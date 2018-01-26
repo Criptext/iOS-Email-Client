@@ -1,0 +1,895 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		41AAC4F8201A9FAD00809C4D /* LoginPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */; };
+		41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */; };
+		41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */; };
+		41AAC4FB201A9FAD00809C4D /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */; };
+		41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EE201A9FAC00809C4D /* ActivityViewController.swift */; };
+		41AAC4FD201A9FAD00809C4D /* DetailThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EF201A9FAC00809C4D /* DetailThreadViewController.swift */; };
+		41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */; };
+		41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */; };
+		41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F2201A9FAC00809C4D /* TourViewController.swift */; };
+		41AAC501201A9FAD00809C4D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F3201A9FAC00809C4D /* DetailViewController.swift */; };
+		41AAC502201A9FAD00809C4D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F4201A9FAD00809C4D /* LoginViewController.swift */; };
+		41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F5201A9FAD00809C4D /* HeaderViewController.swift */; };
+		41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */; };
+		41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */; };
+		41AAC51A201A9FC300809C4D /* ActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */; };
+		41AAC51B201A9FC300809C4D /* DetailGuideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC507201A9FC200809C4D /* DetailGuideView.xib */; };
+		41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC508201A9FC200809C4D /* OpenViewCell.xib */; };
+		41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */; };
+		41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */; };
+		41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50B201A9FC200809C4D /* OpenUIPopover.swift */; };
+		41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50C201A9FC200809C4D /* DetailGuideView.swift */; };
+		41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */; };
+		41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */; };
+		41AAC523201A9FC300809C4D /* AttachmentUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50F201A9FC200809C4D /* AttachmentUIPopover.swift */; };
+		41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC510201A9FC200809C4D /* OpenUIPopover.xib */; };
+		41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC511201A9FC200809C4D /* AttachmentUIPopover.xib */; };
+		41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC512201A9FC300809C4D /* GenericUIPopover.xib */; };
+		41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC513201A9FC300809C4D /* CriptextSpinner.swift */; };
+		41AAC528201A9FC300809C4D /* DetailThreadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC514201A9FC300809C4D /* DetailThreadTableViewCell.xib */; };
+		41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC515201A9FC300809C4D /* GenericUIPopover.swift */; };
+		41AAC52A201A9FC300809C4D /* GoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC516201A9FC300809C4D /* GoogleButton.swift */; };
+		41AAC52B201A9FC300809C4D /* GoogleButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC517201A9FC300809C4D /* GoogleButton.xib */; };
+		41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */; };
+		41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC519201A9FC300809C4D /* MoveMailTableViewCell.swift */; };
+		41AAC537201A9FCD00809C4D /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52E201A9FCC00809C4D /* Email.swift */; };
+		41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52F201A9FCC00809C4D /* Attachment.swift */; };
+		41AAC539201A9FCD00809C4D /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
+		41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC531201A9FCD00809C4D /* Activity.swift */; };
+		41AAC53B201A9FCD00809C4D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC532201A9FCD00809C4D /* User.swift */; };
+		41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */; };
+		41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */; };
+		41AAC53E201A9FCD00809C4D /* Open.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC535201A9FCD00809C4D /* Open.swift */; };
+		41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC536201A9FCD00809C4D /* PreviewItem.swift */; };
+		41AAC541201A9FF500809C4D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC540201A9FF500809C4D /* APIManager.swift */; };
+		41AAC543201AA00000809C4D /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC542201AA00000809C4D /* ContactManager.swift */; };
+		41AAC545201AA01500809C4D /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC544201AA01400809C4D /* DBManager.swift */; };
+		41AAC547201AA01F00809C4D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC546201AA01F00809C4D /* Extensions.swift */; };
+		41AAC549201AA02C00809C4D /* editor-style.css in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC548201AA02C00809C4D /* editor-style.css */; };
+		41AAC54B201AA03E00809C4D /* showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC54A201AA03E00809C4D /* showmore.png */; };
+		41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC54C201AA04F00809C4D /* GoogleService-Info.plist */; };
+		41AAC54F201AA05E00809C4D /* mark_read.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC54E201AA05E00809C4D /* mark_read.png */; };
+		41AAC551201AA06500809C4D /* mark_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC550201AA06500809C4D /* mark_unread.png */; };
+		41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC552201AA06F00809C4D /* MCOMessageViewScript.js */; };
+		41AAC557201AA08500809C4D /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
+		41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55A201B927E00809C4D /* KMAccordionTableViewController.m */; };
+		41AAC562201B92A400809C4D /* KMSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55E201B92A400809C4D /* KMSection.m */; };
+		41AAC563201B92A400809C4D /* KMAppearence.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55F201B92A400809C4D /* KMAppearence.m */; };
+		41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */; };
+		41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */; };
+		41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAAF2017987500D428B7 /* AppDelegate.swift */; };
+		41B6AAB52017987500D428B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB32017987500D428B7 /* Main.storyboard */; };
+		41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
+		41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */; };
+		41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */; };
+		77CC6332368459ABCDA6D461 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		41B6AAC12017987500D428B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 41B6AAA42017987500D428B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 41B6AAAB2017987500D428B7;
+			remoteInfo = "iOS-Email-Client";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Email_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPageViewController.swift; sourceTree = "<group>"; };
+		41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListLabelViewController.swift; sourceTree = "<group>"; };
+		41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
+		41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
+		41AAC4EE201A9FAC00809C4D /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
+		41AAC4EF201A9FAC00809C4D /* DetailThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailThreadViewController.swift; sourceTree = "<group>"; };
+		41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
+		41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveMailViewController.swift; sourceTree = "<group>"; };
+		41AAC4F2201A9FAC00809C4D /* TourViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TourViewController.swift; sourceTree = "<group>"; };
+		41AAC4F3201A9FAC00809C4D /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		41AAC4F4201A9FAD00809C4D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		41AAC4F5201A9FAD00809C4D /* HeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderViewController.swift; sourceTree = "<group>"; };
+		41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
+		41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
+		41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTableViewCell.swift; sourceTree = "<group>"; };
+		41AAC507201A9FC200809C4D /* DetailGuideView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailGuideView.xib; sourceTree = "<group>"; };
+		41AAC508201A9FC200809C4D /* OpenViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenViewCell.xib; sourceTree = "<group>"; };
+		41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailThreadTableViewCell.swift; sourceTree = "<group>"; };
+		41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerUIPopover.swift; sourceTree = "<group>"; };
+		41AAC50B201A9FC200809C4D /* OpenUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenUIPopover.swift; sourceTree = "<group>"; };
+		41AAC50C201A9FC200809C4D /* DetailGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailGuideView.swift; sourceTree = "<group>"; };
+		41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerUIPopover.xib; sourceTree = "<group>"; };
+		41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentTableViewCell.swift; sourceTree = "<group>"; };
+		41AAC50F201A9FC200809C4D /* AttachmentUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentUIPopover.swift; sourceTree = "<group>"; };
+		41AAC510201A9FC200809C4D /* OpenUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenUIPopover.xib; sourceTree = "<group>"; };
+		41AAC511201A9FC200809C4D /* AttachmentUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttachmentUIPopover.xib; sourceTree = "<group>"; };
+		41AAC512201A9FC300809C4D /* GenericUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenericUIPopover.xib; sourceTree = "<group>"; };
+		41AAC513201A9FC300809C4D /* CriptextSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriptextSpinner.swift; sourceTree = "<group>"; };
+		41AAC514201A9FC300809C4D /* DetailThreadTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailThreadTableViewCell.xib; sourceTree = "<group>"; };
+		41AAC515201A9FC300809C4D /* GenericUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericUIPopover.swift; sourceTree = "<group>"; };
+		41AAC516201A9FC300809C4D /* GoogleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleButton.swift; sourceTree = "<group>"; };
+		41AAC517201A9FC300809C4D /* GoogleButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoogleButton.xib; sourceTree = "<group>"; };
+		41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
+		41AAC519201A9FC300809C4D /* MoveMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveMailTableViewCell.swift; sourceTree = "<group>"; };
+		41AAC52E201A9FCC00809C4D /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
+		41AAC52F201A9FCC00809C4D /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		41AAC530201A9FCD00809C4D /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		41AAC531201A9FCD00809C4D /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		41AAC532201A9FCD00809C4D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLActivityItemProvider.swift; sourceTree = "<group>"; };
+		41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityItemProvider.swift; sourceTree = "<group>"; };
+		41AAC535201A9FCD00809C4D /* Open.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Open.swift; sourceTree = "<group>"; };
+		41AAC536201A9FCD00809C4D /* PreviewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewItem.swift; sourceTree = "<group>"; };
+		41AAC540201A9FF500809C4D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		41AAC542201AA00000809C4D /* ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
+		41AAC544201AA01400809C4D /* DBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
+		41AAC546201AA01F00809C4D /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		41AAC548201AA02C00809C4D /* editor-style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "editor-style.css"; sourceTree = "<group>"; };
+		41AAC54A201AA03E00809C4D /* showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = showmore.png; sourceTree = "<group>"; };
+		41AAC54C201AA04F00809C4D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		41AAC54E201AA05E00809C4D /* mark_read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mark_read.png; sourceTree = "<group>"; };
+		41AAC550201AA06500809C4D /* mark_unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mark_unread.png; sourceTree = "<group>"; };
+		41AAC552201AA06F00809C4D /* MCOMessageViewScript.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = MCOMessageViewScript.js; sourceTree = "<group>"; };
+		41AAC554201AA08400809C4D /* iOS-Email-Client-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-Email-Client-Bridging-Header.h"; sourceTree = "<group>"; };
+		41AAC555201AA08500809C4D /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
+		41AAC556201AA08500809C4D /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
+		41AAC55A201B927E00809C4D /* KMAccordionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAccordionTableViewController.m; sourceTree = "<group>"; };
+		41AAC55B201B927E00809C4D /* KMAccordionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAccordionTableViewController.h; sourceTree = "<group>"; };
+		41AAC55E201B92A400809C4D /* KMSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMSection.m; sourceTree = "<group>"; };
+		41AAC55F201B92A400809C4D /* KMAppearence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAppearence.m; sourceTree = "<group>"; };
+		41AAC560201B92A400809C4D /* KMAppearence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAppearence.h; sourceTree = "<group>"; };
+		41AAC561201B92A400809C4D /* KMSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSection.h; sourceTree = "<group>"; };
+		41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KMSectionHeaderView.xib; sourceTree = "<group>"; };
+		41AAC567201B92CC00809C4D /* KMSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSectionHeaderView.h; sourceTree = "<group>"; };
+		41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMSectionHeaderView.m; sourceTree = "<group>"; };
+		41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Email-Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		41B6AAAF2017987500D428B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		41B6AAB42017987500D428B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		41B6AAB62017987500D428B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		41B6AAB92017987500D428B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		41B6AABB2017987500D428B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-Email-ClientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Email_ClientTests.swift; sourceTree = "<group>"; };
+		41B6AAC62017987500D428B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
+		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		41B6AAA92017987500D428B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77CC6332368459ABCDA6D461 /* Pods_iOS_Email_Client.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		41B6AABD2017987500D428B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2962C69A939AA368B015D288 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		41AAC4E8201A9E7000809C4D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC4EE201A9FAC00809C4D /* ActivityViewController.swift */,
+				41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */,
+				41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */,
+				41AAC4EF201A9FAC00809C4D /* DetailThreadViewController.swift */,
+				41AAC4F3201A9FAC00809C4D /* DetailViewController.swift */,
+				41AAC4F5201A9FAD00809C4D /* HeaderViewController.swift */,
+				41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */,
+				41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */,
+				41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */,
+				41AAC4F4201A9FAD00809C4D /* LoginViewController.swift */,
+				41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */,
+				41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */,
+				41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */,
+				41AAC4F2201A9FAC00809C4D /* TourViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		41AAC4E9201A9EF500809C4D /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC558201B91FF00809C4D /* KMAccordion */,
+				41AAC556201AA08500809C4D /* DateUtils.h */,
+				41AAC555201AA08500809C4D /* DateUtils.m */,
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		41AAC558201B91FF00809C4D /* KMAccordion */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC565201B92BF00809C4D /* Header */,
+				41AAC55D201B929200809C4D /* Model */,
+				41AAC559201B925C00809C4D /* ViewController */,
+			);
+			path = KMAccordion;
+			sourceTree = "<group>";
+		};
+		41AAC559201B925C00809C4D /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC55B201B927E00809C4D /* KMAccordionTableViewController.h */,
+				41AAC55A201B927E00809C4D /* KMAccordionTableViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		41AAC55D201B929200809C4D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC560201B92A400809C4D /* KMAppearence.h */,
+				41AAC55F201B92A400809C4D /* KMAppearence.m */,
+				41AAC561201B92A400809C4D /* KMSection.h */,
+				41AAC55E201B92A400809C4D /* KMSection.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		41AAC565201B92BF00809C4D /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC567201B92CC00809C4D /* KMSectionHeaderView.h */,
+				41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */,
+				41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		41B6AAA32017987500D428B7 = {
+			isa = PBXGroup;
+			children = (
+				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
+				41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */,
+				41B6AAAD2017987500D428B7 /* Products */,
+				72CCFB93962F99D0DB7C21D2 /* Pods */,
+				2962C69A939AA368B015D288 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		41B6AAAD2017987500D428B7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */,
+				41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC4E9201A9EF500809C4D /* Libs */,
+				41AAC552201AA06F00809C4D /* MCOMessageViewScript.js */,
+				41AAC540201A9FF500809C4D /* APIManager.swift */,
+				41AAC542201AA00000809C4D /* ContactManager.swift */,
+				41AAC544201AA01400809C4D /* DBManager.swift */,
+				41AAC546201AA01F00809C4D /* Extensions.swift */,
+				41AAC548201AA02C00809C4D /* editor-style.css */,
+				41AAC4E8201A9E7000809C4D /* Controllers */,
+				41B6AAD020179E4E00D428B7 /* Views */,
+				41B6AACF20179D2100D428B7 /* Model */,
+				41B6AAAF2017987500D428B7 /* AppDelegate.swift */,
+				41AAC54A201AA03E00809C4D /* showmore.png */,
+				41B6AAB32017987500D428B7 /* Main.storyboard */,
+				41B6AAB62017987500D428B7 /* Assets.xcassets */,
+				41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */,
+				41B6AABB2017987500D428B7 /* Info.plist */,
+				41AAC54C201AA04F00809C4D /* GoogleService-Info.plist */,
+				41AAC554201AA08400809C4D /* iOS-Email-Client-Bridging-Header.h */,
+				41AAC54E201AA05E00809C4D /* mark_read.png */,
+				41AAC550201AA06500809C4D /* mark_unread.png */,
+			);
+			path = "iOS-Email-Client";
+			sourceTree = "<group>";
+		};
+		41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */ = {
+			isa = PBXGroup;
+			children = (
+				41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */,
+				41B6AAC62017987500D428B7 /* Info.plist */,
+			);
+			path = "iOS-Email-ClientTests";
+			sourceTree = "<group>";
+		};
+		41B6AACF20179D2100D428B7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC531201A9FCD00809C4D /* Activity.swift */,
+				41AAC52F201A9FCC00809C4D /* Attachment.swift */,
+				41AAC530201A9FCD00809C4D /* Contact.swift */,
+				41AAC52E201A9FCC00809C4D /* Email.swift */,
+				41AAC535201A9FCD00809C4D /* Open.swift */,
+				41AAC536201A9FCD00809C4D /* PreviewItem.swift */,
+				41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */,
+				41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */,
+				41AAC532201A9FCD00809C4D /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		41B6AAD020179E4E00D428B7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */,
+				41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */,
+				41AAC50F201A9FC200809C4D /* AttachmentUIPopover.swift */,
+				41AAC511201A9FC200809C4D /* AttachmentUIPopover.xib */,
+				41AAC513201A9FC300809C4D /* CriptextSpinner.swift */,
+				41AAC50C201A9FC200809C4D /* DetailGuideView.swift */,
+				41AAC507201A9FC200809C4D /* DetailGuideView.xib */,
+				41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */,
+				41AAC514201A9FC300809C4D /* DetailThreadTableViewCell.xib */,
+				41AAC515201A9FC300809C4D /* GenericUIPopover.swift */,
+				41AAC512201A9FC300809C4D /* GenericUIPopover.xib */,
+				41AAC516201A9FC300809C4D /* GoogleButton.swift */,
+				41AAC517201A9FC300809C4D /* GoogleButton.xib */,
+				41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */,
+				41AAC519201A9FC300809C4D /* MoveMailTableViewCell.swift */,
+				41AAC50B201A9FC200809C4D /* OpenUIPopover.swift */,
+				41AAC510201A9FC200809C4D /* OpenUIPopover.xib */,
+				41AAC508201A9FC200809C4D /* OpenViewCell.xib */,
+				41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */,
+				41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		72CCFB93962F99D0DB7C21D2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */,
+				7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		41B6AAAB2017987500D428B7 /* iOS-Email-Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41B6AAC92017987500D428B7 /* Build configuration list for PBXNativeTarget "iOS-Email-Client" */;
+			buildPhases = (
+				52D17F27E32DA3C273D4A47C /* [CP] Check Pods Manifest.lock */,
+				41B6AAA82017987500D428B7 /* Sources */,
+				41B6AAA92017987500D428B7 /* Frameworks */,
+				41B6AAAA2017987500D428B7 /* Resources */,
+				9E4ABEF57B503BF0BDDD71D5 /* [CP] Embed Pods Frameworks */,
+				5B118A4C965F4ACA6820CDF6 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "iOS-Email-Client";
+			productName = "iOS-Email-Client";
+			productReference = 41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */;
+			productType = "com.apple.product-type.application";
+		};
+		41B6AABF2017987500D428B7 /* iOS-Email-ClientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41B6AACC2017987500D428B7 /* Build configuration list for PBXNativeTarget "iOS-Email-ClientTests" */;
+			buildPhases = (
+				41B6AABC2017987500D428B7 /* Sources */,
+				41B6AABD2017987500D428B7 /* Frameworks */,
+				41B6AABE2017987500D428B7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				41B6AAC22017987500D428B7 /* PBXTargetDependency */,
+			);
+			name = "iOS-Email-ClientTests";
+			productName = "iOS-Email-ClientTests";
+			productReference = 41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		41B6AAA42017987500D428B7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Criptext Inc.";
+				TargetAttributes = {
+					41B6AAAB2017987500D428B7 = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
+					};
+					41B6AABF2017987500D428B7 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 41B6AAAB2017987500D428B7;
+					};
+				};
+			};
+			buildConfigurationList = 41B6AAA72017987500D428B7 /* Build configuration list for PBXProject "iOS-Email-Client" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 41B6AAA32017987500D428B7;
+			productRefGroup = 41B6AAAD2017987500D428B7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				41B6AAAB2017987500D428B7 /* iOS-Email-Client */,
+				41B6AABF2017987500D428B7 /* iOS-Email-ClientTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		41B6AAAA2017987500D428B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
+				41AAC51B201A9FC300809C4D /* DetailGuideView.xib in Resources */,
+				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
+				41AAC52B201A9FC300809C4D /* GoogleButton.xib in Resources */,
+				41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */,
+				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
+				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
+				41AAC528201A9FC300809C4D /* DetailThreadTableViewCell.xib in Resources */,
+				41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */,
+				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
+				41AAC54B201AA03E00809C4D /* showmore.png in Resources */,
+				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
+				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
+				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
+				41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */,
+				41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */,
+				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
+				41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		41B6AABE2017987500D428B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		52D17F27E32DA3C273D4A47C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iOS-Email-Client-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5B118A4C965F4ACA6820CDF6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9E4ABEF57B503BF0BDDD71D5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CICropPicker/CICropPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/CLTokenInputView/CLTokenInputView.framework",
+				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/M13Checkbox/M13Checkbox.framework",
+				"${BUILT_PRODUCTS_DIR}/MIBadgeButton-Swift/MIBadgeButton_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/MMMaterialDesignSpinner/MMMaterialDesignSpinner.framework",
+				"${BUILT_PRODUCTS_DIR}/Material/Material.framework",
+				"${BUILT_PRODUCTS_DIR}/MonkeyKit/MonkeyKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/RichEditorView/RichEditorView.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftWebSocket/SwiftWebSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TPCustomSwitch/TPCustomSwitch.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CICropPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CLTokenInputView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M13Checkbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MIBadgeButton_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMMaterialDesignSpinner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Material.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MonkeyKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RichEditorView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftWebSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPCustomSwitch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		41B6AAA82017987500D428B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */,
+				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
+				41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */,
+				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
+				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
+				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
+				41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */,
+				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
+				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
+				41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */,
+				41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */,
+				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
+				41AAC501201A9FAD00809C4D /* DetailViewController.swift in Sources */,
+				41AAC4F8201A9FAD00809C4D /* LoginPageViewController.swift in Sources */,
+				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
+				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
+				41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */,
+				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
+				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
+				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
+				41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */,
+				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
+				41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */,
+				41AAC4FD201A9FAD00809C4D /* DetailThreadViewController.swift in Sources */,
+				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
+				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
+				41AAC4FB201A9FAD00809C4D /* ThreadViewController.swift in Sources */,
+				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
+				41AAC51A201A9FC300809C4D /* ActivityTableViewCell.swift in Sources */,
+				41AAC53E201A9FCD00809C4D /* Open.swift in Sources */,
+				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
+				41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */,
+				41AAC562201B92A400809C4D /* KMSection.m in Sources */,
+				41AAC52A201A9FC300809C4D /* GoogleButton.swift in Sources */,
+				41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */,
+				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
+				41AAC502201A9FAD00809C4D /* LoginViewController.swift in Sources */,
+				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
+				41AAC563201B92A400809C4D /* KMAppearence.m in Sources */,
+				41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */,
+				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
+				41AAC523201A9FC300809C4D /* AttachmentUIPopover.swift in Sources */,
+				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
+				41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */,
+				41AAC53B201A9FCD00809C4D /* User.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		41B6AABC2017987500D428B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		41B6AAC22017987500D428B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 41B6AAAB2017987500D428B7 /* iOS-Email-Client */;
+			targetProxy = 41B6AAC12017987500D428B7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		41B6AAB32017987500D428B7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				41B6AAB42017987500D428B7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				41B6AAB92017987500D428B7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		41B6AAC72017987500D428B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		41B6AAC82017987500D428B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		41B6AACA2017987500D428B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-Client";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iOS-Email-Client/Libs/iOS-Email-Client-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		41B6AACB2017987500D428B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-Client";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iOS-Email-Client/Libs/iOS-Email-Client-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		41B6AACD2017987500D428B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				INFOPLIST_FILE = "iOS-Email-ClientTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-ClientTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS-Email-Client.app/iOS-Email-Client";
+			};
+			name = Debug;
+		};
+		41B6AACE2017987500D428B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				INFOPLIST_FILE = "iOS-Email-ClientTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-ClientTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS-Email-Client.app/iOS-Email-Client";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		41B6AAA72017987500D428B7 /* Build configuration list for PBXProject "iOS-Email-Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41B6AAC72017987500D428B7 /* Debug */,
+				41B6AAC82017987500D428B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		41B6AAC92017987500D428B7 /* Build configuration list for PBXNativeTarget "iOS-Email-Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41B6AACA2017987500D428B7 /* Debug */,
+				41B6AACB2017987500D428B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		41B6AACC2017987500D428B7 /* Build configuration list for PBXNativeTarget "iOS-Email-ClientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41B6AACD2017987500D428B7 /* Debug */,
+				41B6AACE2017987500D428B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 41B6AAA42017987500D428B7 /* Project object */;
+}

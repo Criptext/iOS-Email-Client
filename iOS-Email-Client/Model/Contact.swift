@@ -1,0 +1,18 @@
+//
+//  Contact.swift
+//  Criptext Secure Email
+//
+//  Created by Gianni Carlo on 5/18/17.
+//  Copyright © 2017 Criptext Inc. All rights reserved.
+//
+
+import RealmSwift
+
+class Contact: Object {
+    dynamic var displayName = ""
+    dynamic var email = ""
+    
+    override static func primaryKey() -> String? {
+        return "email"
+    }
+}

@@ -1,0 +1,4 @@
+/*Overwrite default editor color to black*/
+#editor {
+    color: #000;
+}
