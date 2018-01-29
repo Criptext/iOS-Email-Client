@@ -45,7 +45,7 @@ class ActivityViewController: UITableViewController{
         }
         
         let font:UIFont = Font.regular.size(13)!
-        let attributes:[String : Any] = [NSFontAttributeName: font];
+        let attributes:[NSAttributedStringKey : Any] = [NSAttributedStringKey.font: font];
         statusBarButton.setTitleTextAttributes(attributes, for: .normal)
         
         self.tableView.tableFooterView = UIView()
@@ -71,14 +71,14 @@ class ActivityViewController: UITableViewController{
         self.dismiss(animated: true, completion: nil)
     }
     
-    func handleRefresh(_ refreshControl: UIRefreshControl) {
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.markAllAsRead()
         self.activities.removeAll()
         self.tableView.reloadData()
         self.getMoreActivities(manual: true)
     }
     
-    func onWebSocketMessage(_ notification : Notification) {
+    @objc func onWebSocketMessage(_ notification : Notification) {
         
         guard let userInfo = notification.userInfo else{
                 print("No userInfo found in notification")
@@ -229,12 +229,12 @@ extension ActivityViewController {
             }
             else{
                 //OPEN
-                cell.lockImageView.tintColor = UIColor.init(colorLiteralRed: 0, green: 145/255, blue: 255/255, alpha: 1)
-                cell.timerImageView.tintColor = UIColor.init(colorLiteralRed: 0, green: 145/255, blue: 255/255, alpha: 1)
+                cell.lockImageView.tintColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
+                cell.timerImageView.tintColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
             }
             
             cell.toLabel.textColor = UIColor.black
-            cell.subjectLabel.textColor = UIColor.init(colorLiteralRed: 114/244, green: 114/255, blue: 114/255, alpha: 1)
+            cell.subjectLabel.textColor = UIColor(red: 114/244, green: 114/255, blue: 114/255, alpha: 1)
             cell.buttonUnsend.setImage(Icon.btn_unsend.image, for: .normal)
             cell.buttonUnsend.isEnabled = true
             cell.buttonUnsend.isHidden = false
@@ -313,7 +313,7 @@ extension ActivityViewController {
             }
             
             if(total > 0 && activity.exists && self.user.isPro()){
-                cell.attachmentImageView.tintColor = UIColor.init(colorLiteralRed: 0, green: 145/255, blue: 255/255, alpha: 1)
+                cell.attachmentImageView.tintColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
             }
             else if(activity.exists){
                 cell.attachmentImageView.tintColor = UIColor.gray

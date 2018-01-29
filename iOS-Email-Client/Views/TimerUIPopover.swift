@@ -78,7 +78,7 @@ class TimerUIPopover: UIViewController, UIPopoverPresentationControllerDelegate{
         timer.invalidate()
     }
     
-    func updateTime(){
+    @objc func updateTime(){
         
         //Get the time left until the specified date
         let ti = Int(dateEnd.timeIntervalSinceNow)

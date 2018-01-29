@@ -94,8 +94,8 @@ class InboxViewController: UITableViewController {
                 }
                 
                 //retry saving drafts and sending emails
-                let drafts = DBManager.getPendingDrafts()
-                let emails = DBManager.getPendingEmails()
+//                let drafts = DBManager.getPendingDrafts()
+//                let emails = DBManager.getPendingEmails()
                 
                 break
             }
@@ -135,7 +135,7 @@ class InboxViewController: UITableViewController {
         self.counterBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
         self.counterBarButton.tintColor = Icon.system.color
         
-        let attributescounter = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20)]
+        let attributescounter = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 20)]
         self.counterBarButton.setTitleTextAttributes(attributescounter, for: .normal)
         
         self.menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu_white"), style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
@@ -151,10 +151,11 @@ class InboxViewController: UITableViewController {
         activityButton.setImage(Icon.activity.image, for: .normal)
         activityButton.addTarget(self, action: #selector(didPressActivity), for: UIControlEvents.touchUpInside)
         self.activityBarButton = UIBarButtonItem(customView: activityButton)
-        self.activityBarButton.tintColor = UIColor(colorLiteralRed: 0, green: 122/255, blue: 255/255, alpha: 1)
+        
+        self.activityBarButton.tintColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 1)
         
         let font:UIFont = Font.regular.size(13)!
-        let attributes:[String : Any] = [NSFontAttributeName: font];
+        let attributes:[NSAttributedStringKey : Any] = [NSAttributedStringKey.font: font];
         self.statusBarButton.setTitleTextAttributes(attributes, for: .normal)
         self.statusBarButton.tintColor = UIColor.darkGray
         
@@ -222,7 +223,7 @@ class InboxViewController: UITableViewController {
 
 //MARK: - Modify mails actions
 extension InboxViewController{
-    func didPressEdit() {
+    @objc func didPressEdit() {
         
         self.tableView.setEditing(!self.tableView.isEditing, animated: true)
         
@@ -244,7 +245,7 @@ extension InboxViewController{
         self.setButtonItems(isEditing: self.tableView.isEditing)
     }
     
-    func didPressComposer(_ sender: UIBarButtonItem) {
+    @objc func didPressComposer(_ sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
@@ -259,7 +260,7 @@ extension InboxViewController{
     
     
     
-    func didPressActivity(_ sender: UIBarButtonItem) {
+    @objc func didPressActivity(_ sender: UIBarButtonItem) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navigationView = storyboard.instantiateViewController(withIdentifier: "ActivityViewController") as! UINavigationController
@@ -273,7 +274,7 @@ extension InboxViewController{
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
-    func didPressArchive(_ sender: UIBarButtonItem) {
+    @objc func didPressArchive(_ sender: UIBarButtonItem) {
         guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows,
             (self.selectedLabel == .inbox || self.selectedLabel == .junk) else {
                 if self.tableView.isEditing {
@@ -310,7 +311,7 @@ extension InboxViewController{
         }
     }
     
-    func didPressTrash(_ sender: UIBarButtonItem) {
+    @objc func didPressTrash(_ sender: UIBarButtonItem) {
         guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
             if self.tableView.isEditing {
                 self.didPressEdit()
@@ -357,7 +358,7 @@ extension InboxViewController{
         }
     }
     
-    func emailTrashed(notification:Notification) -> Void {
+    @objc func emailTrashed(notification:Notification) -> Void {
         guard let userInfo = notification.userInfo,
             let emailTrashed  = userInfo["email"] as? Email else {
                 print("No userInfo found in notification")
@@ -384,7 +385,7 @@ extension InboxViewController{
         }
     }
     
-    func didPressMove(_ sender: UIBarButtonItem) {
+    @objc func didPressMove(_ sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let moveVC = storyboard.instantiateViewController(withIdentifier: "MoveMailViewController") as! MoveMailViewController
@@ -393,7 +394,7 @@ extension InboxViewController{
         self.present(moveVC, animated: true, completion: nil)
     }
     
-    func didPressMark(_ sender: UIBarButtonItem) {
+    @objc func didPressMark(_ sender: UIBarButtonItem) {
         
         guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
             return
@@ -509,7 +510,7 @@ extension InboxViewController{
         }
     }
     
-    func didPressDelete(_ sender: UIBarButtonItem) {
+    @objc func didPressDelete(_ sender: UIBarButtonItem) {
         guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
             if self.tableView.isEditing {
                 self.didPressEdit()
@@ -1076,7 +1077,7 @@ extension InboxViewController{
         CriptextSpinner.hide(from: self.view)
     }
     
-    func handleRefresh(_ refreshControl: UIRefreshControl, automatic:Bool = false, signIn:Bool = false, completion: (() -> Void)?){
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl, automatic:Bool = false, signIn:Bool = false, completion: (() -> Void)?){
         
         if !automatic {
             DBManager.restoreState(self.currentUser)
@@ -1137,8 +1138,8 @@ extension InboxViewController{
             }
             
             if let historyId = (ticket.fetchedObject as! GTLRGmail_ListHistoryResponse).historyId,
-                Int64(historyId) > self.currentUser.historyId(for: self.selectedLabel) {
-                DBManager.update(self.currentUser, historyId: Int64(historyId), label: self.selectedLabel)
+                Int64(truncating: historyId) > self.currentUser.historyId(for: self.selectedLabel) {
+                DBManager.update(self.currentUser, historyId: Int64(truncating: historyId), label: self.selectedLabel)
             }
             
             // it's easier to reload the data from DB for some cases
@@ -1689,12 +1690,12 @@ extension InboxViewController {
                 }
                 else{
                     //OPEN
-                    cell.lockImageView.tintColor = UIColor.init(colorLiteralRed: 0, green: 145/255, blue: 255/255, alpha: 1)
-                    cell.timerImageView.tintColor = UIColor.init(colorLiteralRed: 0, green: 145/255, blue: 255/255, alpha: 1)
+                    cell.lockImageView.tintColor = UIColor.init(red: 0, green: 145/255, blue: 255/255, alpha: 1)
+                    cell.timerImageView.tintColor = UIColor.init(red: 0, green: 145/255, blue: 255/255, alpha: 1)
                 }
                 
                 cell.senderLabel.textColor = UIColor.black
-                cell.subjectLabel.textColor = UIColor.init(colorLiteralRed: 114/244, green: 114/255, blue: 114/255, alpha: 1)
+                cell.subjectLabel.textColor = UIColor.init(red: 114/244, green: 114/255, blue: 114/255, alpha: 1)
             }
             else{
                 //UNSENT

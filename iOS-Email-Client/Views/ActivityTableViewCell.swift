@@ -58,7 +58,7 @@ class ActivityTableViewCell: UITableViewCell {
         self.tapGestureRecognizer = tap
     }
     
-    func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
+    @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
         guard let delegate = self.delegate else {
             return
         }

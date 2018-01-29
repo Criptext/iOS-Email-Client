@@ -7,7 +7,7 @@
 //
 
 #import "KMSection.h"
-#import "Criptext_Secure_Email-Swift.h"
+#import "iOS_Email_Client-Swift.h"
 
 @implementation KMSection
 

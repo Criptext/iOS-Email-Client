@@ -96,7 +96,7 @@ class OpenUIPopover: UIViewController, UIPopoverPresentationControllerDelegate, 
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.Activity.onFileNotificationChange, object: nil)
     }
     
-    func onWebSocketMessage(_ notification : Notification) {
+    @objc func onWebSocketMessage(_ notification : Notification) {
         
         guard let userInfo = notification.userInfo else{
             print("No userInfo found in notification")

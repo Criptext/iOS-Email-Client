@@ -10,50 +10,50 @@ import Foundation
 import RealmSwift
 
 class User: Object {
-    dynamic var id = 0
-    dynamic var email = ""
-    dynamic var firstName = ""
-    dynamic var lastName = ""
-    dynamic var plan = ""
-    dynamic var auth = ""
-    dynamic var jwt = ""
-    dynamic var session = ""
-    dynamic var status = 0
-    dynamic var monkeyId = ""
-    dynamic var coupon = ""
-    dynamic var pubKey = ""
-    dynamic var emailHeader = ""
-    dynamic var emailSignature = ""
-    dynamic var defaultOn = true
-    dynamic var serverAuthCode = ""
-    dynamic var authentication: GIDAuthentication!
-    dynamic var badge = 0
+    @objc dynamic var id = 0
+    @objc dynamic var email = ""
+    @objc dynamic var firstName = ""
+    @objc dynamic var lastName = ""
+    @objc dynamic var plan = ""
+    @objc dynamic var auth = ""
+    @objc dynamic var jwt = ""
+    @objc dynamic var session = ""
+    @objc dynamic var status = 0
+    @objc dynamic var monkeyId = ""
+    @objc dynamic var coupon = ""
+    @objc dynamic var pubKey = ""
+    @objc dynamic var emailHeader = ""
+    @objc dynamic var emailSignature = ""
+    @objc dynamic var defaultOn = true
+    @objc dynamic var serverAuthCode = ""
+    @objc dynamic var authentication: GIDAuthentication!
+    @objc dynamic var badge = 0
     
-    dynamic var inboxNextPageToken:String? = "0"
-    dynamic var inboxHistoryId:Int64 = 0
-    dynamic var inboxUpdateDate:Date?
-    dynamic var inboxBadge = ""
+    @objc dynamic var inboxNextPageToken:String? = "0"
+    @objc dynamic var inboxHistoryId:Int64 = 0
+    @objc dynamic var inboxUpdateDate:Date?
+    @objc dynamic var inboxBadge = ""
     
-    dynamic var draftNextPageToken:String? = "0"
-    dynamic var draftHistoryId:Int64 = 0
-    dynamic var draftUpdateDate:Date?
-    dynamic var draftBadge = ""
+    @objc dynamic var draftNextPageToken:String? = "0"
+    @objc dynamic var draftHistoryId:Int64 = 0
+    @objc dynamic var draftUpdateDate:Date?
+    @objc dynamic var draftBadge = ""
     
-    dynamic var sentNextPageToken:String? = "0"
-    dynamic var sentHistoryId:Int64 = 0
-    dynamic var sentUpdateDate:Date?
+    @objc dynamic var sentNextPageToken:String? = "0"
+    @objc dynamic var sentHistoryId:Int64 = 0
+    @objc dynamic var sentUpdateDate:Date?
     
-    dynamic var junkNextPageToken:String? = "0"
-    dynamic var junkHistoryId:Int64 = 0
-    dynamic var junkUpdateDate:Date?
+    @objc dynamic var junkNextPageToken:String? = "0"
+    @objc dynamic var junkHistoryId:Int64 = 0
+    @objc dynamic var junkUpdateDate:Date?
     
-    dynamic var trashNextPageToken:String? = "0"
-    dynamic var trashHistoryId:Int64 = 0
-    dynamic var trashUpdateDate:Date?
+    @objc dynamic var trashNextPageToken:String? = "0"
+    @objc dynamic var trashHistoryId:Int64 = 0
+    @objc dynamic var trashUpdateDate:Date?
     
-    dynamic var allNextPageToken:String? = "0"
-    dynamic var allHistoryId:Int64 = 0
-    dynamic var allUpdateDate:Date?
+    @objc dynamic var allNextPageToken:String? = "0"
+    @objc dynamic var allHistoryId:Int64 = 0
+    @objc dynamic var allUpdateDate:Date?
     
     var fullName: String {
         return "\(firstName) \(lastName)"

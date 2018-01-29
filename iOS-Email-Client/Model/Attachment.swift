@@ -51,17 +51,17 @@ enum ExpirationType: Int {
 //tipo -> 2 expiration on open, 3 expiration on send
 class AttachmentGmail: Object, Attachment {
 
-    dynamic var currentPassword = ""
-    dynamic var attachmentId = ""
-    dynamic var contentId = ""
-    dynamic var fileName = ""
-    dynamic var filePath = ""
-    dynamic var fileToken = ""
-    dynamic var mimeType = ""
-    dynamic var size = 0
-    dynamic var isReadOnly = false
-    dynamic var isEncrypted = false
-    dynamic var isUploaded = false
+    @objc dynamic var currentPassword = ""
+    @objc dynamic var attachmentId = ""
+    @objc dynamic var contentId = ""
+    @objc dynamic var fileName = ""
+    @objc dynamic var filePath = ""
+    @objc dynamic var fileToken = ""
+    @objc dynamic var mimeType = ""
+    @objc dynamic var size = 0
+    @objc dynamic var isReadOnly = false
+    @objc dynamic var isEncrypted = false
+    @objc dynamic var isUploaded = false
     
     var fileURL: URL? {
         if attachmentId.isEmpty {
@@ -106,28 +106,28 @@ func ==(lhs: Attachment, rhs: Attachment) -> Bool {
 }
 
 class AttachmentCriptext: Object, Attachment {
-    dynamic var filePath:String = ""
+    @objc dynamic var filePath:String = ""
     //sent
-    dynamic var id = "" // fileToken
-    dynamic var fileName = ""
-    dynamic var fileToken = ""
-    dynamic var size = 0
-    dynamic var isEncrypted = true
-    dynamic var isReadOnly = false
-    dynamic var isUploaded = false
-    dynamic var currentPassword = ""
-    dynamic var mimeType = ""
+    @objc dynamic var id = "" // fileToken
+    @objc dynamic var fileName = ""
+    @objc dynamic var fileToken = ""
+    @objc dynamic var size = 0
+    @objc dynamic var isEncrypted = true
+    @objc dynamic var isReadOnly = false
+    @objc dynamic var isUploaded = false
+    @objc dynamic var currentPassword = ""
+    @objc dynamic var mimeType = ""
     
     //Criptext
-    dynamic var userId = ""
-    dynamic var emailToken = ""
-    dynamic var fileType = ""
-    dynamic var remoteUrl = ""
-    dynamic var timestamp = ""
-    dynamic var openArraySerialized = ""
-    dynamic var openArray = [String]()
-    dynamic var downloadArraySerialized = ""
-    dynamic var downloadArray = [String]()
+    @objc dynamic var userId = ""
+    @objc dynamic var emailToken = ""
+    @objc dynamic var fileType = ""
+    @objc dynamic var remoteUrl = ""
+    @objc dynamic var timestamp = ""
+    @objc dynamic var openArraySerialized = ""
+    @objc dynamic var openArray = [String]()
+    @objc dynamic var downloadArraySerialized = ""
+    @objc dynamic var downloadArray = [String]()
 
     //Attachment Criptext
     override static func primaryKey() -> String? {

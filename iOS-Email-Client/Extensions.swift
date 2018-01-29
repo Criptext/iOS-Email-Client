@@ -155,7 +155,7 @@ extension UIAlertController {
         return password.characters.count > 4 && password.rangeOfCharacter(from: .whitespacesAndNewlines) == nil
     }
     
-    func textDidChangeInLoginAlert() {
+    @objc func textDidChangeInLoginAlert() {
         if let password = textFields?[0].text,
             let password2 = textFields?[1].text,
             let action = actions.last {
@@ -244,15 +244,18 @@ extension Notification.Name {
 
 extension String {
     init(htmlEncodedString: String) {
-        let encodedData = htmlEncodedString.data(using: String.Encoding.utf8)!
-        let attributedOptions = [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                  NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue)] as [String : Any]
+//        let encodedData = htmlEncodedString.data(using: String.Encoding.utf8)!
+//        let attributedOptions = [ NSAttributedString.DocumentAttributeKey.documentType.rawValue: NSAttributedString.DocumentType.html,
+//                                  NSAttributedString.DocumentAttributeKey.characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue)] as! [NSAttributedString.DocumentReadingOptionKey : Any]
+//
+//        guard let attributedString = try? NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil) else {
+//            self.init(htmlEncodedString)
+//            return
+//        }
+//
+//        self.init(attributedString.string)
         
-        guard let attributedString = try? NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil) else {
-            self.init(htmlEncodedString)!
-            return
-        }
-        self.init(attributedString.string)!
+        self.init(htmlEncodedString)
     }
 }
 
@@ -273,11 +276,11 @@ enum Font {
         switch self {
         case .bold:
             let font = UIFont(name: "Lato-Semibold", size: size)!
-            let attrs = [NSFontAttributeName : font]
+            let attrs = [NSAttributedStringKey.font : font]
             return NSMutableAttributedString(string:text, attributes:attrs)
         default:
             let font = UIFont(name: "Lato-Regular", size: size)!
-            let attrs = [NSFontAttributeName : font]
+            let attrs = [NSAttributedStringKey.font : font]
             return NSMutableAttributedString(string:text, attributes:attrs)
         }
     }

@@ -308,12 +308,12 @@ extension ThreadViewController {
                 }
                 else{
                     //OPEN
-                    cell.lockImageView.tintColor = UIColor.init(colorLiteralRed: 0, green: 145/255, blue: 255/255, alpha: 1)
-                    cell.timerImageView.tintColor = UIColor.init(colorLiteralRed: 0, green: 145/255, blue: 255/255, alpha: 1)
+                    cell.lockImageView.tintColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
+                    cell.timerImageView.tintColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
                 }
                 
                 cell.senderLabel.textColor = UIColor.black
-                cell.subjectLabel.textColor = UIColor.init(colorLiteralRed: 114/244, green: 114/255, blue: 114/255, alpha: 1)
+                cell.subjectLabel.textColor = UIColor(red: 114/244, green: 114/255, blue: 114/255, alpha: 1)
             }
             else{
                 //UNSENT

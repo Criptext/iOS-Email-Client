@@ -56,7 +56,7 @@ class LoginPageViewController: UIPageViewController, UIPageViewControllerDataSou
         // Do any additional setup after loading the view.
     }
     
-    func didPressSignIn(_ sender: UIButton) {
+    @objc func didPressSignIn(_ sender: UIButton) {
         CriptextSpinner.show(in: self.view, title: nil, image: UIImage(named: "icon_sent_chat.png"))
         GIDSignIn.sharedInstance().signIn()
     }

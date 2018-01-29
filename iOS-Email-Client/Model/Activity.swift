@@ -10,22 +10,22 @@ import Foundation
 import RealmSwift
 
 class Activity: Object {
-    dynamic var token = ""
-    dynamic var subject = ""
-    dynamic var to = ""
-    dynamic var toDisplayString = ""
-    dynamic var from = ""
-    dynamic var type = 0
-    dynamic var secondsSet = 0
-    dynamic var isMuted = false
-    dynamic var isNew = false
-    dynamic var exists = false
-    dynamic var hasOpens = false
-    dynamic var timestamp = 0
-    dynamic var recallTime = 0
-    dynamic var openArraySerialized = ""
-    dynamic var openArray = [String]()
-    dynamic var openArrayObjects = [Open]()
+    @objc dynamic var token = ""
+    @objc dynamic var subject = ""
+    @objc dynamic var to = ""
+    @objc dynamic var toDisplayString = ""
+    @objc dynamic var from = ""
+    @objc dynamic var type = 0
+    @objc dynamic var secondsSet = 0
+    @objc dynamic var isMuted = false
+    @objc dynamic var isNew = false
+    @objc dynamic var exists = false
+    @objc dynamic var hasOpens = false
+    @objc dynamic var timestamp = 0
+    @objc dynamic var recallTime = 0
+    @objc dynamic var openArraySerialized = ""
+    @objc dynamic var openArray = [String]()
+    @objc dynamic var openArrayObjects = [Open]()
     
     override static func primaryKey() -> String? {
         return "token"

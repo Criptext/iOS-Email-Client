@@ -436,7 +436,7 @@ class DetailViewController: UIViewController {
         self.present(snackVC, animated: true, completion: nil)
     }
     
-    func didPressMark(_ sender: UIBarButtonItem){
+    @objc func didPressMark(_ sender: UIBarButtonItem){
         var title = "Read"
         if self.currentEmail.isRead() {
             title = "Unread"
@@ -641,7 +641,7 @@ class DetailViewController: UIViewController {
         }
     }
     
-    func didPressArchive() {
+    @objc func didPressArchive() {
         
         self.showSnackbar("Archiving...", attributedText: nil, buttons: "", permanent: true)
         
@@ -662,7 +662,7 @@ class DetailViewController: UIViewController {
         }
     }
     
-    func didPressMove() {
+    @objc func didPressMove() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let moveVC = storyboard.instantiateViewController(withIdentifier: "MoveMailViewController") as! MoveMailViewController

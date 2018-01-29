@@ -56,7 +56,7 @@ class AttachmentTableViewCell: UITableViewCell {
         self.holdGestureRecognizer = hold
     }
     
-    func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
+    @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
         guard let delegate = self.delegate else {
             return
         }
@@ -76,7 +76,7 @@ class AttachmentTableViewCell: UITableViewCell {
         }
     }
     
-    func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
+    @objc func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
         guard let delegate = self.delegate else {
             return
         }

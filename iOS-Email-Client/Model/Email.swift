@@ -10,32 +10,32 @@ import Foundation
 import RealmSwift
 
 class Email: Object {
-    dynamic var id = ""
-    dynamic var messageId = ""
-    dynamic var threadId = ""
-    dynamic var historyId:Int64 = 0
-    dynamic var subject = ""
-    dynamic var threadSubject = ""
-    dynamic var from = ""
-    dynamic var fromDisplayString = ""
-    dynamic var to = ""
-    dynamic var toDisplayString = ""
-    dynamic var cc = ""
-    dynamic var ccDisplayString = ""
-    dynamic var date:Date?
-    dynamic var dateString = ""
-    dynamic var snippet = ""
-    dynamic var body = ""
-    dynamic var needsSaving = false
-    dynamic var needsSending = false
-    dynamic var isDisplayed = false
-    dynamic var isLoaded = false
-    dynamic var realCriptextToken = ""
-    dynamic var criptextTokens = [String]()
-    dynamic var criptextTokensSerialized = ""
-    dynamic var labels = [String]()
-    dynamic var labelArraySerialized = ""
-    dynamic var nextPageToken:String? = "0"
+    @objc dynamic var id = ""
+    @objc dynamic var messageId = ""
+    @objc dynamic var threadId = ""
+    @objc dynamic var historyId:Int64 = 0
+    @objc dynamic var subject = ""
+    @objc dynamic var threadSubject = ""
+    @objc dynamic var from = ""
+    @objc dynamic var fromDisplayString = ""
+    @objc dynamic var to = ""
+    @objc dynamic var toDisplayString = ""
+    @objc dynamic var cc = ""
+    @objc dynamic var ccDisplayString = ""
+    @objc dynamic var date:Date?
+    @objc dynamic var dateString = ""
+    @objc dynamic var snippet = ""
+    @objc dynamic var body = ""
+    @objc dynamic var needsSaving = false
+    @objc dynamic var needsSending = false
+    @objc dynamic var isDisplayed = false
+    @objc dynamic var isLoaded = false
+    @objc dynamic var realCriptextToken = ""
+    @objc dynamic var criptextTokens = [String]()
+    @objc dynamic var criptextTokensSerialized = ""
+    @objc dynamic var labels = [String]()
+    @objc dynamic var labelArraySerialized = ""
+    @objc dynamic var nextPageToken:String? = "0"
     var attachments = List<AttachmentGmail>()
     
     func isRead() -> Bool {

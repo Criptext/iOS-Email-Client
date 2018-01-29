@@ -9,8 +9,8 @@
 import RealmSwift
 
 class Contact: Object {
-    dynamic var displayName = ""
-    dynamic var email = ""
+    @objc dynamic var displayName = ""
+    @objc dynamic var email = ""
     
     override static func primaryKey() -> String? {
         return "email"

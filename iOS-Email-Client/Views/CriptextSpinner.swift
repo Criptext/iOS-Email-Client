@@ -81,7 +81,7 @@ class CriptextSpinner: UIView {
         NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
     }
     
-    func statusBarOrientationDidChange(_ notification:Notification){
+    @objc func statusBarOrientationDidChange(_ notification:Notification){
         if let _ = self.superview {
             self.updateForCurrentOrientationAnimated()
         }

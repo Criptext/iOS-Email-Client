@@ -63,7 +63,7 @@ class InboxTableViewCell: UITableViewCell {
         self.selectedBackgroundView = view
     }
     
-    func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
+    @objc func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
         guard let delegate = self.delegate else {
             return
         }
@@ -71,7 +71,7 @@ class InboxTableViewCell: UITableViewCell {
         delegate.tableViewCellDidLongPress(self)
     }
     
-    func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
+    @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
         guard let delegate = self.delegate else {
             return
         }

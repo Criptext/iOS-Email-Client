@@ -418,7 +418,7 @@ class ComposeViewController: UIViewController {
         }
     }
     
-    func showTimer(_ flag:Bool = false){
+    @objc func showTimer(_ flag:Bool = false){
         if !flag {
             self.showAttachmentDrawer(false)
         }
@@ -714,7 +714,7 @@ class ComposeViewController: UIViewController {
         
         //remove reply
         if self.encryptionSwitch.isOn(), let range = body.range(of: "<pre class=\"criptext-remove-this\"></pre>") {
-            body = body[body.startIndex..<range.lowerBound]
+            body = String(body[body.startIndex..<range.lowerBound])
         }
         
         let daySeconds = self.selectedExpirationDays * 86400
@@ -909,7 +909,7 @@ class ComposeViewController: UIViewController {
     }
     
     @IBAction func didChangeSwitchValue(_ sender: UISwitch) {
-        if sender.isOn {
+        if let senderSwitch = sender as? TPCustomSwitch, senderSwitch.isOn() {
             self.encryptionSwitch.setThumb(Icon.activated.color)
             self.encryptionSwitch.thumbImage = Icon.lock.image
             //change icon for attachment w/ padlock
@@ -976,7 +976,7 @@ class ComposeViewController: UIViewController {
     }
     
     @IBAction func didPressAttachmentCamera(_ sender: UIButton) {
-        AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted) in
+        AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted) in
             DispatchQueue.main.async {
                 if !granted {
                     self.showAlert("Access denied", message: "You need to enable access for this app in your settings", style: .alert)
@@ -996,7 +996,7 @@ class ComposeViewController: UIViewController {
         self.present(providerList, animated: true, completion: nil)
     }
     
-    func didPressAccessoryView(_ sender: UIButton) {
+    @objc func didPressAccessoryView(_ sender: UIButton) {
         let tokenInputView = sender.superview as! CLTokenInputView
         
         tokenInputView.beginEditing()
@@ -1272,12 +1272,12 @@ extension ComposeViewController{
     }
     
     //3.1
-    func hideKeyboard() {
+    @objc func hideKeyboard() {
         self.view.endEditing(true)
     }
     
     //4.1
-    func keyboardWillShow(notification: NSNotification) {
+    @objc func keyboardWillShow(notification: NSNotification) {
         
         self.toolbarButtonsTopConstraint.constant = self.offsetValueTopconstraint
         
@@ -1298,7 +1298,7 @@ extension ComposeViewController{
     }
     
     //4.2
-    func keyboardWillHide(notification: NSNotification) {
+    @objc func keyboardWillHide(notification: NSNotification) {
         
         self.toolbarButtonsTopConstraint.constant = self.initialValueTopConstraint
         
@@ -1638,7 +1638,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 let token = CLToken(displayText: name!, context: nil)
                 view.add(token)
             } else {
-                view.textField.text = name
+//                view.textField.text = name
                 self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
             }
             
@@ -1649,7 +1649,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 let token = CLToken(displayText: name!, context: nil)
                 view.add(token)
             } else {
-                view.textField.text = name
+//                view.textField.text = name
                 self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
             }
         }
@@ -1777,9 +1777,9 @@ extension ComposeViewController: RichEditorDelegate {
             }
             
             //avoid this when populating a draft
-            if self.isEdited && editor.isEditorLoaded {
-                self.scrollView.setContentOffset(newOffset, animated: true)
-            }
+//            if self.isEdited && editor.isEditorLoaded {
+//                self.scrollView.setContentOffset(newOffset, animated: true)
+//            }
             
         }
         
@@ -1791,9 +1791,9 @@ extension ComposeViewController: RichEditorDelegate {
     }
     
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
-        if !self.isEdited && editor.isEditorLoaded {
+//        if !self.isEdited && editor.isEditorLoaded {
             self.isEdited = true
-        }
+//        }
     }
     
     func richEditorDidLoad(_ editor: RichEditorView) {

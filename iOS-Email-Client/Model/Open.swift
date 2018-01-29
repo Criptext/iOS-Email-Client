@@ -12,9 +12,9 @@ import Realm
 
 class Open: Object {
     
-    dynamic var timestamp: Double = 0
-    dynamic var location: String = ""
-    dynamic var type: Int = 1//1 open, 2 download
+    @objc dynamic var timestamp: Double = 0
+    @objc dynamic var location: String = ""
+    @objc dynamic var type: Int = 1//1 open, 2 download
     
     init(fromTimestamp timestamp: Double, fromLocation location: String, fromType type: Int) {
         super.init()

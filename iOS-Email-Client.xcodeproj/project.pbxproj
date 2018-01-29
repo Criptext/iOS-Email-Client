@@ -66,6 +66,13 @@
 		41AAC563201B92A400809C4D /* KMAppearence.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55F201B92A400809C4D /* KMAppearence.m */; };
 		41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */; };
 		41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */; };
+		41AAC574201E28FA00809C4D /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC56D201E28F800809C4D /* Lato-Light.ttf */; };
+		41AAC575201E28FA00809C4D /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC56E201E28F900809C4D /* Lato-Medium.ttf */; };
+		41AAC576201E28FA00809C4D /* Lato-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC56F201E28F900809C4D /* Lato-Semibold.ttf */; };
+		41AAC577201E28FA00809C4D /* icon_sent_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC570201E28F900809C4D /* icon_sent_chat.png */; };
+		41AAC578201E28FA00809C4D /* attachments.gif in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC571201E28F900809C4D /* attachments.gif */; };
+		41AAC579201E28FA00809C4D /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC572201E28F900809C4D /* Lato-Black.ttf */; };
+		41AAC57A201E28FA00809C4D /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC573201E28FA00809C4D /* Lato-Regular.ttf */; };
 		41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAAF2017987500D428B7 /* AppDelegate.swift */; };
 		41B6AAB52017987500D428B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB32017987500D428B7 /* Main.storyboard */; };
 		41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -151,6 +158,14 @@
 		41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KMSectionHeaderView.xib; sourceTree = "<group>"; };
 		41AAC567201B92CC00809C4D /* KMSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSectionHeaderView.h; sourceTree = "<group>"; };
 		41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMSectionHeaderView.m; sourceTree = "<group>"; };
+		41AAC56B201E1B4900809C4D /* iOS-Email-Client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOS-Email-Client.entitlements"; sourceTree = "<group>"; };
+		41AAC56D201E28F800809C4D /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		41AAC56E201E28F900809C4D /* Lato-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Medium.ttf"; sourceTree = "<group>"; };
+		41AAC56F201E28F900809C4D /* Lato-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Semibold.ttf"; sourceTree = "<group>"; };
+		41AAC570201E28F900809C4D /* icon_sent_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sent_chat.png; path = "../../Criptext-Secure-Email/Criptext Secure Email/icon_sent_chat.png"; sourceTree = "<group>"; };
+		41AAC571201E28F900809C4D /* attachments.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = attachments.gif; path = "../../Criptext-Secure-Email/Criptext Secure Email/attachments.gif"; sourceTree = "<group>"; };
+		41AAC572201E28F900809C4D /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
+		41AAC573201E28FA00809C4D /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Email-Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41B6AAAF2017987500D428B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41B6AAB42017987500D428B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -215,6 +230,7 @@
 		41AAC4E9201A9EF500809C4D /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				41AAC554201AA08400809C4D /* iOS-Email-Client-Bridging-Header.h */,
 				41AAC558201B91FF00809C4D /* KMAccordion */,
 				41AAC556201AA08500809C4D /* DateUtils.h */,
 				41AAC555201AA08500809C4D /* DateUtils.m */,
@@ -285,6 +301,7 @@
 		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
 			isa = PBXGroup;
 			children = (
+				41AAC56B201E1B4900809C4D /* iOS-Email-Client.entitlements */,
 				41AAC4E9201A9EF500809C4D /* Libs */,
 				41AAC552201AA06F00809C4D /* MCOMessageViewScript.js */,
 				41AAC540201A9FF500809C4D /* APIManager.swift */,
@@ -302,9 +319,15 @@
 				41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */,
 				41B6AABB2017987500D428B7 /* Info.plist */,
 				41AAC54C201AA04F00809C4D /* GoogleService-Info.plist */,
-				41AAC554201AA08400809C4D /* iOS-Email-Client-Bridging-Header.h */,
 				41AAC54E201AA05E00809C4D /* mark_read.png */,
 				41AAC550201AA06500809C4D /* mark_unread.png */,
+				41AAC571201E28F900809C4D /* attachments.gif */,
+				41AAC570201E28F900809C4D /* icon_sent_chat.png */,
+				41AAC572201E28F900809C4D /* Lato-Black.ttf */,
+				41AAC56D201E28F800809C4D /* Lato-Light.ttf */,
+				41AAC56E201E28F900809C4D /* Lato-Medium.ttf */,
+				41AAC573201E28FA00809C4D /* Lato-Regular.ttf */,
+				41AAC56F201E28F900809C4D /* Lato-Semibold.ttf */,
 			);
 			path = "iOS-Email-Client";
 			sourceTree = "<group>";
@@ -383,6 +406,7 @@
 				41B6AAAA2017987500D428B7 /* Resources */,
 				9E4ABEF57B503BF0BDDD71D5 /* [CP] Embed Pods Frameworks */,
 				5B118A4C965F4ACA6820CDF6 /* [CP] Copy Pods Resources */,
+				41AAC56C201E286200809C4D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -425,6 +449,20 @@
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					41B6AABF2017987500D428B7 = {
 						CreatedOnToolsVersion = 9.2;
@@ -458,9 +496,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
+				41AAC574201E28FA00809C4D /* Lato-Light.ttf in Resources */,
+				41AAC578201E28FA00809C4D /* attachments.gif in Resources */,
 				41AAC51B201A9FC300809C4D /* DetailGuideView.xib in Resources */,
+				41AAC579201E28FA00809C4D /* Lato-Black.ttf in Resources */,
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
 				41AAC52B201A9FC300809C4D /* GoogleButton.xib in Resources */,
+				41AAC575201E28FA00809C4D /* Lato-Medium.ttf in Resources */,
 				41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
@@ -469,6 +511,9 @@
 				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
 				41AAC54B201AA03E00809C4D /* showmore.png in Resources */,
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
+				41AAC577201E28FA00809C4D /* icon_sent_chat.png in Resources */,
+				41AAC57A201E28FA00809C4D /* Lato-Regular.ttf in Resources */,
+				41AAC576201E28FA00809C4D /* Lato-Semibold.ttf in Resources */,
 				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
 				41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */,
@@ -488,6 +533,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		41AAC56C201E286200809C4D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 3b4ddc55293ff0e9bf22a8927dc076a5ac0b17ec 2faae85cc964c755921b5b7855e90f3def29650c0a1dfcf386a29e6b2f95e8ce";
+		};
 		52D17F27E32DA3C273D4A47C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -794,11 +852,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "iOS-Email-Client/iOS-Email-Client.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-Client";
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.secure.email;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS-Email-Client/Libs/iOS-Email-Client-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -813,11 +872,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "iOS-Email-Client/iOS-Email-Client.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-Client";
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.secure.email;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS-Email-Client/Libs/iOS-Email-Client-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
