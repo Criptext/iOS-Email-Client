@@ -88,6 +88,12 @@
 		41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */; };
 		41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */; };
 		77CC6332368459ABCDA6D461 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
+		7CBD20BC2023B3B800D70B87 /* ComposerModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */; };
+		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
+		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
+		7CBD20C32024BF5500D70B87 /* logo_2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20C22024BF5300D70B87 /* logo_2.svg */; };
+		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
+		7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +199,12 @@
 		41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-Email-ClientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Email_ClientTests.swift; sourceTree = "<group>"; };
 		41B6AAC62017987500D428B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModelView.swift; sourceTree = "<group>"; };
+		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
+		7CBD20C22024BF5300D70B87 /* logo_2.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = logo_2.svg; path = ../../../../Downloads/logo_2.svg; sourceTree = "<group>"; };
+		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
+		7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -248,6 +260,7 @@
 		41AAC4E8201A9E7000809C4D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7CBD20BF2024BCB500D70B87 /* Login */,
 				41AAC4EE201A9FAC00809C4D /* ActivityViewController.swift */,
 				41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */,
 				41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */,
@@ -415,6 +428,7 @@
 				41AAC508201A9FC200809C4D /* OpenViewCell.xib */,
 				41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */,
 				41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */,
+				7CBD20C42025141F00D70B87 /* GradientUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -426,6 +440,23 @@
 				7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7CBD20BA2023B36D00D70B87 /* ModelViews */ = {
+			isa = PBXGroup;
+			children = (
+				7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */,
+			);
+			path = ModelViews;
+			sourceTree = "<group>";
+		};
+		7CBD20BF2024BCB500D70B87 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */,
+				7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -543,6 +574,7 @@
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
 				41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */,
+				7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
@@ -642,6 +674,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/M13Checkbox/M13Checkbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MIBadgeButton-Swift/MIBadgeButton_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MMMaterialDesignSpinner/MMMaterialDesignSpinner.framework",
@@ -669,6 +702,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M13Checkbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MIBadgeButton_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMMaterialDesignSpinner.framework",
@@ -717,7 +751,9 @@
 				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
+				7CBD20BC2023B3B800D70B87 /* ComposerModelView.swift in Sources */,
 				41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */,
+				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
 				41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */,
 				41AAC4FD201A9FAD00809C4D /* DetailThreadViewController.swift in Sources */,
@@ -731,11 +767,13 @@
 				41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */,
 				41AAC562201B92A400809C4D /* KMSection.m in Sources */,
 				41AAC52A201A9FC300809C4D /* GoogleButton.swift in Sources */,
+				7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */,
 				41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */,
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
 				41AAC502201A9FAD00809C4D /* LoginViewController.swift in Sources */,
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
 				41AAC563201B92A400809C4D /* KMAppearence.m in Sources */,
+				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				41AAC523201A9FC300809C4D /* AttachmentUIPopover.swift in Sources */,

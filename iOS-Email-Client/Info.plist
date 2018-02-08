@@ -59,9 +59,15 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Take pictures and add them to your emails</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Easily access your contacts&apos; emails</string>
+	<string>Easily access your contacts' emails</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Add photos to your emails</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Lato-Black.ttf</string>
+		<string>Lato-Semibold.ttf</string>
+		<string>Lato-Regular.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -70,7 +76,7 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
+	<string>Login</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
