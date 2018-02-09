@@ -88,6 +88,8 @@
 		41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */; };
 		41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */; };
 		77CC6332368459ABCDA6D461 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
+		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
+		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
 		7CBD20BC2023B3B800D70B87 /* ComposerModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
@@ -199,6 +201,8 @@
 		41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-Email-ClientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Email_ClientTests.swift; sourceTree = "<group>"; };
 		41B6AAC62017987500D428B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
+		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
 		7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModelView.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
@@ -429,6 +433,7 @@
 				41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */,
 				41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */,
 				7CBD20C42025141F00D70B87 /* GradientUIView.swift */,
+				7C50C692202E3A3000FED2E8 /* TipUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -455,6 +460,7 @@
 			children = (
 				7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */,
 				7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */,
+				7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -748,6 +754,7 @@
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
 				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
 				41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */,
+				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
@@ -776,6 +783,7 @@
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
+				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
 				41AAC523201A9FC300809C4D /* AttachmentUIPopover.swift in Sources */,
 				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
 				41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */,

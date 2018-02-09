@@ -41,70 +41,64 @@ class SignUpViewController: UIViewController{
         view.addGestureRecognizer(tap)
     }
     
-    
-    @IBAction func emailInputEditStart(_ sender: Any) {
-        markInput(emailMark, MARK_NONE)
+    @IBAction func inputEditStart(_ sender: TextField){
+        guard let markView = mapInputToMark(sender) else {return}
+        markInput(markView , MARK_NONE)
     }
     
-    @IBAction func emailInputEditEnd(_ sender: Any) {
-        if(emailInput.text == ""){
-            setInputError(emailInput, "please enter your username")
-            return markInput(emailMark, MARK_ERROR)
+    @IBAction func inputEditEnd(_ sender: TextField){
+        guard let markView = mapInputToMark(sender) else {return}
+        let inputError = getInputError(sender)
+        setInputError(sender, inputError)
+        if(inputError.isEmpty){
+            return markInput(markView, MARK_SUCCESS)
         }
-        setInputError(emailInput, "")
-        return markInput(emailMark, MARK_SUCCESS)
+        markInput(markView , MARK_ERROR)
     }
     
-    @IBAction func nameInputEditStart(_ sender: Any) {
-        markInput(fullnameMark, MARK_NONE)
-    }
-    
-    @IBAction func nameInputEditEnd(_ sender: Any) {
-        if(fullnameInput.text == ""){
-            setInputError(fullnameInput, "please enter your name")
-            return markInput(fullnameMark, MARK_ERROR)
+    func mapInputToMark(_ textfield: TextField) -> UIImageView?{
+        switch (textfield){
+        case emailInput: return emailMark
+        case fullnameInput: return fullnameMark
+        case passwordInput: return passwordMark
+        case confirmPasswordInput: return confirmPasswordMark
+        case optionalEmailInput: return optionalEmailMark
+        default: return nil
         }
-        setInputError(fullnameInput, "")
-        return markInput(fullnameMark, MARK_SUCCESS)
     }
     
-    @IBAction func passwordInputEditStart(_ sender: Any) {
-        markInput(passwordMark, MARK_NONE)
-    }
-    
-    @IBAction func passwordInputEditEnd(_ sender: Any) {
-        if((passwordInput.text?.count)! < 6){
-            setInputError(passwordInput, "password must be at least 6 characters")
-            return markInput(passwordMark, MARK_ERROR)
+    func getInputError(_ textfield: TextField) -> String {
+        switch(textfield){
+        case emailInput:
+            if(emailInput.isEmpty){
+                return "please enter your username"
+            }
+            break
+        case fullnameInput:
+            if(fullnameInput.isEmpty){
+                return "please enter your name"
+            }
+            break
+        case passwordInput:
+            if((passwordInput.text?.count)! < 6){
+                return "password must be at least 6 characters"
+            }
+            break
+        case confirmPasswordInput:
+            if((confirmPasswordInput.text?.count)! < 6){
+                return "password must be at least 6 characters"
+            }else if(confirmPasswordInput.text != passwordInput.text){
+                return "Passwords don't match"
+            }
+            break
+        case emailInput:
+            if(emailInput.isEmpty){
+                return "please enter your username"
+            }
+            break
+        default: return ""
         }
-        setInputError(passwordInput, "")
-        return markInput(passwordMark, MARK_SUCCESS)
-    }
-    
-    @IBAction func confirmInputEditStart(_ sender: Any) {
-        markInput(confirmPasswordMark, MARK_NONE)
-    }
-    
-    @IBAction func confirmInputEditEnd(_ sender: Any) {
-        if(confirmPasswordInput.text == ""){
-            return
-        }else if(confirmPasswordInput.text != passwordInput.text){
-            setInputError(confirmPasswordInput, "Passwords don't match")
-            return markInput(confirmPasswordMark, MARK_ERROR)
-        }
-        setInputError(confirmPasswordInput, "")
-        return markInput(confirmPasswordMark, MARK_SUCCESS)
-    }
-    
-    @IBAction func optionalInputEditStart(_ sender: Any) {
-        markInput(optionalEmailMark, MARK_NONE)
-    }
-    
-    @IBAction func optionalInputEditEnd(_ sender: Any) {
-        if(optionalEmailInput.text == ""){
-            return markInput(optionalEmailMark, MARK_ERROR)
-        }
-        return markInput(optionalEmailMark, MARK_SUCCESS)
+        return ""
     }
     
     func markInput(_ markView : UIImageView, _ status: Int){
@@ -151,6 +145,29 @@ class SignUpViewController: UIViewController{
         }
     }
     
+    @IBAction func createAccountPress(_ sender: Any) {
+        if(self.optionalEmailInput.text != ""){
+            return self.jumpToCreatingAccount()
+        }
+        
+        let alert = UIAlertController(title: "Warning", message: "", preferredStyle: .alert)
+        let proceedAction = UIAlertAction(title: "Confirm", style: .default){ (alert : UIAlertAction!) -> Void in
+            self.jumpToCreatingAccount()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ (alert : UIAlertAction!) -> Void in
+        }
+        alert.addAction(proceedAction)
+        alert.addAction(cancelAction)
+        alert.setValue(self.buildWarningString(), forKey: "attributedMessage")
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func jumpToCreatingAccount(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview")
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     func labelInit(){
         let boldText  = "Terms and Conditions"
         let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.white]
@@ -163,6 +180,25 @@ class SignUpViewController: UIViewController{
         normalString.append(attributedString)
         
         termsConditionsLabel.setAttributedTitle(normalString, for: .normal)
+    }
+    
+    func buildWarningString() -> NSMutableAttributedString{
+        let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
+        let boldAttrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
+        
+        let boldText  = " Recovery Email "
+        let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
+        
+        let textPart1 = "\nYou did not set a"
+        let stringPart1 = NSMutableAttributedString(string:textPart1, attributes: normalAttrs)
+        
+        let textPart2 = "so account recovery is imposible if you forget your password. \n\nProceed without recovery email?"
+        let stringPart2 = NSMutableAttributedString(string:textPart2, attributes: normalAttrs)
+        
+        boldString.append(stringPart2)
+        stringPart1.append(boldString)
+        
+        return stringPart1
     }
     
     func createButtonInit(){
