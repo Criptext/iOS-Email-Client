@@ -10,25 +10,22 @@ import Foundation
 import Material
 
 class SignUpViewController: UIViewController{
-    let MARK_ERROR = -1
-    let MARK_SUCCESS = 1
-    let MARK_NONE = 0
     
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var termsConditionsLabel: UIButton!
     @IBOutlet weak var createAccountButton: UIButton!
     
-    @IBOutlet weak var emailInput: TextField!
-    @IBOutlet weak var fullnameInput: TextField!
-    @IBOutlet weak var optionalEmailInput: TextField!
-    @IBOutlet weak var confirmPasswordInput: TextField!
-    @IBOutlet weak var passwordInput: TextField!
+    @IBOutlet weak var usernameTextField: StatusTextField!
+    @IBOutlet weak var fullnameTextField: StatusTextField!
+    @IBOutlet weak var emailTextField: StatusTextField!
+    @IBOutlet weak var confirmPasswordTextField: StatusTextField!
+    @IBOutlet weak var passwordTextField: StatusTextField!
     
-    @IBOutlet weak var emailMark: UIImageView!
+    @IBOutlet weak var usernameMark: UIImageView!
     @IBOutlet weak var fullnameMark: UIImageView!
     @IBOutlet weak var passwordMark: UIImageView!
     @IBOutlet weak var confirmPasswordMark: UIImageView!
-    @IBOutlet weak var optionalEmailMark: UIImageView!
+    @IBOutlet weak var emailMark: UIImageView!
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -39,114 +36,126 @@ class SignUpViewController: UIViewController{
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
-    }
-    
-    @IBAction func inputEditStart(_ sender: TextField){
-        guard let markView = mapInputToMark(sender) else {return}
-        markInput(markView , MARK_NONE)
+        
+        usernameTextField.markView = usernameMark
+        fullnameTextField.markView = fullnameMark
+        passwordTextField.markView = passwordMark
+        confirmPasswordTextField.markView = confirmPasswordMark
+        emailTextField.markView = emailMark
+        enableCreateAccountButton()
     }
     
     @IBAction func inputEditEnd(_ sender: TextField){
-        guard let markView = mapInputToMark(sender) else {return}
-        let inputError = getInputError(sender)
-        setInputError(sender, inputError)
-        if(inputError.isEmpty){
-            return markInput(markView, MARK_SUCCESS)
+        switch(sender){
+        case usernameTextField:
+            checkUsername()
+            break
+        case fullnameTextField:
+            checkFullname()
+            break
+        case passwordTextField:
+            checkPassword()
+            break
+        case confirmPasswordTextField:
+            checkConfirmPassword()
+            break
+        case emailTextField:
+            checkOptionalEmail()
+            break
+        default: return
         }
-        markInput(markView , MARK_ERROR)
+        enableCreateAccountButton()
     }
     
     func mapInputToMark(_ textfield: TextField) -> UIImageView?{
         switch (textfield){
-        case emailInput: return emailMark
-        case fullnameInput: return fullnameMark
-        case passwordInput: return passwordMark
-        case confirmPasswordInput: return confirmPasswordMark
-        case optionalEmailInput: return optionalEmailMark
+        case usernameTextField: return usernameMark
+        case fullnameTextField: return fullnameMark
+        case passwordTextField: return passwordMark
+        case confirmPasswordTextField: return confirmPasswordMark
+        case emailTextField: return emailMark
         default: return nil
         }
     }
     
-    func getInputError(_ textfield: TextField) -> String {
-        switch(textfield){
-        case emailInput:
-            if(emailInput.isEmpty){
-                return "please enter your username"
-            }
-            break
-        case fullnameInput:
-            if(fullnameInput.isEmpty){
-                return "please enter your name"
-            }
-            break
-        case passwordInput:
-            if((passwordInput.text?.count)! < 6){
-                return "password must be at least 6 characters"
-            }
-            break
-        case confirmPasswordInput:
-            if((confirmPasswordInput.text?.count)! < 6){
-                return "password must be at least 6 characters"
-            }else if(confirmPasswordInput.text != passwordInput.text){
-                return "Passwords don't match"
-            }
-            break
-        case emailInput:
-            if(emailInput.isEmpty){
-                return "please enter your username"
-            }
-            break
-        default: return ""
-        }
-        return ""
-    }
-    
-    func markInput(_ markView : UIImageView, _ status: Int){
-        switch(status){
-        case 1:
-            markView.image = UIImage(named: "mark-success")
-            markView.isHidden = false;
-            markView.tintColor = UIColor.white
-            break
-        case -1:
-            markView.image = UIImage(named: "mark-error")
-            markView.tintColor = UIColor.black
-            markView.isHidden = false;
-            break
-        default:
-            markView.isHidden = true
-        }
-    }
-    
-    func setInputError(_ input : TextField, _ error : String){
-        input.detail = error
-        if(error != ""){
-            input.dividerNormalColor = UIColor.black
+    func checkUsername(){
+        if(usernameTextField.isEmpty){
+            let inputError = "please enter your username"
+            usernameTextField.setStatus(StatusTextField.Status.invalid, inputError)
             return
         }
-        input.dividerNormalColor = UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6)
+        usernameTextField.setStatus(StatusTextField.Status.valid)
+    }
+    
+    func checkFullname(){
+        if(fullnameTextField.isEmpty){
+            let inputError = "please enter your name"
+            fullnameTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            return
+        }
+        fullnameTextField.setStatus(StatusTextField.Status.valid)
+    }
+    
+    func checkPassword(){
+        if(passwordTextField.text!.count < 6){
+            let inputError = "password must be at least 6 characters"
+            passwordTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            return
+        }
+        passwordTextField.setStatus(StatusTextField.Status.valid)
+        if(confirmPasswordTextField.text != "" && confirmPasswordTextField.text != passwordTextField.text){
+            let inputError = "Passwords don't match"
+            confirmPasswordTextField.setStatus(StatusTextField.Status.invalid, inputError)
+        }else if(confirmPasswordTextField.text != "" && confirmPasswordTextField.text == passwordTextField.text){
+            confirmPasswordTextField.setStatus(StatusTextField.Status.valid)
+        }
+        
+    }
+    
+    func checkConfirmPassword(){
+        if(passwordTextField.text != "" && confirmPasswordTextField.text != passwordTextField.text){
+            let inputError = "Passwords don't match"
+            confirmPasswordTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            return
+        }else if(passwordTextField.text != "" && confirmPasswordTextField.text == passwordTextField.text){
+            confirmPasswordTextField.setStatus(StatusTextField.Status.valid)
+            return
+        }
+        confirmPasswordTextField.setStatus(StatusTextField.Status.none)
+    }
+    
+    func checkOptionalEmail(){
+        if(emailTextField.text != "" && !isValidEmail(emailTextField.text!)){
+            let inputError = "this is not a valid email"
+            emailTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            return
+        }else if(emailTextField.text != ""){
+            emailTextField.setStatus(StatusTextField.Status.valid)
+            return
+        }
+        emailTextField.setStatus(StatusTextField.Status.none)
     }
     
     @objc func hideKeyboard(){
-        self.fullnameInput.endEditing(true)
-        self.passwordInput.endEditing(true)
-        self.confirmPasswordInput.endEditing(true)
-        self.optionalEmailInput.endEditing(true)
-        self.emailInput.endEditing(true)
+        self.fullnameTextField.endEditing(true)
+        self.passwordTextField.endEditing(true)
+        self.confirmPasswordTextField.endEditing(true)
+        self.emailTextField.endEditing(true)
+        self.usernameTextField.endEditing(true)
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func termsConditionsPress(_ sender: Any) {
-        if let url = URL(string: "https://criptext.com") {
+        /*if let url = URL(string: "https://criptext.com") {
             UIApplication.shared.open(url, options: [:])
-        }
+        }*/
     }
     
     @IBAction func createAccountPress(_ sender: Any) {
-        if(self.optionalEmailInput.text != ""){
+        if(emailTextField.status == .valid){
             return self.jumpToCreatingAccount()
         }
         
@@ -154,8 +163,7 @@ class SignUpViewController: UIViewController{
         let proceedAction = UIAlertAction(title: "Confirm", style: .default){ (alert : UIAlertAction!) -> Void in
             self.jumpToCreatingAccount()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ (alert : UIAlertAction!) -> Void in
-        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(proceedAction)
         alert.addAction(cancelAction)
         alert.setValue(self.buildWarningString(), forKey: "attributedMessage")
@@ -218,16 +226,39 @@ class SignUpViewController: UIViewController{
     }
     
     func fieldsInit(){
-        emailMark.isHidden = true
+        usernameMark.isHidden = true
         fullnameMark.isHidden = true
         passwordMark.isHidden = true
         confirmPasswordMark.isHidden = true
-        optionalEmailMark.isHidden = true
+        emailMark.isHidden = true
         
-        emailInput.placeholderAnimation = .hidden
-        fullnameInput.placeholderAnimation = .hidden
-        passwordInput.placeholderAnimation = .hidden
-        confirmPasswordInput.placeholderAnimation = .hidden
-        optionalEmailInput.placeholderAnimation = .hidden
+        usernameTextField.placeholderAnimation = .hidden
+        fullnameTextField.placeholderAnimation = .hidden
+        passwordTextField.placeholderAnimation = .hidden
+        confirmPasswordTextField.placeholderAnimation = .hidden
+        emailTextField.placeholderAnimation = .hidden
+    }
+    
+    func isValidEmail(_ testStr:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
+    
+    func enableCreateAccountButton(){
+        createAccountButton.isEnabled = (usernameTextField.isValid && fullnameTextField.isValid && passwordTextField.isValid && confirmPasswordTextField.isValid && emailTextField.isNotInvalid)
+        if(createAccountButton.isEnabled){
+            createAccountButton.backgroundColor = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 1.0)
+        }else{
+            createAccountButton.backgroundColor = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 0.5)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "signuptowebview"){
+            let webviewController = segue.destination as! WebViewViewController
+            webviewController.url = "https://criptext.com"
+        }
     }
 }

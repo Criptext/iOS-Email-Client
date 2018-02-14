@@ -39,9 +39,22 @@ class NewLoginViewController: UIViewController{
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     @objc func hideKeyboard(){
         self.emailInput.endEditing(true)
+    }
+    
+    
+}
+
+extension NewLoginViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if(navigationController!.viewControllers.count > 1){
+            return true
+        }
+        return false
     }
 }
