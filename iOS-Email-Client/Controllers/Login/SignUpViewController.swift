@@ -29,9 +29,7 @@ class SignUpViewController: UIViewController{
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        backButtonInit()
         labelInit()
-        createButtonInit()
         fieldsInit()
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
@@ -67,17 +65,6 @@ class SignUpViewController: UIViewController{
         enableCreateAccountButton()
     }
     
-    func mapInputToMark(_ textfield: TextField) -> UIImageView?{
-        switch (textfield){
-        case usernameTextField: return usernameMark
-        case fullnameTextField: return fullnameMark
-        case passwordTextField: return passwordMark
-        case confirmPasswordTextField: return confirmPasswordMark
-        case emailTextField: return emailMark
-        default: return nil
-        }
-    }
-    
     func checkUsername(){
         if(usernameTextField.isEmpty){
             let inputError = "please enter your username"
@@ -103,10 +90,10 @@ class SignUpViewController: UIViewController{
             return
         }
         passwordTextField.setStatus(StatusTextField.Status.valid)
-        if(confirmPasswordTextField.text != "" && confirmPasswordTextField.text != passwordTextField.text){
+        if(!confirmPasswordTextField.isEmpty && confirmPasswordTextField.text != passwordTextField.text){
             let inputError = "Passwords don't match"
             confirmPasswordTextField.setStatus(StatusTextField.Status.invalid, inputError)
-        }else if(confirmPasswordTextField.text != "" && confirmPasswordTextField.text == passwordTextField.text){
+        }else if(confirmPasswordTextField.isEmpty && confirmPasswordTextField.text == passwordTextField.text){
             confirmPasswordTextField.setStatus(StatusTextField.Status.valid)
         }
         
@@ -146,12 +133,6 @@ class SignUpViewController: UIViewController{
     
     @IBAction func backButtonPress(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func termsConditionsPress(_ sender: Any) {
-        /*if let url = URL(string: "https://criptext.com") {
-            UIApplication.shared.open(url, options: [:])
-        }*/
     }
     
     @IBAction func createAccountPress(_ sender: Any) {
@@ -209,22 +190,6 @@ class SignUpViewController: UIViewController{
         return stringPart1
     }
     
-    func createButtonInit(){
-        createAccountButton.clipsToBounds = true
-        createAccountButton.layer.cornerRadius = 20
-    }
-    
-    func backButtonInit(){
-        backButton.clipsToBounds = true
-        backButton.layer.shadowColor = UIColor.black.cgColor
-        backButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        backButton.layer.masksToBounds = false
-        backButton.layer.shadowRadius = 1.0
-        backButton.layer.shadowOpacity = 0.11
-        backButton.layer.cornerRadius = backButton.frame.width / 2
-        backButton.imageView?.contentMode = .scaleAspectFit
-    }
-    
     func fieldsInit(){
         usernameMark.isHidden = true
         fullnameMark.isHidden = true
@@ -249,9 +214,9 @@ class SignUpViewController: UIViewController{
     func enableCreateAccountButton(){
         createAccountButton.isEnabled = (usernameTextField.isValid && fullnameTextField.isValid && passwordTextField.isValid && confirmPasswordTextField.isValid && emailTextField.isNotInvalid)
         if(createAccountButton.isEnabled){
-            createAccountButton.backgroundColor = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 1.0)
+            createAccountButton.alpha = 1.0
         }else{
-            createAccountButton.backgroundColor = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 0.5)
+            createAccountButton.alpha = 0.5
         }
     }
     
