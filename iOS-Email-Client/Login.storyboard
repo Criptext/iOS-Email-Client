@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4TP-zh-NPj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -634,8 +634,13 @@
                                     <constraint firstAttribute="height" constant="70" id="OAm-lQ-aBB"/>
                                     <constraint firstAttribute="width" constant="70" id="Otb-JL-fXe"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YZU-A6-c4O">
+                            <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YZU-A6-c4O">
                                 <rect key="frame" x="79" y="321.5" width="217" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="BWm-Ll-EtP"/>
@@ -661,6 +666,11 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -869,10 +879,10 @@
             </objects>
             <point key="canvasLocation" x="470" y="746"/>
         </scene>
-        <!--View Controller-->
+        <!--Connect Device View Controller-->
         <scene sceneID="ZLV-kv-aKG">
             <objects>
-                <viewController id="4TP-zh-NPj" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="connectdeviceview" id="4TP-zh-NPj" customClass="ConnectDeviceViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kMI-Pj-Jjq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -928,22 +938,53 @@
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-mobile" translatesAutoresizingMaskIntoConstraints="NO" id="7eg-WO-UQH">
+                                <rect key="frame" x="287" y="309" width="28" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="28" id="Bcw-hB-Taq"/>
+                                    <constraint firstAttribute="height" constant="28" id="qFO-Kp-JkM"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" red="0.87203125000000004" green="0.86890624999999999" blue="0.86682692307692311" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-desktop" translatesAutoresizingMaskIntoConstraints="NO" id="rTH-ZM-96H">
+                                <rect key="frame" x="60" y="309" width="28" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="28" id="XWH-bW-Zwv"/>
+                                    <constraint firstAttribute="height" constant="28" id="ZnX-fw-l0d"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" red="0.87203125000000004" green="0.86890624999999999" blue="0.86682692309999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="rTH-ZM-96H" firstAttribute="centerY" secondItem="qbV-z3-DSp" secondAttribute="centerY" id="29J-1H-N3E"/>
                             <constraint firstItem="Zjh-J1-eyy" firstAttribute="centerY" secondItem="wTE-lO-vwA" secondAttribute="centerY" multiplier="0.6" id="BPZ-MC-gTd"/>
+                            <constraint firstItem="rTH-ZM-96H" firstAttribute="leading" secondItem="wTE-lO-vwA" secondAttribute="leading" constant="60" id="F4a-ge-Vl4"/>
                             <constraint firstItem="wTE-lO-vwA" firstAttribute="trailing" secondItem="ClX-gg-1sU" secondAttribute="trailing" constant="23" id="Jem-CM-o8D"/>
                             <constraint firstItem="ClX-gg-1sU" firstAttribute="leading" secondItem="wTE-lO-vwA" secondAttribute="leading" constant="23" id="KWR-ou-lBP"/>
                             <constraint firstItem="qbV-z3-DSp" firstAttribute="centerX" secondItem="kMI-Pj-Jjq" secondAttribute="centerX" id="LKs-o7-imR"/>
                             <constraint firstItem="ClX-gg-1sU" firstAttribute="top" secondItem="5Lw-oW-00M" secondAttribute="bottom" constant="2" id="Wiy-2H-Ztk"/>
+                            <constraint firstItem="7eg-WO-UQH" firstAttribute="centerY" secondItem="qbV-z3-DSp" secondAttribute="centerY" id="X8K-er-s2j"/>
                             <constraint firstItem="qbV-z3-DSp" firstAttribute="top" secondItem="Zjh-J1-eyy" secondAttribute="bottom" constant="77" id="Xx6-4O-pex"/>
                             <constraint firstItem="5Lw-oW-00M" firstAttribute="leading" secondItem="wTE-lO-vwA" secondAttribute="leading" constant="23" id="fiV-v4-7iT"/>
+                            <constraint firstAttribute="trailing" secondItem="7eg-WO-UQH" secondAttribute="trailing" constant="60" id="fr1-vi-9cE"/>
                             <constraint firstItem="wTE-lO-vwA" firstAttribute="trailing" secondItem="5Lw-oW-00M" secondAttribute="trailing" constant="23" id="i1V-tU-OZZ"/>
                             <constraint firstItem="5Lw-oW-00M" firstAttribute="top" secondItem="qbV-z3-DSp" secondAttribute="bottom" constant="69" id="iiT-Dt-nIQ"/>
                             <constraint firstItem="Zjh-J1-eyy" firstAttribute="centerX" secondItem="kMI-Pj-Jjq" secondAttribute="centerX" id="ofd-59-n9K"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wTE-lO-vwA"/>
                     </view>
+                    <connections>
+                        <outlet property="emailLabel" destination="ClX-gg-1sU" id="X1T-0W-g6j"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uEY-Xx-i9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1145,6 +1186,8 @@
     <resources>
         <image name="arrow-back" width="17" height="14"/>
         <image name="criptext-logo" width="118" height="31"/>
+        <image name="device-desktop" width="52" height="45"/>
+        <image name="device-mobile" width="25" height="44"/>
         <image name="loading-hourglass" width="38" height="53"/>
         <image name="mark-error" width="28" height="28"/>
         <image name="mark-success" width="28" height="28"/>

@@ -17,13 +17,8 @@ class CreatingAccountViewController: UIViewController{
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        logoImageView.tintColor = UIColor(displayP3Red: 0.0, green: 0.65, blue: 1.0, alpha: 1.0)
-        progressBar.clipsToBounds = true
         progressBar.layer.cornerRadius = 5
         progressBar.layer.sublayers![1].cornerRadius = 5
         progressBar.subviews[1].clipsToBounds = true
-        
-        percentageLabel.clipsToBounds = true
-        percentageLabel.layer.cornerRadius = 8
     }
 }

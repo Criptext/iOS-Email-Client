@@ -12,6 +12,13 @@ class LoginDeviceViewController: UIViewController{
     
     var loginData: LoginData!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)){
+            self.jumpToConnectDevice()
+        }
+    }
+    
     @IBAction func backButtonPress(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -29,8 +36,15 @@ class LoginDeviceViewController: UIViewController{
     
     func jumpToResetDevice(){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")
-        (controller as! ResetDeviceViewController).loginData = self.loginData
+        let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
+        controller.loginData = self.loginData
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func jumpToConnectDevice(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
+        controller.loginData = self.loginData
+        present(controller, animated: true, completion: nil)
     }
 }

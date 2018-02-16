@@ -97,7 +97,8 @@
 		7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */; };
 		7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C6D20362F8600AB96EF /* ResetDeviceViewController.swift */; };
 		7C8D6C702036491100AB96EF /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C6F2036491100AB96EF /* LoginData.swift */; };
-		7CBD20BC2023B3B800D70B87 /* ComposerModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */; };
+		7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */; };
+		7C8D6C74203735E000AB96EF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
@@ -216,7 +217,8 @@
 		7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsProgressUIView.swift; sourceTree = "<group>"; };
 		7C8D6C6D20362F8600AB96EF /* ResetDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetDeviceViewController.swift; sourceTree = "<group>"; };
 		7C8D6C6F2036491100AB96EF /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
-		7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModelView.swift; sourceTree = "<group>"; };
+		7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectDeviceViewController.swift; sourceTree = "<group>"; };
+		7C8D6C73203735E000AB96EF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
@@ -392,6 +394,8 @@
 				41AAC550201AA06500809C4D /* mark_unread.png */,
 				41AAC571201E28F900809C4D /* attachments.gif */,
 				41AAC570201E28F900809C4D /* icon_sent_chat.png */,
+				7CBD20BD2024B09F00D70B87 /* Login.storyboard */,
+				7C8D6C73203735E000AB96EF /* Constants.swift */,
 			);
 			path = "iOS-Email-Client";
 			sourceTree = "<group>";
@@ -463,14 +467,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		7CBD20BA2023B36D00D70B87 /* ModelViews */ = {
-			isa = PBXGroup;
-			children = (
-				7CBD20BB2023B3B800D70B87 /* ComposerModelView.swift */,
-			);
-			path = ModelViews;
-			sourceTree = "<group>";
-		};
 		7CBD20BF2024BCB500D70B87 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +476,7 @@
 				7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */,
 				7C8D6C692035FCD700AB96EF /* LoginDeviceViewController.swift */,
 				7C8D6C6D20362F8600AB96EF /* ResetDeviceViewController.swift */,
+				7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -761,6 +758,7 @@
 				41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */,
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
+				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
@@ -779,7 +777,6 @@
 				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
-				7CBD20BC2023B3B800D70B87 /* ComposerModelView.swift in Sources */,
 				41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */,
 				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
@@ -790,6 +787,7 @@
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				41AAC4FB201A9FAD00809C4D /* ThreadViewController.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
+				7C8D6C74203735E000AB96EF /* Constants.swift in Sources */,
 				41AAC51A201A9FC300809C4D /* ActivityTableViewCell.swift in Sources */,
 				7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */,
 				41AAC53E201A9FCD00809C4D /* Open.swift in Sources */,

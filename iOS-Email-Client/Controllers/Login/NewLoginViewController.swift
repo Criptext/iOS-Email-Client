@@ -26,10 +26,10 @@ class NewLoginViewController: UIViewController{
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
-    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         toggleLoadingView(false)
         clearErrors()
-        enableLoginButton()
+        checkToEnableDisableLoginButton()
     }
     
     @objc func hideKeyboard(){
@@ -71,17 +71,17 @@ class NewLoginViewController: UIViewController{
             loadingView.isHidden = true
             loadingView.stopAnimating()
         }
-        enableLoginButton()
+        checkToEnableDisableLoginButton()
     }
     
     @IBAction func usernameChange(_ sender: Any) {
-        enableLoginButton()
+        checkToEnableDisableLoginButton()
         if(!errorImage.isHidden){
             clearErrors()
         }
     }
     
-    func enableLoginButton(){
+    func checkToEnableDisableLoginButton(){
         loginButton.isEnabled = !usernameTextField.isEmpty
         if(loginButton.isEnabled && loadingView.isHidden){
             loginButton.alpha = 1.0
@@ -95,8 +95,8 @@ class NewLoginViewController: UIViewController{
         if(failed){
             let email = usernameTextField.text! + "@criptext.com"
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "loginwaitview")
-            (controller as! LoginDeviceViewController).loginData = LoginData(email)
+            let controller = storyboard.instantiateViewController(withIdentifier: "loginwaitview") as! LoginDeviceViewController
+            controller.loginData = LoginData(email)
         self.navigationController?.pushViewController(controller, animated: true)
             toggleLoadingView(false)
             clearErrors()

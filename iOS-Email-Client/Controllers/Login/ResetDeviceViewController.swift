@@ -21,8 +21,8 @@ class ResetDeviceViewController: UIViewController{
     
     override func viewDidLoad() {
         emailLabel.text = loginData.email
-        clearErrors()
-        enableResetButton()
+        showOrHideError(show: false)
+        checkToEnableDisableResetButton()
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
     }
@@ -32,8 +32,8 @@ class ResetDeviceViewController: UIViewController{
     }
     
     @IBAction func onPasswordChange(_ sender: Any) {
-        clearErrors()
-        enableResetButton()
+        showOrHideError(show: false)
+        checkToEnableDisableResetButton()
     }
     
     @IBAction func onResetPress(_ sender: Any) {
@@ -41,11 +41,11 @@ class ResetDeviceViewController: UIViewController{
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview")
             self.present(controller, animated: true, completion: nil)
-            clearErrors()
+            showOrHideError(show: false)
             return
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
-            self.setResetError("Incorrect Password")
+            self.showOrHideError(show: false, "Incorrect Password")
             self.failed = true
         }
     }
@@ -54,9 +54,9 @@ class ResetDeviceViewController: UIViewController{
         self.navigationController?.popViewController(animated: true)
     }
     
-    func enableResetButton(){
+    func checkToEnableDisableResetButton(){
         let textCount = passwordTextField.text?.count ?? 0
-        resetButton.isEnabled = !(passwordTextField.isEmpty || textCount < 6)
+        resetButton.isEnabled = !(passwordTextField.isEmpty || textCount < Constants.MinCharactersPassword)
         if(resetButton.isEnabled){
             resetButton.alpha = 1.0
         }else{
@@ -64,15 +64,10 @@ class ResetDeviceViewController: UIViewController{
         }
     }
     
-    func setResetError(_ error: String){
-        errorMark.isHidden = false
-        errorLabel.isHidden = false
-        errorLabel.text = error
-    }
-    
-    func clearErrors(){
-        errorMark.isHidden = true
-        errorLabel.isHidden = true
+    func showOrHideError(show: Bool, _ error: String? = nil){
+        errorMark.isHidden = !show
+        errorLabel.isHidden = !show
+        errorLabel.text = error ?? ""
     }
     
     func jumpToCreatingAccount(){

@@ -40,7 +40,7 @@ class SignUpViewController: UIViewController{
         passwordTextField.markView = passwordMark
         confirmPasswordTextField.markView = confirmPasswordMark
         emailTextField.markView = emailMark
-        enableCreateAccountButton()
+        checkToEnableDisableCreateButton()
     }
     
     @IBAction func inputEditEnd(_ sender: TextField){
@@ -62,65 +62,67 @@ class SignUpViewController: UIViewController{
             break
         default: return
         }
-        enableCreateAccountButton()
+        checkToEnableDisableCreateButton()
     }
     
     func checkUsername(){
-        if(usernameTextField.isEmpty){
+        guard !usernameTextField.isEmpty else {
             let inputError = "please enter your username"
-            usernameTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            usernameTextField.setStatus(.invalid, inputError)
             return
         }
-        usernameTextField.setStatus(StatusTextField.Status.valid)
+        usernameTextField.setStatus(.valid)
     }
     
     func checkFullname(){
-        if(fullnameTextField.isEmpty){
+        guard !fullnameTextField.isEmpty else {
             let inputError = "please enter your name"
-            fullnameTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            fullnameTextField.setStatus(.invalid, inputError)
             return
         }
-        fullnameTextField.setStatus(StatusTextField.Status.valid)
+        fullnameTextField.setStatus(.valid)
     }
     
     func checkPassword(){
-        if(passwordTextField.text!.count < 6){
+        guard passwordTextField.text!.count >= Constants.MinCharactersPassword else {
             let inputError = "password must be at least 6 characters"
-            passwordTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            passwordTextField.setStatus(.invalid, inputError)
             return
         }
-        passwordTextField.setStatus(StatusTextField.Status.valid)
+        passwordTextField.setStatus(.valid)
         if(!confirmPasswordTextField.isEmpty && confirmPasswordTextField.text != passwordTextField.text){
             let inputError = "Passwords don't match"
-            confirmPasswordTextField.setStatus(StatusTextField.Status.invalid, inputError)
+            confirmPasswordTextField.setStatus(.invalid, inputError)
         }else if(confirmPasswordTextField.isEmpty && confirmPasswordTextField.text == passwordTextField.text){
-            confirmPasswordTextField.setStatus(StatusTextField.Status.valid)
+            confirmPasswordTextField.setStatus(.valid)
         }
         
     }
     
     func checkConfirmPassword(){
-        if(passwordTextField.text != "" && confirmPasswordTextField.text != passwordTextField.text){
-            let inputError = "Passwords don't match"
-            confirmPasswordTextField.setStatus(StatusTextField.Status.invalid, inputError)
-            return
-        }else if(passwordTextField.text != "" && confirmPasswordTextField.text == passwordTextField.text){
-            confirmPasswordTextField.setStatus(StatusTextField.Status.valid)
+        guard !passwordTextField.isEmpty else {
+            confirmPasswordTextField.setStatus(.none)
             return
         }
-        confirmPasswordTextField.setStatus(StatusTextField.Status.none)
+        guard confirmPasswordTextField.text == passwordTextField.text else {
+            let inputError = "Passwords don't match"
+            confirmPasswordTextField.setStatus(.invalid, inputError)
+            return
+        }
+        confirmPasswordTextField.setStatus(.valid)
     }
     
     func checkOptionalEmail(){
-        if(emailTextField.text != "" && !isValidEmail(emailTextField.text!)){
-            let inputError = "this is not a valid email"
-            emailTextField.setStatus(StatusTextField.Status.invalid, inputError)
-            return
-        }else if(emailTextField.text != ""){
-            emailTextField.setStatus(StatusTextField.Status.valid)
+        guard !emailTextField.isEmpty else {
+            emailTextField.setStatus(.none)
             return
         }
-        emailTextField.setStatus(StatusTextField.Status.none)
+        guard isValidEmail(emailTextField.text!) else {
+            let inputError = "this is not a valid email"
+            emailTextField.setStatus(.invalid, inputError)
+            return
+        }
+        emailTextField.setStatus(.valid)
     }
     
     @objc func hideKeyboard(){
@@ -211,7 +213,7 @@ class SignUpViewController: UIViewController{
         return emailTest.evaluate(with: testStr)
     }
     
-    func enableCreateAccountButton(){
+    func checkToEnableDisableCreateButton(){
         createAccountButton.isEnabled = (usernameTextField.isValid && fullnameTextField.isValid && passwordTextField.isValid && confirmPasswordTextField.isValid && emailTextField.isNotInvalid)
         if(createAccountButton.isEnabled){
             createAccountButton.alpha = 1.0
