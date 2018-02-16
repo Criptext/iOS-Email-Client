@@ -266,20 +266,20 @@ enum Font {
     func size(_ size:CGFloat) -> UIFont?{
         switch self {
         case .bold:
-            return UIFont(name: "Lato-Black", size: size)
+            return UIFont(name: "NunitoSans-Bold", size: size)
         default:
-            return UIFont(name: "Lato-Regular", size: size)
+            return UIFont(name: "NunitoSans-Regular", size: size)
         }
     }
     
     func attributedString(_ text:String, size:CGFloat) -> NSMutableAttributedString{
         switch self {
         case .bold:
-            let font = UIFont(name: "Lato-Semibold", size: size)!
+            let font = UIFont(name: "NunitoSans-Bold", size: size)!
             let attrs = [NSAttributedStringKey.font : font]
             return NSMutableAttributedString(string:text, attributes:attrs)
         default:
-            let font = UIFont(name: "Lato-Regular", size: size)!
+            let font = UIFont(name: "NunitoSans-Regular", size: size)!
             let attrs = [NSAttributedStringKey.font : font]
             return NSMutableAttributedString(string:text, attributes:attrs)
         }

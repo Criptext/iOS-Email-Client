@@ -46,6 +46,7 @@ class InboxViewController: UITableViewController {
     var deleteBarButton:UIBarButtonItem!
     var menuButton:UIBarButtonItem!
     var counterBarButton:UIBarButtonItem!
+    var titleBarButton:UIBarButtonItem!
     
     var footerView:UIView!
     var footerActivity:UIActivityIndicatorView!
@@ -116,6 +117,9 @@ class InboxViewController: UITableViewController {
         self.fixedSpaceBarButton.width = 20.0
         
         self.cancelBarButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(didPressEdit))
+        
+//        UILabel(frame: <#T##CGRect#>)
+//        self.titleBarButton = UIBarButtonItem(customView: <#T##UIView#>)
         
         self.composerBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "composer"), style: .plain, target: self, action: #selector(didPressComposer))
         self.composerBarButton.tintColor = Icon.system.color
@@ -232,7 +236,7 @@ extension InboxViewController{
             self.title = ""
             self.navigationItem.leftBarButtonItems = [self.cancelBarButton, self.counterBarButton]
         }else{
-            self.navigationItem.leftBarButtonItems = [self.menuButton, self.searchBarButton]
+            self.navigationItem.leftBarButtonItems = [self.menuButton]
 //            self.navigationItem.leftBarButtonItem = self.menuButton
             self.title = self.selectedLabel.description
         }
@@ -980,7 +984,7 @@ extension InboxViewController{
     func setButtonItems(isEditing: Bool){
         
         if(!isEditing){
-            self.navigationItem.rightBarButtonItems = [self.composerBarButton, self.fixedSpaceBarButton, self.activityBarButton, self.spaceBarButton]
+            self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.fixedSpaceBarButton, self.searchBarButton, self.spaceBarButton]
             return
         }
         
@@ -1608,8 +1612,6 @@ extension InboxViewController {
         //Set colors to initial state
         cell.senderLabel.textColor = UIColor.black
         cell.subjectLabel.textColor = UIColor(red:0.37, green:0.37, blue:0.37, alpha:1.0)
-        cell.lockImageView.tintColor = Icon.system.color
-        cell.timerImageView.tintColor = Icon.system.color
         cell.secureAttachmentImageView.tintColor = Icon.disabled.color
         
         //Set row status
@@ -1623,24 +1625,14 @@ extension InboxViewController {
             cell.subjectLabel.font = Font.bold.size(17)
         }
         
-        //Set initial icons hidden status
-        cell.lockView.isHidden = email.realCriptextToken.isEmpty
-        
-        cell.lockView.isHidden = email.realCriptextToken.isEmpty || email.from != self.currentUser.email
-        
-        cell.attachmentView.isHidden = email.attachments.isEmpty
-        cell.attachmentImageView.tintColor = Icon.disabled.color
-        
-        cell.timerView.isHidden = true
-        if !isSentFolder { //change this
-            cell.timerView.isHidden = true
-        }
+//        cell.attachmentView.isHidden = email.attachments.isEmpty
+//        cell.attachmentImageView.tintColor = Icon.disabled.color
         
         //Set attachment image
-        cell.secureAttachmentView.isHidden = true
+//        cell.secureAttachmentView.isHidden = true
         
         if let criptextAttachments = self.attachmentHash[email.realCriptextToken] {
-            cell.secureAttachmentView.isHidden = false
+//            cell.secureAttachmentView.isHidden = false
             for attachment in criptextAttachments {
                 if !attachment.openArray.isEmpty || !attachment.downloadArray.isEmpty {
                     cell.secureAttachmentImageView.tintColor = Icon.system.color
@@ -1650,15 +1642,6 @@ extension InboxViewController {
         }
         
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
-        
-        cell.respondMailView.isHidden = false
-        if cell.subjectLabel.text!.lowercased().contains("re:") {
-            cell.respondMailImageView.image = Icon.reply.image
-        } else if cell.subjectLabel.text!.lowercased().contains("fwd:") {
-            cell.respondMailImageView.image = Icon.forward.image
-        } else {
-            cell.respondMailView.isHidden = true
-        }
         
         cell.previewLabel.text = email.snippet
         
@@ -1682,41 +1665,12 @@ extension InboxViewController {
         //Activity stuff
         if !email.realCriptextToken.isEmpty, let activity = self.activities[email.realCriptextToken] {
             if(activity.exists){
-                
-                if(activity.isNew){
-                    //DELIVERED
-                    cell.lockImageView.tintColor = UIColor.gray
-                    cell.timerImageView.tintColor = UIColor.gray
-                }
-                else{
-                    //OPEN
-                    cell.lockImageView.tintColor = UIColor.init(red: 0, green: 145/255, blue: 255/255, alpha: 1)
-                    cell.timerImageView.tintColor = UIColor.init(red: 0, green: 145/255, blue: 255/255, alpha: 1)
-                }
-                
                 cell.senderLabel.textColor = UIColor.black
                 cell.subjectLabel.textColor = UIColor.init(red: 114/244, green: 114/255, blue: 114/255, alpha: 1)
             }
             else{
                 //UNSENT
-                cell.lockImageView.tintColor = UIColor.red
-                cell.timerImageView.tintColor = UIColor.red
                 cell.secureAttachmentImageView.tintColor = UIColor.red
-            }
-            
-            if !self.currentUser.isPro() {
-                cell.lockImageView.tintColor = activity.exists ? UIColor.gray : UIColor.red
-                cell.timerImageView.tintColor = activity.exists ? UIColor.gray : UIColor.red
-            }
-            
-            if(activity.secondsSet > 0){
-                //INFORMATION ABOUT EXPIRATION
-                cell.timerView.isHidden = false
-                cell.timerWidthConstraint.constant = 20
-            }
-            else{
-                cell.timerView.isHidden = true
-                cell.timerWidthConstraint.constant = 0
             }
         }
         
@@ -1795,152 +1749,6 @@ extension InboxViewController: InboxTableViewCellDelegate {
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         self.tableView(self.tableView , didSelectRowAt: indexPath)
-    }
-    
-    func tableViewCellDidTapLock(_ cell: InboxTableViewCell) {
-        
-        guard self.currentUser.isPro() else {
-            self.showProAlert(nil, message: "Upgrade to Pro to view activity")
-            return
-        }
-        
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
-            return
-        }
-        
-        let email = self.emailArray[indexPath.row]
-        
-        guard let activity = self.activities[email.realCriptextToken] else {
-            return
-        }
-        
-        let custom = OpenUIPopover()
-        
-        let openArray = JSON(parseJSON: activity.openArraySerialized).arrayValue.map({$0.stringValue})
-        if(openArray.count == 0){
-            self.presentGenericPopover("Your email has not been opened", image: Icon.not_open.image!, sourceView: cell.lockView)
-            return
-        }
-        
-        //LAST LOCATION INFORMATION
-        let open:String = openArray[0]
-        let location = open.components(separatedBy: ":")[0]
-        let time = open.components(separatedBy: ":")[1]
-        let date = Date(timeIntervalSince1970: Double(time)!)
-        custom.lastDate = DateUtils.beatyDate(date)
-        custom.lastLocation = location
-        
-        let dateSent = Date(timeIntervalSince1970: Double(activity.timestamp))
-        custom.sentDate = DateUtils.conversationTime(dateSent)
-        
-        //OPENS ARRAY
-        var opensList = [Open]()
-        for open in openArray{
-            let location = open.components(separatedBy: ":")[0]
-            let time = open.components(separatedBy: ":")[1]
-            opensList.append(Open(fromTimestamp: Double(time)!, fromLocation: location, fromType: 1))
-        }
-        custom.opensList = opensList
-        custom.totalViews = String(opensList.count)
-        custom.myMailToken = activity.token
-        
-        custom.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 188)
-        custom.popoverPresentationController?.sourceView = cell.lockView
-        custom.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: cell.lockView.frame.size.width, height: cell.lockView.frame.size.height)
-        custom.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        custom.popoverPresentationController?.backgroundColor = UIColor.white
-        self.present(custom, animated: true, completion: nil)
-
-    }
-    
-    func tableViewCellDidTapTimer(_ cell: InboxTableViewCell) {
-        
-        guard self.currentUser.isPro() else {
-            self.showProAlert(nil, message: "Upgrade to Pro to view activity")
-            return
-        }
-        
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
-            return
-        }
-        
-        let email = self.emailArray[indexPath.row]
-        
-        guard let activity = self.activities[email.realCriptextToken] else {
-            return
-        }
-        
-        if((activity.exists && !activity.isNew) || (activity.exists && activity.type == 3)){
-            //OPENED
-            var dateEnd: NSDate!
-            if(activity.type == 3){
-                //EXPIRATION ONSENT
-                dateEnd = NSDate(timeIntervalSince1970: TimeInterval(activity.timestamp + activity.secondsSet))
-            }
-            else{
-                //EXPIRATION ONOPEN
-                let openArray = JSON(parseJSON: activity.openArraySerialized).arrayValue.map({$0.stringValue})
-                let open = openArray[0]
-                let time = Double(open.components(separatedBy: ":")[1])
-                dateEnd = NSDate(timeIntervalSince1970: TimeInterval(Int(time!) + activity.secondsSet))
-            }
-            let custom = TimerUIPopover()
-            custom.dateEnd = dateEnd
-            custom.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 122)
-            custom.popoverPresentationController?.sourceView = cell.timerView
-            custom.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: cell.timerView.frame.size.width, height: cell.lockView.frame.size.height)
-            custom.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-            custom.popoverPresentationController?.backgroundColor = UIColor.white
-            self.present(custom, animated: true, completion: nil)
-        }
-        else if(activity.exists && activity.isNew){
-            //NOT OPENED
-            self.presentGenericPopover("Timer will start once the email is opened by the recepient", image: Icon.not_timer.image!, sourceView: cell.timerView)
-        }
-        else{
-            //EXPIRED, SHOW NOTHING
-        }
-    }
-    
-    func tableViewCellDidTapAttachment(_ cell: InboxTableViewCell) {
-        
-        guard self.currentUser.isPro() else {
-            self.showProAlert(nil, message: "Upgrade to Pro to view activity")
-            return
-        }
-        
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
-            return
-        }
-        
-        let email = self.emailArray[indexPath.row]
-        
-        guard let activity = self.activities[email.realCriptextToken],
-            let attachments = self.attachmentHash[activity.token] else {
-            return
-        }
-        
-        let custom = AttachmentUIPopover()
-        
-        var height: CGFloat = 168.0
-        if(attachments.count > 2){
-            height = 234.0
-        }
-        if(attachments.count == 1){
-            custom.setOneSectionAlwaysOpen(true)
-        }
-        else{
-            custom.setOneSectionAlwaysOpen(false)
-        }
-        
-        custom.myMailToken = activity.token
-        custom.setSectionArray(attachments)
-        custom.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: height)
-        custom.popoverPresentationController?.sourceView = cell.secureAttachmentView
-        custom.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: cell.secureAttachmentView.frame.size.width, height: cell.lockView.frame.size.height)
-        custom.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        custom.popoverPresentationController?.backgroundColor = UIColor.white
-        self.present(custom, animated: true, completion: nil)
     }
     
     func tableViewCellDidTap(_ cell: InboxTableViewCell) {
@@ -2120,7 +1928,7 @@ extension InboxViewController: InboxTableViewCellDelegate {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110.0
+        return 79.0
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
