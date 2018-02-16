@@ -11,9 +11,13 @@ import Foundation
 class LoginDeviceViewController: UIViewController{
     
     var loginData: LoginData!
+    @IBOutlet weak var waitingDeviceView: UIView!
+    @IBOutlet weak var failureDeviceView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.failureDeviceView.isHidden = true
+        self.waitingDeviceView.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)){
             self.jumpToConnectDevice()
         }
@@ -21,6 +25,11 @@ class LoginDeviceViewController: UIViewController{
     
     @IBAction func backButtonPress(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func onResendPress(_ sender: Any) {
+        print("hola")
+        onFailure()
     }
     
     @IBAction func onCantLoginPress(_ sender: Any) {
@@ -39,6 +48,11 @@ class LoginDeviceViewController: UIViewController{
         let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
         controller.loginData = self.loginData
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func onFailure(){
+        failureDeviceView.isHidden = false
+        waitingDeviceView.isHidden = true
     }
     
     func jumpToConnectDevice(){

@@ -14,8 +14,9 @@ final class DotsProgressUIView: UIView {
     @IBInspectable var radiusOfDots: Int = 3
     @IBInspectable var normalColor: UIColor = UIColor.blue
     var spacingValue: Float = 0.0
-    var loadingTimer: Timer!
+    var loadingTimer: Timer?
     var currentDot = 0
+    var flowRight = true
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,9 +29,10 @@ final class DotsProgressUIView: UIView {
     }
     
     func setup(){
+        currentDot = numberOfDots / 2
         spacingValue = (Float(frame.width) - Float(2 * numberOfDots * radiusOfDots))/Float(numberOfDots - 1)
         if(loadingTimer == nil){
-            loadingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(progressDots), userInfo: nil, repeats: true)
+            loadingTimer = Timer.scheduledTimer(timeInterval: 0.06, target: self, selector: #selector(progressDots), userInfo: nil, repeats: true)
         }
     }
     
@@ -51,10 +53,10 @@ final class DotsProgressUIView: UIView {
     }
     
     func drawDot(_ offset: Int){
-        let path = UIBezierPath(arcCenter: CGPoint(x: (Int(spacingValue) * offset + offset * radiusOfDots *  2 + radiusOfDots + 1), y: radiusOfDots), radius: CGFloat(radiusOfDots), startAngle: CGFloat(0), endAngle:CGFloat(Double.pi * 2), clockwise: true)
+        let path = UIBezierPath(arcCenter: CGPoint(x: (Int(spacingValue) * offset + offset * radiusOfDots *  2 + radiusOfDots + 3), y: radiusOfDots), radius: CGFloat(radiusOfDots), startAngle: CGFloat(0), endAngle:CGFloat(Double.pi * 2), clockwise: true)
         let shape = CAShapeLayer()
         shape.strokeColor = UIColor.clear.cgColor
-        shape.fillColor = generateRandomColor(offset).cgColor
+        shape.fillColor = generateColor(offset).cgColor
         shape.path = path.cgPath
         clipsToBounds = false
         layer.addSublayer(shape)
@@ -64,29 +66,37 @@ final class DotsProgressUIView: UIView {
         setNeedsDisplay()
     }
     
-    func generateRandomColor(_ offset: Int) -> UIColor {
+    func generateColor(_ offset: Int) -> UIColor {
         var myRed: CGFloat = 0
         var myBlue: CGFloat = 0
         var myGreen: CGFloat = 0
         var myAlpha: CGFloat = 0
         normalColor.getRed(&myRed, green: &myGreen, blue: &myBlue, alpha: &myAlpha)
-        return UIColor(red: myRed, green: myGreen, blue: myBlue, alpha: CGFloat(getTintOffset(offset) / Float(numberOfDots)))
+        return UIColor(red: myRed, green: myGreen, blue: myBlue, alpha: CGFloat(getTintOffset(offset)))
     }
     
     func incrementDot(){
-        currentDot += 1
-        if(currentDot >= numberOfDots){
-            currentDot = 0
+        currentDot += flowRight ? 1 : -1
+        if(flowRight && currentDot >= numberOfDots){
+            currentDot = numberOfDots / 2
+            flowRight = false
+        }else if(!flowRight && currentDot <= 0){
+            currentDot = numberOfDots / 2
+            flowRight = true
         }
-        NSLog(currentDot.description)
     }
     
     func getTintOffset(_ offset: Int) -> Float{
-        var tintOffset = offset - currentDot
-        if(tintOffset < 0){
-            tintOffset += numberOfDots
+        if(flowRight){
+            if(offset >= currentDot || offset < currentDot - numberOfDots / 2){
+                return Float(0.25)
+            }
+            return Float(1)
+        }else{
+            if(offset < currentDot || offset >= currentDot + numberOfDots / 2){
+                return Float(0.25)
+            }
+            return Float(1)
         }
-        NSLog(tintOffset.description)
-        return Float(tintOffset)
     }
 }
