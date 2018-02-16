@@ -7,6 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */; };
+		412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */; };
+		412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0292037402C005D1B3F /* NunitoSans-BoldItalic.ttf */; };
+		412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02A2037402C005D1B3F /* NunitoSans-SemiBoldItalic.ttf */; };
+		412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02B2037402C005D1B3F /* NunitoSans-BlackItalic.ttf */; };
+		412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02C2037402C005D1B3F /* NunitoSans-ExtraLightItalic.ttf */; };
+		412CB03B2037402D005D1B3F /* NunitoSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02D2037402C005D1B3F /* NunitoSans-ExtraBoldItalic.ttf */; };
+		412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02E2037402C005D1B3F /* NunitoSans-Light.ttf */; };
+		412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02F2037402C005D1B3F /* NunitoSans-ExtraBold.ttf */; };
+		412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0302037402C005D1B3F /* NunitoSans-Italic.ttf */; };
+		412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0312037402D005D1B3F /* NunitoSans-ExtraLight.ttf */; };
+		412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */; };
+		412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */; };
+		412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */; };
 		41AAC4F8201A9FAD00809C4D /* LoginPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */; };
 		41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */; };
 		41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */; };
@@ -66,13 +80,8 @@
 		41AAC563201B92A400809C4D /* KMAppearence.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55F201B92A400809C4D /* KMAppearence.m */; };
 		41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */; };
 		41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */; };
-		41AAC574201E28FA00809C4D /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC56D201E28F800809C4D /* Lato-Light.ttf */; };
-		41AAC575201E28FA00809C4D /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC56E201E28F900809C4D /* Lato-Medium.ttf */; };
-		41AAC576201E28FA00809C4D /* Lato-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC56F201E28F900809C4D /* Lato-Semibold.ttf */; };
 		41AAC577201E28FA00809C4D /* icon_sent_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC570201E28F900809C4D /* icon_sent_chat.png */; };
 		41AAC578201E28FA00809C4D /* attachments.gif in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC571201E28F900809C4D /* attachments.gif */; };
-		41AAC579201E28FA00809C4D /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC572201E28F900809C4D /* Lato-Black.ttf */; };
-		41AAC57A201E28FA00809C4D /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC573201E28FA00809C4D /* Lato-Regular.ttf */; };
 		41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAAF2017987500D428B7 /* AppDelegate.swift */; };
 		41B6AAB52017987500D428B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB32017987500D428B7 /* Main.storyboard */; };
 		41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -93,6 +102,20 @@
 
 /* Begin PBXFileReference section */
 		14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Email_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Black.ttf"; sourceTree = "<group>"; };
+		412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-LightItalic.ttf"; sourceTree = "<group>"; };
+		412CB0292037402C005D1B3F /* NunitoSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		412CB02A2037402C005D1B3F /* NunitoSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		412CB02B2037402C005D1B3F /* NunitoSans-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-BlackItalic.ttf"; sourceTree = "<group>"; };
+		412CB02C2037402C005D1B3F /* NunitoSans-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		412CB02D2037402C005D1B3F /* NunitoSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		412CB02E2037402C005D1B3F /* NunitoSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Light.ttf"; sourceTree = "<group>"; };
+		412CB02F2037402C005D1B3F /* NunitoSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		412CB0302037402C005D1B3F /* NunitoSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Italic.ttf"; sourceTree = "<group>"; };
+		412CB0312037402D005D1B3F /* NunitoSans-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-ExtraLight.ttf"; sourceTree = "<group>"; };
+		412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Regular.ttf"; sourceTree = "<group>"; };
+		412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
+		412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPageViewController.swift; sourceTree = "<group>"; };
 		41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListLabelViewController.swift; sourceTree = "<group>"; };
 		41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
@@ -159,13 +182,8 @@
 		41AAC567201B92CC00809C4D /* KMSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSectionHeaderView.h; sourceTree = "<group>"; };
 		41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMSectionHeaderView.m; sourceTree = "<group>"; };
 		41AAC56B201E1B4900809C4D /* iOS-Email-Client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOS-Email-Client.entitlements"; sourceTree = "<group>"; };
-		41AAC56D201E28F800809C4D /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
-		41AAC56E201E28F900809C4D /* Lato-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Medium.ttf"; sourceTree = "<group>"; };
-		41AAC56F201E28F900809C4D /* Lato-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Semibold.ttf"; sourceTree = "<group>"; };
 		41AAC570201E28F900809C4D /* icon_sent_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sent_chat.png; path = "../../Criptext-Secure-Email/Criptext Secure Email/icon_sent_chat.png"; sourceTree = "<group>"; };
 		41AAC571201E28F900809C4D /* attachments.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = attachments.gif; path = "../../Criptext-Secure-Email/Criptext Secure Email/attachments.gif"; sourceTree = "<group>"; };
-		41AAC572201E28F900809C4D /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
-		41AAC573201E28FA00809C4D /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Email-Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41B6AAAF2017987500D428B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41B6AAB42017987500D428B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -204,6 +222,27 @@
 				14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		412CB00A20373C28005D1B3F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */,
+				412CB02B2037402C005D1B3F /* NunitoSans-BlackItalic.ttf */,
+				412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */,
+				412CB0292037402C005D1B3F /* NunitoSans-BoldItalic.ttf */,
+				412CB02F2037402C005D1B3F /* NunitoSans-ExtraBold.ttf */,
+				412CB02D2037402C005D1B3F /* NunitoSans-ExtraBoldItalic.ttf */,
+				412CB0312037402D005D1B3F /* NunitoSans-ExtraLight.ttf */,
+				412CB02C2037402C005D1B3F /* NunitoSans-ExtraLightItalic.ttf */,
+				412CB0302037402C005D1B3F /* NunitoSans-Italic.ttf */,
+				412CB02E2037402C005D1B3F /* NunitoSans-Light.ttf */,
+				412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */,
+				412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */,
+				412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */,
+				412CB02A2037402C005D1B3F /* NunitoSans-SemiBoldItalic.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		41AAC4E8201A9E7000809C4D /* Controllers */ = {
@@ -301,6 +340,7 @@
 		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
 			isa = PBXGroup;
 			children = (
+				412CB00A20373C28005D1B3F /* Fonts */,
 				41AAC56B201E1B4900809C4D /* iOS-Email-Client.entitlements */,
 				41AAC4E9201A9EF500809C4D /* Libs */,
 				41AAC552201AA06F00809C4D /* MCOMessageViewScript.js */,
@@ -323,11 +363,6 @@
 				41AAC550201AA06500809C4D /* mark_unread.png */,
 				41AAC571201E28F900809C4D /* attachments.gif */,
 				41AAC570201E28F900809C4D /* icon_sent_chat.png */,
-				41AAC572201E28F900809C4D /* Lato-Black.ttf */,
-				41AAC56D201E28F800809C4D /* Lato-Light.ttf */,
-				41AAC56E201E28F900809C4D /* Lato-Medium.ttf */,
-				41AAC573201E28FA00809C4D /* Lato-Regular.ttf */,
-				41AAC56F201E28F900809C4D /* Lato-Semibold.ttf */,
 			);
 			path = "iOS-Email-Client";
 			sourceTree = "<group>";
@@ -495,30 +530,39 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
+				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
-				41AAC574201E28FA00809C4D /* Lato-Light.ttf in Resources */,
 				41AAC578201E28FA00809C4D /* attachments.gif in Resources */,
+				412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */,
 				41AAC51B201A9FC300809C4D /* DetailGuideView.xib in Resources */,
-				41AAC579201E28FA00809C4D /* Lato-Black.ttf in Resources */,
+				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
+				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
 				41AAC52B201A9FC300809C4D /* GoogleButton.xib in Resources */,
-				41AAC575201E28FA00809C4D /* Lato-Medium.ttf in Resources */,
+				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
+				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
 				41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
+				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
+				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
 				41AAC528201A9FC300809C4D /* DetailThreadTableViewCell.xib in Resources */,
+				412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */,
 				41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */,
 				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
 				41AAC54B201AA03E00809C4D /* showmore.png in Resources */,
+				412CB03B2037402D005D1B3F /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
+				412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */,
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
 				41AAC577201E28FA00809C4D /* icon_sent_chat.png in Resources */,
-				41AAC57A201E28FA00809C4D /* Lato-Regular.ttf in Resources */,
-				41AAC576201E28FA00809C4D /* Lato-Semibold.ttf in Resources */,
 				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
+				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
 				41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */,
 				41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
+				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
 				41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
