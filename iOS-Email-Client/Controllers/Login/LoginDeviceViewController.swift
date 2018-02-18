@@ -13,11 +13,13 @@ class LoginDeviceViewController: UIViewController{
     var loginData: LoginData!
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
+    @IBOutlet weak var hourglassImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.failureDeviceView.isHidden = true
         self.waitingDeviceView.isHidden = false
+        self.hourglassImage.transform = CGAffineTransform(rotationAngle: (20.0 * .pi) / 180.0)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)){
             self.jumpToConnectDevice()
         }
@@ -28,7 +30,6 @@ class LoginDeviceViewController: UIViewController{
     }
     
     @IBAction func onResendPress(_ sender: Any) {
-        print("hola")
         onFailure()
     }
     

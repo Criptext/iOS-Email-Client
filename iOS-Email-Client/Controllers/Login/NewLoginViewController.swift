@@ -105,6 +105,8 @@ class NewLoginViewController: UIViewController{
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
             self.setLoginError("Username does not exist")
             self.toggleLoadingView(false)
+            self.loginButton.isEnabled = false
+            self.loginButton.alpha = 0.5
             self.failed = true
         }
         

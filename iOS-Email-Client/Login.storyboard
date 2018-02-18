@@ -848,6 +848,14 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1B-8C-PKn" customClass="ProgressArrowUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                        <rect key="frame" x="162" y="304" width="50" height="50"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="50" id="Mey-l3-c01"/>
+                                                            <constraint firstAttribute="height" constant="50" id="pXd-4F-Rug"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <accessibility key="accessibilityConfiguration">
@@ -858,6 +866,8 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                     <constraint firstItem="CQ6-X5-Uq5" firstAttribute="centerX" secondItem="oqf-Tb-I2x" secondAttribute="centerX" id="47f-mJ-ycS"/>
                                                     <constraint firstItem="UEg-nZ-3Qg" firstAttribute="leading" secondItem="oqf-Tb-I2x" secondAttribute="leading" constant="57" id="49J-5W-Kzt"/>
                                                     <constraint firstAttribute="trailing" secondItem="Ewk-Fo-ARJ" secondAttribute="trailing" constant="47" id="599-ub-HY4"/>
+                                                    <constraint firstItem="y1B-8C-PKn" firstAttribute="centerY" secondItem="CQ6-X5-Uq5" secondAttribute="centerY" id="A9X-wc-nSv"/>
+                                                    <constraint firstItem="y1B-8C-PKn" firstAttribute="centerX" secondItem="CQ6-X5-Uq5" secondAttribute="centerX" id="Lcl-7n-uD9"/>
                                                     <constraint firstItem="t2e-M6-6pu" firstAttribute="centerX" secondItem="oqf-Tb-I2x" secondAttribute="centerX" id="XVB-nW-OYI"/>
                                                     <constraint firstItem="t2e-M6-6pu" firstAttribute="top" secondItem="UEg-nZ-3Qg" secondAttribute="bottom" constant="11" id="Z8y-t5-SXT"/>
                                                     <constraint firstItem="Ewk-Fo-ARJ" firstAttribute="centerY" secondItem="oqf-Tb-I2x" secondAttribute="centerY" multiplier="0.75" id="jon-8w-DKd"/>
@@ -955,6 +965,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                     </view>
                     <connections>
                         <outlet property="failureDeviceView" destination="0gh-tT-mLY" id="EwJ-16-AYR"/>
+                        <outlet property="hourglassImage" destination="CQ6-X5-Uq5" id="A4Z-X8-aXv"/>
                         <outlet property="waitingDeviceView" destination="oqf-Tb-I2x" id="R2I-IK-Hgb"/>
                     </connections>
                 </viewController>

@@ -21,7 +21,7 @@ class ResetDeviceViewController: UIViewController{
     
     override func viewDidLoad() {
         emailLabel.text = loginData.email
-        showFeedback(show: false)
+        showFeedback(false)
         checkToEnableDisableResetButton()
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -32,7 +32,7 @@ class ResetDeviceViewController: UIViewController{
     }
     
     @IBAction func onPasswordChange(_ sender: Any) {
-        showFeedback(show: false)
+        showFeedback(false)
         checkToEnableDisableResetButton()
     }
     
@@ -41,11 +41,11 @@ class ResetDeviceViewController: UIViewController{
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview")
             self.present(controller, animated: true, completion: nil)
-            showFeedback(show: false)
+            showFeedback(false)
             return
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
-            self.showFeedback(show: false, "Incorrect Password")
+            self.showFeedback(false, "Incorrect Password")
             self.failed = true
         }
     }
@@ -64,7 +64,7 @@ class ResetDeviceViewController: UIViewController{
         }
     }
     
-    func showFeedback(show: Bool, _ message: String? = nil){
+    func showFeedback(_ show: Bool, _ message: String? = nil){
         errorMark.isHidden = !show
         errorLabel.isHidden = !show
         errorLabel.text = message ?? ""

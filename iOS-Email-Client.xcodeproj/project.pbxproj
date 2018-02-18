@@ -99,6 +99,7 @@
 		7C8D6C702036491100AB96EF /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C6F2036491100AB96EF /* LoginData.swift */; };
 		7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */; };
 		7C8D6C74203735E000AB96EF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
+		7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
@@ -219,6 +220,7 @@
 		7C8D6C6F2036491100AB96EF /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 		7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectDeviceViewController.swift; sourceTree = "<group>"; };
 		7C8D6C73203735E000AB96EF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressArrowUIView.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
@@ -454,6 +456,7 @@
 				7C8D6C632034A4D800AB96EF /* StatusTextField.swift */,
 				7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */,
 				7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */,
+				7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC4F8201A9FAD00809C4D /* LoginPageViewController.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
+				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
 				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
 				41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
