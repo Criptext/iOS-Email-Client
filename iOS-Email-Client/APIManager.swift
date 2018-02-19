@@ -117,7 +117,7 @@ class APIManager {
                 
                 if let value = response.result.value,
                     let dataFromString = value.data(using: .utf8, allowLossyConversion: false) {
-                    let jsonVar = JSON(data: dataFromString)
+                    let jsonVar = try! JSON(data: dataFromString)
                     
                     let errorCode = jsonVar["error"].intValue
                     
@@ -166,7 +166,7 @@ class APIManager {
             
             if let value = response.result.value,
                 let dataFromString = value.data(using: .utf8, allowLossyConversion: false) {
-                let jsonVar = JSON(data: dataFromString)
+                let jsonVar = try! JSON(data: dataFromString)
                 
                 let errorCode = jsonVar["error"].intValue
                 //check if it failed due to jwt expired or wrong session
@@ -218,7 +218,7 @@ class APIManager {
                 return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             let errorCode = jsonVar["error"].intValue
             
@@ -312,7 +312,7 @@ class APIManager {
                 return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             let errorCode = jsonVar["error"].intValue
             
@@ -339,7 +339,7 @@ class APIManager {
                 return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             let errorCode = jsonVar["error"].intValue
             
@@ -368,7 +368,7 @@ class APIManager {
                 return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             let errorCode = jsonVar["error"].intValue
             
@@ -397,7 +397,7 @@ class APIManager {
                 return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             let errorCode = jsonVar["error"].intValue
             
@@ -431,7 +431,7 @@ class APIManager {
                     return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             let errorCode = jsonVar["error"].intValue
             
@@ -463,7 +463,7 @@ class APIManager {
                     return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             let errorCode = jsonVar["error"].intValue
             
@@ -492,7 +492,7 @@ class APIManager {
                 return
             }
             
-            let jsonVar = JSON(data: dataFromString)
+            let jsonVar = try! JSON(data: dataFromString)
             
             var attachmentArray = [AttachmentCriptext]()
             let attachments = jsonVar["attachments"].arrayValue
@@ -596,7 +596,7 @@ class APIManager {
         self.request(user, url: url, method: .post, parameters: parameters, headers: headers) { (response) in
             guard let value = response.result.value,
                 let dataFromString = value.data(using: .utf8, allowLossyConversion: false),
-                let jsonArray = JSON(data: dataFromString).dictionaryValue["mails"]?.array else {
+                let jsonArray = try! JSON(data: dataFromString).dictionaryValue["mails"]?.array else {
                     completion(response.error, nil, nil, nil)
                     return
             }
@@ -709,7 +709,7 @@ class APIManager {
         self.request(user, url: url, method: .post, parameters: parameters, headers: headers) { (response) in
             guard let value = response.result.value,
                 let dataFromString = value.data(using: .utf8, allowLossyConversion: false),
-                let _ = JSON(data: dataFromString).dictionaryValue["message"]?.string else {
+                let _ = try! JSON(data: dataFromString).dictionaryValue["message"]?.string else {
                     completion(response.error, false)
                     return
             }
@@ -727,7 +727,7 @@ class APIManager {
         self.request(user, url: url, method: .post, parameters: parameters, headers: headers) { (response) in
             guard let value = response.result.value,
                 let dataFromString = value.data(using: .utf8, allowLossyConversion: false),
-                let jsonArray = JSON(data: dataFromString).dictionaryValue["mails"]?.array else {
+                let jsonArray = try! JSON(data: dataFromString).dictionaryValue["mails"]?.array else {
                     completion(response.error, nil)
                     return
             }

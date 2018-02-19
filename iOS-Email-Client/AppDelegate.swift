@@ -14,6 +14,7 @@ import Firebase
 import FirebaseMessaging
 import UserNotifications
 import RealmSwift
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -56,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance().serverClientID = "249459851975-65698k7s4pb2pa1klkddb5fj0b330fro.apps.googleusercontent.com"
         
         var initialVC:UIViewController!
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
         
         if GIDSignIn.sharedInstance().hasAuthInKeychain() {
             //Go to inbox
@@ -81,6 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         self.replaceRootViewController(initialVC)
+        IQKeyboardManager.sharedManager().enable = true
         return true
     }
     

@@ -25,6 +25,7 @@ target 'iOS-Email-Client' do
   pod "MIBadgeButton-Swift", :git => 'https://github.com/mustafaibrahim989/MIBadgeButton-Swift.git', :branch => 'master'
   pod "MMMaterialDesignSpinner"
   pod 'RichEditorView', :git => 'https://github.com/cjwirth/RichEditorView', :branch => 'swift-4'
+  pod 'IQKeyboardManagerSwift'
 end
 
 post_install do |installer|
