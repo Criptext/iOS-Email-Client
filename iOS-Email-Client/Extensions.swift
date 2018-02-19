@@ -343,7 +343,7 @@ enum Icon {
             case .regular:
                 return UIImage(named: "attachment_regular")
             case .secure:
-                return UIImage(named: "attachment_secure")
+                return UIImage(named: "attachment_inbox")
             case .image:
                 return UIImage(named: "attachment_image")
             case .expired:

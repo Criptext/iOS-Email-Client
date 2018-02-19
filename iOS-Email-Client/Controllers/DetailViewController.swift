@@ -76,13 +76,12 @@ class DetailViewController: UIViewController {
         self.fixedSpaceBarButton.width = 20.0
         
         self.archiveBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "archive-icon"), style: .plain, target: self, action: #selector(didPressArchive))
-        self.moveBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "moveto-icon"), style: .plain, target: self, action: #selector(didPressMove))
         
         self.trashBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressTrash))
         
         self.replyBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.reply, target: self, action: #selector(didPressReply(_:)))
         
-        self.navigationItem.rightBarButtonItems = [self.replyBarButton, self.trashBarButton, self.moveBarButton, self.archiveBarButton]
+        self.navigationItem.rightBarButtonItems = [self.replyBarButton, self.trashBarButton, self.archiveBarButton]
         
         self.lockButton.tintColor = Icon.enabled.color
         self.attachButton.tintColor = Icon.enabled.color

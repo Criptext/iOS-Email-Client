@@ -46,7 +46,8 @@ class InboxViewController: UITableViewController {
     var deleteBarButton:UIBarButtonItem!
     var menuButton:UIBarButtonItem!
     var counterBarButton:UIBarButtonItem!
-    var titleBarButton:UIBarButtonItem!
+    var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
+    var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
     
     var footerView:UIView!
     var footerActivity:UIActivityIndicatorView!
@@ -59,11 +60,14 @@ class InboxViewController: UITableViewController {
     
     var ws:WebSocket!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.title = Label.inbox.description
         
 //        CriptextSpinner.show(in: self.view, title: nil, image: UIImage(named: "icon_sent_chat.png"))
         GIDSignIn.sharedInstance().delegate = self
@@ -112,63 +116,16 @@ class InboxViewController: UITableViewController {
         self.navigationItem.searchController = self.searchController
         self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh(_:automatic:signIn:completion:)), for: UIControlEvents.valueChanged)
         
-        self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
-        self.fixedSpaceBarButton.width = 20.0
-        
-        self.cancelBarButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(didPressEdit))
-        
-//        UILabel(frame: <#T##CGRect#>)
-//        self.titleBarButton = UIBarButtonItem(customView: <#T##UIView#>)
-        
-        self.composerBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "composer"), style: .plain, target: self, action: #selector(didPressComposer))
-        self.composerBarButton.tintColor = Icon.system.color
-        
-        self.trashBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressTrash))
-        
-        self.trashBarButton.isEnabled = false
-        self.archiveBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "archive-icon"), style: .plain, target: self, action: #selector(didPressArchive))
-        
-        self.archiveBarButton.isEnabled = false
-        self.moveBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "moveto-icon"), style: .plain, target: self, action: #selector(didPressMove))
-        
-        self.markBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "mark_read"), style: .plain, target: self, action: #selector(didPressMark))
-        
-        self.moveBarButton.isEnabled = false
-        self.deleteBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressDelete))
-        self.counterBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
-        self.counterBarButton.tintColor = Icon.system.color
-        
-        let attributescounter = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 20)]
-        self.counterBarButton.setTitleTextAttributes(attributescounter, for: .normal)
-        
-        self.menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu_white"), style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
-        self.searchBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "magnifying-glass"), style: .plain, target: self, action: #selector(didPressSearch(_:)))
-        
         self.tableView.allowsMultipleSelectionDuringEditing = true
 
-        // Set batButtonItems
-        let activityButton = MIBadgeButton(type: .custom)
-        activityButton.badgeString = ""
-        activityButton.frame = CGRect(x:0, y:0, width:20, height:60)
-        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(25, 12, 0, 10)
-        activityButton.setImage(Icon.activity.image, for: .normal)
-        activityButton.addTarget(self, action: #selector(didPressActivity), for: UIControlEvents.touchUpInside)
-        self.activityBarButton = UIBarButtonItem(customView: activityButton)
-        
-        self.activityBarButton.tintColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 1)
-        
-        let font:UIFont = Font.regular.size(13)!
-        let attributes:[NSAttributedStringKey : Any] = [NSAttributedStringKey.font: font];
-        self.statusBarButton.setTitleTextAttributes(attributes, for: .normal)
-        self.statusBarButton.tintColor = UIColor.darkGray
+        self.initBarButtonItems()
         
         self.currentUser = DBManager.getUsers().first
         
         self.setButtonItems(isEditing: false)
         self.loadMails(from: .inbox, since: Date())
         
-        self.navigationItem.leftBarButtonItems = [self.menuButton, self.searchBarButton]
+        self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.emailTrashed), name: NSNotification.Name(rawValue: "EmailTrashed"), object: nil)
     }
@@ -219,6 +176,63 @@ class InboxViewController: UITableViewController {
         self.footerActivity.frame = CGRect(origin: self.footerActivity.frame.origin, size: CGSize(width: size.width / 2, height: self.footerActivity.frame.size.height) )
     }
     
+    func initBarButtonItems(){
+        self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
+        self.fixedSpaceBarButton.width = 25.0
+        
+        self.cancelBarButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(didPressEdit))
+        
+        self.composerBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "composer"), style: .plain, target: self, action: #selector(didPressComposer))
+        self.composerBarButton.tintColor = Icon.system.color
+        
+        self.trashBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressTrash))
+        self.trashBarButton.tintColor = UIColor.white
+        
+        self.trashBarButton.isEnabled = false
+        self.archiveBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "archive-icon"), style: .plain, target: self, action: #selector(didPressArchive))
+        self.archiveBarButton.tintColor = UIColor.white
+        self.archiveBarButton.isEnabled = false
+        
+        self.markBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "mark_read"), style: .plain, target: self, action: #selector(didPressMark))
+        
+        self.deleteBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressDelete))
+        self.deleteBarButton.tintColor = UIColor.white
+        self.counterBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
+        self.counterBarButton.tintColor = Icon.system.color
+        self.titleBarButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Bold", size: 16.0)!, NSAttributedStringKey.foregroundColor: UIColor.white], for: .disabled)
+        self.titleBarButton.isEnabled = false
+        
+        self.countBarButton.tintColor = UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)
+        self.countBarButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Bold", size: 16.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
+        self.countBarButton.isEnabled = false
+        
+        let attributescounter = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 20)]
+        self.counterBarButton.setTitleTextAttributes(attributescounter, for: .normal)
+        
+        self.menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu_white"), style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
+        self.menuButton.tintColor = UIColor.white
+        self.searchBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: self, action: #selector(didPressSearch(_:)))
+        self.searchBarButton.tintColor = UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)
+        
+        // Set batButtonItems
+        let activityButton = MIBadgeButton(type: .custom)
+        activityButton.badgeString = ""
+        activityButton.frame = CGRect(x:0, y:0, width:16.8, height:20.7)
+        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(25, 12, 0, 10)
+        activityButton.setImage(#imageLiteral(resourceName: "activity"), for: .normal)
+        activityButton.tintColor = UIColor.white
+        activityButton.addTarget(self, action: #selector(didPressActivity), for: UIControlEvents.touchUpInside)
+        self.activityBarButton = UIBarButtonItem(customView: activityButton)
+        
+        self.activityBarButton.tintColor = UIColor.white
+        
+        let font:UIFont = Font.regular.size(13)!
+        let attributes:[NSAttributedStringKey : Any] = [NSAttributedStringKey.font: font];
+        self.statusBarButton.setTitleTextAttributes(attributes, for: .normal)
+        self.statusBarButton.tintColor = UIColor.darkGray
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -236,9 +250,9 @@ extension InboxViewController{
             self.title = ""
             self.navigationItem.leftBarButtonItems = [self.cancelBarButton, self.counterBarButton]
         }else{
-            self.navigationItem.leftBarButtonItems = [self.menuButton]
-//            self.navigationItem.leftBarButtonItem = self.menuButton
-            self.title = self.selectedLabel.description
+            self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+            self.titleBarButton.title = self.selectedLabel.description.uppercased()
+//            self.title = self.selectedLabel.description
         }
         
         //disable toolbar buttons
@@ -556,7 +570,7 @@ extension InboxViewController{
 extension InboxViewController {
     func didChange(_ label:Label) {
         self.selectedLabel = label
-        self.title = label.description
+        self.titleBarButton.title = label.description.uppercased()
         self.emailArray.removeAll()
         self.threadHash.removeAll()
         
@@ -984,7 +998,7 @@ extension InboxViewController{
     func setButtonItems(isEditing: Bool){
         
         if(!isEditing){
-            self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.fixedSpaceBarButton, self.searchBarButton, self.spaceBarButton]
+            self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.searchBarButton, self.spaceBarButton]
             return
         }
         
@@ -994,7 +1008,6 @@ extension InboxViewController{
         case .inbox:
             items = [self.markBarButton,
                      self.trashBarButton,
-                     self.moveBarButton,
                      self.archiveBarButton,
                      self.spaceBarButton]
         case .sent, .draft:
@@ -1002,7 +1015,6 @@ extension InboxViewController{
                      self.spaceBarButton]
         case .trash, .junk:
             items = [self.deleteBarButton,
-                     self.moveBarButton,
                      self.markBarButton, self.spaceBarButton]
         default:
             break
@@ -1015,14 +1027,12 @@ extension InboxViewController{
         switch self.selectedLabel {
         case .inbox:
             self.markBarButton.isEnabled = isEnabled
-            self.moveBarButton.isEnabled = isEnabled
             self.archiveBarButton.isEnabled = isEnabled
             self.trashBarButton.isEnabled = isEnabled
         case .sent, .draft:
             self.trashBarButton.isEnabled = isEnabled
         case .junk, .trash:
             self.markBarButton.isEnabled = isEnabled
-            self.moveBarButton.isEnabled = isEnabled
         default:
             break
         }
@@ -1610,32 +1620,22 @@ extension InboxViewController {
         let isSentFolder = self.selectedLabel == .sent
         
         //Set colors to initial state
-        cell.senderLabel.textColor = UIColor.black
-        cell.subjectLabel.textColor = UIColor(red:0.37, green:0.37, blue:0.37, alpha:1.0)
-        cell.secureAttachmentImageView.tintColor = Icon.disabled.color
+        cell.secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
         //Set row status
         if email.isRead() || isSentFolder {
-            cell.backgroundColor = UIColor.white
-            cell.senderLabel.font = Font.regular.size(17)
-            cell.subjectLabel.font = Font.regular.size(17)
+            cell.backgroundColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+            cell.senderLabel.font = Font.regular.size(15)
         }else{
-            cell.backgroundColor = UIColor(red:0.96, green:0.98, blue:1.00, alpha:1.0)
-            cell.senderLabel.font = Font.bold.size(17)
-            cell.subjectLabel.font = Font.bold.size(17)
+            cell.backgroundColor = UIColor.white
+            cell.senderLabel.font = Font.bold.size(15)
         }
-        
-//        cell.attachmentView.isHidden = email.attachments.isEmpty
-//        cell.attachmentImageView.tintColor = Icon.disabled.color
-        
-        //Set attachment image
-//        cell.secureAttachmentView.isHidden = true
         
         if let criptextAttachments = self.attachmentHash[email.realCriptextToken] {
 //            cell.secureAttachmentView.isHidden = false
             for attachment in criptextAttachments {
                 if !attachment.openArray.isEmpty || !attachment.downloadArray.isEmpty {
-                    cell.secureAttachmentImageView.tintColor = Icon.system.color
+//                    cell.secureAttachmentImageView.tintColor = Icon.system.color
                     break
                 }
             }
@@ -1665,17 +1665,17 @@ extension InboxViewController {
         //Activity stuff
         if !email.realCriptextToken.isEmpty, let activity = self.activities[email.realCriptextToken] {
             if(activity.exists){
-                cell.senderLabel.textColor = UIColor.black
-                cell.subjectLabel.textColor = UIColor.init(red: 114/244, green: 114/255, blue: 114/255, alpha: 1)
+//                cell.senderLabel.textColor = UIColor.black
+//                cell.subjectLabel.textColor = UIColor.init(red: 114/244, green: 114/255, blue: 114/255, alpha: 1)
             }
             else{
                 //UNSENT
-                cell.secureAttachmentImageView.tintColor = UIColor.red
+//                cell.secureAttachmentImageView.tintColor = UIColor.red
             }
         }
         
         if !self.currentUser.isPro() {
-            cell.secureAttachmentImageView.tintColor = UIColor.gray
+//            cell.secureAttachmentImageView.tintColor = UIColor.gray
         }
         
         guard let emailArrayHash = self.threadHash[email.threadId], emailArrayHash.count > 1 else{

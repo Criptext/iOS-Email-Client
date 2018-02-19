@@ -21,7 +21,6 @@
 		412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */; };
 		412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */; };
 		412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */; };
-		41AAC4F8201A9FAD00809C4D /* LoginPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */; };
 		41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */; };
 		41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */; };
 		41AAC4FB201A9FAD00809C4D /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */; };
@@ -31,7 +30,6 @@
 		41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */; };
 		41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F2201A9FAC00809C4D /* TourViewController.swift */; };
 		41AAC501201A9FAD00809C4D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F3201A9FAC00809C4D /* DetailViewController.swift */; };
-		41AAC502201A9FAD00809C4D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F4201A9FAD00809C4D /* LoginViewController.swift */; };
 		41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F5201A9FAD00809C4D /* HeaderViewController.swift */; };
 		41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */; };
 		41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */; };
@@ -130,7 +128,6 @@
 		412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Regular.ttf"; sourceTree = "<group>"; };
 		412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
 		412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPageViewController.swift; sourceTree = "<group>"; };
 		41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListLabelViewController.swift; sourceTree = "<group>"; };
 		41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
@@ -140,7 +137,6 @@
 		41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveMailViewController.swift; sourceTree = "<group>"; };
 		41AAC4F2201A9FAC00809C4D /* TourViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TourViewController.swift; sourceTree = "<group>"; };
 		41AAC4F3201A9FAC00809C4D /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		41AAC4F4201A9FAD00809C4D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		41AAC4F5201A9FAD00809C4D /* HeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderViewController.swift; sourceTree = "<group>"; };
 		41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
@@ -285,8 +281,6 @@
 				41AAC4F5201A9FAD00809C4D /* HeaderViewController.swift */,
 				41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */,
 				41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */,
-				41AAC4EA201A9FAC00809C4D /* LoginPageViewController.swift */,
-				41AAC4F4201A9FAD00809C4D /* LoginViewController.swift */,
 				41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */,
 				41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */,
 				41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */,
@@ -763,7 +757,6 @@
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
 				41AAC501201A9FAD00809C4D /* DetailViewController.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
-				41AAC4F8201A9FAD00809C4D /* LoginPageViewController.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
 				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
 				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
@@ -795,7 +788,6 @@
 				7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */,
 				41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */,
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
-				41AAC502201A9FAD00809C4D /* LoginViewController.swift in Sources */,
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
 				41AAC563201B92A400809C4D /* KMAppearence.m in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,

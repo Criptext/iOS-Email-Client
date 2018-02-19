@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         FIRApp.configure()
         
+        UIApplication.shared.statusBarStyle = .lightContent
+        
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
@@ -57,10 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance().serverClientID = "249459851975-65698k7s4pb2pa1klkddb5fj0b330fro.apps.googleusercontent.com"
         
         var initialVC:UIViewController!
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        
         
         if GIDSignIn.sharedInstance().hasAuthInKeychain() {
             //Go to inbox
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
             let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "ListLabelViewController") as! ListLabelViewController
             let inboxVC = rootVC.childViewControllers.first as! InboxViewController
@@ -78,6 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             initialVC = SnackbarController(rootViewController: drawerVC)
         }else{
             //Go to login
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
         
