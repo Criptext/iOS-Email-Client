@@ -53,7 +53,6 @@ class ProgressArrowUIView: UIView{
         drawArc()
         drawOval()
         for offset in loadinDots {
-            //drawOval(Double(offset))
             drawDot(offset)
         }
         checkForNewDot()

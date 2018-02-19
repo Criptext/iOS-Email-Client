@@ -806,7 +806,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2e-M6-6pu">
-                                                        <rect key="frame" x="37" y="423" width="300.5" height="44"/>
+                                                        <rect key="frame" x="37" y="418" width="300.5" height="44"/>
                                                         <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="300" id="FnF-6B-rS7"/>
@@ -826,7 +826,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Didn’t get the prompt?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEg-nZ-3Qg">
-                                                        <rect key="frame" x="57" y="391.5" width="261" height="20.5"/>
+                                                        <rect key="frame" x="57" y="386.5" width="261" height="20.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20.5" id="skI-9t-dWd"/>
                                                         </constraints>
@@ -835,12 +835,10 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading-hourglass" translatesAutoresizingMaskIntoConstraints="NO" id="CQ6-X5-Uq5">
-                                                        <rect key="frame" x="170" y="311.5" width="35" height="35"/>
+                                                        <rect key="frame" x="172.5" y="311.5" width="30" height="30"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="35" id="Pf2-fb-mqX"/>
-                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="bqp-eF-479"/>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="pJ0-e4-apx"/>
-                                                            <constraint firstAttribute="width" constant="35" id="s4H-2o-NcJ"/>
+                                                            <constraint firstAttribute="height" constant="30" id="Pf2-fb-mqX"/>
+                                                            <constraint firstAttribute="width" constant="30" id="s4H-2o-NcJ"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
@@ -849,7 +847,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1B-8C-PKn" customClass="ProgressArrowUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                        <rect key="frame" x="162" y="304" width="50" height="50"/>
+                                                        <rect key="frame" x="162" y="301.5" width="50" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="Mey-l3-c01"/>
