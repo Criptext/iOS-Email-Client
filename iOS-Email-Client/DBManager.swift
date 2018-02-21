@@ -667,3 +667,23 @@ extension DBManager {
         return Array(results)
     }
 }
+
+//MARK: - Keys related
+extension DBManager {
+    
+    class func store(_ keysRecord: KeysRecord){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(keysRecord, update: true)
+        }
+    }
+    
+    class func store(_ keysRecords: [KeysRecord]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(keysRecords, update: true)
+        }
+    }
+}
