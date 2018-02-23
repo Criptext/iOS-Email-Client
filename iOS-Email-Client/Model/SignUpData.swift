@@ -20,7 +20,9 @@ class SignUpData{
     var deviceId: Int = 1
     var preKeyId: Int32 = 0
     var signedKeyId: Int32 = 5
-    var store: AxolotlInMemoryStore
+    var indentityStore = CriptextIdentityKeyStore()
+    var keyStore = CriptextPreKeyStore()
+    var signedKeyStore = CriptextSignedPreKeyStore()
     var publicKeys: [String : Any]?
     var token: String?
     
@@ -29,37 +31,27 @@ class SignUpData{
         self.password = password
         self.fullname = fullname
         self.optionalEmail = optionalEmail
-        store = AxolotlInMemoryStore()
     }
     
     func generateKeys(){
         let preKeyPair: ECKeyPair = Curve25519.generateKeyPair()
         let signedPreKeyPair: ECKeyPair = Curve25519.generateKeyPair()
-        let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey(), with: store.identityKeyPair())
+        let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey(), with: indentityStore.identityKeyPair())
         
-        let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: store.localRegistrationId(), deviceId: Int32(deviceId), preKeyId: preKeyId, preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: store.identityKeyPair()?.publicKey())
+        let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: indentityStore.localRegistrationId(), deviceId: Int32(deviceId), preKeyId: preKeyId, preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: indentityStore.identityKeyPair()?.publicKey())
         
         let preKeyRecord : PreKeyRecord = PreKeyRecord.init(id: preKey.preKeyId, keyPair: preKeyPair)
         let signedPreKeyRecord: SignedPreKeyRecord = SignedPreKeyRecord.init(id: signedKeyId, keyPair: signedPreKeyPair, signature: signedPreKeySignature, generatedAt: Date())
-        self.store.storePreKey(preKeyId, preKeyRecord: preKeyRecord)
-        self.store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)
+        keyStore.storePreKey(preKeyId, preKeyRecord: preKeyRecord)
+        signedKeyStore.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)
         
+        bundleKeys(signedPreKeySignature: signedPreKeySignature!.base64EncodedString(), signedPreKeyPublic: signedPreKeyPair.publicKey().base64EncodedString(), signedPreKeyId: signedKeyId, preKeyPublicKey: preKeyPair.publicKey().base64EncodedString(), preKeyId: preKeyId, identityPublicKey: indentityStore.identityKeyPair()!.publicKey().base64EncodedString(), registrationId: indentityStore.localRegistrationId(), deviceId: Int32(deviceId), identifier: identifier)
         
-        bundleKeys(signedPreKeySignature: signedPreKeySignature!.base64EncodedString(), signedPreKeyPublic: signedPreKeyPair.publicKey().base64EncodedString(), signedPreKeyId: signedKeyId, preKeyPublicKey: preKeyPair.publicKey().base64EncodedString(), preKeyId: preKeyId, identityPublicKey: store.identityKeyPair()!.publicKey().base64EncodedString(), registrationId: store.localRegistrationId(), deviceId: Int32(deviceId), identifier: identifier)
-        storeKeys(preKeyRecord, signedPreKeyRecord)
-    }
-    
-    func storeKeys(_ preKeyRecord: PreKeyRecord, _ signedPreKeyRecord: SignedPreKeyRecord){
-        let keyData = NSKeyedArchiver.archivedData(withRootObject: signedPreKeyRecord)
-        let keyString = keyData.base64EncodedString()
-        let signedData = NSKeyedArchiver.archivedData(withRootObject: signedPreKeyRecord)
-        let signedString = signedData.base64EncodedString()
-        let keysRecord = KeysRecord()
-        keysRecord.preKeyId = Int(preKeyId)
-        keysRecord.signedPreKeyId = Int(signedKeyId)
-        keysRecord.preKeyPair = keyString
-        keysRecord.signedPreKeyPair = signedString
-        DBManager.store(keysRecord)
+        let defaults = UserDefaults.standard
+        let myIdentity = indentityStore.identityKeyPair()
+        let identityData = NSKeyedArchiver.archivedData(withRootObject: myIdentity!)
+        let identityString = identityData.base64EncodedString()
+        defaults.set(identityString, forKey: "identity")
     }
     
     func bundleKeys(signedPreKeySignature: String, signedPreKeyPublic: String, signedPreKeyId: Int32, preKeyPublicKey: String, preKeyId: Int32, identityPublicKey: String, registrationId: Int32, deviceId: Int32, identifier: String){
