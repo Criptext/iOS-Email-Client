@@ -3521,9 +3521,13 @@
         <image name="attachment_pdf" width="80" height="80"/>
         <image name="attachment_photolibrary" width="27" height="27"/>
         <image name="close" width="28" height="28"/>
+<<<<<<< HEAD
         <image name="close-rounded" width="14" height="14"/>
         <image name="color-bell" width="45" height="50"/>
         <image name="composer" width="32" height="30"/>
+=======
+        <image name="color-bell" width="45" height="50"/>
+>>>>>>> activity feed, load and user interaction
         <image name="expiration-email-icon" width="32" height="31"/>
         <image name="formatting" width="15" height="18"/>
         <image name="icon_settings_inactive" width="16" height="16"/>
