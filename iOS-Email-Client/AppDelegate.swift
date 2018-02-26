@@ -76,12 +76,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 inboxVC.threadToOpen = threadId
             }
             
-            let drawerVC = NavigationDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: nil)
+            let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
+            
+            let drawerVC = NavigationDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
             drawerVC.delegate = inboxVC
             initialVC = SnackbarController(rootViewController: drawerVC)
         }else{
             //Go to login
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
         

@@ -26,6 +26,8 @@ class SignUpData{
     var publicKeys: [String : Any]?
     var token: String?
     
+    
+    
     init(_ username: String, _ password: String, _ fullname: String, optionalEmail: String?){
         self.username = username
         self.password = password
