@@ -10,6 +10,7 @@ import Foundation
 import SignalProtocolFramework
 
 class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
+    // MARK: - SignedPreKeyStore
     
     func loadSignedPrekey(_ signedPreKeyId: Int32) -> SignedPreKeyRecord {
         guard let signedPreKeyRecords = DBManager.getSignedKeyRecordById(id: signedPreKeyId) else {

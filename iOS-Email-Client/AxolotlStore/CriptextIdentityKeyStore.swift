@@ -9,13 +9,19 @@
 import Foundation
 import SignalProtocolFramework
 
-class CriptextIdentityKeyStore: NSObject, IdentityKeyStore{
-    
+class CriptextIdentityKeyStore: NSObject{
     var idKeyPair = Curve25519.generateKeyPair()
     var localRegId = Int32(arc4random() % 16380)
     var trustedKeys = [String: Data]()
     
-    
+    func restoreIdentity(_ base64Identity: String){
+        let identityData = Data(base64Encoded: base64Identity)
+        let identityKeys = NSKeyedUnarchiver.unarchiveObject(with: identityData!) as! ECKeyPair
+        self.idKeyPair = identityKeys
+    }
+}
+
+extension CriptextIdentityKeyStore: IdentityKeyStore{
     func identityKeyPair() -> ECKeyPair? {
         return idKeyPair
     }
@@ -43,11 +49,5 @@ class CriptextIdentityKeyStore: NSObject, IdentityKeyStore{
         default:
             return false
         }
-    }
-    
-    func restoreIdentity(_ base64Identity: String){
-        let identityData = Data(base64Encoded: base64Identity)
-        let identityKeys = NSKeyedUnarchiver.unarchiveObject(with: identityData!) as! ECKeyPair
-        self.idKeyPair = identityKeys
     }
 }

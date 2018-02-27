@@ -9,10 +9,11 @@
 import Foundation
 import SignalProtocolFramework
 
-class CriptextSessionStore: NSObject, SessionStore{
-    
+class CriptextSessionStore: NSObject{
     var sessionRecords = [String : [Int32: SessionRecord]]()
-    
+}
+
+extension CriptextSessionStore: SessionStore{
     func loadSession(_ contactIdentifier: String!, deviceId: Int32) -> SessionRecord! {
         guard sessionRecords[contactIdentifier] != nil && sessionRecords[contactIdentifier]![deviceId] != nil else {
             return SessionRecord()

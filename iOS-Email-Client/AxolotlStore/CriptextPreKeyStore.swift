@@ -10,6 +10,7 @@ import Foundation
 import SignalProtocolFramework
 
 class CriptextPreKeyStore: NSObject, PreKeyStore{
+    // MARK: - PreKeyStore
     
     func loadPreKey(_ preKeyId: Int32) -> PreKeyRecord! {
         guard let preKeyRecord = DBManager.getKeyRecordById(id: preKeyId) else {
@@ -38,5 +39,5 @@ class CriptextPreKeyStore: NSObject, PreKeyStore{
     func removePreKey(_ preKeyId: Int32) {
         DBManager.deleteKeyRecord(id: preKeyId)
     }
-    
 }
+
