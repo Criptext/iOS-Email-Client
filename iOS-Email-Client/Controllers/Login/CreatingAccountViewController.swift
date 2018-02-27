@@ -27,7 +27,7 @@ class CreatingAccountViewController: UIViewController{
     }
     
     func sendSignUpRequest(){
-        feedbackLabel.text = "Notifying your existance..."
+        feedbackLabel.text = "Notifying your existence..."
         APIManager.singUpRequest(signupData.username, signupData.fullname, signupData.password, signupData.optionalEmail) { (error) in
             guard error == nil else {
                 self.feedbackLabel.text = "Woops 1..."

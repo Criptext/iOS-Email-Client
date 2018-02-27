@@ -15,10 +15,11 @@ class CriptextSessionStore: NSObject{
 
 extension CriptextSessionStore: SessionStore{
     func loadSession(_ contactIdentifier: String!, deviceId: Int32) -> SessionRecord! {
-        guard sessionRecords[contactIdentifier] != nil && sessionRecords[contactIdentifier]![deviceId] != nil else {
+        guard let mySessions = sessionRecords[contactIdentifier],
+            let mySession = mySessions[deviceId] else {
             return SessionRecord()
         }
-        return sessionRecords[contactIdentifier]![deviceId]!
+        return mySession
     }
     
     func subDevicesSessions(_ contactIdentifier: String!) -> [Any]! {
@@ -30,10 +31,10 @@ extension CriptextSessionStore: SessionStore{
     }
     
     func containsSession(_ contactIdentifier: String!, deviceId: Int32) -> Bool {
-        guard sessionRecords[contactIdentifier] != nil && sessionRecords[contactIdentifier]![deviceId] != nil else {
-            return false
+        guard let mySessions = sessionRecords[contactIdentifier] else {
+                return true
         }
-        return true
+        return mySessions[deviceId] != nil
     }
     
     func deleteSession(forContact contactIdentifier: String!, deviceId: Int32) {

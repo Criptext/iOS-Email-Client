@@ -13,27 +13,34 @@ class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
     // MARK: - SignedPreKeyStore
     
     func loadSignedPrekey(_ signedPreKeyId: Int32) -> SignedPreKeyRecord {
-        guard let signedPreKeyRecords = DBManager.getSignedKeyRecordById(id: signedPreKeyId) else {
+        guard let signedKeyRecords = DBManager.getSignedKeyRecordById(id: signedPreKeyId),
+            let signedPreKeyRecordsData = Data(base64Encoded: signedKeyRecords.signedPreKeyPair),
+            let signedPreKeyRecord = NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData) as? SignedPreKeyRecord
+        else {
             return SignedPreKeyRecord()
         }
-        let signedPreKeyRecordsData = Data(base64Encoded: signedPreKeyRecords.signedPreKeyPair)
-        return NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData!) as! SignedPreKeyRecord
+        return signedPreKeyRecord
     }
     
     func loadSignedPrekeyOrNil(_ signedPreKeyId: Int32) -> SignedPreKeyRecord? {
-        guard let signedPreKeyRecords = DBManager.getSignedKeyRecordById(id: signedPreKeyId) else {
-            return nil
+        guard let signedKeyRecords = DBManager.getSignedKeyRecordById(id: signedPreKeyId),
+            let signedPreKeyRecordsData = Data(base64Encoded: signedKeyRecords.signedPreKeyPair),
+            let signedPreKeyRecord = NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData) as? SignedPreKeyRecord
+        else {
+                return nil
         }
-        let signedPreKeyRecordsData = Data(base64Encoded: signedPreKeyRecords.signedPreKeyPair)
-        return NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData!) as? SignedPreKeyRecord
+        return signedPreKeyRecord
     }
     
     func loadSignedPreKeys() -> [SignedPreKeyRecord] {
         var mySignedPreKeyRecords = [SignedPreKeyRecord]()
         for record in DBManager.getAllSignedKeyRecords() {
-            let signedPreKeyRecordsData = Data(base64Encoded: record.signedPreKeyPair)
-            let keyRecord = NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData!) as! SignedPreKeyRecord
-            mySignedPreKeyRecords.append(keyRecord)
+            guard let signedPreKeyRecordsData = Data(base64Encoded: record.signedPreKeyPair),
+                let signedPreKeyRecord = NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData) as? SignedPreKeyRecord
+            else {
+                continue
+            }
+            mySignedPreKeyRecords.append(signedPreKeyRecord)
         }
         return mySignedPreKeyRecords
     }
@@ -48,10 +55,7 @@ class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
     }
     
     func containsSignedPreKey(_ signedPreKeyId: Int32) -> Bool {
-        guard DBManager.getSignedKeyRecordById(id: signedPreKeyId) != nil else {
-            return false
-        }
-        return true
+        return DBManager.getSignedKeyRecordById(id: signedPreKeyId) != nil
     }
     
     func removeSignedPreKey(_ signedPrekeyId: Int32) {

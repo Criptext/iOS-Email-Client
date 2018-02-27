@@ -13,11 +13,13 @@ class CriptextPreKeyStore: NSObject, PreKeyStore{
     // MARK: - PreKeyStore
     
     func loadPreKey(_ preKeyId: Int32) -> PreKeyRecord! {
-        guard let preKeyRecord = DBManager.getKeyRecordById(id: preKeyId) else {
+        guard let keyRecord = DBManager.getKeyRecordById(id: preKeyId),
+            let preKeyRecordData = Data(base64Encoded: keyRecord.preKeyPair),
+            let preKeyRecord = NSKeyedUnarchiver.unarchiveObject(with: preKeyRecordData) as? PreKeyRecord
+        else {
             return PreKeyRecord()
         }
-        let preKeyRecordData = Data(base64Encoded: preKeyRecord.preKeyPair)
-        return NSKeyedUnarchiver.unarchiveObject(with: preKeyRecordData!) as! PreKeyRecord
+        return preKeyRecord
     }
     
     func storePreKey(_ preKeyId: Int32, preKeyRecord record: PreKeyRecord!) {
@@ -30,10 +32,7 @@ class CriptextPreKeyStore: NSObject, PreKeyStore{
     }
     
     func containsPreKey(_ preKeyId: Int32) -> Bool {
-        guard DBManager.getKeyRecordById(id: preKeyId) != nil else {
-            return false
-        }
-        return true
+        return DBManager.getKeyRecordById(id: preKeyId) != nil
     }
     
     func removePreKey(_ preKeyId: Int32) {
