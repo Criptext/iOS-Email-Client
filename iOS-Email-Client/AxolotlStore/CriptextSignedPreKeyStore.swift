@@ -13,10 +13,7 @@ class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
     // MARK: - SignedPreKeyStore
     
     func loadSignedPrekey(_ signedPreKeyId: Int32) -> SignedPreKeyRecord {
-        guard let signedKeyRecords = DBManager.getSignedKeyRecordById(id: signedPreKeyId),
-            let signedPreKeyRecordsData = Data(base64Encoded: signedKeyRecords.signedPreKeyPair),
-            let signedPreKeyRecord = NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData) as? SignedPreKeyRecord
-        else {
+        guard let signedPreKeyRecord = loadSignedPrekeyOrNil(signedPreKeyId) else {
             return SignedPreKeyRecord()
         }
         return signedPreKeyRecord
