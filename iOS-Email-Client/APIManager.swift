@@ -18,7 +18,7 @@ protocol ProgressDelegate {
 }
 
 class APIManager {
-    static let baseUrl = "https://mail.criptext.com"
+    static let baseUrl = "http://172.30.1.133:8000"
     
     static let CODE_SUCESS = 0
     static let CODE_JWT_INVALID = 101
@@ -27,6 +27,53 @@ class APIManager {
     static let CODE_REQUEST_CANCELLED = -999
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
+    
+    class func singUpRequest(_ username: String, _ fullname: String, _ password: String, _ email: String?, completion: @escaping ((Error?) -> Void)){
+        let recoveryEmail = email != nil && !email!.isEmpty ? email : "empty@criptext.com"
+        let parameters = ["username": username,
+                          "password": password,
+                          "name": fullname,
+                          "recoveryEmail": recoveryEmail!] as [String: Any]
+        print(parameters)
+        let url = "\(self.baseUrl)/user"
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{
+            (response) in
+            response.result.ifFailure {
+                completion(response.result.error)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((Error?, String?) -> Void)){
+        let parameters = ["username": username,
+                          "password": password,
+                          "deviceId": 1] as [String : Any]
+        let url = "\(self.baseUrl)/user/auth"
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{
+            (response) in
+            guard let value = response.result.value else {
+                completion(response.result.error, nil)
+                return
+            }
+            completion(nil, value)
+        }
+    }
+    
+    class func sendKeysRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/keybundle"
+        let headers = ["Authorization": "Bearer \(token)"]
+        print(token)
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            response.result.ifFailure {
+                completion(response.result.error)
+                return
+            }
+            completion(nil)
+        }
+    }
     
     /*
        Get specified number of apps from itunes endpoint

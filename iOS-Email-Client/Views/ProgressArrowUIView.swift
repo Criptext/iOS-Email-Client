@@ -39,7 +39,6 @@ class ProgressArrowUIView: UIView{
         for offset in 0...5 {
             loadinDots.append(angle - Double.pi * 1.25 - Double(offset) * dotsSpacing)
         }
-        
     }
     
     @objc func continueProgress(){
@@ -60,8 +59,8 @@ class ProgressArrowUIView: UIView{
     }
     
     func incrementRadius(){
-        angle += (fps * 2)
-        if(angle > (2 * Double.pi)){
+        angle += (fps * 3)
+        if(angle > DoublePi){
             angle = 0
         }
     }

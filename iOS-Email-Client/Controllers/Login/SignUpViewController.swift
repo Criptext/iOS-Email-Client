@@ -14,7 +14,7 @@ class SignUpViewController: UIViewController{
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var termsConditionsLabel: UIButton!
     @IBOutlet weak var createAccountButton: UIButton!
-    
+
     @IBOutlet weak var usernameTextField: StatusTextField!
     @IBOutlet weak var fullnameTextField: StatusTextField!
     @IBOutlet weak var emailTextField: StatusTextField!
@@ -26,6 +26,9 @@ class SignUpViewController: UIViewController{
     @IBOutlet weak var passwordMark: UIImageView!
     @IBOutlet weak var confirmPasswordMark: UIImageView!
     @IBOutlet weak var emailMark: UIImageView!
+    
+    var loadingAccount = false
+    
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -154,8 +157,14 @@ class SignUpViewController: UIViewController{
     }
     
     func jumpToCreatingAccount(){
+        let username = usernameTextField.text!
+        let fullname = fullnameTextField.text!
+        let password = passwordTextField.text!
+        let email = emailTextField.text
+        let signupData = SignUpData(username, fullname, password, optionalEmail: email)
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview")
+        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
+        controller.signupData = signupData
         self.present(controller, animated: true, completion: nil)
     }
     

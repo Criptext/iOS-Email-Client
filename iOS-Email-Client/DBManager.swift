@@ -667,3 +667,95 @@ extension DBManager {
         return Array(results)
     }
 }
+
+//MARK: - Keys related
+extension DBManager {
+    
+    class func store(_ keyRecord: KeyRecord){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(keyRecord, update: true)
+        }
+    }
+    
+    class func store(_ keyRecords: [KeyRecord]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(keyRecords, update: true)
+        }
+    }
+    
+    class func getKeysRecords() -> [KeyRecord] {
+        let realm = try! Realm()
+        
+        return Array(realm.objects(KeyRecord.self))
+    }
+    
+    class func getKeyRecordById(id: Int32) -> KeyRecord?{
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "preKeyId == \(id)")
+        let results = realm.objects(KeyRecord.self).filter(predicate)
+        
+        return results.first
+    }
+    
+    class func deleteKeyRecord(id: Int32){
+        let realm = try! Realm()
+        guard let keyRecord = realm.object(ofType: KeyRecord.self, forPrimaryKey: id) else {
+            return
+        }
+        try! realm.write() {
+            realm.delete(keyRecord)
+        }
+    }
+    
+    class func store(_ keyRecord: SignedKeyRecord){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(keyRecord, update: true)
+        }
+    }
+    
+    class func store(_ keyRecords: [SignedKeyRecord]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(keyRecords, update: true)
+        }
+    }
+    
+    class func getKeysRecords() -> [SignedKeyRecord] {
+        let realm = try! Realm()
+        
+        return Array(realm.objects(SignedKeyRecord.self))
+    }
+    
+    class func getSignedKeyRecordById(id: Int32) -> SignedKeyRecord?{
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "signedPreKeyId == \(id)")
+        let results = realm.objects(SignedKeyRecord.self).filter(predicate)
+        
+        return results.first
+    }
+    
+    class func deleteSignedKeyRecord(id: Int32){
+        let realm = try! Realm()
+        guard let keyRecord = realm.object(ofType: SignedKeyRecord.self, forPrimaryKey: id) else {
+            return
+        }
+        try! realm.write() {
+            realm.delete(keyRecord)
+        }
+    }
+    
+    class func getAllSignedKeyRecords() -> [SignedKeyRecord]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(SignedKeyRecord.self))
+    }
+}

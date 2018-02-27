@@ -640,7 +640,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YZU-A6-c4O">
+                            <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YZU-A6-c4O">
                                 <rect key="frame" x="79" y="321.5" width="217" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="BWm-Ll-EtP"/>
@@ -660,7 +660,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BBI-ya-JwL" customClass="TipUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="167" y="346.5" width="41" height="20"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="68%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVk-y1-1wB">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVk-y1-1wB" customClass="CounterLabelUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="-0.5" width="41" height="20"/>
                                         <color key="backgroundColor" red="0.21568627450980393" green="0.26666666666666666" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -705,8 +705,9 @@
                         <viewLayoutGuide key="safeArea" id="AaF-tb-sER"/>
                     </view>
                     <connections>
+                        <outlet property="feedbackLabel" destination="VeR-Uo-Ifp" id="pHF-ho-Lwu"/>
                         <outlet property="logoImageView" destination="Yqy-3d-Yj1" id="eOo-S5-amh"/>
-                        <outlet property="percentageLabel" destination="dVk-y1-1wB" id="cbY-j7-R5G"/>
+                        <outlet property="percentageLabel" destination="dVk-y1-1wB" id="vac-Kw-RCe"/>
                         <outlet property="progressBar" destination="YZU-A6-c4O" id="tk1-61-KIA"/>
                     </connections>
                 </viewController>

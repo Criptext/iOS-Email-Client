@@ -83,7 +83,10 @@
 		41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */; };
 		41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */; };
-		77CC6332368459ABCDA6D461 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
+		7C147B43203C9676004823DE /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
+		7C147B44203C9676004823DE /* SignalProtocolFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7C4D4FEB203DDEF400DF6E4E /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */; };
+		7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */; };
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
 		7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C632034A4D800AB96EF /* StatusTextField.swift */; };
@@ -96,10 +99,17 @@
 		7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */; };
 		7C8D6C74203735E000AB96EF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */; };
+		7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F1B68203C7A3500D30DCC /* SignUpData.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
 		7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */; };
+		7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
+		7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
+		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
+		7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
+		7CDAD27320449A730080A32C /* SignedKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* SignedKeyRecord.swift */; };
+		EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +121,20 @@
 			remoteInfo = "iOS-Email-Client";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7C147B45203C9676004823DE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7C147B44203C9676004823DE /* SignalProtocolFramework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Email_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +225,9 @@
 		41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-Email-ClientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Email_ClientTests.swift; sourceTree = "<group>"; };
 		41B6AAC62017987500D428B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C147B42203C9676004823DE /* SignalProtocolFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SignalProtocolFramework.framework; path = Carthage/Build/iOS/SignalProtocolFramework.framework; sourceTree = "<group>"; };
+		7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
+		7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterLabelUIView.swift; sourceTree = "<group>"; };
 		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
 		7C8D6C632034A4D800AB96EF /* StatusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTextField.swift; sourceTree = "<group>"; };
@@ -213,10 +240,16 @@
 		7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectDeviceViewController.swift; sourceTree = "<group>"; };
 		7C8D6C73203735E000AB96EF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressArrowUIView.swift; sourceTree = "<group>"; };
+		7C8F1B68203C7A3500D30DCC /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
 		7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSessionStore.swift; sourceTree = "<group>"; };
+		7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextPreKeyStore.swift; sourceTree = "<group>"; };
+		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
+		7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextIdentityKeyStore.swift; sourceTree = "<group>"; };
+		7CDAD27220449A730080A32C /* SignedKeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedKeyRecord.swift; sourceTree = "<group>"; };
 		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -226,7 +259,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77CC6332368459ABCDA6D461 /* Pods_iOS_Email_Client.framework in Frameworks */,
+				7C147B43203C9676004823DE /* SignalProtocolFramework.framework in Frameworks */,
+				EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +377,7 @@
 		41B6AAA32017987500D428B7 = {
 			isa = PBXGroup;
 			children = (
+				7C147B42203C9676004823DE /* SignalProtocolFramework.framework */,
 				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
 				41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */,
 				41B6AAAD2017987500D428B7 /* Products */,
@@ -363,6 +398,7 @@
 		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
 			isa = PBXGroup;
 			children = (
+				7CDAD2662040A7BD0080A32C /* AxolotlStore */,
 				412CB00A20373C28005D1B3F /* Fonts */,
 				41AAC56B201E1B4900809C4D /* iOS-Email-Client.entitlements */,
 				41AAC4E9201A9EF500809C4D /* Libs */,
@@ -412,6 +448,9 @@
 				41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */,
 				41AAC532201A9FCD00809C4D /* User.swift */,
 				7C8D6C6F2036491100AB96EF /* LoginData.swift */,
+				7C8F1B68203C7A3500D30DCC /* SignUpData.swift */,
+				7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */,
+				7CDAD27220449A730080A32C /* SignedKeyRecord.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -445,6 +484,7 @@
 				7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */,
 				7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */,
 				7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */,
+				7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -472,6 +512,17 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		7CDAD2662040A7BD0080A32C /* AxolotlStore */ = {
+			isa = PBXGroup;
+			children = (
+				7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */,
+				7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */,
+				7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */,
+				7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */,
+			);
+			path = AxolotlStore;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -485,7 +536,9 @@
 				41B6AAAA2017987500D428B7 /* Resources */,
 				9E4ABEF57B503BF0BDDD71D5 /* [CP] Embed Pods Frameworks */,
 				5B118A4C965F4ACA6820CDF6 /* [CP] Copy Pods Resources */,
-				41AAC56C201E286200809C4D /* ShellScript */,
+				41AAC56C201E286200809C4D /* Run Script */,
+				7C147B45203C9676004823DE /* Embed Frameworks */,
+				7C4D4FE9203CBD3A00DF6E4E /* Run Script Framework */,
 			);
 			buildRules = (
 			);
@@ -620,13 +673,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		41AAC56C201E286200809C4D /* ShellScript */ = {
+		41AAC56C201E286200809C4D /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,6 +722,22 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		7C4D4FE9203CBD3A00DF6E4E /* Run Script Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SignalProtocolFramework.framework",
+			);
+			name = "Run Script Framework";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SignalProtocolFramework.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		9E4ABEF57B503BF0BDDD71D5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -748,6 +818,7 @@
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
+				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
@@ -763,6 +834,7 @@
 				41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
+				7C4D4FEB203DDEF400DF6E4E /* KeyRecord.swift in Sources */,
 				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
@@ -775,6 +847,7 @@
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				41AAC4FB201A9FAD00809C4D /* ThreadViewController.swift in Sources */,
+				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
 				7C8D6C74203735E000AB96EF /* Constants.swift in Sources */,
 				41AAC51A201A9FC300809C4D /* ActivityTableViewCell.swift in Sources */,
@@ -784,6 +857,7 @@
 				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
 				41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */,
 				41AAC562201B92A400809C4D /* KMSection.m in Sources */,
+				7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */,
 				41AAC52A201A9FC300809C4D /* GoogleButton.swift in Sources */,
 				7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */,
 				41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */,
@@ -791,9 +865,13 @@
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
 				41AAC563201B92A400809C4D /* KMAppearence.m in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
+				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
 				41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
+				7CDAD27320449A730080A32C /* SignedKeyRecord.swift in Sources */,
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
+				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,
+				7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */,
 				41AAC523201A9FC300809C4D /* AttachmentUIPopover.swift in Sources */,
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
@@ -957,6 +1035,10 @@
 				CODE_SIGN_ENTITLEMENTS = "iOS-Email-Client/iOS-Email-Client.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.secure.email;
@@ -977,6 +1059,10 @@
 				CODE_SIGN_ENTITLEMENTS = "iOS-Email-Client/iOS-Email-Client.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.secure.email;

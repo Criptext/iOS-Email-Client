@@ -110,3 +110,5 @@ Podfile.lock
 # Carthage/Checkouts
 
 Carthage/Build
+Carthage/
+Carthage/*
