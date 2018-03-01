@@ -91,6 +91,8 @@
 		7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */; };
+		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
+		7C34E5FD204716BD00E71906 /* EmailDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FC204716BD00E71906 /* EmailDetail.swift */; };
 		7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */; };
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
@@ -124,6 +126,8 @@
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
+		7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */; };
+		7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */; };
 		EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
 /* End PBXBuildFile section */
 
@@ -247,6 +251,8 @@
 		7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextAxolotlStore.swift; sourceTree = "<group>"; };
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRPreKeyRecord.swift; sourceTree = "<group>"; };
+		7C34E5FA20470D2100E71906 /* EmailDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailData.swift; sourceTree = "<group>"; };
+		7C34E5FC204716BD00E71906 /* EmailDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetail.swift; sourceTree = "<group>"; };
 		7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterLabelUIView.swift; sourceTree = "<group>"; };
 		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
@@ -279,6 +285,8 @@
 		7CDB4661203F0C9F007C9637 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
+		7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewController.swift; sourceTree = "<group>"; };
+		7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTableViewCell.swift; sourceTree = "<group>"; };
 		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
@@ -361,6 +369,7 @@
 				41AAC4F2201A9FAC00809C4D /* TourViewController.swift */,
 				7CDB465D203E336A007C9637 /* FeedViewController.swift */,
 				7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */,
+				7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -497,6 +506,8 @@
 				7C154FD2204DEBAF00D72F6E /* Account.swift */,
 				7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */,
 				7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */,
+				7C34E5FA20470D2100E71906 /* EmailDetailData.swift */,
+				7C34E5FC204716BD00E71906 /* EmailDetail.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -537,6 +548,7 @@
 				7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */,
 				7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */,
 				954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */,
+				7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -882,6 +894,7 @@
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
 				41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
+				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
 				41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */,
 				7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */,
@@ -931,6 +944,7 @@
 				41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */,
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
+				7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */,
 				41AAC563201B92A400809C4D /* KMAppearence.m in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
@@ -938,6 +952,7 @@
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
 				7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */,
+				7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */,
 				7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */,
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
 				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,
@@ -946,6 +961,7 @@
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
 				41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */,
+				7C34E5FD204716BD00E71906 /* EmailDetail.swift in Sources */,
 				41AAC53B201A9FCD00809C4D /* User.swift in Sources */,
 				7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */,
 			);
