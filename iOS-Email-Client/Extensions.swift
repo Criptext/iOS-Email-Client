@@ -286,6 +286,11 @@ enum Font {
     }
 }
 
+enum FontSize: CGFloat {
+    case feed = 14.0
+    case feedDate = 11.0
+}
+
 enum Icon {
     case activated
     case enabled

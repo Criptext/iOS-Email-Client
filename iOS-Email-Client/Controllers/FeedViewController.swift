@@ -26,6 +26,7 @@ class FeedViewController: UIViewController{
             noFeedsView.isHidden = true
             feedsTableView.isHidden = false
         }
+        feedsTableView.register(UINib(nibName: "TableEndViewCell", bundle: nil), forCellReuseIdentifier: "EndCell")
     }
 }
 
@@ -57,9 +58,13 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if(section == 0){
-            return "New"
+            return "NEW"
         }
-        return "Older"
+        return "OLDER"
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(42)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -107,32 +112,19 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         guard section == 1 else {
             return nil
         }
-        
-        let footerView = UIView(frame: CGRect(x:0, y:0, width:tableView.frame.size.width, height:50))
-        let indicator = UIActivityIndicatorView(frame: CGRect.init(x: (tableView.frame.size.width/2)-25, y: 0, width: 50, height: 50))
-        indicator.color = .black
-        indicator.activityIndicatorViewStyle = .gray
-        indicator.startAnimating()
-        
-        let labelReachEnd = UILabel(frame: CGRect.init(x: (tableView.frame.size.width/2)-50, y: 0, width: 100, height: 50))
-        labelReachEnd.textColor = UIColor.darkGray
-        labelReachEnd.text = "No more activities"
-        
+        let footerView = tableView.dequeueReusableCell(withIdentifier: "EndCell") as! TableEndViewCell
         if(feedsData.reachedEnd){
-            footerView.addSubview(labelReachEnd)
+            footerView.displayMessage("No more activities")
         }else{
-            footerView.addSubview(indicator)
+            footerView.startLoader()
         }
-        
-        footerView.backgroundColor = UIColor.white
         return footerView
     }
     
     func tableView( _ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat{
-        if(feedsData.loadingFeeds){
+        if(section == 1){
             return 50.0
-        }
-        else{
+        }else{
             return 0.0
         }
     }

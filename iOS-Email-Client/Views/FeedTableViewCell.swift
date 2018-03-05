@@ -14,11 +14,7 @@ class FeedTableViewCell: UITableViewCell{
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var mutedIconImage: UIImageView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
+
     func setLabels(_ header: String, _ subject: String, _ myDate: String){
         headerLabel.text = header
         subjectLabel.text = subject
@@ -39,15 +35,17 @@ class FeedTableViewCell: UITableViewCell{
     
     func handleViewed(isNew: Bool){
         if(!isNew){
-            headerLabel.font = UIFont.systemFont(ofSize: headerLabel.font.pointSize)
-            subjectLabel.font = UIFont.systemFont(ofSize: subjectLabel.font.pointSize)
-            dateLabel.font = UIFont.systemFont(ofSize: dateLabel.font.pointSize)
-            backgroundColor = .clear
+            let regularFont = Font.regular.size(FontSize.feed.rawValue)
+            headerLabel.font = regularFont
+            subjectLabel.font = regularFont
+            dateLabel.font = Font.regular.size(FontSize.feedDate.rawValue)
+            backgroundColor = .white
             return
         }
-        headerLabel.font = UIFont.boldSystemFont(ofSize: headerLabel.font.pointSize)
-        subjectLabel.font = UIFont.boldSystemFont(ofSize: subjectLabel.font.pointSize)
-        dateLabel.font = UIFont.boldSystemFont(ofSize: dateLabel.font.pointSize)
+        let boldFont = Font.bold.size(FontSize.feed.rawValue)
+        headerLabel.font = boldFont
+        subjectLabel.font = boldFont
+        dateLabel.font = Font.bold.size(FontSize.feedDate.rawValue)
         backgroundColor = UIColor(red: 242/255, green: 248/255, blue: 1, alpha: 1)
         
     }
