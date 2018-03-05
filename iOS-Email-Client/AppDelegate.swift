@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             initialVC = SnackbarController(rootViewController: drawerVC)
         }else{
             //Go to login
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
         

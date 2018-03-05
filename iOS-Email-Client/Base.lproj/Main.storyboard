@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cQK-wt-4C5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -1281,7 +1281,7 @@
             </objects>
             <point key="canvasLocation" x="896.79999999999995" y="1217.5412293853074"/>
         </scene>
-        <!--Inbox View Controller-->
+        <!--Data Source-->
         <scene sceneID="yLP-Bp-waj">
             <objects>
                 <viewController storyboardIdentifier="InboxViewController" id="gA0-rr-zOr" customClass="InboxViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
@@ -1421,15 +1421,17 @@
                                             <outlet property="badgeLabel" destination="6K4-p6-7jf" id="p5e-HD-ufd"/>
                                             <outlet property="badgeWidthConstraint" destination="bJR-p0-yXX" id="bOw-l7-kDz"/>
                                             <outlet property="containerBadge" destination="plx-qW-utu" id="Pmq-K0-qZ0"/>
+                                            <outlet property="dataSource" destination="gA0-rr-zOr" id="mzL-Ra-AFB"/>
                                             <outlet property="dateLabel" destination="BPT-s1-oSH" id="3mQ-GX-YDA"/>
                                             <outlet property="dateWidthConstraint" destination="84C-6X-exO" id="wRf-33-XTr"/>
+                                            <outlet property="delegate" destination="gA0-rr-zOr" id="njj-Z1-21o"/>
                                             <outlet property="previewLabel" destination="TyM-xa-owd" id="FQo-t1-fVi"/>
                                             <outlet property="secureAttachmentImageView" destination="UIJ-IR-1G9" id="1EL-um-9qe"/>
                                             <outlet property="senderLabel" destination="vfx-S0-hVs" id="SLR-Ra-wqw"/>
                                             <outlet property="subjectLabel" destination="3Jt-xU-pVS" id="bEw-X4-G73"/>
-                                            <outlet property="dataSource" destination="gA0-rr-zOr" id="mzL-Ra-AFB"/>
-                                    <outlet property="delegate" destination="gA0-rr-zOr" id="njj-Z1-21o"/>
-                                </connections>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
