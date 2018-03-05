@@ -16,10 +16,15 @@ class EmailDetailViewController: UITableViewController{
         emailData.mockEmails()
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 98
+        
+        for index in 0...emailData.emails.count - 1{
+            let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
+            tableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "emailTableCellView", for: indexPath) as! EmailTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "emailDetail\(indexPath.row)") as! EmailTableViewCell
         let email = emailData.emails[indexPath.row]
         cell.setContent(email.preview, email.content, isExpanded: email.isExpanded)
         cell.myHeight = email.myHeight
@@ -31,18 +36,22 @@ class EmailDetailViewController: UITableViewController{
         return emailData.emails.count
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as! EmailTableViewCell? else {
-            return
-        }
-        let email = emailData.emails[indexPath.row]
-        email.isExpanded = !email.isExpanded
-        email.myHeight = 0
-        cell.toggleCell(email.isExpanded)
-        if(!email.isExpanded){
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableHeaderView")
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableFooterView")
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat(78)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(56)
     }
 }
 
@@ -53,11 +62,19 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         }
         let email = emailData.emails[indexPath.row]
         email.myHeight = height
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-        cell.setNeedsUpdateConstraints()
-        cell.updateConstraintsIfNeeded()
-        self.tableView.beginUpdates()
-        self.tableView.endUpdates()
+        tableView.reloadData()
+    }
+    
+    func tableViewCellDidTap(_ cell: EmailTableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        email.isExpanded = !email.isExpanded
+        email.myHeight = 0
+        cell.toggleCell(email.isExpanded)
+        if(!email.isExpanded){
+            tableView.reloadData()
+        }
     }
 }
