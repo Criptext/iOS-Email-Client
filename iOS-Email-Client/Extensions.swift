@@ -22,6 +22,51 @@ extension GTLRService {
     }
 }
 
+extension UIColor {
+    convenience init(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+        
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff, alpha: 1
+        )
+    }
+}
+
+func MD5(string: String) -> Data {
+    let messageData = string.data(using:.utf8)!
+    var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+    _ = digestData.withUnsafeMutableBytes {digestBytes in
+        messageData.withUnsafeBytes {messageBytes in
+            CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+        }
+    }
+    return digestData
+}
+
+func colorByName(name: String) -> UIColor{
+    
+    var color = "0091ff"
+    let md5Data = MD5(string: name)
+    let md5 =  md5Data.map { String(format: "%02hhx", $0) }.joined()
+    if(md5.count >= 7){
+        let start = md5.index(md5.startIndex, offsetBy: 1)
+        let end = md5.index(md5.startIndex, offsetBy: 7)
+        let range = start..<end
+        color = String(md5[range])
+    }
+    return UIColor(hex: color)
+    
+}
+
 func mimeTypeForPath(path: String) -> String {
     let url = NSURL(fileURLWithPath: path)
     
@@ -310,6 +355,20 @@ enum Icon {
         }
     }
     
+    enum new_arrow {
+        case up
+        case down
+        
+        var image: UIImage? {
+            switch self {
+            case .down:
+                return UIImage(named: "new-arrow-down")
+            case .up:
+                return UIImage(named: "new-arrow-up")
+            }
+        }
+    }
+    
     case camera
     case library
     case icloud
@@ -328,8 +387,10 @@ enum Icon {
     case system
     case reply
     case forward
+    case compose
     
     enum attachment {
+        case vertical
         case regular
         case secure
         case image
@@ -345,6 +406,8 @@ enum Icon {
         
         var image: UIImage? {
             switch self {
+            case .vertical:
+                return UIImage(named: "attachment")
             case .regular:
                 return UIImage(named: "attachment_regular")
             case .secure:
@@ -391,6 +454,8 @@ enum Icon {
     
     var image: UIImage? {
         switch self {
+        case .compose:
+            return UIImage(named: "composer")
         case .camera:
             return UIImage(named: "attachment_camera")
         case .library:

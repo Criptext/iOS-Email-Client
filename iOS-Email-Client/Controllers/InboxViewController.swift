@@ -23,6 +23,7 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var topToolbar: NavigationToolbarView!
+    @IBOutlet weak var buttonCompose: UIButton!
     
     var currentService: GTLRService! = GTLRGmailService()
     var currentUser: User!
@@ -139,11 +140,13 @@ class InboxViewController: UIViewController {
         self.currentUser = DBManager.getUsers().first
         
         self.setButtonItems(isEditing: false)
-        self.loadMails(from: .inbox, since: Date())
+        //self.loadMails(from: .inbox, since: Date())
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.emailTrashed), name: NSNotification.Name(rawValue: "EmailTrashed"), object: nil)
+        
+        self.initFloatingButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -206,11 +209,7 @@ class InboxViewController: UIViewController {
         derp.layer.cornerRadius = 15.5
         derp.addTarget(self, action: #selector(didPressEdit), for: .touchUpInside)
         
-        self.cancelBarButton = UIBarButtonItem(customView: derp)//UIBarButtonItem(image: #imageLiteral(resourceName: "menu-back"), style: .plain, target: self, action: #selector(didPressEdit))
-        
-        
-        self.composerBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "composer"), style: .plain, target: self, action: #selector(didPressComposer))
-        self.composerBarButton.tintColor = Icon.system.color
+        self.cancelBarButton = UIBarButtonItem(customView: derp)
         
         self.trashBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressTrash))
         self.trashBarButton.tintColor = UIColor.white
@@ -263,6 +262,17 @@ class InboxViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func initFloatingButton(){
+        let shadowPath = UIBezierPath(rect: CGRect(x: 15, y: 15, width: 30, height: 30))
+        buttonCompose.layer.shadowColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1).cgColor
+        buttonCompose.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)  //Here you control x and y
+        buttonCompose.layer.shadowOpacity = 1
+        buttonCompose.layer.shadowRadius = 15 //Here your control your blur
+        buttonCompose.layer.masksToBounds =  false
+        buttonCompose.layer.shadowPath = shadowPath.cgPath
+    }
+    
 }
 
 //MARK: - Modify mails actions
@@ -293,7 +303,7 @@ extension InboxViewController{
         self.setButtonItems(isEditing: self.isCustomEditing)
     }
     
-    @objc func didPressComposer(_ sender: UIBarButtonItem) {
+    @IBAction func didPressComposer(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
@@ -712,8 +722,6 @@ extension InboxViewController {
         composeVC.addToken("support@criptext.com", value: "support@criptext.com", to: composeVC.toField)
         composeVC.subjectField.text = "Criptext iPhone Support"
         composeVC.editorView.html = body
-        
-        composeVC.encryptionSwitch.setOn(false, animated: false)
         composeVC.thumbUpdated = true
         
         let snackVC = SnackbarController(rootViewController: navComposeVC)
