@@ -20,6 +20,7 @@ class InboxTableViewCell: UITableViewCell {
     
     @IBOutlet weak var secureAttachmentImageView: UIImageView!
     
+    @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var containerBadge: UIView!
     @IBOutlet weak var badgeLabel: UILabel!
     @IBOutlet weak var badgeWidthConstraint: NSLayoutConstraint!
@@ -30,6 +31,9 @@ class InboxTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        self.avatarImageView.layer.borderWidth = 1.0
+        self.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
         
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         self.addGestureRecognizer(hold)
@@ -50,11 +54,15 @@ class InboxTableViewCell: UITableViewCell {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        
         if editing {
             self.containerBadge.backgroundColor = UIColor(red:0.76, green:0.76, blue:0.78, alpha:1.0)
             self.tintColor = Icon.system.color
+            self.avatarImageView.layer.borderWidth = 1.0
+            self.avatarImageView.image = nil
         } else {
             self.tintColor = UIColor.black
+            self.avatarImageView.layer.borderWidth = 0.0
         }
     }
     

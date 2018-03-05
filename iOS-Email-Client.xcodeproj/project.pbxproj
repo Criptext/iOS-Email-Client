@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411FDF70204CF93300BCD787 /* InitialsImageView.swift */; };
 		412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */; };
 		412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */; };
 		412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0292037402C005D1B3F /* NunitoSans-BoldItalic.ttf */; };
@@ -21,6 +22,8 @@
 		412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */; };
 		412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */; };
 		412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */; };
+		414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 414E7D4B203F2A860088C647 /* NavigationToolbarView.xib */; };
+		414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */; };
 		41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */; };
 		41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */; };
 		41AAC4FB201A9FAD00809C4D /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */; };
@@ -138,6 +141,7 @@
 
 /* Begin PBXFileReference section */
 		14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Email_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		411FDF70204CF93300BCD787 /* InitialsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsImageView.swift; sourceTree = "<group>"; };
 		412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Black.ttf"; sourceTree = "<group>"; };
 		412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		412CB0292037402C005D1B3F /* NunitoSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -152,6 +156,8 @@
 		412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Regular.ttf"; sourceTree = "<group>"; };
 		412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
 		412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		414E7D4B203F2A860088C647 /* NavigationToolbarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationToolbarView.xib; sourceTree = "<group>"; };
+		414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationToolbarView.swift; sourceTree = "<group>"; };
 		41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListLabelViewController.swift; sourceTree = "<group>"; };
 		41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +288,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		411FDF6F204A07B700BCD787 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				41AAC540201A9FF500809C4D /* APIManager.swift */,
+				41AAC542201AA00000809C4D /* ContactManager.swift */,
+				41AAC544201AA01400809C4D /* DBManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		412CB00A20373C28005D1B3F /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +346,7 @@
 				41AAC558201B91FF00809C4D /* KMAccordion */,
 				41AAC556201AA08500809C4D /* DateUtils.h */,
 				41AAC555201AA08500809C4D /* DateUtils.m */,
+				411FDF70204CF93300BCD787 /* InitialsImageView.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -403,9 +420,7 @@
 				41AAC56B201E1B4900809C4D /* iOS-Email-Client.entitlements */,
 				41AAC4E9201A9EF500809C4D /* Libs */,
 				41AAC552201AA06F00809C4D /* MCOMessageViewScript.js */,
-				41AAC540201A9FF500809C4D /* APIManager.swift */,
-				41AAC542201AA00000809C4D /* ContactManager.swift */,
-				41AAC544201AA01400809C4D /* DBManager.swift */,
+				411FDF6F204A07B700BCD787 /* Managers */,
 				41AAC546201AA01F00809C4D /* Extensions.swift */,
 				41AAC548201AA02C00809C4D /* editor-style.css */,
 				41AAC4E8201A9E7000809C4D /* Controllers */,
@@ -485,6 +500,8 @@
 				7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */,
 				7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */,
 				7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */,
+				414E7D4B203F2A860088C647 /* NavigationToolbarView.xib */,
+				414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -657,6 +674,7 @@
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
 				41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */,
 				41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */,
+				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
 				41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */,
@@ -820,6 +838,7 @@
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
+				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
 				41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
 				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
@@ -832,6 +851,7 @@
 				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
 				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
 				41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */,
+				414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
 				7C4D4FEB203DDEF400DF6E4E /* KeyRecord.swift in Sources */,

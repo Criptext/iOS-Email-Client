@@ -18,7 +18,11 @@ import SwiftyJSON
 //delete
 import RealmSwift
 
-class InboxViewController: UITableViewController {
+class InboxViewController: UIViewController {
+    
+    @IBOutlet weak var tableView: UITableView!
+    let refreshControl = UIRefreshControl()
+    @IBOutlet weak var topToolbar: NavigationToolbarView!
     
     var currentService: GTLRService! = GTLRGmailService()
     var currentUser: User!
@@ -35,6 +39,7 @@ class InboxViewController: UITableViewController {
     var searchController = UISearchController(searchResultsController: nil)
     var spaceBarButton:UIBarButtonItem!
     var fixedSpaceBarButton:UIBarButtonItem!
+    var flexibleSpaceBarButton:UIBarButtonItem!
     var cancelBarButton:UIBarButtonItem!
     var searchBarButton:UIBarButtonItem!
     var activityBarButton:UIBarButtonItem!
@@ -60,6 +65,9 @@ class InboxViewController: UITableViewController {
     
     var ws:WebSocket!
     
+    var originalNavigationRect:CGRect!
+    var isCustomEditing = false
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -72,6 +80,13 @@ class InboxViewController: UITableViewController {
 //        CriptextSpinner.show(in: self.view, title: nil, image: UIImage(named: "icon_sent_chat.png"))
         GIDSignIn.sharedInstance().delegate = self
         
+        self.navigationController?.navigationBar.addSubview(self.topToolbar)
+        let margins = self.navigationController!.navigationBar.layoutMarginsGuide
+        self.topToolbar.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: -8.0).isActive = true
+        self.topToolbar.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 8.0).isActive = true
+        self.topToolbar.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: 8.0).isActive = true
+        self.navigationController?.navigationBar.bringSubview(toFront: self.topToolbar)
+        
         self.footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 40.0))
         self.footerView.backgroundColor = UIColor.clear
         self.footerActivity = UIActivityIndicatorView(activityIndicatorStyle: .gray)
@@ -80,8 +95,9 @@ class InboxViewController: UITableViewController {
         self.footerActivity.center = self.footerView.center
         self.tableView.tableFooterView = self.footerView
         
-        APIManager.reachabilityManager.startListening()
+        self.originalNavigationRect = self.navigationController?.navigationBar.frame
         
+        APIManager.reachabilityManager.startListening()
         APIManager.reachabilityManager.listener = { status in
             
             switch status {
@@ -114,9 +130,9 @@ class InboxViewController: UITableViewController {
         definesPresentationContext = true
         
         self.navigationItem.searchController = self.searchController
-        self.refreshControl?.addTarget(self, action: #selector(self.handleRefresh(_:automatic:signIn:completion:)), for: UIControlEvents.valueChanged)
+        self.refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:automatic:signIn:completion:)), for: UIControlEvents.valueChanged)
         
-        self.tableView.allowsMultipleSelectionDuringEditing = true
+        self.tableView.allowsMultipleSelection = true
 
         self.initBarButtonItems()
         
@@ -133,7 +149,7 @@ class InboxViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let indexPath = self.tableView.indexPathForSelectedRow, !self.tableView.isEditing else {
+        guard let indexPath = self.tableView.indexPathForSelectedRow, !self.isCustomEditing else {
             return
         }
         
@@ -163,7 +179,7 @@ class InboxViewController: UITableViewController {
             }
             
             if let earlyDate = Calendar.current.date(byAdding: .minute, value: -1, to: Date()), earlyDate > date {
-                self.handleRefresh(self.tableView.refreshControl!, automatic: true, signIn: false, completion: nil)
+                self.handleRefresh(self.refreshControl, automatic: true, signIn: false, completion: nil)
             } else {
                 self.statusBarButton.title = String(format:"Updated %@",DateUtils.beatyDate(date))
             }
@@ -180,8 +196,18 @@ class InboxViewController: UITableViewController {
         self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
         self.fixedSpaceBarButton.width = 25.0
+        self.flexibleSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         
-        self.cancelBarButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(didPressEdit))
+//        self.cancelBarButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(didPressEdit))
+        let derp = UIButton(type: .custom)
+        derp.frame = CGRect(x: 0, y: 0, width: 31, height: 31)
+        derp.setImage(#imageLiteral(resourceName: "menu-back"), for: .normal)
+        derp.layer.backgroundColor = UIColor.red.cgColor
+        derp.layer.cornerRadius = 15.5
+        derp.addTarget(self, action: #selector(didPressEdit), for: .touchUpInside)
+        
+        self.cancelBarButton = UIBarButtonItem(customView: derp)//UIBarButtonItem(image: #imageLiteral(resourceName: "menu-back"), style: .plain, target: self, action: #selector(didPressEdit))
+        
         
         self.composerBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "composer"), style: .plain, target: self, action: #selector(didPressComposer))
         self.composerBarButton.tintColor = Icon.system.color
@@ -242,25 +268,29 @@ class InboxViewController: UITableViewController {
 //MARK: - Modify mails actions
 extension InboxViewController{
     @objc func didPressEdit() {
+        self.isCustomEditing = !self.isCustomEditing
+//        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
         
-        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
-        
-        if self.tableView.isEditing {
-            self.counterBarButton.title = "1"
+        if self.isCustomEditing {
+            self.topToolbar.counterButton.title = "1"
             self.title = ""
             self.navigationItem.leftBarButtonItems = [self.cancelBarButton, self.counterBarButton]
+            self.topToolbar.isHidden = false
         }else{
+            self.topToolbar.isHidden = true
+            self.navigationController?.navigationBar.isHidden = false
             self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
             self.titleBarButton.title = self.selectedLabel.description.uppercased()
+            self.navigationController?.navigationBar.frame = self.originalNavigationRect
 //            self.title = self.selectedLabel.description
         }
         
         //disable toolbar buttons
-        if !self.tableView.isEditing {
+        if !self.isCustomEditing {
             self.toggleToolbar(false)
         }
         
-        self.setButtonItems(isEditing: self.tableView.isEditing)
+        self.setButtonItems(isEditing: self.isCustomEditing)
     }
     
     @objc func didPressComposer(_ sender: UIBarButtonItem) {
@@ -295,7 +325,7 @@ extension InboxViewController{
     @objc func didPressArchive(_ sender: UIBarButtonItem) {
         guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows,
             (self.selectedLabel == .inbox || self.selectedLabel == .junk) else {
-                if self.tableView.isEditing {
+                if self.isCustomEditing {
                     self.didPressEdit()
                 }
             return
@@ -305,7 +335,7 @@ extension InboxViewController{
         
         self.showSnackbar("Archiving...", attributedText: nil, buttons: "", permanent: true)
         APIManager.threadModifyLabels(add: nil, remove: [self.selectedLabel.id], from: emailThreadIds, with: self.currentService, user:"me") { (error, result) in
-            if self.tableView.isEditing {
+            if self.isCustomEditing {
                 self.didPressEdit()
             }
             
@@ -331,7 +361,7 @@ extension InboxViewController{
     
     @objc func didPressTrash(_ sender: UIBarButtonItem) {
         guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
-            if self.tableView.isEditing {
+            if self.isCustomEditing {
                 self.didPressEdit()
             }
             return
@@ -341,7 +371,7 @@ extension InboxViewController{
         
         self.showSnackbar("Sending mail to Trash...", attributedText: nil, buttons: "", permanent: true)
         APIManager.trash(emails: emailThreadIds, with: self.currentService) { (error, result) in
-            if self.tableView.isEditing {
+            if self.isCustomEditing {
                 self.didPressEdit()
             }
             
@@ -508,7 +538,7 @@ extension InboxViewController{
         CriptextSpinner.show(in: self.view.superview!, title: nil, image: UIImage(named: "icon_sent_chat.png"))
         APIManager.delete(emails: emailThreadIds, with: self.currentService) { (error, result) in
             CriptextSpinner.hide(from: self.view)
-            if self.tableView.isEditing {
+            if self.isCustomEditing {
                 self.didPressEdit()
             }
             
@@ -530,7 +560,7 @@ extension InboxViewController{
     
     @objc func didPressDelete(_ sender: UIBarButtonItem) {
         guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
-            if self.tableView.isEditing {
+            if self.isCustomEditing {
                 self.didPressEdit()
             }
             return
@@ -539,7 +569,7 @@ extension InboxViewController{
         
         self.showSnackbar("Deleting mail...", attributedText: nil, buttons: "", permanent: true)
         APIManager.delete(emails: emailThreadIds, with: self.currentService) { (error, result) in
-            if self.tableView.isEditing {
+            if self.isCustomEditing {
                 self.didPressEdit()
             }
             
@@ -574,7 +604,7 @@ extension InboxViewController {
         self.emailArray.removeAll()
         self.threadHash.removeAll()
         
-        if self.tableView.isEditing {
+        if self.isCustomEditing {
             self.didPressEdit()
         }
         
@@ -600,8 +630,8 @@ extension InboxViewController {
         }
         
         self.statusBarButton.title = nil
-        self.refreshControl?.beginRefreshing()
-        self.handleRefresh(self.refreshControl!, automatic: false, signIn: false, completion: nil)
+        self.refreshControl.beginRefreshing()
+        self.handleRefresh(self.refreshControl, automatic: false, signIn: false, completion: nil)
         
     }
     
@@ -711,7 +741,7 @@ extension InboxViewController{
             self.navigationController?.popViewController(animated: true)
         }
         
-        if self.tableView.isEditing {
+        if self.isCustomEditing {
             self.didPressEdit()
         }
         
@@ -1007,6 +1037,7 @@ extension InboxViewController{
         switch self.selectedLabel {
         case .inbox:
             items = [self.markBarButton,
+                     self.flexibleSpaceBarButton,
                      self.trashBarButton,
                      self.archiveBarButton,
                      self.spaceBarButton]
@@ -1114,7 +1145,7 @@ extension InboxViewController{
         }
         
         guard !self.emailArray.isEmpty else {
-            self.refreshControl?.endRefreshing()
+            self.refreshControl.endRefreshing()
             return
         }
         
@@ -1134,7 +1165,7 @@ extension InboxViewController{
         APIManager.getUpdates(self.currentService, since: self.currentUser.historyId(for: self.selectedLabel), folder: self.selectedLabel, user: "me", completionHandler: { (ticket, emailsAdded, emailsDeleted, labelsAdded, labelsRemoved, parsedContacts, error) in
             
             CriptextSpinner.hide(from: self.view)
-            self.refreshControl?.endRefreshing()
+            self.refreshControl.endRefreshing()
             
             if let error = error {
                 print(error.localizedDescription)
@@ -1230,7 +1261,7 @@ extension InboxViewController{
                 }
                 
                 self.tableView.reloadData()
-                self.counterBarButton.title = "0"
+                self.topToolbar.counterButton.title = "0"
             }
             
             
@@ -1267,7 +1298,7 @@ extension InboxViewController{
                 }
                 
                 self.tableView.reloadData()
-                self.counterBarButton.title = "0"
+                self.topToolbar.counterButton.title = "0"
                 
             })
         })
@@ -1305,7 +1336,7 @@ extension InboxViewController{
             pageToken: pageToken
         ) { (ticket, parsedEmails, parsedContacts, error) in
             CriptextSpinner.hide(from: self.view)
-            self.refreshControl?.endRefreshing()
+            self.refreshControl.endRefreshing()
             self.footerActivity.stopAnimating()
             
             if let contacts = parsedContacts {
@@ -1495,7 +1526,7 @@ extension InboxViewController: GIDSignInDelegate{
         self.showSnackbar("Signed in as \(user.profile.email!)", attributedText: nil, buttons: "", permanent: true)
         
         //if email array count > 0, fetch partial updates
-        self.handleRefresh(self.refreshControl!, automatic: true, signIn: true, completion: nil)
+        self.handleRefresh(self.refreshControl, automatic: true, signIn: true, completion: nil)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.registerPushNotifications()
@@ -1606,8 +1637,8 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
 }
 
 //MARK: - TableView Datasource
-extension InboxViewController {
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+extension InboxViewController: UITableViewDataSource{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let email:Email
@@ -1647,6 +1678,8 @@ extension InboxViewController {
         
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
         
+        
+        
         let size = cell.dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         cell.dateWidthConstraint.constant = size.width
         
@@ -1661,6 +1694,19 @@ extension InboxViewController {
         if senderText.isEmpty {
             cell.senderLabel.text = "No Recipients"
         }
+        
+        if self.isCustomEditing {
+            cell.avatarImageView.image = nil
+            cell.avatarImageView.layer.borderWidth = 1.0
+            cell.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
+            cell.avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+        } else {
+            
+            let initials = cell.senderLabel.text!.replacingOccurrences(of: "\"", with: "")
+            cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
+            cell.avatarImageView.layer.borderWidth = 0.0
+        }
+        
         
         //Activity stuff
         if !email.realCriptextToken.isEmpty, let activity = self.activities[email.realCriptextToken] {
@@ -1726,7 +1772,7 @@ extension InboxViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.searchController.isActive && self.searchController.searchBar.text != "" {
             return self.filteredEmailArray.count
         }
@@ -1735,9 +1781,19 @@ extension InboxViewController {
 }
 
 //MARK: - TableView Delegate
-extension InboxViewController: InboxTableViewCellDelegate {
+extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .none
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
     func tableViewCellDidLongPress(_ cell: InboxTableViewCell) {
-        if self.tableView.isEditing {
+        
+        if self.isCustomEditing {
             return
         }
         
@@ -1745,6 +1801,11 @@ extension InboxViewController: InboxTableViewCellDelegate {
         
         guard let indexPath = self.tableView.indexPath(for: cell) else {
             return
+        }
+        
+        if self.tableView.indexPathsForSelectedRows == nil {
+//            print("count \(indexPaths.count)")
+            self.tableView.reloadData()
         }
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
@@ -1771,17 +1832,25 @@ extension InboxViewController: InboxTableViewCellDelegate {
         self.tableView(self.tableView , didSelectRowAt: indexPath)
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView.isEditing {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if self.isCustomEditing {
             guard let indexPaths = tableView.indexPathsForSelectedRows else {
                 return
             }
             
             if indexPaths.count == 1 {
-                
                 self.toggleToolbar(true)
             }
-            self.counterBarButton.title = "\(indexPaths.count)"
+            
+            let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
+            
+            cell.avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
+            cell.avatarImageView.image = #imageLiteral(resourceName: "check")
+            cell.avatarImageView.tintColor = UIColor.white
+            
+            
+            self.topToolbar.counterButton.title = "\(indexPaths.count)"
             return
         }
         
@@ -1890,22 +1959,25 @@ extension InboxViewController: InboxTableViewCellDelegate {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
-        guard tableView.isEditing else {
+        guard self.isCustomEditing else {
             return
         }
         
         guard tableView.indexPathsForSelectedRows == nil else {
-            self.counterBarButton.title = "\(tableView.indexPathsForSelectedRows!.count)"
+            self.topToolbar.counterButton.title = "\(tableView.indexPathsForSelectedRows!.count)"
+            let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
+            cell.avatarImageView.image = nil
             return
         }
         
         self.toggleToolbar(false)
         self.didPressEdit()
+        self.tableView.reloadData()
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let lastEmail = (self.searchController.isActive  && self.searchController.searchBar.text != "") ? self.filteredEmailArray.last : self.emailArray.last,
             let threadEmailArray = self.threadHash[lastEmail.threadId], let firstThreadEmail = threadEmailArray.first else {
                 return
@@ -1927,11 +1999,11 @@ extension InboxViewController: InboxTableViewCellDelegate {
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 79.0
     }
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let email:Email
         if self.searchController.isActive && self.searchController.searchBar.text != "" {
@@ -1950,7 +2022,7 @@ extension InboxViewController: InboxTableViewCellDelegate {
             APIManager.trash(emails: [email.threadId], with: self.currentService) { (error, result) in
                 if error != nil {
                     self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                    tableView.isEditing = false
+                    self.isCustomEditing = false
                     self.hideSnackbar()
                     return
                 }
@@ -1997,7 +2069,7 @@ extension InboxViewController: InboxTableViewCellDelegate {
                 
                 if error != nil {
                     self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                    self.tableView.isEditing = false
+                    self.isCustomEditing = false
                     self.hideSnackbar()
                     return
                 }
@@ -2026,7 +2098,7 @@ extension InboxViewController: InboxTableViewCellDelegate {
         return [trashAction, archiveAction];
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 }

@@ -150,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
         }
         
-        inboxVC.handleRefresh(inboxVC.refreshControl!, automatic: true, signIn: false, completion: nil)
+        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true, signIn: false, completion: nil)
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -227,7 +227,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
         }
         
-        inboxVC.handleRefresh(inboxVC.refreshControl!, automatic: true) {
+        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true) {
             completionHandler([])//completionHandler([.badge, .alert, .sound])
         }
     }
@@ -249,7 +249,7 @@ extension AppDelegate: FIRMessagingDelegate {
                 return
         }
         
-        inboxVC.handleRefresh(inboxVC.refreshControl!, automatic: true) {
+        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true) {
             completionHandler(.newData)
         }
     }
