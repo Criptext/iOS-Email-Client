@@ -16,6 +16,19 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
     var signupData: SignUpData!
+    var state = 0
+    
+    func handleState(){
+        switch(state){
+        case 0:
+            sendSignUpRequest()
+        case 1:
+            createAccount()
+        default:
+            state = 0
+            handleState()
+        }
+    }
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -23,44 +36,27 @@ class CreatingAccountViewController: UIViewController{
         progressBar.layer.cornerRadius = 5
         progressBar.layer.sublayers![1].cornerRadius = 5
         progressBar.subviews[1].clipsToBounds = true
-        sendSignUpRequest()
+        handleState()
     }
     
     func sendSignUpRequest(){
         feedbackLabel.text = "Generating keys..."
         signupData.generateKeys()
-        APIManager.singUpRequest(signupData.buildDataForRequest()) { (error) in
-            guard error == nil else {
-                self.feedbackLabel.text = "Woops 1..."
+        APIManager.singUpRequest(signupData.buildDataForRequest()) { (error, token) in
+            guard error == nil && token != nil else {
+                self.displayErrorMessage()
                 return
             }
-            self.percentageLabel.setValue(33.0, interval: 1.5)
-            UIView.animate(withDuration: 1.5, animations: { 
-                self.progressBar.setProgress(0.33, animated: true)
-            }, completion: { (completed) in
-                self.sendLoginRequest()
-            })
-        }
-    }
-    
-    func sendLoginRequest(){
-        feedbackLabel.text = "Login into awesomeness..."
-        APIManager.loginRequest(signupData.username, signupData.password) { (error, token) in
-            guard error == nil else {
-                self.feedbackLabel.text = "Woops 2..."
-                return
+            self.signupData.token = token
+            self.animateProgress(50.0, 2.0) {
+                self.state += 1
+                self.handleState()
             }
-            self.percentageLabel.setValue(66.0, interval: 1.5)
-            UIView.animate(withDuration: 1.5, animations: {
-                self.progressBar.setProgress(0.66, animated: true)
-            }, completion: { (completed) in
-                self.signupData.token = token
-                self.createAccount()
-            })
         }
     }
     
     func createAccount(){
+        feedbackLabel.text = "Login into awesomeness..."
         let myAccount = Account()
         myAccount.username = signupData.username
         myAccount.name = signupData.fullname
@@ -70,12 +66,41 @@ class CreatingAccountViewController: UIViewController{
         DBManager.store(myAccount)
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")
-        
-        self.percentageLabel.setValue(100.0, interval: 1.5)
-        UIView.animate(withDuration: 1.5, animations: {
-            self.progressBar.setProgress(1, animated: true)
-        }, completion: { (completed) in
-
+        animateProgress(100.0, 2.0) {
+            self.goToMailbox()
+        }
+    }
+    
+    func displayErrorMessage(){
+        let alert = UIAlertController(title: "Warning", message: "Unable to complete your sign-up, would you like to try again?", preferredStyle: .alert)
+        let proceedAction = UIAlertAction(title: "Retry", style: .default){ (alert : UIAlertAction!) -> Void in
+            self.handleState()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){ (alert : UIAlertAction!) -> Void in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(proceedAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func goToMailbox(){
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let mailboxVC = delegate.initMailboxRootVC(nil)
+        present(mailboxVC, animated: true) {
+            delegate.replaceRootViewController(mailboxVC)
+        }
+    }
+    
+    func animateProgress(_ value: Double, _ duration: Double, completion: @escaping () -> Void){
+        self.percentageLabel.setValue(value, interval: duration)
+        UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
+            self.progressBar.setProgress(Float(value/100), animated: true)
         })
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration){
+            completion()
+        }
     }
 }

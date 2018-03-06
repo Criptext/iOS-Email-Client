@@ -776,3 +776,65 @@ extension DBManager {
         return Array(realm.objects(SignedKeyRecord.self))
     }
 }
+
+//MARK: - Session related
+
+extension DBManager {
+    
+    class func store(_ sessionRecord: RawSessionRecord){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(sessionRecord, update: true)
+        }
+    }
+    
+    class func getSessionRecord(contactId: String, deviceId: Int32) -> RawSessionRecord?{
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let results = realm.objects(RawSessionRecord.self).filter(predicate)
+        
+        return results.first
+    }
+    
+    class func deleteSessionRecord(contactId: String, deviceId: Int32){
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let results = realm.objects(RawSessionRecord.self).filter(predicate)
+        
+        try! realm.write() {
+            realm.delete(results)
+        }
+    }
+    
+    class func deleteAllSessions(contactId: String){
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "contactId == '\(contactId)'")
+        let results = realm.objects(RawSessionRecord.self).filter(predicate)
+        
+        try! realm.write() {
+            realm.delete(results)
+        }
+    }
+    
+    class func store(_ trustedDevice: TrustedDevice){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(trustedDevice, update: true)
+        }
+    }
+    
+    class func getTrustedDevice(recipientId: String) -> TrustedDevice?{
+        let realm = try! Realm()
+        
+        guard let trustedDevice = realm.object(ofType: TrustedDevice.self, forPrimaryKey: recipientId) else {
+            return nil
+        }
+        
+        return trustedDevice
+    }
+}

@@ -67,12 +67,17 @@ class SignUpData{
     }
     
     func buildDataForRequest() -> [String : Any]{
-        return [
+        var data = [
             "recipientId": username,
             "password": password,
             "name": fullname,
             "keybundle": publicKeys ?? []
             ] as [String : Any]
+        if(optionalEmail != nil && !optionalEmail!.isEmpty){
+            data["recoveryEmail"] = optionalEmail
+        }
+        
+        return data
     }
     
     func getRawIdentityKeyPar() -> String? {

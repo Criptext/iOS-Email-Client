@@ -28,17 +28,17 @@ class APIManager {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?) -> Void)){
+    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
         print(params)
         let url = "\(self.baseUrl)/user"
         
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString{
             (response) in
-            response.result.ifFailure {
-                completion(response.result.error)
+            guard let value = response.result.value else {
+                completion(response.result.error, nil)
                 return
             }
-            completion(nil)
+            completion(nil, value)
         }
     }
     

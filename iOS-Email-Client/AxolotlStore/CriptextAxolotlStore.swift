@@ -19,8 +19,8 @@ class CriptextAxolotlStore: NSObject{
         identityKeyStore = CriptextIdentityKeyStore()
     }
     
-    init(_ base64Identity: String){
-        identityKeyStore = CriptextIdentityKeyStore(base64Identity)
+    init(_ regId: Int32, _ base64Identity: String){
+        identityKeyStore = CriptextIdentityKeyStore(regId, base64Identity)
     }
 }
 
