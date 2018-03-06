@@ -44,12 +44,6 @@ class SignUpData{
         store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)
         
         bundleKeys(signedPreKeySignature: signedPreKeySignature!.base64EncodedString(), signedPreKeyPublic: signedPreKeyPair.publicKey().base64EncodedString(), signedPreKeyId: signedKeyId, preKeyPublicKey: preKeyPair.publicKey().base64EncodedString(), preKeyId: preKeyId, identityPublicKey: store.identityKeyPair()!.publicKey().base64EncodedString(), registrationId: store.localRegistrationId(), deviceId: Int32(deviceId), identifier: identifier)
-        
-        let defaults = UserDefaults.standard
-        let myIdentity = store.identityKeyPair()
-        let identityData = NSKeyedArchiver.archivedData(withRootObject: myIdentity!)
-        let identityString = identityData.base64EncodedString()
-        defaults.set(identityString, forKey: "identity")
     }
     
     func bundleKeys(signedPreKeySignature: String, signedPreKeyPublic: String, signedPreKeyId: Int32, preKeyPublicKey: String, preKeyId: Int32, identityPublicKey: String, registrationId: Int32, deviceId: Int32, identifier: String){

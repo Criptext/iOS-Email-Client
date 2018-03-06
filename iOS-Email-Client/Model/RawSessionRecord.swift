@@ -11,6 +11,6 @@ import RealmSwift
 
 class RawSessionRecord: Object{
     @objc dynamic var contactId = ""
-    @objc dynamic var deviceId = 0
+    @objc dynamic var deviceId : Int32 = 0
     @objc dynamic var sessionRecord = ""
 }

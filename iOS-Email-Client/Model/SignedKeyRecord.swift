@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 class SignedKeyRecord: Object{
-    @objc dynamic var signedPreKeyId = 0
+    @objc dynamic var signedPreKeyId : Int32 = 0
     @objc dynamic var signedPreKeyPair = ""
     
     override static func primaryKey() -> String? {

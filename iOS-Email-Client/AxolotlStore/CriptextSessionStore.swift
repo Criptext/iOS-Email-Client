@@ -32,7 +32,7 @@ extension CriptextSessionStore: SessionStore{
         let sessionString = sessionData.base64EncodedString()
         let rawSession = RawSessionRecord()
         rawSession.contactId = contactIdentifier
-        rawSession.deviceId = Int(deviceId)
+        rawSession.deviceId = deviceId
         rawSession.sessionRecord = sessionString
         DBManager.store(rawSession)
     }
