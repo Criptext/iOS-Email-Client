@@ -124,9 +124,8 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView( _ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat{
         if(section == 1){
             return 50.0
-        }else{
-            return 0.0
         }
+        return 0.0
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
