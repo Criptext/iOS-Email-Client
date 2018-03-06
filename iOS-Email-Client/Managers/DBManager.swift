@@ -257,6 +257,23 @@ class DBManager {
     }
 }
 
+//MARK: - Account related
+extension DBManager {
+    class func store(_ account: Account){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(account, update: true)
+        }
+    }
+    
+    class func getAccountByUsername(_ username: String) -> Account? {
+        let realm = try! Realm()
+        
+        return realm.object(ofType: Account.self, forPrimaryKey: username)
+    }
+}
+
 //MARK: - Activity related
 extension DBManager {
     

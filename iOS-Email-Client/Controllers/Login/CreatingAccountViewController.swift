@@ -27,15 +27,16 @@ class CreatingAccountViewController: UIViewController{
     }
     
     func sendSignUpRequest(){
-        feedbackLabel.text = "Notifying your existence..."
-        APIManager.singUpRequest(signupData.username, signupData.fullname, signupData.password, signupData.optionalEmail) { (error) in
+        feedbackLabel.text = "Generating keys..."
+        signupData.generateKeys()
+        APIManager.singUpRequest(signupData.buildDataForRequest()) { (error) in
             guard error == nil else {
                 self.feedbackLabel.text = "Woops 1..."
                 return
             }
-            self.percentageLabel.setValue(25.0, interval: 1.5)
+            self.percentageLabel.setValue(33.0, interval: 1.5)
             UIView.animate(withDuration: 1.5, animations: { 
-                self.progressBar.setProgress(0.25, animated: true)
+                self.progressBar.setProgress(0.33, animated: true)
             }, completion: { (completed) in
                 self.sendLoginRequest()
             })
@@ -49,30 +50,32 @@ class CreatingAccountViewController: UIViewController{
                 self.feedbackLabel.text = "Woops 2..."
                 return
             }
-            self.percentageLabel.setValue(50.0, interval: 1.5)
+            self.percentageLabel.setValue(66.0, interval: 1.5)
             UIView.animate(withDuration: 1.5, animations: {
-                self.progressBar.setProgress(0.5, animated: true)
+                self.progressBar.setProgress(0.66, animated: true)
             }, completion: { (completed) in
                 self.signupData.token = token
-                self.sendKeysRequest()
+                self.createAccount()
             })
         }
     }
     
-    func sendKeysRequest(){
-        self.feedbackLabel.text = "Generating keys..."
-        signupData.generateKeys()
-        APIManager.sendKeysRequest(signupData.publicKeys!, token: signupData.token!){ error in
-            guard error == nil else {
-                self.feedbackLabel.text = "Woops 3..."
-                return
-            }
-            self.percentageLabel.setValue(75.0, interval: 1.5)
-            UIView.animate(withDuration: 1.5, animations: {
-                self.progressBar.setProgress(0.75, animated: true)
-            }, completion: { (completed) in
-                self.feedbackLabel.text = "Adding the last lego piece..."
-            })
-        }
+    func createAccount(){
+        let myAccount = Account()
+        myAccount.username = signupData.username
+        myAccount.name = signupData.fullname
+        myAccount.password = signupData.password
+        myAccount.jwt = signupData.token!
+        myAccount.rawIdentityKeyPair = signupData.getRawIdentityKeyPar() ?? ""
+        DBManager.store(myAccount)
+        let defaults = UserDefaults.standard
+        defaults.set(myAccount.username, forKey: "activeAccount")
+        
+        self.percentageLabel.setValue(100.0, interval: 1.5)
+        UIView.animate(withDuration: 1.5, animations: {
+            self.progressBar.setProgress(1, animated: true)
+        }, completion: { (completed) in
+
+        })
     }
 }
