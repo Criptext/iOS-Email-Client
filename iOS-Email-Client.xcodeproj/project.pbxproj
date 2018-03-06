@@ -112,6 +112,12 @@
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
 		7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
 		7CDAD27320449A730080A32C /* SignedKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* SignedKeyRecord.swift */; };
+		7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */; };
+		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
+		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
+		7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB4661203F0C9F007C9637 /* Feed.swift */; };
+		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
+		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
 		EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
 /* End PBXBuildFile section */
 
@@ -256,6 +262,12 @@
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextIdentityKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD27220449A730080A32C /* SignedKeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedKeyRecord.swift; sourceTree = "<group>"; };
+		7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
+		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
+		7CDB4661203F0C9F007C9637 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
+		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
 		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -335,6 +347,7 @@
 				41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */,
 				41AAC4ED201A9FAC00809C4D /* ThreadViewController.swift */,
 				41AAC4F2201A9FAC00809C4D /* TourViewController.swift */,
+				7CDB465D203E336A007C9637 /* FeedViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -464,8 +477,10 @@
 				41AAC532201A9FCD00809C4D /* User.swift */,
 				7C8D6C6F2036491100AB96EF /* LoginData.swift */,
 				7C8F1B68203C7A3500D30DCC /* SignUpData.swift */,
-				7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */,
 				7CDAD27220449A730080A32C /* SignedKeyRecord.swift */,
+				7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */,
+				7CDB465F203F0C2A007C9637 /* FeedsData.swift */,
+				7CDB4661203F0C9F007C9637 /* Feed.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -502,6 +517,9 @@
 				7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */,
 				414E7D4B203F2A860088C647 /* NavigationToolbarView.xib */,
 				414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */,
+				7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */,
+				7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */,
+				7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -677,6 +695,7 @@
 				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
+				7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */,
 				41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -831,6 +850,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */,
+				7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */,
 				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
 				41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */,
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
@@ -843,6 +863,7 @@
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
 				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
 				41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */,
+				7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */,
 				41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */,
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
 				41AAC501201A9FAD00809C4D /* DetailViewController.swift in Sources */,
@@ -858,6 +879,7 @@
 				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
+				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
 				41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */,
 				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
@@ -888,7 +910,9 @@
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
 				41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
+				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
 				7CDAD27320449A730080A32C /* SignedKeyRecord.swift in Sources */,
+				7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */,
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
 				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,
 				7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */,

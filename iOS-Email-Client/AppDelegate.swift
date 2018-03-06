@@ -76,7 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 inboxVC.threadToOpen = threadId
             }
             
-            let drawerVC = NavigationDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: nil)
+            let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
+            
+            let drawerVC = NavigationDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
             drawerVC.delegate = inboxVC
             initialVC = SnackbarController(rootViewController: drawerVC)
         }else{
