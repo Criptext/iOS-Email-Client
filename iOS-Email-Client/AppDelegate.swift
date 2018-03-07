@@ -60,8 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var initialVC:UIViewController!
         
-        
-        if GIDSignIn.sharedInstance().hasAuthInKeychain() {
+        let defaults = UserDefaults.standard
+        if defaults.string(forKey: "activeAccount") != nil {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions)
         }else{
