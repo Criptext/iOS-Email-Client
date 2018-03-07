@@ -16,17 +16,19 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
     var signupData: SignUpData!
-    var state = 0
+    var state : CreationState = .signupRequest
+    
+    enum CreationState{
+        case signupRequest
+        case accountCreate
+    }
     
     func handleState(){
         switch(state){
-        case 0:
+        case .signupRequest:
             sendSignUpRequest()
-        case 1:
+        case .accountCreate:
             createAccount()
-        default:
-            state = 0
-            handleState()
         }
     }
     
@@ -49,7 +51,7 @@ class CreatingAccountViewController: UIViewController{
             }
             self.signupData.token = token
             self.animateProgress(50.0, 2.0) {
-                self.state += 1
+                self.state = .accountCreate
                 self.handleState()
             }
         }
@@ -62,7 +64,7 @@ class CreatingAccountViewController: UIViewController{
         myAccount.name = signupData.fullname
         myAccount.password = signupData.password
         myAccount.jwt = signupData.token!
-        myAccount.rawIdentityKeyPair = signupData.getRawIdentityKeyPar() ?? ""
+        myAccount.rawIdentityKeyPair = signupData.getRawIdentityKeyPair() ?? ""
         DBManager.store(myAccount)
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")

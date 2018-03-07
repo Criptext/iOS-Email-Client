@@ -74,7 +74,7 @@ class SignUpData{
         return data
     }
     
-    func getRawIdentityKeyPar() -> String? {
+    func getRawIdentityKeyPair() -> String? {
         guard let myIdentity = store.identityKeyPair() else {
             return nil
         }
