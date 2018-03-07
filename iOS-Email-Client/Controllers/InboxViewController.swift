@@ -1635,6 +1635,20 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
             
         }
     }
+    
+    func navigationDrawerController(navigationDrawerController: NavigationDrawerController, didOpen position: NavigationDrawerPosition) {
+        guard position == .right else {
+            return
+        }
+        navigationDrawerController.isRightPanGestureEnabled = false
+    }
+    
+    func navigationDrawerController(navigationDrawerController: NavigationDrawerController, didClose position: NavigationDrawerPosition) {
+        guard position == .right else {
+            return
+        }
+        navigationDrawerController.isRightPanGestureEnabled = true
+    }
 }
 
 //MARK: - TableView Datasource

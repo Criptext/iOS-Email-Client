@@ -33,6 +33,9 @@ class FeedViewController: UIViewController{
 extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if(indexPath.section > 0 && indexPath.row == feedsData.oldFeeds.count){
+            return buildLastRow()
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "feedTableCellView", for: indexPath) as! FeedTableViewCell
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         cell.setLabels(feed.message, feed.subject, feed.getFormattedDate())
@@ -45,7 +48,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         if(section == 0){
             return feedsData.newFeeds.count
         }
-        return feedsData.oldFeeds.count
+        return feedsData.oldFeeds.count + 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -68,9 +71,19 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard !isLoaderRow(indexPath) else {
+            return nil
+        }
         let delete = deleteAction(tableView, indexPath: indexPath)
         let mute = muteAction(tableView, indexPath: indexPath)
         return UISwipeActionsConfiguration(actions: [delete, mute])
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard !isLoaderRow(indexPath) else {
+            return false
+        }
+        return true
     }
     
     func muteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
@@ -86,7 +99,21 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         return action
     }
     
+    func buildLastRow() -> UITableViewCell{
+        let footerView = feedsTableView.dequeueReusableCell(withIdentifier: "EndCell") as! TableEndViewCell
+        if(feedsData.reachedEnd){
+            footerView.displayMessage("No more activities")
+        }else{
+            footerView.startLoader()
+        }
+        return footerView
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !isLoaderRow(indexPath) else {
+            tableView.deselectRow(at: indexPath, animated: false)
+            return
+        }
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         feed.isNew = false
         tableView.reloadRows(at: [indexPath], with: .fade)
@@ -108,43 +135,25 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         return action
     }
     
-    func tableView( _ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?{
-        guard section == 1 else {
-            return nil
-        }
-        let footerView = tableView.dequeueReusableCell(withIdentifier: "EndCell") as! TableEndViewCell
-        if(feedsData.reachedEnd){
-            footerView.displayMessage("No more activities")
-        }else{
-            footerView.startLoader()
-        }
-        return footerView
-    }
-    
-    func tableView( _ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat{
-        if(section == 1){
-            return 50.0
-        }
-        return 0.0
-    }
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        guard !feedsData.loadingFeeds && !feedsData.reachedEnd,
-            let lastFeed =  feedsData.oldFeeds.last else {
+        guard !feedsData.loadingFeeds && !feedsData.reachedEnd else {
             return
         }
-        let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
 
-        if(feed == lastFeed){
+        if(isLoaderRow(indexPath)){
             feedsData.loadingFeeds = true
-            tableView.reloadData()
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)){
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10)){
                 self.feedsData.mockFeeds2()
                 self.feedsData.reachedEnd = true
                 self.feedsData.loadingFeeds = false
                 tableView.reloadData()
             }
         }
+    }
+    
+    func isLoaderRow(_ indexPath: IndexPath) -> Bool {
+        return indexPath.section == 1 && indexPath.row == feedsData.oldFeeds.count
     }
 }
