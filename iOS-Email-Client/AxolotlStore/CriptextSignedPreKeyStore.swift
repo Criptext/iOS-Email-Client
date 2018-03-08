@@ -45,7 +45,7 @@ class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
     func storeSignedPreKey(_ signedPreKeyId: Int32, signedPreKeyRecord: SignedPreKeyRecord) {
         let keyData = NSKeyedArchiver.archivedData(withRootObject: signedPreKeyRecord)
         let keyString = keyData.base64EncodedString()
-        let keyRecord = SignedKeyRecord()
+        let keyRecord = CRSignedPreKeyRecord()
         keyRecord.signedPreKeyId = signedPreKeyId
         keyRecord.signedPreKeyPair = keyString
         DBManager.store(keyRecord)

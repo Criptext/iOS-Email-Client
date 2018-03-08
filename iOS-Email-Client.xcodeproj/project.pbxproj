@@ -90,7 +90,7 @@
 		7C147B44203C9676004823DE /* SignalProtocolFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
-		7C4D4FEB203DDEF400DF6E4E /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */; };
+		7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */; };
 		7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */; };
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
@@ -105,8 +105,8 @@
 		7C8D6C74203735E000AB96EF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */; };
 		7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F1B68203C7A3500D30DCC /* SignUpData.swift */; };
-		7CA794B7204F30AB000AC986 /* RawSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* RawSessionRecord.swift */; };
-		7CA794B9204F3B2A000AC986 /* TrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* TrustedDevice.swift */; };
+		7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
+		7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
@@ -115,7 +115,7 @@
 		7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
 		7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
-		7CDAD27320449A730080A32C /* SignedKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* SignedKeyRecord.swift */; };
+		7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */; };
 		7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */; };
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
@@ -244,7 +244,7 @@
 		7C147B42203C9676004823DE /* SignalProtocolFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SignalProtocolFramework.framework; path = Carthage/Build/iOS/SignalProtocolFramework.framework; sourceTree = "<group>"; };
 		7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextAxolotlStore.swift; sourceTree = "<group>"; };
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
-		7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
+		7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRPreKeyRecord.swift; sourceTree = "<group>"; };
 		7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterLabelUIView.swift; sourceTree = "<group>"; };
 		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
@@ -259,8 +259,8 @@
 		7C8D6C73203735E000AB96EF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressArrowUIView.swift; sourceTree = "<group>"; };
 		7C8F1B68203C7A3500D30DCC /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
-		7CA794B6204F30AB000AC986 /* RawSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawSessionRecord.swift; sourceTree = "<group>"; };
-		7CA794B8204F3B2A000AC986 /* TrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedDevice.swift; sourceTree = "<group>"; };
+		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
+		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
@@ -269,7 +269,7 @@
 		7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextIdentityKeyStore.swift; sourceTree = "<group>"; };
-		7CDAD27220449A730080A32C /* SignedKeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedKeyRecord.swift; sourceTree = "<group>"; };
+		7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSignedPreKeyRecord.swift; sourceTree = "<group>"; };
 		7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
@@ -485,13 +485,13 @@
 				41AAC532201A9FCD00809C4D /* User.swift */,
 				7C8D6C6F2036491100AB96EF /* LoginData.swift */,
 				7C8F1B68203C7A3500D30DCC /* SignUpData.swift */,
-				7CDAD27220449A730080A32C /* SignedKeyRecord.swift */,
-				7C4D4FEA203DDEF400DF6E4E /* KeyRecord.swift */,
+				7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */,
+				7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */,
 				7CDB465F203F0C2A007C9637 /* FeedsData.swift */,
 				7CDB4661203F0C9F007C9637 /* Feed.swift */,
 				7C154FD2204DEBAF00D72F6E /* Account.swift */,
-				7CA794B6204F30AB000AC986 /* RawSessionRecord.swift */,
-				7CA794B8204F3B2A000AC986 /* TrustedDevice.swift */,
+				7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */,
+				7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -863,7 +863,7 @@
 			files = (
 				41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */,
 				7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */,
-				7CA794B9204F3B2A000AC986 /* TrustedDevice.swift in Sources */,
+				7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */,
 				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
 				41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */,
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
@@ -890,7 +890,7 @@
 				414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
-				7C4D4FEB203DDEF400DF6E4E /* KeyRecord.swift in Sources */,
+				7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */,
 				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
@@ -912,7 +912,7 @@
 				41AAC53E201A9FCD00809C4D /* Open.swift in Sources */,
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
 				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
-				7CA794B7204F30AB000AC986 /* RawSessionRecord.swift in Sources */,
+				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */,
 				41AAC562201B92A400809C4D /* KMSection.m in Sources */,
 				7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */,
@@ -927,7 +927,7 @@
 				41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
-				7CDAD27320449A730080A32C /* SignedKeyRecord.swift in Sources */,
+				7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */,
 				7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */,
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
 				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,

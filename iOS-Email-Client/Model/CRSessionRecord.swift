@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class RawSessionRecord: Object{
+class CRSessionRecord: Object{
     @objc dynamic var contactId = ""
     @objc dynamic var deviceId : Int32 = 0
     @objc dynamic var sessionRecord = ""

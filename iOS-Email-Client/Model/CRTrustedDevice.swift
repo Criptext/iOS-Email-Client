@@ -9,9 +9,9 @@
 import Foundation
 import RealmSwift
 
-class TrustedDevice: Object{
+class CRTrustedDevice: Object{
     @objc dynamic var recipientId = ""
-    @objc dynamic var rawIdentity = ""
+    @objc dynamic var identityB64 = ""
     
     override static func primaryKey() -> String? {
         return "recipientId"

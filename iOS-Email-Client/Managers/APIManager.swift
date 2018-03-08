@@ -29,7 +29,6 @@ class APIManager {
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
     class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
-        print(params)
         let url = "\(self.baseUrl)/user"
         
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString{
@@ -60,7 +59,6 @@ class APIManager {
     class func sendKeysRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
         let headers = ["Authorization": "Bearer \(token)"]
-        print(token)
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
             response.result.ifFailure {
                 completion(response.result.error)

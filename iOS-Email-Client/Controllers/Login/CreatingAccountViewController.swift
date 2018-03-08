@@ -43,7 +43,6 @@ class CreatingAccountViewController: UIViewController{
     
     func sendSignUpRequest(){
         feedbackLabel.text = "Generating keys..."
-        signupData.generateKeys()
         APIManager.singUpRequest(signupData.buildDataForRequest()) { (error, token) in
             guard error == nil && token != nil else {
                 self.displayErrorMessage()
@@ -64,7 +63,7 @@ class CreatingAccountViewController: UIViewController{
         myAccount.name = signupData.fullname
         myAccount.password = signupData.password
         myAccount.jwt = signupData.token!
-        myAccount.rawIdentityKeyPair = signupData.getRawIdentityKeyPair() ?? ""
+        myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""
         DBManager.store(myAccount)
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")

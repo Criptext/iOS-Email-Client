@@ -30,7 +30,7 @@ extension CriptextSessionStore: SessionStore{
     func storeSession(_ contactIdentifier: String!, deviceId: Int32, session: SessionRecord!) {
         let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
         let sessionString = sessionData.base64EncodedString()
-        let rawSession = RawSessionRecord()
+        let rawSession = CRSessionRecord()
         rawSession.contactId = contactIdentifier
         rawSession.deviceId = deviceId
         rawSession.sessionRecord = sessionString

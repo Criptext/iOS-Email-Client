@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class SignedKeyRecord: Object{
+class CRSignedPreKeyRecord: Object{
     @objc dynamic var signedPreKeyId : Int32 = 0
     @objc dynamic var signedPreKeyPair = ""
     

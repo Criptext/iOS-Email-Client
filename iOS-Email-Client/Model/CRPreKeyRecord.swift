@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class KeyRecord: Object{
+class CRPreKeyRecord: Object{
     @objc dynamic var preKeyId : Int32 = 0
     @objc dynamic var preKeyPair = ""
     

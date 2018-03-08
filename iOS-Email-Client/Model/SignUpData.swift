@@ -19,7 +19,7 @@ class SignUpData{
     }
     var deviceId: Int = 1
     var preKeyId: Int32 = 0
-    var signedKeyId: Int32 = 5
+    var signedKeyId: Int32 = 0
     var store = CriptextAxolotlStore()
     var publicKeys: [String : Any]?
     var token: String?
@@ -61,11 +61,14 @@ class SignUpData{
     }
     
     func buildDataForRequest() -> [String : Any]{
+        if(publicKeys == nil){
+            generateKeys()
+        }
         var data = [
             "recipientId": username,
             "password": password,
             "name": fullname,
-            "keybundle": publicKeys ?? []
+            "keybundle": publicKeys!
             ] as [String : Any]
         if(optionalEmail != nil && !optionalEmail!.isEmpty){
             data["recoveryEmail"] = optionalEmail
@@ -74,7 +77,7 @@ class SignUpData{
         return data
     }
     
-    func getRawIdentityKeyPair() -> String? {
+    func getIdentityKeyPairB64() -> String? {
         guard let myIdentity = store.identityKeyPair() else {
             return nil
         }

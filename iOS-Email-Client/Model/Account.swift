@@ -14,7 +14,7 @@ class Account: Object{
     @objc dynamic var name = ""
     @objc dynamic var password = ""
     @objc dynamic var jwt = ""
-    @objc dynamic var rawIdentityKeyPair = ""
+    @objc dynamic var identityB64 = ""
     @objc dynamic var regId : Int32 = 0
     
     override static func primaryKey() -> String? {

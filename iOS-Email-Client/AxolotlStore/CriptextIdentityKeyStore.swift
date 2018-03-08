@@ -37,8 +37,8 @@ extension CriptextIdentityKeyStore: IdentityKeyStore{
     
     func saveRemoteIdentity(_ identityKey: Data, recipientId: String) -> Bool {
         let rawIdentity = identityKey.base64EncodedString()
-        let trustedDevice = TrustedDevice()
-        trustedDevice.rawIdentity = rawIdentity
+        let trustedDevice = CRTrustedDevice()
+        trustedDevice.identityB64 = rawIdentity
         trustedDevice.recipientId = recipientId
         DBManager.store(trustedDevice)
         return true
@@ -50,7 +50,7 @@ extension CriptextIdentityKeyStore: IdentityKeyStore{
         }
         guard direction == .outgoing,
             let trustedDevice = DBManager.getTrustedDevice(recipientId: recipientId),
-            let trustedData = Data(base64Encoded: trustedDevice.rawIdentity) else {
+            let trustedData = Data(base64Encoded: trustedDevice.identityB64) else {
             return false
         }
         return trustedData == identityKey
