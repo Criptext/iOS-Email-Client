@@ -257,6 +257,23 @@ class DBManager {
     }
 }
 
+//MARK: - Account related
+extension DBManager {
+    class func store(_ account: Account){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(account, update: true)
+        }
+    }
+    
+    class func getAccountByUsername(_ username: String) -> Account? {
+        let realm = try! Realm()
+        
+        return realm.object(ofType: Account.self, forPrimaryKey: username)
+    }
+}
+
 //MARK: - Activity related
 extension DBManager {
     
@@ -671,7 +688,7 @@ extension DBManager {
 //MARK: - Keys related
 extension DBManager {
     
-    class func store(_ keyRecord: KeyRecord){
+    class func store(_ keyRecord: CRPreKeyRecord){
         let realm = try! Realm()
         
         try! realm.write {
@@ -679,7 +696,7 @@ extension DBManager {
         }
     }
     
-    class func store(_ keyRecords: [KeyRecord]){
+    class func store(_ keyRecords: [CRPreKeyRecord]){
         let realm = try! Realm()
         
         try! realm.write {
@@ -687,24 +704,24 @@ extension DBManager {
         }
     }
     
-    class func getKeysRecords() -> [KeyRecord] {
+    class func getKeysRecords() -> [CRPreKeyRecord] {
         let realm = try! Realm()
         
-        return Array(realm.objects(KeyRecord.self))
+        return Array(realm.objects(CRPreKeyRecord.self))
     }
     
-    class func getKeyRecordById(id: Int32) -> KeyRecord?{
+    class func getKeyRecordById(id: Int32) -> CRPreKeyRecord?{
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "preKeyId == \(id)")
-        let results = realm.objects(KeyRecord.self).filter(predicate)
+        let results = realm.objects(CRPreKeyRecord.self).filter(predicate)
         
         return results.first
     }
     
     class func deleteKeyRecord(id: Int32){
         let realm = try! Realm()
-        guard let keyRecord = realm.object(ofType: KeyRecord.self, forPrimaryKey: id) else {
+        guard let keyRecord = realm.object(ofType: CRPreKeyRecord.self, forPrimaryKey: id) else {
             return
         }
         try! realm.write() {
@@ -712,7 +729,7 @@ extension DBManager {
         }
     }
     
-    class func store(_ keyRecord: SignedKeyRecord){
+    class func store(_ keyRecord: CRSignedPreKeyRecord){
         let realm = try! Realm()
         
         try! realm.write {
@@ -720,7 +737,7 @@ extension DBManager {
         }
     }
     
-    class func store(_ keyRecords: [SignedKeyRecord]){
+    class func store(_ keyRecords: [CRSignedPreKeyRecord]){
         let realm = try! Realm()
         
         try! realm.write {
@@ -728,24 +745,24 @@ extension DBManager {
         }
     }
     
-    class func getKeysRecords() -> [SignedKeyRecord] {
+    class func getKeysRecords() -> [CRSignedPreKeyRecord] {
         let realm = try! Realm()
         
-        return Array(realm.objects(SignedKeyRecord.self))
+        return Array(realm.objects(CRSignedPreKeyRecord.self))
     }
     
-    class func getSignedKeyRecordById(id: Int32) -> SignedKeyRecord?{
+    class func getSignedKeyRecordById(id: Int32) -> CRSignedPreKeyRecord?{
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "signedPreKeyId == \(id)")
-        let results = realm.objects(SignedKeyRecord.self).filter(predicate)
+        let results = realm.objects(CRSignedPreKeyRecord.self).filter(predicate)
         
         return results.first
     }
     
     class func deleteSignedKeyRecord(id: Int32){
         let realm = try! Realm()
-        guard let keyRecord = realm.object(ofType: SignedKeyRecord.self, forPrimaryKey: id) else {
+        guard let keyRecord = realm.object(ofType: CRSignedPreKeyRecord.self, forPrimaryKey: id) else {
             return
         }
         try! realm.write() {
@@ -753,9 +770,71 @@ extension DBManager {
         }
     }
     
-    class func getAllSignedKeyRecords() -> [SignedKeyRecord]{
+    class func getAllSignedKeyRecords() -> [CRSignedPreKeyRecord]{
         let realm = try! Realm()
         
-        return Array(realm.objects(SignedKeyRecord.self))
+        return Array(realm.objects(CRSignedPreKeyRecord.self))
+    }
+}
+
+//MARK: - Session related
+
+extension DBManager {
+    
+    class func store(_ sessionRecord: CRSessionRecord){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(sessionRecord, update: true)
+        }
+    }
+    
+    class func getSessionRecord(contactId: String, deviceId: Int32) -> CRSessionRecord?{
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let results = realm.objects(CRSessionRecord.self).filter(predicate)
+        
+        return results.first
+    }
+    
+    class func deleteSessionRecord(contactId: String, deviceId: Int32){
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let results = realm.objects(CRSessionRecord.self).filter(predicate)
+        
+        try! realm.write() {
+            realm.delete(results)
+        }
+    }
+    
+    class func deleteAllSessions(contactId: String){
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "contactId == '\(contactId)'")
+        let results = realm.objects(CRSessionRecord.self).filter(predicate)
+        
+        try! realm.write() {
+            realm.delete(results)
+        }
+    }
+    
+    class func store(_ trustedDevice: CRTrustedDevice){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(trustedDevice, update: true)
+        }
+    }
+    
+    class func getTrustedDevice(recipientId: String) -> CRTrustedDevice?{
+        let realm = try! Realm()
+        
+        guard let trustedDevice = realm.object(ofType: CRTrustedDevice.self, forPrimaryKey: recipientId) else {
+            return nil
+        }
+        
+        return trustedDevice
     }
 }

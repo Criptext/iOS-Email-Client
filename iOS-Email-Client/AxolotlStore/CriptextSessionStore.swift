@@ -15,11 +15,12 @@ class CriptextSessionStore: NSObject{
 
 extension CriptextSessionStore: SessionStore{
     func loadSession(_ contactIdentifier: String!, deviceId: Int32) -> SessionRecord! {
-        guard let mySessions = sessionRecords[contactIdentifier],
-            let mySession = mySessions[deviceId] else {
+        guard let rawSessionRecord = DBManager.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId),
+            let sessionData = Data(base64Encoded: rawSessionRecord.sessionRecord),
+            let sessionRecord = NSKeyedUnarchiver.unarchiveObject(with: sessionData) as? SessionRecord else {
             return SessionRecord()
         }
-        return mySession
+        return sessionRecord
     }
     
     func subDevicesSessions(_ contactIdentifier: String!) -> [Any]! {
@@ -27,22 +28,25 @@ extension CriptextSessionStore: SessionStore{
     }
     
     func storeSession(_ contactIdentifier: String!, deviceId: Int32, session: SessionRecord!) {
-        sessionRecords[contactIdentifier] = [deviceId: session]
+        let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
+        let sessionString = sessionData.base64EncodedString()
+        let rawSession = CRSessionRecord()
+        rawSession.contactId = contactIdentifier
+        rawSession.deviceId = deviceId
+        rawSession.sessionRecord = sessionString
+        DBManager.store(rawSession)
     }
     
     func containsSession(_ contactIdentifier: String!, deviceId: Int32) -> Bool {
-        guard let mySessions = sessionRecords[contactIdentifier] else {
-                return true
-        }
-        return mySessions[deviceId] != nil
+        return DBManager.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId) != nil
     }
     
     func deleteSession(forContact contactIdentifier: String!, deviceId: Int32) {
-        sessionRecords[contactIdentifier] = nil
+        DBManager.deleteSessionRecord(contactId: contactIdentifier, deviceId: deviceId)
     }
     
     func deleteAllSessions(forContact contactIdentifier: String!) {
-        sessionRecords = [String : [Int32: SessionRecord]]()
+        DBManager.deleteAllSessions(contactId: contactIdentifier)
     }
     
 }

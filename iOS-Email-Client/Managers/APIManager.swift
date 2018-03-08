@@ -28,22 +28,16 @@ class APIManager {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    class func singUpRequest(_ username: String, _ fullname: String, _ password: String, _ email: String?, completion: @escaping ((Error?) -> Void)){
-        let recoveryEmail = email != nil && !email!.isEmpty ? email : "empty@criptext.com"
-        let parameters = ["username": username,
-                          "password": password,
-                          "name": fullname,
-                          "recoveryEmail": recoveryEmail!] as [String: Any]
-        print(parameters)
+    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
         let url = "\(self.baseUrl)/user"
         
-        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString{
             (response) in
-            response.result.ifFailure {
-                completion(response.result.error)
+            guard let value = response.result.value else {
+                completion(response.result.error, nil)
                 return
             }
-            completion(nil)
+            completion(nil, value)
         }
     }
     
@@ -65,7 +59,6 @@ class APIManager {
     class func sendKeysRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
         let headers = ["Authorization": "Bearer \(token)"]
-        print(token)
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
             response.result.ifFailure {
                 completion(response.result.error)

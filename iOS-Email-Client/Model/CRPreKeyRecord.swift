@@ -9,8 +9,8 @@
 import Foundation
 import RealmSwift
 
-class KeyRecord: Object{
-    @objc dynamic var preKeyId = 0
+class CRPreKeyRecord: Object{
+    @objc dynamic var preKeyId : Int32 = 0
     @objc dynamic var preKeyPair = ""
     
     override static func primaryKey() -> String? {

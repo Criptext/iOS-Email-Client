@@ -11,17 +11,18 @@ import SignalProtocolFramework
 
 class CriptextIdentityKeyStore: NSObject{
     let idKeyPair : ECKeyPair
-    let localRegId = Int32(arc4random() % 16380)
-    let trustedKeys = [String: Data]()
+    let localRegId : Int32
     
     override init(){
+        self.localRegId = Int32(arc4random() % 16380)
         self.idKeyPair = Curve25519.generateKeyPair()
     }
     
-    init(_ base64Identity: String){
+    init(_ regId: Int32, _ base64Identity: String){
         let identityData = Data(base64Encoded: base64Identity)
         let identityKeys = NSKeyedUnarchiver.unarchiveObject(with: identityData!) as! ECKeyPair
         self.idKeyPair = identityKeys
+        self.localRegId = regId
     }
 }
 
@@ -35,7 +36,12 @@ extension CriptextIdentityKeyStore: IdentityKeyStore{
     }
     
     func saveRemoteIdentity(_ identityKey: Data, recipientId: String) -> Bool {
-        return trustedKeys[recipientId] == identityKey
+        let rawIdentity = identityKey.base64EncodedString()
+        let trustedDevice = CRTrustedDevice()
+        trustedDevice.identityB64 = rawIdentity
+        trustedDevice.recipientId = recipientId
+        DBManager.store(trustedDevice)
+        return true
     }
     
     func isTrustedIdentityKey(_ identityKey: Data, recipientId: String, direction: TSMessageDirection) -> Bool {
@@ -43,7 +49,8 @@ extension CriptextIdentityKeyStore: IdentityKeyStore{
             return true
         }
         guard direction == .outgoing,
-            let trustedData = trustedKeys[recipientId] else {
+            let trustedDevice = DBManager.getTrustedDevice(recipientId: recipientId),
+            let trustedData = Data(base64Encoded: trustedDevice.identityB64) else {
             return false
         }
         return trustedData == identityKey

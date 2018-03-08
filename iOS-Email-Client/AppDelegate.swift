@@ -60,27 +60,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var initialVC:UIViewController!
         
-        
-        if GIDSignIn.sharedInstance().hasAuthInKeychain() {
+        let defaults = UserDefaults.standard
+        if defaults.string(forKey: "activeAccount") != nil {
             //Go to inbox
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
-            let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "ListLabelViewController") as! ListLabelViewController
-            let inboxVC = rootVC.childViewControllers.first as! InboxViewController
-            sidemenuVC.detailViewController = inboxVC
-            GIDSignIn.sharedInstance().delegate = inboxVC
-            
-            if let launchOptions = launchOptions,
-                let notification = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary,
-                let threadId = notification.object(forKey: "threadId") as? String  {
-                inboxVC.threadToOpen = threadId
-            }
-            
-            let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
-            
-            let drawerVC = NavigationDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
-            drawerVC.delegate = inboxVC
-            initialVC = SnackbarController(rootViewController: drawerVC)
+            initialVC = initMailboxRootVC(launchOptions)
         }else{
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -118,6 +101,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = nil
         self.window?.rootViewController = viewController
         self.window?.makeKeyAndVisible()
+    }
+    
+    func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> UIViewController{
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
+        let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "ListLabelViewController") as! ListLabelViewController
+        let inboxVC = rootVC.childViewControllers.first as! InboxViewController
+        sidemenuVC.detailViewController = inboxVC
+        GIDSignIn.sharedInstance().delegate = inboxVC
+        
+        if let launchOptions = launchOptions,
+            let notification = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary,
+            let threadId = notification.object(forKey: "threadId") as? String  {
+            inboxVC.threadToOpen = threadId
+        }
+        
+        let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
+        
+        let drawerVC = NavigationDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
+        drawerVC.delegate = inboxVC
+        return SnackbarController(rootViewController: drawerVC)
     }
     
     func application(application: UIApplication,

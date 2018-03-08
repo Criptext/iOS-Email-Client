@@ -1091,6 +1091,7 @@ extension InboxViewController{
     }
     
     func loadMails(from label:Label, since date:Date){
+        return
         let tupleObject = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
         
         guard (tupleObject.1.count > 0 || tupleObject.0.count > 0) else {
