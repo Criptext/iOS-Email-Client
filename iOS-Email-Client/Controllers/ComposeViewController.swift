@@ -18,6 +18,7 @@ import ContactsUI
 import RichEditorView
 import SwiftSoup
 import MIBadgeButton_Swift
+import IQKeyboardManagerSwift
 
 class ComposeViewController: UIViewController {
     @IBOutlet weak var toField: CLTokenInputView!
@@ -28,8 +29,7 @@ class ComposeViewController: UIViewController {
     
     @IBOutlet weak var toolbarView: UIView!
     @IBOutlet weak var toolbarBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var toolbarButtonsTopConstraint: NSLayoutConstraint! //initial value 7
-    @IBOutlet weak var dummySwitch: UISwitch!
+    @IBOutlet weak var toolbarHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var bccHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var ccHeightConstraint: NSLayoutConstraint!
@@ -39,15 +39,12 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var metadataHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var attachmentButton: UIButton!
-    @IBOutlet weak var timerButton: UIButton!
-    @IBOutlet weak var timeButton: UIButton!
-    
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var blackBackground: UIView!
     @IBOutlet weak var timerContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var attachmentTableHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var timerPicker: UIPickerView!
     
@@ -61,6 +58,8 @@ class ComposeViewController: UIViewController {
     
     @IBOutlet weak var attachmentButtonContainerView: UIView!
     
+    @IBOutlet weak var buttonCollapse: UIButton!
+    
     var currentUser:User!
     var currentService: GTLRService!
     var replyingEmail: Email?
@@ -72,6 +71,7 @@ class ComposeViewController: UIViewController {
     let collapsedMetadataHeight:CGFloat = 90
     
     var toolbarBottomConstraintInitialValue: CGFloat?
+    var toolbarHeightConstraintInitialValue: CGFloat?
     
     let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
     
@@ -92,8 +92,6 @@ class ComposeViewController: UIViewController {
     let days = Array(0...24)
     let hours = Array(0...23)
     let minutes = Array(0...59)
-    
-    let encryptionSwitch = TPCustomSwitch(frame: .zero)
     
     var thumbUpdated = false
     
@@ -116,15 +114,20 @@ class ComposeViewController: UIViewController {
         super.viewDidLoad()
         
         self.sendBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
-        self.sendSecureBarButton = UIBarButtonItem(image: Icon.send_secure.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
-        self.sendSecureBarButton.tintColor = Icon.system.color
+        self.sendSecureBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
+        self.sendSecureBarButton.tintColor = .white
         
+        let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
+        textField.font = Font.regular.size(14)
+        
+        self.editorView.placeholder = "Message"
         self.editorView.delegate = self
         self.subjectField.delegate = self
         
-        self.toField.fieldName = "To:"
+        self.toField.fieldName = "To"
         self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
+        
         let toFieldButton = UIButton(type: .custom)
         toFieldButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
         toFieldButton.setTitle("+", for: .normal)
@@ -133,9 +136,10 @@ class ComposeViewController: UIViewController {
         self.toField.accessoryView = toFieldButton
         self.toField.accessoryView?.isHidden = true
         
-        self.bccField.fieldName = "Bcc:"
+        self.bccField.fieldName = "Bcc"
         self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
+        
         let bccFieldButton = UIButton(type: .custom)
         bccFieldButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
         bccFieldButton.setTitle("+", for: .normal)
@@ -144,9 +148,10 @@ class ComposeViewController: UIViewController {
         self.bccField.accessoryView = bccFieldButton
         self.bccField.accessoryView?.isHidden = true
         
-        self.ccField.fieldName = "Cc:"
+        self.ccField.fieldName = "Cc"
         self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
+        
         let ccFieldButton = UIButton(type: .custom)
         ccFieldButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
         ccFieldButton.setTitle("+", for: .normal)
@@ -157,27 +162,15 @@ class ComposeViewController: UIViewController {
         
         self.contactTableView.isHidden = true
         
-        self.timerButton.tintColor = Icon.enabled.color
-        
-        self.toolbarView.addSubview(self.encryptionSwitch)
-        self.encryptionSwitch.center = CGPoint(x: self.dummySwitch.center.x, y: self.dummySwitch.center.y)
-        self.encryptionSwitch.addTarget(self, action: #selector(self.didChangeSwitchValue(_:)), for: UIControlEvents.valueChanged)
-        self.encryptionSwitch.activeColor = UIColor(red:0.00, green:0.43, blue:0.97, alpha:1.0)
-        self.encryptionSwitch.onTintColor = UIColor(red:0.00, green:0.43, blue:0.97, alpha:1.0)
-        
-        self.toolbarView.bringSubview(toFront: self.encryptionSwitch)
-        
         self.editorView.isScrollEnabled = false
-        self.editorView.html = "<br><br>" + self.currentUser.emailSignature
+        //self.editorView.html = "<br><br>" + self.currentUser.emailSignature
         print(self.editorView.lineHeight)
-        self.editorHeightConstraint.constant = 370
+        self.editorHeightConstraint.constant = 150
         
         self.openedCheckbox.setCheckState(.checked, animated: true)
         
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
-        
-        self.timeButton.setTitle("Encrypt this email", for: .normal)
-        self.timeButton.setTitleColor(Icon.enabled.color, for: .normal)
+        self.toolbarHeightConstraintInitialValue = toolbarHeightConstraint.constant
         
         //3
         self.enableKeyboardHideOnTap()
@@ -198,31 +191,19 @@ class ComposeViewController: UIViewController {
         
         let activityButton = MIBadgeButton(type: .custom)
         activityButton.badgeString = ""
-        activityButton.frame = CGRect(x:0, y:0, width:19, height:24)
+        activityButton.frame = CGRect(x:14, y:8, width:18, height:32)
+        activityButton.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 5, 2)
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
         activityButton.addTarget(self, action: #selector(didPressAttachment(_:)), for: UIControlEvents.touchUpInside)
         activityButton.tintColor = Icon.enabled.color
-//        activityButton.badgeBackgroundColor = UIColor.red
-//        activityButton.badgeTextColor = UIColor.white
         
         activityButton.tintColor = self.attachmentArray.isEmpty ? Icon.enabled.color : Icon.system.color
         self.attachmentBarButton = activityButton
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
-//        activityButton.badgeBackgroundColor
-        if self.currentUser.defaultOn {
-            self.encryptionSwitch.thumbImage = Icon.lock.image
-            self.encryptionSwitch.setOn(self.currentUser.defaultOn, animated: true)
-            self.title = "New Secure Email"
-            self.navigationItem.rightBarButtonItem = self.sendSecureBarButton
-            activityButton.setImage(Icon.attachment.secure.image, for: .normal)
-            activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
-        } else {
-            self.encryptionSwitch.thumbImage = Icon.lock_open.image
-            self.title = "New Email"
-            self.navigationItem.rightBarButtonItem = self.sendBarButton
-            activityButton.setImage(Icon.attachment.regular.image, for: .normal)
-            activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 10)
-        }
+        self.title = "New Secure Email"
+        self.navigationItem.rightBarButtonItem = self.sendSecureBarButton
+        activityButton.setImage(Icon.attachment.vertical.image, for: .normal)
+        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
         
         var badgeString = ""
         
@@ -232,8 +213,11 @@ class ComposeViewController: UIViewController {
         
         self.attachmentBarButton.badgeString = badgeString
         
+        self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
+        
         //Download gmail attachments if necessary
         self.download(self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail], mail: self.emailDraft)
+        
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -241,8 +225,6 @@ class ComposeViewController: UIViewController {
         
         if !self.thumbUpdated {
             self.thumbUpdated = true
-            self.encryptionSwitch.thumbImage = Icon.lock.image
-            self.encryptionSwitch.setOn(self.currentUser.defaultOn, animated: true)
         }
         
         if self.toField.allTokens.isEmpty {
@@ -251,26 +233,21 @@ class ComposeViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        IQKeyboardManager.sharedManager().enable = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        IQKeyboardManager.sharedManager().enable = true
+    }
+    
     //MARK: - functions
     
     func add(_ attachment:Attachment){
         self.attachmentBarButton.tintColor = Icon.system.color
         self.attachmentArray.insert(attachment, at: 0)
         
-        var height = 303
-        
-        if self.attachmentArray.count < 3 {
-            height = 108 + (self.attachmentArray.count * 65)
-        }
-        
-        if self.attachmentArray.isEmpty {
-            height = 110
-        }
-        
-        self.attachmentContainerHeightConstraint.constant = CGFloat(height)
-        UIView.animate(withDuration: 0.5) { 
-            self.view.layoutIfNeeded()
-        }
+        self.toggleAttachmentTable()
         
         self.tableView.performUpdate({
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
@@ -310,21 +287,7 @@ class ComposeViewController: UIViewController {
         
         self.attachmentBarButton.badgeString = badgeString
         
-        var height = 303
-        
-        if self.attachmentArray.count < 3 {
-            height = 108 + (self.attachmentArray.count * 65)
-        }
-        
-        if self.attachmentArray.isEmpty {
-            self.attachmentBarButton.tintColor = Icon.enabled.color
-            height = 110
-        }
-        
-        self.attachmentContainerHeightConstraint.constant = CGFloat(height)
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
+        self.toggleAttachmentTable()
     
         do{
             try FileManager.default.removeItem(at: attachment.fileURL!)
@@ -440,21 +403,27 @@ class ComposeViewController: UIViewController {
         
         self.navigationController?.navigationBar.layer.zPosition = flag ? -1 : 0
         
+        self.attachmentContainerHeightConstraint.constant = CGFloat(flag ? 110 : 0)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+            self.blackBackground.alpha = flag ? 0.5 : 0
+        }
+    }
+    
+    func toggleAttachmentTable(){
+        
         var height = 303
         if self.attachmentArray.count < 3 {
             height = 108 + (self.attachmentArray.count * 65)
         }
         
         if self.attachmentArray.isEmpty {
-            height = 110
+            height = 0
         }
         
-        self.attachmentContainerHeightConstraint.constant = CGFloat(flag ? height : 0)
-        
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-            self.blackBackground.alpha = flag ? 0.5 : 0
-        }
+        self.attachmentTableHeightConstraint.constant = CGFloat(height)
+        self.showAttachmentDrawer(false)
     }
     
     func resignKeyboard() {
@@ -475,6 +444,7 @@ class ComposeViewController: UIViewController {
             return
         }
         
+        self.buttonCollapse.setImage(flag ? Icon.new_arrow.down.image : Icon.new_arrow.up.image, for: .normal)
         self.bccHeightConstraint.constant = flag ? 0 : self.expandedBbcSpacing
         self.ccHeightConstraint.constant = flag ? 0 : self.expandedCcSpacing
         
@@ -712,11 +682,6 @@ class ComposeViewController: UIViewController {
         
         self.toggleInteraction(false)
         
-        //remove reply
-        if self.encryptionSwitch.isOn(), let range = body.range(of: "<pre class=\"criptext-remove-this\"></pre>") {
-            body = String(body[body.startIndex..<range.lowerBound])
-        }
-        
         let daySeconds = self.selectedExpirationDays * 86400
         let hourSeconds = self.selectedExpirationHours * 3600
         let minuteSeconds = self.selectedExpirationMinutes * 60
@@ -736,22 +701,16 @@ class ComposeViewController: UIViewController {
             }
         }
         
-        if self.encryptionSwitch.isOn() {
-            let fullString = NSMutableAttributedString(string: "")
-            
-            let image1Attachment = NSTextAttachment()
-            image1Attachment.image = #imageLiteral(resourceName: "lock")
-            
-            let image1String = NSAttributedString(attachment: image1Attachment)
-            
-            fullString.append(image1String)
-            fullString.append(NSAttributedString(string: " Sending secure email..."))
-            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-        }else{
-            self.showSnackbar("Sending mail...", attributedText: nil, buttons: "", permanent: true)
-        }
+        let fullString = NSMutableAttributedString(string: "")
         
+        let image1Attachment = NSTextAttachment()
+        image1Attachment.image = #imageLiteral(resourceName: "lock")
         
+        let image1String = NSAttributedString(attachment: image1Attachment)
+        
+        fullString.append(image1String)
+        fullString.append(NSAttributedString(string: " Sending secure email..."))
+        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
         
         guard let emailDraft = self.emailDraft else {
             APIManager.sendMail(to: recipients,
@@ -759,11 +718,11 @@ class ComposeViewController: UIViewController {
                                 bcc: bcc,
                                 subject: subject,
                                 body: body,
-                                replyBody: self.encryptionSwitch.isOn() ? self.replyBody : nil,
+                                replyBody: self.replyBody,
                                 messageId: self.replyingEmail?.messageId,
                                 threadId: self.replyingEmail?.threadId,
                                 draftId: nil,
-                                encrypted: self.encryptionSwitch.isOn(),
+                                encrypted: true,
                                 from: self.currentUser,
                                 with: self.attachmentArray,
                                 expiration: (totalSeconds, expirationType)) { (error, result) in
@@ -801,11 +760,11 @@ class ComposeViewController: UIViewController {
                                 bcc: bcc,
                                 subject: subject,
                                 body: body,
-                                replyBody: self.encryptionSwitch.isOn() ? self.replyBody : nil,
+                                replyBody: self.replyBody,
                                 messageId: self.replyingEmail?.messageId,
                                 threadId: self.replyingEmail?.threadId,
                                 draftId: draftId,
-                                encrypted: self.encryptionSwitch.isOn(),
+                                encrypted: true,
                                 from: self.currentUser,
                                 with: self.attachmentArray,
                                 expiration: (totalSeconds, expirationType)) { (error, result) in
@@ -863,16 +822,6 @@ class ComposeViewController: UIViewController {
         self.selectedExpirationHours = hours
         self.selectedExpirationMinutes = minutes
         
-        self.timerButton.tintColor = Icon.activated.color
-    }
-    
-    @IBAction func didPressShowTimer(_ sender: UIButton) {
-        guard self.currentUser.isPro() else {
-            self.showProAlert(nil, message: "Upgrade to Pro to set timer")
-            return
-        }
-        
-        self.showTimer(true)
     }
     
     @IBAction func didPressCancelTimer(_ sender: UIButton) {
@@ -886,7 +835,6 @@ class ComposeViewController: UIViewController {
         self.timerPicker.selectRow(0, inComponent: 1, animated: true)
         self.timerPicker.selectRow(0, inComponent: 2, animated: true)
         
-        self.timerButton.tintColor = Icon.enabled.color
     }
     
     @IBAction func didPressSubject(_ sender: UIButton) {
@@ -906,58 +854,6 @@ class ComposeViewController: UIViewController {
     @IBAction func didPressAttachment(_ sender: UIButton) {
         //derpo
         self.showAttachmentDrawer(true)
-    }
-    
-    @IBAction func didChangeSwitchValue(_ sender: UISwitch) {
-        if let senderSwitch = sender as? TPCustomSwitch, senderSwitch.isOn() {
-            self.encryptionSwitch.setThumb(Icon.activated.color)
-            self.encryptionSwitch.thumbImage = Icon.lock.image
-            //change icon for attachment w/ padlock
-            self.attachmentButton.setImage(Icon.attachment.secure.image, for: .normal)
-            self.attachmentBarButton.setImage(Icon.attachment.secure.image, for: .normal)
-            self.attachmentBarButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
-            self.timerButton.isHidden = false
-            
-            self.attachmentBarButton.tintColor = self.attachmentArray.filter({$0.isEncrypted == true}).isEmpty ? Icon.enabled.color : Icon.system.color
-            
-            self.title = "New Secure Email"
-            self.navigationItem.rightBarButtonItem = self.sendSecureBarButton
-        }else{
-            self.encryptionSwitch.setThumb(Icon.disabled.color)
-            self.encryptionSwitch.thumbImage = Icon.lock_open.image
-            //change icon for attachment w/o padlock
-            self.attachmentBarButton.setImage(Icon.attachment.regular.image, for: .normal)
-            self.attachmentBarButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 10)
-            self.timerButton.isHidden = true
-            
-            self.attachmentBarButton.tintColor = self.attachmentArray.filter({$0.isEncrypted == false}).isEmpty ? Icon.enabled.color : Icon.system.color
-            
-            self.title = "New Email"
-            self.navigationItem.rightBarButtonItem = self.sendBarButton
-        }
-        
-        self.tableView.reloadData()
-        
-        let containsEncrypted = self.attachmentArray.contains(where: { return $0.isEncrypted })
-        
-        if self.encryptionSwitch.isOn() && !containsEncrypted && !self.attachmentArray.isEmpty {
-            self.showAlert("Warning", message: "1 or more attachments are not encrypted. Eliminate them and attach them securely using the button", style: .alert)
-        }
-        
-        if !self.encryptionSwitch.isOn() &&
-            containsEncrypted &&
-            UserDefaults.standard.bool(forKey: "showEncryptionAlert") {
-            print("------------------------------------")
-            let alert = UIAlertController(title: "You just turned off Criptext Encryption for this email.", message: "\nRemember:\n\n-Your email won't be encrypted.\n-Your secure attachments won't be sent.\n-Email content can be read by filters, firewalls and servers.", preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-            
-            alert.addAction(UIAlertAction(title: "Don't show again", style: .destructive) { action in
-                UserDefaults.standard.set(false, forKey: "showEncryptionAlert")
-            })
-            
-            self.present(alert, animated: true, completion:nil)
-        }
     }
     
     @IBAction func didPressAttachmentLibrary(_ sender: UIButton) {
@@ -1018,7 +914,7 @@ extension ComposeViewController: CICropPickerDelegate {
             return
         }
         
-        if self.encryptionSwitch.isOn() && !self.currentUser.isPro() && data.count > 5000000 {
+        if data.count > 5000000 {
             //deny basic user attaching file over 5 Mbs
             var actions = [UIAlertAction]()
             
@@ -1034,7 +930,7 @@ extension ComposeViewController: CICropPickerDelegate {
             return
         }
         
-        if self.encryptionSwitch.isOn() && self.currentUser.isPro() && data.count > 100000000 {
+        if data.count > 100000000 {
             //deny pro user attaching file over 100 Mbs
             self.showAlert(nil, message: "File size of 100 Mb limit exceeded.", style: .alert)
             return
@@ -1044,17 +940,13 @@ extension ComposeViewController: CICropPickerDelegate {
         
         imagePicker.dismiss(animated: true){
             var attachment:Attachment!
-            if self.encryptionSwitch.isOn() {
-                attachment = AttachmentCriptext()
-            } else {
-                attachment = AttachmentGmail()
-            }
+            attachment = AttachmentCriptext()
             
             attachment.fileName = "Criptext_Image_\(formatter.string(from: currentDate)).png"
             attachment.mimeType = mimeTypeForPath(path: attachment.fileName)
             attachment.filePath = tmpPath
             attachment.size = data.count
-            attachment.isEncrypted = self.encryptionSwitch.isOn()
+            attachment.isEncrypted = true
             
             self.isEdited = true
             
@@ -1064,38 +956,38 @@ extension ComposeViewController: CICropPickerDelegate {
                 return
             }
             
-            APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
-                
-                if let error = error as NSError?,
-                    let errorObject = error.userInfo["error"] as? [String:String] {
-                    
-                    var actions = [UIAlertAction]()
-                    
-                    if !self.currentUser.isPro() && error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
-                        let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
-                            UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
-                        })
-                        actions.append(proAction)
-                    }
-                    
-                    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                    actions.append(okAction)
-                    
-                    self.showAlert(errorObject["title"], message: errorObject["description"], style: .alert, actions: actions)
-                    //delete attachment
-                    self.remove(attachment)
-                    return
-                }
-                
-                guard let fileToken = fileToken else {
-                    attachment.isUploaded = false
-                    print(error!)
-                    //show error in UI
-                    return
-                }
-                
+//            APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
+//
+//                if let error = error as NSError?,
+//                    let errorObject = error.userInfo["error"] as? [String:String] {
+//
+//                    var actions = [UIAlertAction]()
+//
+//                    if error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
+//                        let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
+//                            UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
+//                        })
+//                        actions.append(proAction)
+//                    }
+//
+//                    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+//                    actions.append(okAction)
+//
+//                    self.showAlert(errorObject["title"], message: errorObject["description"], style: .alert, actions: actions)
+//                    //delete attachment
+//                    self.remove(attachment)
+//                    return
+//                }
+//
+//                guard let fileToken = fileToken else {
+//                    attachment.isUploaded = false
+//                    print(error!)
+//                    //show error in UI
+//                    return
+//                }
+            
                 attachment.isUploaded = true
-                attachment.fileToken = fileToken
+                attachment.fileToken = "123"
                 //store attachment in DB
                 
                 //clean up local file not needed anymore
@@ -1113,7 +1005,7 @@ extension ComposeViewController: CICropPickerDelegate {
                 
                 cell.progressView.progress = 1
                 cell.progressView.isHidden = true
-            }
+            //}
         }
     }
 }
@@ -1161,7 +1053,7 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
             return
         }
         
-        if self.encryptionSwitch.isOn() && !self.currentUser.isPro() && data.count > 5000000 {
+        if data.count > 5000000 {
             //deny basic user attaching file over 5 Mbs
             var actions = [UIAlertAction]()
             
@@ -1177,7 +1069,7 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
             return
         }
         
-        if self.encryptionSwitch.isOn() && self.currentUser.isPro() && data.count > 100000000 {
+        if data.count > 100000000 {
             //deny pro user attaching file over 100 Mbs
             self.showAlert(nil, message: "File size of 100 Mb limit exceeded.", style: .alert)
             return
@@ -1186,17 +1078,13 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         //upload file to server
         
         var attachment:Attachment!
-        if self.encryptionSwitch.isOn() {
-            attachment = AttachmentCriptext()
-        } else {
-            attachment = AttachmentGmail()
-        }
+        attachment = AttachmentCriptext()
         
         attachment.fileName = trueName
         attachment.mimeType = mimeTypeForPath(path: trueName)
         attachment.filePath = finalPath
         attachment.size = Int(fileAttributes.fileSize())
-        attachment.isEncrypted = self.encryptionSwitch.isOn()
+        attachment.isEncrypted = true
         
         self.isEdited = true
         
@@ -1212,7 +1100,7 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
             let errorObject = error.userInfo["error"] as? [String:String] {
                 var actions = [UIAlertAction]()
                 
-                if !self.currentUser.isPro() && error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
+                if error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
                     let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
                         UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
                     })
@@ -1279,8 +1167,6 @@ extension ComposeViewController{
     //4.1
     @objc func keyboardWillShow(notification: NSNotification) {
         
-        self.toolbarButtonsTopConstraint.constant = self.offsetValueTopconstraint
-        
         let info = notification.userInfo!
         
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
@@ -1299,8 +1185,6 @@ extension ComposeViewController{
     
     //4.2
     @objc func keyboardWillHide(notification: NSNotification) {
-        
-        self.toolbarButtonsTopConstraint.constant = self.initialValueTopConstraint
         
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
         
@@ -1337,11 +1221,12 @@ extension ComposeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == self.contactTableView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath) as! ContactTableViewCell
             let contact = self.contactArray[indexPath.row]
             
-            cell.textLabel?.text = contact.displayName
-            cell.detailTextLabel?.text = contact.email
+            cell.nameLabel?.text = contact.displayName
+            cell.emailLabel?.text = contact.email
+            cell.avatarImageView.setImageWith(contact.displayName, color: colorByName(name: contact.displayName), circular: true, fontName: "NunitoSans-Regular")
             
             return cell
         }
@@ -1353,38 +1238,13 @@ extension ComposeViewController: UITableViewDataSource {
         
         cell.nameLabel.text = attachment.fileName
         cell.sizeLabel.text = "\(attachment.filesize)"
-        
-        //set initial state
-        cell.passwordImageView.tintColor = Icon.disabled.color
-        cell.passwordLabel.textColor = Icon.disabled.color
-        cell.readOnlyImageView.tintColor = Icon.disabled.color
-        cell.readOnlyLabel.textColor = Icon.disabled.color
-        
-        if !attachment.currentPassword.isEmpty {
-            cell.passwordImageView.tintColor = Icon.activated.color
-            cell.passwordLabel.textColor = Icon.activated.color
-        }
-        
-        if attachment.isReadOnly {
-            cell.readOnlyImageView.tintColor = Icon.activated.color
-            cell.readOnlyLabel.textColor = Icon.activated.color
-        }
-        
-        cell.readOnlyContainerView.isHidden = !attachment.isEncrypted
-        cell.passwordContainerView.isHidden = !attachment.isEncrypted
-        
         cell.lockImageView.image = Icon.lock.image
         
         if attachment.isEncrypted {
             cell.lockImageView.tintColor = Icon.activated.color
         } else {
-            if self.encryptionSwitch.isOn() {
-                cell.lockImageView.tintColor = Icon.enabled.color
-                cell.lockImageView.image = Icon.lock_open.image
-            } else {
-                cell.lockImageView.tintColor = UIColor.red
-            }
-            
+            cell.lockImageView.tintColor = Icon.enabled.color
+            cell.lockImageView.image = Icon.lock_open.image
         }
         
         cell.progressView.isHidden = (attachment.isEncrypted && attachment.isUploaded) || cell.progressView.progress == 1 || !attachment.isEncrypted
@@ -1432,7 +1292,7 @@ extension ComposeViewController: UITableViewDataSource {
 extension ComposeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == self.contactTableView {
-            return 44.0
+            return 60.0
         }
         return self.rowHeight
     }
@@ -1660,13 +1520,25 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         self.contactTableView.isHidden = (view.text?.isEmpty)!
+        self.toolbarHeightConstraint.constant = (view.text?.isEmpty)! ? self.toolbarHeightConstraintInitialValue! : 0
+        self.toolbarView.isHidden = (view.text?.isEmpty)! ? false : true
         
         if !(text?.isEmpty)! {
             self.contactArray = DBManager.getContacts(text ?? "")
+            //JUST FOR TESTING
+            self.contactArray.append(Contact(value: ["displayName": "Daniel Tigse", "email": "daniel@criptext.com"]))
+            self.contactArray.append(Contact(value: ["displayName": "Daniel Palma", "email": "daniel@palma.com"]))
+            self.contactArray.append(Contact(value: ["displayName": "Andres Palma", "email": "andres@criptext.com"]))
+            self.contactArray.append(Contact(value: ["displayName": "Catalina Solis", "email": "catalina@cc.com"]))
+            
             self.contactTableView.isHidden = self.contactArray.isEmpty
+            self.toolbarHeightConstraint.constant = self.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0
+            self.toolbarView.isHidden = self.contactArray.isEmpty ? false : true
             
             self.contactTableView.reloadData()
         }
+        
+        self.view.layoutIfNeeded()
     }
     
     func tokenInputViewDidBeginEditing(_ view: CLTokenInputView) {
@@ -1683,11 +1555,12 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             self.contactTableViewTopConstraint.constant = self.ccField.bounds.height + self.bccField.bounds.height
         }
         
-        self.collapseCC(false)
     }
 
     func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
+        
         self.contactTableView.isHidden = true
+        
         guard let text = view.text, text.characters.count > 0 else {
             return
         }
@@ -1783,7 +1656,7 @@ extension ComposeViewController: RichEditorDelegate {
             
         }
         
-        guard height > 350 else {
+        guard height > 150 else {
             return
         }
         
@@ -1798,7 +1671,7 @@ extension ComposeViewController: RichEditorDelegate {
     
     func richEditorDidLoad(_ editor: RichEditorView) {
         
-        self.editorView.replace(font: "Lato-Regular", css: "editor-style")
+        self.editorView.replace(font: "NunitoSans-Regular", css: "editor-style")
         
     }
     

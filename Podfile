@@ -12,7 +12,7 @@ target 'iOS-Email-Client' do
   pod 'RealmSwift'
   pod 'Fabric'
   pod 'Crashlytics'
-  pod 'CLTokenInputView'
+  pod 'CLTokenInputView', :git => 'https://github.com/danieltigse/CLTokenInputView.git', :branch => 'master'
   pod 'Material', '~> 2.10.3'
   pod 'CICropPicker'
   pod 'SDWebImage', '~>3.8'
@@ -26,6 +26,7 @@ target 'iOS-Email-Client' do
   pod "MMMaterialDesignSpinner"
   pod 'RichEditorView', :git => 'https://github.com/cjwirth/RichEditorView', :branch => 'swift-4'
   pod 'IQKeyboardManagerSwift'
+  pod 'UIImageView-Letters'
 end
 
 post_install do |installer|

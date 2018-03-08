@@ -24,13 +24,9 @@ class AttachmentTableViewCell: UITableViewCell {
     @IBOutlet weak var typeImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var sizeLabel: UILabel!
-    @IBOutlet weak var readOnlyContainerView: UIView!
-    @IBOutlet weak var readOnlyImageView: UIImageView!
-    @IBOutlet weak var readOnlyLabel: UILabel!
-    @IBOutlet weak var passwordContainerView: UIView!
-    @IBOutlet weak var passwordImageView: UIImageView!
-    @IBOutlet weak var passwordLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var viewClose: UIView!
+    @IBOutlet weak var buttonClose: UIButton!
     
     var tapGestureRecognizer:UITapGestureRecognizer!
     var holdGestureRecognizer:UILongPressGestureRecognizer!
@@ -39,13 +35,9 @@ class AttachmentTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.passwordContainerView.isUserInteractionEnabled = true
-        self.passwordLabel.isUserInteractionEnabled = true
-        self.passwordImageView.isUserInteractionEnabled = true
-        
-        self.readOnlyContainerView.isUserInteractionEnabled = true
-        self.readOnlyLabel.isUserInteractionEnabled = true
-        self.readOnlyImageView.isUserInteractionEnabled = true
+        self.contentContainerView.layer.borderColor = UIColor(hex:"f6f6f6").cgColor
+        self.contentContainerView.layer.borderWidth = 1.5
+        self.contentContainerView.layer.cornerRadius = 6.0
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
@@ -54,6 +46,16 @@ class AttachmentTableViewCell: UITableViewCell {
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         self.addGestureRecognizer(hold)
         self.holdGestureRecognizer = hold
+        
+        self.viewClose.layer.borderColor = UIColor(hex:"e2e2e2").cgColor
+        self.buttonClose.addTarget(self, action: #selector(didPressCloseButton(_:)), for: .touchUpInside)
+    }
+    
+    @objc func didPressCloseButton(_ view: UIButton){
+        guard let delegate = self.delegate else {
+            return
+        }
+        delegate.tableViewCellDidLongPress(self)
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
@@ -66,14 +68,9 @@ class AttachmentTableViewCell: UITableViewCell {
         guard let tappedView = self.hitTest(touchPt, with: nil) else {
             return
         }
+    
+        delegate.tableViewCellDidTap(self)
         
-        if tappedView == self.readOnlyContainerView{
-            delegate.tableViewCellDidTapReadOnly(self)
-        } else if tappedView == self.passwordContainerView{
-            delegate.tableViewCellDidTapPassword(self)
-        } else {
-            delegate.tableViewCellDidTap(self)
-        }
     }
     
     @objc func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
@@ -88,7 +85,7 @@ class AttachmentTableViewCell: UITableViewCell {
         if highlighted {
             self.contentContainerView.backgroundColor = UIColor.lightGray
         }else{
-            self.contentContainerView.backgroundColor = UIColor.white
+            self.contentContainerView.backgroundColor = UIColor(hex:"FAFAFA")
         }
     }
     
