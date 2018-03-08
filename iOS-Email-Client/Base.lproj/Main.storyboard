@@ -454,7 +454,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k3H-Kz-Bt8">
-                                                            <rect key="frame" x="15" y="10.28125000089949" width="40" height="39.999999999999773"/>
+                                                            <rect key="frame" x="15" y="10" width="40" height="40"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -4070,10 +4070,9 @@
         <image name="close-rounded" width="14" height="14"/>
         <image name="color-bell" width="45" height="50"/>
         <image name="composer" width="32" height="30"/>
-        <image name="expiration-email-icon" width="32" height="31"/>
-        <image name="formatting" width="15" height="18"/>
         <image name="dots-options" width="24" height="6"/>
         <image name="expiration-email-icon" width="32" height="31"/>
+        <image name="formatting" width="15" height="18"/>
         <image name="icon-forward" width="55" height="60"/>
         <image name="icon-reply" width="55" height="48"/>
         <image name="icon-reply-all" width="55" height="38"/>
