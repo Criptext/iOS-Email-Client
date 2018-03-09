@@ -113,6 +113,10 @@
 		7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F1B68203C7A3500D30DCC /* SignUpData.swift */; };
 		7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
 		7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
+		7CB198A22051DE4800AA4FF8 /* AttachmentHistoryUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A12051DE4700AA4FF8 /* AttachmentHistoryUIPopover.xib */; };
+		7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */; };
+		7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */; };
+		7CB198A82051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A72051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
@@ -276,6 +280,10 @@
 		7C8F1B68203C7A3500D30DCC /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
+		7CB198A12051DE4700AA4FF8 /* AttachmentHistoryUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentHistoryUIPopover.xib; sourceTree = "<group>"; };
+		7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentHistoryTableCell.xib; sourceTree = "<group>"; };
+		7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentHistoryTableCell.swift; sourceTree = "<group>"; };
+		7CB198A72051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentHistoryUIPopover.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
@@ -558,6 +566,10 @@
 				7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */,
 				7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */,
 				7C34E606204A0F6900E71906 /* EmailDetailTableCell.xib */,
+				7CB198A12051DE4700AA4FF8 /* AttachmentHistoryUIPopover.xib */,
+				7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */,
+				7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */,
+				7CB198A72051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -702,6 +714,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C34E607204A0F6A00E71906 /* EmailDetailTableCell.xib in Resources */,
+				7CB198A22051DE4800AA4FF8 /* AttachmentHistoryUIPopover.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
@@ -712,6 +725,7 @@
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
 				41AAC52B201A9FC300809C4D /* GoogleButton.xib in Resources */,
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
+				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
 				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
 				41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */,
 				7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */,
@@ -945,6 +959,7 @@
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
 				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
+				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
 				41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */,
 				7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */,
 				41AAC562201B92A400809C4D /* KMSection.m in Sources */,
@@ -975,6 +990,7 @@
 				7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */,
 				41AAC53B201A9FCD00809C4D /* User.swift in Sources */,
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,
+				7CB198A82051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift in Sources */,
 				7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

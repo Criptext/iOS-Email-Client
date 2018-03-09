@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AttachmentHistoryUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="attachmentsTableView" destination="9O0-uh-D6s" id="KjS-kY-TBu"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attachment History" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CtV-d5-AcX">
+                    <rect key="frame" x="43" y="34" width="289" height="43"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="43" id="gKR-jB-mhE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9O0-uh-D6s">
+                    <rect key="frame" x="0.0" y="91" width="375" height="576"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="cgI-G3-Zxr"/>
+                        <outlet property="delegate" destination="-1" id="vRO-yC-gks"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="9O0-uh-D6s" secondAttribute="trailing" id="07q-UJ-JCH"/>
+                <constraint firstItem="9O0-uh-D6s" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Bus-wY-pSg"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="CtV-d5-AcX" secondAttribute="trailing" constant="43" id="CiL-c4-hCh"/>
+                <constraint firstItem="CtV-d5-AcX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="43" id="EFl-Gk-lYR"/>
+                <constraint firstItem="9O0-uh-D6s" firstAttribute="top" secondItem="CtV-d5-AcX" secondAttribute="bottom" constant="14" id="Ks1-tb-fvx"/>
+                <constraint firstItem="CtV-d5-AcX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="14" id="NrB-nx-p5t"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="9O0-uh-D6s" secondAttribute="bottom" id="ViL-ma-jbE"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+</document>
