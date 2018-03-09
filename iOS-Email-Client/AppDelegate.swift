@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
         
-        let drawerVC = NavigationDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
+        let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
         return SnackbarController(rootViewController: drawerVC)
     }

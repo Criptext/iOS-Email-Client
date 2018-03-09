@@ -80,10 +80,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        guard !isLoaderRow(indexPath) else {
-            return false
-        }
-        return true
+        return !isLoaderRow(indexPath)
     }
     
     func muteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
@@ -104,7 +101,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         if(feedsData.reachedEnd){
             footerView.displayMessage("No more activities")
         }else{
-            footerView.startLoader()
+            footerView.displayLoader()
         }
         return footerView
     }

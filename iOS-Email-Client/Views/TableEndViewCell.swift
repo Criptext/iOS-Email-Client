@@ -18,7 +18,7 @@ class TableEndViewCell: UITableViewCell{
         loader.activityIndicatorViewStyle = .gray
     }
     
-    func startLoader(){
+    func displayLoader(){
         messageLabel.isHidden = true
         loader.isHidden = false
         loader.startAnimating()
