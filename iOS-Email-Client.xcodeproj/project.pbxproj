@@ -100,6 +100,7 @@
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
 		7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */; };
+		7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */; };
 		7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C632034A4D800AB96EF /* StatusTextField.swift */; };
 		7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */; };
 		7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */; };
@@ -267,6 +268,7 @@
 		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
 		7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDrawerController.swift; sourceTree = "<group>"; };
+		7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReadHistoryUIPopover.xib; sourceTree = "<group>"; };
 		7C8D6C632034A4D800AB96EF /* StatusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTextField.swift; sourceTree = "<group>"; };
 		7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBackButton.swift; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 				7CDB465D203E336A007C9637 /* FeedViewController.swift */,
 				7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */,
 				7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */,
+				7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -749,6 +752,7 @@
 				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
+				7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */,
 				7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */,
 				41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */,
 			);

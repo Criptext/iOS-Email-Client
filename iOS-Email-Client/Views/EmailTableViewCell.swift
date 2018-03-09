@@ -12,6 +12,7 @@ import WebKit
 protocol EmailTableViewCellDelegate {
     func tableViewCellDidLoadContent(_ cell:EmailTableViewCell)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
+    func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -78,7 +79,7 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         if tappedView == self.attachmentView || tappedView == self.attachmentIconView{
-            // TODO: call delegate to handle attachment icon click
+            delegate.tableViewCellDidTapIcon(self, self.attachmentView, .attachment)
         } else if tappedView == self.unsendView || tappedView == self.unsendIconView{
             // TODO: call delegate to handle unsend icon click
         } else if tappedView == self.readView || tappedView == self.readIconView{
@@ -92,6 +93,17 @@ class EmailTableViewCell: UITableViewCell{
         } else {
             delegate.tableViewCellDidTap(self)
         }
+    }
+}
+
+extension EmailTableViewCell{
+    enum IconType {
+        case attachment
+        case unsend
+        case read
+        case options
+        case reply
+        case contacts
     }
 }
 

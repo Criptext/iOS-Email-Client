@@ -70,4 +70,23 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         email.isExpanded = !email.isExpanded
         tableView.reloadData()
     }
+    
+    func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType) {
+        switch(iconType){
+        case .attachment:
+            handleAttachmentTap(cell, sender)
+        default:
+            return
+        }
+    }
+    
+    func handleAttachmentTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        let custom = AttachmentHistoryUIPopover()
+        custom.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 233)
+        custom.popoverPresentationController?.sourceView = sender
+        custom.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width, height: sender.frame.size.height)
+        custom.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        custom.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(custom, animated: true, completion: nil)
+    }
 }
