@@ -1643,6 +1643,14 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
             
         }
     }
+    
+    func navigationDrawerController(navigationDrawerController: NavigationDrawerController, didClose position: NavigationDrawerPosition) {
+        guard position == .right,
+            let feedVC = navigationDrawerController.rightViewController as? FeedViewController else {
+            return
+        }
+        feedVC.feedsTableView.isEditing = false
+    }
 }
 
 //MARK: - TableView Datasource
