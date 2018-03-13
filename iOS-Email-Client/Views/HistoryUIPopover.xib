@@ -10,9 +10,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AttachmentHistoryUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HistoryUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="attachmentsTableView" destination="9O0-uh-D6s" id="KjS-kY-TBu"/>
+                <outlet property="historyTitleImage" destination="zAz-oB-6T9" id="bg2-bH-8ju"/>
+                <outlet property="historyTitleLabel" destination="CtV-d5-AcX" id="0WA-Vm-COS"/>
                 <outlet property="view" destination="iN0-l3-epB" id="N9h-kC-iPr"/>
             </connections>
         </placeholder>
@@ -22,27 +24,27 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attachment History" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CtV-d5-AcX">
-                    <rect key="frame" x="43" y="34" width="289" height="43"/>
+                    <rect key="frame" x="43" y="46" width="289" height="23"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="43" id="gKR-jB-mhE"/>
+                        <constraint firstAttribute="height" constant="23" id="gKR-jB-mhE"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9O0-uh-D6s">
-                    <rect key="frame" x="0.0" y="91" width="375" height="576"/>
+                    <rect key="frame" x="0.0" y="79" width="375" height="588"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="cgI-G3-Zxr"/>
                         <outlet property="delegate" destination="-1" id="vRO-yC-gks"/>
                     </connections>
                 </tableView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment" translatesAutoresizingMaskIntoConstraints="NO" id="zAz-oB-6T9">
-                    <rect key="frame" x="22.5" y="48" width="8" height="15"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment" translatesAutoresizingMaskIntoConstraints="NO" id="zAz-oB-6T9">
+                    <rect key="frame" x="21" y="50" width="16" height="15"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="AP8-tH-caD"/>
-                        <constraint firstAttribute="width" constant="8" id="ZS2-hU-mcG"/>
+                        <constraint firstAttribute="width" constant="16" id="ZS2-hU-mcG"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
@@ -54,13 +56,13 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="9O0-uh-D6s" secondAttribute="trailing" id="07q-UJ-JCH"/>
-                <constraint firstItem="CtV-d5-AcX" firstAttribute="leading" secondItem="zAz-oB-6T9" secondAttribute="trailing" constant="12.699999999999999" id="1ca-ql-dsM"/>
+                <constraint firstItem="CtV-d5-AcX" firstAttribute="leading" secondItem="zAz-oB-6T9" secondAttribute="trailing" constant="6" id="1ca-ql-dsM"/>
                 <constraint firstItem="9O0-uh-D6s" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Bus-wY-pSg"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="CtV-d5-AcX" secondAttribute="trailing" constant="43" id="CiL-c4-hCh"/>
                 <constraint firstItem="CtV-d5-AcX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="43" id="EFl-Gk-lYR"/>
-                <constraint firstItem="9O0-uh-D6s" firstAttribute="top" secondItem="CtV-d5-AcX" secondAttribute="bottom" constant="14" id="Ks1-tb-fvx"/>
+                <constraint firstItem="9O0-uh-D6s" firstAttribute="top" secondItem="CtV-d5-AcX" secondAttribute="bottom" constant="10" id="Ks1-tb-fvx"/>
                 <constraint firstItem="zAz-oB-6T9" firstAttribute="centerY" secondItem="CtV-d5-AcX" secondAttribute="centerY" id="NMz-81-oDh"/>
-                <constraint firstItem="CtV-d5-AcX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="14" id="NrB-nx-p5t"/>
+                <constraint firstItem="CtV-d5-AcX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="26" id="NrB-nx-p5t"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="9O0-uh-D6s" secondAttribute="bottom" id="ViL-ma-jbE"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

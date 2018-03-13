@@ -75,18 +75,62 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         switch(iconType){
         case .attachment:
             handleAttachmentTap(cell, sender)
+        case .read:
+            handleReadTap(cell, sender)
+        case .contacts:
+            handleContactsTap(cell, sender)
+        case .unsend:
+            handleUnsendTap(cell, sender)
         default:
             return
         }
     }
     
     func handleAttachmentTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        let custom = AttachmentHistoryUIPopover()
-        custom.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 233)
-        custom.popoverPresentationController?.sourceView = sender
-        custom.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width, height: sender.frame.size.height)
-        custom.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        custom.popoverPresentationController?.backgroundColor = UIColor.white
-        self.present(custom, animated: true, completion: nil)
+        let historyPopover = HistoryUIPopover()
+        historyPopover.historyCellName = "AttachmentHistoryTableCell"
+        historyPopover.historyTitleText = "Attachments History"
+        historyPopover.historyImage = #imageLiteral(resourceName: "attachment")
+        historyPopover.cellHeight = 81.0
+        historyPopover.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 233)
+        historyPopover.popoverPresentationController?.sourceView = sender
+        historyPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width, height: sender.frame.size.height)
+        historyPopover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        historyPopover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(historyPopover, animated: true, completion: nil)
+    }
+    
+    func handleReadTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        let historyPopover = HistoryUIPopover()
+        historyPopover.historyCellName = "ReadHistoryTableCell"
+        historyPopover.historyTitleText = "Read History"
+        historyPopover.historyImage = #imageLiteral(resourceName: "read")
+        historyPopover.cellHeight = 39.0
+        historyPopover.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 233)
+        historyPopover.popoverPresentationController?.sourceView = sender
+        historyPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width, height: sender.frame.size.height)
+        historyPopover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        historyPopover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(historyPopover, animated: true, completion: nil)
+    }
+    
+    func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        let contactsPopover = ContactsDetailUIPopover()
+        contactsPopover.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 233)
+        contactsPopover.popoverPresentationController?.sourceView = sender
+        contactsPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width/4, height: sender.frame.size.height)
+        contactsPopover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        contactsPopover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(contactsPopover, animated: true, completion: nil)
+    }
+    
+    func handleUnsendTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        let contactsPopover = UnsentUIPopover()
+        contactsPopover.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 68)
+        contactsPopover.popoverPresentationController?.sourceView = sender
+        contactsPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width/1.0001, height: sender.frame.size.height)
+        contactsPopover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        contactsPopover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(contactsPopover, animated: true, completion: nil)
     }
 }

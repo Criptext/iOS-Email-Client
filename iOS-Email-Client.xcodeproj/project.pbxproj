@@ -101,6 +101,12 @@
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
 		7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */; };
 		7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */; };
+		7C63AB56205330A00053219F /* ReadHistoryTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB55205330A00053219F /* ReadHistoryTableCell.xib */; };
+		7C63AB58205332990053219F /* ReadHistoryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB57205332990053219F /* ReadHistoryTableCell.swift */; };
+		7C63AB5A2056C7850053219F /* ContactsDetailUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB592056C7850053219F /* ContactsDetailUIPopover.xib */; };
+		7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5B2056D1170053219F /* ContactsDetailUIPopover.swift */; };
+		7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */; };
+		7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5F205816470053219F /* UnsentUIPopover.swift */; };
 		7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C632034A4D800AB96EF /* StatusTextField.swift */; };
 		7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */; };
 		7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */; };
@@ -114,10 +120,10 @@
 		7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F1B68203C7A3500D30DCC /* SignUpData.swift */; };
 		7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
 		7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
-		7CB198A22051DE4800AA4FF8 /* AttachmentHistoryUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A12051DE4700AA4FF8 /* AttachmentHistoryUIPopover.xib */; };
+		7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A12051DE4700AA4FF8 /* HistoryUIPopover.xib */; };
 		7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */; };
 		7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */; };
-		7CB198A82051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A72051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift */; };
+		7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
@@ -269,6 +275,12 @@
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
 		7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDrawerController.swift; sourceTree = "<group>"; };
 		7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReadHistoryUIPopover.xib; sourceTree = "<group>"; };
+		7C63AB55205330A00053219F /* ReadHistoryTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReadHistoryTableCell.xib; sourceTree = "<group>"; };
+		7C63AB57205332990053219F /* ReadHistoryTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadHistoryTableCell.swift; sourceTree = "<group>"; };
+		7C63AB592056C7850053219F /* ContactsDetailUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactsDetailUIPopover.xib; sourceTree = "<group>"; };
+		7C63AB5B2056D1170053219F /* ContactsDetailUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailUIPopover.swift; sourceTree = "<group>"; };
+		7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsentUIPopover.xib; sourceTree = "<group>"; };
+		7C63AB5F205816470053219F /* UnsentUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsentUIPopover.swift; sourceTree = "<group>"; };
 		7C8D6C632034A4D800AB96EF /* StatusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTextField.swift; sourceTree = "<group>"; };
 		7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBackButton.swift; sourceTree = "<group>"; };
@@ -282,10 +294,10 @@
 		7C8F1B68203C7A3500D30DCC /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
-		7CB198A12051DE4700AA4FF8 /* AttachmentHistoryUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentHistoryUIPopover.xib; sourceTree = "<group>"; };
+		7CB198A12051DE4700AA4FF8 /* HistoryUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryUIPopover.xib; sourceTree = "<group>"; };
 		7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentHistoryTableCell.xib; sourceTree = "<group>"; };
 		7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentHistoryTableCell.swift; sourceTree = "<group>"; };
-		7CB198A72051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentHistoryUIPopover.swift; sourceTree = "<group>"; };
+		7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryUIPopover.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
@@ -386,7 +398,6 @@
 				7CDB465D203E336A007C9637 /* FeedViewController.swift */,
 				7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */,
 				7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */,
-				7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -532,6 +543,7 @@
 		41B6AAD020179E4E00D428B7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */,
 				41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */,
 				41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */,
 				41AAC50F201A9FC200809C4D /* AttachmentUIPopover.swift */,
@@ -569,10 +581,16 @@
 				7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */,
 				7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */,
 				7C34E606204A0F6900E71906 /* EmailDetailTableCell.xib */,
-				7CB198A12051DE4700AA4FF8 /* AttachmentHistoryUIPopover.xib */,
+				7CB198A12051DE4700AA4FF8 /* HistoryUIPopover.xib */,
 				7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */,
 				7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */,
-				7CB198A72051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift */,
+				7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */,
+				7C63AB55205330A00053219F /* ReadHistoryTableCell.xib */,
+				7C63AB57205332990053219F /* ReadHistoryTableCell.swift */,
+				7C63AB592056C7850053219F /* ContactsDetailUIPopover.xib */,
+				7C63AB5B2056D1170053219F /* ContactsDetailUIPopover.swift */,
+				7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */,
+				7C63AB5F205816470053219F /* UnsentUIPopover.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -717,7 +735,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C34E607204A0F6A00E71906 /* EmailDetailTableCell.xib in Resources */,
-				7CB198A22051DE4800AA4FF8 /* AttachmentHistoryUIPopover.xib in Resources */,
+				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
@@ -734,6 +752,7 @@
 				7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
+				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
 				41AAC528201A9FC300809C4D /* DetailThreadTableViewCell.xib in Resources */,
@@ -747,6 +766,8 @@
 				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
+				7C63AB5A2056C7850053219F /* ContactsDetailUIPopover.xib in Resources */,
+				7C63AB56205330A00053219F /* ReadHistoryTableCell.xib in Resources */,
 				41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */,
 				41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */,
 				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
@@ -912,6 +933,7 @@
 				41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */,
 				7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */,
 				7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */,
+				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
 				41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */,
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
@@ -932,6 +954,7 @@
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
 				7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */,
+				7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */,
 				7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */,
 				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
 				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
@@ -990,11 +1013,12 @@
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
 				41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */,
+				7C63AB58205332990053219F /* ReadHistoryTableCell.swift in Sources */,
 				7C34E5FD204716BD00E71906 /* EmailDetail.swift in Sources */,
 				7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */,
 				41AAC53B201A9FCD00809C4D /* User.swift in Sources */,
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,
-				7CB198A82051ED4700AA4FF8 /* AttachmentHistoryUIPopover.swift in Sources */,
+				7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */,
 				7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

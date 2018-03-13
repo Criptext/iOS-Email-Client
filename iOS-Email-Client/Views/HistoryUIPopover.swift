@@ -10,10 +10,16 @@ import Foundation
 
 class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegate{
     @IBOutlet weak var attachmentsTableView: UITableView!
+    @IBOutlet weak var historyTitleLabel: UILabel!
+    @IBOutlet weak var historyTitleImage: UIImageView!
+    var historyCellName: String!
+    var historyTitleText: String!
+    var historyImage: UIImage!
+    var cellHeight: CGFloat = 0
     var overlay: UIView?
     
     init(){
-        super.init(nibName: "AttachmentHistoryUIPopover", bundle: nil)
+        super.init(nibName: "HistoryUIPopover", bundle: nil)
         self.modalPresentationStyle = UIModalPresentationStyle.popover;
         self.popoverPresentationController?.delegate = self;
     }
@@ -40,7 +46,9 @@ class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegat
     }
     
     override func viewDidLoad() {
-        attachmentsTableView.register(UINib(nibName: "AttachmentHistoryTableCell", bundle: nil), forCellReuseIdentifier: "attachHistoryCell")
+        attachmentsTableView.register(UINib(nibName: historyCellName, bundle: nil), forCellReuseIdentifier: "historyCell")
+        historyTitleLabel.text = historyTitleText
+        historyTitleImage.image = historyImage
     }
     
     dynamic func presentationController(_ presentationController: UIPresentationController, willPresentWithAdaptiveStyle style: UIModalPresentationStyle, transitionCoordinator: UIViewControllerTransitionCoordinator?) {
@@ -72,11 +80,11 @@ extension HistoryUIPopover: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attachHistoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 81.0
+        return cellHeight
     }
 }

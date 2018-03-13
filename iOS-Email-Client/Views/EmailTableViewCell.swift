@@ -81,15 +81,15 @@ class EmailTableViewCell: UITableViewCell{
         if tappedView == self.attachmentView || tappedView == self.attachmentIconView{
             delegate.tableViewCellDidTapIcon(self, self.attachmentView, .attachment)
         } else if tappedView == self.unsendView || tappedView == self.unsendIconView{
-            // TODO: call delegate to handle unsend icon click
+            delegate.tableViewCellDidTapIcon(self, self.unsendView, .unsend)
         } else if tappedView == self.readView || tappedView == self.readIconView{
-            // TODO: call delegate to handle read icon click
+            delegate.tableViewCellDidTapIcon(self, self.readView, .read)
         } else if tappedView == self.optionsView || tappedView == self.optionsIconView{
             // TODO: call delegate to handle options icon click
         } else if tappedView == self.replyView || tappedView == self.replyIconView{
             // TODO: call delegate to handle reply icon click
         } else if tappedView == self.moreRecipientsLabel{
-            // TODO: call delegate to handle contacts label click
+            delegate.tableViewCellDidTapIcon(self, self.moreRecipientsLabel, .contacts)
         } else {
             delegate.tableViewCellDidTap(self)
         }

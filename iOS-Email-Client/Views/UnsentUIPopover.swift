@@ -1,19 +1,19 @@
 //
-//  AttachmentHistoryUIPopover.swift
+//  UnsentUIPop.swift
 //  iOS-Email-Client
 //
-//  Created by Pedro Aim on 3/8/18.
+//  Created by Pedro Aim on 3/13/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
 import Foundation
 
-class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegate{
-    @IBOutlet weak var attachmentsTableView: UITableView!
+class UnsentUIPopover: UIViewController{
+    @IBOutlet weak var dateLabel: UILabel!
     var overlay: UIView?
     
     init(){
-        super.init(nibName: "AttachmentHistoryUIPopover", bundle: nil)
+        super.init(nibName: "UnsentUIPopover", bundle: nil)
         self.modalPresentationStyle = UIModalPresentationStyle.popover;
         self.popoverPresentationController?.delegate = self;
     }
@@ -34,15 +34,9 @@ class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegat
             })
         }
     }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle{
-        return .none
-    }
-    
-    override func viewDidLoad() {
-        attachmentsTableView.register(UINib(nibName: "AttachmentHistoryTableCell", bundle: nil), forCellReuseIdentifier: "attachHistoryCell")
-    }
-    
+}
+
+extension UnsentUIPopover: UIPopoverPresentationControllerDelegate{
     dynamic func presentationController(_ presentationController: UIPresentationController, willPresentWithAdaptiveStyle style: UIModalPresentationStyle, transitionCoordinator: UIViewControllerTransitionCoordinator?) {
         
         let parentView = presentationController.presentingViewController.view
@@ -64,19 +58,8 @@ class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegat
         
         self.overlay = overlay
     }
-}
-
-extension HistoryUIPopover: UITableViewDelegate, UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attachHistoryCell", for: indexPath)
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 81.0
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle{
+        return .none
     }
 }
