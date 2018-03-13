@@ -85,9 +85,9 @@ class EmailTableViewCell: UITableViewCell{
         } else if tappedView == self.readView || tappedView == self.readIconView{
             delegate.tableViewCellDidTapIcon(self, self.readView, .read)
         } else if tappedView == self.optionsView || tappedView == self.optionsIconView{
-            // TODO: call delegate to handle options icon click
+            delegate.tableViewCellDidTapIcon(self, self.optionsView, .options)
         } else if tappedView == self.replyView || tappedView == self.replyIconView{
-            // TODO: call delegate to handle reply icon click
+            delegate.tableViewCellDidTapIcon(self, self.replyView, .reply)
         } else if tappedView == self.moreRecipientsLabel{
             delegate.tableViewCellDidTapIcon(self, self.moreRecipientsLabel, .contacts)
         } else {

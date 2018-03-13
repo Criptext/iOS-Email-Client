@@ -8,22 +8,51 @@
 
 import Foundation
 
-class EmailDetailViewController: UITableViewController{
+class EmailDetailViewController: UIViewController {
     var emailData = EmailDetailData()
+    @IBOutlet weak var backgroundOverlayView: UIView!
+    @IBOutlet weak var emailsTableView: UITableView!
+    @IBOutlet weak var optionsContainerView: UIView!
+    @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
+    var tapGestureRecognizer:UITapGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         emailData.mockEmails()
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 98
-        
+        setupMoreOptionsViews()
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
         for index in 0..<emailData.emails.count{
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
-            tableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
+            emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func setupMoreOptionsViews(){
+        emailsTableView.rowHeight = UITableViewAutomaticDimension
+        emailsTableView.estimatedRowHeight = 98
+        optionsContainerView.isHidden = false
+        backgroundOverlayView.isHidden = true
+        backgroundOverlayView.alpha = 0.0
+        optionsContainerOffsetConstraint.constant = -300.0
+    }
+    
+    @objc func closeMoreOptions(){
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseOut, animations: {
+            self.optionsContainerOffsetConstraint.constant = -300.0
+            self.backgroundOverlayView.alpha = 0.0
+            self.view.layoutIfNeeded()
+        }, completion: {
+            finished in
+                self.optionsContainerView.isHidden = true
+                self.backgroundOverlayView.isHidden = true
+            self.backgroundOverlayView.removeGestureRecognizer(self.tapGestureRecognizer)
+        })
+    }
+}
+
+extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "emailDetail\(indexPath.row)") as! EmailTableViewCell
         let email = emailData.emails[indexPath.row]
         cell.setContent(email.preview, email.content, isExpanded: email.isExpanded)
@@ -31,16 +60,16 @@ class EmailDetailViewController: UITableViewController{
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return emailData.emails.count
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableHeaderView")
         return headerView
     }
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableFooterView")
         return headerView
     }
@@ -52,6 +81,7 @@ class EmailDetailViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 56.0
     }
+    
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate{
@@ -63,7 +93,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
     }
     
     func tableViewCellDidTap(_ cell: EmailTableViewCell) {
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
+        guard let indexPath = self.emailsTableView.indexPath(for: cell) else {
             return
         }
         let email = emailData.emails[indexPath.row]
@@ -81,6 +111,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
             handleContactsTap(cell, sender)
         case .unsend:
             handleUnsendTap(cell, sender)
+        case .options:
+            handleOptionsTap(cell, sender)
         default:
             return
         }
@@ -132,5 +164,19 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         contactsPopover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
         contactsPopover.popoverPresentationController?.backgroundColor = UIColor.white
         self.present(contactsPopover, animated: true, completion: nil)
+    }
+    
+    func handleOptionsTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        self.optionsContainerView.isHidden = false
+        self.backgroundOverlayView.isHidden = false
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
+            self.optionsContainerOffsetConstraint.constant = 0.0
+            self.backgroundOverlayView.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }, completion: {
+            finished in
+            print("HOLI HOLI")
+            self.backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
+        })
     }
 }
