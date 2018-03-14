@@ -34,6 +34,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var replyView: UIView!
     @IBOutlet weak var replyIconView: UIImageView!
     @IBOutlet weak var webViewWrapperView: UIView!
+    @IBOutlet weak var borderBGView: UIView!
     var content = ""
     var loadedContent = false
     var myHeight : CGFloat = 0.0
@@ -46,6 +47,7 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setupView(){
+        backgroundColor = .clear
         webView.navigationDelegate = self
         heightConstraint.constant = myHeight
         unsendView.layer.borderWidth = 1
@@ -54,6 +56,8 @@ class EmailTableViewCell: UITableViewCell{
         readView.layer.borderColor = UIColor(red: 0, green: 145/255, blue: 1, alpha: 0.63).cgColor
         attachmentView.layer.borderWidth = 1
         attachmentView.layer.borderColor = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1).cgColor
+        borderBGView.layer.borderWidth = 1
+        borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
     }
     
     func setContent(_ preview: String, _ content : String, isExpanded: Bool){
