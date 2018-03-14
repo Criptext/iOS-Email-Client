@@ -14,7 +14,7 @@ class FeedTableViewCell: UITableViewCell{
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var mutedIconImage: UIImageView!
-    
+
     func setLabels(_ header: String, _ subject: String, _ myDate: String){
         headerLabel.text = header
         subjectLabel.text = subject

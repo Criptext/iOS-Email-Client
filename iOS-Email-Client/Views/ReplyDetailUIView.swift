@@ -9,20 +9,15 @@
 import Foundation
 
 class ReplyDetailUIView: UIButton{
-    @IBInspectable var type: Int = 0
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
+    @IBInspectable var typeAdapter: Int{
+        get {
+            return self.type.rawValue
+        }
+        set(typeValue) {
+            self.type = DirectionBorder(rawValue: typeValue) ?? .none
+        }
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
-    
-    func setup(){
-    }
+    var type : DirectionBorder = .none
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
@@ -44,9 +39,15 @@ class ReplyDetailUIView: UIButton{
     
     func getCornersByType() -> UIRectCorner{
         switch(type){
-        case 1: return [UIRectCorner.topLeft, UIRectCorner.bottomLeft]
-        case 2: return [UIRectCorner.topRight, UIRectCorner.bottomRight]
+        case .left: return [UIRectCorner.topLeft, UIRectCorner.bottomLeft]
+        case .right: return [UIRectCorner.topRight, UIRectCorner.bottomRight]
         default: return []
         }
+    }
+    
+    enum DirectionBorder: Int {
+        case none = 0
+        case left = 1
+        case right = 2
     }
 }

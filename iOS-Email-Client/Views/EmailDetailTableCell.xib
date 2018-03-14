@@ -11,15 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="200" id="mtm-Bj-dEs" customClass="EmailTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="228" id="mtm-Bj-dEs" customClass="EmailTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="228"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mtm-Bj-dEs" id="5te-0K-DXB">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="199.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="227.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KaE-PD-svL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="199.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="227.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYk-NZ-Ec1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
@@ -113,7 +113,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j7W-SK-UmD">
                                 <rect key="frame" x="0.0" y="98" width="375" height="98"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gianni Carlo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HTR-0G-icb">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pepe Le Pew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HTR-0G-icb">
                                         <rect key="frame" x="28" y="12" width="258" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="s2r-i3-dGR"/>
@@ -318,17 +318,27 @@
                                     <constraint firstItem="l4w-QX-eOS" firstAttribute="leading" secondItem="TjS-60-oSo" secondAttribute="trailing" constant="10" id="zFt-lI-hcW"/>
                                 </constraints>
                             </view>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
-                                <rect key="frame" x="0.0" y="196" width="375" height="3.5"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
+                                <rect key="frame" x="0.0" y="196" width="375" height="31.5"/>
+                                <subviews>
+                                    <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
+                                        <rect key="frame" x="29" y="0.0" width="322" height="31.5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <wkWebViewConfiguration key="configuration">
+                                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                            <wkPreferences key="preferences"/>
+                                        </wkWebViewConfiguration>
+                                    </wkWebView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="250" id="YVz-km-wWZ"/>
+                                    <constraint firstItem="bUF-LT-65F" firstAttribute="leading" secondItem="tm2-e0-IDa" secondAttribute="leading" constant="29" id="0Oc-DR-asd"/>
+                                    <constraint firstItem="bUF-LT-65F" firstAttribute="centerY" secondItem="tm2-e0-IDa" secondAttribute="centerY" id="9sJ-hc-khW"/>
+                                    <constraint firstAttribute="height" priority="250" id="nMQ-Id-iGW"/>
+                                    <constraint firstAttribute="trailing" secondItem="bUF-LT-65F" secondAttribute="trailing" constant="24" id="sEb-js-5e4"/>
+                                    <constraint firstItem="bUF-LT-65F" firstAttribute="height" secondItem="tm2-e0-IDa" secondAttribute="height" id="zdj-CM-wg5"/>
                                 </constraints>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </stackView>
@@ -346,7 +356,7 @@
                 <outlet property="attachmentView" destination="l4w-QX-eOS" id="KsV-9A-dDt"/>
                 <outlet property="collapsedDetailView" destination="oYk-NZ-Ec1" id="EKC-XG-2oO"/>
                 <outlet property="expandedDetailView" destination="j7W-SK-UmD" id="dZe-Yc-YIC"/>
-                <outlet property="heightConstraint" destination="YVz-km-wWZ" id="wvu-Os-b8r"/>
+                <outlet property="heightConstraint" destination="nMQ-Id-iGW" id="5mf-lb-XqG"/>
                 <outlet property="moreRecipientsLabel" destination="TjS-60-oSo" id="KfN-uG-f2f"/>
                 <outlet property="optionsIconView" destination="Y7U-U8-8kI" id="dYI-jY-4t8"/>
                 <outlet property="optionsView" destination="nbg-Dv-yZM" id="MAV-yr-jmU"/>
@@ -358,7 +368,9 @@
                 <outlet property="unsendIconView" destination="GXe-Zp-JfU" id="EeP-hN-kyA"/>
                 <outlet property="unsendView" destination="Wnv-kq-RK4" id="cHO-4R-dmy"/>
                 <outlet property="webView" destination="bUF-LT-65F" id="0Wn-sq-XD4"/>
+                <outlet property="webViewWrapperView" destination="tm2-e0-IDa" id="BGn-II-V8l"/>
             </connections>
+            <point key="canvasLocation" x="39.5" y="168"/>
         </tableViewCell>
     </objects>
     <resources>

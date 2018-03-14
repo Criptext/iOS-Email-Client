@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             initialVC = initMailboxRootVC(launchOptions)
         }else{
             //Go to login
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
         

@@ -27,7 +27,6 @@ class EmailDetailViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "emailDetail\(indexPath.row)") as! EmailTableViewCell
         let email = emailData.emails[indexPath.row]
         cell.setContent(email.preview, email.content, isExpanded: email.isExpanded)
-        cell.myHeight = email.myHeight
         cell.delegate = self
         return cell
     }
@@ -56,12 +55,10 @@ class EmailDetailViewController: UITableViewController{
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate{
-    func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, _ height: CGFloat) {
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
+    func tableViewCellDidLoadContent(_ cell: EmailTableViewCell) {
+        guard self.tableView.indexPath(for: cell) != nil else {
             return
         }
-        let email = emailData.emails[indexPath.row]
-        email.myHeight = height
         tableView.reloadData()
     }
     
@@ -71,10 +68,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         }
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
-        email.myHeight = 0
-        cell.toggleCell(email.isExpanded)
-        if(!email.isExpanded){
-            tableView.reloadData()
-        }
+        tableView.reloadData()
     }
 }

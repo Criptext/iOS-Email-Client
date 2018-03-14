@@ -10,7 +10,7 @@ import Foundation
 import WebKit
 
 protocol EmailTableViewCellDelegate {
-    func tableViewCellDidLoadContent(_ cell:EmailTableViewCell, _ height: CGFloat)
+    func tableViewCellDidLoadContent(_ cell:EmailTableViewCell)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
 }
 
@@ -32,7 +32,9 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var optionsIconView: UIImageView!
     @IBOutlet weak var replyView: UIView!
     @IBOutlet weak var replyIconView: UIImageView!
+    @IBOutlet weak var webViewWrapperView: UIView!
     var content = ""
+    var loadedContent = false
     var myHeight : CGFloat = 0.0
     
     override func awakeFromNib() {
@@ -56,25 +58,14 @@ class EmailTableViewCell: UITableViewCell{
     func setContent(_ preview: String, _ content : String, isExpanded: Bool){
         self.content = content
         previewLabel.text = preview
-        webView.isHidden = !isExpanded
+        webViewWrapperView.isHidden = !isExpanded
         if(isExpanded){
-            webView.loadHTMLString(content, baseURL: nil)
-        }else{
-            myHeight = 0
+            if(!loadedContent){
+                webView.loadHTMLString(content, baseURL: nil)
+            }
         }
         expandedDetailView.isHidden = !isExpanded
         collapsedDetailView.isHidden = isExpanded
-    }
-    
-    func toggleCell(_ isExpanded: Bool){
-        webView.isHidden = !isExpanded
-        expandedDetailView.isHidden = !isExpanded
-        collapsedDetailView.isHidden = isExpanded
-        if(isExpanded){
-            webView.loadHTMLString(content, baseURL: nil)
-        }else{
-            myHeight = 0
-        }
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
@@ -87,17 +78,17 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         if tappedView == self.attachmentView || tappedView == self.attachmentIconView{
-            print("Attachment!")
+            // TODO: call delegate to handle attachment icon click
         } else if tappedView == self.unsendView || tappedView == self.unsendIconView{
-            print("Unsend!")
+            // TODO: call delegate to handle unsend icon click
         } else if tappedView == self.readView || tappedView == self.readIconView{
-            print("Read!")
+            // TODO: call delegate to handle read icon click
         } else if tappedView == self.optionsView || tappedView == self.optionsIconView{
-            print("Options!")
+            // TODO: call delegate to handle options icon click
         } else if tappedView == self.replyView || tappedView == self.replyIconView{
-            print("Reply!")
+            // TODO: call delegate to handle reply icon click
         } else if tappedView == self.moreRecipientsLabel{
-            print("More Contacts!")
+            // TODO: call delegate to handle contacts label click
         } else {
             delegate.tableViewCellDidTap(self)
         }
@@ -110,15 +101,32 @@ extension EmailTableViewCell: WKNavigationDelegate{
         guard myHeight <= 0.0 else {
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01){
-            let myHeight = webView.scrollView.contentSize.height
-            
-            self.heightConstraint.constant = CGFloat(myHeight)
-            guard let delegate = self.delegate else {
-                return
-            }
-            delegate.tableViewCellDidLoadContent(self, myHeight)
+        startObservingHeight()
+    }
+    
+    func startObservingHeight() {
+        let options = NSKeyValueObservingOptions([.new])
+        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: options, context: nil)
+    }
+    
+    func stopObservingHeight() {
+        webView.scrollView.removeObserver(self, forKeyPath: "contentSize", context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let keypath = keyPath,
+            keypath == "contentSize" else {
+            super.observeValue(forKeyPath: nil, of: object, change: change, context: context)
+            return
         }
-        
+        myHeight = webView.scrollView.contentSize.height
+        print(self.myHeight)
+        heightConstraint.constant = self.myHeight
+        loadedContent = true
+        guard let delegate = self.delegate else {
+            return
+        }
+        delegate.tableViewCellDidLoadContent(self)
+        stopObservingHeight()
     }
 }

@@ -22,7 +22,6 @@ class EmailDetail: Object {
     @objc dynamic var date : Date?
     @objc dynamic var isTrash = false
     @objc dynamic var isDraft = false
-    var myHeight : CGFloat = 0.0
     var isExpanded = false
     
     override static func primaryKey() -> String? {
@@ -30,6 +29,6 @@ class EmailDetail: Object {
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["myHeight", "isExpanded"]
+        return ["isExpanded"]
     }
 }
