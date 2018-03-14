@@ -10,7 +10,7 @@ import Foundation
 import WebKit
 
 protocol EmailTableViewCellDelegate {
-    func tableViewCellDidLoadContent(_ cell:EmailTableViewCell, _ height: Int)
+    func tableViewCellDidLoadContent(_ cell:EmailTableViewCell, _ height: CGFloat)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
 }
 
@@ -33,7 +33,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var replyView: UIView!
     @IBOutlet weak var replyIconView: UIImageView!
     var content = ""
-    var myHeight = 0
+    var myHeight : CGFloat = 0.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,9 +43,8 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setupView(){
-        print(myHeight)
         webView.navigationDelegate = self
-        heightConstraint.constant = CGFloat(myHeight)
+        heightConstraint.constant = myHeight
         unsendView.layer.borderWidth = 1
         unsendView.layer.borderColor = UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1).cgColor
         readView.layer.borderWidth = 1
@@ -108,7 +107,7 @@ class EmailTableViewCell: UITableViewCell{
 extension EmailTableViewCell: WKNavigationDelegate{
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        guard myHeight <= 0 else {
+        guard myHeight <= 0.0 else {
             return
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01){
@@ -118,7 +117,7 @@ extension EmailTableViewCell: WKNavigationDelegate{
             guard let delegate = self.delegate else {
                 return
             }
-            delegate.tableViewCellDidLoadContent(self, Int(myHeight))
+            delegate.tableViewCellDidLoadContent(self, myHeight)
         }
         
     }

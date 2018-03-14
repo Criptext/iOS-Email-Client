@@ -10,7 +10,6 @@ import Foundation
 
 class EmailDetailFooterCell: UITableViewCell{
     
-    
     @IBAction func onPressReply(_ sender: Any) {
         print("Reply!")
     }
@@ -21,13 +20,5 @@ class EmailDetailFooterCell: UITableViewCell{
     
     @IBAction func onPressForward(_ sender: Any) {
         print("Forward!")
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        setupView()
-    }
-    
-    func setupView(){
     }
 }

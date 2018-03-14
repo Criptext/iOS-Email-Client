@@ -17,7 +17,7 @@ class EmailDetailViewController: UITableViewController{
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 98
         
-        for index in 0...emailData.emails.count - 1{
+        for index in 0..<emailData.emails.count{
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
             tableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
         }
@@ -47,16 +47,16 @@ class EmailDetailViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat(78)
+        return 78.0
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(56)
+        return 56.0
     }
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate{
-    func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, _ height: Int) {
+    func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, _ height: CGFloat) {
         guard let indexPath = self.tableView.indexPath(for: cell) else {
             return
         }
