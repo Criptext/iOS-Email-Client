@@ -792,7 +792,7 @@ extension DBManager {
     class func getSessionRecord(contactId: String, deviceId: Int32) -> CRSessionRecord?{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == \(deviceId)")
         let results = realm.objects(CRSessionRecord.self).filter(predicate)
         
         return results.first
@@ -801,7 +801,7 @@ extension DBManager {
     class func deleteSessionRecord(contactId: String, deviceId: Int32){
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == \(deviceId)")
         let results = realm.objects(CRSessionRecord.self).filter(predicate)
         
         try! realm.write() {

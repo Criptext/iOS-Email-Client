@@ -1137,21 +1137,21 @@ extension InboxViewController{
             DBManager.restoreState(self.currentUser)
         }
         
-        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
-            let fullString = NSMutableAttributedString(string: "")
-            
-            let image1Attachment = NSTextAttachment()
-            image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
-            
-            let image1String = NSAttributedString(attachment: image1Attachment)
-            
-            fullString.append(image1String)
-            fullString.append(NSAttributedString(string: " Downloading emails..."))
-            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-            
-            self.getEmails("me", labels: [self.selectedLabel.id], completion: completion)
-            return
-        }
+//        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
+//            let fullString = NSMutableAttributedString(string: "")
+//
+//            let image1Attachment = NSTextAttachment()
+//            image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
+//
+//            let image1String = NSAttributedString(attachment: image1Attachment)
+//
+//            fullString.append(image1String)
+//            fullString.append(NSAttributedString(string: " Downloading emails..."))
+//            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
+//
+//            self.getEmails("me", labels: [self.selectedLabel.id], completion: completion)
+//            return
+//        }
         
         guard !self.emailArray.isEmpty else {
             self.refreshControl.endRefreshing()
