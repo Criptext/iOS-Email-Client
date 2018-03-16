@@ -55,7 +55,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "emailDetail\(indexPath.row)") as! EmailTableViewCell
         let email = emailData.emails[indexPath.row]
-        cell.setContent(email.preview, email.content, isExpanded: email.isExpanded)
+        cell.setContent(email)
         cell.delegate = self
         return cell
     }
@@ -74,11 +74,11 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
         return headerView
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 78.0
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 56.0
     }
     
@@ -86,10 +86,10 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension EmailDetailViewController: EmailTableViewCellDelegate{
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell) {
-        guard self.tableView.indexPath(for: cell) != nil else {
+        guard emailsTableView.indexPath(for: cell) != nil else {
             return
         }
-        tableView.reloadData()
+        emailsTableView.reloadData()
     }
     
     func tableViewCellDidTap(_ cell: EmailTableViewCell) {
@@ -98,7 +98,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         }
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
-        tableView.reloadData()
+        emailsTableView.reloadData()
     }
     
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType) {
@@ -175,7 +175,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
             self.view.layoutIfNeeded()
         }, completion: {
             finished in
-            print("HOLI HOLI")
             self.backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
         })
     }

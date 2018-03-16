@@ -35,7 +35,10 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var replyIconView: UIImageView!
     @IBOutlet weak var webViewWrapperView: UIView!
     @IBOutlet weak var borderBGView: UIView!
-    var content = ""
+    @IBOutlet weak var contactsCollapseLabel: UILabel!
+    @IBOutlet weak var contactsExpandLabel: UILabel!
+    @IBOutlet weak var miniAttachmentIconView: UIImageView!
+    @IBOutlet weak var miniReadIconView: UIImageView!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
     
@@ -51,26 +54,72 @@ class EmailTableViewCell: UITableViewCell{
         webView.navigationDelegate = self
         heightConstraint.constant = myHeight
         unsendView.layer.borderWidth = 1
-        unsendView.layer.borderColor = UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1).cgColor
         readView.layer.borderWidth = 1
-        readView.layer.borderColor = UIColor(red: 0, green: 145/255, blue: 1, alpha: 0.63).cgColor
         attachmentView.layer.borderWidth = 1
-        attachmentView.layer.borderColor = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1).cgColor
         borderBGView.layer.borderWidth = 1
         borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
     }
     
-    func setContent(_ preview: String, _ content : String, isExpanded: Bool){
-        self.content = content
-        previewLabel.text = preview
+    func setContent(_ email: EmailDetail){
+        let isExpanded = email.isExpanded
         webViewWrapperView.isHidden = !isExpanded
-        if(isExpanded){
-            if(!loadedContent){
-                webView.loadHTMLString(content, baseURL: nil)
-            }
-        }
         expandedDetailView.isHidden = !isExpanded
         collapsedDetailView.isHidden = isExpanded
+        if(isExpanded){
+            setExpandedContent(email)
+        }else{
+            setCollapsedContent(email)
+        }
+    }
+    
+    func setCollapsedContent(_ email: EmailDetail){
+        let preview = email.isUnsent ? "Unsent" : email.preview
+        previewLabel.text = preview
+        setCollapsedIcons(email)
+        if(email.isUnsent){
+            previewLabel.textColor = CriptextColor.textUnsent.color
+            borderBGView.layer.borderColor = CriptextColor.borderUnsent.color.cgColor
+        }
+    }
+    
+    func setExpandedContent(_ email: EmailDetail){
+        let content = email.content
+        if(!loadedContent){
+            webView.loadHTMLString(content, baseURL: nil)
+        }
+        setExpandedIcons(email)
+    }
+    
+    func setCollapsedIcons(_ email: EmailDetail){
+        let hasOpens = true
+        let hasAttachments = true
+        
+        miniReadIconView.tintColor = hasOpens ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
+        miniAttachmentIconView.tintColor = hasAttachments ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
+    }
+    
+    func setExpandedIcons(_ email: EmailDetail){
+        let isSecure = email.secure
+        let hasOpens = true
+        let hasAttachments = true
+        let isUnsent = email.isUnsent
+        
+        guard isSecure == true else {
+            readView.isHidden = true
+            attachmentView.isHidden = true
+            unsendView.isHidden = true
+            return
+        }
+        
+        readIconView.tintColor = hasOpens ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
+        readView.layer.borderColor = hasOpens ?  CriptextColor.borderIcon.color.cgColor : CriptextColor.iconDisable.color.cgColor
+        
+        attachmentIconView.tintColor = hasAttachments ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
+        attachmentView.layer.borderColor = hasAttachments ?  CriptextColor.borderIcon.color.cgColor : CriptextColor.iconDisable.color.cgColor
+        
+        unsendIconView.tintColor =  isUnsent ?  CriptextColor.iconAlert.color : .white
+        unsendView.backgroundColor = isUnsent ? .white : CriptextColor.iconAlert.color
+        unsendView.layer.borderColor = isUnsent ?  CriptextColor.borderUnsent.color.cgColor : CriptextColor.iconAlert.color.cgColor
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){

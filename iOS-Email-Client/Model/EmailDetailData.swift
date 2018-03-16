@@ -18,6 +18,7 @@ class EmailDetailData{
         email1.content = Constants.htmlTopWrapper + "<div dir=\"ltr\">pfffffffffff</div>" + Constants.htmlBottomWrapper
         emails.append(email1)
         let email2 = EmailDetail()
+        email2.delivered = "unsent"
         email2.subject = "Este es un texto super largo pues para probar y es unsend"
         email2.preview = "pues aqui para que le hagas unsend"
         email2.content = Constants.unsendEmail

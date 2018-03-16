@@ -31,4 +31,8 @@ class EmailDetail: Object {
     override static func ignoredProperties() -> [String] {
         return ["isExpanded"]
     }
+    
+    var isUnsent: Bool{
+        return delivered == "unsent"
+    }
 }
