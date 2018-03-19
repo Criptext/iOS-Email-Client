@@ -11,19 +11,19 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="282" id="mtm-Bj-dEs" customClass="EmailTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="282"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="1001" id="mtm-Bj-dEs" customClass="EmailTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="1001"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mtm-Bj-dEs" id="5te-0K-DXB">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="1000.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x8R-Mr-qce">
-                        <rect key="frame" x="0.0" y="4" width="375" height="273.5"/>
+                        <rect key="frame" x="0.0" y="4" width="375" height="992.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KaE-PD-svL">
-                        <rect key="frame" x="0.0" y="5" width="375" height="271.5"/>
+                        <rect key="frame" x="0.0" y="5" width="375" height="990.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYk-NZ-Ec1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
@@ -53,7 +53,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el…" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uDR-zl-Siw">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el…" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uDR-zl-Siw">
                                         <rect key="frame" x="71" y="41.5" width="287" height="42"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="42" id="xXS-8D-HIe"/>
@@ -305,10 +305,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
-                                <rect key="frame" x="0.0" y="196" width="375" height="75.5"/>
+                                <rect key="frame" x="0.0" y="196" width="375" height="114.5"/>
                                 <subviews>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
-                                        <rect key="frame" x="29" y="0.0" width="322" height="75.5"/>
+                                        <rect key="frame" x="29" y="0.0" width="322" height="114.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <wkWebViewConfiguration key="configuration">
                                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -325,6 +325,13 @@
                                     <constraint firstItem="bUF-LT-65F" firstAttribute="height" secondItem="tm2-e0-IDa" secondAttribute="height" id="zdj-CM-wg5"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gto-qF-XbD">
+                                <rect key="frame" x="0.0" y="310.5" width="375" height="680"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="750" constant="290" id="USB-5e-poq"/>
+                                </constraints>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.99878231095679015" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </stackView>
@@ -336,7 +343,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6QI-gH-SwO">
-                        <rect key="frame" x="0.0" y="276.5" width="375" height="5"/>
+                        <rect key="frame" x="0.0" y="995.5" width="375" height="5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="5" id="n42-ki-5wr"/>
@@ -364,6 +371,7 @@
             <connections>
                 <outlet property="attachmentIconView" destination="Uqg-nT-Nij" id="B6F-g3-dCa"/>
                 <outlet property="attachmentView" destination="l4w-QX-eOS" id="KsV-9A-dDt"/>
+                <outlet property="attachmentsTableView" destination="Gto-qF-XbD" id="on9-Ar-oSC"/>
                 <outlet property="borderBGView" destination="x8R-Mr-qce" id="kmH-ZK-eqh"/>
                 <outlet property="collapsedDetailView" destination="oYk-NZ-Ec1" id="EKC-XG-2oO"/>
                 <outlet property="contactsCollapseLabel" destination="XDx-eF-08j" id="OwT-NY-LPh"/>
@@ -385,7 +393,7 @@
                 <outlet property="webView" destination="bUF-LT-65F" id="0Wn-sq-XD4"/>
                 <outlet property="webViewWrapperView" destination="tm2-e0-IDa" id="BGn-II-V8l"/>
             </connections>
-            <point key="canvasLocation" x="63.5" y="123"/>
+            <point key="canvasLocation" x="63.5" y="482.5"/>
         </tableViewCell>
     </objects>
     <resources>

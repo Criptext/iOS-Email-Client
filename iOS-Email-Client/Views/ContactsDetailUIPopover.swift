@@ -47,7 +47,7 @@ class ContactsDetailUIPopover: UIViewController{
         toEmailsLabel.attributedText = attributedText
         replyToEmailsLabel.attributedText = buildContactAttributedString("Gianni", "gianni@criptext.com")
         fromEmailsLabel.attributedText = buildContactAttributedString("Pedro Aim", "pedro_aim@hotmail.com")
-        let toViewHeight = getLabelHeight(attributedText)
+        let toViewHeight = Utils.getLabelHeight(attributedText, width: toEmailsLabel.frame.width, fontSize: 15.0)
         toHeightConstraint.constant = toViewHeight + 8.0
         toLabelHeightConstraint.constant = toViewHeight
     }
@@ -72,19 +72,6 @@ class ContactsDetailUIPopover: UIViewController{
         
         stringPart1.append(stringPart2)
         return stringPart1
-    }
-    
-    func getLabelHeight(_ text: NSMutableAttributedString) -> CGFloat {
-        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: toEmailsLabel.frame.width, height: CGFloat.greatestFiniteMagnitude))
-        
-        label.textColor=UIColor.black
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.font = Font.regular.size(15.0)
-        label.numberOfLines = 0
-        
-        label.attributedText = text
-        label.sizeToFit()
-        return label.frame.height
     }
 }
 

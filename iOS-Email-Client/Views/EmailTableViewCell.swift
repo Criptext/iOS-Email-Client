@@ -39,6 +39,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var contactsExpandLabel: UILabel!
     @IBOutlet weak var miniAttachmentIconView: UIImageView!
     @IBOutlet weak var miniReadIconView: UIImageView!
+    @IBOutlet weak var attachmentsTableView: UITableView!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
     
@@ -47,6 +48,10 @@ class EmailTableViewCell: UITableViewCell{
         setupView()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
+        attachmentsTableView.delegate = self
+        attachmentsTableView.dataSource = self
+        let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
+        attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentTableCell")
     }
     
     func setupView(){
@@ -64,6 +69,7 @@ class EmailTableViewCell: UITableViewCell{
         let isExpanded = email.isExpanded
         webViewWrapperView.isHidden = !isExpanded
         expandedDetailView.isHidden = !isExpanded
+        attachmentsTableView.isHidden = !isExpanded
         collapsedDetailView.isHidden = isExpanded
         if(isExpanded){
             setExpandedContent(email)
@@ -74,7 +80,8 @@ class EmailTableViewCell: UITableViewCell{
     
     func setCollapsedContent(_ email: EmailDetail){
         let preview = email.isUnsent ? "Unsent" : email.preview
-        previewLabel.text = preview
+        let numberOfLines = Utils.getNumberOfLines(preview, width: previewLabel.frame.width, fontSize: 17.0)
+        previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
         setCollapsedIcons(email)
         if(email.isUnsent){
             previewLabel.textColor = CriptextColor.textUnsent.color
@@ -127,7 +134,8 @@ class EmailTableViewCell: UITableViewCell{
             return
         }
         let touchPt = gestureRecognizer.location(in: self.contentView)
-        guard let tappedView = self.hitTest(touchPt, with: nil) else {
+        guard touchPt.y < 103.0 + myHeight,
+            let tappedView = self.hitTest(touchPt, with: nil) else {
             return
         }
         
@@ -185,7 +193,6 @@ extension EmailTableViewCell: WKNavigationDelegate{
             return
         }
         myHeight = webView.scrollView.contentSize.height
-        print(self.myHeight)
         heightConstraint.constant = self.myHeight
         loadedContent = true
         guard let delegate = self.delegate else {
@@ -193,5 +200,22 @@ extension EmailTableViewCell: WKNavigationDelegate{
         }
         delegate.tableViewCellDidLoadContent(self)
         stopObservingHeight()
+    }
+}
+
+extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentTableCell") as! AttachmentTableCell
+        cell.setNameAndSize("Red Velvet Members.pdf", "23 MB")
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 58.0
     }
 }

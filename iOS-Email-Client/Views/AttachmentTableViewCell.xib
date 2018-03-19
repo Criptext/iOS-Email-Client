@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="yhn-fY-vij" customClass="AttachmentTableCell" customModule="iOS_Email_Client" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="68"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m8Z-E0-HmE">
+                    <rect key="frame" x="27" y="10" width="324" height="48"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment_pdf" translatesAutoresizingMaskIntoConstraints="NO" id="ax7-C4-FBi">
+                            <rect key="frame" x="7" y="8" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="ZlJ-OZ-xZD"/>
+                                <constraint firstAttribute="width" constant="32" id="luS-mN-LJX"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZP2-bJ-aKN">
+                            <rect key="frame" x="49" y="13" width="236" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="wz8-C2-UP9"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-download" translatesAutoresizingMaskIntoConstraints="NO" id="pH5-Rc-G60">
+                            <rect key="frame" x="296" y="16.5" width="12" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="12" id="Qas-AR-2yn"/>
+                                <constraint firstAttribute="height" constant="15" id="rlJ-d9-Veg"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                    <color key="value" red="0.54117647059999996" green="0.56862745100000001" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="pH5-Rc-G60" firstAttribute="leading" secondItem="ZP2-bJ-aKN" secondAttribute="trailing" constant="11" id="5L3-Tr-sFg"/>
+                        <constraint firstAttribute="height" constant="48" id="Me3-yT-ZT9"/>
+                        <constraint firstItem="ZP2-bJ-aKN" firstAttribute="centerY" secondItem="ax7-C4-FBi" secondAttribute="centerY" id="Qwb-yJ-wOy"/>
+                        <constraint firstItem="ZP2-bJ-aKN" firstAttribute="leading" secondItem="ax7-C4-FBi" secondAttribute="trailing" constant="10" id="XLT-1z-7lQ"/>
+                        <constraint firstItem="pH5-Rc-G60" firstAttribute="centerY" secondItem="m8Z-E0-HmE" secondAttribute="centerY" id="eHZ-Xt-nPX"/>
+                        <constraint firstItem="ax7-C4-FBi" firstAttribute="centerY" secondItem="m8Z-E0-HmE" secondAttribute="centerY" id="hED-D2-abQ"/>
+                        <constraint firstAttribute="trailing" secondItem="pH5-Rc-G60" secondAttribute="trailing" constant="16" id="nvw-SR-Ow0"/>
+                        <constraint firstItem="ax7-C4-FBi" firstAttribute="leading" secondItem="m8Z-E0-HmE" secondAttribute="leading" constant="7" id="yUU-K1-TDY"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="m8Z-E0-HmE" firstAttribute="centerY" secondItem="OWh-t1-UXx" secondAttribute="centerY" id="2D8-1O-LdG"/>
+                <constraint firstItem="OWh-t1-UXx" firstAttribute="trailing" secondItem="m8Z-E0-HmE" secondAttribute="trailing" constant="24" id="2oD-72-FrH"/>
+                <constraint firstItem="m8Z-E0-HmE" firstAttribute="leading" secondItem="OWh-t1-UXx" secondAttribute="leading" constant="27" id="rXc-gy-n2a"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="OWh-t1-UXx"/>
+            <connections>
+                <outlet property="attachmentContainer" destination="m8Z-E0-HmE" id="f2P-nz-diP"/>
+                <outlet property="attachmentLabel" destination="ZP2-bJ-aKN" id="Guh-4Z-ix7"/>
+            </connections>
+            <point key="canvasLocation" x="-57.5" y="115"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="attachment_pdf" width="80" height="80"/>
+        <image name="icon-download" width="30" height="38"/>
+    </resources>
+</document>
