@@ -426,10 +426,6 @@ class DetailViewController: UIViewController {
         
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let composeVC = navComposeVC.childViewControllers.first as! ComposeViewController
-        composeVC.currentService = self.currentService
-        composeVC.currentUser = self.currentUser
-        composeVC.replyingEmail = self.currentEmail
-        
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         
         self.present(snackVC, animated: true, completion: nil)
@@ -674,9 +670,6 @@ class DetailViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let composeVC = navComposeVC.childViewControllers.first as! ComposeViewController
-        composeVC.currentService = self.currentService
-        composeVC.currentUser = self.currentUser
-        composeVC.replyingEmail = self.currentEmail
         composeVC.loadViewIfNeeded()
         
         if self.currentEmail.from == self.currentUser.email {
@@ -698,7 +691,7 @@ class DetailViewController: UIViewController {
         
         
         composeVC.editorView.html = "<br><br><br>" + self.currentUser.emailSignature + replyBody
-        composeVC.replyBody = replyBody
+        //composeVC.replyBody = replyBody
         
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         
@@ -711,9 +704,6 @@ class DetailViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let composeVC = navComposeVC.childViewControllers.first as! ComposeViewController
-        composeVC.currentService = self.currentService
-        composeVC.currentUser = self.currentUser
-        composeVC.replyingEmail = self.currentEmail
         composeVC.loadViewIfNeeded()
         
         for email in self.currentEmail.cc.components(separatedBy: ",") {
@@ -747,7 +737,7 @@ class DetailViewController: UIViewController {
         let replyBody = ("<br><br><pre class=\"criptext-remove-this\"></pre>" + "On \(DateUtils.prettyDate(self.currentEmail.date!) ?? "some day"), \(self.currentEmail.from) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + self.currentEmail.body + "</blockquote>").replacingOccurrences(of: "https://mail.criptext.com/rs/", with: "https://mail.criptext.com/cache/")
 
         composeVC.editorView.html = "<br><br><br>" + self.currentUser.emailSignature + replyBody
-        composeVC.replyBody = replyBody
+        //composeVC.replyBody = replyBody
         
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         
@@ -760,9 +750,6 @@ class DetailViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let composeVC = navComposeVC.childViewControllers.first as! ComposeViewController
-        composeVC.currentService = self.currentService
-        composeVC.currentUser = self.currentUser
-        composeVC.replyingEmail = self.currentEmail
         let gmailAttachments = Array(self.currentEmail.attachments)
         composeVC.attachmentArray = self.attachmentArray + gmailAttachments
         composeVC.loadViewIfNeeded()
@@ -776,7 +763,7 @@ class DetailViewController: UIViewController {
         let replyBody = ("<br><br><pre class=\"criptext-remove-this\"></pre>Begin forwarded message:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + self.currentEmail.body + "</blockquote>").replacingOccurrences(of: "https://mail.criptext.com/rs/", with: "https://mail.criptext.com/cache/")
 
         composeVC.editorView.html = "<br><br><br>" + self.currentUser.emailSignature + replyBody
-        composeVC.replyBody = replyBody
+        //composeVC.replyBody = replyBody
         
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         

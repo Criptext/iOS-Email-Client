@@ -18,7 +18,7 @@ protocol ProgressDelegate {
 }
 
 class APIManager {
-    static let baseUrl = "http://172.30.1.47:8000"
+    static let baseUrl = "http://172.30.1.157:8000"
     
     static let CODE_SUCESS = 0
     static let CODE_JWT_INVALID = 101
@@ -68,10 +68,11 @@ class APIManager {
         }
     }
     
-    class func getKeysRequest(recipientId: String, deviceId: String, token: String, completion: @escaping ((Error?, Any?) -> Void)){
-        let url = "\(self.baseUrl)/keybundle/\(recipientId)/\(deviceId)"
+    class func getKeysRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
+        let url = "\(self.baseUrl)/keybundle"
         let headers = ["Authorization": "Bearer \(token)"]
-        Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            
             switch(response.result) {
                 case .success(let value):
                     completion(nil, value)

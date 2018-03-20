@@ -169,8 +169,6 @@ extension ThreadViewController {
         if email.isDraft() {
             let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
             let vcDraft = navComposeVC.childViewControllers.first as! ComposeViewController
-            vcDraft.currentService = self.currentService
-            vcDraft.currentUser = self.currentUser
             vcDraft.attachmentArray = Array(email.attachments)
             vcDraft.isDraft = true
             vcDraft.emailDraft = email

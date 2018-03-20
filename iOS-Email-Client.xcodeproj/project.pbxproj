@@ -146,6 +146,7 @@
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
+		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
 		EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
 /* End PBXBuildFile section */
 
@@ -325,6 +326,7 @@
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
 		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
 		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -546,6 +548,7 @@
 				7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */,
 				7C34E5FA20470D2100E71906 /* EmailDetailData.swift */,
 				7C34E5FC204716BD00E71906 /* EmailDetail.swift */,
+				95661FCA205C2B9A006DF852 /* EmailContact.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1012,6 +1015,7 @@
 				41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */,
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
+				95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */,
 				7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */,
 				41AAC563201B92A400809C4D /* KMAppearence.m in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,

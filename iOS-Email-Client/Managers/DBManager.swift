@@ -683,6 +683,7 @@ extension DBManager {
         
         return Array(results)
     }
+    
 }
 
 //MARK: - Keys related
@@ -838,3 +839,30 @@ extension DBManager {
         return trustedDevice
     }
 }
+
+//MARK: - Email Detail
+
+extension DBManager {
+ 
+    class func store(_ emailDetail: EmailDetail){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(emailDetail, update: true)
+        }
+    }
+}
+
+//MARK: - Email Contact
+
+extension DBManager {
+    
+    class func store(_ emailContacts:[EmailContact]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(emailContacts, update: true)
+        }
+    }
+}
+
