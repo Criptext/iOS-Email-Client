@@ -61,12 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var initialVC:UIViewController!
         
         let defaults = UserDefaults.standard
-        if false {
+        if defaults.string(forKey: "activeAccount") != nil {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions)
         }else{
             //Go to login
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
         
@@ -193,9 +193,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         inboxVC.register(deviceTokenString)
     }
-    
-    
-    
 }
 
 extension AppDelegate: UISplitViewControllerDelegate {

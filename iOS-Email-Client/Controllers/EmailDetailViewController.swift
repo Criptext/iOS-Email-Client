@@ -15,6 +15,7 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
     var tapGestureRecognizer:UITapGestureRecognizer!
+    var myHeaderView : UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,10 +69,14 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard myHeaderView == nil else {
+            return myHeaderView
+        }
         let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableHeaderView") as! EmailDetailHeaderCell
         headerView.addLabels(emailData.labels)
         headerView.setSubject(emailData.subject)
-        return headerView
+        myHeaderView = headerView
+        return myHeaderView
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -24,13 +24,13 @@ class EmailDetailHeaderCell: UITableViewCell{
         labelsListView.cornerRadius = 8
     }
     
-    func addLabels(_ labels: [String]){
+    func addLabels(_ labels: [Label]){
         guard labelsListView.tagViews.count == 0 else {
             return
         }
         for label in labels {
-            let tag = labelsListView.addTag(label)
-            tag.tagBackgroundColor = Utils.generateRandomColor()
+            let tag = labelsListView.addTag(label.text)
+            tag.tagBackgroundColor = UIColor(hexString: label.color, alpha: 1.0)
         }
         labelsListView.invalidateIntrinsicContentSize()
     }

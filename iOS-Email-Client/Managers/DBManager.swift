@@ -838,6 +838,17 @@ extension DBManager {
         
         return trustedDevice
     }
+    
+    //MARK: - Labels
+    
+    class func store(_ label: Label){
+        let realm = try! Realm()
+        label.incrementID()
+        try! realm.write {
+            realm.add(label, update: true)
+        }
+    }
+    
 }
 
 //MARK: - Email Detail
