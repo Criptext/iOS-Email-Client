@@ -243,7 +243,7 @@ class ListLabelViewController: UIViewController {
         })
     }
     
-    func changeInbox(_ labelItem:Label){
+    func changeInbox(_ labelItem:MyLabel){
         
         if self.detailViewController.selectedLabel != labelItem {
             self.detailViewController.didChange(labelItem)

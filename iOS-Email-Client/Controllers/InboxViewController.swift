@@ -28,7 +28,7 @@ class InboxViewController: UIViewController {
     var currentService: GTLRService! = GTLRGmailService()
     var currentUser: User!
     
-    var selectedLabel = Label.inbox
+    var selectedLabel = MyLabel.inbox
     
     var emailArray = [Email]()
     var filteredEmailArray = [Email]()
@@ -358,7 +358,7 @@ extension InboxViewController{
                 let threadId = self.emailArray[indexPath.row].threadId
                 for hashEmail in self.threadHash[threadId]!{
                     DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
-                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != Label.unread.id })
+                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != MyLabel.unread.id })
                 }
                 self.emailArray.remove(at: indexPath.row)
             }
@@ -396,7 +396,7 @@ extension InboxViewController{
                     if self.selectedLabel == .inbox || self.selectedLabel == .junk {
                         DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
                     }
-                    hashEmail.labels.append(Label.trash.id)
+                    hashEmail.labels.append(MyLabel.trash.id)
                     DBManager.update(hashEmail, labels: hashEmail.labels)
                 }
                 let email = self.emailArray.remove(at: indexPath.row)
@@ -461,7 +461,7 @@ extension InboxViewController{
         
         var count = 0
         for email in emails {
-            if !email.labels.contains(where: { $0 == Label.unread.id }) {
+            if !email.labels.contains(where: { $0 == MyLabel.unread.id }) {
                 count = count + 1
             }
         }
@@ -487,9 +487,9 @@ extension InboxViewController{
             var removeLabels:[String]?
             
             if markRead {
-                removeLabels = [Label.unread.id]
+                removeLabels = [MyLabel.unread.id]
             } else {
-                addLabels = [Label.unread.id]
+                addLabels = [MyLabel.unread.id]
             }
             
             self.showSnackbar("Marking as \(title)...", attributedText: nil, buttons: "", permanent: true)
@@ -513,13 +513,13 @@ extension InboxViewController{
                                             for email in emails {
                                                 var newBadge = UIApplication.shared.applicationIconBadgeNumber
                                                 if markRead {
-                                                    DBManager.update(email, labels: email.labels.filter{$0 != Label.unread.id})
+                                                    DBManager.update(email, labels: email.labels.filter{$0 != MyLabel.unread.id})
                                                     newBadge = newBadge - 1
                                                     
                                                 } else {
                                                     newBadge = newBadge + 1
                                                     
-                                                    DBManager.update(email, labels: Array(Set(email.labels + [Label.unread.id])))
+                                                    DBManager.update(email, labels: Array(Set(email.labels + [MyLabel.unread.id])))
                                                 }
                                                 
                                                 if newBadge >= 0 {
@@ -605,7 +605,7 @@ extension InboxViewController{
 
 //MARK: - Side menu events
 extension InboxViewController {
-    func didChange(_ label:Label) {
+    func didChange(_ label:MyLabel) {
         self.selectedLabel = label
         self.titleBarButton.title = label.description.uppercased()
         self.emailArray.removeAll()
@@ -1093,7 +1093,7 @@ extension InboxViewController{
         self.threadToOpen = nil
     }
     
-    func loadMails(from label:Label, since date:Date){
+    func loadMails(from label:MyLabel, since date:Date){
         return
         let tupleObject = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
         
@@ -1429,11 +1429,11 @@ extension InboxViewController{
             DBManager.store(email)
             
             //do not do anything if email is actually in trash
-            if email.labels.contains(Label.trash.id) && self.selectedLabel != .trash {
+            if email.labels.contains(MyLabel.trash.id) && self.selectedLabel != .trash {
                 continue
             }
             //do not do anything if email is actually in junk
-            if email.labels.contains(Label.junk.id) && self.selectedLabel != .junk {
+            if email.labels.contains(MyLabel.junk.id) && self.selectedLabel != .junk {
                 continue
             }
             
@@ -1537,7 +1537,7 @@ extension InboxViewController: GIDSignInDelegate{
         appDelegate.registerPushNotifications()
 
         //subscribe to topic events for push related events
-        APIManager.watch(labels: [Label.inbox.id], topic: "projects/criptext-secure-email/topics/inbox", with: self.currentService, user: "me") { (error, flag) in
+        APIManager.watch(labels: [MyLabel.inbox.id], topic: "projects/criptext-secure-email/topics/inbox", with: self.currentService, user: "me") { (error, flag) in
             
             if let error = error {
                 print(error)
@@ -1615,7 +1615,7 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
     }
     
     func updateAppIcon() {
-        APIManager.info([Label.inbox.id, Label.draft.id], with: self.currentService, user: "me") { (error, labels) in
+        APIManager.info([MyLabel.inbox.id, MyLabel.draft.id], with: self.currentService, user: "me") { (error, labels) in
             guard let parsedLabels = labels else {
                 print(String(describing: error?.localizedDescription))
                 return
@@ -1624,15 +1624,15 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
             let sideVC = self.navigationDrawerController?.leftViewController as! ListLabelViewController
             
             for label in parsedLabels {
-                if Label.inbox.id == label.identifier {
-                    DBManager.update(self.currentUser, badge: label.threadsUnread!, label: Label.inbox)
+                if MyLabel.inbox.id == label.identifier {
+                    DBManager.update(self.currentUser, badge: label.threadsUnread!, label: MyLabel.inbox)
                     sideVC.inboxBadgeLabel.text = self.currentUser.inboxBadge
                     UIApplication.shared.applicationIconBadgeNumber = Int(label.threadsUnread!)
                 }
                 
-                if Label.draft.id == label.identifier {
+                if MyLabel.draft.id == label.identifier {
                     
-                    DBManager.update(self.currentUser, badge: label.messagesTotal!, label: Label.draft)
+                    DBManager.update(self.currentUser, badge: label.messagesTotal!, label: MyLabel.draft)
                     sideVC.draftBadgeLabel.text = self.currentUser.draftBadge
                 }
             }
@@ -1918,9 +1918,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 return
             }
             
-            APIManager.messageModifyLabels(add: nil, remove: [Label.unread.id], from: [email.id], with: self.currentService, user: "me", completionHandler: { (error, success) in
+            APIManager.messageModifyLabels(add: nil, remove: [MyLabel.unread.id], from: [email.id], with: self.currentService, user: "me", completionHandler: { (error, success) in
                 if error == nil {
-                    DBManager.update(email, labels: email.labels.filter{$0 != Label.unread.id})
+                    DBManager.update(email, labels: email.labels.filter{$0 != MyLabel.unread.id})
                     
                     if let selectedIndexPath = self.tableView.indexPathForSelectedRow {
                         self.tableView.reloadRows(at: [selectedIndexPath], with: UITableViewRowAnimation.automatic)
@@ -2044,7 +2044,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                     if self.selectedLabel == .inbox || self.selectedLabel == .junk {
                         DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
                     }
-                    hashEmail.labels.append(Label.trash.id)
+                    hashEmail.labels.append(MyLabel.trash.id)
                     DBManager.update(hashEmail, labels: hashEmail.labels)
                 }
                 
@@ -2089,7 +2089,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 
                 for hashEmail in self.threadHash[email.threadId]!{
                     DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
-                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != Label.unread.id})
+                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != MyLabel.unread.id})
                 }
                 
                 if self.searchController.isActive && self.searchController.searchBar.text != "" {

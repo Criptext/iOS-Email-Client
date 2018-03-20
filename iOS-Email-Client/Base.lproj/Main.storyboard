@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="bgc-oZ-Vag">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -1279,7 +1279,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gNg-2z-CrL" id="sWS-XJ-yh7">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Erika Perugachi opened: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SWE-Z1-5em">
@@ -1444,31 +1444,46 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="emailTableHeaderView" rowHeight="100" id="egv-Jd-zFn">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="emailTableHeaderView" rowHeight="100" id="egv-Jd-zFn" customClass="EmailDetailHeaderCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="egv-Jd-zFn" id="h5Q-w5-li9">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your People in The Club" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qlc-nc-Hc8">
-                                                    <rect key="frame" x="28" y="15" width="319" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="0Tm-7f-VNo"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BC5-lI-cT3">
+                                                    <rect key="frame" x="28" y="10" width="319" height="80"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your People in The Club" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qlc-nc-Hc8">
+                                                            <rect key="frame" x="0.0" y="0.0" width="319" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="21" id="0Tm-7f-VNo"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sW4-xU-KO6" customClass="TagListView" customModule="TagListView">
+                                                            <rect key="frame" x="0.0" y="21" width="319" height="59"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        </view>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="Qlc-nc-Hc8" firstAttribute="leading" secondItem="h5Q-w5-li9" secondAttribute="leading" constant="28" id="cU6-ep-d7F"/>
-                                                <constraint firstAttribute="trailing" secondItem="Qlc-nc-Hc8" secondAttribute="trailing" constant="28" id="tkT-Cw-Zb0"/>
-                                                <constraint firstItem="Qlc-nc-Hc8" firstAttribute="top" secondItem="h5Q-w5-li9" secondAttribute="top" constant="15" id="zNQ-Ef-qS5"/>
+                                                <constraint firstItem="BC5-lI-cT3" firstAttribute="top" secondItem="h5Q-w5-li9" secondAttribute="top" constant="10" id="2Is-S0-Mgd"/>
+                                                <constraint firstAttribute="bottom" secondItem="BC5-lI-cT3" secondAttribute="bottom" constant="10" id="aKS-Rt-YUe"/>
+                                                <constraint firstItem="BC5-lI-cT3" firstAttribute="leading" secondItem="h5Q-w5-li9" secondAttribute="leading" constant="28" id="hcS-cx-BWI"/>
+                                                <constraint firstAttribute="trailing" secondItem="BC5-lI-cT3" secondAttribute="trailing" constant="28" id="tGE-Nb-0nX"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.96851271390914917" green="0.96889704465866089" blue="0.97216635942459106" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="labelsListView" destination="sW4-xU-KO6" id="DzF-0N-V13"/>
+                                            <outlet property="subjectHeightConstraint" destination="0Tm-7f-VNo" id="b6y-ax-Vlh"/>
+                                            <outlet property="subjectLabel" destination="Qlc-nc-Hc8" id="gye-d9-Nd7"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="emailTableFooterView" rowHeight="100" id="1lA-E1-4rs" customClass="EmailDetailFooterCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="155.5" width="375" height="100"/>

@@ -59,7 +59,7 @@ class User: Object {
         return "\(firstName) \(lastName)"
     }
     
-    func nextPageToken(for label:Label) -> String? {
+    func nextPageToken(for label:MyLabel) -> String? {
         switch label {
         case .inbox:
             return self.inboxNextPageToken
@@ -78,7 +78,7 @@ class User: Object {
         }
     }
     
-    func historyId(for label:Label) -> Int64 {
+    func historyId(for label:MyLabel) -> Int64 {
         switch label {
         case .inbox:
             return self.inboxHistoryId
@@ -97,7 +97,7 @@ class User: Object {
         }
     }
     
-    func getUpdateDate(for label:Label) -> Date? {
+    func getUpdateDate(for label:MyLabel) -> Date? {
         switch label {
         case .inbox:
             return self.inboxUpdateDate

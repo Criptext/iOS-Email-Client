@@ -496,7 +496,7 @@ enum Icon {
     }
 }
 
-enum Label {
+enum MyLabel {
     case inbox
     case draft
     case sent

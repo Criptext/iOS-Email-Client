@@ -19,6 +19,7 @@ class EmailDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         emailData.mockEmails()
+        emailData.mockLabels()
         setupMoreOptionsViews()
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
         backgroundOverlayView.addGestureRecognizer(tapGestureRecognizer)
@@ -31,6 +32,8 @@ class EmailDetailViewController: UIViewController {
     func setupMoreOptionsViews(){
         emailsTableView.rowHeight = UITableViewAutomaticDimension
         emailsTableView.estimatedRowHeight = 108
+        emailsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
+        emailsTableView.estimatedSectionHeaderHeight = 56;
         optionsContainerView.isHidden = false
         backgroundOverlayView.isHidden = true
         backgroundOverlayView.alpha = 0.0
@@ -65,23 +68,20 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableHeaderView")
+        let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableHeaderView") as! EmailDetailHeaderCell
+        headerView.addLabels(emailData.labels)
+        headerView.setSubject(emailData.subject)
         return headerView
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableFooterView")
-        return headerView
+        let footerView = tableView.dequeueReusableCell(withIdentifier: "emailTableFooterView")
+        return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 78.0
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 56.0
-    }
-    
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate{

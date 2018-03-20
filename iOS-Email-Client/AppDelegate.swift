@@ -61,12 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var initialVC:UIViewController!
         
         let defaults = UserDefaults.standard
-        if defaults.string(forKey: "activeAccount") != nil {
+        if false {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions)
         }else{
             //Go to login
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
         

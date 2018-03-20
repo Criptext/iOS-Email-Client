@@ -9,7 +9,19 @@
 import Foundation
 
 class EmailDetailData{
-    var emails : [EmailDetail] = [EmailDetail]()
+    var emails = [EmailDetail]()
+    var labels = [String]()
+    var subject = "This is a large subject to display a 2 lines subject"
+    
+    func mockLabels(){
+        labels.append("Inbox")
+        labels.append("Spam")
+        labels.append("Starred")
+        labels.append("Important")
+        labels.append("Hola")
+        labels.append("Principal")
+        labels.append("Trabajo")
+    }
     
     func mockEmails(){
         let email1 = EmailDetail()
