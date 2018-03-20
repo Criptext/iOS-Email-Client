@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegate{
+class HistoryUIPopover: BaseUIPopover{
     @IBOutlet weak var attachmentsTableView: UITableView!
     @IBOutlet weak var historyTitleLabel: UILabel!
     @IBOutlet weak var historyTitleImage: UIImageView!
@@ -16,33 +16,13 @@ class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegat
     var historyTitleText: String!
     var historyImage: UIImage!
     var cellHeight: CGFloat = 0
-    var overlay: UIView?
     
     init(){
-        super.init(nibName: "HistoryUIPopover", bundle: nil)
-        self.modalPresentationStyle = UIModalPresentationStyle.popover;
-        self.popoverPresentationController?.delegate = self;
+        super.init("HistoryUIPopover")
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-    
-    deinit {
-        guard let overlay = overlay else {
-            return
-        }
-        DispatchQueue.main.async() {
-            UIView.animate(withDuration: 0.1, animations: {
-                overlay.alpha = 0.0
-            }, completion: { _ in
-                overlay.removeFromSuperview()
-            })
-        }
-    }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle{
-        return .none
     }
     
     override func viewDidLoad() {
@@ -51,27 +31,6 @@ class HistoryUIPopover: UIViewController, UIPopoverPresentationControllerDelegat
         historyTitleImage.image = historyImage
     }
     
-    dynamic func presentationController(_ presentationController: UIPresentationController, willPresentWithAdaptiveStyle style: UIModalPresentationStyle, transitionCoordinator: UIViewControllerTransitionCoordinator?) {
-        
-        let parentView = presentationController.presentingViewController.view
-        
-        let overlay = UIView(frame: (parentView?.bounds)!)
-        overlay.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
-        parentView?.addSubview(overlay)
-        
-        let views: [String: UIView] = ["parentView": parentView!, "overlay": overlay]
-        
-        parentView?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[overlay]|", options: [], metrics: nil, views: views))
-        parentView?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[overlay]|", options: [], metrics: nil, views: views))
-        
-        overlay.alpha = 0.0
-        
-        transitionCoordinator?.animate(alongsideTransition: { _ in
-            overlay.alpha = 1.0
-        }, completion: nil)
-        
-        self.overlay = overlay
-    }
 }
 
 extension HistoryUIPopover: UITableViewDelegate, UITableViewDataSource{

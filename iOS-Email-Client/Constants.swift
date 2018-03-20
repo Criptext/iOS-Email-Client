@@ -138,32 +138,3 @@ struct Constants {
     static let htmlBottomWrapper = "</body></html>"
 
 }
-
-enum CriptextColor {
-    case mainUI
-    case iconDisable
-    case iconAlert
-    case borderUnsent
-    case textUnsent
-    case borderIcon
-    case borderAlert
-    
-    var color: UIColor {
-        switch self {
-        case .mainUI:
-            return UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
-        case .borderIcon:
-            return UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 0.63)
-        case .iconDisable:
-            return UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1)
-        case .iconAlert:
-            return UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1)
-        case .borderUnsent:
-            return UIColor(red: 227/255, green: 102/255, blue: 102/255, alpha: 1)
-        case .textUnsent:
-            return UIColor(red: 238/255, green: 163/255, blue: 163/255, alpha: 1)
-        case .borderAlert:
-            return UIColor(red: 255/255, green: 187/255, blue: 194/255, alpha: 1)
-        }
-    }
-}

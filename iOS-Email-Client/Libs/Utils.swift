@@ -9,40 +9,32 @@
 import Foundation
 
 class Utils{
-    class func getLabelHeight(_ text: NSMutableAttributedString, width: CGFloat, fontSize: CGFloat) -> CGFloat {
+    
+    class func createLabelWithDynamicHeight(_ width: CGFloat, _ fontSize: CGFloat) -> UILabel {
         let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
         
         label.textColor=UIColor.black
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.lineBreakMode = .byWordWrapping
         label.font = Font.regular.size(fontSize)
         label.numberOfLines = 0
         
-        label.attributedText = text
-        label.sizeToFit()
-        return label.frame.height
+        return label
     }
     
-    class func getLabelHeight(_ text: String, width: CGFloat, fontSize: CGFloat) -> CGFloat {
-        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+    class func getLabelHeight(_ text: Any, width: CGFloat, fontSize: CGFloat) -> CGFloat {
+        let label = createLabelWithDynamicHeight(width, fontSize)
+        if text is NSMutableAttributedString {
+            label.attributedText = text as! NSMutableAttributedString
+        } else {
+            label.text = text as? String
+        }
         
-        label.textColor=UIColor.black
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.font = Font.regular.size(fontSize)
-        label.numberOfLines = 0
-        
-        label.text = text
         label.sizeToFit()
         return label.frame.height
     }
     
     class func getNumberOfLines(_ text: String, width: CGFloat, fontSize: CGFloat) -> CGFloat {
-        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
-        
-        label.textColor=UIColor.black
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.font = Font.regular.size(fontSize)
-        label.numberOfLines = 0
-        
+        let label = createLabelWithDynamicHeight(width, fontSize)
         label.text = text
         label.sizeToFit()
         return label.frame.height/label.font.pointSize

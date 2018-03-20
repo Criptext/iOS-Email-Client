@@ -109,6 +109,7 @@
 		7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5B2056D1170053219F /* ContactsDetailUIPopover.swift */; };
 		7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */; };
 		7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5F205816470053219F /* UnsentUIPopover.swift */; };
+		7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
 		7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */; };
 		7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C632034A4D800AB96EF /* StatusTextField.swift */; };
 		7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */; };
@@ -286,6 +287,7 @@
 		7C63AB5B2056D1170053219F /* ContactsDetailUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailUIPopover.swift; sourceTree = "<group>"; };
 		7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsentUIPopover.xib; sourceTree = "<group>"; };
 		7C63AB5F205816470053219F /* UnsentUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsentUIPopover.swift; sourceTree = "<group>"; };
+		7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIPopover.swift; sourceTree = "<group>"; };
 		7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDrawerController.swift; sourceTree = "<group>"; };
 		7C8D6C632034A4D800AB96EF /* StatusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTextField.swift; sourceTree = "<group>"; };
 		7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				7CDB465D203E336A007C9637 /* FeedViewController.swift */,
 				7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */,
 				7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */,
+				7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -990,6 +993,7 @@
 				7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */,
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
+				7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */,
 				7C8D6C74203735E000AB96EF /* Constants.swift in Sources */,
 				41AAC51A201A9FC300809C4D /* ActivityTableViewCell.swift in Sources */,
 				7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */,

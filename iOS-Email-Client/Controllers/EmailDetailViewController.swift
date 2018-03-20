@@ -21,6 +21,7 @@ class EmailDetailViewController: UIViewController {
         emailData.mockEmails()
         setupMoreOptionsViews()
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
+        backgroundOverlayView.addGestureRecognizer(tapGestureRecognizer)
         for index in 0..<emailData.emails.count{
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
             emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
@@ -45,7 +46,6 @@ class EmailDetailViewController: UIViewController {
             finished in
                 self.optionsContainerView.isHidden = true
                 self.backgroundOverlayView.isHidden = true
-            self.backgroundOverlayView.removeGestureRecognizer(self.tapGestureRecognizer)
         })
     }
 }
@@ -162,9 +162,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
             self.optionsContainerOffsetConstraint.constant = 0.0
             self.backgroundOverlayView.alpha = 1.0
             self.view.layoutIfNeeded()
-        }, completion: {
-            finished in
-            self.backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
         })
     }
 }

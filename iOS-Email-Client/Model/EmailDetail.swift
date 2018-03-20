@@ -18,7 +18,7 @@ class EmailDetail: Object {
     @objc dynamic var content = ""
     @objc dynamic var preview = ""
     @objc dynamic var subject = ""
-    @objc dynamic var delivered = ""
+    @objc dynamic var delivered = DeliverStatus.SENT
     @objc dynamic var date : Date?
     @objc dynamic var isTrash = false
     @objc dynamic var isDraft = false
@@ -33,6 +33,13 @@ class EmailDetail: Object {
     }
     
     var isUnsent: Bool{
-        return delivered == "unsent"
+        return delivered == DeliverStatus.UNSENT
     }
+}
+
+struct DeliverStatus {
+    static let PENDING = 0
+    static let SENT = 1
+    static let DELIVERED = 2
+    static let UNSENT = -1
 }

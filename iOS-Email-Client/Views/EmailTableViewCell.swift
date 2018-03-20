@@ -84,8 +84,8 @@ class EmailTableViewCell: UITableViewCell{
         previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
         setCollapsedIcons(email)
         if(email.isUnsent){
-            previewLabel.textColor = CriptextColor.textUnsent.color
-            borderBGView.layer.borderColor = CriptextColor.borderUnsent.color.cgColor
+            previewLabel.textColor = .alertText
+            borderBGView.layer.borderColor = UIColor.alertLight.cgColor
         }
     }
     
@@ -101,8 +101,8 @@ class EmailTableViewCell: UITableViewCell{
         let hasOpens = true
         let hasAttachments = true
         
-        miniReadIconView.tintColor = hasOpens ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
-        miniAttachmentIconView.tintColor = hasAttachments ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
+        miniReadIconView.tintColor = hasOpens ?  .mainUI : .neutral
+        miniAttachmentIconView.tintColor = hasAttachments ?  .mainUI : .neutral
     }
     
     func setExpandedIcons(_ email: EmailDetail){
@@ -118,15 +118,15 @@ class EmailTableViewCell: UITableViewCell{
             return
         }
         
-        readIconView.tintColor = hasOpens ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
-        readView.layer.borderColor = hasOpens ?  CriptextColor.borderIcon.color.cgColor : CriptextColor.iconDisable.color.cgColor
+        readIconView.tintColor = hasOpens ?  .mainUI : .neutral
+        readView.layer.borderColor = hasOpens ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
         
-        attachmentIconView.tintColor = hasAttachments ?  CriptextColor.mainUI.color : CriptextColor.iconDisable.color
-        attachmentView.layer.borderColor = hasAttachments ?  CriptextColor.borderIcon.color.cgColor : CriptextColor.iconDisable.color.cgColor
+        attachmentIconView.tintColor = hasAttachments ?  .mainUI : .neutral
+        attachmentView.layer.borderColor = hasAttachments ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
         
-        unsendIconView.tintColor =  isUnsent ?  CriptextColor.iconAlert.color : .white
-        unsendView.backgroundColor = isUnsent ? .white : CriptextColor.iconAlert.color
-        unsendView.layer.borderColor = isUnsent ?  CriptextColor.borderUnsent.color.cgColor : CriptextColor.iconAlert.color.cgColor
+        unsendIconView.tintColor =  isUnsent ?  .alert : .white
+        unsendView.backgroundColor = isUnsent ? .white : .alert
+        unsendView.layer.borderColor = isUnsent ?  UIColor.alertLight.cgColor : UIColor.alert.cgColor
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
