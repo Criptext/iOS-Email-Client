@@ -12,6 +12,7 @@ import WebKit
 protocol EmailTableViewCellDelegate {
     func tableViewCellDidLoadContent(_ cell:EmailTableViewCell)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
+    func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -33,7 +34,12 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var replyView: UIView!
     @IBOutlet weak var replyIconView: UIImageView!
     @IBOutlet weak var webViewWrapperView: UIView!
-    var content = ""
+    @IBOutlet weak var borderBGView: UIView!
+    @IBOutlet weak var contactsCollapseLabel: UILabel!
+    @IBOutlet weak var contactsExpandLabel: UILabel!
+    @IBOutlet weak var miniAttachmentIconView: UIImageView!
+    @IBOutlet weak var miniReadIconView: UIImageView!
+    @IBOutlet weak var attachmentsTableView: UITableView!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
     
@@ -42,30 +48,85 @@ class EmailTableViewCell: UITableViewCell{
         setupView()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
+        attachmentsTableView.delegate = self
+        attachmentsTableView.dataSource = self
+        let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
+        attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentTableCell")
     }
     
     func setupView(){
+        backgroundColor = .clear
         webView.navigationDelegate = self
         heightConstraint.constant = myHeight
         unsendView.layer.borderWidth = 1
-        unsendView.layer.borderColor = UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1).cgColor
         readView.layer.borderWidth = 1
-        readView.layer.borderColor = UIColor(red: 0, green: 145/255, blue: 1, alpha: 0.63).cgColor
         attachmentView.layer.borderWidth = 1
-        attachmentView.layer.borderColor = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1).cgColor
+        borderBGView.layer.borderWidth = 1
+        borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
     }
     
-    func setContent(_ preview: String, _ content : String, isExpanded: Bool){
-        self.content = content
-        previewLabel.text = preview
+    func setContent(_ email: EmailDetail){
+        let isExpanded = email.isExpanded
         webViewWrapperView.isHidden = !isExpanded
-        if(isExpanded){
-            if(!loadedContent){
-                webView.loadHTMLString(content, baseURL: nil)
-            }
-        }
         expandedDetailView.isHidden = !isExpanded
+        attachmentsTableView.isHidden = !isExpanded
         collapsedDetailView.isHidden = isExpanded
+        if(isExpanded){
+            setExpandedContent(email)
+        }else{
+            setCollapsedContent(email)
+        }
+    }
+    
+    func setCollapsedContent(_ email: EmailDetail){
+        let preview = email.isUnsent ? "Unsent" : email.preview
+        let numberOfLines = Utils.getNumberOfLines(preview, width: previewLabel.frame.width, fontSize: 17.0)
+        previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
+        setCollapsedIcons(email)
+        if(email.isUnsent){
+            previewLabel.textColor = .alertText
+            borderBGView.layer.borderColor = UIColor.alertLight.cgColor
+        }
+    }
+    
+    func setExpandedContent(_ email: EmailDetail){
+        let content = email.content
+        if(!loadedContent){
+            webView.loadHTMLString(content, baseURL: nil)
+        }
+        setExpandedIcons(email)
+    }
+    
+    func setCollapsedIcons(_ email: EmailDetail){
+        let hasOpens = true
+        let hasAttachments = true
+        
+        miniReadIconView.tintColor = hasOpens ?  .mainUI : .neutral
+        miniAttachmentIconView.tintColor = hasAttachments ?  .mainUI : .neutral
+    }
+    
+    func setExpandedIcons(_ email: EmailDetail){
+        let isSecure = email.secure
+        let hasOpens = true
+        let hasAttachments = true
+        let isUnsent = email.isUnsent
+        
+        guard isSecure == true else {
+            readView.isHidden = true
+            attachmentView.isHidden = true
+            unsendView.isHidden = true
+            return
+        }
+        
+        readIconView.tintColor = hasOpens ?  .mainUI : .neutral
+        readView.layer.borderColor = hasOpens ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
+        
+        attachmentIconView.tintColor = hasAttachments ?  .mainUI : .neutral
+        attachmentView.layer.borderColor = hasAttachments ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
+        
+        unsendIconView.tintColor =  isUnsent ?  .alert : .white
+        unsendView.backgroundColor = isUnsent ? .white : .alert
+        unsendView.layer.borderColor = isUnsent ?  UIColor.alertLight.cgColor : UIColor.alert.cgColor
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
@@ -73,25 +134,37 @@ class EmailTableViewCell: UITableViewCell{
             return
         }
         let touchPt = gestureRecognizer.location(in: self.contentView)
-        guard let tappedView = self.hitTest(touchPt, with: nil) else {
+        guard touchPt.y < 103.0 + myHeight,
+            let tappedView = self.hitTest(touchPt, with: nil) else {
             return
         }
         
         if tappedView == self.attachmentView || tappedView == self.attachmentIconView{
-            // TODO: call delegate to handle attachment icon click
+            delegate.tableViewCellDidTapIcon(self, self.attachmentView, .attachment)
         } else if tappedView == self.unsendView || tappedView == self.unsendIconView{
-            // TODO: call delegate to handle unsend icon click
+            delegate.tableViewCellDidTapIcon(self, self.unsendView, .unsend)
         } else if tappedView == self.readView || tappedView == self.readIconView{
-            // TODO: call delegate to handle read icon click
+            delegate.tableViewCellDidTapIcon(self, self.readView, .read)
         } else if tappedView == self.optionsView || tappedView == self.optionsIconView{
-            // TODO: call delegate to handle options icon click
+            delegate.tableViewCellDidTapIcon(self, self.optionsView, .options)
         } else if tappedView == self.replyView || tappedView == self.replyIconView{
-            // TODO: call delegate to handle reply icon click
+            delegate.tableViewCellDidTapIcon(self, self.replyView, .reply)
         } else if tappedView == self.moreRecipientsLabel{
-            // TODO: call delegate to handle contacts label click
+            delegate.tableViewCellDidTapIcon(self, self.moreRecipientsLabel, .contacts)
         } else {
             delegate.tableViewCellDidTap(self)
         }
+    }
+}
+
+extension EmailTableViewCell{
+    enum IconType {
+        case attachment
+        case unsend
+        case read
+        case options
+        case reply
+        case contacts
     }
 }
 
@@ -120,7 +193,6 @@ extension EmailTableViewCell: WKNavigationDelegate{
             return
         }
         myHeight = webView.scrollView.contentSize.height
-        print(self.myHeight)
         heightConstraint.constant = self.myHeight
         loadedContent = true
         guard let delegate = self.delegate else {
@@ -128,5 +200,22 @@ extension EmailTableViewCell: WKNavigationDelegate{
         }
         delegate.tableViewCellDidLoadContent(self)
         stopObservingHeight()
+    }
+}
+
+extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentTableCell") as! AttachmentTableCell
+        cell.setNameAndSize("Red Velvet Members.pdf", "23 MB")
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 58.0
     }
 }

@@ -136,4 +136,5 @@ struct Constants {
     " <body>"
     
     static let htmlBottomWrapper = "</body></html>"
+
 }

@@ -11,14 +11,14 @@ import Foundation
 class EmailDetailFooterCell: UITableViewCell{
     
     @IBAction func onPressReply(_ sender: Any) {
-        print("Reply!")
+        // TODO Reply feature
     }
     
     @IBAction func onPressReplyAll(_ sender: Any) {
-        print("Reply All!")
+        // TODO Reply All feature
     }
     
     @IBAction func onPressForward(_ sender: Any) {
-        print("Forward!")
+        // TODO Forward feature
     }
 }
