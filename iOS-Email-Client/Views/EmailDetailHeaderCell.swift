@@ -30,7 +30,7 @@ class EmailDetailHeaderCell: UITableViewCell{
         }
         for label in labels {
             let tag = labelsListView.addTag(label.text)
-            tag.tagBackgroundColor = UIColor(hexString: label.color, alpha: 1.0)
+            tag.tagBackgroundColor = UIColor(hex: label.color)
         }
         labelsListView.invalidateIntrinsicContentSize()
     }

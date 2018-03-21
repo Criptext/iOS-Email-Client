@@ -19,7 +19,6 @@ class Label : Object {
         super.init()
         self.text = labelText
         self.color = Utils.generateRandomColor().toHexString()
-        print(self.color)
     }
     
     required init(realm: RLMRealm, schema: RLMObjectSchema) {
