@@ -1556,7 +1556,7 @@ extension APIManager {
     }
     
     //error, ticket, emailsAdded[Email], emailsDeleted[String], labelsAdded[String:[String]], labelsRemoved[String:[String]]
-    class func getUpdates(_ service:GTLRService, since historyId:Int64, folder label:Label, user id:String, completionHandler handler: @escaping ((GTLRServiceTicket, [Email]?, [String]?, [String:[String]]?, [String:[String]]?, [Contact]?, Error?) -> Void)){
+    class func getUpdates(_ service:GTLRService, since historyId:Int64, folder label:MyLabel, user id:String, completionHandler handler: @escaping ((GTLRServiceTicket, [Email]?, [String]?, [String:[String]]?, [String:[String]]?, [Contact]?, Error?) -> Void)){
         
         let query = GTLRGmailQuery_UsersHistoryList.query(withUserId: id)
         query.startHistoryId = UInt64(historyId)

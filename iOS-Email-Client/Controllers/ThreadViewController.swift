@@ -16,7 +16,7 @@ class ThreadViewController: UITableViewController {
     
     var currentUser:User!
     var currentService: GTLRService!
-    var selectedLabel:Label!
+    var selectedLabel:MyLabel!
     var attachmentHash = [String:[AttachmentCriptext]]()
     var activities = [String:Activity]()
     
@@ -216,12 +216,12 @@ extension ThreadViewController {
             return
         }
         
-        let modifyObject = GTLRGmail_ModifyMessageRequest(json: ["removeLabelIds": [Label.unread.id]])
+        let modifyObject = GTLRGmail_ModifyMessageRequest(json: ["removeLabelIds": [MyLabel.unread.id]])
         let query = GTLRGmailQuery_UsersMessagesModify.query(withObject: modifyObject, userId: "me", identifier: email.id)
         
         self.currentService.executeQuery(query) { (ticket, derpo, error) in
             if error == nil {
-                email.labels = email.labels.filter{$0 != Label.unread.id}
+                email.labels = email.labels.filter{$0 != MyLabel.unread.id}
                 self.tableView.reloadRows(at: [self.tableView.indexPathForSelectedRow ?? IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.automatic)
                 (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
             }

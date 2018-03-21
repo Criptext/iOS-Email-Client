@@ -39,7 +39,7 @@ class DetailViewController: UIViewController {
     var currentEmail:Email!
     var currentEmailIndex:Int!
     var threadEmailArray:[Email]!
-    var selectedLabel:Label!
+    var selectedLabel:MyLabel!
     
     var currentUser: User!
     var currentService: GTLRService!
@@ -392,7 +392,7 @@ class DetailViewController: UIViewController {
             if self.selectedLabel == .inbox || self.selectedLabel == .junk {
                 DBManager.update(self.currentEmail, labels: self.currentEmail.labels.filter{$0 != self.selectedLabel.id})
             }
-            self.currentEmail.labels.append(Label.trash.id)
+            self.currentEmail.labels.append(MyLabel.trash.id)
             DBManager.update(self.currentEmail, labels: self.currentEmail.labels)
             NotificationCenter.default.post(name: Notification.Name(rawValue:"EmailTrashed"), object: nil, userInfo:["email":self.currentEmail])
             self.navigationController?.popViewController(animated: true)
@@ -445,9 +445,9 @@ class DetailViewController: UIViewController {
             var removeLabels:[String]?
             
             if self.currentEmail.isRead() {
-                addLabels = [Label.unread.id]
+                addLabels = [MyLabel.unread.id]
             } else {
-                removeLabels = [Label.unread.id]
+                removeLabels = [MyLabel.unread.id]
             }
             
             self.showSnackbar("Marking mail as \(title)...", attributedText: nil, buttons: "", permanent: true)
@@ -467,9 +467,9 @@ class DetailViewController: UIViewController {
                                             self.showSnackbar("Mail marked as \(title)", attributedText: nil, buttons: "", permanent: false)
                                             
                                             if self.currentEmail.isRead() {
-                                                DBManager.update(self.currentEmail, labels: Array(Set(self.currentEmail.labels + [Label.unread.id])))
+                                                DBManager.update(self.currentEmail, labels: Array(Set(self.currentEmail.labels + [MyLabel.unread.id])))
                                             } else {
-                                                DBManager.update(self.currentEmail, labels: self.currentEmail.labels.filter{$0 != Label.unread.id})
+                                                DBManager.update(self.currentEmail, labels: self.currentEmail.labels.filter{$0 != MyLabel.unread.id})
                                             }
                                             
 //                                            let imagename = self.currentEmail.isRead() ? "mark_unread" : "mark_read"
@@ -651,7 +651,7 @@ class DetailViewController: UIViewController {
             self.showSnackbar("Archived", attributedText: nil, buttons: "", permanent: false)
             
             DBManager.update(self.currentEmail, labels: self.currentEmail.labels.filter{$0 != self.selectedLabel.id})
-            DBManager.update(self.currentEmail, labels: self.currentEmail.labels.filter{$0 != Label.unread.id })
+            DBManager.update(self.currentEmail, labels: self.currentEmail.labels.filter{$0 != MyLabel.unread.id })
             
             (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
         }

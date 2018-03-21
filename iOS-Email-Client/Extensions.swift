@@ -496,7 +496,7 @@ enum Icon {
     }
 }
 
-enum Label {
+enum MyLabel {
     case inbox
     case draft
     case sent
@@ -575,10 +575,21 @@ enum Commands:Int {
 }
 
 extension UIColor {
+    
     static let mainUI = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
     static let mainUILight = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 0.63)
     static let neutral = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1)
     static let alert = UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1)
     static let alertLight = UIColor(red: 227/255, green: 102/255, blue: 102/255, alpha: 1)
     static let alertText = UIColor(red: 238/255, green: 163/255, blue: 163/255, alpha: 1)
+    
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        return String(format:"%06x", rgb)
+    }
 }

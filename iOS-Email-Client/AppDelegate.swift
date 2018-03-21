@@ -193,9 +193,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         inboxVC.register(deviceTokenString)
     }
-    
-    
-    
 }
 
 extension AppDelegate: UISplitViewControllerDelegate {

@@ -114,7 +114,7 @@ class DBManager {
         }
     }
  
-    class func update(_ user:User, badge:NSNumber, label:Label){
+    class func update(_ user:User, badge:NSNumber, label:MyLabel){
         let realm = try! Realm()
         
         let badgeString = String(describing: badge)
@@ -130,7 +130,7 @@ class DBManager {
         }
     }
     
-    class func update(_ user:User, historyId:Int64, label:Label){
+    class func update(_ user:User, historyId:Int64, label:MyLabel){
         let realm = try! Realm()
         
         try! realm.write() {
@@ -160,7 +160,7 @@ class DBManager {
         }
     }
     
-    class func update(_ user:User, nextPageToken:String?, label:Label){
+    class func update(_ user:User, nextPageToken:String?, label:MyLabel){
         let realm = try! Realm()
         
         try! realm.write() {
@@ -190,7 +190,7 @@ class DBManager {
         }
     }
     
-    class func update(_ user:User, updateDate:Date?, label:Label){
+    class func update(_ user:User, updateDate:Date?, label:MyLabel){
         let realm = try! Realm()
         
         try! realm.write() {
@@ -454,7 +454,7 @@ extension DBManager {
     
     
     
-    class func getMails(from label:Label, since date:Date, current emailArray:[Email], current threadHash:[String:[Email]]) -> ([String:[Email]], [Email]) {
+    class func getMails(from label:MyLabel, since date:Date, current emailArray:[Email], current threadHash:[String:[Email]]) -> ([String:[Email]], [Email]) {
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "labelArraySerialized contains '\(label.id)' AND date < %@", date as CVarArg)
@@ -480,11 +480,11 @@ extension DBManager {
         
         for email in trueResults {
             email.labels = email.labelArraySerialized.components(separatedBy: ",")
-            if label != .trash && email.labels.contains(Label.trash.id) {
+            if label != .trash && email.labels.contains(MyLabel.trash.id) {
                 continue
             }
             
-            if label != .junk && email.labels.contains(Label.junk.id) {
+            if label != .junk && email.labels.contains(MyLabel.junk.id) {
                 continue
             }
             
@@ -838,6 +838,17 @@ extension DBManager {
         
         return trustedDevice
     }
+    
+    //MARK: - Labels
+    
+    class func store(_ label: Label){
+        let realm = try! Realm()
+        label.incrementID()
+        try! realm.write {
+            realm.add(label, update: true)
+        }
+    }
+    
 }
 
 //MARK: - Email Detail
