@@ -683,6 +683,7 @@ extension DBManager {
         
         return Array(results)
     }
+    
 }
 
 //MARK: - Keys related
@@ -792,7 +793,7 @@ extension DBManager {
     class func getSessionRecord(contactId: String, deviceId: Int32) -> CRSessionRecord?{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == \(deviceId)")
         let results = realm.objects(CRSessionRecord.self).filter(predicate)
         
         return results.first
@@ -801,7 +802,7 @@ extension DBManager {
     class func deleteSessionRecord(contactId: String, deviceId: Int32){
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == '\(deviceId)'")
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == \(deviceId)")
         let results = realm.objects(CRSessionRecord.self).filter(predicate)
         
         try! realm.write() {
@@ -838,3 +839,30 @@ extension DBManager {
         return trustedDevice
     }
 }
+
+//MARK: - Email Detail
+
+extension DBManager {
+ 
+    class func store(_ emailDetail: EmailDetail){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(emailDetail, update: true)
+        }
+    }
+}
+
+//MARK: - Email Contact
+
+extension DBManager {
+    
+    class func store(_ emailContacts:[EmailContact]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(emailContacts, update: true)
+        }
+    }
+}
+

@@ -10,6 +10,8 @@ import Foundation
 import RealmSwift
 
 class EmailDetail: Object {
+    
+    @objc dynamic var id = 0
     @objc dynamic var key = ""
     @objc dynamic var threadId = ""
     @objc dynamic var s3Key = ""
@@ -25,7 +27,7 @@ class EmailDetail: Object {
     var isExpanded = false
     
     override static func primaryKey() -> String? {
-        return "key"
+        return "id"
     }
     
     override static func ignoredProperties() -> [String] {
@@ -34,6 +36,11 @@ class EmailDetail: Object {
     
     var isUnsent: Bool{
         return delivered == DeliveryStatus.UNSENT
+    }
+    
+    func incrementID() -> Int {
+        let realm = try! Realm()
+        return (realm.objects(EmailDetail.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
 }
 

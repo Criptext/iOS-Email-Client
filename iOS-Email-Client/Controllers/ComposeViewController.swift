@@ -19,6 +19,7 @@ import RichEditorView
 import SwiftSoup
 import MIBadgeButton_Swift
 import IQKeyboardManagerSwift
+import SignalProtocolFramework
 
 class ComposeViewController: UIViewController {
     @IBOutlet weak var toField: CLTokenInputView!
@@ -36,62 +37,37 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var toHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var editorHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var metadataHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var blackBackground: UIView!
-    @IBOutlet weak var timerContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentTableHeightConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var timerPicker: UIPickerView!
-    
-    @IBOutlet weak var openedCheckbox: M13Checkbox!
-    @IBOutlet weak var sentCheckbox: M13Checkbox!
     
     @IBOutlet weak var contactTableView: UITableView!
     @IBOutlet weak var contactTableViewTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var closeBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var attachmentButtonContainerView: UIView!
-    
     @IBOutlet weak var buttonCollapse: UIButton!
     
-    var currentUser:User!
-    var currentService: GTLRService!
-    var replyingEmail: Email?
-    var replyBody: String?
+    var activeAccount:Account!
     
     var expandedBbcSpacing:CGFloat = 45
     var expandedCcSpacing:CGFloat = 45
-    var expandedMetadataHeight:CGFloat = 182
-    let collapsedMetadataHeight:CGFloat = 90
     
     var toolbarBottomConstraintInitialValue: CGFloat?
     var toolbarHeightConstraintInitialValue: CGFloat?
     
     let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
     
-    let initialValueTopConstraint:CGFloat = 10
-    let offsetValueTopconstraint:CGFloat = 12
     let rowHeight:CGFloat = 65.0
     
     var attachmentArray = [Attachment]() //AttachmentGmail or AttachmentCriptext
     var contactArray = [Contact]()
     
     let imagePicker = CICropPicker()
-    
-    var selectedExpirationDays = 0
-    var selectedExpirationHours = 0
-    var selectedExpirationMinutes = 0
-    
-    //Picker data source
-    let days = Array(0...24)
-    let hours = Array(0...23)
-    let minutes = Array(0...59)
     
     var thumbUpdated = false
     
@@ -109,9 +85,14 @@ class ComposeViewController: UIViewController {
     
     var dismissTapGestureRecognizer: UITapGestureRecognizer!
     
+    let DOMAIN = "criptext.com"
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let defaults = UserDefaults.standard
+        activeAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)
         
         self.sendBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
         self.sendSecureBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
@@ -167,8 +148,6 @@ class ComposeViewController: UIViewController {
         print(self.editorView.lineHeight)
         self.editorHeightConstraint.constant = 150
         
-        self.openedCheckbox.setCheckState(.checked, animated: true)
-        
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
         self.toolbarHeightConstraintInitialValue = toolbarHeightConstraint.constant
         
@@ -177,17 +156,12 @@ class ComposeViewController: UIViewController {
         
         self.imagePicker.delegate = self
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(showTimer(_:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideBlackBackground(_:)))
         self.blackBackground.addGestureRecognizer(tap)
-        //table
         
         self.tableView.separatorStyle = .none
         self.tableView.tableFooterView = UIView()
         self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
-        //load attachments from Criptext
-        if let emailDraft = self.emailDraft {
-            self.loadAttachments(from: emailDraft.body)
-        }
         
         let activityButton = MIBadgeButton(type: .custom)
         activityButton.badgeString = ""
@@ -307,18 +281,7 @@ class ComposeViewController: UIViewController {
     
     func saveDraft() {
         
-        guard let service = self.currentService else {
-            //TODO: alert user
-            self.showAlert("Service unavailable", message: "Please try saving the draft later", style: .alert)
-            return
-        }
         self.resignKeyboard()
-        
-        var recipients = self.toField.allTokens.map({return ($0.displayText, String($0.context as! NSString)) })
-        recipients.append(contentsOf: self.bccField.allTokens.map({return ($0.displayText, String($0.context as! NSString))}))
-        recipients.append(contentsOf: self.ccField.allTokens.map({return ($0.displayText, String($0.context as! NSString))}))
-        let bcc = self.bccField.allTokens.map({return ($0.displayText, String($0.context as! NSString))})
-        let cc = self.ccField.allTokens.map({return ($0.displayText, String($0.context as! NSString))})
         
         var subject = self.subjectField.text ?? ""
         
@@ -328,72 +291,70 @@ class ComposeViewController: UIViewController {
         
         let body = self.addAttachments(to: self.editorView.html)
         
-        self.showSnackbar("Saving Draft...", attributedText: nil, buttons: "", permanent: true)
+        //self.showSnackbar("Saving Draft...", attributedText: nil, buttons: "", permanent: true)
+        
         //update draft
         if self.isDraft, let emailDraft = self.emailDraft {
-            APIManager.updateDraft(message: emailDraft.messageId,
-                                   threadId: emailDraft.threadId,
-                                   to: recipients,
-                                   cc: cc,
-                                   bcc: bcc,
-                                   subject: subject,
-                                   body: body,
-                                   attachments: Array(emailDraft.attachments),
-                                   from: self.currentUser,
-                                   service: service,
-                                   completion: { (error, result) in
-                self.hideSnackbar()
-                if error == nil {
-                    self.dismiss(animated: true){
-                        (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
-                    }
-                }else {
-                    print(error!)
-                    self.showAlert("Network Error", message: "Please retry saving the email draft later", style: .alert)
-                    return
-                }
-            })
+            
             return
         }
         
-        let plainAttachments = self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail]
+        //let plainAttachments = self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail]
+        
         //create draft
-        APIManager.draftMail(to: recipients,
-                             cc: cc,
-                             bcc: bcc,
-                             subject: subject,
-                             body: body,
-                             threadId: replyingEmail?.threadId,
-                             attachments: plainAttachments,
-                             from: self.currentUser,
-                             service:service) { (error, result) in
-            CriptextSpinner.hide(from: self.view)
-            self.hideSnackbar()
-            if error == nil {
-                self.dismiss(animated: true){
-                    (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
-                }
-            }else {
-                print(error!)
-                self.showAlert("Network Error", message: "Please retry saving the email draft later", style: .alert)
-                return
-            }
+        let emailDetail = EmailDetail()
+        emailDetail.id = emailDetail.incrementID()
+        emailDetail.key = "\(NSDate().timeIntervalSince1970)"
+        emailDetail.content = body
+        if(body.count > 100){
+            let index = body.index(body.startIndex, offsetBy: 100)
+            emailDetail.preview = String(body[..<index])
         }
+        else{
+            emailDetail.preview = body
+        }
+        emailDetail.subject = subject
+        emailDetail.date = Date()
+        emailDetail.isDraft = true
+        DBManager.store(emailDetail)
+        
+        //create email contacts
+        var emailContacts = [EmailContact]()
+        self.toField.allTokens.forEach { (token) in
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+        }
+        self.ccField.allTokens.forEach { (token) in
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+        }
+        self.bccField.allTokens.forEach { (token) in
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+        }
+        
+        DBManager.store(emailContacts)
+        
     }
     
-    @objc func showTimer(_ flag:Bool = false){
-        if !flag {
-            self.showAttachmentDrawer(false)
+    func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: EmailDetail){
+        let emailContact = EmailContact()
+        emailContact.id = emailContact.incrementID()
+        emailContact.emailId = emailDetail.id
+        if(token.context == nil){
+            emailContact.contactMail = token.displayText
         }
+        else{
+            emailContact.contactMail = token.context as! String
+        }
+        emailContacts.append(emailContact)
+    }
+    
+    @objc func hideBlackBackground(_ flag:Bool = false){
         
+        self.showAttachmentDrawer(false)
         self.resignKeyboard()
-        
         self.navigationController?.navigationBar.layer.zPosition = flag ? -1 : 0
-        self.timerContainerHeightConstraint.constant = flag ? 290 : 0
-        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
-            self.blackBackground.alpha = flag ? 0.5 : 0
+            self.blackBackground.alpha = 0
         }
     }
     
@@ -453,54 +414,6 @@ class ComposeViewController: UIViewController {
         })
     }
     
-    func loadAttachments(from body:String) {
-        var doc:Document!
-        do {
-            doc = try SwiftSoup.parse(body)
-            
-            let preTags = try doc.getElementsByAttributeValueContaining("class", "criptext_attachment")
-            
-            for attachmentTag in preTags {
-                
-                let content = try attachmentTag.html()
-                
-                let components = content.components(separatedBy: ":")
-                
-                let token = components[0].replacingOccurrences(of: "<wbr>", with: "")
-                let name = components[1].replacingOccurrences(of: "<wbr>", with: "")
-                let size = components[2].replacingOccurrences(of: "<wbr>", with: "")
-                var password = ""
-                if components.count > 3 {
-                    password = components[3].replacingOccurrences(of: "<wbr>", with: "")
-                }
-                
-                var readonly = "0"
-                if components.count > 4 {
-                    readonly = components[4].replacingOccurrences(of: "<wbr>", with: "")
-                }
-                
-                let attach = AttachmentCriptext()
-                attach.fileToken = token
-                attach.fileName = name
-                attach.size = Int(size)!
-                attach.currentPassword = password
-                attach.isReadOnly = readonly == "1"
-                
-                
-                attach.mimeType = mimeTypeForPath(path: attach.fileName)
-                attach.isUploaded = true
-                self.attachmentArray.append(attach)
-                
-                try attachmentTag.html("")
-                try attachmentTag.removeAttr("class")
-                
-                
-            }
-        } catch {
-            print("error loading attachments from draft")
-        }
-    }
-    
     func addAttachments(to body:String) -> String{
         guard !self.attachmentArray.isEmpty else {
             return body
@@ -556,30 +469,29 @@ class ComposeViewController: UIViewController {
                 DBManager.update(attachment, isUploaded: true)
                 continue
             }
-            APIManager.download(attachment: attachment.attachmentId, for: emailDraft.id, with: self.currentService, user: "me", completionHandler: { (error, data) in
-                guard let attachmentData = data else {
-                    //show error
-                    self.showAlert("Network Error", message: "Please retry opening the draft later", style: .alert)
-                    return
-                }
-                
-                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-//                attachment.attachmentId.substring(to: attachment.attachmentId.startIndex.advancedBy(10))
-                let substring = attachment.attachmentId.substring(to: attachment.attachmentId.index(attachment.attachmentId.startIndex, offsetBy: 10))
-                let filePath = documentsPath + "/" + substring + attachment.fileName
-                let fileURL = URL(fileURLWithPath: filePath)
-                
-                do {
-                    try attachmentData.write(to: fileURL)
-                } catch {
-                    //show error
-                    self.showAlert("Network Error", message: "Please retry opening the attachment later", style: .alert)
-                    return
-                }
-                
-                DBManager.update(attachment, isUploaded: true)
-                
-            })
+//            APIManager.download(attachment: attachment.attachmentId, for: emailDraft.id, with: self.currentService, user: "me", completionHandler: { (error, data) in
+//                guard let attachmentData = data else {
+//                    //show error
+//                    self.showAlert("Network Error", message: "Please retry opening the draft later", style: .alert)
+//                    return
+//                }
+//
+//                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+//                let substring = attachment.attachmentId.substring(to: attachment.attachmentId.index(attachment.attachmentId.startIndex, offsetBy: 10))
+//                let filePath = documentsPath + "/" + substring + attachment.fileName
+//                let fileURL = URL(fileURLWithPath: filePath)
+//
+//                do {
+//                    try attachmentData.write(to: fileURL)
+//                } catch {
+//                    //show error
+//                    self.showAlert("Network Error", message: "Please retry opening the attachment later", style: .alert)
+//                    return
+//                }
+//
+//                DBManager.update(attachment, isUploaded: true)
+//
+//            })
         }
     }
     
@@ -630,165 +542,182 @@ class ComposeViewController: UIViewController {
         guard let subject = self.subjectField.text, !subject.isEmpty else {
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             let sendAction = UIAlertAction(title: "Send", style: .default, handler: { (_) in
-                self.sendMail()
+                self.prepareMail()
             })
             self.showAlert("Empty Subject", message: "This email has no subject. Do you want to send it anyway?", style: .alert, actions: [cancelAction, sendAction])
             return
         }
         
-        self.sendMail()
+        self.prepareMail()
     }
     
-    func sendMail(){
-        let subject = self.subjectField.text ?? "No Subject"
+    func processEmailAddress(token: CLToken, criptextEmails: inout Array<Dictionary<String, Any>>, emailArray: inout Array<String>, type: String){
         
-        let recipients = self.toField.allTokens.map { (token) -> String in
-            var finalString = token.displayText
-            
-            if let context = token.context as? NSString {
-                finalString = finalString + " <\(String(context))>"
-            } else {
-                finalString = finalString + " <\(token.displayText)>"
-            }
-            
-            return finalString
+        var email = ""
+        if let emailTemp = token.context as? NSString {
+            email = String(emailTemp)
+        } else {
+            email = token.displayText
         }
         
-        let bcc = self.bccField.allTokens.map { (token) -> String in
-            var finalString = token.displayText
-            
-            if let context = token.context as? NSString {
-                finalString = finalString + " <\(String(context))>"
-            } else {
-                finalString = finalString + " <\(token.displayText)>"
-            }
-            
-            return finalString
+        if(email.contains(DOMAIN)){
+            criptextEmails.append([
+                "recipientId": String(email.split(separator: "@")[0]),
+                "deviceId": 1 as Int32,
+                "type": type
+                ])
         }
+        else{
+            emailArray.append("\(token.displayText) <\(email)>")
+        }
+    }
+    
+    func sendMail(subject: String, guestEmail: Dictionary<String, Any>, criptextEmails: Array<Any>){
         
-        let cc = self.ccField.allTokens.map { (token) -> String in
-            var finalString = token.displayText
+        APIManager.postMailRequest([
+            "subject": subject,
+            "criptextEmails": criptextEmails
+            //"guestEmail": guestEmail
+        ], token: activeAccount.jwt) { (error) in
             
-            if let context = token.context as? NSString {
-                finalString = finalString + " <\(String(context))>"
-            } else {
-                finalString = finalString + " <\(token.displayText)>"
-            }
-            
-            return finalString
-        }
-        
-        var body = self.editorView.html
-        
-        self.toggleInteraction(false)
-        
-        let daySeconds = self.selectedExpirationDays * 86400
-        let hourSeconds = self.selectedExpirationHours * 3600
-        let minuteSeconds = self.selectedExpirationMinutes * 60
-        let totalSeconds = daySeconds + hourSeconds + minuteSeconds
-        
-        var expirationType = ExpirationType.regular
-        
-        if recipients.isEmpty {
-            return
-        }
-        
-        if totalSeconds > 0 {
-            if self.sentCheckbox.checkState == .checked {
-                expirationType = .send
-            }else if self.openedCheckbox.checkState == .checked {
-                expirationType = .open
-            }
-        }
-        
-        let fullString = NSMutableAttributedString(string: "")
-        
-        let image1Attachment = NSTextAttachment()
-        image1Attachment.image = #imageLiteral(resourceName: "lock")
-        
-        let image1String = NSAttributedString(attachment: image1Attachment)
-        
-        fullString.append(image1String)
-        fullString.append(NSAttributedString(string: " Sending secure email..."))
-        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-        
-        guard let emailDraft = self.emailDraft else {
-            APIManager.sendMail(to: recipients,
-                                cc: cc,
-                                bcc: bcc,
-                                subject: subject,
-                                body: body,
-                                replyBody: self.replyBody,
-                                messageId: self.replyingEmail?.messageId,
-                                threadId: self.replyingEmail?.threadId,
-                                draftId: nil,
-                                encrypted: true,
-                                from: self.currentUser,
-                                with: self.attachmentArray,
-                                expiration: (totalSeconds, expirationType)) { (error, result) in
-                                    CriptextSpinner.hide(from: self.view)
-                                    self.toggleInteraction(true)
-                                    
-                                    if let error = error {
-                                        self.showAlert("Network Error", message: error, style: .alert)
-                                        self.hideSnackbar()
-                                        return
-                                    }
-                                    
-                                    guard let _ = result else {
-                                        self.showAlert("Network Error", message: "Please retry sending the email later", style: .alert)
-                                        self.hideSnackbar()
-                                        return
-                                    }
-                                    
-                                    self.dismiss(animated: true, completion: nil)
-            }
-            
-            return
-        }
-        
-        APIManager.getDraftId(message: emailDraft.messageId, service: self.currentService) { (error, draftId) in
-            guard let draftId = draftId else {
-                //no draft in relation to this message id
-                self.toggleInteraction(true)
-                self.showAlert("Network Error", message: "Please retry sending the draft later", style: .alert)
+            self.toggleInteraction(true)
+            if let error = error {
+                self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
+                self.hideSnackbar()
+                self.hideBlackBackground()
                 return
             }
             
-            APIManager.sendMail(to: recipients,
-                                cc: cc,
-                                bcc: bcc,
-                                subject: subject,
-                                body: body,
-                                replyBody: self.replyBody,
-                                messageId: self.replyingEmail?.messageId,
-                                threadId: self.replyingEmail?.threadId,
-                                draftId: draftId,
-                                encrypted: true,
-                                from: self.currentUser,
-                                with: self.attachmentArray,
-                                expiration: (totalSeconds, expirationType)) { (error, result) in
-                                    CriptextSpinner.hide(from: self.view)
-                                    self.toggleInteraction(true)
-                                    
-                                    if let error = error {
-                                        self.showAlert("Network Error", message: error, style: .alert)
-                                        self.hideSnackbar()
-                                        return
-                                    }
-                                    
-                                    guard let _ = result else {
-                                        self.showAlert("Network Error", message: "Please retry sending the email later", style: .alert)
-                                        return
-                                    }
-                                    
-                                    self.dismiss(animated: true){
-                                        (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
-                                    }
-                                    
+            self.dismiss(animated: true){
+                (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
             }
             
         }
+        
+    }
+    
+    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>, index: Int){
+        
+        var recipients = [String]()
+        var knownAddresses = Dictionary<String, Int32>()
+        criptextEmails.forEach { (dictionary: Dictionary<String, Any>) in
+            
+            var criptextEmail = dictionary
+            let recipientId = criptextEmail["recipientId"] as! String
+            let deviceId = criptextEmail["deviceId"] as! Int32
+            if(store.containsSession(recipientId, deviceId: deviceId)){
+                criptextEmail["body"] = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
+                criptextEmails[index] = criptextEmail
+                knownAddresses[recipientId] = deviceId
+            }
+            else{
+                recipients.append(recipientId)
+            }
+            
+        }
+        let params = [
+            "recipients": recipients,
+            "knownAddresses": knownAddresses
+            ] as [String : Any]
+        
+        var criptextEmailsCopy = criptextEmails
+        APIManager.getKeysRequest(params, token: activeAccount.jwt) { (err, response) in
+            
+            if(err != nil){
+                self.showAlert("Network Error", message: err?.localizedDescription, style: .alert)
+                self.hideSnackbar()
+                self.hideBlackBackground()
+                self.toggleInteraction(true)
+                return
+            }
+            
+            let keysArray = response as! Array<Dictionary<String, Any>>
+            keysArray.forEach({ (keys) in
+                
+                let contactRegistrationId = keys["registrationId"] as! Int32
+                let contactPrekeyPublic: Data = Data(base64Encoded:((keys["preKey"] as! NSDictionary).object(forKey: "publicKey") as! String))!
+                let contactSignedPrekeyPublic: Data = Data(base64Encoded:(keys["signedPreKeyPublic"] as! String))!
+                let contactSignedPrekeySignature: Data = Data(base64Encoded:(keys["signedPreKeySignature"] as! String))!
+                let contactIdentityPublicKey: Data = Data(base64Encoded:(keys["identityPublicKey"] as! String))!
+                let contactPreKey: PreKeyBundle = PreKeyBundle.init(registrationId: contactRegistrationId, deviceId: keys["deviceId"] as! Int32, preKeyId: 0, preKeyPublic: contactPrekeyPublic, signedPreKeyPublic: contactSignedPrekeyPublic, signedPreKeyId: keys["signedPreKeyId"] as! Int32, signedPreKeySignature: contactSignedPrekeySignature, identityKey: contactIdentityPublicKey)
+                
+                let sessionBuilder: SessionBuilder = SessionBuilder.init(axolotlStore: store, recipientId: keys["recipientId"] as! String, deviceId: keys["deviceId"] as! Int32)
+                sessionBuilder.processPrekeyBundle(contactPreKey)
+                
+                var criptextEmail = criptextEmailsCopy[index]
+                criptextEmail["body"] = self.encryptMessage(body: body, deviceId: keys["deviceId"] as! Int32, recipientId: keys["recipientId"] as! String, store: store)
+                criptextEmailsCopy[index] = criptextEmail
+            })
+        
+            self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmailsCopy)
+        }
+        
+    }
+    
+    func prepareMail(){
+        
+        let subject = self.subjectField.text ?? "No Subject"
+        
+        var allContacts = [Contact]()
+        var criptextEmails = [Dictionary<String, Any>]()
+        var toArray = [String]()
+        var ccArray = [String]()
+        var bccArray = [String]()
+        
+        self.toField.allTokens.forEach { (token) in
+            if(token.context == nil){
+                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
+            }
+            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &toArray, type: "to")
+        }
+        self.ccField.allTokens.forEach { (token) in
+            if(token.context == nil){
+                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
+            }
+            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &ccArray, type: "cc")
+        }
+        self.bccField.allTokens.forEach { (token) in
+            if(token.context == nil){
+                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
+            }
+            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &bccArray, type: "bcc")
+        }
+        
+        let body = self.editorView.html
+        
+        self.toggleInteraction(false)
+        
+        if toField.allTokens.isEmpty {
+            return
+        }
+        
+        let fullString = NSMutableAttributedString(string: "")
+        let image1Attachment = NSTextAttachment()
+        image1Attachment.image = #imageLiteral(resourceName: "lock")
+        let image1String = NSAttributedString(attachment: image1Attachment)
+        fullString.append(image1String)
+        fullString.append(NSAttributedString(string: " Sending email..."))
+        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
+        
+        let store = CriptextAxolotlStore.init(self.activeAccount.regId, self.activeAccount.identityB64)
+        let guestEmail = [
+            "to": toArray,
+            "cc": ccArray,
+            "bcc": bccArray
+        ]
+        
+        DBManager.store(allContacts)
+        saveDraft()
+        getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails, index: 0)
+        
+    }
+    
+    func encryptMessage(body: String, deviceId: Int32, recipientId: String, store: CriptextAxolotlStore) -> String{
+        
+        let sessionCipher: SessionCipher = SessionCipher.init(axolotlStore: store, recipientId: String(recipientId), deviceId: deviceId)
+        let outgoingMessage: CipherMessage = sessionCipher.encryptMessage(body.data(using: .utf8))
+        return outgoingMessage.serialized().base64EncodedString()
+        
     }
     
     @IBAction func didPressCC(_ sender: UIButton) {
@@ -796,59 +725,8 @@ class ComposeViewController: UIViewController {
         self.collapseCC(needsCollapsing)
     }
     
-    @IBAction func didPressSetTimer(_ sender: UIButton) {
-        self.showTimer(false)
-        
-        let days = self.timerPicker.selectedRow(inComponent: 0)
-        let hours = self.timerPicker.selectedRow(inComponent: 1)
-        let minutes = self.timerPicker.selectedRow(inComponent: 2)
-        
-        
-//        var finalString = ""
-//        
-//        if days > 0 {
-//            finalString = finalString + "\(days) Days "
-//        }
-//        
-//        if hours > 0 {
-//            finalString = finalString + "\(hours) Hrs "
-//        }
-//        
-//        if minutes > 0 {
-//            finalString = finalString + "\(minutes) Mins"
-//        }
-        
-        self.selectedExpirationDays = days
-        self.selectedExpirationHours = hours
-        self.selectedExpirationMinutes = minutes
-        
-    }
-    
-    @IBAction func didPressCancelTimer(_ sender: UIButton) {
-        self.showTimer(false)
-        
-        self.selectedExpirationDays = 0
-        self.selectedExpirationHours = 0
-        self.selectedExpirationMinutes = 0
-        
-        self.timerPicker.selectRow(0, inComponent: 0, animated: true)
-        self.timerPicker.selectRow(0, inComponent: 1, animated: true)
-        self.timerPicker.selectRow(0, inComponent: 2, animated: true)
-        
-    }
-    
     @IBAction func didPressSubject(_ sender: UIButton) {
         self.subjectField.becomeFirstResponder()
-    }
-    
-    @IBAction func checkboxValueChanged(_ sender: M13Checkbox) {
-        if sender == self.openedCheckbox  && self.openedCheckbox.checkState == .checked{
-            self.sentCheckbox.setCheckState(.unchecked, animated: true)
-        }
-        
-        if sender == self.sentCheckbox  && self.sentCheckbox.checkState == .checked{
-            self.openedCheckbox.setCheckState(.unchecked, animated: true)
-        }
     }
     
     @IBAction func didPressAttachment(_ sender: UIButton) {
@@ -1012,6 +890,7 @@ extension ComposeViewController: CICropPickerDelegate {
 
 //MARK: - Document Handler Delegate
 extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate {
+    
     func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         //show document picker
         documentPicker.delegate = self;
@@ -1094,53 +973,53 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
             return
         }
         
-        APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
-            
-            if let error = error as NSError?,
-            let errorObject = error.userInfo["error"] as? [String:String] {
-                var actions = [UIAlertAction]()
-                
-                if error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
-                    let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
-                        UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
-                    })
-                    actions.append(proAction)
-                }
-                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                actions.append(okAction)
-                
-                self.showAlert(errorObject["title"], message: errorObject["description"], style: .alert, actions: actions)
-                
-                //delete attachment
-                self.remove(attachment)
-                return
-            }
-            
-            guard let fileToken = fileToken else {
-                attachment.isUploaded = false
-                print(error!)
-                //show error in UI
-                return
-            }
-            
-            attachment.isUploaded = true
-            attachment.fileToken = fileToken
-            
-            try? FileManager.default.removeItem(atPath:attachment.filePath)
-            
-            //update cell to hide progress bar
-            guard let index = self.attachmentArray.index(where: { (attach) -> Bool in
-                return attach == attachment
-            }) else {
-                //if not found, do nothing
-                return
-            }
-            
-            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
-            
-            cell.progressView.progress = 1
-            cell.progressView.isHidden = true
-        }
+//        APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
+//
+//            if let error = error as NSError?,
+//            let errorObject = error.userInfo["error"] as? [String:String] {
+//                var actions = [UIAlertAction]()
+//
+//                if error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
+//                    let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
+//                        UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
+//                    })
+//                    actions.append(proAction)
+//                }
+//                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+//                actions.append(okAction)
+//
+//                self.showAlert(errorObject["title"], message: errorObject["description"], style: .alert, actions: actions)
+//
+//                //delete attachment
+//                self.remove(attachment)
+//                return
+//            }
+//
+//            guard let fileToken = fileToken else {
+//                attachment.isUploaded = false
+//                print(error!)
+//                //show error in UI
+//                return
+//            }
+//
+//            attachment.isUploaded = true
+//            attachment.fileToken = fileToken
+//
+//            try? FileManager.default.removeItem(atPath:attachment.filePath)
+//
+//            //update cell to hide progress bar
+//            guard let index = self.attachmentArray.index(where: { (attach) -> Bool in
+//                return attach == attachment
+//            }) else {
+//                //if not found, do nothing
+//                return
+//            }
+//
+//            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
+//
+//            cell.progressView.progress = 1
+//            cell.progressView.isHidden = true
+//        }
     }
 }
 
@@ -1439,47 +1318,6 @@ extension ComposeViewController: UITextFieldDelegate {
     }
 }
 
-//MARK: - Picker Delegate
-extension ComposeViewController: UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 3
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch component {
-        case 0:
-            return self.days.count
-        case 1:
-            return self.hours.count
-        case 2:
-            return self.minutes.count
-        default:
-            return 0
-        }
-    }
-}
-
-extension ComposeViewController: UIPickerViewDelegate {
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        var text:String!
-        
-        switch component {
-        case 0:
-            text = "\(self.days[row])"
-        case 1:
-            text = "\(self.hours[row])"
-        case 2:
-            text = "\(self.minutes[row])"
-        default:
-            text = ""
-        }
-        
-        return text
-    }
-}
-
-
 //MARK: - Token Input Delegate
 extension ComposeViewController: CLTokenInputViewDelegate {
     
@@ -1525,11 +1363,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         
         if !(text?.isEmpty)! {
             self.contactArray = DBManager.getContacts(text ?? "")
-            //JUST FOR TESTING
-            self.contactArray.append(Contact(value: ["displayName": "Daniel Tigse", "email": "daniel@criptext.com"]))
-            self.contactArray.append(Contact(value: ["displayName": "Daniel Palma", "email": "daniel@palma.com"]))
-            self.contactArray.append(Contact(value: ["displayName": "Andres Palma", "email": "andres@criptext.com"]))
-            self.contactArray.append(Contact(value: ["displayName": "Catalina Solis", "email": "catalina@cc.com"]))
             
             self.contactTableView.isHidden = self.contactArray.isEmpty
             self.toolbarHeightConstraint.constant = self.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0

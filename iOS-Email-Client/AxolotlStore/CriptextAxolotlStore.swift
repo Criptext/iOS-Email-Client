@@ -62,7 +62,8 @@ extension CriptextAxolotlStore: AxolotlStore{
     }
     
     func isTrustedIdentityKey(_ identityKey: Data, recipientId: String, direction: TSMessageDirection) -> Bool {
-        return identityKeyStore.isTrustedIdentityKey(identityKey, recipientId: recipientId, direction: direction)
+        //return identityKeyStore.isTrustedIdentityKey(identityKey, recipientId: recipientId, direction: direction)
+        return true
     }
     
     func loadPreKey(_ preKeyId: Int32) -> PreKeyRecord! {

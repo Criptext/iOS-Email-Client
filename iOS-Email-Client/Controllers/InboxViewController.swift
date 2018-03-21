@@ -308,9 +308,6 @@ extension InboxViewController{
         
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let composeVC = navComposeVC.childViewControllers.first as! ComposeViewController
-        composeVC.currentService = self.currentService
-        composeVC.currentUser = self.currentUser
-        
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
@@ -716,8 +713,6 @@ extension InboxViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let composeVC = navComposeVC.childViewControllers.first as! ComposeViewController
-        composeVC.currentService = self.currentService
-        composeVC.currentUser = self.currentUser
         composeVC.loadViewIfNeeded()
         composeVC.addToken("support@criptext.com", value: "support@criptext.com", to: composeVC.toField)
         composeVC.subjectField.text = "Criptext iPhone Support"
@@ -1137,24 +1132,25 @@ extension InboxViewController{
             DBManager.restoreState(self.currentUser)
         }
         
-        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
-            let fullString = NSMutableAttributedString(string: "")
-            
-            let image1Attachment = NSTextAttachment()
-            image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
-            
-            let image1String = NSAttributedString(attachment: image1Attachment)
-            
-            fullString.append(image1String)
-            fullString.append(NSAttributedString(string: " Downloading emails..."))
-            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-            
-            self.getEmails("me", labels: [self.selectedLabel.id], completion: completion)
-            return
-        }
+//        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
+//            let fullString = NSMutableAttributedString(string: "")
+//
+//            let image1Attachment = NSTextAttachment()
+//            image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
+//
+//            let image1String = NSAttributedString(attachment: image1Attachment)
+//
+//            fullString.append(image1String)
+//            fullString.append(NSAttributedString(string: " Downloading emails..."))
+//            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
+//
+//            self.getEmails("me", labels: [self.selectedLabel.id], completion: completion)
+//            return
+//        }
         
         guard !self.emailArray.isEmpty else {
             self.refreshControl.endRefreshing()
+            self.hideSnackbar()
             return
         }
         
@@ -1945,8 +1941,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let vcDraft = navComposeVC.childViewControllers.first as! ComposeViewController
-        vcDraft.currentService = self.currentService
-        vcDraft.currentUser = self.currentUser
         vcDraft.attachmentArray = Array(email.attachments)
         vcDraft.emailDraft = email
         vcDraft.isDraft = true
