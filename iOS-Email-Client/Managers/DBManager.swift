@@ -227,6 +227,7 @@ class DBManager {
     }
     
     class func getUsers() -> [User] {
+        return [User()]
         let realm = try! Realm()
         
         return Array(realm.objects(User.self))
@@ -343,6 +344,7 @@ extension DBManager {
     }
     
     class func getAllActivities() -> [String:Activity]{
+        return [:]
         let realm = try! Realm()
         
         let activities = Array(realm.objects(Activity.self).sorted(byKeyPath: "timestamp", ascending: false))
@@ -435,6 +437,7 @@ extension DBManager {
     }
     
     class func getAllAttachments() -> [String: [AttachmentCriptext]]{
+        return [:]
         let realm = try! Realm()
         
         var result: [String: [AttachmentCriptext]] = [:]
@@ -493,6 +496,9 @@ extension DBManager {
     }
     
     class func getMails(from label:MyLabel, since date:Date, current emailArray:[Email], current threadHash:[String:[Email]]) -> ([String:[Email]], [Email]) {
+        let placeholder = EmailDetailData()
+        placeholder.mockEmails()
+        return ([:], placeholder.emails)
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "labelArraySerialized contains '\(label.id)' AND date < %@", date as CVarArg)

@@ -140,7 +140,7 @@ class InboxViewController: UIViewController {
         self.currentUser = DBManager.getUsers().first
         
         self.setButtonItems(isEditing: false)
-        //self.loadMails(from: .inbox, since: Date())
+        self.loadMails(from: .inbox, since: Date())
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
@@ -177,7 +177,7 @@ class InboxViewController: UIViewController {
             
             guard let date = self.currentUser.getUpdateDate(for: self.selectedLabel) else {
                 self.statusBarButton.title = nil
-                self.handleRefresh(self.tableView.refreshControl!, automatic: true, signIn: false, completion: nil)
+//                self.handleRefresh(self.tableView.refreshControl!, automatic: true, signIn: false, completion: nil)
                 return
             }
             
@@ -1054,6 +1054,10 @@ extension InboxViewController{
     }
     
     func loadMails(from label:MyLabel, since date:Date){
+        let tuple = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
+        
+        self.emailArray = tuple.1
+        self.tableView.reloadData()
         return
         let tupleObject = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
         
@@ -1570,14 +1574,18 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             email = self.emailArray[indexPath.row]
         }
         
-        guard let emailArrayHash = self.threadHash[email.threadId] else{
-            return
-        }
+        let emp = EmailDetailData()
+        emp.emails = [email]
+        
+//        guard let emailArrayHash = self.threadHash[email.threadId] else{
+//            return
+//        }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         if self.selectedLabel != .draft {
             let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
+            vc.emailData = emp
             
 //            vc.currentUser = self.currentUser
 //            vc.currentEmail = email
