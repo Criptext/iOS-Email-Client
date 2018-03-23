@@ -302,7 +302,7 @@ class ComposeViewController: UIViewController {
         //let plainAttachments = self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail]
         
         //create draft
-        let emailDetail = EmailDetail()
+        let emailDetail = Email()
         emailDetail.id = emailDetail.incrementID()
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
@@ -334,7 +334,7 @@ class ComposeViewController: UIViewController {
         
     }
     
-    func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: EmailDetail){
+    func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: Email){
         let emailContact = EmailContact()
         emailContact.id = emailContact.incrementID()
         emailContact.emailId = emailDetail.id
@@ -469,29 +469,6 @@ class ComposeViewController: UIViewController {
                 DBManager.update(attachment, isUploaded: true)
                 continue
             }
-//            APIManager.download(attachment: attachment.attachmentId, for: emailDraft.id, with: self.currentService, user: "me", completionHandler: { (error, data) in
-//                guard let attachmentData = data else {
-//                    //show error
-//                    self.showAlert("Network Error", message: "Please retry opening the draft later", style: .alert)
-//                    return
-//                }
-//
-//                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-//                let substring = attachment.attachmentId.substring(to: attachment.attachmentId.index(attachment.attachmentId.startIndex, offsetBy: 10))
-//                let filePath = documentsPath + "/" + substring + attachment.fileName
-//                let fileURL = URL(fileURLWithPath: filePath)
-//
-//                do {
-//                    try attachmentData.write(to: fileURL)
-//                } catch {
-//                    //show error
-//                    self.showAlert("Network Error", message: "Please retry opening the attachment later", style: .alert)
-//                    return
-//                }
-//
-//                DBManager.update(attachment, isUploaded: true)
-//
-//            })
         }
     }
     

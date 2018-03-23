@@ -273,6 +273,39 @@ class InboxViewController: UIViewController {
         buttonCompose.layer.shadowPath = shadowPath.cgPath
     }
     
+    func startNetworkListener(){
+        APIManager.reachabilityManager.startListening()
+        APIManager.reachabilityManager.listener = { status in
+            
+            switch status {
+            case .notReachable, .unknown:
+                //do nothing
+                self.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
+                break
+            default:
+                //try to reconnect
+                //if service doesn't have authorizer, do sign in again
+                //                self.hideSnackbar()
+                guard self.currentService.isReady() else{
+                    GIDSignIn.sharedInstance().signInSilently()
+                    return
+                }
+                
+                //retry saving drafts and sending emails
+                //                let drafts = DBManager.getPendingDrafts()
+                //                let emails = DBManager.getPendingEmails()
+                
+                break
+            }
+        }
+    }
+    
+    func mockupMails(){
+//        self.emailArray = [];
+        let emailData = EmailDetailData()
+        emailData.mockEmails()
+        self.emailArray = emailData.emails
+    }
 }
 
 //MARK: - Modify mails actions
@@ -338,32 +371,8 @@ extension InboxViewController{
             return
         }
         
-        let emailThreadIds = emailsIndexPath.map { return self.emailArray[$0.row].threadId }
-        
-        self.showSnackbar("Archiving...", attributedText: nil, buttons: "", permanent: true)
-        APIManager.threadModifyLabels(add: nil, remove: [self.selectedLabel.id], from: emailThreadIds, with: self.currentService, user:"me") { (error, result) in
-            if self.isCustomEditing {
-                self.didPressEdit()
-            }
-            
-            if error != nil {
-                self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                self.hideSnackbar()
-                return
-            }
-            
-            self.showSnackbar("Archived", attributedText: nil, buttons: "", permanent: false)
-            
-            for indexPath in emailsIndexPath {
-                let threadId = self.emailArray[indexPath.row].threadId
-                for hashEmail in self.threadHash[threadId]!{
-                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
-                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != MyLabel.unread.id })
-                }
-                self.emailArray.remove(at: indexPath.row)
-            }
-            self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
-        }
+//        self.emailArray.remove(at: indexPath.row)
+        self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
     }
     
     @objc func didPressTrash(_ sender: UIBarButtonItem) {
@@ -374,43 +383,8 @@ extension InboxViewController{
             return
         }
         
-        let emailThreadIds = emailsIndexPath.map { return self.emailArray[$0.row].threadId }
-        
-        self.showSnackbar("Sending mail to Trash...", attributedText: nil, buttons: "", permanent: true)
-        APIManager.trash(emails: emailThreadIds, with: self.currentService) { (error, result) in
-            if self.isCustomEditing {
-                self.didPressEdit()
-            }
-            
-            if error != nil {
-                self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                self.hideSnackbar()
-                return
-            }
-            
-            self.showSnackbar("Mail sent to Trash", attributedText: nil, buttons: "", permanent: false)
-            
-            for indexPath in emailsIndexPath {
-                let threadId = self.emailArray[indexPath.row].threadId
-                for hashEmail in self.threadHash[threadId]!{
-                    if self.selectedLabel == .inbox || self.selectedLabel == .junk {
-                        DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
-                    }
-                    hashEmail.labels.append(MyLabel.trash.id)
-                    DBManager.update(hashEmail, labels: hashEmail.labels)
-                }
-                let email = self.emailArray.remove(at: indexPath.row)
-                
-                if !email.isRead() {
-                    let newBadge = UIApplication.shared.applicationIconBadgeNumber - 1
-                    
-                    if newBadge >= 0 {
-                        UIApplication.shared.applicationIconBadgeNumber = newBadge
-                    }
-                }
-            }
-            self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
-        }
+//        let email = self.emailArray.remove(at: emailsIndexPath.first!.row)
+        self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
     }
     
     @objc func emailTrashed(notification:Notification) -> Void {
@@ -431,13 +405,6 @@ extension InboxViewController{
         }
         
         self.tableView.reloadData()
-        
-        if let navController = self.navigationController,
-            navController.viewControllers.count > 1,
-            let threadVC = navController.viewControllers[1] as? ThreadViewController {
-            threadVC.emailArray = self.threadHash[emailTrashed.threadId] ?? []
-            threadVC.tableView.reloadData()
-        }
     }
     
     @objc func didPressMove(_ sender: UIBarButtonItem) {
@@ -460,11 +427,6 @@ extension InboxViewController{
         let emails = emailsIndexPath.map { return self.emailArray[$0.row] }
         
         var count = 0
-        for email in emails {
-            if !email.labels.contains(where: { $0 == MyLabel.unread.id }) {
-                count = count + 1
-            }
-        }
         
         if count == emails.count {
             markRead = false
@@ -513,13 +475,11 @@ extension InboxViewController{
                                             for email in emails {
                                                 var newBadge = UIApplication.shared.applicationIconBadgeNumber
                                                 if markRead {
-                                                    DBManager.update(email, labels: email.labels.filter{$0 != MyLabel.unread.id})
+//                                                    DBManager.update(email, labels: email.labels.filter{$0 != Label.unread.id})
                                                     newBadge = newBadge - 1
                                                     
                                                 } else {
                                                     newBadge = newBadge + 1
-                                                    
-                                                    DBManager.update(email, labels: Array(Set(email.labels + [MyLabel.unread.id])))
                                                 }
                                                 
                                                 if newBadge >= 0 {
@@ -773,7 +733,7 @@ extension InboxViewController{
                                         for indexPath in emailsIndexPath {
                                             let threadId = self.emailArray[indexPath.row].threadId
                                             for hashEmail in self.threadHash[threadId]!{
-                                                DBManager.updateEmail(id: hashEmail.id, addLabels: [selectedMailbox.id], removeLabels: removeLabels)
+                                                DBManager.updateEmail(id: hashEmail.key, addLabels: [selectedMailbox.id], removeLabels: removeLabels)
                                                 
                                             }
                                         }
@@ -1167,146 +1127,7 @@ extension InboxViewController{
             self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
         }
         
-        APIManager.getUpdates(self.currentService, since: self.currentUser.historyId(for: self.selectedLabel), folder: self.selectedLabel, user: "me", completionHandler: { (ticket, emailsAdded, emailsDeleted, labelsAdded, labelsRemoved, parsedContacts, error) in
-            
-            CriptextSpinner.hide(from: self.view)
-            self.refreshControl.endRefreshing()
-            
-            if let error = error {
-                print(error.localizedDescription)
-                self.hideSnackbar()
-                return
-            }
-            
-            if signIn {
-                self.showSnackbar("Updated just now", attributedText: nil, buttons: "", permanent: false)
-            }
-            
-            
-            if let contacts = parsedContacts {
-                DBManager.store(contacts)
-            }
-            
-            if let historyId = (ticket.fetchedObject as! GTLRGmail_ListHistoryResponse).historyId,
-                Int64(truncating: historyId) > self.currentUser.historyId(for: self.selectedLabel) {
-                DBManager.update(self.currentUser, historyId: Int64(truncating: historyId), label: self.selectedLabel)
-            }
-            
-            // it's easier to reload the data from DB for some cases
-            // like archiving a thread
-            var shouldClean = false
-            
-            if var emails = emailsAdded{
-                self.addFetched(&emails)
-            }
-            
-            if let completionHandler = completion {
-                completionHandler()
-            }
-            
-            if let threadId = self.threadToOpen {
-                self.open(threadId: threadId)
-            }
-            
-            //delete emails
-            if let emailIds = emailsDeleted, emailIds.count > 0{
-                //should clean = true
-                for id in emailIds {
-                    DBManager.deleteEmail(id: id)
-                }
-                self.emailArray.removeAll()
-                self.threadHash.removeAll()
-                self.loadMails(from: self.selectedLabel, since: Date())
-            }
-            
-            //labels added
-            if let labels = labelsAdded, labels.count > 0{
-                shouldClean = true
-                //should clean = true
-                for (emailId, labels) in labels {
-                    DBManager.updateEmail(id: emailId, addLabels: labels, removeLabels: nil)
-                }
-            }
-            
-            //labels removed
-            if let labelRemoved = labelsRemoved{
-                shouldClean = true
-                //should clean = true
-                for (emailId, labels) in labelRemoved {
-                    DBManager.updateEmail(id: emailId, addLabels: nil, removeLabels: labels)
-                }
-            }
-            
-            let now = Date()
-            DBManager.update(self.currentUser, updateDate: now, label: self.selectedLabel)
-            self.statusBarButton.title = String(format:"Updated Just Now")
-            
-            APIManager.getActivityPanel(self.currentUser, since: 0, count: "100") { (error, tupleResponse) in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                
-                if let activityArray = tupleResponse?.0 {
-                    DBManager.store(activityArray)
-                    self.activities = DBManager.getAllActivities()
-                }
-                
-                if let attachmentArray = tupleResponse?.1 {
-                    DBManager.store(attachmentArray)
-                    for attachment in attachmentArray {
-                        self.attachmentHash[attachment.emailToken] = [attachment]
-                    }
-                }
-                
-                if shouldClean {
-                    self.emailArray.removeAll()
-                    self.threadHash.removeAll()
-                    self.loadMails(from: self.selectedLabel, since: Date())
-                }
-                
-                self.tableView.reloadData()
-                self.topToolbar.counterButton.title = "0"
-            }
-            
-            
-            guard let parsedEmails = emailsAdded else {
-                return
-            }
-            
-            let criptextEmails = parsedEmails.flatMap({ (email) -> Email? in
-                if email.realCriptextToken.isEmpty {
-                    return nil
-                }
-                
-                return email
-            })
-            
-            
-            let tokens = criptextEmails.map { $0.realCriptextToken }
-            
-            APIManager.getMailSnippets(self.currentUser, tokens: tokens, completion: { (error, results) in
-                if let error = error {
-                    print(error)
-                }
-                
-                guard var results = results else {
-                    return
-                }
-                
-                for criptextEmail in criptextEmails {
-                    guard let snippet = results.removeValue(forKey: criptextEmail.realCriptextToken) else {
-                        continue
-                    }
-                    
-                    DBManager.update(criptextEmail, snippet: snippet)
-                }
-                
-                self.tableView.reloadData()
-                self.topToolbar.counterButton.title = "0"
-                
-            })
-        })
+        //get updates
         
         self.updateAppIcon()
     }
@@ -1335,11 +1156,10 @@ extension InboxViewController{
         
         self.footerActivity.startAnimating()
         APIManager.getMails(
-            self.currentService,
             userId: userId,
             labels: labels,
             pageToken: pageToken
-        ) { (ticket, parsedEmails, parsedContacts, error) in
+        ) { (parsedEmails, parsedContacts, error) in
             CriptextSpinner.hide(from: self.view)
             self.refreshControl.endRefreshing()
             self.footerActivity.stopAnimating()
@@ -1353,12 +1173,12 @@ extension InboxViewController{
                 return
             }
             
-            if let firstEmail = parsedEmails.first,
-                firstEmail.historyId > self.currentUser.historyId(for: self.selectedLabel) {
-                DBManager.update(self.currentUser, historyId: firstEmail.historyId, label: self.selectedLabel)
-            }
+//            if let firstEmail = parsedEmails.first,
+//                firstEmail.historyId > self.currentUser.historyId(for: self.selectedLabel) {
+//                DBManager.update(self.currentUser, historyId: firstEmail.historyId, label: self.selectedLabel)
+//            }
             
-            DBManager.update(self.currentUser, nextPageToken: (ticket.fetchedObject as! GTLRGmail_ListThreadsResponse).nextPageToken, label: self.selectedLabel)
+//            DBManager.update(self.currentUser, nextPageToken: (ticket.fetchedObject as! GTLRGmail_ListThreadsResponse).nextPageToken, label: self.selectedLabel)
             let now = Date()
             DBManager.update(self.currentUser, updateDate: now, label: self.selectedLabel)
             self.statusBarButton.title = "Updated Just Now"
@@ -1369,114 +1189,16 @@ extension InboxViewController{
             if let completionHandler = completion {
                 completionHandler()
             }
-            
-            APIManager.getActivityPanel(self.currentUser, since: self.emailArray.count, count: "50") { (error, tupleResponse) in
-                if let error = error {
-                    print(error)
-                }
-                
-                if let activityArray = tupleResponse?.0 {
-                    DBManager.store(activityArray)
-                    self.activities = DBManager.getAllActivities()
-                }
-                
-                if let attachmentArray = tupleResponse?.1 {
-                    DBManager.store(attachmentArray)
-                    for attachment in attachmentArray {
-                        self.attachmentHash[attachment.emailToken] = [attachment]
-                    }
-                }
-                
-                self.tableView.reloadData()
-            }
-            
-            let criptextEmails = parsedEmails.flatMap({ (email) -> Email? in
-                if email.realCriptextToken.isEmpty {
-                    return nil
-                }
-                
-                return email
-            })
-
-            
-            let tokens = criptextEmails.map { $0.realCriptextToken }
-            
-            APIManager.getMailSnippets(self.currentUser, tokens: tokens, completion: { (error, results) in
-                if let error = error {
-                    print(error)
-                }
-                
-                guard var results = results else {
-                    return
-                }
-                
-                for criptextEmail in criptextEmails.reversed() {
-                    guard let snippet = results.removeValue(forKey: criptextEmail.realCriptextToken) else {
-                        continue
-                    }
-                    
-                    DBManager.update(criptextEmail, snippet: snippet)
-                }
-                
-                self.tableView.reloadData()
-                
-            })
         }
     }
     
     func addFetched(_ emails: inout [Email]){
-        for email in emails {
-            DBManager.store(email)
-            
-            //do not do anything if email is actually in trash
-            if email.labels.contains(MyLabel.trash.id) && self.selectedLabel != .trash {
-                continue
-            }
-            //do not do anything if email is actually in junk
-            if email.labels.contains(MyLabel.junk.id) && self.selectedLabel != .junk {
-                continue
-            }
-            
-            if self.threadHash[email.threadId] == nil {
-                self.threadHash[email.threadId] = []
-            }
-
-            if !self.threadHash[email.threadId]!.contains(where: { (e) -> Bool in return e.id == email.id}){
-                
-                for threadEmail in self.threadHash[email.threadId]! {
-                    if let firstToken = threadEmail.criptextTokens.first,
-                        let currentEmailToken = email.criptextTokens.first {
-                        
-                        if firstToken == currentEmailToken {
-                            //clean token
-                            DBManager.update(email, realToken: "")
-                        }
-                    }
-                }
-                
-                self.threadHash[email.threadId]!.append(email)
-                self.threadHash[email.threadId]!.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-            }
-            
-            if self.threadHash[email.threadId]?.count == 1 {
-                
-                if !self.emailArray.contains(where: { $0.threadId == email.threadId }) {
-                    self.emailArray.append(email)
-                }
-                
-                if email.historyId > self.currentUser.historyId(for: self.selectedLabel) {
-                    DBManager.update(self.currentUser, historyId: email.historyId, label:self.selectedLabel)
-                }
-            }
-            
-            if let dummyEmail = self.emailArray.first(where: { $0.threadId == email.threadId }),
-                let index = self.emailArray.index(of: dummyEmail), email.date! > dummyEmail.date! {
-                self.emailArray[index] = email
-            }
-        }
+//        for email in emails {
+            //DBManager.store(email)
+            //add to array
+//        }
         
         self.emailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-        
         self.tableView.reloadData()
     }
 }
@@ -1667,7 +1389,7 @@ extension InboxViewController: UITableViewDataSource{
         cell.secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
         //Set row status
-        if email.isRead() || isSentFolder {
+        if !email.unread || isSentFolder {
             cell.backgroundColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
             cell.senderLabel.font = Font.regular.size(15)
         }else{
@@ -1675,19 +1397,9 @@ extension InboxViewController: UITableViewDataSource{
             cell.senderLabel.font = Font.bold.size(15)
         }
         
-        if let criptextAttachments = self.attachmentHash[email.realCriptextToken] {
-//            cell.secureAttachmentView.isHidden = false
-            for attachment in criptextAttachments {
-                if !attachment.openArray.isEmpty || !attachment.downloadArray.isEmpty {
-//                    cell.secureAttachmentImageView.tintColor = Icon.system.color
-                    break
-                }
-            }
-        }
-        
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
         
-        cell.previewLabel.text = email.snippet
+        cell.previewLabel.text = email.preview
         
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
         
@@ -1696,17 +1408,17 @@ extension InboxViewController: UITableViewDataSource{
         let size = cell.dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         cell.dateWidthConstraint.constant = size.width
         
-        var senderText = (isSentFolder || self.selectedLabel == .draft) ? email.toDisplayString : email.fromDisplayString
+//        var senderText = (isSentFolder || self.selectedLabel == .draft) ? email.to : email.fromDisplayString
         
-        if self.currentUser.email == email.from && self.selectedLabel != .sent {
-            senderText = "me"
-        }
+//        if self.currentUser.email == email.from && self.selectedLabel != .sent {
+//            senderText = "me"
+//        }
         
-        cell.senderLabel.text = senderText
-        
-        if senderText.isEmpty {
-            cell.senderLabel.text = "No Recipients"
-        }
+//        cell.senderLabel.text = senderText
+//
+//        if senderText.isEmpty {
+//            cell.senderLabel.text = "No Recipients"
+//        }
         
         if self.isCustomEditing {
             cell.avatarImageView.image = nil
@@ -1720,19 +1432,6 @@ extension InboxViewController: UITableViewDataSource{
             cell.avatarImageView.layer.borderWidth = 0.0
         }
         
-        
-        //Activity stuff
-        if !email.realCriptextToken.isEmpty, let activity = self.activities[email.realCriptextToken] {
-            if(activity.exists){
-//                cell.senderLabel.textColor = UIColor.black
-//                cell.subjectLabel.textColor = UIColor.init(red: 114/244, green: 114/255, blue: 114/255, alpha: 1)
-            }
-            else{
-                //UNSENT
-//                cell.secureAttachmentImageView.tintColor = UIColor.red
-            }
-        }
-        
         if !self.currentUser.isPro() {
 //            cell.secureAttachmentImageView.tintColor = UIColor.gray
         }
@@ -1743,20 +1442,20 @@ extension InboxViewController: UITableViewDataSource{
             return cell
         }
         
-        let names = emailArrayHash.map { (mail) -> String in
-            var senderText = mail.fromDisplayString
-            
-            if self.currentUser.email == mail.from {
-                senderText = "me"
-            }
-            
-            return senderText
-        }
-        
-        cell.senderLabel.text = Array(Set(names)).joined(separator: ", ")
+//        let names = emailArrayHash.map { (mail) -> String in
+//            var senderText = mail.fromDisplayString
+//
+//            if self.currentUser.email == mail.from {
+//                senderText = "me"
+//            }
+//
+//            return senderText
+//        }
+//
+//        cell.senderLabel.text = Array(Set(names)).joined(separator: ", ")
         
         //check if unread among thread mails
-        if emailArrayHash.contains(where: { return !$0.isRead() }) {
+        if emailArrayHash.contains(where: { return $0.unread }) {
             cell.backgroundColor = UIColor(red:0.96, green:0.98, blue:1.00, alpha:1.0)
             cell.senderLabel.font = Font.bold.size(17)
             cell.subjectLabel.font = Font.bold.size(17)
@@ -1777,10 +1476,6 @@ extension InboxViewController: UITableViewDataSource{
         }
         
         cell.badgeLabel.text = String(emailArrayHash.count)
-        
-        guard let _ = self.attachmentHash[email.realCriptextToken] else {
-            return cell
-        }
         
         return cell
     }
@@ -1876,64 +1571,26 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         guard let emailArrayHash = self.threadHash[email.threadId] else{
-            print(email.id)
-            print(email.threadId)
             return
         }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
-        if emailArrayHash.count > 1 {
-            let vc = storyboard.instantiateViewController(withIdentifier: "DetailThreadViewController") as! DetailThreadViewController
-            vc.currentUser = self.currentUser
-            vc.currentService = self.currentService
-            vc.currentThread = emailArrayHash
-//            vc.selectedLabel = self.selectedLabel
-//            vc.attachmentHash = self.attachmentHash
-//            vc.emailArray = emailArrayHash
-//            vc.activities = self.activities
-            
-            self.navigationController?.pushViewController(vc, animated: true)
-            return
-        }
-        
         if self.selectedLabel != .draft {
-            let vc = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+            let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
             
-            vc.currentUser = self.currentUser
-            vc.currentEmail = email
-            vc.selectedLabel = self.selectedLabel
-            vc.currentService = self.currentService
-            vc.currentEmailIndex = 0
-            vc.threadEmailArray = []
-            
-            if let firstToken = email.criptextTokens.first {
-                vc.activity = self.activities[firstToken]
-                vc.attachmentArray = self.attachmentHash[firstToken] ?? []
-            }
+//            vc.currentUser = self.currentUser
+//            vc.currentEmail = email
+//            vc.selectedLabel = self.selectedLabel
+//            vc.currentEmailIndex = 0
             
             
-            if email.isRead() {
+            if !email.unread {
                 self.navigationController?.pushViewController(vc, animated: true)
                 return
             }
             
-            APIManager.messageModifyLabels(add: nil, remove: [MyLabel.unread.id], from: [email.id], with: self.currentService, user: "me", completionHandler: { (error, success) in
-                if error == nil {
-                    DBManager.update(email, labels: email.labels.filter{$0 != MyLabel.unread.id})
-                    
-                    if let selectedIndexPath = self.tableView.indexPathForSelectedRow {
-                        self.tableView.reloadRows(at: [selectedIndexPath], with: UITableViewRowAnimation.automatic)
-                        self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
-                    }
-                    
-                    let newBadge = UIApplication.shared.applicationIconBadgeNumber - 1
-                    
-                    if newBadge >= 0 {
-                        UIApplication.shared.applicationIconBadgeNumber = newBadge
-                    }
-                }
-            })
+            //modify labels
             
             self.navigationController?.pushViewController(vc, animated: true)
             return
@@ -1941,16 +1598,16 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let vcDraft = navComposeVC.childViewControllers.first as! ComposeViewController
-        vcDraft.attachmentArray = Array(email.attachments)
+//        vcDraft.attachmentArray = Array(email.attachments)
         vcDraft.emailDraft = email
         vcDraft.isDraft = true
         vcDraft.loadViewIfNeeded()
-        for email in email.to.components(separatedBy: ",") {
-            if email.isEmpty {
-                continue
-            }
-            vcDraft.addToken(email, value: email, to: vcDraft.toField)
-        }
+//        for email in email.to.components(separatedBy: ",") {
+//            if email.isEmpty {
+//                continue
+//            }
+//            vcDraft.addToken(email, value: email, to: vcDraft.toField)
+//        }
         
         if email.subject != "No Subject" {
             vcDraft.subjectField.text = email.subject
@@ -1958,7 +1615,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             vcDraft.subjectField.text = email.subject
         }
         
-        vcDraft.editorView.html = email.body
+        vcDraft.editorView.html = email.content
         vcDraft.isEdited = false
         
         let snackVC = SnackbarController(rootViewController: navComposeVC)
@@ -2042,10 +1699,10 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 
                 for hashEmail in self.threadHash[email.threadId]!{
                     if self.selectedLabel == .inbox || self.selectedLabel == .junk {
-                        DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
+//                        DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
                     }
-                    hashEmail.labels.append(MyLabel.trash.id)
-                    DBManager.update(hashEmail, labels: hashEmail.labels)
+//                    hashEmail.labels.append(MyLabel.trash.id)
+//                    DBManager.update(hashEmail, labels: hashEmail.labels)
                 }
                 
                 if self.searchController.isActive && self.searchController.searchBar.text != "" {
@@ -2068,9 +1725,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return [trashAction]
         }
         
-        guard email.labels.contains(self.selectedLabel.id) else {
-            return []
-        }
+//        guard email.labels.contains(self.selectedLabel.id) else {
+//            return []
+//        }
         
         let archiveAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
             
@@ -2087,10 +1744,10 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 
                 self.showSnackbar("Archived", attributedText: nil, buttons: "", permanent: false)
                 
-                for hashEmail in self.threadHash[email.threadId]!{
-                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
-                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != MyLabel.unread.id})
-                }
+//                for hashEmail in self.threadHash[email.threadId]!{
+//                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
+//                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != MyLabel.unread.id})
+//                }
                 
                 if self.searchController.isActive && self.searchController.searchBar.text != "" {
                     let emailTmp = self.filteredEmailArray.remove(at: indexPath.row)
@@ -2125,9 +1782,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
         filteredEmailArray = emailArray.filter { email in
-            return email.body.lowercased().contains(searchText.lowercased())
-                || email.from.lowercased().contains(searchText.lowercased())
-                || email.to.lowercased().contains(searchText.lowercased())
+            return email.content.lowercased().contains(searchText.lowercased())
                 || email.subject.lowercased().contains(searchText.lowercased())
         }
         
