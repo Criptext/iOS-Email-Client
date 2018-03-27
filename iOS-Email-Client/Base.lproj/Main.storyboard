@@ -1288,8 +1288,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwm-FM-Cnc" customClass="NavigationToolbarView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="88" id="hdG-sc-X0h"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="100" sectionFooterHeight="18" estimatedSectionFooterHeight="100" translatesAutoresizingMaskIntoConstraints="NO" id="H88-ZN-H4B">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                                 <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="emailTableHeaderView" rowHeight="100" id="egv-Jd-zFn" customClass="EmailDetailHeaderCell" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -1615,23 +1622,29 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="AwY-z4-5E0" secondAttribute="trailing" id="0lI-S0-YzO"/>
+                            <constraint firstItem="pwm-FM-Cnc" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="2IV-rk-JbB"/>
                             <constraint firstAttribute="bottom" secondItem="1su-18-smw" secondAttribute="bottom" id="5uW-lU-hmM"/>
                             <constraint firstAttribute="trailing" secondItem="1su-18-smw" secondAttribute="trailing" id="Bdi-g2-4n8"/>
+                            <constraint firstItem="pwm-FM-Cnc" firstAttribute="top" secondItem="YLR-Gd-JFL" secondAttribute="bottom" id="M6O-0g-bIu"/>
                             <constraint firstAttribute="bottom" secondItem="AwY-z4-5E0" secondAttribute="bottom" id="MpT-wU-0fT"/>
                             <constraint firstItem="AwY-z4-5E0" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="SWZ-Fs-vGf"/>
                             <constraint firstItem="psb-7X-bXy" firstAttribute="top" secondItem="H88-ZN-H4B" secondAttribute="bottom" id="T7d-MC-ycK"/>
                             <constraint firstItem="H88-ZN-H4B" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="ksC-OI-i28"/>
                             <constraint firstItem="1su-18-smw" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="sqT-eC-RNj"/>
                             <constraint firstAttribute="trailing" secondItem="H88-ZN-H4B" secondAttribute="trailing" id="t1V-pA-6iO"/>
+                            <constraint firstAttribute="trailing" secondItem="pwm-FM-Cnc" secondAttribute="trailing" id="tUW-lC-Ckj"/>
                             <constraint firstItem="1su-18-smw" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="wqb-Jz-RUE"/>
                             <constraint firstItem="H88-ZN-H4B" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="zoe-f9-WJc"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="backgroundOverlayView" destination="1su-18-smw" id="IVb-XP-Ogr"/>
                         <outlet property="emailsTableView" destination="H88-ZN-H4B" id="roC-Vf-CEU"/>
                         <outlet property="optionsContainerOffsetConstraint" destination="MpT-wU-0fT" id="0qn-pz-XLa"/>
                         <outlet property="optionsContainerView" destination="AwY-z4-5E0" id="F8E-n0-3CT"/>
+                        <outlet property="topToolbar" destination="pwm-FM-Cnc" id="7BQ-Sn-zwh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Wl-gk-N8t" userLabel="First Responder" sceneMemberID="firstResponder"/>
