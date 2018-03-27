@@ -8,7 +8,6 @@
 //
 
 import UIKit
-import GoogleAPIClientForREST
 import Material
 import SDWebImage
 import SwiftWebSocket
@@ -25,7 +24,6 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var topToolbar: NavigationToolbarView!
     @IBOutlet weak var buttonCompose: UIButton!
     
-    var currentService: GTLRService! = GTLRGmailService()
     var currentUser: User!
     
     var selectedLabel = MyLabel.inbox
@@ -58,8 +56,6 @@ class InboxViewController: UIViewController {
     var footerView:UIView!
     var footerActivity:UIActivityIndicatorView!
     
-    var currentSearchTicket: GTLRServiceTicket?
-    
     var threadToOpen:String?
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
@@ -79,7 +75,6 @@ class InboxViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
 //        CriptextSpinner.show(in: self.view, title: nil, image: UIImage(named: "icon_sent_chat.png"))
-        GIDSignIn.sharedInstance().delegate = self
         
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
@@ -98,32 +93,7 @@ class InboxViewController: UIViewController {
         
         self.originalNavigationRect = self.navigationController?.navigationBar.frame
         
-        APIManager.reachabilityManager.startListening()
-        APIManager.reachabilityManager.listener = { status in
-            
-            switch status {
-            case .notReachable, .unknown:
-                //do nothing
-                self.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
-                break
-            default:
-                //try to reconnect
-                //if service doesn't have authorizer, do sign in again
-//                self.hideSnackbar()
-                guard self.currentService.isReady() else{
-                    GIDSignIn.sharedInstance().signInSilently()
-                    return
-                }
-                
-                //retry saving drafts and sending emails
-//                let drafts = DBManager.getPendingDrafts()
-//                let emails = DBManager.getPendingEmails()
-                
-                break
-            }
-        }
-        
-//        GIDSignIn.sharedInstance().signInSilently()
+        self.startNetworkListener()
         
         self.searchController.searchResultsUpdater = self as UISearchResultsUpdating
         self.searchController.dimsBackgroundDuringPresentation = false
@@ -284,17 +254,7 @@ class InboxViewController: UIViewController {
                 break
             default:
                 //try to reconnect
-                //if service doesn't have authorizer, do sign in again
-                //                self.hideSnackbar()
-                guard self.currentService.isReady() else{
-                    GIDSignIn.sharedInstance().signInSilently()
-                    return
-                }
-                
                 //retry saving drafts and sending emails
-                //                let drafts = DBManager.getPendingDrafts()
-                //                let emails = DBManager.getPendingEmails()
-                
                 break
             }
         }
@@ -453,41 +413,6 @@ extension InboxViewController{
             } else {
                 addLabels = [MyLabel.unread.id]
             }
-            
-            self.showSnackbar("Marking as \(title)...", attributedText: nil, buttons: "", permanent: true)
-            
-            APIManager.threadModifyLabels(add: addLabels,
-                                          remove: removeLabels,
-                                          from: emailThreadIds,
-                                          with: self.currentService,
-                                          user: "me",
-                                          completionHandler: { (error, flag) in
-                                            
-                                            
-                                            if error != nil {
-                                                self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                                                self.hideSnackbar()
-                                                return
-                                            }
-                                            
-                                            self.showSnackbar("Marked as \(title)", attributedText: nil, buttons: "", permanent: false)
-                                            
-                                            for email in emails {
-                                                var newBadge = UIApplication.shared.applicationIconBadgeNumber
-                                                if markRead {
-//                                                    DBManager.update(email, labels: email.labels.filter{$0 != Label.unread.id})
-                                                    newBadge = newBadge - 1
-                                                    
-                                                } else {
-                                                    newBadge = newBadge + 1
-                                                }
-                                                
-                                                if newBadge >= 0 {
-                                                    UIApplication.shared.applicationIconBadgeNumber = newBadge
-                                                }
-                                            }
-                                            self.tableView.reloadData()
-            })
         })
         
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -500,29 +425,18 @@ extension InboxViewController{
     
     func didPressDeleteAll(_ sender: UIBarButtonItem) {
         
-        let emailThreadIds = self.emailArray.map({ return $0.threadId })
-        
-        CriptextSpinner.show(in: self.view.superview!, title: nil, image: UIImage(named: "icon_sent_chat.png"))
-        APIManager.delete(emails: emailThreadIds, with: self.currentService) { (error, result) in
-            CriptextSpinner.hide(from: self.view)
-            if self.isCustomEditing {
-                self.didPressEdit()
-            }
-            
-            if error != nil {
-                self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                return
-            }
-            
-            for email in self.emailArray {
-                if let hashEmails = self.threadHash[email.threadId] {
-                    DBManager.delete(hashEmails)
-                }
-            }
-            self.emailArray.removeAll()
-            self.threadHash.removeAll()
-            self.tableView.reloadData()
+        if self.isCustomEditing {
+            self.didPressEdit()
         }
+        
+        for email in self.emailArray {
+            if let hashEmails = self.threadHash[email.threadId] {
+                DBManager.delete(hashEmails)
+            }
+        }
+        self.emailArray.removeAll()
+        self.threadHash.removeAll()
+        self.tableView.reloadData()
     }
     
     @objc func didPressDelete(_ sender: UIBarButtonItem) {
@@ -532,33 +446,17 @@ extension InboxViewController{
             }
             return
         }
-        let emailThreadIds = emailsIndexPath.map { return self.emailArray[$0.row].threadId }
         
-        self.showSnackbar("Deleting mail...", attributedText: nil, buttons: "", permanent: true)
-        APIManager.delete(emails: emailThreadIds, with: self.currentService) { (error, result) in
-            if self.isCustomEditing {
-                self.didPressEdit()
-            }
+        for indexPath in emailsIndexPath {
+            let threadId = self.emailArray[indexPath.row].threadId
             
-            if error != nil {
-                self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                self.hideSnackbar()
-                return
+            if let hashEmails = self.threadHash[threadId] {
+                DBManager.delete(hashEmails)
+                self.threadHash.removeValue(forKey: threadId)
             }
-            
-            self.showSnackbar("Mail deleted", attributedText: nil, buttons: "", permanent: false)
-            
-            for indexPath in emailsIndexPath {
-                let threadId = self.emailArray[indexPath.row].threadId
-                
-                if let hashEmails = self.threadHash[threadId] {
-                    DBManager.delete(hashEmails)
-                    self.threadHash.removeValue(forKey: threadId)
-                }
-                self.emailArray.remove(at: indexPath.row)
-            }
-            self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
+            self.emailArray.remove(at: indexPath.row)
         }
+        self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
     }
     
 }
@@ -714,34 +612,17 @@ extension InboxViewController{
             removeLabels = [self.selectedLabel.id]
         }
         
-        let emailThreadIds = emailsIndexPath.map { return self.emailArray[$0.row].threadId }
-        
-        self.showSnackbar("Moving...", attributedText: nil, buttons: "", permanent: true)
-        APIManager.threadModifyLabels(add: [selectedMailbox.id],
-                                      remove: removeLabels,
-                                      from: emailThreadIds,
-                                      with: self.currentService, user:"me") { (error, result) in
-                                        
-                                        if error != nil {
-                                            self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                                            self.hideSnackbar()
-                                            return
-                                        }
-                                        
-                                        self.showSnackbar("Moved", attributedText: nil, buttons: "", permanent: false)
-                                        
-                                        for indexPath in emailsIndexPath {
-                                            let threadId = self.emailArray[indexPath.row].threadId
-                                            for hashEmail in self.threadHash[threadId]!{
-                                                DBManager.updateEmail(id: hashEmail.key, addLabels: [selectedMailbox.id], removeLabels: removeLabels)
-                                                
-                                            }
-                                        }
-                                        self.emailArray.removeAll()
-                                        self.threadHash.removeAll()
-                                        self.loadMails(from: self.selectedLabel, since: Date())
-                                        self.tableView.reloadData()
+        for indexPath in emailsIndexPath {
+            let threadId = self.emailArray[indexPath.row].threadId
+            for hashEmail in self.threadHash[threadId]!{
+                DBManager.updateEmail(id: hashEmail.key, addLabels: [selectedMailbox.id], removeLabels: removeLabels)
+                
+            }
         }
+        self.emailArray.removeAll()
+        self.threadHash.removeAll()
+        self.loadMails(from: self.selectedLabel, since: Date())
+        self.tableView.reloadData()
     }
 }
 
@@ -1208,108 +1089,42 @@ extension InboxViewController{
 }
 
 //MARK: - Google SignIn Delegate
-extension InboxViewController: GIDSignInDelegate{
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        // Perform any operations when the user disconnects from app here.
-        // ...
-        print(error)
-        CriptextSpinner.hide(from: self.view)
-    }
+extension InboxViewController{
     
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+    //silent sign in callback
+    func sign(_ user:User, _ error: Error!) {
 
         guard error == nil else{
             print(error.localizedDescription)
             return
         }
         
-        self.currentService.authorizer = user.authentication.fetcherAuthorizer()
+        //fetch user
         
-        if self.currentUser == nil {
-            self.currentUser = DBManager.getUserBy(user.profile.email!)
-        }
-        
-        self.currentUser.authentication = user.authentication
-
-        let sideVC = self.navigationDrawerController?.leftViewController as! ListLabelViewController
-        sideVC.loadViewIfNeeded()
-        sideVC.secureSwitch.setOn(self.currentUser.defaultOn, animated: true)
-        
-        let givenName:String = user.profile.givenName ?? user.profile.email
-        let familyName:String = user.profile.familyName ?? ""
-        
-        sideVC.nameLabel.text = "\(givenName) \(familyName)"
-        sideVC.mailLabel.text = user.profile.email
-        sideVC.profileImageView.sd_setImage(with: user.profile.imageURL(withDimension: 120))
-        sideVC.setUserAccount(self.currentUser)
-        sideVC.draftBadgeLabel.text = self.currentUser.draftBadge
-        sideVC.inboxBadgeLabel.text = self.currentUser.inboxBadge
-        
-        if let date = self.currentUser.getUpdateDate(for: self.selectedLabel){
-            self.statusBarButton.title = String(format:"Updated %@",DateUtils.beatyDate(date))
-        }else{
-            self.statusBarButton.title = nil
-        }
-
+        //setup badges for sideVC and profile Img
         self.startWebSocket()
         self.updateBadge(self.currentUser.badge)
-        
-        self.showSnackbar("Signed in as \(user.profile.email!)", attributedText: nil, buttons: "", permanent: true)
         
         //if email array count > 0, fetch partial updates
         self.handleRefresh(self.refreshControl, automatic: true, signIn: true, completion: nil)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.registerPushNotifications()
-
-        //subscribe to topic events for push related events
-        APIManager.watch(labels: [MyLabel.inbox.id], topic: "projects/criptext-secure-email/topics/inbox", with: self.currentService, user: "me") { (error, flag) in
-            
-            if let error = error {
-                print(error)
-            }else{
-                print("====== SUBSCRIBED TO EVENTS: \(flag)")
-            }
-        }
-        
-        ContactManager.getContacts() { (granted, contacts) in
-            guard granted, let contacts = contacts else {
-                //handle contact permission refused
-                return
-            }
-            
-            DBManager.store(contacts)
-        }
         
         self.updateAppIcon()
     }
     
     func signout(){
-        CriptextSpinner.show(in: self.view.superview!, title: nil, image: UIImage(named: "icon_sent_chat.png"))
-        APIManager.stopNotifications(user: "me", with: self.currentService) { (error, flag) in
-            APIManager.unregisterToken(self.currentUser, completion: { (err, response) in
-                CriptextSpinner.hide(from: self.view)
-                self.stopWebsocket()
-                GIDSignIn.sharedInstance().signOut()
-                DBManager.signout()
-                UIApplication.shared.applicationIconBadgeNumber = 0
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                
-                let vc = storyboard.instantiateInitialViewController()!
-                
-                self.navigationController?.childViewControllers.last!.present(vc, animated: true){
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.replaceRootViewController(vc)
-                }
-            })
-        }
-    }
-    
-    func register(_ token:String){
+        self.stopWebsocket()
+        DBManager.signout()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
-        APIManager.register(token, user: self.currentUser) { (error, derpo) in
-            print(error)
-            print(derpo)
+        let vc = storyboard.instantiateInitialViewController()!
+        
+        self.navigationController?.childViewControllers.last!.present(vc, animated: true){
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.replaceRootViewController(vc)
         }
     }
 }
@@ -1341,29 +1156,7 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
     }
     
     func updateAppIcon() {
-        APIManager.info([MyLabel.inbox.id, MyLabel.draft.id], with: self.currentService, user: "me") { (error, labels) in
-            guard let parsedLabels = labels else {
-                print(String(describing: error?.localizedDescription))
-                return
-            }
-            
-            let sideVC = self.navigationDrawerController?.leftViewController as! ListLabelViewController
-            
-            for label in parsedLabels {
-                if MyLabel.inbox.id == label.identifier {
-                    DBManager.update(self.currentUser, badge: label.threadsUnread!, label: MyLabel.inbox)
-                    sideVC.inboxBadgeLabel.text = self.currentUser.inboxBadge
-                    UIApplication.shared.applicationIconBadgeNumber = Int(label.threadsUnread!)
-                }
-                
-                if MyLabel.draft.id == label.identifier {
-                    
-                    DBManager.update(self.currentUser, badge: label.messagesTotal!, label: MyLabel.draft)
-                    sideVC.draftBadgeLabel.text = self.currentUser.draftBadge
-                }
-            }
-            
-        }
+        //check mails for badge
     }
     
     func navigationDrawerController(navigationDrawerController: NavigationDrawerController, didClose position: NavigationDrawerPosition) {
@@ -1694,84 +1487,22 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
             
-            self.showSnackbar("Sending mail to Trash...", attributedText: nil, buttons: "", permanent: true)
-            APIManager.trash(emails: [email.threadId], with: self.currentService) { (error, result) in
-                if error != nil {
-                    self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                    self.isCustomEditing = false
-                    self.hideSnackbar()
+            if self.searchController.isActive && self.searchController.searchBar.text != "" {
+                let emailTmp = self.filteredEmailArray.remove(at: indexPath.row)
+                guard let index = self.emailArray.index(of: emailTmp) else {
                     return
                 }
-                
-                self.showSnackbar("Mail sent to Trash", attributedText: nil, buttons: "", permanent: false)
-                
-                for hashEmail in self.threadHash[email.threadId]!{
-                    if self.selectedLabel == .inbox || self.selectedLabel == .junk {
-//                        DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
-                    }
-//                    hashEmail.labels.append(MyLabel.trash.id)
-//                    DBManager.update(hashEmail, labels: hashEmail.labels)
-                }
-                
-                if self.searchController.isActive && self.searchController.searchBar.text != "" {
-                    let emailTmp = self.filteredEmailArray.remove(at: indexPath.row)
-                    guard let index = self.emailArray.index(of: emailTmp) else {
-                        return
-                    }
-                    self.emailArray.remove(at: index)
-                }else {
-                    self.emailArray.remove(at: indexPath.row)
-                }
-                
-                self.tableView.deleteRows(at: [indexPath], with: .fade)
+                self.emailArray.remove(at: index)
+            }else {
+                self.emailArray.remove(at: indexPath.row)
             }
+            
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
         
         trashAction.backgroundColor = UIColor(patternImage: UIImage(named: "trash-action")!)
         
-        if self.selectedLabel == .sent || self.selectedLabel == .draft {
-            return [trashAction]
-        }
-        
-//        guard email.labels.contains(self.selectedLabel.id) else {
-//            return []
-//        }
-        
-        let archiveAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
-            
-            self.showSnackbar("Archiving...", attributedText: nil, buttons: "", permanent: true)
-            APIManager.threadModifyLabels(add:nil, remove:[self.selectedLabel.id], from: [email.threadId], with: self.currentService, user:"me") { (error, result) in
-                CriptextSpinner.hide(from: self.view)
-                
-                if error != nil {
-                    self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                    self.isCustomEditing = false
-                    self.hideSnackbar()
-                    return
-                }
-                
-                self.showSnackbar("Archived", attributedText: nil, buttons: "", permanent: false)
-                
-//                for hashEmail in self.threadHash[email.threadId]!{
-//                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != self.selectedLabel.id})
-//                    DBManager.update(hashEmail, labels: hashEmail.labels.filter{$0 != MyLabel.unread.id})
-//                }
-                
-                if self.searchController.isActive && self.searchController.searchBar.text != "" {
-                    let emailTmp = self.filteredEmailArray.remove(at: indexPath.row)
-                    guard let index = self.emailArray.index(of: emailTmp) else {
-                        return
-                    }
-                    self.emailArray.remove(at: index)
-                }else {
-                    self.emailArray.remove(at: indexPath.row)
-                }
-                self.tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-        }
-        archiveAction.backgroundColor = UIColor(patternImage: UIImage(named: "archive-action")!)
-        
-        return [trashAction, archiveAction];
+        return [trashAction];
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -1803,33 +1534,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
     
     func loadSearchedMails(){
-        
-        guard let nextPageToken = self.searchNextPageToken else {
-            CriptextSpinner.hide(from: self.view)
-            return
-        }
-        
-        if let ticket = self.currentSearchTicket {
-            ticket.cancel()
-        }
-        print("getting new ticket")
-        self.currentSearchTicket = APIManager.searchMails(
-            self.currentService,
-            userId: "me",
-            searchText: self.searchController.searchBar.text,
-            pageToken: nextPageToken
-        ) { (ticket, parsedEmails, error) in
-            
-            self.currentSearchTicket = nil
-            
-            guard let parsedEmails = parsedEmails, !ticket.isCancelled else {
-                print(String(describing: error?.localizedDescription))
-                return
-            }
-            
-            self.searchNextPageToken = (ticket.fetchedObject as! GTLRGmail_ListThreadsResponse).nextPageToken
-            self.addSearchedFetched(parsedEmails)
-        }
+        //search emails
     }
     
     func addSearchedFetched(_ emails:[Email]){

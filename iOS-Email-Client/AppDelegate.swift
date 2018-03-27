@@ -51,13 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.tintColor = UIColor.black
         
-        var configureError: NSError?
-        GGLContext.sharedInstance().configureWithError(&configureError)
-        assert(configureError == nil, "Error configuring Google services: \(String(describing: configureError))")
-        
-        GIDSignIn.sharedInstance().scopes.append("https://mail.google.com/")
-        GIDSignIn.sharedInstance().serverClientID = "249459851975-65698k7s4pb2pa1klkddb5fj0b330fro.apps.googleusercontent.com"
-        
         var initialVC:UIViewController!
         
         let defaults = UserDefaults.standard
@@ -69,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
-        
+    
         self.replaceRootViewController(initialVC)
         IQKeyboardManager.sharedManager().enable = true
         return true
@@ -109,7 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "ListLabelViewController") as! ListLabelViewController
         let inboxVC = rootVC.childViewControllers.first as! InboxViewController
         sidemenuVC.detailViewController = inboxVC
-        GIDSignIn.sharedInstance().delegate = inboxVC
         
         if let launchOptions = launchOptions,
             let notification = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary,
@@ -122,13 +114,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
         return SnackbarController(rootViewController: drawerVC)
-    }
-    
-    func application(application: UIApplication,
-                     openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        return GIDSignIn.sharedInstance().handle(url as URL!,
-                                                 sourceApplication: sourceApplication,
-                                                 annotation: annotation)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -168,18 +153,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        return self.application(app, processOpenURLAction: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as Any, iosVersion: 9)
-    }
-    
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return self.application(application, processOpenURLAction: url, sourceApplication: sourceApplication, annotation: annotation, iosVersion: 8)
-    }
-    
-    func application(_ application: UIApplication, processOpenURLAction url: URL, sourceApplication: String?, annotation: Any, iosVersion: Int) -> Bool {
-        return GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation)
-    }
-    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
         
@@ -191,7 +164,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
         }
         
-        inboxVC.register(deviceTokenString)
+        //register token for push
     }
 }
 

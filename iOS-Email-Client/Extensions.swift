@@ -9,18 +9,6 @@
 import Foundation
 import MobileCoreServices
 import RichEditorView
-import GoogleAPIClientForREST
-
-extension GTLRService {
-    func isReady() -> Bool{
-    
-        if let _ = self.authorizer {
-            return true
-        }
-        
-        return false
-    }
-}
 
 extension UIColor {
     convenience init(hex: String) {

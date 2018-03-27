@@ -2,8 +2,6 @@ use_frameworks!
 inhibit_all_warnings!
 source 'https://github.com/CocoaPods/Specs.git'
 target 'iOS-Email-Client' do
-  pod 'Google/SignIn'
-  pod 'GoogleAPIClientForREST/Gmail', '~> 1.1.1'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
   pod 'FLAnimatedImage'
