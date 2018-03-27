@@ -10,7 +10,13 @@ import Foundation
 import Material
 
 class CriptextDrawerController: NavigationDrawerController{
+    
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        //avoid activating when there's a VC pushed
+        if self.rootViewController.childViewControllers.count > 1 {
+            return false
+        }
+        
         if(isRightViewOpened && isPointOutsidePanArea(point: touch.location(in: view))){
             return false
         }
