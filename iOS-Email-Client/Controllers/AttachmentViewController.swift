@@ -14,17 +14,17 @@ class AttachmentViewController: UIViewController {
 
     @IBOutlet weak var navItem: UINavigationItem!
     
-    var currentAttachment:Attachment!
+    var currentAttachment:File!
     lazy var previewController = QLPreviewController()
     lazy var previewItem = PreviewItem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.previewController.dataSource = self
-        self.navItem.title = self.currentAttachment.fileName
-        self.title = self.currentAttachment.fileName
+        self.navItem.title = self.currentAttachment.name
+        self.title = self.currentAttachment.name
         self.showSnackbar("Loading...", attributedText: nil, buttons: "", permanent: true)
-        self.webView.loadRequest(URLRequest(url: URL(string: "https://mail.criptext.com/viewer/\(self.currentAttachment.fileToken)")!))
+        self.webView.loadRequest(URLRequest(url: URL(string: "https://mail.criptext.com/viewer/\(self.currentAttachment.token)")!))
         
     }
     
@@ -44,7 +44,7 @@ extension AttachmentViewController: UIWebViewDelegate {
             return true
         }
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let filename = NSString(string:self.currentAttachment.fileName)
+        let filename = NSString(string:self.currentAttachment.name)
         
         
         let fileURL = documentsURL.appendingPathComponent(url.lastPathComponent).appendingPathExtension(filename.pathExtension)
@@ -52,26 +52,26 @@ extension AttachmentViewController: UIWebViewDelegate {
         if FileManager.default.fileExists(atPath: fileURL.path) {
             //show the file
             self.previewItem.previewItemURL = fileURL
-            self.previewItem.previewItemTitle = self.currentAttachment.fileName
+            self.previewItem.previewItemTitle = self.currentAttachment.name
             self.previewController.reloadData()
             self.present(self.previewController, animated: true, completion: nil)
             return false
         }
         
         CriptextSpinner.show(in: self.view, title: "Downloading")
-        APIManager.download(from: url, to: fileURL, delegate: self) { (error, fileURL) in
-            CriptextSpinner.hide(from: self.view)
-            if let _ = error {
-                self.showAlert("Network Error", message: "Please try again later", style: .alert)
-                return
-            }
-            //show the file
-            self.previewItem.previewItemURL = fileURL
-            self.previewItem.previewItemTitle = self.currentAttachment.fileName
-            self.previewController.reloadData()
-            self.present(self.previewController, animated: true, completion: nil)
-            return
-        }
+//        APIManager.download(from: url, to: fileURL, delegate: self) { (error, fileURL) in
+//            CriptextSpinner.hide(from: self.view)
+//            if let _ = error {
+//                self.showAlert("Network Error", message: "Please try again later", style: .alert)
+//                return
+//            }
+//            //show the file
+//            self.previewItem.previewItemURL = fileURL
+//            self.previewItem.previewItemTitle = self.currentAttachment.fileName
+//            self.previewController.reloadData()
+//            self.present(self.previewController, animated: true, completion: nil)
+//            return
+//        }
         
         return false
     }

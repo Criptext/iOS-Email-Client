@@ -26,7 +26,6 @@
 		414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */; };
 		41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */; };
 		41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */; };
-		41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EE201A9FAC00809C4D /* ActivityViewController.swift */; };
 		41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */; };
 		41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */; };
 		41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F2201A9FAC00809C4D /* TourViewController.swift */; };
@@ -38,13 +37,9 @@
 		41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC508201A9FC200809C4D /* OpenViewCell.xib */; };
 		41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */; };
 		41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */; };
-		41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50B201A9FC200809C4D /* OpenUIPopover.swift */; };
 		41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50C201A9FC200809C4D /* DetailGuideView.swift */; };
 		41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */; };
 		41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */; };
-		41AAC523201A9FC300809C4D /* AttachmentUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50F201A9FC200809C4D /* AttachmentUIPopover.swift */; };
-		41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC510201A9FC200809C4D /* OpenUIPopover.xib */; };
-		41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC511201A9FC200809C4D /* AttachmentUIPopover.xib */; };
 		41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC512201A9FC300809C4D /* GenericUIPopover.xib */; };
 		41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC513201A9FC300809C4D /* CriptextSpinner.swift */; };
 		41AAC528201A9FC300809C4D /* DetailThreadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC514201A9FC300809C4D /* DetailThreadTableViewCell.xib */; };
@@ -54,10 +49,7 @@
 		41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */; };
 		41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC519201A9FC300809C4D /* MoveMailTableViewCell.swift */; };
 		41AAC537201A9FCD00809C4D /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52E201A9FCC00809C4D /* Email.swift */; };
-		41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52F201A9FCC00809C4D /* Attachment.swift */; };
 		41AAC539201A9FCD00809C4D /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
-		41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC531201A9FCD00809C4D /* Activity.swift */; };
-		41AAC53B201A9FCD00809C4D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC532201A9FCD00809C4D /* User.swift */; };
 		41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */; };
 		41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */; };
 		41AAC53E201A9FCD00809C4D /* Open.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC535201A9FCD00809C4D /* Open.swift */; };
@@ -73,11 +65,6 @@
 		41AAC551201AA06500809C4D /* mark_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC550201AA06500809C4D /* mark_unread.png */; };
 		41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC552201AA06F00809C4D /* MCOMessageViewScript.js */; };
 		41AAC557201AA08500809C4D /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
-		41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55A201B927E00809C4D /* KMAccordionTableViewController.m */; };
-		41AAC562201B92A400809C4D /* KMSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55E201B92A400809C4D /* KMSection.m */; };
-		41AAC563201B92A400809C4D /* KMAppearence.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC55F201B92A400809C4D /* KMAppearence.m */; };
-		41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */; };
-		41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */; };
 		41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAAF2017987500D428B7 /* AppDelegate.swift */; };
 		41B6AAB52017987500D428B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB32017987500D428B7 /* Main.storyboard */; };
 		41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -147,6 +134,8 @@
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
 		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
+		9568328C20752C5F007F8489 /* LabelEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328B20752C5F007F8489 /* LabelEmail.swift */; };
+		9568329020753FBE007F8489 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
 		EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
 /* End PBXBuildFile section */
 
@@ -196,7 +185,6 @@
 		414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationToolbarView.swift; sourceTree = "<group>"; };
 		41AAC4EB201A9FAC00809C4D /* ListLabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListLabelViewController.swift; sourceTree = "<group>"; };
 		41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
-		41AAC4EE201A9FAC00809C4D /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
 		41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveMailViewController.swift; sourceTree = "<group>"; };
 		41AAC4F2201A9FAC00809C4D /* TourViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TourViewController.swift; sourceTree = "<group>"; };
@@ -208,13 +196,9 @@
 		41AAC508201A9FC200809C4D /* OpenViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenViewCell.xib; sourceTree = "<group>"; };
 		41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailThreadTableViewCell.swift; sourceTree = "<group>"; };
 		41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerUIPopover.swift; sourceTree = "<group>"; };
-		41AAC50B201A9FC200809C4D /* OpenUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenUIPopover.swift; sourceTree = "<group>"; };
 		41AAC50C201A9FC200809C4D /* DetailGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailGuideView.swift; sourceTree = "<group>"; };
 		41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerUIPopover.xib; sourceTree = "<group>"; };
 		41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentTableViewCell.swift; sourceTree = "<group>"; };
-		41AAC50F201A9FC200809C4D /* AttachmentUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentUIPopover.swift; sourceTree = "<group>"; };
-		41AAC510201A9FC200809C4D /* OpenUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenUIPopover.xib; sourceTree = "<group>"; };
-		41AAC511201A9FC200809C4D /* AttachmentUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttachmentUIPopover.xib; sourceTree = "<group>"; };
 		41AAC512201A9FC300809C4D /* GenericUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenericUIPopover.xib; sourceTree = "<group>"; };
 		41AAC513201A9FC300809C4D /* CriptextSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CriptextSpinner.swift; sourceTree = "<group>"; };
 		41AAC514201A9FC300809C4D /* DetailThreadTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailThreadTableViewCell.xib; sourceTree = "<group>"; };
@@ -224,10 +208,7 @@
 		41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
 		41AAC519201A9FC300809C4D /* MoveMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveMailTableViewCell.swift; sourceTree = "<group>"; };
 		41AAC52E201A9FCC00809C4D /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
-		41AAC52F201A9FCC00809C4D /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		41AAC530201A9FCD00809C4D /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
-		41AAC531201A9FCD00809C4D /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
-		41AAC532201A9FCD00809C4D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLActivityItemProvider.swift; sourceTree = "<group>"; };
 		41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityItemProvider.swift; sourceTree = "<group>"; };
 		41AAC535201A9FCD00809C4D /* Open.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Open.swift; sourceTree = "<group>"; };
@@ -245,15 +226,6 @@
 		41AAC554201AA08400809C4D /* iOS-Email-Client-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-Email-Client-Bridging-Header.h"; sourceTree = "<group>"; };
 		41AAC555201AA08500809C4D /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		41AAC556201AA08500809C4D /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
-		41AAC55A201B927E00809C4D /* KMAccordionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAccordionTableViewController.m; sourceTree = "<group>"; };
-		41AAC55B201B927E00809C4D /* KMAccordionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAccordionTableViewController.h; sourceTree = "<group>"; };
-		41AAC55E201B92A400809C4D /* KMSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMSection.m; sourceTree = "<group>"; };
-		41AAC55F201B92A400809C4D /* KMAppearence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAppearence.m; sourceTree = "<group>"; };
-		41AAC560201B92A400809C4D /* KMAppearence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAppearence.h; sourceTree = "<group>"; };
-		41AAC561201B92A400809C4D /* KMSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSection.h; sourceTree = "<group>"; };
-		41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KMSectionHeaderView.xib; sourceTree = "<group>"; };
-		41AAC567201B92CC00809C4D /* KMSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSectionHeaderView.h; sourceTree = "<group>"; };
-		41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMSectionHeaderView.m; sourceTree = "<group>"; };
 		41AAC56B201E1B4900809C4D /* iOS-Email-Client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iOS-Email-Client.entitlements"; sourceTree = "<group>"; };
 		41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Email-Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41B6AAAF2017987500D428B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -327,6 +299,8 @@
 		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
+		9568328B20752C5F007F8489 /* LabelEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelEmail.swift; sourceTree = "<group>"; };
+		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -394,7 +368,6 @@
 			isa = PBXGroup;
 			children = (
 				7CBD20BF2024BCB500D70B87 /* Login */,
-				41AAC4EE201A9FAC00809C4D /* ActivityViewController.swift */,
 				41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */,
 				41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */,
 				41AAC4F5201A9FAD00809C4D /* HeaderViewController.swift */,
@@ -415,53 +388,12 @@
 			isa = PBXGroup;
 			children = (
 				41AAC554201AA08400809C4D /* iOS-Email-Client-Bridging-Header.h */,
-				41AAC558201B91FF00809C4D /* KMAccordion */,
 				41AAC556201AA08500809C4D /* DateUtils.h */,
 				41AAC555201AA08500809C4D /* DateUtils.m */,
 				411FDF70204CF93300BCD787 /* InitialsImageView.swift */,
 				7C5FD825205C857C000E5F14 /* Utils.swift */,
 			);
 			path = Libs;
-			sourceTree = "<group>";
-		};
-		41AAC558201B91FF00809C4D /* KMAccordion */ = {
-			isa = PBXGroup;
-			children = (
-				41AAC565201B92BF00809C4D /* Header */,
-				41AAC55D201B929200809C4D /* Model */,
-				41AAC559201B925C00809C4D /* ViewController */,
-			);
-			path = KMAccordion;
-			sourceTree = "<group>";
-		};
-		41AAC559201B925C00809C4D /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				41AAC55B201B927E00809C4D /* KMAccordionTableViewController.h */,
-				41AAC55A201B927E00809C4D /* KMAccordionTableViewController.m */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		41AAC55D201B929200809C4D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				41AAC560201B92A400809C4D /* KMAppearence.h */,
-				41AAC55F201B92A400809C4D /* KMAppearence.m */,
-				41AAC561201B92A400809C4D /* KMSection.h */,
-				41AAC55E201B92A400809C4D /* KMSection.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		41AAC565201B92BF00809C4D /* Header */ = {
-			isa = PBXGroup;
-			children = (
-				41AAC567201B92CC00809C4D /* KMSectionHeaderView.h */,
-				41AAC568201B92CC00809C4D /* KMSectionHeaderView.m */,
-				41AAC566201B92CC00809C4D /* KMSectionHeaderView.xib */,
-			);
-			path = Header;
 			sourceTree = "<group>";
 		};
 		41B6AAA32017987500D428B7 = {
@@ -527,15 +459,12 @@
 		41B6AACF20179D2100D428B7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				41AAC531201A9FCD00809C4D /* Activity.swift */,
-				41AAC52F201A9FCC00809C4D /* Attachment.swift */,
 				41AAC530201A9FCD00809C4D /* Contact.swift */,
 				41AAC52E201A9FCC00809C4D /* Email.swift */,
 				41AAC535201A9FCD00809C4D /* Open.swift */,
 				41AAC536201A9FCD00809C4D /* PreviewItem.swift */,
 				41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */,
 				41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */,
-				41AAC532201A9FCD00809C4D /* User.swift */,
 				7C8D6C6F2036491100AB96EF /* LoginData.swift */,
 				7C8F1B68203C7A3500D30DCC /* SignUpData.swift */,
 				7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */,
@@ -548,6 +477,8 @@
 				7C34E5FA20470D2100E71906 /* EmailDetailData.swift */,
 				95661FCA205C2B9A006DF852 /* EmailContact.swift */,
 				7C5FD82C20607602000E5F14 /* Label.swift */,
+				9568328B20752C5F007F8489 /* LabelEmail.swift */,
+				9568328F20753FBE007F8489 /* File.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -558,8 +489,6 @@
 				7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */,
 				41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */,
 				41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */,
-				41AAC50F201A9FC200809C4D /* AttachmentUIPopover.swift */,
-				41AAC511201A9FC200809C4D /* AttachmentUIPopover.xib */,
 				41AAC513201A9FC300809C4D /* CriptextSpinner.swift */,
 				41AAC50C201A9FC200809C4D /* DetailGuideView.swift */,
 				41AAC507201A9FC200809C4D /* DetailGuideView.xib */,
@@ -571,8 +500,6 @@
 				41AAC517201A9FC300809C4D /* GoogleButton.xib */,
 				41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */,
 				41AAC519201A9FC300809C4D /* MoveMailTableViewCell.swift */,
-				41AAC50B201A9FC200809C4D /* OpenUIPopover.swift */,
-				41AAC510201A9FC200809C4D /* OpenUIPopover.xib */,
 				41AAC508201A9FC200809C4D /* OpenViewCell.xib */,
 				41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */,
 				41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */,
@@ -763,7 +690,6 @@
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
 				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
-				41AAC525201A9FC300809C4D /* AttachmentUIPopover.xib in Resources */,
 				7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
@@ -784,8 +710,6 @@
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
 				7C63AB5A2056C7850053219F /* ContactsDetailUIPopover.xib in Resources */,
 				7C63AB56205330A00053219F /* ReadHistoryTableCell.xib in Resources */,
-				41AAC524201A9FC300809C4D /* OpenUIPopover.xib in Resources */,
-				41AAC569201B92CC00809C4D /* KMSectionHeaderView.xib in Resources */,
 				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
@@ -848,7 +772,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -951,14 +875,12 @@
 				7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */,
 				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
-				41AAC55C201B927E00809C4D /* KMAccordionTableViewController.m in Sources */,
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
-				41AAC538201A9FCD00809C4D /* Attachment.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
 				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				7C5FD826205C857C000E5F14 /* Utils.swift in Sources */,
@@ -974,12 +896,10 @@
 				7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */,
 				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
 				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
-				41AAC56A201B92CC00809C4D /* KMSectionHeaderView.m in Sources */,
 				414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
 				7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */,
-				41AAC51F201A9FC300809C4D /* OpenUIPopover.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
@@ -999,27 +919,25 @@
 				7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */,
 				954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */,
 				41AAC53E201A9FCD00809C4D /* Open.swift in Sources */,
+				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
 				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
-				41AAC53A201A9FCD00809C4D /* Activity.swift in Sources */,
 				7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */,
-				41AAC562201B92A400809C4D /* KMSection.m in Sources */,
 				7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */,
 				41AAC52A201A9FC300809C4D /* GoogleButton.swift in Sources */,
 				7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */,
-				41AAC4FC201A9FAD00809C4D /* ActivityViewController.swift in Sources */,
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
 				95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */,
 				7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */,
-				41AAC563201B92A400809C4D /* KMAppearence.m in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
 				41AAC4F9201A9FAD00809C4D /* ListLabelViewController.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
+				9568328C20752C5F007F8489 /* LabelEmail.swift in Sources */,
 				7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */,
 				7C5FD82D20607602000E5F14 /* Label.swift in Sources */,
 				7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */,
@@ -1027,14 +945,12 @@
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
 				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,
 				7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */,
-				41AAC523201A9FC300809C4D /* AttachmentUIPopover.swift in Sources */,
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				7C5FD82B2060259C000E5F14 /* EmailDetailHeaderCell.swift in Sources */,
 				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
 				41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */,
 				7C63AB58205332990053219F /* ReadHistoryTableCell.swift in Sources */,
 				7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */,
-				41AAC53B201A9FCD00809C4D /* User.swift in Sources */,
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,
 				7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */,
 				7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */,

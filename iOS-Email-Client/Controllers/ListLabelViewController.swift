@@ -78,8 +78,6 @@ class ListLabelViewController: UIViewController {
     let initialInboxHeight:CGFloat = 300
     let initialSettingsHeight:CGFloat = 401
     
-    var user:User!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -173,14 +171,7 @@ class ListLabelViewController: UIViewController {
     
     @IBAction func didPressUpgrade(_ sender: UIButton) {
         sender.backgroundColor = UIColor.clear
-        
-        if(user != nil && user.isPro()){
-            UIApplication.shared.open(URL(string: "https://mail.criptext.com/account/info")!)
-        }
-        else{
-            UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
-        }
-        
+        UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)        
     }
     
     @IBAction func didPressInvite(_ sender: UIButton) {
@@ -209,17 +200,6 @@ class ListLabelViewController: UIViewController {
     @IBAction func didPressSettings(_ sender: UIButton) {
         let needsCollapsing = self.settingsContainerHeightConstraint.constant != 0
         self.collapseSettings(needsCollapsing)
-    }
-    
-    func setUserAccount(_ user:User){
-        self.user = user
-        if(self.user.isPro()){
-            self.upgradeToProLabel.text = "My Account"
-            self.upgradeImageView.image = Icon.my_account.image
-        }else {
-            self.upgradeToProLabel.text = "Upgrade to Pro"
-            self.upgradeImageView.image = Icon.upgrade.image
-        }
     }
     
     func collapseInbox(_ flag:Bool){

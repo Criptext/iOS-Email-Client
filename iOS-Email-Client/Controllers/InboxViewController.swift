@@ -24,15 +24,13 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var topToolbar: NavigationToolbarView!
     @IBOutlet weak var buttonCompose: UIButton!
     
-    var currentUser: User!
-    
     var selectedLabel = MyLabel.inbox
     
     var emailArray = [Email]()
     var filteredEmailArray = [Email]()
     var threadHash = [String:[Email]]()
-    var attachmentHash = DBManager.getAllAttachments()
-    var activities = DBManager.getAllActivities()
+    //var attachmentHash = DBManager.getAllAttachments()
+    //var activities = DBManager.getAllActivities()
     var searchNextPageToken: String?
     
     var searchController = UISearchController(searchResultsController: nil)
@@ -107,8 +105,6 @@ class InboxViewController: UIViewController {
 
         self.initBarButtonItems()
         
-        self.currentUser = DBManager.getUsers().first
-        
         self.setButtonItems(isEditing: false)
         self.loadMails(from: .inbox, since: Date())
         
@@ -141,22 +137,6 @@ class InboxViewController: UIViewController {
     // and perform API calls
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if self.emailArray.count > 0 {
-            self.updateBadge(self.currentUser.badge)
-            
-            guard let date = self.currentUser.getUpdateDate(for: self.selectedLabel) else {
-                self.statusBarButton.title = nil
-//                self.handleRefresh(self.tableView.refreshControl!, automatic: true, signIn: false, completion: nil)
-                return
-            }
-            
-            if let earlyDate = Calendar.current.date(byAdding: .minute, value: -1, to: Date()), earlyDate > date {
-                self.handleRefresh(self.refreshControl, automatic: true, signIn: false, completion: nil)
-            } else {
-                self.statusBarButton.title = String(format:"Updated %@",DateUtils.beatyDate(date))
-            }
-        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -303,16 +283,7 @@ extension InboxViewController{
     
     @objc func didPressActivity(_ sender: UIBarButtonItem) {
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navigationView = storyboard.instantiateViewController(withIdentifier: "ActivityViewController") as! UINavigationController
-        let activityVC = navigationView.childViewControllers.last as! ActivityViewController
-        activityVC.user = self.currentUser
         
-        let snackVC = SnackbarController(rootViewController: navigationView)
-        
-        DBManager.update(self.currentUser, badge: 0)
-        self.updateBadge(self.currentUser.badge)
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
     @objc func didPressArchive(_ sender: UIBarButtonItem) {
@@ -472,21 +443,6 @@ extension InboxViewController {
         //        check if it should get emails or just handle refresh
         self.loadMails(from: label, since: Date())
         
-        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
-            let fullString = NSMutableAttributedString(string: "")
-            
-            let image1Attachment = NSTextAttachment()
-            image1Attachment.image = #imageLiteral(resourceName: "load-arrow")
-            
-            let image1String = NSAttributedString(attachment: image1Attachment)
-            
-            fullString.append(image1String)
-            fullString.append(NSAttributedString(string: " Refreshing \(label.description)..."))
-            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-            self.getEmails("me", labels: [label.id], completion: nil)
-            return
-        }
-        
         self.statusBarButton.title = nil
         self.refreshControl.beginRefreshing()
         self.handleRefresh(self.refreshControl, automatic: false, signIn: false, completion: nil)
@@ -505,7 +461,6 @@ extension InboxViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let signatureVC = storyboard.instantiateViewController(withIdentifier: "SignatureViewController") as! SignatureViewController
-        signatureVC.currentUser = self.currentUser
         
         self.navigationController?.childViewControllers.last!.present(signatureVC, animated: true, completion: nil)
     }
@@ -514,7 +469,6 @@ extension InboxViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let headerVC = storyboard.instantiateViewController(withIdentifier: "HeaderViewController") as! HeaderViewController
-        headerVC.currentUser = self.currentUser
         
         self.navigationController?.childViewControllers.last!.present(headerVC, animated: true, completion: nil)
     }
@@ -559,7 +513,7 @@ extension InboxViewController {
     
     func showSupport(){
         
-        let body = "Type your message here...<br><br><br><br><br><br><br>Do not write below this line.<br>*****************************<br> Version: 1.2<br> Device: \(systemIdentifier()) <br> OS: iOS \(UIDevice.current.systemVersion) <br> Account type: \(self.currentUser.statusDescription()) <br> Plan: \(self.currentUser.plan)"
+        let body = "Type your message here...<br><br><br><br><br><br><br>Do not write below this line.<br>*****************************<br> Version: 1.2<br> Device: \(systemIdentifier()) <br> OS: iOS \(UIDevice.current.systemVersion)"
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
@@ -576,7 +530,7 @@ extension InboxViewController {
     }
     
     func changeDefaultValue(_ isOn:Bool){
-        DBManager.update(self.currentUser, switchValue: isOn)
+        //DBManager.update(self.currentUser, switchValue: isOn)
     }
 }
 
@@ -625,7 +579,7 @@ extension InboxViewController{
         
         let defaults = UserDefaults.standard
         let since = defaults.integer(forKey: "lastSync")
-        self.ws = WebSocket("wss://com.criptext.com:3000?user_id=\(self.currentUser.id)&session_id=\(NSUUID().uuidString)&since=\(since)", subProtocols:["criptext-protocol"])
+        self.ws = WebSocket("wss://com.criptext.com:3000?user_id=1&session_id=\(NSUUID().uuidString)&since=\(since)", subProtocols:["criptext-protocol"])
         
         self.ws.event.open = {
             print("opened")
@@ -654,167 +608,47 @@ extension InboxViewController{
                 switch cmd {
                 case Commands.userStatus.rawValue:
                     let newStatus = mail["args"]["msg"].intValue
-                    DBManager.update(self.currentUser, status:newStatus)
+                    //DBManager.update(self.currentUser, status:newStatus)
                     
                     if let plan = mail["args"]["plan"].string {
                         
-                        DBManager.update(self.currentUser, plan:plan.isEmpty ? "Free trial" : plan)
+                       // DBManager.update(self.currentUser, plan:plan.isEmpty ? "Free trial" : plan)
                     }
                     
                     let sideVC = self.navigationDrawerController?.leftViewController as! ListLabelViewController
-                    sideVC.setUserAccount(self.currentUser)
+                    //sideVC.setUserAccount(self.currentUser)
                     
                 case Commands.emailOpened.rawValue:
-                    //[{"cmd":1,"args":{"uid_from":1,"uid_to":"100","location":"Gmail","expirationTime":"1987200","timestamp":1492039527,"msg":"www.dt89@gmail.com:967nl7v92fqrggb9j1ds1r7rzkdf6vfj2sf3l3di"},"timestamp":1492039527}]
-                    totalMailOpens += 1
-                    let token = mail["args"]["msg"].string?.components(separatedBy: ":")[1]
-                    let location = mail["args"]["location"].string
-                    let timestamp = mail["args"]["timestamp"].int
-                    
-                    if let activity = DBManager.getActivityBy(token!) {
-                        var openArray = JSON(parseJSON: activity.openArraySerialized).arrayValue.map({$0.stringValue})
-                        openArray.insert(String(format:"%@:%d",location!,timestamp!), at: 0)
-                        DBManager.update(activity, openArraySerialized: openArray.description)
-                        DBManager.update(activity, hasOpens: true)
-                        DBManager.update(activity, isNew: false)
-                        
-                        var subject = activity.subject
-                        
-                        if subject.characters.count > 25 {
-                            subject = subject.substring(to: subject.index(subject.startIndex, offsetBy: 25)) + "..."
-                        }
-                        
-                        self.showSnackbar("📩 Email \"\(subject)\" was opened", attributedText: nil, buttons: "", permanent: false)
-                    }
                     
                     //SEND NOTIFICATIONS TO ACTIVITY
-                    NotificationCenter.default.post(name: Notification.Name.Activity.onMsgNotificationChange, object: nil, userInfo: ["token": token!])
+                    //NotificationCenter.default.post(name: Notification.Name.Activity.onMsgNotificationChange, object: nil, userInfo: ["token": token!])
                     
                     shouldReload = true
                     
                 case Commands.emailUnsend.rawValue:
                     //[{"cmd":4,"args":{"uid_from":1,"uid_to":"100","timestamp":1492039527,"msg":<token>},"timestamp":1492039527}]
-                    let token = mail["args"]["msg"].stringValue
-                    if let activity = self.activities[token] {
-                        DBManager.update(activity, exist: false)
-                    }
-                    
-                    guard let email = DBManager.getMailBy(token: token) else {
-                        break
-                    }
-                    
-                    DBManager.update(email, snippet: "The content is no longer available")
                     
                     shouldReload = true
                     
                 case Commands.fileOpened.rawValue:
                     //[{"cmd":2,"args":{"uid_from":1,"uid_to":"100","location":"Guayaquil, EC","timestamp":1492039785,"file_token":"f2ao1vzakh85mij1ds17wncb40qenkp661dcxr","email_token":"967nl7v92fqrggb9j1ds1r7rzkdf6vfj2sf3l3di","file_name":"7-Activity-Inbox.png"},"timestamp":1492039785}]
-                    let mailToken = mail["args"]["email_token"].string
-                    let fileToken = mail["args"]["file_token"].string
-                    let location = mail["args"]["location"].string
-                    let timestamp = mail["args"]["timestamp"].int
-                    
-                    if let attachment = DBManager.getAttachmentBy(fileToken!){
-                        var openArray = JSON(parseJSON: attachment.openArraySerialized).arrayValue.map({$0.stringValue})
-                        openArray.insert(String(format:"%@:%d",location!,timestamp!), at: 0)
-                        DBManager.update(attachment, openArraySerialized: openArray.description)
-                        
-                        var filename = attachment.fileName
-                        
-                        if filename.characters.count > 30 {
-                            filename = filename.substring(to: filename.index(filename.startIndex, offsetBy: 30)) + "..."
-                        }
-                        
-                        self.showSnackbar("📎 File \"\(filename)\" was opened", attributedText: nil, buttons: "", permanent: false)
-                    }
-                    
-                    //SEND NOTIFICATIONS TO ACTIVITY
-                    NotificationCenter.default.post(name: Notification.Name.Activity.onFileNotificationChange, object: nil, userInfo: ["fileToken": fileToken!, "mailToken": mailToken!])
                     
                     shouldReload = true
                     
                 case Commands.fileDownloaded.rawValue:
                     //[{"cmd":3,"args":{"uid_from":1,"uid_to":"100","location":"Guayaquil, EC","timestamp":1492039847,"file_token":"f2ao1vzakh85mij1ds17wncb40qenkp661dcxr","email_token":"967nl7v92fqrggb9j1ds1r7rzkdf6vfj2sf3l3di","file_name":"7-Activity-Inbox.png"},"timestamp":1492039847}]
-                    let mailToken = mail["args"]["email_token"].string
-                    let fileToken = mail["args"]["file_token"].string
-                    let location = mail["args"]["location"].string
-                    let timestamp = mail["args"]["timestamp"].int
-                    
-                    if let attachment = DBManager.getAttachmentBy(fileToken!) {
-                        var downloadArray = JSON(parseJSON: attachment.downloadArraySerialized).arrayValue.map({$0.stringValue})
-                        downloadArray.insert(String(format:"%@:%d",location!,timestamp!), at: 0)
-                        DBManager.update(attachment, downloadArraySerialized: downloadArray.description)
-                        
-                        var filename = attachment.fileName
-                        
-                        if filename.characters.count > 30 {
-                            filename = filename.substring(to: filename.index(filename.startIndex, offsetBy: 30)) + "..."
-                        }
-                        
-                        self.showSnackbar("📎 File \"\(filename)\" was downloaded", attributedText: nil, buttons: "", permanent: false)
-                    }
-                    
-                    //SEND NOTIFICATIONS TO ACTIVITY
-                    NotificationCenter.default.post(name: Notification.Name.Activity.onFileNotificationChange, object: nil, userInfo: ["fileToken": fileToken!, "mailToken": mailToken!])
                     
                     shouldReload = true
                     
                 case Commands.emailCreated.rawValue:
                     //[{"cmd":54,"args":{"uid_from":1,"uid_to":"100","timestamp":1492103587,"msg":"9814u5geuaulq5mij1gny37yfsnb0uoafrsh5mi:mayer@criptext.com"},"timestamp":1492103587}]
-                    let token = mail["args"]["msg"].string?.components(separatedBy: ":")[0]
-                    APIManager.getMailDetail(self.currentUser, token: token!, completion: { (error, attachments, activity) in
-                        
-                        if(error != nil){
-                            return
-                        }
-                        
-                        guard let activity = activity else {
-                            return
-                        }
-                        
-                        DBManager.store([activity])
-                        
-                        //SEND NOTIFICATIONS TO ACTIVITY
-                        NotificationCenter.default.post(name: Notification.Name.Activity.onNewMessage, object: nil, userInfo: ["activity": activity])
-                    })
+                    break
                     
                 case Commands.fileCreated.rawValue:
                     //[{"cmd":55,"args":{"uid_from":1,"uid_to":"100","timestamp":1492103609,"msg":"9814u5geuaulq5mij1gny37yfsnb0uoafrsh5mi"},"timestamp":1492103609}]
-                    let token = mail["args"]["msg"].string
-                    APIManager.getMailDetail(self.currentUser, token: token!, completion: { (error, attachments, activity) in
-                        
-                        if(error != nil){
-                            return
-                        }
-                        
-                        guard let attachmentArray = attachments else {
-                            return
-                        }
-                        
-                        DBManager.store(attachmentArray)
-                        
-                        //SEND NOTIFICATIONS TO ACTIVITY
-                        NotificationCenter.default.post(name: Notification.Name.Activity.onNewAttachment, object: nil, userInfo: ["attachments": attachmentArray, "token": token!])
-                    })
-                    
+                    break
                 case Commands.emailMute.rawValue:
                     //{"cmd":5,"args":{"uid_from":156,"uid_to":"5634","timestamp":1499355531, "msg":{"tokens":"fyehrgfgnfyndwgtrt54g,5gyuetyehwgy5egtyg","mute":"0"}},"timestamp":1499355531}
-                    guard let tokens = mail["args"]["msg"]["tokens"].string,
-                        let mute = mail["args"]["msg"]["mute"].string else {
-                        return
-                    }
-                    
-                    let tokenArray = tokens.components(separatedBy: ",")
-                    let isMuted = mute == "1"
-                    
-                    for token in tokenArray {
-                        if let activity = self.activities[token] {
-                            DBManager.update(activity, isMuted: isMuted)
-                        }
-                    }
-                    
-                    //SEND NOTIFICATIONS TO ACTIVITY
-                    NotificationCenter.default.post(name: Notification.Name.Activity.onEmailMute, object: nil, userInfo: ["tokens": tokens, "mute": mute])
                     
                     break
                     
@@ -829,8 +663,8 @@ extension InboxViewController{
             
             //UPDATE BADGE
             if(totalMailOpens > 0){
-                DBManager.update(self.currentUser, badge: self.currentUser.badge + totalMailOpens)
-                self.updateBadge(self.currentUser.badge)
+                //DBManager.update(self.currentUser, badge: self.currentUser.badge + totalMailOpens)
+                //self.updateBadge(self.currentUser.badge)
             }
             
             guard shouldReload, let indexPaths = self.tableView.indexPathsForVisibleRows else {
@@ -970,7 +804,7 @@ extension InboxViewController{
     @objc func handleRefresh(_ refreshControl: UIRefreshControl, automatic:Bool = false, signIn:Bool = false, completion: (() -> Void)?){
         
         if !automatic {
-            DBManager.restoreState(self.currentUser)
+            //DBManager.restoreState(self.currentUser)
         }
         
 //        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
@@ -1017,11 +851,6 @@ extension InboxViewController{
     // Used to fetch mails from cloud
     func getEmails(_ userId:String, labels:[String], completion: (() -> Void)?){
         
-        guard let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel) else {
-            CriptextSpinner.hide(from: self.view)
-            return
-        }
-        
         let fullString = NSMutableAttributedString(string: "")
         
         let image1Attachment = NSTextAttachment()
@@ -1033,44 +862,42 @@ extension InboxViewController{
         fullString.append(NSAttributedString(string: " Downloading emails..."))
         self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
         
-        let pageToken:String? = nextPageToken != "0" ? nextPageToken : nil
-        
         self.footerActivity.startAnimating()
-        APIManager.getMails(
-            userId: userId,
-            labels: labels,
-            pageToken: pageToken
-        ) { (parsedEmails, parsedContacts, error) in
-            CriptextSpinner.hide(from: self.view)
-            self.refreshControl.endRefreshing()
-            self.footerActivity.stopAnimating()
-            
-            if let contacts = parsedContacts {
-                DBManager.store(contacts)
-            }
-            
-            guard var parsedEmails = parsedEmails else {
-                print(String(describing: error?.localizedDescription))
-                return
-            }
-            
+//        APIManager.getMails(
+//            userId: userId,
+//            labels: labels,
+//            pageToken: pageToken
+//        ) { (parsedEmails, parsedContacts, error) in
+//            CriptextSpinner.hide(from: self.view)
+//            self.refreshControl.endRefreshing()
+//            self.footerActivity.stopAnimating()
+//
+//            if let contacts = parsedContacts {
+//                DBManager.store(contacts)
+//            }
+//
+//            guard var parsedEmails = parsedEmails else {
+//                print(String(describing: error?.localizedDescription))
+//                return
+//            }
+        
 //            if let firstEmail = parsedEmails.first,
 //                firstEmail.historyId > self.currentUser.historyId(for: self.selectedLabel) {
 //                DBManager.update(self.currentUser, historyId: firstEmail.historyId, label: self.selectedLabel)
 //            }
             
 //            DBManager.update(self.currentUser, nextPageToken: (ticket.fetchedObject as! GTLRGmail_ListThreadsResponse).nextPageToken, label: self.selectedLabel)
-            let now = Date()
-            DBManager.update(self.currentUser, updateDate: now, label: self.selectedLabel)
-            self.statusBarButton.title = "Updated Just Now"
-            
-            self.hideSnackbar()
-            self.addFetched(&parsedEmails)
-            
-            if let completionHandler = completion {
-                completionHandler()
-            }
-        }
+//            let now = Date()
+//            DBManager.update(self.currentUser, updateDate: now, label: self.selectedLabel)
+//            self.statusBarButton.title = "Updated Just Now"
+//
+//            self.hideSnackbar()
+//            self.addFetched(&parsedEmails)
+//
+//            if let completionHandler = completion {
+//                completionHandler()
+//            }
+//        }
     }
     
     func addFetched(_ emails: inout [Email]){
@@ -1088,28 +915,7 @@ extension InboxViewController{
 extension InboxViewController{
     
     //silent sign in callback
-    func sign(_ user:User, _ error: Error!) {
-
-        guard error == nil else{
-            print(error.localizedDescription)
-            return
-        }
-        
-        //fetch user
-        
-        //setup badges for sideVC and profile Img
-        self.startWebSocket()
-        self.updateBadge(self.currentUser.badge)
-        
-        //if email array count > 0, fetch partial updates
-        self.handleRefresh(self.refreshControl, automatic: true, signIn: true, completion: nil)
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.registerPushNotifications()
-        
-        self.updateAppIcon()
-    }
-    
+   
     func signout(){
         self.stopWebsocket()
         DBManager.signout()
@@ -1223,10 +1029,6 @@ extension InboxViewController: UITableViewDataSource{
             let initials = cell.senderLabel.text!.replacingOccurrences(of: "\"", with: "")
             cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
             cell.avatarImageView.layer.borderWidth = 0.0
-        }
-        
-        if !self.currentUser.isPro() {
-//            cell.secureAttachmentImageView.tintColor = UIColor.gray
         }
         
         guard let emailArrayHash = self.threadHash[email.threadId], emailArrayHash.count > 1 else{
