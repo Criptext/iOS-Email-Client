@@ -10,58 +10,47 @@ import Foundation
 import RealmSwift
 
 class Email: Object {
-    @objc dynamic var id = ""
-    @objc dynamic var messageId = ""
+    
+    @objc dynamic var id = 0
+    @objc dynamic var key = ""
     @objc dynamic var threadId = ""
-    @objc dynamic var historyId:Int64 = 0
+    @objc dynamic var s3Key = ""
+    @objc dynamic var unread = true
+    @objc dynamic var secure = true
+    @objc dynamic var content = ""
+    @objc dynamic var preview = ""
     @objc dynamic var subject = ""
-    @objc dynamic var threadSubject = ""
-    @objc dynamic var from = ""
-    @objc dynamic var fromDisplayString = ""
-    @objc dynamic var to = ""
-    @objc dynamic var toDisplayString = ""
-    @objc dynamic var cc = ""
-    @objc dynamic var ccDisplayString = ""
-    @objc dynamic var date:Date?
-    @objc dynamic var dateString = ""
-    @objc dynamic var snippet = ""
-    @objc dynamic var body = ""
-    @objc dynamic var needsSaving = false
-    @objc dynamic var needsSending = false
-    @objc dynamic var isDisplayed = false
-    @objc dynamic var isLoaded = false
-    @objc dynamic var realCriptextToken = ""
-    @objc dynamic var criptextTokens = [String]()
-    @objc dynamic var criptextTokensSerialized = ""
-    @objc dynamic var labels = [String]()
-    @objc dynamic var labelArraySerialized = ""
-    @objc dynamic var nextPageToken:String? = "0"
-    var attachments = List<AttachmentGmail>()
-    
-    func isRead() -> Bool {
-        if labels.contains("UNREAD") { return false }
-        return true
-    }
-    
-    func isDraft() -> Bool {
-        if labels.contains("DRAFT") { return true }
-        return false
-    }
-    
-    func usingCriptext() -> Bool {
-        if criptextTokensSerialized.characters.count > 0 { return true }
-        return false
-    }
+    @objc dynamic var delivered = DeliveryStatus.SENT
+    @objc dynamic var date : Date?
+    @objc dynamic var isTrash = false
+    @objc dynamic var isDraft = false
+    var isExpanded = false
     
     override static func primaryKey() -> String? {
         return "id"
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["labels", "dateString", "criptextTokens", "isDisplayed", "isLoaded"]
+        return ["isExpanded"]
+    }
+    
+    var isUnsent: Bool{
+        return delivered == DeliveryStatus.UNSENT
+    }
+    
+    func incrementID() -> Int {
+        let realm = try! Realm()
+        return (realm.objects(Email.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
 }
 
 func ==(lhs: Email, rhs: Email) -> Bool {
     return lhs.id == rhs.id
+}
+
+struct DeliveryStatus {
+    static let PENDING = 0
+    static let SENT = 1
+    static let DELIVERED = 2
+    static let UNSENT = -1
 }

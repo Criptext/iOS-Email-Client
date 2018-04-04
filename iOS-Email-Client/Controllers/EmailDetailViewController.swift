@@ -14,20 +14,60 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topToolbar: NavigationToolbarView!
+    
     var tapGestureRecognizer:UITapGestureRecognizer!
     var myHeaderView : UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        emailData.mockEmails()
-        emailData.mockLabels()
-        setupMoreOptionsViews()
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
-        backgroundOverlayView.addGestureRecognizer(tapGestureRecognizer)
-        for index in 0..<emailData.emails.count{
-            let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
-            emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
-        }
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
+        
+        self.emailData.mockEmails()
+        self.emailData.mockLabels()
+        
+        self.setupToolbar()
+        self.setupMoreOptionsViews()
+        
+        self.registerCellNibs()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.topToolbar.isHidden = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.topToolbar.removeFromSuperview()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.topToolbar.isHidden = false
+    }
+    
+    func setupToolbar(){
+        self.navigationController?.navigationBar.addSubview(self.topToolbar)
+        let margins = self.navigationController!.navigationBar.layoutMarginsGuide
+        self.topToolbar.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: -8.0).isActive = true
+        self.topToolbar.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 8.0).isActive = true
+        self.topToolbar.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: 8.0).isActive = true
+        self.navigationController?.navigationBar.bringSubview(toFront: self.topToolbar)
+        self.topToolbar.isHidden = true
+        
+        let cancelButton = UIButton(type: .custom)
+        cancelButton.frame = CGRect(x: 0, y: 0, width: 31, height: 31)
+        cancelButton.setImage(#imageLiteral(resourceName: "menu-back"), for: .normal)
+        cancelButton.layer.backgroundColor = UIColor(red:0.31, green:0.32, blue:0.36, alpha:1.0).cgColor
+        cancelButton.tintColor = UIColor(red:0.56, green:0.56, blue:0.58, alpha:1.0)
+        cancelButton.layer.cornerRadius = 15.5
+        let cancelBarButton = UIBarButtonItem(customView: cancelButton)
+        self.navigationItem.leftBarButtonItem = cancelBarButton
     }
     
     func setupMoreOptionsViews(){
@@ -39,6 +79,16 @@ class EmailDetailViewController: UIViewController {
         backgroundOverlayView.isHidden = true
         backgroundOverlayView.alpha = 0.0
         optionsContainerOffsetConstraint.constant = -300.0
+        
+        self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
+        self.backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
+    }
+    
+    func registerCellNibs(){
+        for index in 0..<self.emailData.emails.count{
+            let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
+            self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
+        }
     }
     
     @objc func closeMoreOptions(){
@@ -168,5 +218,17 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
             self.backgroundOverlayView.alpha = 1.0
             self.view.layoutIfNeeded()
         })
+    }
+}
+
+extension EmailDetailViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let nav = self.navigationController else {
+            return false
+        }
+        if(nav.viewControllers.count > 1){
+            return true
+        }
+        return false
     }
 }

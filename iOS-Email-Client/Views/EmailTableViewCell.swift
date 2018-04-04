@@ -65,7 +65,7 @@ class EmailTableViewCell: UITableViewCell{
         borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
     }
     
-    func setContent(_ email: EmailDetail){
+    func setContent(_ email: Email){
         let isExpanded = email.isExpanded
         webViewWrapperView.isHidden = !isExpanded
         expandedDetailView.isHidden = !isExpanded
@@ -78,7 +78,7 @@ class EmailTableViewCell: UITableViewCell{
         }
     }
     
-    func setCollapsedContent(_ email: EmailDetail){
+    func setCollapsedContent(_ email: Email){
         let preview = email.isUnsent ? "Unsent" : email.preview
         let numberOfLines = Utils.getNumberOfLines(preview, width: previewLabel.frame.width, fontSize: 17.0)
         previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
@@ -89,7 +89,7 @@ class EmailTableViewCell: UITableViewCell{
         }
     }
     
-    func setExpandedContent(_ email: EmailDetail){
+    func setExpandedContent(_ email: Email){
         let content = email.content
         if(!loadedContent){
             webView.loadHTMLString(content, baseURL: nil)
@@ -97,7 +97,7 @@ class EmailTableViewCell: UITableViewCell{
         setExpandedIcons(email)
     }
     
-    func setCollapsedIcons(_ email: EmailDetail){
+    func setCollapsedIcons(_ email: Email){
         let hasOpens = true
         let hasAttachments = true
         
@@ -105,7 +105,7 @@ class EmailTableViewCell: UITableViewCell{
         miniAttachmentIconView.tintColor = hasAttachments ?  .mainUI : .neutral
     }
     
-    func setExpandedIcons(_ email: EmailDetail){
+    func setExpandedIcons(_ email: Email){
         let isSecure = email.secure
         let hasOpens = true
         let hasAttachments = true

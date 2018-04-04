@@ -9,7 +9,7 @@
 import Foundation
 
 class EmailDetailData{
-    var emails = [EmailDetail]()
+    var emails = [Email]()
     var labels = [Label]()
     var subject = "This is a large subject to display a 2 lines subject"
     
@@ -29,43 +29,43 @@ class EmailDetailData{
     }
     
     func mockEmails(){
-        let email1 = EmailDetail()
+        let email1 = Email()
         email1.subject = "Hola Mundo"
         email1.preview = "pffffffff"
         email1.content = Constants.htmlTopWrapper + "<div dir=\"ltr\">pfffffffffff</div>" + Constants.htmlBottomWrapper
         emails.append(email1)
-        let email2 = EmailDetail()
+        let email2 = Email()
         email2.delivered = DeliveryStatus.UNSENT
         email2.subject = "Este es un texto super largo pues para probar y es unsend"
         email2.preview = "pues aqui para que le hagas unsend"
         email2.content = Constants.unsendEmail
         emails.append(email2)
-        let email3 = EmailDetail()
+        let email3 = Email()
         email3.subject = "Ya sabe baron"
         email3.preview = "y que te puedo decir"
         email3.content = Constants.htmlTopWrapper + "<div dir=\"ltr\">y que te puedo decirsh</div>" + Constants.htmlBottomWrapper
         emails.append(email3)
-        let email4 = EmailDetail()
+        let email4 = Email()
         email4.subject = "Hola Mundo ABC"
         email4.preview = "pffffffff ABC"
         email4.content = Constants.htmlTopWrapper + "<div dir=\"ltr\">pfffffffffff ABC</div>" + Constants.htmlBottomWrapper
         emails.append(email4)
-        let email5 = EmailDetail()
+        let email5 = Email()
         email5.subject = "este es un texto diferente xq yolo"
         email5.preview = "Red Velvet"
         email5.content = Constants.htmlTopWrapper + "<div dir=\"ltr\">Red Velvet</div>" + Constants.htmlBottomWrapper
         emails.append(email5)
-        let email6 = EmailDetail()
+        let email6 = Email()
         email6.subject = "este es un red flavor xq ya tu sabe"
         email6.preview = "red flavor bye bye bye red flavor bye bye bye red flavor bye bye bye red flavor bye bye bye red flavor"
         email6.content = longPage
         emails.append(email6)
-        let email7 = EmailDetail()
+        let email7 = Email()
         email7.subject = "Candy candy candy"
         email7.preview = "chocolate chocolate"
         email7.content = Constants.htmlTopWrapper + "<div dir=\"ltr\">chocolate chocolate chocoleto</div>" + Constants.htmlBottomWrapper
         //emails.append(email7)
-        let email8 = EmailDetail()
+        let email8 = Email()
         email8.subject = "Unsending Peek a boo"
         email8.preview = "Peek a boo unsend"
         email8.content = Constants.unsendEmail

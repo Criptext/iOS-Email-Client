@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import GoogleAPIClientForREST
 import Material
 
 class TourViewController: UIViewController {
