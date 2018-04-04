@@ -259,13 +259,6 @@ class InboxViewController: UIViewController {
             }
         }
     }
-    
-    func mockupMails(){
-//        self.emailArray = [];
-        let emailData = EmailDetailData()
-        emailData.mockEmails()
-        self.emailArray = emailData.emails
-    }
 }
 
 //MARK: - Modify mails actions
@@ -939,7 +932,10 @@ extension InboxViewController{
         
         self.emailArray = tuple.1
         self.tableView.reloadData()
+        
+        //@TODO: remove return statement and paginate mails from db
         return
+        
         let tupleObject = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
         
         guard (tupleObject.1.count > 0 || tupleObject.0.count > 0) else {
