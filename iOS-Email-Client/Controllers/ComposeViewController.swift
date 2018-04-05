@@ -84,7 +84,7 @@ class ComposeViewController: UIViewController {
     
     var dismissTapGestureRecognizer: UITapGestureRecognizer!
     
-    let DOMAIN = "criptext.com"
+    let DOMAIN = "jigl.com"
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -590,7 +590,7 @@ class ComposeViewController: UIViewController {
         
         if(recipients.isEmpty){
             self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmails)
-            return;
+            return
         }
         
         let params = [
@@ -613,11 +613,17 @@ class ComposeViewController: UIViewController {
             keysArray.forEach({ (keys) in
                 
                 let contactRegistrationId = keys["registrationId"] as! Int32
-                let contactPrekeyPublic: Data = Data(base64Encoded:((keys["preKey"] as! NSDictionary).object(forKey: "publicKey") as! String))!
+                var contactPrekeyPublic: Data? = nil
+                var preKeyId: Int32 = 0
+                if let prekey = keys["preKey"] as? Dictionary<String, Any>{
+                    contactPrekeyPublic = Data(base64Encoded:(prekey["publicKey"] as! String))!
+                    preKeyId = prekey["id"] as! Int32
+                }
+                
                 let contactSignedPrekeyPublic: Data = Data(base64Encoded:(keys["signedPreKeyPublic"] as! String))!
                 let contactSignedPrekeySignature: Data = Data(base64Encoded:(keys["signedPreKeySignature"] as! String))!
                 let contactIdentityPublicKey: Data = Data(base64Encoded:(keys["identityPublicKey"] as! String))!
-                let contactPreKey: PreKeyBundle = PreKeyBundle.init(registrationId: contactRegistrationId, deviceId: keys["deviceId"] as! Int32, preKeyId: 0, preKeyPublic: contactPrekeyPublic, signedPreKeyPublic: contactSignedPrekeyPublic, signedPreKeyId: keys["signedPreKeyId"] as! Int32, signedPreKeySignature: contactSignedPrekeySignature, identityKey: contactIdentityPublicKey)
+                let contactPreKey: PreKeyBundle = PreKeyBundle.init(registrationId: contactRegistrationId, deviceId: keys["deviceId"] as! Int32, preKeyId: preKeyId, preKeyPublic: contactPrekeyPublic, signedPreKeyPublic: contactSignedPrekeyPublic, signedPreKeyId: keys["signedPreKeyId"] as! Int32, signedPreKeySignature: contactSignedPrekeySignature, identityKey: contactIdentityPublicKey)
                 
                 let sessionBuilder: SessionBuilder = SessionBuilder.init(axolotlStore: store, recipientId: keys["recipientId"] as! String, deviceId: keys["deviceId"] as! Int32)
                 sessionBuilder.processPrekeyBundle(contactPreKey)
