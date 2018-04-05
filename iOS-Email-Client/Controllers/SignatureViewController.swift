@@ -11,11 +11,9 @@ import Foundation
 class SignatureViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     
-    var currentUser:User!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.textView.text = currentUser.emailSignature
+        self.textView.text = ""
         self.textView.becomeFirstResponder()
     }
     
@@ -24,13 +22,6 @@ class SignatureViewController: UIViewController {
     }
     
     @IBAction func didPressSave(_ sender: UIBarButtonItem) {
-        
-        guard self.currentUser.emailSignature != self.textView.text else {
-            self.dismiss(animated: true, completion: nil)
-            return
-        }
-        
-        DBManager.update(self.currentUser, signature: self.textView.text)
         self.dismiss(animated: true, completion: nil)
     }
 }

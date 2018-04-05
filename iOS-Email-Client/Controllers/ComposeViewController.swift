@@ -63,7 +63,7 @@ class ComposeViewController: UIViewController {
     
     let rowHeight:CGFloat = 65.0
     
-    var attachmentArray = [Attachment]() //AttachmentGmail or AttachmentCriptext
+    var attachmentArray = [File]()
     var contactArray = [Contact]()
     
     let imagePicker = CICropPicker()
@@ -189,7 +189,7 @@ class ComposeViewController: UIViewController {
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
         //Download gmail attachments if necessary
-        self.download(self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail], mail: self.emailDraft)
+        //self.download(self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail], mail: self.emailDraft)
         
     }
     
@@ -216,7 +216,7 @@ class ComposeViewController: UIViewController {
     
     //MARK: - functions
     
-    func add(_ attachment:Attachment){
+    func add(_ attachment:File){
         self.attachmentBarButton.tintColor = Icon.system.color
         self.attachmentArray.insert(attachment, at: 0)
         
@@ -236,7 +236,7 @@ class ComposeViewController: UIViewController {
         self.attachmentBarButton.badgeString = badgeString
     }
     
-    func remove(_ attachment:Attachment){
+    func remove(_ attachment:File){
         
         guard let index = self.attachmentArray.index(where: { (attach) -> Bool in
             return attach == attachment
@@ -263,13 +263,13 @@ class ComposeViewController: UIViewController {
         self.toggleAttachmentTable()
     
         do{
-            try FileManager.default.removeItem(at: attachment.fileURL!)
+            //try FileManager.default.removeItem(at: attachment.filePath)
         }catch{
             print("file already updated")
         }
         
         //cancelling request just in case
-        APIManager.cancelUpload(attachment.fileName)
+        APIManager.cancelUpload(attachment.name)
         
         self.tableView.performUpdate({
             self.tableView.deleteRows(at: [indexPath], with: .fade)
@@ -425,9 +425,6 @@ class ComposeViewController: UIViewController {
             try elements.remove()
             
             for attachment in self.attachmentArray {
-                if !attachment.isEncrypted {
-                    continue
-                }
                 
                 var preTag:Element!
                 
@@ -438,8 +435,7 @@ class ComposeViewController: UIViewController {
                 }
                 
                 try preTag.addClass("criptext_attachment")
-                let readOnly = attachment.isReadOnly ? "1" : "0"
-                try preTag.html("\(attachment.fileToken):\(attachment.fileName):\(attachment.size):\(attachment.currentPassword):\(readOnly)")
+                try preTag.html("\(attachment.token):\(attachment.name):\(attachment.size)")
                 try preTag.attr("style", "color:white;display:none")
             }
             
@@ -459,15 +455,15 @@ class ComposeViewController: UIViewController {
         })
     }
     
-    func download (_ attachments:[AttachmentGmail], mail:Email?) {
+    func download (_ attachments:[File], mail:Email?) {
         guard let emailDraft = mail, !attachments.isEmpty else {
             return
         }
         for attachment in attachments {
-            if FileManager.default.fileExists(atPath: (attachment.fileURL?.path)!) {
-                DBManager.update(attachment, isUploaded: true)
+            //if FileManager.default.fileExists(atPath: (attachment.fileURL?.path)!) {
+                //DBManager.update(attachment, isUploaded: true)
                 continue
-            }
+            //}
         }
     }
     
@@ -591,6 +587,12 @@ class ComposeViewController: UIViewController {
             }
             
         }
+        
+        if(recipients.isEmpty){
+            self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmails)
+            return;
+        }
+        
         let params = [
             "recipients": recipients,
             "knownAddresses": knownAddresses
@@ -793,22 +795,16 @@ extension ComposeViewController: CICropPickerDelegate {
         try! data.write(to: URL(fileURLWithPath: tmpPath))
         
         imagePicker.dismiss(animated: true){
-            var attachment:Attachment!
-            attachment = AttachmentCriptext()
+            let attachment = File()
             
-            attachment.fileName = "Criptext_Image_\(formatter.string(from: currentDate)).png"
-            attachment.mimeType = mimeTypeForPath(path: attachment.fileName)
+            attachment.name = "Criptext_Image_\(formatter.string(from: currentDate)).png"
+            attachment.mimeType = "application/octet-stream"
             attachment.filePath = tmpPath
             attachment.size = data.count
-            attachment.isEncrypted = true
             
             self.isEdited = true
             
             self.add(attachment)
-            if !attachment.isEncrypted {
-                attachment.isUploaded = true
-                return
-            }
             
 //            APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
 //
@@ -841,7 +837,7 @@ extension ComposeViewController: CICropPickerDelegate {
 //                }
             
                 attachment.isUploaded = true
-                attachment.fileToken = "123"
+                attachment.token = "123"
                 //store attachment in DB
                 
                 //clean up local file not needed anymore
@@ -932,22 +928,16 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         
         //upload file to server
         
-        var attachment:Attachment!
-        attachment = AttachmentCriptext()
+        let attachment = File()
         
-        attachment.fileName = trueName
+        attachment.name = trueName
         attachment.mimeType = mimeTypeForPath(path: trueName)
         attachment.filePath = finalPath
         attachment.size = Int(fileAttributes.fileSize())
-        attachment.isEncrypted = true
         
         self.isEdited = true
         
         self.add(attachment)
-        if !attachment.isEncrypted {
-            attachment.isUploaded = true
-            return
-        }
         
 //        APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
 //
@@ -1059,7 +1049,7 @@ extension ComposeViewController: ProgressDelegate {
     func updateProgress(_ percent: Double, for id: String) {
         
         guard let index = self.attachmentArray.index(where: { (attachment) -> Bool in
-            return attachment.fileName == id
+            return attachment.name == id
         }) else {
             //if not found, do nothing
             return
@@ -1091,18 +1081,14 @@ extension ComposeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentTableViewCell", for: indexPath) as! AttachmentTableViewCell
         cell.delegate = self
         
-        cell.nameLabel.text = attachment.fileName
-        cell.sizeLabel.text = "\(attachment.filesize)"
+        cell.nameLabel.text = attachment.name
+        cell.sizeLabel.text = "\(attachment.size)"
         cell.lockImageView.image = Icon.lock.image
         
-        if attachment.isEncrypted {
-            cell.lockImageView.tintColor = Icon.activated.color
-        } else {
-            cell.lockImageView.tintColor = Icon.enabled.color
-            cell.lockImageView.image = Icon.lock_open.image
-        }
+        cell.lockImageView.tintColor = Icon.enabled.color
+        cell.lockImageView.image = Icon.lock_open.image
         
-        cell.progressView.isHidden = (attachment.isEncrypted && attachment.isUploaded) || cell.progressView.progress == 1 || !attachment.isEncrypted
+        cell.progressView.isHidden = attachment.isUploaded || cell.progressView.progress == 1
         
         //image icon
         var imageIcon:UIImage!
@@ -1184,12 +1170,6 @@ extension ComposeViewController: AttachmentTableViewCellDelegate {
         let indexPath = self.tableView.indexPath(for: cell)
         var attachment = self.attachmentArray[indexPath!.row]
         
-        guard attachment.currentPassword.isEmpty else {
-            attachment.currentPassword = ""
-            self.tableView.reloadData()
-            return
-        }
-        
         let alertController = UIAlertController(title: "Set password", message: "It must be longer than 5 characters and don't contain special characters", preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
@@ -1208,7 +1188,7 @@ extension ComposeViewController: AttachmentTableViewCellDelegate {
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         let okAction = UIAlertAction(title: "Ok", style: .default) { (action) in
-            attachment.currentPassword = alertController.textFields?[0].text ?? ""
+            //attachment.currentPassword = alertController.textFields?[0].text ?? ""
             self.tableView.reloadData()
         }
         
@@ -1222,8 +1202,6 @@ extension ComposeViewController: AttachmentTableViewCellDelegate {
     func tableViewCellDidTapReadOnly(_ cell: AttachmentTableViewCell) {
         let indexPath = self.tableView.indexPath(for: cell)
         var attachment = self.attachmentArray[indexPath!.row]
-        attachment.isReadOnly = !attachment.isReadOnly
-        print("wot")
         self.tableView.reloadData()
     }
     
@@ -1237,7 +1215,7 @@ extension ComposeViewController: AttachmentTableViewCellDelegate {
         let attachment = self.attachmentArray[indexPath.row]
         
         cell.holdGestureRecognizer.isEnabled = false
-        let alertController = UIAlertController(title: "Remove Attachment", message: "Are you sure you want to remove the attachment: \(attachment.fileName)", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Remove Attachment", message: "Are you sure you want to remove the attachment: \(attachment.name)", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { (action) in
             cell.holdGestureRecognizer.isEnabled = true
