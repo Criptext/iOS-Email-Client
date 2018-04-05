@@ -32,11 +32,9 @@
 		41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */; };
 		41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */; };
 		41AAC51A201A9FC300809C4D /* ActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */; };
-		41AAC51B201A9FC300809C4D /* DetailGuideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC507201A9FC200809C4D /* DetailGuideView.xib */; };
 		41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC508201A9FC200809C4D /* OpenViewCell.xib */; };
 		41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */; };
 		41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */; };
-		41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50C201A9FC200809C4D /* DetailGuideView.swift */; };
 		41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */; };
 		41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */; };
 		41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC512201A9FC300809C4D /* GenericUIPopover.xib */; };
@@ -195,11 +193,9 @@
 		41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
 		41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTableViewCell.swift; sourceTree = "<group>"; };
-		41AAC507201A9FC200809C4D /* DetailGuideView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailGuideView.xib; sourceTree = "<group>"; };
 		41AAC508201A9FC200809C4D /* OpenViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenViewCell.xib; sourceTree = "<group>"; };
 		41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailThreadTableViewCell.swift; sourceTree = "<group>"; };
 		41AAC50A201A9FC200809C4D /* TimerUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerUIPopover.swift; sourceTree = "<group>"; };
-		41AAC50C201A9FC200809C4D /* DetailGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailGuideView.swift; sourceTree = "<group>"; };
 		41AAC50D201A9FC200809C4D /* TimerUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerUIPopover.xib; sourceTree = "<group>"; };
 		41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentTableViewCell.swift; sourceTree = "<group>"; };
 		41AAC512201A9FC300809C4D /* GenericUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenericUIPopover.xib; sourceTree = "<group>"; };
@@ -499,8 +495,6 @@
 				41AAC506201A9FC200809C4D /* ActivityTableViewCell.swift */,
 				41AAC50E201A9FC200809C4D /* AttachmentTableViewCell.swift */,
 				41AAC513201A9FC300809C4D /* CriptextSpinner.swift */,
-				41AAC50C201A9FC200809C4D /* DetailGuideView.swift */,
-				41AAC507201A9FC200809C4D /* DetailGuideView.xib */,
 				41AAC509201A9FC200809C4D /* DetailThreadTableViewCell.swift */,
 				41AAC514201A9FC300809C4D /* DetailThreadTableViewCell.xib */,
 				41AAC515201A9FC300809C4D /* GenericUIPopover.swift */,
@@ -694,7 +688,6 @@
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
 				412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */,
-				41AAC51B201A9FC300809C4D /* DetailGuideView.xib in Resources */,
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
@@ -819,18 +812,12 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CICropPicker/CICropPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/CLTokenInputView/CLTokenInputView.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/M13Checkbox/M13Checkbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MIBadgeButton-Swift/MIBadgeButton_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MMMaterialDesignSpinner/MMMaterialDesignSpinner.framework",
 				"${BUILT_PRODUCTS_DIR}/Material/Material.framework",
 				"${BUILT_PRODUCTS_DIR}/MonkeyKit/MonkeyKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RichEditorView/RichEditorView.framework",
@@ -848,18 +835,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CICropPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CLTokenInputView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M13Checkbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MIBadgeButton_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMMaterialDesignSpinner.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Material.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MonkeyKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RichEditorView.framework",
@@ -964,7 +945,6 @@
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				7C5FD82B2060259C000E5F14 /* EmailDetailHeaderCell.swift in Sources */,
 				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
-				41AAC520201A9FC300809C4D /* DetailGuideView.swift in Sources */,
 				7C63AB58205332990053219F /* ReadHistoryTableCell.swift in Sources */,
 				7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */,
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,

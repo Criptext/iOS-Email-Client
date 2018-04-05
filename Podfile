@@ -2,9 +2,6 @@ use_frameworks!
 inhibit_all_warnings!
 source 'https://github.com/CocoaPods/Specs.git'
 target 'iOS-Email-Client' do
-  pod 'Firebase/Core'
-  pod 'Firebase/Messaging'
-  pod 'FLAnimatedImage'
   pod 'Alamofire'
   pod 'SwiftyJSON'
   pod 'RealmSwift'
