@@ -965,7 +965,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Ca0-zf-uom" firstAttribute="top" secondItem="qPA-C3-Jbt" secondAttribute="bottom" id="EFf-aK-eZV"/>
                             <constraint firstItem="rqy-hR-4tH" firstAttribute="centerX" secondItem="ui0-nE-WIa" secondAttribute="centerX" id="Hev-Nf-uz6"/>
@@ -1393,6 +1393,377 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PDf-Fu-THT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1687" y="1173"/>
+        </scene>
+        <!--Menu View Controller-->
+        <scene sceneID="44f-OE-ibN">
+            <objects>
+                <viewController storyboardIdentifier="MenuViewController" id="pDf-uV-0zl" customClass="MenuViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="trA-gP-Si8"/>
+                        <viewControllerLayoutGuide type="bottom" id="P1v-o8-s07"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8oY-1e-tYC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="emN-So-ZQn">
+                                <rect key="frame" x="0.0" y="20" width="375" height="880"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cd4-gP-Pk8">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="880"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1qd-qs-7ov">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vYb-Fk-pQR">
+                                                        <rect key="frame" x="23" y="21" width="49" height="49"/>
+                                                        <color key="backgroundColor" red="0.29019607843137252" green="0.42352941176470588" blue="0.38431372549019605" alpha="0.0" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="49" id="ov0-Ca-RLV"/>
+                                                            <constraint firstAttribute="width" constant="49" id="wcB-3J-3fp"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pedro Iniguez" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RrI-XR-Cjh">
+                                                        <rect key="frame" x="84.5" y="29" width="270.5" height="18"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="18" id="8iz-SJ-cka"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pedro@jigl.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sw7-3M-d4M">
+                                                        <rect key="frame" x="84" y="47" width="271" height="18"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="0.44" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="RrI-XR-Cjh" secondAttribute="trailing" constant="20" id="NkH-bs-Mq2"/>
+                                                    <constraint firstAttribute="height" constant="96" id="Qnu-PC-THD"/>
+                                                    <constraint firstItem="Sw7-3M-d4M" firstAttribute="trailing" secondItem="RrI-XR-Cjh" secondAttribute="trailing" id="b71-Qz-2VT"/>
+                                                    <constraint firstItem="RrI-XR-Cjh" firstAttribute="leading" secondItem="vYb-Fk-pQR" secondAttribute="trailing" constant="12.4" id="biB-tv-N4J"/>
+                                                    <constraint firstItem="RrI-XR-Cjh" firstAttribute="top" secondItem="1qd-qs-7ov" secondAttribute="top" constant="29" id="f1e-0k-wmR"/>
+                                                    <constraint firstItem="Sw7-3M-d4M" firstAttribute="leading" secondItem="RrI-XR-Cjh" secondAttribute="leading" id="l4C-kO-Vy0"/>
+                                                    <constraint firstItem="vYb-Fk-pQR" firstAttribute="leading" secondItem="1qd-qs-7ov" secondAttribute="leading" constant="23" id="lVh-bt-YhE"/>
+                                                    <constraint firstItem="vYb-Fk-pQR" firstAttribute="top" secondItem="1qd-qs-7ov" secondAttribute="top" constant="21" id="sr7-Ht-9zH"/>
+                                                    <constraint firstItem="Sw7-3M-d4M" firstAttribute="top" secondItem="RrI-XR-Cjh" secondAttribute="bottom" id="tDO-Vo-33X"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="center" semanticContentAttribute="spatial" translatesAutoresizingMaskIntoConstraints="NO" id="Eke-lg-Yxy" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="108" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="vMv-yP-Icc"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-inbox"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Inbox"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="labelId">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onMenuItemLabelPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="XLc-lS-a6V"/>
+                                                </connections>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrT-p6-ByL" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="171" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="P7W-rT-144"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="send"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Sent"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="labelId">
+                                                        <integer key="value" value="3"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onMenuItemLabelPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="vWi-U9-dkc"/>
+                                                </connections>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3tM-4B-FoX" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="234" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="f15-kR-zKd"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-draft"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Draft"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="labelId">
+                                                        <integer key="value" value="6"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onMenuItemLabelPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="qb7-BE-dOG"/>
+                                                </connections>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wHS-lP-oUA" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="297" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="K3n-mB-0WB"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-starred"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Starred"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="labelId">
+                                                        <integer key="value" value="5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onMenuItemLabelPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="9Z3-yJ-U3I"/>
+                                                </connections>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eua-tN-sq4" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="360" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="d12-Mn-dU3"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-spam"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Spam"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="labelId">
+                                                        <integer key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onMenuItemLabelPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="IMq-YC-ozV"/>
+                                                </connections>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5G-oW-Ngf" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="423" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="34Y-2e-I4p"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="b6n-ZK-xdv"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="delete-icon"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Trash"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="labelId">
+                                                        <integer key="value" value="7"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onMenuItemLabelPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="utB-H8-DFp"/>
+                                                </connections>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mfd-QN-y7t">
+                                                <rect key="frame" x="38" y="486" width="294" height="1"/>
+                                                <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="0.5" id="VVV-mo-Efv"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rBg-0J-UXL">
+                                                <rect key="frame" x="38" y="650" width="294" height="1"/>
+                                                <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="0.5" id="gNm-lV-BQ5"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rb8-hg-EV2" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="487" width="375" height="63"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new-arrow-up" translatesAutoresizingMaskIntoConstraints="NO" id="RLw-GA-FAh">
+                                                        <rect key="frame" x="311" y="26" width="8" height="10"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="8" id="IcS-8O-qxl"/>
+                                                            <constraint firstAttribute="height" constant="10" id="qMi-s7-lpm"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                                                <color key="value" red="0.86274509803921573" green="0.8666666666666667" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </imageView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="F46-Oh-y6d"/>
+                                                    <constraint firstAttribute="trailing" secondItem="RLw-GA-FAh" secondAttribute="trailing" constant="56" id="N3F-IE-ouY"/>
+                                                    <constraint firstItem="RLw-GA-FAh" firstAttribute="centerY" secondItem="Rb8-hg-EV2" secondAttribute="centerY" id="mx0-H3-kuM"/>
+                                                    <constraint firstAttribute="height" constant="63" id="pEd-qD-7xo"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-label"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Labels"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onLabelsMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="sWB-xo-XbA"/>
+                                                </connections>
+                                            </view>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vA9-AV-fgK">
+                                                <rect key="frame" x="38" y="550" width="294" height="100"/>
+                                                <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="pbx-63-WZD"/>
+                                                </constraints>
+                                                <prototypes>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="labeltablecell" id="Izo-uE-1ik" customClass="CustomLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="28" width="294" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Izo-uE-1ik" id="WKf-d6-MoC">
+                                                            <rect key="frame" x="0.0" y="0.0" width="294" height="44"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FjO-b0-qeC">
+                                                                    <rect key="frame" x="45" y="18.5" width="7" height="7"/>
+                                                                    <color key="backgroundColor" red="0.39607843139999999" green="0.74117647060000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="7" id="7ur-KQ-xrU"/>
+                                                                        <constraint firstAttribute="height" constant="7" id="z7W-bf-P1t"/>
+                                                                    </constraints>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                            <integer key="value" value="7"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </view>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zR-PW-uYA">
+                                                                    <rect key="frame" x="72" y="13" width="187" height="18"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="18" id="t9V-2S-mJ1"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="8zR-PW-uYA" firstAttribute="leading" secondItem="FjO-b0-qeC" secondAttribute="trailing" constant="20" id="29Q-vb-kbl"/>
+                                                                <constraint firstItem="FjO-b0-qeC" firstAttribute="leading" secondItem="WKf-d6-MoC" secondAttribute="leadingMargin" constant="30" id="Ftg-N0-KJS"/>
+                                                                <constraint firstAttribute="trailingMargin" secondItem="8zR-PW-uYA" secondAttribute="trailing" constant="20" id="VIB-yK-bV5"/>
+                                                                <constraint firstItem="FjO-b0-qeC" firstAttribute="centerY" secondItem="WKf-d6-MoC" secondAttribute="centerY" id="Xhs-i7-H7i"/>
+                                                                <constraint firstItem="8zR-PW-uYA" firstAttribute="centerY" secondItem="WKf-d6-MoC" secondAttribute="centerY" id="eJC-zQ-jg7"/>
+                                                            </constraints>
+                                                        </tableViewCellContentView>
+                                                        <connections>
+                                                            <outlet property="dotView" destination="FjO-b0-qeC" id="Py3-jx-4M9"/>
+                                                            <outlet property="myTextLabel" destination="8zR-PW-uYA" id="mwo-KC-vjM"/>
+                                                        </connections>
+                                                    </tableViewCell>
+                                                </prototypes>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="pDf-uV-0zl" id="8z6-Em-4WB"/>
+                                                    <outlet property="delegate" destination="pDf-uV-0zl" id="I7W-6y-S33"/>
+                                                </connections>
+                                            </tableView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GMd-T7-3IZ" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="651" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="58X-QG-0AX"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="jCI-Ye-PQg"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-settings"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Settings"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ohA-2A-EIz" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="714" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="KeX-MC-Kxg"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="umk-M8-o4E"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-support"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Support"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="Eke-lg-Yxy" firstAttribute="top" secondItem="1qd-qs-7ov" secondAttribute="bottom" constant="12" id="2ST-eX-O6m"/>
+                                            <constraint firstItem="Mfd-QN-y7t" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" constant="38" id="3Bz-tK-2MS"/>
+                                            <constraint firstItem="BrT-p6-ByL" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="3mj-b9-f3C"/>
+                                            <constraint firstAttribute="trailing" secondItem="Eke-lg-Yxy" secondAttribute="trailing" id="5Zt-N0-sed"/>
+                                            <constraint firstAttribute="trailing" secondItem="GMd-T7-3IZ" secondAttribute="trailing" id="6D6-yz-hPK"/>
+                                            <constraint firstItem="wHS-lP-oUA" firstAttribute="top" secondItem="3tM-4B-FoX" secondAttribute="bottom" id="6E0-LN-Bgm"/>
+                                            <constraint firstItem="vA9-AV-fgK" firstAttribute="top" secondItem="Rb8-hg-EV2" secondAttribute="bottom" id="6Xb-0N-deA"/>
+                                            <constraint firstItem="1qd-qs-7ov" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="7pF-vq-OCv"/>
+                                            <constraint firstAttribute="trailing" secondItem="ohA-2A-EIz" secondAttribute="trailing" id="8Jc-nt-23M"/>
+                                            <constraint firstAttribute="trailing" secondItem="3tM-4B-FoX" secondAttribute="trailing" id="9NX-a5-B2L"/>
+                                            <constraint firstItem="Eke-lg-Yxy" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="9Yg-bG-fIG"/>
+                                            <constraint firstAttribute="trailing" secondItem="vA9-AV-fgK" secondAttribute="trailing" constant="43" id="B9M-cx-1FM"/>
+                                            <constraint firstItem="GMd-T7-3IZ" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="G3b-35-f5t"/>
+                                            <constraint firstAttribute="trailing" secondItem="rBg-0J-UXL" secondAttribute="trailing" constant="43" id="H6Y-jG-jik"/>
+                                            <constraint firstItem="GMd-T7-3IZ" firstAttribute="top" secondItem="rBg-0J-UXL" secondAttribute="bottom" id="JUd-Mg-5Vh"/>
+                                            <constraint firstItem="eua-tN-sq4" firstAttribute="top" secondItem="wHS-lP-oUA" secondAttribute="bottom" id="KvB-Vm-By3"/>
+                                            <constraint firstAttribute="trailing" secondItem="wHS-lP-oUA" secondAttribute="trailing" id="MAk-AD-tiO"/>
+                                            <constraint firstAttribute="trailing" secondItem="Mfd-QN-y7t" secondAttribute="trailing" constant="43" id="MN3-6r-8xj"/>
+                                            <constraint firstItem="M5G-oW-Ngf" firstAttribute="top" secondItem="eua-tN-sq4" secondAttribute="bottom" id="McJ-OL-cug"/>
+                                            <constraint firstItem="ohA-2A-EIz" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="Mfz-SJ-ZyJ"/>
+                                            <constraint firstItem="eua-tN-sq4" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="Qms-n2-jba"/>
+                                            <constraint firstItem="rBg-0J-UXL" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" constant="38" id="RxL-gE-7Gk"/>
+                                            <constraint firstItem="vA9-AV-fgK" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" constant="38" id="Z1l-vI-i1E"/>
+                                            <constraint firstItem="BrT-p6-ByL" firstAttribute="top" secondItem="Eke-lg-Yxy" secondAttribute="bottom" id="ZKP-er-qoX"/>
+                                            <constraint firstAttribute="trailing" secondItem="eua-tN-sq4" secondAttribute="trailing" id="cf5-WH-a2C"/>
+                                            <constraint firstAttribute="trailing" secondItem="Rb8-hg-EV2" secondAttribute="trailing" id="cvQ-FC-Mfy"/>
+                                            <constraint firstItem="1qd-qs-7ov" firstAttribute="top" secondItem="cd4-gP-Pk8" secondAttribute="top" id="fB2-fP-XZQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="BrT-p6-ByL" secondAttribute="trailing" id="gC2-Z0-gmI"/>
+                                            <constraint firstItem="Mfd-QN-y7t" firstAttribute="top" secondItem="M5G-oW-Ngf" secondAttribute="bottom" id="gPV-VD-1T8"/>
+                                            <constraint firstItem="Rb8-hg-EV2" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="gYS-H6-bLL"/>
+                                            <constraint firstItem="3tM-4B-FoX" firstAttribute="top" secondItem="BrT-p6-ByL" secondAttribute="bottom" id="ixH-Cb-aNt"/>
+                                            <constraint firstItem="wHS-lP-oUA" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="n1D-Y9-qqm"/>
+                                            <constraint firstItem="rBg-0J-UXL" firstAttribute="top" secondItem="vA9-AV-fgK" secondAttribute="bottom" id="nog-2m-LEB"/>
+                                            <constraint firstAttribute="trailing" secondItem="1qd-qs-7ov" secondAttribute="trailing" id="oRD-zW-DtS"/>
+                                            <constraint firstAttribute="trailing" secondItem="M5G-oW-Ngf" secondAttribute="trailing" id="sTP-HE-jeb"/>
+                                            <constraint firstItem="ohA-2A-EIz" firstAttribute="top" secondItem="GMd-T7-3IZ" secondAttribute="bottom" id="ufg-Pg-D4s"/>
+                                            <constraint firstItem="3tM-4B-FoX" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="vCn-Rb-o89"/>
+                                            <constraint firstItem="M5G-oW-Ngf" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="vQV-E9-tqt"/>
+                                            <constraint firstItem="Rb8-hg-EV2" firstAttribute="top" secondItem="Mfd-QN-y7t" secondAttribute="bottom" id="wxq-en-3ZG"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.98765659041394338" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="cd4-gP-Pk8" firstAttribute="width" secondItem="emN-So-ZQn" secondAttribute="width" id="CkW-9v-qA8"/>
+                                    <constraint firstItem="cd4-gP-Pk8" firstAttribute="height" secondItem="emN-So-ZQn" secondAttribute="height" id="KnL-NC-JNh"/>
+                                    <constraint firstAttribute="trailing" secondItem="cd4-gP-Pk8" secondAttribute="trailing" id="MI9-jb-eEC"/>
+                                    <constraint firstAttribute="bottom" secondItem="cd4-gP-Pk8" secondAttribute="bottom" id="RPn-w7-fP5"/>
+                                    <constraint firstItem="cd4-gP-Pk8" firstAttribute="leading" secondItem="emN-So-ZQn" secondAttribute="leading" id="aPY-KL-cqf"/>
+                                    <constraint firstItem="cd4-gP-Pk8" firstAttribute="top" secondItem="emN-So-ZQn" secondAttribute="top" id="nrh-FR-BCc"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="P1v-o8-s07" firstAttribute="top" secondItem="emN-So-ZQn" secondAttribute="bottom" id="USL-fe-JmC"/>
+                            <constraint firstAttribute="trailing" secondItem="emN-So-ZQn" secondAttribute="trailing" id="lT8-LG-x0W"/>
+                            <constraint firstItem="emN-So-ZQn" firstAttribute="top" secondItem="trA-gP-Si8" secondAttribute="bottom" id="qdy-Ji-kmN"/>
+                            <constraint firstItem="emN-So-ZQn" firstAttribute="leading" secondItem="8oY-1e-tYC" secondAttribute="leading" id="s9M-T3-TaG"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="375" height="900"/>
+                    <connections>
+                        <outlet property="avatarImage" destination="vYb-Fk-pQR" id="LIs-2b-tNA"/>
+                        <outlet property="draftMenuItem" destination="3tM-4B-FoX" id="ZOf-pv-Qw0"/>
+                        <outlet property="inboxMenuItem" destination="Eke-lg-Yxy" id="IYk-q9-Hj0"/>
+                        <outlet property="labelsTableHeightContraint" destination="pbx-63-WZD" id="Np2-bK-p6D"/>
+                        <outlet property="labelsTableView" destination="vA9-AV-fgK" id="XOn-v5-bhB"/>
+                        <outlet property="labelsTapIconView" destination="RLw-GA-FAh" id="TOT-YX-mTo"/>
+                        <outlet property="nameLabel" destination="RrI-XR-Cjh" id="1CC-Jm-2tA"/>
+                        <outlet property="scrollView" destination="emN-So-ZQn" id="KeL-81-ubm"/>
+                        <outlet property="sentMenuItem" destination="BrT-p6-ByL" id="GQP-mG-dkW"/>
+                        <outlet property="spamMenuItem" destination="eua-tN-sq4" id="Ibo-hg-OAo"/>
+                        <outlet property="starredMenuItem" destination="wHS-lP-oUA" id="iYP-qY-lyz"/>
+                        <outlet property="trashMenuItem" destination="M5G-oW-Ngf" id="nxi-Ks-0wh"/>
+                        <outlet property="usernameLabel" destination="Sw7-3M-d4M" id="4b7-HQ-phQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="egH-pf-pNG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2557.5999999999999" y="-342.72863568215894"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Cil-C1-wMw">
@@ -2747,13 +3118,22 @@
         <image name="close-rounded" width="14" height="14"/>
         <image name="color-bell" width="45" height="50"/>
         <image name="composer" width="32" height="30"/>
+        <image name="delete-icon" width="16" height="18"/>
         <image name="formatting" width="15" height="18"/>
+        <image name="icon-draft" width="30" height="30"/>
         <image name="icon-forward" width="55" height="60"/>
+        <image name="icon-inbox" width="18" height="17"/>
+        <image name="icon-label" width="33" height="33"/>
         <image name="icon-reply" width="55" height="48"/>
         <image name="icon-reply-all" width="55" height="38"/>
+        <image name="icon-settings" width="32" height="32"/>
+        <image name="icon-spam" width="31" height="31"/>
+        <image name="icon-starred" width="32" height="31"/>
+        <image name="icon-support" width="33" height="32"/>
         <image name="icon_settings_inactive" width="16" height="16"/>
         <image name="muted" width="34" height="38"/>
         <image name="new-arrow-down" width="12" height="7"/>
+        <image name="new-arrow-up" width="12" height="7"/>
         <image name="send" width="23" height="20"/>
         <image name="slider_allmail" width="24" height="18"/>
         <image name="slider_criptext" width="29" height="29"/>

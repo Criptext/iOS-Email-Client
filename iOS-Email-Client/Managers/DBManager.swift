@@ -63,7 +63,7 @@ extension DBManager {
         }
     }
     
-    class func getMails(from label:MyLabel, since date:Date, current emailArray:[Email], current threadHash:[String:[Email]]) -> ([String:[Email]], [Email]) {
+    class func getMails(from label:SystemLabel, since date:Date, current emailArray:[Email], current threadHash:[String:[Email]]) -> ([String:[Email]], [Email]) {
         let placeholder = EmailDetailData()
         placeholder.mockEmails()
         return ([:], placeholder.emails)

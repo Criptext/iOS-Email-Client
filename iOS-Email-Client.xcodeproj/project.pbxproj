@@ -115,6 +115,8 @@
 		7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */; };
 		7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */; };
 		7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */; };
+		7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */; };
+		7CB44949207BBE0C009430EB /* MenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB44948207BBE0C009430EB /* MenuData.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
@@ -128,10 +130,13 @@
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
 		7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB4661203F0C9F007C9637 /* Feed.swift */; };
+		7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */; };
+		7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */; };
 		7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */; };
 		7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */; };
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
+		7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFF2EE720766532002B19DB /* MenuViewController.swift */; };
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
 		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
 		9568328C20752C5F007F8489 /* LabelEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328B20752C5F007F8489 /* LabelEmail.swift */; };
@@ -279,6 +284,8 @@
 		7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentHistoryTableCell.xib; sourceTree = "<group>"; };
 		7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentHistoryTableCell.swift; sourceTree = "<group>"; };
 		7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryUIPopover.swift; sourceTree = "<group>"; };
+		7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTableViewCell.swift; sourceTree = "<group>"; };
+		7CB44948207BBE0C009430EB /* MenuData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuData.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
@@ -292,10 +299,13 @@
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
 		7CDB4661203F0C9F007C9637 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemUIView.xib; sourceTree = "<group>"; };
+		7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemUIView.swift; sourceTree = "<group>"; };
 		7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewController.swift; sourceTree = "<group>"; };
 		7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTableViewCell.swift; sourceTree = "<group>"; };
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
+		7CFF2EE720766532002B19DB /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
@@ -380,6 +390,7 @@
 				7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */,
 				7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */,
 				7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */,
+				7CFF2EE720766532002B19DB /* MenuViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -479,6 +490,7 @@
 				7C5FD82C20607602000E5F14 /* Label.swift */,
 				9568328B20752C5F007F8489 /* LabelEmail.swift */,
 				9568328F20753FBE007F8489 /* File.swift */,
+				7CB44948207BBE0C009430EB /* MenuData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -533,6 +545,9 @@
 				7C5FD821205C2FBA000E5F14 /* AttachmentTableViewCell.xib */,
 				7C5FD823205C377F000E5F14 /* AttachmentTableCell.swift */,
 				7C5FD82A2060259C000E5F14 /* EmailDetailHeaderCell.swift */,
+				7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */,
+				7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */,
+				7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -692,6 +707,7 @@
 				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
 				7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
+				7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
@@ -876,12 +892,15 @@
 				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
+				7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
+				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
+				7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */,
 				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				7C5FD826205C857C000E5F14 /* Utils.swift in Sources */,
 				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
@@ -939,6 +958,7 @@
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
 				9568328C20752C5F007F8489 /* LabelEmail.swift in Sources */,
 				7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */,
+				7CB44949207BBE0C009430EB /* MenuData.swift in Sources */,
 				7C5FD82D20607602000E5F14 /* Label.swift in Sources */,
 				7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */,
 				7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */,

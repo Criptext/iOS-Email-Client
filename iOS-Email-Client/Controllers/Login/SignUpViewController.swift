@@ -161,7 +161,7 @@ class SignUpViewController: UIViewController{
         let fullname = fullnameTextField.text!
         let password = passwordTextField.text!
         let email = emailTextField.text
-        let signupData = SignUpData(username, fullname, password, optionalEmail: email)
+        let signupData = SignUpData(username, password, fullname: fullname, optionalEmail: email)
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
         controller.signupData = signupData

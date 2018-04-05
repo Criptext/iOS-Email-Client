@@ -484,31 +484,35 @@ enum Icon {
     }
 }
 
-enum MyLabel {
+enum SystemLabel {
     case inbox
     case draft
     case sent
     case junk
     case trash
+    case starred
+    case important
     case unread
     case all
     
-    var id: String {
+    var id: Int {
         switch self {
         case .inbox:
-            return "INBOX"
+            return 1
         case .draft:
-            return "DRAFT"
+            return 6
         case .sent:
-            return "SENT"
+            return 3
         case .junk:
-            return "SPAM"
+            return 2
         case .trash:
-            return "TRASH"
-        case .unread:
-            return "UNREAD"
+            return 7
+        case .starred:
+            return 5
+        case .important:
+            return 4
         default:
-            return ""
+            return -1
         }
     }
     
@@ -570,6 +574,9 @@ extension UIColor {
     static let alert = UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1)
     static let alertLight = UIColor(red: 227/255, green: 102/255, blue: 102/255, alpha: 1)
     static let alertText = UIColor(red: 238/255, green: 163/255, blue: 163/255, alpha: 1)
+    static let itemSelected = UIColor(red: 242/255, green: 248/255, blue: 255/255, alpha: 1)
+    static let lightText = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 1)
+    static let lightIcon = UIColor(red: 220/255, green: 221/255, blue: 224/255, alpha: 1)
     
     func toHexString() -> String {
         var r:CGFloat = 0

@@ -223,12 +223,7 @@ class ListLabelViewController: UIViewController {
         })
     }
     
-    func changeInbox(_ labelItem:MyLabel){
-        
-        if self.detailViewController.selectedLabel != labelItem {
-            self.detailViewController.didChange(labelItem)
-        }
-        
+    func changeInbox(_ labelItem:SystemLabel){
         self.navigationDrawerController?.closeLeftView()
     }
 }

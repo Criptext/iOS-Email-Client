@@ -56,7 +56,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = UserDefaults.standard
         if defaults.string(forKey: "activeAccount") != nil {
             //Go to inbox
-            initialVC = initMailboxRootVC(launchOptions)
+            let activeAccount = defaults.string(forKey: "activeAccount")!
+            initialVC = initMailboxRootVC(launchOptions, activeAccount)
         }else{
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -96,13 +97,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
     }
     
-    func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> UIViewController{
+    func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?, _ activeAccount: String) -> UIViewController{
+        let myAccount = DBManager.getAccountByUsername(activeAccount)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
-        let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "ListLabelViewController") as! ListLabelViewController
+        let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+        sidemenuVC.menuData = MenuData()
         let inboxVC = rootVC.childViewControllers.first as! InboxViewController
-        sidemenuVC.detailViewController = inboxVC
         
+        inboxVC.myAccount = myAccount
         if let launchOptions = launchOptions,
             let notification = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary,
             let threadId = notification.object(forKey: "threadId") as? String  {
