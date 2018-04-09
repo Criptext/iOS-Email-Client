@@ -12,7 +12,7 @@ import RealmSwift
 class LabelEmail : Object {
     
     @objc dynamic var id : Int = 0
-    @objc dynamic var email_id = ""
+    @objc dynamic var email_id = 0
     @objc dynamic var label_id = 0
     
     override static func primaryKey() -> String? {

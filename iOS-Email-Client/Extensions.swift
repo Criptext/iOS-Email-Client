@@ -528,6 +528,10 @@ enum SystemLabel {
             return "Junk"
         case .trash:
             return "Trash"
+        case .important:
+            return "Important"
+        case .starred:
+            return "Starred"
         case .unread:
             return "Unread"
         case .all:
@@ -552,6 +556,27 @@ enum SystemLabel {
         default:
             return UIImage(named: "slider_allmail")
         }
+    }
+    
+    static var array: [SystemLabel] {
+        var a: [SystemLabel] = []
+        switch SystemLabel.inbox {
+            case .inbox: a.append(.inbox); fallthrough
+            case .draft:
+                a.append(.draft); fallthrough
+            case .sent:
+                a.append(.sent); fallthrough
+            case .junk:
+                a.append(.junk); fallthrough
+            case .trash:
+                a.append(.trash); fallthrough
+            case .starred:
+                a.append(.starred); fallthrough
+            case .important:
+                a.append(.important); fallthrough
+            default: break
+        }
+        return a
     }
 }
 

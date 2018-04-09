@@ -45,6 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Tell Realm to use this new configuration object for the default Realm
         Realm.Configuration.defaultConfiguration = config
+        if(DBManager.getLabel(SystemLabel.inbox.id) == nil){
+            createSystemLabels()
+        }
         
         self.window?.tintColor = UIColor.black
         
@@ -110,6 +113,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
         return SnackbarController(rootViewController: drawerVC)
+    }
+    
+    func createSystemLabels(){
+        for systemLabel in SystemLabel.array {
+            let newLabel = Label(systemLabel.description)
+            newLabel.id = systemLabel.id
+            DBManager.store(newLabel)
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

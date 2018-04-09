@@ -718,7 +718,7 @@ extension InboxViewController{
     }
     
     func loadMails(from label:SystemLabel, since date:Date){
-        let tuple = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
+        let tuple = DBManager.getMails(from: label, since: date)
         
         self.emailArray = tuple.1
         self.tableView.reloadData()
@@ -726,7 +726,7 @@ extension InboxViewController{
         //@TODO: remove return statement and paginate mails from db
         return
         
-        let tupleObject = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
+        let tupleObject = DBManager.getMails(from: label, since: date)
         
         guard (tupleObject.1.count > 0 || tupleObject.0.count > 0) else {
             //no more emails in DB
@@ -1112,72 +1112,19 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return
         }
         
-        let email:Email
-        if self.searchController.isActive && self.searchController.searchBar.text != "" {
-            self.searchController.searchBar.resignFirstResponder()
-            email = self.filteredEmailArray[indexPath.row]
-        }else {
-            email = self.emailArray[indexPath.row]
-        }
-        
+        let selectedEmail = self.emailArray[indexPath.row]
+        let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId, label: 1)
         let emp = EmailDetailData()
-        emp.emails = [email]
-        
-//        guard let emailArrayHash = self.threadHash[email.threadId] else{
-//            return
-//        }
+        emp.emails = emails
+        emails.last?.isExpanded = true
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         if self.selectedLabel != SystemLabel.draft.id {
             let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
             vc.emailData = emp
-            
-//            vc.currentUser = self.currentUser
-//            vc.currentEmail = email
-//            vc.selectedLabel = self.selectedLabel
-//            vc.currentEmailIndex = 0
-            
-            
-            if !email.unread {
-                self.navigationController?.pushViewController(vc, animated: true)
-                return
-            }
-            
-            //modify labels
-            
             self.navigationController?.pushViewController(vc, animated: true)
             return
-        }
-        
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let vcDraft = navComposeVC.childViewControllers.first as! ComposeViewController
-//        vcDraft.attachmentArray = Array(email.attachments)
-        vcDraft.emailDraft = email
-        vcDraft.isDraft = true
-        vcDraft.loadViewIfNeeded()
-//        for email in email.to.components(separatedBy: ",") {
-//            if email.isEmpty {
-//                continue
-//            }
-//            vcDraft.addToken(email, value: email, to: vcDraft.toField)
-//        }
-        
-        if email.subject != "No Subject" {
-            vcDraft.subjectField.text = email.subject
-        } else if email.subject != "(No Subject)" {
-            vcDraft.subjectField.text = email.subject
-        }
-        
-        vcDraft.editorView.html = email.content
-        vcDraft.isEdited = false
-        
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true) {
-            //needed here because rich editor triggers content change on did load
-            vcDraft.isEdited = false
-            vcDraft.scrollView.setContentOffset(CGPoint(x: 0, y: -64), animated: true)
         }
     }
     

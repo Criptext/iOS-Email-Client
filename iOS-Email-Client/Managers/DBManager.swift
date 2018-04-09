@@ -63,34 +63,19 @@ extension DBManager {
         }
     }
     
-    class func getMails(from label:SystemLabel, since date:Date, current emailArray:[Email], current threadHash:[String:[Email]]) -> ([String:[Email]], [Email]) {
-        let placeholder = EmailDetailData()
-        placeholder.mockEmails()
-        return ([:], placeholder.emails)
+    class func getMails(from label:SystemLabel, since date:Date) -> ([String:[Email]], [Email]) {
+        let realm = try! Realm()
+        let emails = Array(realm.objects(Email.self))
+        return ([:], emails)
+    }
+    
+    class func getMailsbyThreadId(_ threadId: String, label: Int) -> [Email] {
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "labelArraySerialized contains '\(label.id)' AND date < %@", date as CVarArg)
-        let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false)
+        let predicate = NSPredicate(format: "threadId == '\(threadId)'")
+        let results = realm.objects(Email.self).filter(predicate)
         
-        var threadIds:Set<String>!
-        //        if results.count > 100 {
-        //            //add all emails with the same date as the last one
-        //            let datePredicate = NSPredicate(format: "labelArraySerialized contains '\(label.id)' AND date == %@ AND id != %@", results.last!.date! as CVarArg, results.last!.id)
-        //            let sameDateEmails = realm.objects(Email.self).filter(datePredicate)
-        //
-        //            threadIds = Set(results[0...100].map({return $0.threadId}))
-        //            threadIds.formUnion(Set(sameDateEmails.map({return $0.threadId})))
-        //        }else{
-        //            threadIds = Set(results.map({return $0.threadId}))
-        //        }
-        
-        let threadPredicate = NSPredicate(format: "threadId IN %@", threadIds)
-        let trueResults = realm.objects(Email.self).filter(threadPredicate).sorted(byKeyPath: "date", ascending: false)
-        
-        var newThreadHash = [String:[Email]]()
-        var newEmailArray = [Email]()
-        
-        return (newThreadHash, newEmailArray)
+        return Array(results)
     }
     
     class func getMailBy(token:String) -> Email?{
@@ -158,6 +143,16 @@ extension DBManager {
         
         guard let email = realm.object(ofType: Email.self, forPrimaryKey: id) else {
             return
+        }
+    }
+    
+    class func updateEmail(_ email: Email, key: String, s3Key: String, threadId: String){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.key = key
+            email.s3Key = s3Key
+            email.threadId = threadId
         }
     }
     
@@ -372,6 +367,39 @@ extension DBManager {
         }
     }
     
+    class func getLabel(_ labelId: Int) -> Label?{
+        let realm = try! Realm()
+        
+        guard let label = realm.object(ofType: Label.self, forPrimaryKey: labelId) else {
+            return nil
+        }
+        
+        return label
+    }
+    
+    class func store(_ labelEmail: LabelEmail){
+        let realm = try! Realm()
+        labelEmail.incrementID()
+        try! realm.write {
+            realm.add(labelEmail, update: true)
+        }
+    }
+    
+    class func addRemoveLabelsFromEmail(_ emailId: Int, addedLabelIds: [Int], removedLabelIds: [Int]){
+        let realm = try! Realm()
+        try! realm.write {
+            for labelId in addedLabelIds{
+                let labelEmail = LabelEmail()
+                labelEmail.email_id = emailId
+                labelEmail.label_id = labelId
+                labelEmail.incrementID()
+                realm.add(labelEmail, update: true)
+            }
+            let predicate = NSPredicate(format: "email_id == \(emailId) && label_id IN %@", removedLabelIds)
+            let labelEmailsToDelete = realm.objects(LabelEmail.self).filter(predicate)
+            realm.delete(labelEmailsToDelete)
+        }
+    }
 }
 
 //MARK: - Email Contact

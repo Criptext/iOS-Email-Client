@@ -22,8 +22,6 @@ class Email: Object {
     @objc dynamic var subject = ""
     @objc dynamic var delivered = DeliveryStatus.SENT
     @objc dynamic var date : Date?
-    @objc dynamic var isTrash = false
-    @objc dynamic var isDraft = false
     var isExpanded = false
     
     override static func primaryKey() -> String? {

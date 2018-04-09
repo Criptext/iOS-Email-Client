@@ -9,7 +9,7 @@
 import Foundation
 
 class EmailDetailViewController: UIViewController {
-    var emailData = EmailDetailData()
+    var emailData : EmailDetailData!
     @IBOutlet weak var backgroundOverlayView: UIView!
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var optionsContainerView: UIView!
@@ -24,9 +24,7 @@ class EmailDetailViewController: UIViewController {
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         
-        self.emailData.mockEmails()
         self.emailData.mockLabels()
-        
         self.setupToolbar()
         self.setupMoreOptionsViews()
         

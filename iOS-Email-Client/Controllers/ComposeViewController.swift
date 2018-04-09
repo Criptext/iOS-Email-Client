@@ -288,16 +288,6 @@ class ComposeViewController: UIViewController {
         
         let body = self.addAttachments(to: self.editorView.html)
         
-        //self.showSnackbar("Saving Draft...", attributedText: nil, buttons: "", permanent: true)
-        
-        //update draft
-        if self.isDraft, let emailDraft = self.emailDraft {
-            
-            return
-        }
-        
-        //let plainAttachments = self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail]
-        
         //create draft
         let emailDetail = Email()
         emailDetail.id = emailDetail.incrementID()
@@ -312,8 +302,13 @@ class ComposeViewController: UIViewController {
         }
         emailDetail.subject = subject
         emailDetail.date = Date()
-        emailDetail.isDraft = true
         DBManager.store(emailDetail)
+        
+        let labelEmail = LabelEmail()
+        labelEmail.email_id = emailDetail.id
+        labelEmail.label_id = SystemLabel.draft.id
+        
+        DBManager.store(labelEmail)
         
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -328,6 +323,8 @@ class ComposeViewController: UIViewController {
         }
         
         DBManager.store(emailContacts)
+        
+        emailDraft = emailDetail
         
     }
     
@@ -548,8 +545,7 @@ class ComposeViewController: UIViewController {
             "subject": subject,
             "criptextEmails": criptextEmails
             //"guestEmail": guestEmail
-        ], token: activeAccount.jwt) { (error) in
-            
+        ], token: activeAccount.jwt) { (error, data) in
             self.toggleInteraction(true)
             if let error = error {
                 self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
@@ -557,13 +553,26 @@ class ComposeViewController: UIViewController {
                 self.hideBlackBackground()
                 return
             }
-            
+            self.updateEmailData(data)
             self.dismiss(animated: true){
+                self.hideSnackbar()
                 (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
             }
             
         }
         
+    }
+    
+    func updateEmailData(_ data : Any?){
+        guard let myEmail = emailDraft else {
+            return
+        }
+        let keysArray = data as! Dictionary<String, Any>
+        let key = (keysArray["metadataKey"] as! Int32).description
+        let s3Key = keysArray["bodyKey"] as! String
+        let threadId = keysArray["threadId"] as! String
+        DBManager.updateEmail(myEmail, key: key, s3Key: s3Key, threadId: threadId)
+        DBManager.addRemoveLabelsFromEmail(myEmail.id, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
     }
     
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>, index: Int){
@@ -689,7 +698,9 @@ class ComposeViewController: UIViewController {
         ]
         
         DBManager.store(allContacts)
+        print("hola")
         saveDraft()
+        print("bye")
         getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails, index: 0)
         
     }

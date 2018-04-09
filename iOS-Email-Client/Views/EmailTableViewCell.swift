@@ -92,7 +92,7 @@ class EmailTableViewCell: UITableViewCell{
     func setExpandedContent(_ email: Email){
         let content = email.content
         if(!loadedContent){
-            webView.loadHTMLString(content, baseURL: nil)
+            webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: nil)
         }
         setExpandedIcons(email)
     }

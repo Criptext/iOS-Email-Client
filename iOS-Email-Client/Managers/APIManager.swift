@@ -82,15 +82,18 @@ class APIManager {
         }
     }
     
-    class func postMailRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
+    class func postMailRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
         let url = "\(self.baseUrl)/email"
         let headers = ["Authorization": "Bearer \(token)"]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            response.result.ifFailure {
-                completion(response.result.error)
-                return
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            switch(response.result) {
+            case .success(let value):
+                completion(nil, value)
+                break
+            case .failure(let error):
+                completion(error, nil)
+                break;
             }
-            completion(nil)
         }
     }
     
