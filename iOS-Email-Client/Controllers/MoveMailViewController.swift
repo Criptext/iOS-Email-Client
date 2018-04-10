@@ -11,9 +11,9 @@ import Foundation
 class MoveMailViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
-    var selectedLabel:MyLabel!
-    var selectedMailbox:MyLabel?
-    var labels = [MyLabel.inbox, MyLabel.sent, MyLabel.junk, MyLabel.trash]
+    var selectedLabel:SystemLabel!
+    var selectedMailbox:SystemLabel?
+    var labels = [SystemLabel.inbox, SystemLabel.sent, SystemLabel.junk, SystemLabel.trash]
     
     override func viewDidLoad() {
         super.viewDidLoad()

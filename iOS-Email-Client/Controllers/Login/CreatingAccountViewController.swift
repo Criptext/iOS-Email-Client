@@ -68,7 +68,7 @@ class CreatingAccountViewController: UIViewController{
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")
         animateProgress(100.0, 2.0) {
-            self.goToMailbox()
+            self.goToMailbox(myAccount.username)
         }
     }
     
@@ -85,11 +85,11 @@ class CreatingAccountViewController: UIViewController{
         self.present(alert, animated: true, completion: nil)
     }
     
-    func goToMailbox(){
+    func goToMailbox(_ activeAccount: String){
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        let mailboxVC = delegate.initMailboxRootVC(nil)
+        let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
         present(mailboxVC, animated: true) {
             delegate.replaceRootViewController(mailboxVC)
         }
