@@ -602,9 +602,6 @@ extension InboxViewController{
                        // DBManager.update(self.currentUser, plan:plan.isEmpty ? "Free trial" : plan)
                     }
                     
-                    let sideVC = self.navigationDrawerController?.leftViewController as! ListLabelViewController
-                    //sideVC.setUserAccount(self.currentUser)
-                    
                 case Commands.emailOpened.rawValue:
                     
                     //SEND NOTIFICATIONS TO ACTIVITY
@@ -735,7 +732,6 @@ extension InboxViewController{
             //no more emails in DB
             //fetch from cloud
             print("=== FETCHING MAILS FROM CLOUD")
-            //self.getEmails("me", labels: [self.selectedLabel.id], completion: nil)
             return
         }
         

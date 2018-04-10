@@ -37,17 +37,17 @@ class MenuItemUIView: UIButton {
         UINib(nibName: "MenuItemUIView", bundle: nil).instantiate(withOwner: self, options: nil)
         addSubview(view)
         view.frame = self.bounds
-        showBadge(false, count: nil)
+        showBadge(0)
         showAsSelected(false)
     }
     
-    func showBadge(_ show: Bool, count: Int?){
-        guard show && count != nil else {
+    func showBadge(_ count: Int){
+        guard count > 0 else {
             badgeView.isHidden = true
             return
         }
         badgeView.isHidden = false
-        badgeLabel.text = count!.description
+        badgeLabel.text = count.description
     }
     
     func showAsSelected(_ selected: Bool){

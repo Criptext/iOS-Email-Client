@@ -12,6 +12,7 @@ class MenuViewController: UIViewController{
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
     let MENU_CONTENT_HEIGHT : CGFloat = 720.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
+    let MAX_LABELS_DISPLAY = 2
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -26,7 +27,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var labelsTapIconView: UIImageView!
     @IBOutlet weak var labelsTableHeightContraint: NSLayoutConstraint!
     var selectedMenuItem : MenuItemUIView?
-    var mailboxVC : InboxViewController? {
+    var mailboxVC : InboxViewController! {
         get {
             return self.navigationDrawerController?.rootViewController.childViewControllers.first as? InboxViewController
         }
@@ -35,10 +36,7 @@ class MenuViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let myMailboxVC = mailboxVC else {
-            return
-        }
-        setupAccountInfo(myMailboxVC.myAccount)
+        setupAccountInfo(mailboxVC.myAccount)
         inboxMenuItem.showAsSelected(true)
         selectedMenuItem = inboxMenuItem
         labelsTableHeightContraint.constant = 0.0
@@ -55,20 +53,15 @@ class MenuViewController: UIViewController{
     }
     
     @IBAction func onMenuItemLabelPress(_ sender: MenuItemUIView) {
-        guard let myMailboxVC = mailboxVC else {
-            return
-        }
-        if(selectedMenuItem != nil){
-            selectedMenuItem?.showAsSelected(false)
-        }
+        selectedMenuItem?.showAsSelected(false)
         selectedMenuItem = sender
         sender.showAsSelected(true)
-        myMailboxVC.didPressLabel(labelId: sender.labelId, sender: sender)
+        mailboxVC.didPressLabel(labelId: sender.labelId, sender: sender)
     }
     
     @IBAction func onLabelsMenuItemPress(_ sender: Any) {
         guard menuData.expandedLabels else {
-            let labelsHeight = menuData.labels.count >= 3 ? MAX_LABELS_HEIGHT : CGFloat(menuData.labels.count) * LABEL_CELL_HEIGHT
+            let labelsHeight = menuData.labels.count > MAX_LABELS_DISPLAY ? MAX_LABELS_HEIGHT : CGFloat(menuData.labels.count) * LABEL_CELL_HEIGHT
             menuData.expandedLabels = true
             labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-down")
             scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT + labelsHeight)
