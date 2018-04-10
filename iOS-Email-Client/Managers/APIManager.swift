@@ -9,7 +9,6 @@
 import Foundation
 import SwiftyJSON
 import Alamofire
-import MonkeyKit
 import RealmSwift
 
 protocol ProgressDelegate {

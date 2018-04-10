@@ -10,8 +10,6 @@ import UIKit
 import Fabric
 import Crashlytics
 import Material
-import Firebase
-import FirebaseMessaging
 import UserNotifications
 import RealmSwift
 import IQKeyboardManagerSwift
@@ -26,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // Initialize sign-in
         Fabric.with([Crashlytics.self])
-        FIRApp.configure()
         
         UIApplication.shared.statusBarStyle = .lightContent
         
@@ -77,9 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UNUserNotificationCenter.current().requestAuthorization(
                 options: authOptions,
                 completionHandler: {_, _ in })
-            
-            // For iOS 10 data message (sent via FCM)
-            FIRMessaging.messaging().remoteMessageDelegate = self
             
         } else {
             let settings: UIUserNotificationSettings =
@@ -161,8 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let snackVC = self.window?.rootViewController?.snackbarController,
             let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
             let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController,
-            let deviceTokenString = FIRInstanceID.instanceID().token() else {
+            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
                 return
         }
         
@@ -207,28 +200,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true) {
             completionHandler([])//completionHandler([.badge, .alert, .sound])
-        }
-    }
-}
-
-extension AppDelegate: FIRMessagingDelegate {
-    func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
-        print("message: \(remoteMessage)")
-    }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        FIRMessaging.messaging().appDidReceiveMessage(userInfo)
-        
-        guard let snackVC = self.window?.rootViewController?.snackbarController,
-            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-            let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                completionHandler(.noData)
-                return
-        }
-        
-        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true) {
-            completionHandler(.newData)
         }
     }
 }
