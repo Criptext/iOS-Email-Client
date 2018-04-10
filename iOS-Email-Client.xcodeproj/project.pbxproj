@@ -67,8 +67,27 @@
 		41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */; };
 		41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */; };
-		7C147B43203C9676004823DE /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
-		7C147B44203C9676004823DE /* SignalProtocolFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		41C36848207C69F3008B50A8 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
+		41C3684A207C6C0B008B50A8 /* Motion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36849207C6C0B008B50A8 /* Motion.framework */; };
+		41C9CBBA20769A9600B8994F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229B12076923E00C32998 /* Alamofire.framework */; };
+		41C9CBBB20769A9F00B8994F /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
+		41C9CBBC20769AA500B8994F /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229B52076943F00C32998 /* SwiftyJSON.framework */; };
+		41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FD82720602244000E5F14 /* TagListView.framework */; };
+		41C9CC832078195900B8994F /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC822078195900B8994F /* Material.framework */; };
+		41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC842078196600B8994F /* CICropPicker.framework */; };
+		41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8620781C4600B8994F /* SDWebImage.framework */; };
+		41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8820781C4E00B8994F /* M13Checkbox.framework */; };
+		41C9CC8B20781C5600B8994F /* SwiftWebSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8A20781C5600B8994F /* SwiftWebSocket.framework */; };
+		41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */; };
+		41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8E20781C6700B8994F /* MMMaterialDesignSpinner.framework */; };
+		41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
+		41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */; };
+		41E229BF207696DE00C32998 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BD207696DE00C32998 /* Realm.framework */; };
+		41E229C0207696DE00C32998 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
+		41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748D207C68C900CCA685 /* MIBadgeButton_Swift.framework */; };
+		41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
+		41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A275207C6466004BDF90 /* Crashlytics.framework */; };
+		41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A277207C6470004BDF90 /* Fabric.framework */; };
 		7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
@@ -82,8 +101,6 @@
 		7C5FD822205C2FBB000E5F14 /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5FD821205C2FBA000E5F14 /* AttachmentTableViewCell.xib */; };
 		7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD823205C377F000E5F14 /* AttachmentTableCell.swift */; };
 		7C5FD826205C857C000E5F14 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD825205C857C000E5F14 /* Utils.swift */; };
-		7C5FD82820602246000E5F14 /* TagListView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FD82720602244000E5F14 /* TagListView.framework */; };
-		7C5FD82920602246000E5F14 /* TagListView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FD82720602244000E5F14 /* TagListView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C5FD82B2060259C000E5F14 /* EmailDetailHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82A2060259C000E5F14 /* EmailDetailHeaderCell.swift */; };
 		7C5FD82D20607602000E5F14 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82C20607602000E5F14 /* Label.swift */; };
 		7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */; };
@@ -138,7 +155,6 @@
 		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
 		9568328C20752C5F007F8489 /* LabelEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328B20752C5F007F8489 /* LabelEmail.swift */; };
 		9568329020753FBE007F8489 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
-		EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,23 +167,7 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		7C147B45203C9676004823DE /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				7C5FD82920602246000E5F14 /* TagListView.framework in Embed Frameworks */,
-				7C147B44203C9676004823DE /* SignalProtocolFramework.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Email_Client.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		411FDF70204CF93300BCD787 /* InitialsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsImageView.swift; sourceTree = "<group>"; };
 		412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Black.ttf"; sourceTree = "<group>"; };
 		412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -235,6 +235,30 @@
 		41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-Email-ClientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Email_ClientTests.swift; sourceTree = "<group>"; };
 		41B6AAC62017987500D428B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = Carthage/Build/iOS/IQKeyboardManagerSwift.framework; sourceTree = "<group>"; };
+		41C36849207C6C0B008B50A8 /* Motion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Motion.framework; path = Carthage/Build/iOS/Motion.framework; sourceTree = "<group>"; };
+		41C9CBBF2076AAE400B8994F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "../../Downloads/com.crashlytics.ios-manual/Crashlytics.framework"; sourceTree = "<group>"; };
+		41C9CBC02076AAE400B8994F /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "../../Downloads/com.crashlytics.ios-manual/Fabric.framework"; sourceTree = "<group>"; };
+		41C9CC802078193B00B8994F /* CLTokenInputViewFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CLTokenInputViewFramework.framework; path = Carthage/Build/iOS/CLTokenInputViewFramework.framework; sourceTree = "<group>"; };
+		41C9CC822078195900B8994F /* Material.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Material.framework; path = Carthage/Build/iOS/Material.framework; sourceTree = "<group>"; };
+		41C9CC842078196600B8994F /* CICropPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CICropPicker.framework; path = Carthage/Build/iOS/CICropPicker.framework; sourceTree = "<group>"; };
+		41C9CC8620781C4600B8994F /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
+		41C9CC8820781C4E00B8994F /* M13Checkbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = M13Checkbox.framework; path = Carthage/Build/iOS/M13Checkbox.framework; sourceTree = "<group>"; };
+		41C9CC8A20781C5600B8994F /* SwiftWebSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftWebSocket.framework; path = Carthage/Build/iOS/SwiftWebSocket.framework; sourceTree = "<group>"; };
+		41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/iOS/SwiftSoup.framework; sourceTree = "<group>"; };
+		41C9CC8E20781C6700B8994F /* MMMaterialDesignSpinner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MMMaterialDesignSpinner.framework; path = Carthage/Build/iOS/MMMaterialDesignSpinner.framework; sourceTree = "<group>"; };
+		41C9CC9020781C6C00B8994F /* MIBadgeButtonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MIBadgeButtonFramework.framework; path = Carthage/Build/iOS/MIBadgeButtonFramework.framework; sourceTree = "<group>"; };
+		41C9CC9220781CAB00B8994F /* RichEditorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RichEditorView.framework; path = Carthage/Build/iOS/RichEditorView.framework; sourceTree = "<group>"; };
+		41C9CC9420781CEF00B8994F /* IQKeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManager.framework; path = Carthage/Build/iOS/IQKeyboardManager.framework; sourceTree = "<group>"; };
+		41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIImageView_Letters.framework; path = Carthage/Build/iOS/UIImageView_Letters.framework; sourceTree = "<group>"; };
+		41E229B12076923E00C32998 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		41E229B52076943F00C32998 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		41E229BD207696DE00C32998 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		41E229BE207696DE00C32998 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		41EE748D207C68C900CCA685 /* MIBadgeButton_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MIBadgeButton_Swift.framework; path = Carthage/Build/iOS/MIBadgeButton_Swift.framework; sourceTree = "<group>"; };
+		41EE748F207C68D700CCA685 /* CLTokenInputView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CLTokenInputView.framework; path = Carthage/Build/iOS/CLTokenInputView.framework; sourceTree = "<group>"; };
+		41F3A275207C6466004BDF90 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		41F3A277207C6470004BDF90 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		7C147B42203C9676004823DE /* SignalProtocolFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SignalProtocolFramework.framework; path = Carthage/Build/iOS/SignalProtocolFramework.framework; sourceTree = "<group>"; };
 		7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextAxolotlStore.swift; sourceTree = "<group>"; };
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -300,12 +324,10 @@
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
 		7CFF2EE720766532002B19DB /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.release.xcconfig"; sourceTree = "<group>"; };
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
 		9568328B20752C5F007F8489 /* LabelEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelEmail.swift; sourceTree = "<group>"; };
 		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Email-Client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,9 +335,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C147B43203C9676004823DE /* SignalProtocolFramework.framework in Frameworks */,
-				EAB481D0ACDA898C93651917 /* Pods_iOS_Email_Client.framework in Frameworks */,
-				7C5FD82820602246000E5F14 /* TagListView.framework in Frameworks */,
+				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
+				41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */,
+				41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */,
+				41C36848207C69F3008B50A8 /* IQKeyboardManagerSwift.framework in Frameworks */,
+				41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */,
+				41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */,
+				41C9CC8B20781C5600B8994F /* SwiftWebSocket.framework in Frameworks */,
+				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
+				41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */,
+				41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */,
+				41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */,
+				41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */,
+				41C3684A207C6C0B008B50A8 /* Motion.framework in Frameworks */,
+				41C9CC832078195900B8994F /* Material.framework in Frameworks */,
+				41E229BF207696DE00C32998 /* Realm.framework in Frameworks */,
+				41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */,
+				41E229C0207696DE00C32998 /* RealmSwift.framework in Frameworks */,
+				41C9CBBA20769A9600B8994F /* Alamofire.framework in Frameworks */,
+				41C9CBBB20769A9F00B8994F /* SignalProtocolFramework.framework in Frameworks */,
+				41C9CBBC20769AA500B8994F /* SwiftyJSON.framework in Frameworks */,
+				41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,7 +372,30 @@
 		2962C69A939AA368B015D288 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				14D83764688122B88256F2F6 /* Pods_iOS_Email_Client.framework */,
+				41C36849207C6C0B008B50A8 /* Motion.framework */,
+				41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */,
+				41EE748F207C68D700CCA685 /* CLTokenInputView.framework */,
+				41EE748D207C68C900CCA685 /* MIBadgeButton_Swift.framework */,
+				41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */,
+				41C9CC9420781CEF00B8994F /* IQKeyboardManager.framework */,
+				41C9CC9220781CAB00B8994F /* RichEditorView.framework */,
+				41C9CC9020781C6C00B8994F /* MIBadgeButtonFramework.framework */,
+				41C9CC8E20781C6700B8994F /* MMMaterialDesignSpinner.framework */,
+				41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */,
+				41C9CC8A20781C5600B8994F /* SwiftWebSocket.framework */,
+				41C9CC8820781C4E00B8994F /* M13Checkbox.framework */,
+				41C9CC8620781C4600B8994F /* SDWebImage.framework */,
+				41C9CC842078196600B8994F /* CICropPicker.framework */,
+				41C9CC822078195900B8994F /* Material.framework */,
+				41C9CC802078193B00B8994F /* CLTokenInputViewFramework.framework */,
+				41C9CBBF2076AAE400B8994F /* Crashlytics.framework */,
+				41C9CBC02076AAE400B8994F /* Fabric.framework */,
+				41E229BD207696DE00C32998 /* Realm.framework */,
+				41E229BE207696DE00C32998 /* RealmSwift.framework */,
+				41E229B52076943F00C32998 /* SwiftyJSON.framework */,
+				7C5FD82720602244000E5F14 /* TagListView.framework */,
+				7C147B42203C9676004823DE /* SignalProtocolFramework.framework */,
+				41E229B12076923E00C32998 /* Alamofire.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -403,12 +466,11 @@
 		41B6AAA32017987500D428B7 = {
 			isa = PBXGroup;
 			children = (
-				7C5FD82720602244000E5F14 /* TagListView.framework */,
-				7C147B42203C9676004823DE /* SignalProtocolFramework.framework */,
+				41F3A277207C6470004BDF90 /* Fabric.framework */,
+				41F3A275207C6466004BDF90 /* Crashlytics.framework */,
 				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
 				41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */,
 				41B6AAAD2017987500D428B7 /* Products */,
-				72CCFB93962F99D0DB7C21D2 /* Pods */,
 				2962C69A939AA368B015D288 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -543,15 +605,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		72CCFB93962F99D0DB7C21D2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */,
-				7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		7CBD20BF2024BCB500D70B87 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -585,14 +638,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 41B6AAC92017987500D428B7 /* Build configuration list for PBXNativeTarget "iOS-Email-Client" */;
 			buildPhases = (
-				52D17F27E32DA3C273D4A47C /* [CP] Check Pods Manifest.lock */,
 				41B6AAA82017987500D428B7 /* Sources */,
 				41B6AAA92017987500D428B7 /* Frameworks */,
 				41B6AAAA2017987500D428B7 /* Resources */,
-				9E4ABEF57B503BF0BDDD71D5 /* [CP] Embed Pods Frameworks */,
-				5B118A4C965F4ACA6820CDF6 /* [CP] Copy Pods Resources */,
-				41AAC56C201E286200809C4D /* Run Script */,
-				7C147B45203C9676004823DE /* Embed Frameworks */,
 				7C4D4FE9203CBD3A00DF6E4E /* Run Script Framework */,
 			);
 			buildRules = (
@@ -735,56 +783,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		41AAC56C201E286200809C4D /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 3b4ddc55293ff0e9bf22a8927dc076a5ac0b17ec 2faae85cc964c755921b5b7855e90f3def29650c0a1dfcf386a29e6b2f95e8ce";
-		};
-		52D17F27E32DA3C273D4A47C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-iOS-Email-Client-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5B118A4C965F4ACA6820CDF6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		7C4D4FE9203CBD3A00DF6E4E /* Run Script Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -792,70 +790,50 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SignalProtocolFramework.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/TagListView.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CLTokenInputView.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Material.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CICropPicker.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/M13Checkbox.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftWebSocket.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftSoup.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/MMMaterialDesignSpinner.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/MIBadgeButton_Swift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RichEditorView.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManagerSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/UIImageView_Letters.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Motion.framework",
 			);
 			name = "Run Script Framework";
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SignalProtocolFramework.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Realm.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RealmSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/TagListView.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftyJSON.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CLTokenInputView.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Material.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CICropPicker.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SDWebImage.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/M13Checkbox.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftWebSocket.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftSoup.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MMMaterialDesignSpinner.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MIBadgeButton_Swift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RichEditorView.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManagerSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIImageView_Letters.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Motion.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-		9E4ABEF57B503BF0BDDD71D5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/CICropPicker/CICropPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/CLTokenInputView/CLTokenInputView.framework",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/M13Checkbox/M13Checkbox.framework",
-				"${BUILT_PRODUCTS_DIR}/MIBadgeButton-Swift/MIBadgeButton_Swift.framework",
-				"${BUILT_PRODUCTS_DIR}/MMMaterialDesignSpinner/MMMaterialDesignSpinner.framework",
-				"${BUILT_PRODUCTS_DIR}/Material/Material.framework",
-				"${BUILT_PRODUCTS_DIR}/MonkeyKit/MonkeyKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RichEditorView/RichEditorView.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftWebSocket/SwiftWebSocket.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/TPCustomSwitch/TPCustomSwitch.framework",
-				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore/UICKeyChainStore.framework",
-				"${BUILT_PRODUCTS_DIR}/UIImageView-Letters/UIImageView_Letters.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CICropPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CLTokenInputView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/M13Checkbox.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MIBadgeButton_Swift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMMaterialDesignSpinner.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Material.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MonkeyKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RichEditorView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftWebSocket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPCustomSwitch.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageView_Letters.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS-Email-Client/Pods-iOS-Email-Client-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1100,7 +1078,6 @@
 		};
 		41B6AACA2017987500D428B7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B16AC543688994FBF6A77348 /* Pods-iOS-Email-Client.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1111,6 +1088,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1126,7 +1104,6 @@
 		};
 		41B6AACB2017987500D428B7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7D4111C972B5D50DA59075A5 /* Pods-iOS-Email-Client.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1137,6 +1114,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -11,8 +11,6 @@ import CLTokenInputView
 import Photos
 import CICropPicker
 import M13Checkbox
-import TPCustomSwitch
-import MonkeyKit
 import ContactsUI
 import RichEditorView
 import SwiftSoup
