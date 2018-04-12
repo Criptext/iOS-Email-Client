@@ -591,6 +591,13 @@ enum Commands:Int {
     case fileCreated = 55
 }
 
+enum ContactType : String {
+    case from = "from"
+    case to = "to"
+    case cc = "cc"
+    case bcc = "bcc"
+}
+
 extension UIColor {
     
     static let mainUI = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
@@ -611,5 +618,37 @@ extension UIColor {
         getRed(&r, green: &g, blue: &b, alpha: &a)
         let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
         return String(format:"%06x", rgb)
+    }
+}
+
+var DJB_TYPE : UInt8 = 0x05;
+
+extension Data {
+    
+    func prependByte() -> Data {
+        guard self.count == 32 else {
+            return self
+        }
+        let myData = NSMutableData(bytes: &DJB_TYPE, length: 1)
+        myData.append(self)
+        return myData as Data
+    }
+    
+    func removeByte() -> Data {
+        guard self.count == 33 else {
+            return self
+        }
+        return self.suffix(from: 1)
+    }
+    
+    func customBase64String() -> String {
+        let dataPlus = self.prependByte()
+        let customBase64String = dataPlus.base64EncodedString()
+        return customBase64String
+    }
+    
+    func plainBase64String() -> String {
+        let customBase64String = self.base64EncodedString()
+        return customBase64String
     }
 }

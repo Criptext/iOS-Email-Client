@@ -34,7 +34,7 @@ class SignUpData{
     func generateKeys(){
         let preKeyPair: ECKeyPair = Curve25519.generateKeyPair()
         let signedPreKeyPair: ECKeyPair = Curve25519.generateKeyPair()
-        let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey(), with: store.identityKeyPair())
+        let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey().prependByte(), with: store.identityKeyPair())
         
         let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: store.localRegistrationId(), deviceId: Int32(deviceId), preKeyId: preKeyId, preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: store.identityKeyPair()?.publicKey())
         
@@ -43,10 +43,10 @@ class SignUpData{
         store.storePreKey(preKeyId, preKeyRecord: preKeyRecord)
         store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)
         
-        bundleKeys(signedPreKeySignature: signedPreKeySignature!.base64EncodedString(), signedPreKeyPublic: signedPreKeyPair.publicKey().base64EncodedString(), signedPreKeyId: signedKeyId, preKeyPublicKey: preKeyPair.publicKey().base64EncodedString(), preKeyId: preKeyId, identityPublicKey: store.identityKeyPair()!.publicKey().base64EncodedString(), registrationId: store.localRegistrationId(), deviceId: Int32(deviceId), identifier: identifier)
+        bundleKeys(signedPreKeySignature: signedPreKeySignature!.plainBase64String(), signedPreKeyPublic: signedPreKeyPair.publicKey().customBase64String(), signedPreKeyId: signedKeyId, preKeyPublicKey: preKeyPair.publicKey().customBase64String(), preKeyId: preKeyId, identityPublicKey: store.identityKeyPair()!.publicKey().customBase64String(), registrationId: store.localRegistrationId())
     }
     
-    func bundleKeys(signedPreKeySignature: String, signedPreKeyPublic: String, signedPreKeyId: Int32, preKeyPublicKey: String, preKeyId: Int32, identityPublicKey: String, registrationId: Int32, deviceId: Int32, identifier: String){
+    func bundleKeys(signedPreKeySignature: String, signedPreKeyPublic: String, signedPreKeyId: Int32, preKeyPublicKey: String, preKeyId: Int32, identityPublicKey: String, registrationId: Int32){
         publicKeys = [
             "signedPreKeySignature": signedPreKeySignature,
             "signedPreKeyPublic": signedPreKeyPublic,
@@ -83,5 +83,9 @@ class SignUpData{
         }
         let identityData = NSKeyedArchiver.archivedData(withRootObject: myIdentity)
         return identityData.base64EncodedString()
+    }
+    
+    func getRegId() -> Int32 {
+        return store.localRegistrationId()
     }
 }

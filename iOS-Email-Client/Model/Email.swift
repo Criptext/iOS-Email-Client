@@ -22,7 +22,16 @@ class Email: Object {
     @objc dynamic var subject = ""
     @objc dynamic var delivered = DeliveryStatus.SENT
     @objc dynamic var date : Date?
+    let labels = List<Label>()
+    let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
     var isExpanded = false
+    var fromContact : Contact? {
+        get {
+            let predicate = NSPredicate(format: "type == '\(ContactType.from.rawValue)'")
+            let contact = emailContacts.filter(predicate).first?.contact
+            return contact
+        }
+    }
     
     override static func primaryKey() -> String? {
         return "id"
@@ -39,6 +48,23 @@ class Email: Object {
     func incrementID() -> Int {
         let realm = try! Realm()
         return (realm.objects(Email.self).max(ofProperty: "id") as Int? ?? 0) + 1
+    }
+    
+    func getContacts(type: ContactType) -> List<Contact> {
+        let contacts = List<Contact>()
+        let predicate = NSPredicate(format: "type == '\(type.rawValue)'")
+        let emailContacts = self.emailContacts.filter(predicate)
+        emailContacts.forEach { (emailContact) in
+            guard let contact = emailContact.contact else {
+                return
+            }
+            contacts.append(contact)
+        }
+        return contacts
+    }
+    
+    func getFormattedDate() -> String {
+        return DateUtils.conversationTime(date)
     }
 }
 

@@ -16,6 +16,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var toHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var toLabelHeightConstraint: NSLayoutConstraint!
+    var email: Email!
     
     init(){
         super.init("ContactsDetailUIPopover")
@@ -27,23 +28,39 @@ class ContactsDetailUIPopover: BaseUIPopover{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(email.emailContacts)
+        setFromContact()
+        setToContacts()
+        replyToView.isHidden = true
+    }
+    
+    func setFromContact(){
+        guard let contact = email.fromContact else {
+            return
+        }
+        fromEmailsLabel.attributedText = buildContactAttributedString(contact.displayName, contact.email)
+    }
+    
+    func setToContacts(){
         let attributedText = buildContactsAttributedString()
         toEmailsLabel.attributedText = attributedText
-        replyToEmailsLabel.attributedText = buildContactAttributedString("Gianni", "gianni@criptext.com")
-        fromEmailsLabel.attributedText = buildContactAttributedString("Pedro Aim", "pedro_aim@hotmail.com")
         let toViewHeight = Utils.getLabelHeight(attributedText, width: toEmailsLabel.frame.width, fontSize: 15.0)
         toHeightConstraint.constant = toViewHeight + 8.0
         toLabelHeightConstraint.constant = toViewHeight
     }
     
     func buildContactsAttributedString() -> NSMutableAttributedString{
-        let contact1 = buildContactAttributedString("Pedro Aim", "pedro_aim12345536563456345635@criptext.com\n\n")
-        let contact2 = buildContactAttributedString("Hola Hola", "hola@criptext.com\n\n")
-        let contact3 = buildContactAttributedString("Bye Bye", "bye@criptext.com")
-        contact1.append(contact2)
-        contact1.append(contact2)
-        contact1.append(contact3)
-        return contact1
+        let contacts = email.getContacts(type: .to)
+        let contactAttString = NSMutableAttributedString()
+        contacts.forEach { (contact) in
+            let contactString = buildContactAttributedString(contact.displayName, contact.email)
+            contactAttString.append(contactString)
+            guard contact != contacts.first && contact != contacts.last else {
+                return
+            }
+            contactAttString.append(buildContactAttributedString("\n", "\n"))
+        }
+        return contactAttString
     }
     
     func buildContactAttributedString(_ name: String, _ email: String) -> NSMutableAttributedString{

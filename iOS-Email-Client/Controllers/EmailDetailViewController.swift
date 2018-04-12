@@ -23,8 +23,6 @@ class EmailDetailViewController: UIViewController {
         super.viewDidLoad()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
-        
-        self.emailData.mockLabels()
         self.setupToolbar()
         self.setupMoreOptionsViews()
         
@@ -190,8 +188,13 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
     }
     
     func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        guard let indexPath = emailsTableView.indexPath(for: cell) else {
+            return
+        }
+        let email = emailData.emails[indexPath.row]
         let contactsPopover = ContactsDetailUIPopover()
-        presentPopover(contactsPopover, sender, height: 233)
+        contactsPopover.email = email
+        presentPopover(contactsPopover, sender, height: CGFloat(50 + 2 * email.emailContacts.count * 20))
     }
     
     func handleUnsendTap(_ cell: EmailTableViewCell, _ sender: UIView){

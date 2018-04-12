@@ -11,15 +11,16 @@ import RealmSwift
 class EmailContact: Object{
     
     @objc dynamic var id = 0
-    @objc dynamic var emailId = 0
-    @objc dynamic var contactMail = ""
+    @objc dynamic var email : Email?
+    @objc dynamic var contact : Contact?
+    @objc dynamic var type : String = ContactType.to.rawValue
     
     override static func primaryKey() -> String? {
         return "id"
     }
     
-    func incrementID() -> Int {
+    func incrementID() {
         let realm = try! Realm()
-        return (realm.objects(EmailContact.self).max(ofProperty: "id") as Int? ?? 0) + 1
+        self.id = (realm.objects(EmailContact.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
 }

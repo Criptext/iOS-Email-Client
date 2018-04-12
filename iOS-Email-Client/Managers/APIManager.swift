@@ -26,11 +26,15 @@ class APIManager {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
+    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Any?, String?) -> Void)){
         let url = "\(self.baseUrl)/user"
         
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString{
             (response) in
+            guard response.response?.statusCode == 200 else {
+                completion("Account not created", nil)
+                return
+            }
             guard let value = response.result.value else {
                 completion(response.result.error, nil)
                 return
@@ -88,6 +92,37 @@ class APIManager {
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             switch(response.result) {
             case .success(let value):
+                completion(nil, value)
+                break
+            case .failure(let error):
+                completion(error, nil)
+                break;
+            }
+        }
+    }
+    
+    class func getEvents(token: String, completion: @escaping ((Error?, Any?) -> Void)){
+        let url = "\(self.baseUrl)/event"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            switch(response.result) {
+            case .success(let value):
+                completion(nil, value)
+                break
+            case .failure(let error):
+                completion(error, nil)
+                break;
+            }
+        }
+    }
+    
+    class func getEmailBody(s3Key: String, token: String, completion: @escaping ((Any?, Any?) -> Void)){
+        let url = "\(self.baseUrl)/email/body/\(s3Key)"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            switch(response.result) {
+            case .success(let value):
+                print(response.response?.statusCode ?? "holis")
                 completion(nil, value)
                 break
             case .failure(let error):
@@ -173,88 +208,6 @@ class APIManager {
         return toDisplayEmail
     }
 
-}
-
-extension APIManager {
-
-//    class func upload(_ file:Data, id:String, fileName:String, mimeType:String, from user:User, delegate:ProgressDelegate?, completion: @escaping ((Error?, String?) -> Void)){
-//        let url = "\(self.baseUrl)/v2.0/attachment/upload"
-//
-//        let headers = ["Authorization": "Basic \(user.auth)", "fileid": id]
-//
-//        let parameters = ["userid":String(user.id)]
-//
-//        Alamofire.upload(multipartFormData: { (multipartFormData) in
-//            for (key, value) in parameters {
-//                multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
-//            }
-//            multipartFormData.append(file, withName: "files", fileName: fileName, mimeType: mimeType)
-//        }, to: url, method: .post, headers: headers) { (result) in
-//            switch result {
-//            case .success(let upload, _, _):
-//
-//                upload.uploadProgress(closure: { (Progress) in
-//                    print("Upload Progress: \(Progress.fractionCompleted)")
-//                    if let delegate = delegate {
-//                        delegate.updateProgress(Progress.fractionCompleted, for: id)
-//                    }
-//                })
-//
-//                upload.responseJSON { responseObject in
-//
-//                    guard responseObject.response?.statusCode == 200,
-//                        let value = responseObject.result.value else {
-//                            //check if request was cancelled
-//
-//                            if responseObject.result.isFailure,
-//                                let error = responseObject.result.error as NSError?,
-//                                error.code == CODE_REQUEST_CANCELLED {
-//                                //do nothing
-//                                return
-//                            }
-//
-//                            var code = -1
-//                            var userInfo = ["error": ["title":"Network Error", "description":"Please try again later"]]
-//
-//                            //check if error is due to file size
-//                            if let response = responseObject.response, response.statusCode == CODE_FILE_SIZE_EXCEEDED {
-//                                print("===== error file size")
-//                                print(response.statusCode)
-//                                code = response.statusCode
-//
-//                                userInfo["error"]!["title"] = nil
-//
-//                                userInfo["error"]!["description"] = "File size " + (user.isPro() ? "100 MB" : "5 MB") + " limit exceeded"
-//                            }
-//
-//                            completion(NSError(domain: "com.criptext.com", code: code, userInfo: userInfo), nil)
-//                            return
-//                    }
-//
-//                    let jsonVar = JSON(value)
-//
-//                    let errorCode = jsonVar["error"].intValue
-//
-//                    guard errorCode == self.CODE_SUCESS else {
-//                        completion(NSError(domain: "com.criptext.com", code: errorCode, userInfo: nil), nil)
-//                        return
-//                    }
-//
-//                    let token = jsonVar["tokenfile"].stringValue
-//
-//                    completion(nil, token)
-//
-//                    print("JSON: \(jsonVar)")
-//                }
-//
-//            case .failure(let encodingError):
-//                //self.delegate?.showFailAlert()
-//                print(encodingError)
-//                completion(NSError(domain: "com.criptext.com", code: -1, userInfo: ["error": ["title":"Network Error", "description":"Please try again later"]]), nil)
-//            }
-//        }
-//    }
-    
 }
 
 extension APIManager {

@@ -13,6 +13,7 @@ import SDWebImage
 import SwiftWebSocket
 import MIBadgeButton_Swift
 import SwiftyJSON
+import SignalProtocolFramework
 
 //delete
 import RealmSwift
@@ -107,13 +108,23 @@ class InboxViewController: UIViewController {
         self.initBarButtonItems()
         
         self.setButtonItems(isEditing: false)
-        self.loadMails(from: .inbox, since: Date())
+        self.loadMails(from: selectedLabel, since: Date())
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.emailTrashed), name: NSNotification.Name(rawValue: "EmailTrashed"), object: nil)
         
         self.initFloatingButton()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        
+        tryEncryptDecrypt()
+        
+        let store = CriptextAxolotlStore(myAccount.regId, myAccount.identityB64)
+        let myIdentity = store.identityKeyPair()?.publicKey().first
+        print("holaaa: \(myIdentity)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -239,6 +250,114 @@ class InboxViewController: UIViewController {
                 break
             }
         }
+    }
+    
+    @objc func refresh(_ refreshControl: UIRefreshControl) {
+        APIManager.getEvents(token: myAccount.jwt) { (error, data) in
+            refreshControl.endRefreshing()
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            let keysArray = data as! Array<Dictionary<String, Any>>
+            keysArray.forEach({ (keys) in
+                let cmd = keys["cmd"] as! Int32
+                guard let params = Utils.convertToDictionary(text: (keys["params"] as! String)) else {
+                    return
+                }
+                switch(cmd){
+                case 1:
+                    self.handleNewEmailCommand(params: params)
+                    break
+                default:
+                    break
+                }
+            })
+        }
+    }
+    
+    func handleNewEmailCommand(params: [String: Any]){
+        let threadId = params["threadId"] as! String
+        let subject = params["subject"] as! String
+        let from = params["from"] as! String
+        let to = params["to"] as! String
+        let cc = params["cc"] as! String
+        let bcc = params["bcc"] as! String
+        let bodyKey = params["bodyKey"] as! String
+        let preview = params["preview"] as! String
+        let date = params["date"] as! String
+        let metadataKey = params["metadataKey"] as! Int32
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let localDate = dateFormatter.date(from: date)
+        
+        guard DBManager.getMailByKey(key: metadataKey.description) == nil else {
+            print("yala \(metadataKey)")
+            return
+        }
+        
+        let email = Email()
+        email.threadId = threadId
+        email.subject = subject
+        email.key = metadataKey.description
+        email.s3Key = bodyKey
+        email.preview = preview
+        email.date = localDate
+        
+        APIManager.getEmailBody(s3Key: email.s3Key, token: myAccount.jwt) { (error, data) in
+            guard error == nil else {
+                return
+            }
+            let signalMessage = data as! String
+            email.content = self.decryptMessage(signalMessage)
+            email.preview = String(email.content.prefix(100))
+            email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
+            DBManager.store(email)
+        }
+        
+    }
+    
+    func decryptMessage(_ encryptedMessageB64: String) -> String{
+        let axolotlStore = CriptextAxolotlStore(myAccount.regId, myAccount.identityB64)
+        let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: myAccount.username, deviceId: 1)
+        let incomingMessage = PreKeyWhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
+        let plainText = sessionCipher?.decrypt(incomingMessage)
+        let plainTextString = NSString(data:plainText!, encoding:String.Encoding.ascii.rawValue)
+        print("decrypted: \(String(describing: plainTextString))")
+        return plainTextString! as String
+    }
+    
+    func tryEncryptDecrypt(){
+        return
+        let aliceStore = AxolotlInMemoryStore()
+        let store = CriptextAxolotlStore(myAccount.regId, myAccount.identityB64)
+        let message = "Hello there!!!"
+        let deviceId = 1
+        let preKeyId : Int32 = 1
+        let signedKeyId : Int32 = 1
+        let preKeyPair: ECKeyPair = Curve25519.generateKeyPair()
+        let signedPreKeyPair: ECKeyPair = Curve25519.generateKeyPair()
+        let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey(), with: store.identityKeyPair())
+        
+        let signedPreKeySignatureString = "pOhtnYCbSm+mETLHVPGCO/3mb2Bg6zDYbXgSFEko7AoUDxQW6e0oXOKJtYufT++XWBAIKSGpYDG811H4J1r3CA=="
+        let signedPreKeyPublic = "/CB1jzS6Jwn112gg2CKcHdWEYIyvH0J/Zn4ZprphnnM="
+        let preKeyPublicKey = "JaFs0pHawn97wbSIw7SPNRiVUvFxH7NbBWwiLlPoeTE="
+        let identityPublicKey = "hyHCS+53bmRvZHrzC5+IPFUFS/56myePc3S7Ic1t+lk="
+        let registrationId = store.localRegistrationId()
+        
+        let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: registrationId, deviceId: Int32(deviceId), preKeyId: preKeyId, preKeyPublic: Data(base64Encoded: preKeyPublicKey)!, signedPreKeyPublic: Data(base64Encoded: signedPreKeyPublic)!, signedPreKeyId: signedKeyId, signedPreKeySignature: Data(base64Encoded: signedPreKeySignatureString)!, identityKey: Data(base64Encoded: identityPublicKey)!)
+        
+        /*let preKeyRecord : PreKeyRecord = PreKeyRecord.init(id: preKey.preKeyId, keyPair: preKeyPair)
+        let signedPreKeyRecord: SignedPreKeyRecord = SignedPreKeyRecord.init(id: signedKeyId, keyPair: signedPreKeyPair, signature: signedPreKeySignature, generatedAt: Date())
+        store.storePreKey(preKeyId, preKeyRecord: preKeyRecord)
+        store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)*/
+        
+        let aliceSessionBuilder: SessionBuilder = SessionBuilder.init(axolotlStore: aliceStore, recipientId: myAccount.username, deviceId: 1)
+        aliceSessionBuilder.processPrekeyBundle(preKey)
+        let aliceSessionCipher: SessionCipher = SessionCipher.init(axolotlStore: aliceStore, recipientId: myAccount.username, deviceId: 1)
+        let outgoingMessage: CipherMessage = aliceSessionCipher.encryptMessage(message.data(using: .utf8))
+        print("Encriptado:\(outgoingMessage.serialized().base64EncodedString())")
     }
 }
 
@@ -417,32 +536,14 @@ extension InboxViewController{
     }
     
     func didPressLabel(labelId: Int, sender: Any?){
+        self.selectedLabel = labelId
+        loadMails(from: labelId, since: Date())
         self.navigationDrawerController?.closeLeftView()
     }
 }
 
 //MARK: - Side menu events
 extension InboxViewController {
-    func didChange(_ label:SystemLabel) {
-        self.titleBarButton.title = label.description.uppercased()
-        self.emailArray.removeAll()
-        self.threadHash.removeAll()
-        
-        if self.isCustomEditing {
-            self.didPressEdit()
-        }
-        
-        self.tableView.reloadData()
-        
-        
-        //        check if it should get emails or just handle refresh
-        self.loadMails(from: label, since: Date())
-        
-        self.statusBarButton.title = nil
-        self.refreshControl.beginRefreshing()
-        self.handleRefresh(self.refreshControl, automatic: false, signIn: false, completion: nil)
-        
-    }
     
     @IBAction func didPressOpenMenu(_ sender: UIBarButtonItem) {
         self.navigationDrawerController?.toggleLeftView()
@@ -555,7 +656,7 @@ extension InboxViewController{
         }
         self.emailArray.removeAll()
         self.threadHash.removeAll()
-        self.loadMails(from: SystemLabel.inbox, since: Date())
+        self.loadMails(from: selectedLabel, since: Date())
         self.tableView.reloadData()
     }
 }
@@ -717,9 +818,8 @@ extension InboxViewController{
         self.threadToOpen = nil
     }
     
-    func loadMails(from label:SystemLabel, since date:Date){
+    func loadMails(from label: Int, since date:Date){
         let tuple = DBManager.getMails(from: label, since: date)
-        
         self.emailArray = tuple.1
         self.tableView.reloadData()
         
@@ -952,7 +1052,7 @@ extension InboxViewController: UITableViewDataSource{
         }
         
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
-        
+        cell.senderLabel.text = email.fromContact?.displayName ?? "Unknown"
         cell.previewLabel.text = email.preview
         
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
@@ -1114,15 +1214,18 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let selectedEmail = self.emailArray[indexPath.row]
         let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId, label: 1)
-        let emp = EmailDetailData()
-        emp.emails = emails
+        let emailDetailData = EmailDetailData()
+        emailDetailData.emails = emails
+        emailDetailData.labels += emails.first!.labels
+        emailDetailData.subject = emails.first!.subject
+        
         emails.last?.isExpanded = true
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         if self.selectedLabel != SystemLabel.draft.id {
             let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
-            vc.emailData = emp
+            vc.emailData = emailDetailData
             self.navigationController?.pushViewController(vc, animated: true)
             return
         }
@@ -1160,7 +1263,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         if email == lastEmail {
             if(searchController.searchBar.text == ""){
-                self.loadMails(from: SystemLabel.inbox, since: firstThreadEmail.date!)
+                self.loadMails(from: selectedLabel, since: firstThreadEmail.date!)
             }
             else{
                 self.loadSearchedMails()

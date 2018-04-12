@@ -57,15 +57,16 @@ extension DBManager {
         if let _ = realm.object(ofType: Email.self, forPrimaryKey: email.id) {
             return
         }
-        
+        email.id = email.incrementID()
         try! realm.write() {
             realm.add(email, update: true)
         }
     }
     
-    class func getMails(from label:SystemLabel, since date:Date) -> ([String:[Email]], [Email]) {
+    class func getMails(from label: Int, since date:Date) -> ([String:[Email]], [Email]) {
+        var threadIds = Set<String>()
         let realm = try! Realm()
-        let emails = Array(realm.objects(Email.self))
+        let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@", label)).sorted(by: {$0.date! > $1.date!})
         return ([:], emails)
     }
     
@@ -78,10 +79,10 @@ extension DBManager {
         return Array(results)
     }
     
-    class func getMailBy(token:String) -> Email?{
+    class func getMailByKey(key:String) -> Email?{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "realCriptextToken == '\(token)'")
+        let predicate = NSPredicate(format: "key == '\(key)'")
         let results = realm.objects(Email.self).filter(predicate)
         
         return results.first
@@ -202,6 +203,15 @@ extension DBManager {
         return Array(results)
     }
     
+    class func getContact(_ email:String) -> Contact?{
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "email == '\(email)'")
+        let results = realm.objects(Contact.self).filter(predicate)
+        
+        return results.first
+    }
+    
 }
 
 //MARK: - Keys related
@@ -313,7 +323,6 @@ extension DBManager {
         
         let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == \(deviceId)")
         let results = realm.objects(CRSessionRecord.self).filter(predicate)
-        
         return results.first
     }
     
@@ -377,27 +386,21 @@ extension DBManager {
         return label
     }
     
-    class func store(_ labelEmail: LabelEmail){
-        let realm = try! Realm()
-        labelEmail.incrementID()
-        try! realm.write {
-            realm.add(labelEmail, update: true)
-        }
-    }
-    
-    class func addRemoveLabelsFromEmail(_ emailId: Int, addedLabelIds: [Int], removedLabelIds: [Int]){
+    class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
         let realm = try! Realm()
         try! realm.write {
-            for labelId in addedLabelIds{
-                let labelEmail = LabelEmail()
-                labelEmail.email_id = emailId
-                labelEmail.label_id = labelId
-                labelEmail.incrementID()
-                realm.add(labelEmail, update: true)
+            for labelId in addedLabelIds {
+                guard let label = self.getLabel(labelId) else {
+                    continue
+                }
+                email.labels.append(label)
             }
-            let predicate = NSPredicate(format: "email_id == \(emailId) && label_id IN %@", removedLabelIds)
-            let labelEmailsToDelete = realm.objects(LabelEmail.self).filter(predicate)
-            realm.delete(labelEmailsToDelete)
+            for labelId in removedLabelIds {
+                guard let index = email.labels.index(where: {$0.id == labelId}) else {
+                    continue
+                }
+                email.labels.remove(at: index)
+            }
         }
     }
 }
@@ -410,8 +413,17 @@ extension DBManager {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(emailContacts, update: true)
+            for emailContact in emailContacts {
+                emailContact.incrementID()
+                realm.add(emailContact, update: true)
+            }
         }
+    }
+    
+    class func getEmailContacts() -> [EmailContact] {
+        let realm = try! Realm()
+        
+        return Array(realm.objects(EmailContact.self))
     }
 }
 

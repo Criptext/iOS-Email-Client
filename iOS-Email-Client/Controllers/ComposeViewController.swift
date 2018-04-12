@@ -290,7 +290,6 @@ class ComposeViewController: UIViewController {
         
         //create draft
         let emailDetail = Email()
-        emailDetail.id = emailDetail.incrementID()
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
         if(body.count > 100){
@@ -302,25 +301,22 @@ class ComposeViewController: UIViewController {
         }
         emailDetail.subject = subject
         emailDetail.date = Date()
+        emailDetail.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         DBManager.store(emailDetail)
         
-        let labelEmail = LabelEmail()
-        labelEmail.email_id = emailDetail.id
-        labelEmail.label_id = SystemLabel.draft.id
-        
-        DBManager.store(labelEmail)
         
         //create email contacts
         var emailContacts = [EmailContact]()
         self.toField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.to)
         }
         self.ccField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.cc)
         }
         self.bccField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.bcc)
         }
+        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: emailDetail, type: ContactType.from)
         
         DBManager.store(emailContacts)
         
@@ -328,15 +324,18 @@ class ComposeViewController: UIViewController {
         
     }
     
-    func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: Email){
+    func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: Email, type: ContactType){
         let emailContact = EmailContact()
-        emailContact.id = emailContact.incrementID()
-        emailContact.emailId = emailDetail.id
-        if(token.context == nil){
-            emailContact.contactMail = token.displayText
-        }
-        else{
-            emailContact.contactMail = token.context as! String
+        emailContact.email = emailDetail
+        emailContact.type = type.rawValue
+        if let contact = DBManager.getContact(token.displayText) {
+            emailContact.contact = contact
+        } else {
+            let newContact = Contact()
+            newContact.email = token.displayText
+            newContact.displayName = token.displayText
+            DBManager.store([newContact]);
+            emailContact.contact = newContact
         }
         emailContacts.append(emailContact)
     }
@@ -572,7 +571,7 @@ class ComposeViewController: UIViewController {
         let s3Key = keysArray["bodyKey"] as! String
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(myEmail, key: key, s3Key: s3Key, threadId: threadId)
-        DBManager.addRemoveLabelsFromEmail(myEmail.id, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
+        DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
     }
     
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>, index: Int){
@@ -618,7 +617,7 @@ class ComposeViewController: UIViewController {
             
             let keysArray = response as! Array<Dictionary<String, Any>>
             keysArray.forEach({ (keys) in
-                
+                print(keys)
                 let contactRegistrationId = keys["registrationId"] as! Int32
                 var contactPrekeyPublic: Data? = nil
                 var preKeyId: Int32 = 0
@@ -698,9 +697,7 @@ class ComposeViewController: UIViewController {
         ]
         
         DBManager.store(allContacts)
-        print("hola")
         saveDraft()
-        print("bye")
         getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails, index: 0)
         
     }
