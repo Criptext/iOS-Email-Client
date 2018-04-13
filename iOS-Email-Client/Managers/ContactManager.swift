@@ -54,4 +54,27 @@ class ContactManager {
             completion(true, contacts)
         }
     }
+    
+    class func parseContact(_ contactString: String) -> Contact {
+        let splittedContact = contactString.split(separator: "<")
+        guard splittedContact.count > 1 else {
+            return Contact(value: ["displayName": contactString, "email": contactString])
+        }
+        let contactName = splittedContact[0].prefix((splittedContact[0].count - 1))
+        let email = splittedContact[1].prefix((splittedContact[1].count - 1))
+        return Contact(value: ["displayName": contactName, "email": email])
+    }
+    
+    class func parseContacts(_ contactsString: String, email: Email, type: ContactType){
+        let contacts = contactsString.split(separator: ",")
+        contacts.forEach { (contactString) in
+            let contact = parseContact(contactsString)
+            let emailContact = EmailContact()
+            emailContact.contact = contact
+            emailContact.email = email
+            emailContact.type = type.rawValue
+            DBManager.store([contact])
+            DBManager.store([emailContact])
+        }
+    }
 }

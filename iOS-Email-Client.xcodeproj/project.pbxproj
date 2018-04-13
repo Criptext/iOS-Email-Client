@@ -88,6 +88,11 @@
 		41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A275207C6466004BDF90 /* Crashlytics.framework */; };
 		41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A277207C6470004BDF90 /* Fabric.framework */; };
+		7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */; };
+		7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AC20810CFD008F1395 /* EventHandler.swift */; };
+		7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
+		7C147B43203C9676004823DE /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
+		7C147B44203C9676004823DE /* SignalProtocolFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
@@ -258,6 +263,9 @@
 		41EE748F207C68D700CCA685 /* CLTokenInputView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CLTokenInputView.framework; path = Carthage/Build/iOS/CLTokenInputView.framework; sourceTree = "<group>"; };
 		41F3A275207C6466004BDF90 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		41F3A277207C6470004BDF90 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		7C13D8AC20810CFD008F1395 /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
+		7C13D8AE20810D75008F1395 /* SignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalHandler.swift; sourceTree = "<group>"; };
 		7C147B42203C9676004823DE /* SignalProtocolFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SignalProtocolFramework.framework; path = Carthage/Build/iOS/SignalProtocolFramework.framework; sourceTree = "<group>"; };
 		7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextAxolotlStore.swift; sourceTree = "<group>"; };
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -404,6 +412,7 @@
 				41AAC540201A9FF500809C4D /* APIManager.swift */,
 				41AAC542201AA00000809C4D /* ContactManager.swift */,
 				41AAC544201AA01400809C4D /* DBManager.swift */,
+				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -457,6 +466,8 @@
 				41AAC555201AA08500809C4D /* DateUtils.m */,
 				411FDF70204CF93300BCD787 /* InitialsImageView.swift */,
 				7C5FD825205C857C000E5F14 /* Utils.swift */,
+				7C13D8AC20810CFD008F1395 /* EventHandler.swift */,
+				7C13D8AE20810D75008F1395 /* SignalHandler.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -868,6 +879,7 @@
 				7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */,
 				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
 				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
+				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,
 				414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
@@ -880,12 +892,14 @@
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
 				7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */,
 				41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */,
+				7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */,
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */,
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
 				7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */,
+				7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */,
 				7C8D6C74203735E000AB96EF /* Constants.swift in Sources */,
 				41AAC51A201A9FC300809C4D /* ActivityTableViewCell.swift in Sources */,
 				7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */,

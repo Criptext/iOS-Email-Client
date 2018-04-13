@@ -31,6 +31,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
         print(email.emailContacts)
         setFromContact()
         setToContacts()
+        dateLabel.text = email.getFormattedDate()
         replyToView.isHidden = true
     }
     

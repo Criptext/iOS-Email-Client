@@ -122,7 +122,6 @@ class APIManager {
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             switch(response.result) {
             case .success(let value):
-                print(response.response?.statusCode ?? "holis")
                 completion(nil, value)
                 break
             case .failure(let error):

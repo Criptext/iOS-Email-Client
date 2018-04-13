@@ -117,6 +117,7 @@ class InboxViewController: UIViewController {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
+        WebSocketManager.sharedInstance.addListener(identifier: "mailbox", listener: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -246,116 +247,22 @@ class InboxViewController: UIViewController {
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
         APIManager.getEvents(token: myAccount.jwt) { (error, data) in
-            let asyncGroupCalls = DispatchGroup()
             refreshControl?.endRefreshing()
             guard error == nil else {
                 print(error.debugDescription)
                 return
             }
-            let keysArray = data as! Array<Dictionary<String, Any>>
-            keysArray.forEach({ (keys) in
-                asyncGroupCalls.enter()
-                let cmd = keys["cmd"] as! Int32
-                guard let params = Utils.convertToDictionary(text: (keys["params"] as! String)) else {
-                    return
-                }
-                switch(cmd){
-                case 1:
-                    self.handleNewEmailCommand(params: params){
-                        asyncGroupCalls.leave()
-                    }
-                    break
-                default:
-                    break
-                }
-            })
-            asyncGroupCalls.notify(queue: .main) {
-                self.didPressLabel(labelId: self.selectedLabel, sender: nil)
-            }
+            let eventsArray = data as! Array<Dictionary<String, Any>>
+            let eventHandler = EventHandler(account: self.myAccount)
+            eventHandler.eventDelegate = self
+            eventHandler.handleEvents(events: eventsArray)
         }
     }
-    
-    func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping () -> Void){
-        let threadId = params["threadId"] as! String
-        let subject = params["subject"] as! String
-        let from = params["from"] as! String
-        let to = params["to"] as! String
-        let cc = params["cc"] as! String
-        let bcc = params["bcc"] as! String
-        let bodyKey = params["bodyKey"] as! String
-        let preview = params["preview"] as! String
-        let date = params["date"] as! String
-        let metadataKey = params["metadataKey"] as! Int32
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let localDate = dateFormatter.date(from: date)
-        
-        guard DBManager.getMailByKey(key: metadataKey.description) == nil else {
-            print("yala \(metadataKey)")
-            finishCallback()
-            return
-        }
-        
-        let email = Email()
-        email.threadId = threadId
-        email.subject = subject
-        email.key = metadataKey.description
-        email.s3Key = bodyKey
-        email.preview = preview
-        email.date = localDate
-        
-        APIManager.getEmailBody(s3Key: email.s3Key, token: myAccount.jwt) { (error, data) in
-            guard error == nil else {
-                finishCallback()
-                return
-            }
-            let signalMessage = data as! String
-            email.content = self.decryptMessage(signalMessage)
-            email.preview = String(email.content.prefix(100))
-            email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
-            DBManager.store(email)
-            
-            self.parseContacts(from, email: email, type: .from)
-            self.parseContacts(to, email: email, type: .to)
-            self.parseContacts(cc, email: email, type: .cc)
-            self.parseContacts(bcc, email: email, type: .bcc)
-            finishCallback()
-        }
-        
-    }
-    
-    func decryptMessage(_ encryptedMessageB64: String) -> String{
-        let axolotlStore = CriptextAxolotlStore(myAccount.regId, myAccount.identityB64)
-        let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: myAccount.username, deviceId: 1)
-        let incomingMessage = PreKeyWhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
-        let plainText = sessionCipher?.decrypt(incomingMessage)
-        let plainTextString = NSString(data:plainText!, encoding:String.Encoding.ascii.rawValue)
-        print("decrypted: \(String(describing: plainTextString))")
-        return plainTextString! as String
-    }
-    
-    func parseContact(_ contactString: String) -> Contact {
-        let splittedContact = contactString.split(separator: "<")
-        guard splittedContact.count > 1 else {
-            return Contact(value: ["displayName": contactString, "email": contactString])
-        }
-        let contactName = splittedContact[0].prefix((splittedContact[0].count - 1))
-        let email = splittedContact[1].prefix((splittedContact[1].count - 1))
-        return Contact(value: ["displayName": contactName, "email": email])
-    }
-    
-    func parseContacts(_ contactsString: String, email: Email, type: ContactType){
-        let contacts = contactsString.split(separator: ",")
-        contacts.forEach { (contactString) in
-            let contact = parseContact(contactsString)
-            let emailContact = EmailContact()
-            emailContact.contact = contact
-            emailContact.email = email
-            emailContact.type = type.rawValue
-            DBManager.store([contact])
-            DBManager.store([emailContact])
-        }
+}
+
+extension InboxViewController: EventHandlerDelegate {
+    func didReceiveNewEmails() {
+        didPressLabel(labelId: selectedLabel, sender: nil)
     }
 }
 

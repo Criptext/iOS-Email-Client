@@ -58,5 +58,4 @@ class Utils{
         }
         return nil
     }
-    
 }
