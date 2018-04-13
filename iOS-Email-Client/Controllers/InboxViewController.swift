@@ -101,8 +101,6 @@ class InboxViewController: UIViewController {
         definesPresentationContext = true
         
         self.navigationItem.searchController = self.searchController
-        self.refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:automatic:signIn:completion:)), for: UIControlEvents.valueChanged)
-        
         self.tableView.allowsMultipleSelection = true
 
         self.initBarButtonItems()
@@ -117,14 +115,8 @@ class InboxViewController: UIViewController {
         self.initFloatingButton()
         
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
-        
-        tryEncryptDecrypt()
-        
-        let store = CriptextAxolotlStore(myAccount.regId, myAccount.identityB64)
-        let myIdentity = store.identityKeyPair()?.publicKey().first
-        print("holaaa: \(myIdentity)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -252,31 +244,38 @@ class InboxViewController: UIViewController {
         }
     }
     
-    @objc func refresh(_ refreshControl: UIRefreshControl) {
+    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
         APIManager.getEvents(token: myAccount.jwt) { (error, data) in
-            refreshControl.endRefreshing()
+            let asyncGroupCalls = DispatchGroup()
+            refreshControl?.endRefreshing()
             guard error == nil else {
                 print(error.debugDescription)
                 return
             }
             let keysArray = data as! Array<Dictionary<String, Any>>
             keysArray.forEach({ (keys) in
+                asyncGroupCalls.enter()
                 let cmd = keys["cmd"] as! Int32
                 guard let params = Utils.convertToDictionary(text: (keys["params"] as! String)) else {
                     return
                 }
                 switch(cmd){
                 case 1:
-                    self.handleNewEmailCommand(params: params)
+                    self.handleNewEmailCommand(params: params){
+                        asyncGroupCalls.leave()
+                    }
                     break
                 default:
                     break
                 }
             })
+            asyncGroupCalls.notify(queue: .main) {
+                self.didPressLabel(labelId: self.selectedLabel, sender: nil)
+            }
         }
     }
     
-    func handleNewEmailCommand(params: [String: Any]){
+    func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping () -> Void){
         let threadId = params["threadId"] as! String
         let subject = params["subject"] as! String
         let from = params["from"] as! String
@@ -294,6 +293,7 @@ class InboxViewController: UIViewController {
         
         guard DBManager.getMailByKey(key: metadataKey.description) == nil else {
             print("yala \(metadataKey)")
+            finishCallback()
             return
         }
         
@@ -307,6 +307,7 @@ class InboxViewController: UIViewController {
         
         APIManager.getEmailBody(s3Key: email.s3Key, token: myAccount.jwt) { (error, data) in
             guard error == nil else {
+                finishCallback()
                 return
             }
             let signalMessage = data as! String
@@ -314,6 +315,12 @@ class InboxViewController: UIViewController {
             email.preview = String(email.content.prefix(100))
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
+            
+            self.parseContacts(from, email: email, type: .from)
+            self.parseContacts(to, email: email, type: .to)
+            self.parseContacts(cc, email: email, type: .cc)
+            self.parseContacts(bcc, email: email, type: .bcc)
+            finishCallback()
         }
         
     }
@@ -328,36 +335,27 @@ class InboxViewController: UIViewController {
         return plainTextString! as String
     }
     
-    func tryEncryptDecrypt(){
-        return
-        let aliceStore = AxolotlInMemoryStore()
-        let store = CriptextAxolotlStore(myAccount.regId, myAccount.identityB64)
-        let message = "Hello there!!!"
-        let deviceId = 1
-        let preKeyId : Int32 = 1
-        let signedKeyId : Int32 = 1
-        let preKeyPair: ECKeyPair = Curve25519.generateKeyPair()
-        let signedPreKeyPair: ECKeyPair = Curve25519.generateKeyPair()
-        let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey(), with: store.identityKeyPair())
-        
-        let signedPreKeySignatureString = "pOhtnYCbSm+mETLHVPGCO/3mb2Bg6zDYbXgSFEko7AoUDxQW6e0oXOKJtYufT++XWBAIKSGpYDG811H4J1r3CA=="
-        let signedPreKeyPublic = "/CB1jzS6Jwn112gg2CKcHdWEYIyvH0J/Zn4ZprphnnM="
-        let preKeyPublicKey = "JaFs0pHawn97wbSIw7SPNRiVUvFxH7NbBWwiLlPoeTE="
-        let identityPublicKey = "hyHCS+53bmRvZHrzC5+IPFUFS/56myePc3S7Ic1t+lk="
-        let registrationId = store.localRegistrationId()
-        
-        let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: registrationId, deviceId: Int32(deviceId), preKeyId: preKeyId, preKeyPublic: Data(base64Encoded: preKeyPublicKey)!, signedPreKeyPublic: Data(base64Encoded: signedPreKeyPublic)!, signedPreKeyId: signedKeyId, signedPreKeySignature: Data(base64Encoded: signedPreKeySignatureString)!, identityKey: Data(base64Encoded: identityPublicKey)!)
-        
-        /*let preKeyRecord : PreKeyRecord = PreKeyRecord.init(id: preKey.preKeyId, keyPair: preKeyPair)
-        let signedPreKeyRecord: SignedPreKeyRecord = SignedPreKeyRecord.init(id: signedKeyId, keyPair: signedPreKeyPair, signature: signedPreKeySignature, generatedAt: Date())
-        store.storePreKey(preKeyId, preKeyRecord: preKeyRecord)
-        store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)*/
-        
-        let aliceSessionBuilder: SessionBuilder = SessionBuilder.init(axolotlStore: aliceStore, recipientId: myAccount.username, deviceId: 1)
-        aliceSessionBuilder.processPrekeyBundle(preKey)
-        let aliceSessionCipher: SessionCipher = SessionCipher.init(axolotlStore: aliceStore, recipientId: myAccount.username, deviceId: 1)
-        let outgoingMessage: CipherMessage = aliceSessionCipher.encryptMessage(message.data(using: .utf8))
-        print("Encriptado:\(outgoingMessage.serialized().base64EncodedString())")
+    func parseContact(_ contactString: String) -> Contact {
+        let splittedContact = contactString.split(separator: "<")
+        guard splittedContact.count > 1 else {
+            return Contact(value: ["displayName": contactString, "email": contactString])
+        }
+        let contactName = splittedContact[0].prefix((splittedContact[0].count - 1))
+        let email = splittedContact[1].prefix((splittedContact[1].count - 1))
+        return Contact(value: ["displayName": contactName, "email": email])
+    }
+    
+    func parseContacts(_ contactsString: String, email: Email, type: ContactType){
+        let contacts = contactsString.split(separator: ",")
+        contacts.forEach { (contactString) in
+            let contact = parseContact(contactsString)
+            let emailContact = EmailContact()
+            emailContact.contact = contact
+            emailContact.email = email
+            emailContact.type = type.rawValue
+            DBManager.store([contact])
+            DBManager.store([emailContact])
+        }
     }
 }
 
@@ -825,144 +823,6 @@ extension InboxViewController{
         
         //@TODO: remove return statement and paginate mails from db
         return
-        
-        let tupleObject = DBManager.getMails(from: label, since: date)
-        
-        guard (tupleObject.1.count > 0 || tupleObject.0.count > 0) else {
-            //no more emails in DB
-            //fetch from cloud
-            print("=== FETCHING MAILS FROM CLOUD")
-            return
-        }
-        
-        for threadObject in tupleObject.0 {
-            if self.threadHash[threadObject.key] == nil {
-                self.threadHash[threadObject.key] = []
-                self.threadHash[threadObject.key]!.append(contentsOf: threadObject.value)
-            }
-            //do not add otherwise, fetching mails from DB guarantees to pull every mail for each thread
-        }
-        
-        for email in tupleObject.1 {
-            //verify this email isnt duplicate
-            if !self.emailArray.contains(where: { $0.threadId == email.threadId }) {
-                self.emailArray.append(email)
-            }
-        }
-        
-        self.emailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-        
-        self.tableView.reloadData()
-        CriptextSpinner.hide(from: self.view)
-    }
-    
-    @objc func handleRefresh(_ refreshControl: UIRefreshControl, automatic:Bool = false, signIn:Bool = false, completion: (() -> Void)?){
-        
-        if !automatic {
-            //DBManager.restoreState(self.currentUser)
-        }
-        
-//        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
-//            let fullString = NSMutableAttributedString(string: "")
-//
-//            let image1Attachment = NSTextAttachment()
-//            image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
-//
-//            let image1String = NSAttributedString(attachment: image1Attachment)
-//
-//            fullString.append(image1String)
-//            fullString.append(NSAttributedString(string: " Downloading emails..."))
-//            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-//
-//            self.getEmails("me", labels: [self.selectedLabel.id], completion: completion)
-//            return
-//        }
-        
-        guard !self.emailArray.isEmpty else {
-            self.refreshControl.endRefreshing()
-            self.hideSnackbar()
-            return
-        }
-        
-        if signIn {
-            let fullString = NSMutableAttributedString(string: "")
-            
-            let image1Attachment = NSTextAttachment()
-            image1Attachment.image = #imageLiteral(resourceName: "load-arrow")
-            
-            let image1String = NSAttributedString(attachment: image1Attachment)
-            
-            fullString.append(image1String)
-            fullString.append(NSAttributedString(string: " Refreshing \(self.selectedLabel.description)..."))
-            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-        }
-        
-        //get updates
-        
-        self.updateAppIcon()
-    }
-
-    
-    // Used to fetch mails from cloud
-    func getEmails(_ userId:String, labels:[String], completion: (() -> Void)?){
-        
-        let fullString = NSMutableAttributedString(string: "")
-        
-        let image1Attachment = NSTextAttachment()
-        image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
-        
-        let image1String = NSAttributedString(attachment: image1Attachment)
-        
-        fullString.append(image1String)
-        fullString.append(NSAttributedString(string: " Downloading emails..."))
-        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-        
-        self.footerActivity.startAnimating()
-//        APIManager.getMails(
-//            userId: userId,
-//            labels: labels,
-//            pageToken: pageToken
-//        ) { (parsedEmails, parsedContacts, error) in
-//            CriptextSpinner.hide(from: self.view)
-//            self.refreshControl.endRefreshing()
-//            self.footerActivity.stopAnimating()
-//
-//            if let contacts = parsedContacts {
-//                DBManager.store(contacts)
-//            }
-//
-//            guard var parsedEmails = parsedEmails else {
-//                print(String(describing: error?.localizedDescription))
-//                return
-//            }
-        
-//            if let firstEmail = parsedEmails.first,
-//                firstEmail.historyId > self.currentUser.historyId(for: self.selectedLabel) {
-//                DBManager.update(self.currentUser, historyId: firstEmail.historyId, label: self.selectedLabel)
-//            }
-            
-//            DBManager.update(self.currentUser, nextPageToken: (ticket.fetchedObject as! GTLRGmail_ListThreadsResponse).nextPageToken, label: self.selectedLabel)
-//            let now = Date()
-//            DBManager.update(self.currentUser, updateDate: now, label: self.selectedLabel)
-//            self.statusBarButton.title = "Updated Just Now"
-//
-//            self.hideSnackbar()
-//            self.addFetched(&parsedEmails)
-//
-//            if let completionHandler = completion {
-//                completionHandler()
-//            }
-//        }
-    }
-    
-    func addFetched(_ emails: inout [Email]){
-//        for email in emails {
-            //DBManager.store(email)
-            //add to array
-//        }
-        
-        self.emailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-        self.tableView.reloadData()
     }
 }
 

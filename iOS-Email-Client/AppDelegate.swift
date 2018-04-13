@@ -148,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
         }
         
-        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true, signIn: false, completion: nil)
+        inboxVC.getPendingEvents(nil)
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -209,8 +209,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
         }
         
-        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true) {
-            completionHandler([])//completionHandler([.badge, .alert, .sound])
-        }
+        inboxVC.getPendingEvents(nil)
     }
 }
