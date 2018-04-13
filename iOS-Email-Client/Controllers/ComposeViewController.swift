@@ -324,15 +324,26 @@ class ComposeViewController: UIViewController {
         
     }
     
+    func getEmailFromToken(_ token: CLToken) -> String {
+        var email = ""
+        if let emailTemp = token.context as? NSString {
+            email = String(emailTemp)
+        } else {
+            email = token.displayText
+        }
+        return email
+    }
+    
     func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: Email, type: ContactType){
+        let email = getEmailFromToken(token)
         let emailContact = EmailContact()
         emailContact.email = emailDetail
         emailContact.type = type.rawValue
-        if let contact = DBManager.getContact(token.displayText) {
+        if let contact = DBManager.getContact(email) {
             emailContact.contact = contact
         } else {
             let newContact = Contact()
-            newContact.email = token.displayText
+            newContact.email = email
             newContact.displayName = token.displayText
             DBManager.store([newContact]);
             emailContact.contact = newContact
@@ -519,12 +530,7 @@ class ComposeViewController: UIViewController {
     
     func processEmailAddress(token: CLToken, criptextEmails: inout Array<Dictionary<String, Any>>, emailArray: inout Array<String>, type: String){
         
-        var email = ""
-        if let emailTemp = token.context as? NSString {
-            email = String(emailTemp)
-        } else {
-            email = token.displayText
-        }
+        let email = getEmailFromToken(token)
         
         if(email.contains(DOMAIN)){
             criptextEmails.append([
@@ -647,29 +653,18 @@ class ComposeViewController: UIViewController {
     func prepareMail(){
         
         let subject = self.subjectField.text ?? "No Subject"
-        
-        var allContacts = [Contact]()
         var criptextEmails = [Dictionary<String, Any>]()
         var toArray = [String]()
         var ccArray = [String]()
         var bccArray = [String]()
         
         self.toField.allTokens.forEach { (token) in
-            if(token.context == nil){
-                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
-            }
             processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &toArray, type: "to")
         }
         self.ccField.allTokens.forEach { (token) in
-            if(token.context == nil){
-                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
-            }
             processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &ccArray, type: "cc")
         }
         self.bccField.allTokens.forEach { (token) in
-            if(token.context == nil){
-                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
-            }
             processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &bccArray, type: "bcc")
         }
         
@@ -696,7 +691,6 @@ class ComposeViewController: UIViewController {
             "bcc": bccArray
         ]
         
-        DBManager.store(allContacts)
         saveDraft()
         getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails, index: 0)
         

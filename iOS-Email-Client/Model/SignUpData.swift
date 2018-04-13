@@ -10,6 +10,7 @@ import Foundation
 import SignalProtocolFramework
 
 class SignUpData{
+    let NUMBER_OF_PREKEYS = 50
     var username: String
     var password: String
     var fullname: String
@@ -18,7 +19,6 @@ class SignUpData{
         return username
     }
     var deviceId: Int = 1
-    var preKeyId: Int32 = 0
     var signedKeyId: Int32 = 0
     var store = CriptextAxolotlStore()
     var publicKeys: [String : Any]?
@@ -32,29 +32,37 @@ class SignUpData{
     }
     
     func generateKeys(){
-        let preKeyPair: ECKeyPair = Curve25519.generateKeyPair()
         let signedPreKeyPair: ECKeyPair = Curve25519.generateKeyPair()
         let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey().prependByte(), with: store.identityKeyPair())
-        
-        let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: store.localRegistrationId(), deviceId: Int32(deviceId), preKeyId: preKeyId, preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: store.identityKeyPair()?.publicKey())
-        
-        let preKeyRecord : PreKeyRecord = PreKeyRecord.init(id: preKey.preKeyId, keyPair: preKeyPair)
         let signedPreKeyRecord: SignedPreKeyRecord = SignedPreKeyRecord.init(id: signedKeyId, keyPair: signedPreKeyPair, signature: signedPreKeySignature, generatedAt: Date())
-        store.storePreKey(preKeyId, preKeyRecord: preKeyRecord)
         store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)
         
-        bundleKeys(signedPreKeySignature: signedPreKeySignature!.plainBase64String(), signedPreKeyPublic: signedPreKeyPair.publicKey().customBase64String(), signedPreKeyId: signedKeyId, preKeyPublicKey: preKeyPair.publicKey().customBase64String(), preKeyId: preKeyId, identityPublicKey: store.identityKeyPair()!.publicKey().customBase64String(), registrationId: store.localRegistrationId())
+        var keys = [[String: Any]]()
+        for index in 0..<NUMBER_OF_PREKEYS {
+            let keyData = generateKey(index: Int32(index), signedPreKeyPair: signedPreKeyPair, signedPreKeySignature: signedPreKeySignature!)
+            keys.append(keyData)
+        }
+        
+        bundleKeys(signedPreKeySignature: signedPreKeySignature!.plainBase64String(), signedPreKeyPublic: signedPreKeyPair.publicKey().customBase64String(), signedPreKeyId: signedKeyId, preKeys: keys, identityPublicKey: store.identityKeyPair()!.publicKey().customBase64String(), registrationId: store.localRegistrationId())
     }
     
-    func bundleKeys(signedPreKeySignature: String, signedPreKeyPublic: String, signedPreKeyId: Int32, preKeyPublicKey: String, preKeyId: Int32, identityPublicKey: String, registrationId: Int32){
+    func generateKey(index: Int32, signedPreKeyPair: ECKeyPair, signedPreKeySignature: Data) -> [String: Any] {
+        let preKeyPair: ECKeyPair = Curve25519.generateKeyPair()
+        let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: store.localRegistrationId(), deviceId: Int32(deviceId), preKeyId: Int32(index), preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: store.identityKeyPair()?.publicKey())
+        
+        let preKeyRecord : PreKeyRecord = PreKeyRecord.init(id: preKey.preKeyId, keyPair: preKeyPair)
+        
+        store.storePreKey(index, preKeyRecord: preKeyRecord)
+        
+        return ["publicKey": preKeyPair.publicKey().customBase64String(), "id": index]
+    }
+    
+    func bundleKeys(signedPreKeySignature: String, signedPreKeyPublic: String, signedPreKeyId: Int32, preKeys: [[String: Any]], identityPublicKey: String, registrationId: Int32){
         publicKeys = [
             "signedPreKeySignature": signedPreKeySignature,
             "signedPreKeyPublic": signedPreKeyPublic,
             "signedPreKeyId": signedPreKeyId,
-            "preKeys": [[
-                "publicKey": preKeyPublicKey,
-                "id": preKeyId
-                ]],
+            "preKeys": preKeys,
             "identityPublicKey": identityPublicKey,
             "registrationId": registrationId
             ] as [String : Any]
