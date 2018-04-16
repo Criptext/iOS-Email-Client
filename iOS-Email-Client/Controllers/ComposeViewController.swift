@@ -291,6 +291,7 @@ class ComposeViewController: UIViewController {
         else{
             emailDetail.preview = body
         }
+        emailDetail.unread = false
         emailDetail.subject = subject
         emailDetail.date = Date()
         emailDetail.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)

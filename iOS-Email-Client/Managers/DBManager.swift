@@ -157,6 +157,14 @@ extension DBManager {
         }
     }
     
+    class func updateEmail(_ email: Email, unread: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.unread = unread
+        }
+    }
+    
     class func deleteEmail(id:String){
         
         let realm = try! Realm()

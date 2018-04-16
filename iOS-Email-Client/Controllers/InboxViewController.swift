@@ -59,7 +59,6 @@ class InboxViewController: UIViewController {
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
-    var ws:WebSocket!
     var myAccount: Account!
     
     var originalNavigationRect:CGRect!
@@ -72,9 +71,6 @@ class InboxViewController: UIViewController {
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-//        CriptextSpinner.show(in: self.view, title: nil, image: UIImage(named: "icon_sent_chat.png"))
         
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
@@ -138,8 +134,6 @@ class InboxViewController: UIViewController {
         
     }
     
-    // When the view appears, ensure that the Gmail API service is authorized
-    // and perform API calls
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -566,124 +560,6 @@ extension InboxViewController{
     }
 }
 
-//MARK: - Websocket
-extension InboxViewController{
-    func startWebSocket(){
-        
-        let defaults = UserDefaults.standard
-        let since = defaults.integer(forKey: "lastSync")
-        self.ws = WebSocket("wss://com.criptext.com:3000?user_id=1&session_id=\(NSUUID().uuidString)&since=\(since)", subProtocols:["criptext-protocol"])
-        
-        self.ws.event.open = {
-            print("opened")
-        }
-        self.ws.event.close = { code, reason, clean in
-            print("close")
-            self.startWebSocket()
-        }
-        self.ws.event.error = { error in
-            print("error \(error)")
-        }
-        self.ws.event.message = { message in
-            guard let text = message as? String,
-                let mails = JSON.parse(text).array else {
-                    return
-            }
-            
-            print("recv: \(text)")
-            
-            var shouldReload = false
-            var lastSync = 0
-            var totalMailOpens = 0
-            for mail in mails {
-                let cmd = mail["cmd"].intValue
-                
-                switch cmd {
-                case Commands.userStatus.rawValue:
-                    let newStatus = mail["args"]["msg"].intValue
-                    //DBManager.update(self.currentUser, status:newStatus)
-                    
-                    if let plan = mail["args"]["plan"].string {
-                        
-                       // DBManager.update(self.currentUser, plan:plan.isEmpty ? "Free trial" : plan)
-                    }
-                    
-                case Commands.emailOpened.rawValue:
-                    
-                    //SEND NOTIFICATIONS TO ACTIVITY
-                    //NotificationCenter.default.post(name: Notification.Name.Activity.onMsgNotificationChange, object: nil, userInfo: ["token": token!])
-                    
-                    shouldReload = true
-                    
-                case Commands.emailUnsend.rawValue:
-                    //[{"cmd":4,"args":{"uid_from":1,"uid_to":"100","timestamp":1492039527,"msg":<token>},"timestamp":1492039527}]
-                    
-                    shouldReload = true
-                    
-                case Commands.fileOpened.rawValue:
-                    //[{"cmd":2,"args":{"uid_from":1,"uid_to":"100","location":"Guayaquil, EC","timestamp":1492039785,"file_token":"f2ao1vzakh85mij1ds17wncb40qenkp661dcxr","email_token":"967nl7v92fqrggb9j1ds1r7rzkdf6vfj2sf3l3di","file_name":"7-Activity-Inbox.png"},"timestamp":1492039785}]
-                    
-                    shouldReload = true
-                    
-                case Commands.fileDownloaded.rawValue:
-                    //[{"cmd":3,"args":{"uid_from":1,"uid_to":"100","location":"Guayaquil, EC","timestamp":1492039847,"file_token":"f2ao1vzakh85mij1ds17wncb40qenkp661dcxr","email_token":"967nl7v92fqrggb9j1ds1r7rzkdf6vfj2sf3l3di","file_name":"7-Activity-Inbox.png"},"timestamp":1492039847}]
-                    
-                    shouldReload = true
-                    
-                case Commands.emailCreated.rawValue:
-                    //[{"cmd":54,"args":{"uid_from":1,"uid_to":"100","timestamp":1492103587,"msg":"9814u5geuaulq5mij1gny37yfsnb0uoafrsh5mi:mayer@criptext.com"},"timestamp":1492103587}]
-                    break
-                    
-                case Commands.fileCreated.rawValue:
-                    //[{"cmd":55,"args":{"uid_from":1,"uid_to":"100","timestamp":1492103609,"msg":"9814u5geuaulq5mij1gny37yfsnb0uoafrsh5mi"},"timestamp":1492103609}]
-                    break
-                case Commands.emailMute.rawValue:
-                    //{"cmd":5,"args":{"uid_from":156,"uid_to":"5634","timestamp":1499355531, "msg":{"tokens":"fyehrgfgnfyndwgtrt54g,5gyuetyehwgy5egtyg","mute":"0"}},"timestamp":1499355531}
-                    
-                    break
-                    
-                default:
-                    print("unsupported command")
-                }
-                lastSync = mail["timestamp"].intValue
-            }
-            
-            //SAVE THE LAST SYNC
-            defaults.set(lastSync, forKey: "lastSync")
-            
-            //UPDATE BADGE
-            if(totalMailOpens > 0){
-                //DBManager.update(self.currentUser, badge: self.currentUser.badge + totalMailOpens)
-                //self.updateBadge(self.currentUser.badge)
-            }
-            
-            guard shouldReload, let indexPaths = self.tableView.indexPathsForVisibleRows else {
-                return
-            }
-            
-            self.tableView.reloadRows(at: indexPaths, with: .automatic)
-        }
-        
-    }
-    
-    func stopWebsocket(){
-        self.ws.event.close = {_,_,_ in }
-        self.ws.close()
-    }
-    
-    func updateBadge(_ count: Int){
-        
-        let activityButton = self.activityBarButton?.customView as! MIBadgeButton?
-        if(count == 0){
-            activityButton?.badgeString = ""
-        }
-        else{
-            activityButton?.badgeString = String(count)
-        }
-        
-    }
-}
-
 //MARK: - UIBarButton layout
 extension InboxViewController{
     func setButtonItems(isEditing: Bool){
@@ -739,7 +615,6 @@ extension InboxViewController{
     //silent sign in callback
    
     func signout(){
-        self.stopWebsocket()
         DBManager.signout()
         UIApplication.shared.applicationIconBadgeNumber = 0
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -763,11 +638,6 @@ extension InboxViewController: UIGestureRecognizerDelegate {
         guard let tappedView = self.view.hitTest(touchPt, with: nil) else {
             return true
         }
-        
-        
-//        if gestureRecognizer == self.dismissTapGestureRecognizer && tappedView.isDescendant(of: self.contactTableView) && !self.contactTableView.isHidden {
-//            return false
-//        }
         
         return true
     }
@@ -811,7 +681,7 @@ extension InboxViewController: UITableViewDataSource{
         
         //Set row status
         if !email.unread || isSentFolder {
-            cell.backgroundColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+            cell.backgroundColor = UIColor(red:244/255, green:244/255, blue:244/255, alpha:1.0)
             cell.senderLabel.font = Font.regular.size(15)
         }else{
             cell.backgroundColor = UIColor.white
@@ -829,25 +699,19 @@ extension InboxViewController: UITableViewDataSource{
         let size = cell.dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         cell.dateWidthConstraint.constant = size.width
         
-//        var senderText = (isSentFolder || self.selectedLabel == .draft) ? email.to : email.fromDisplayString
-        
-//        if self.currentUser.email == email.from && self.selectedLabel != .sent {
-//            senderText = "me"
-//        }
-        
-//        cell.senderLabel.text = senderText
-//
-//        if senderText.isEmpty {
-//            cell.senderLabel.text = "No Recipients"
-//        }
-        
         if self.isCustomEditing {
-            cell.avatarImageView.image = nil
-            cell.avatarImageView.layer.borderWidth = 1.0
-            cell.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
-            cell.avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+            if(cell.isSelected){
+                cell.backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
+                cell.avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
+                cell.avatarImageView.image = #imageLiteral(resourceName: "check")
+                cell.avatarImageView.tintColor = UIColor.white
+            } else {
+                cell.avatarImageView.image = nil
+                cell.avatarImageView.layer.borderWidth = 1.0
+                cell.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
+                cell.avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+            }
         } else {
-            
             let initials = cell.senderLabel.text!.replacingOccurrences(of: "\"", with: "")
             cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
             cell.avatarImageView.layer.borderWidth = 0.0
@@ -858,18 +722,6 @@ extension InboxViewController: UITableViewDataSource{
             cell.badgeWidthConstraint.constant = 0
             return cell
         }
-        
-//        let names = emailArrayHash.map { (mail) -> String in
-//            var senderText = mail.fromDisplayString
-//
-//            if self.currentUser.email == mail.from {
-//                senderText = "me"
-//            }
-//
-//            return senderText
-//        }
-//
-//        cell.senderLabel.text = Array(Set(names)).joined(separator: ", ")
         
         //check if unread among thread mails
         if emailArrayHash.contains(where: { return $0.unread }) {
@@ -967,14 +819,11 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             if indexPaths.count == 1 {
                 self.toggleToolbar(true)
             }
-            
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
-            
+            cell.backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
             cell.avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
             cell.avatarImageView.image = #imageLiteral(resourceName: "check")
             cell.avatarImageView.tintColor = UIColor.white
-            
-            
             self.topToolbar.counterButton.title = "\(indexPaths.count)"
             return
         }
@@ -1006,8 +855,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         guard tableView.indexPathsForSelectedRows == nil else {
             self.topToolbar.counterButton.title = "\(tableView.indexPathsForSelectedRows!.count)"
-            let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
-            cell.avatarImageView.image = nil
+            tableView.reloadRows(at: [indexPath], with: .none)
             return
         }
         
@@ -1137,5 +985,14 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
         self.filteredEmailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
         
         self.tableView.reloadData()
+    }
+}
+
+extension InboxViewController: UINavigationControllerDelegate{
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        guard viewController == self else {
+            return
+        }
+        tableView.reloadData()
     }
 }

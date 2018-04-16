@@ -109,9 +109,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
-        
+    
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
+        rootVC.delegate = inboxVC
         WebSocketManager.sharedInstance.connect(account: myAccount!)
         return SnackbarController(rootViewController: drawerVC)
     }

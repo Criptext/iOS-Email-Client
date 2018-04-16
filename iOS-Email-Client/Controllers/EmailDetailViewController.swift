@@ -137,9 +137,11 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension EmailDetailViewController: EmailTableViewCellDelegate{
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell) {
-        guard emailsTableView.indexPath(for: cell) != nil else {
+        guard let indexPath = self.emailsTableView.indexPath(for: cell) else {
             return
         }
+        let email = emailData.emails[indexPath.row]
+        DBManager.updateEmail(email, unread: false)
         emailsTableView.reloadData()
     }
     
