@@ -91,8 +91,6 @@
 		7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */; };
 		7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AC20810CFD008F1395 /* EventHandler.swift */; };
 		7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
-		7C147B43203C9676004823DE /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
-		7C147B44203C9676004823DE /* SignalProtocolFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
@@ -241,9 +239,6 @@
 		41B6AAC62017987500D428B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = Carthage/Build/iOS/IQKeyboardManagerSwift.framework; sourceTree = "<group>"; };
 		41C36849207C6C0B008B50A8 /* Motion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Motion.framework; path = Carthage/Build/iOS/Motion.framework; sourceTree = "<group>"; };
-		41C9CBBF2076AAE400B8994F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "../../Downloads/com.crashlytics.ios-manual/Crashlytics.framework"; sourceTree = "<group>"; };
-		41C9CBC02076AAE400B8994F /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "../../Downloads/com.crashlytics.ios-manual/Fabric.framework"; sourceTree = "<group>"; };
-		41C9CC802078193B00B8994F /* CLTokenInputViewFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CLTokenInputViewFramework.framework; path = Carthage/Build/iOS/CLTokenInputViewFramework.framework; sourceTree = "<group>"; };
 		41C9CC822078195900B8994F /* Material.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Material.framework; path = Carthage/Build/iOS/Material.framework; sourceTree = "<group>"; };
 		41C9CC842078196600B8994F /* CICropPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CICropPicker.framework; path = Carthage/Build/iOS/CICropPicker.framework; sourceTree = "<group>"; };
 		41C9CC8620781C4600B8994F /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
@@ -251,7 +246,6 @@
 		41C9CC8A20781C5600B8994F /* SwiftWebSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftWebSocket.framework; path = Carthage/Build/iOS/SwiftWebSocket.framework; sourceTree = "<group>"; };
 		41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/iOS/SwiftSoup.framework; sourceTree = "<group>"; };
 		41C9CC8E20781C6700B8994F /* MMMaterialDesignSpinner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MMMaterialDesignSpinner.framework; path = Carthage/Build/iOS/MMMaterialDesignSpinner.framework; sourceTree = "<group>"; };
-		41C9CC9020781C6C00B8994F /* MIBadgeButtonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MIBadgeButtonFramework.framework; path = Carthage/Build/iOS/MIBadgeButtonFramework.framework; sourceTree = "<group>"; };
 		41C9CC9220781CAB00B8994F /* RichEditorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RichEditorView.framework; path = Carthage/Build/iOS/RichEditorView.framework; sourceTree = "<group>"; };
 		41C9CC9420781CEF00B8994F /* IQKeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManager.framework; path = Carthage/Build/iOS/IQKeyboardManager.framework; sourceTree = "<group>"; };
 		41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIImageView_Letters.framework; path = Carthage/Build/iOS/UIImageView_Letters.framework; sourceTree = "<group>"; };
@@ -385,7 +379,6 @@
 				41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */,
 				41C9CC9420781CEF00B8994F /* IQKeyboardManager.framework */,
 				41C9CC9220781CAB00B8994F /* RichEditorView.framework */,
-				41C9CC9020781C6C00B8994F /* MIBadgeButtonFramework.framework */,
 				41C9CC8E20781C6700B8994F /* MMMaterialDesignSpinner.framework */,
 				41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */,
 				41C9CC8A20781C5600B8994F /* SwiftWebSocket.framework */,
@@ -393,9 +386,6 @@
 				41C9CC8620781C4600B8994F /* SDWebImage.framework */,
 				41C9CC842078196600B8994F /* CICropPicker.framework */,
 				41C9CC822078195900B8994F /* Material.framework */,
-				41C9CC802078193B00B8994F /* CLTokenInputViewFramework.framework */,
-				41C9CBBF2076AAE400B8994F /* Crashlytics.framework */,
-				41C9CBC02076AAE400B8994F /* Fabric.framework */,
 				41E229BD207696DE00C32998 /* Realm.framework */,
 				41E229BE207696DE00C32998 /* RealmSwift.framework */,
 				41E229B52076943F00C32998 /* SwiftyJSON.framework */,

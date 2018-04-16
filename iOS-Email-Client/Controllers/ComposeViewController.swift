@@ -204,14 +204,6 @@ class ComposeViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        IQKeyboardManager.sharedManager().enable = false
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        IQKeyboardManager.sharedManager().enable = true
-    }
-    
     //MARK: - functions
     
     func add(_ attachment:File){
