@@ -559,24 +559,8 @@ enum SystemLabel {
     }
     
     static var array: [SystemLabel] {
-        var a: [SystemLabel] = []
-        switch SystemLabel.inbox {
-            case .inbox: a.append(.inbox); fallthrough
-            case .draft:
-                a.append(.draft); fallthrough
-            case .sent:
-                a.append(.sent); fallthrough
-            case .junk:
-                a.append(.junk); fallthrough
-            case .trash:
-                a.append(.trash); fallthrough
-            case .starred:
-                a.append(.starred); fallthrough
-            case .important:
-                a.append(.important); fallthrough
-            default: break
-        }
-        return a
+        let labels: [SystemLabel] = [.inbox, .draft, .sent, .junk, .trash, .starred, .important]
+        return labels
     }
 }
 

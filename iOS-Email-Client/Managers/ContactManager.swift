@@ -55,7 +55,7 @@ class ContactManager {
         }
     }
     
-    class func parseContact(_ contactString: String) -> Contact {
+    private class func parseContact(_ contactString: String) -> Contact {
         let splittedContact = contactString.split(separator: "<")
         guard splittedContact.count > 1 else {
             return Contact(value: ["displayName": contactString, "email": contactString])
@@ -65,7 +65,7 @@ class ContactManager {
         return Contact(value: ["displayName": contactName, "email": email])
     }
     
-    class func parseContacts(_ contactsString: String, email: Email, type: ContactType){
+    class func parseEmailContacts(_ contactsString: String, email: Email, type: ContactType){
         let contacts = contactsString.split(separator: ",")
         contacts.forEach { (contactString) in
             let contact = parseContact(contactsString)

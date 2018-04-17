@@ -262,7 +262,7 @@ class InboxViewController: UIViewController {
 
 extension InboxViewController: EventHandlerDelegate {
     func didReceiveNewEmails() {
-        didPressLabel(labelId: selectedLabel, sender: nil)
+        swapMailbox(labelId: selectedLabel, sender: nil)
     }
 }
 
@@ -440,7 +440,7 @@ extension InboxViewController{
         self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
     }
     
-    func didPressLabel(labelId: Int, sender: Any?){
+    func swapMailbox(labelId: Int, sender: Any?){
         self.selectedLabel = labelId
         loadMails(from: labelId, since: Date())
         self.navigationDrawerController?.closeLeftView()

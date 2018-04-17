@@ -26,13 +26,14 @@ class APIManager {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Any?, String?) -> Void)){
+    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
         let url = "\(self.baseUrl)/user"
         
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString{
             (response) in
             guard response.response?.statusCode == 200 else {
-                completion("Account not created", nil)
+                let error = CriptextError(code: .accountNotCreated)
+                completion(error, nil)
                 return
             }
             guard let value = response.result.value else {
@@ -90,14 +91,11 @@ class APIManager {
         let url = "\(self.baseUrl)/email"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            switch(response.result) {
-            case .success(let value):
-                completion(nil, value)
-                break
-            case .failure(let error):
-                completion(error, nil)
-                break;
+            guard let value = response.result.value else {
+                completion(response.error, nil)
+                return
             }
+            completion(nil, value)
         }
     }
     
@@ -105,14 +103,11 @@ class APIManager {
         let url = "\(self.baseUrl)/event"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            switch(response.result) {
-            case .success(let value):
-                completion(nil, value)
-                break
-            case .failure(let error):
-                completion(error, nil)
-                break;
+            guard let value = response.result.value else {
+                completion(response.error, nil)
+                return
             }
+            completion(nil, value)
         }
     }
     
@@ -120,14 +115,11 @@ class APIManager {
         let url = "\(self.baseUrl)/email/body/\(s3Key)"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            switch(response.result) {
-            case .success(let value):
-                completion(nil, value)
-                break
-            case .failure(let error):
-                completion(error, nil)
-                break;
+            guard let value = response.result.value else {
+                completion(response.error, nil)
+                return
             }
+            completion(nil, value)
         }
     }
     

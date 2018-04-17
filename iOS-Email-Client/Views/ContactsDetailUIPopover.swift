@@ -28,7 +28,6 @@ class ContactsDetailUIPopover: BaseUIPopover{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(email.emailContacts)
         setFromContact()
         setToContacts()
         dateLabel.text = email.getFormattedDate()

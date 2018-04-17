@@ -10,15 +10,9 @@ import Foundation
 import SignalProtocolFramework
 
 class SignalHandler {
-    let myAccount : Account
-    
-    init(account: Account){
-        myAccount = account
-    }
-    
-    func decryptMessage(_ encryptedMessageB64: String) -> String{
-        let axolotlStore = CriptextAxolotlStore(myAccount.regId, myAccount.identityB64)
-        let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: myAccount.username, deviceId: 1)
+    class func decryptMessage(_ encryptedMessageB64: String, account: Account) -> String{
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: account.username, deviceId: 1)
         let incomingMessage = PreKeyWhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
         let plainText = sessionCipher?.decrypt(incomingMessage)
         let plainTextString = NSString(data:plainText!, encoding:String.Encoding.ascii.rawValue)

@@ -14,12 +14,10 @@ protocol EventHandlerDelegate {
 
 class EventHandler {
     let myAccount : Account
-    let signalHandler : SignalHandler
     var eventDelegate : EventHandlerDelegate?
     
     init(account: Account){
         myAccount = account
-        signalHandler = SignalHandler(account: myAccount)
     }
     
     func handleEvents(events: Array<Dictionary<String, Any>>){
@@ -41,7 +39,7 @@ class EventHandler {
             return
         }
         switch(cmd){
-        case 1:
+        case Event.newEmail.rawValue:
             self.handleNewEmailCommand(params: params){
                 finishCallback()
             }
@@ -86,17 +84,21 @@ class EventHandler {
                 return
             }
             let signalMessage = data as! String
-            email.content = self.signalHandler.decryptMessage(signalMessage)
+            email.content = SignalHandler.decryptMessage(signalMessage, account: self.myAccount)
             email.preview = String(email.content.prefix(100))
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
             
-            ContactManager.parseContacts(from, email: email, type: .from)
-            ContactManager.parseContacts(to, email: email, type: .to)
-            ContactManager.parseContacts(cc, email: email, type: .cc)
-            ContactManager.parseContacts(bcc, email: email, type: .bcc)
+            ContactManager.parseEmailContacts(from, email: email, type: .from)
+            ContactManager.parseEmailContacts(to, email: email, type: .to)
+            ContactManager.parseEmailContacts(cc, email: email, type: .cc)
+            ContactManager.parseEmailContacts(bcc, email: email, type: .bcc)
             finishCallback()
         }
         
     }
+}
+
+enum Event: Int32 {
+    case newEmail = 1
 }

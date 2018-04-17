@@ -56,7 +56,7 @@ class MenuViewController: UIViewController{
         selectedMenuItem?.showAsSelected(false)
         selectedMenuItem = sender
         sender.showAsSelected(true)
-        mailboxVC.didPressLabel(labelId: sender.labelId, sender: sender)
+        mailboxVC.swapMailbox(labelId: sender.labelId, sender: sender)
     }
     
     @IBAction func onLabelsMenuItemPress(_ sender: Any) {

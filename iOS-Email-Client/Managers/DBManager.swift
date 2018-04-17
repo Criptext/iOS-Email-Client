@@ -379,11 +379,7 @@ extension DBManager {
     class func getLabel(_ labelId: Int) -> Label?{
         let realm = try! Realm()
         
-        guard let label = realm.object(ofType: Label.self, forPrimaryKey: labelId) else {
-            return nil
-        }
-        
-        return label
+        return realm.object(ofType: Label.self, forPrimaryKey: labelId)
     }
     
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
