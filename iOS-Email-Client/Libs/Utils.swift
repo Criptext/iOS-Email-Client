@@ -48,5 +48,15 @@ class Utils{
         return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
     }
     
-    
+    class func convertToDictionary(text: String) -> [String: Any]? {
+        guard let data = text.data(using: .utf8) else {
+            return nil
+        }
+        do {
+            return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
 }

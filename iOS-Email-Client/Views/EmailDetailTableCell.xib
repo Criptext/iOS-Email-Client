@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -329,7 +329,7 @@
                                 <rect key="frame" x="0.0" y="310.5" width="375" height="680"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="750" constant="290" id="USB-5e-poq"/>
+                                    <constraint firstAttribute="height" priority="750" id="USB-5e-poq"/>
                                 </constraints>
                             </tableView>
                         </subviews>
@@ -373,9 +373,11 @@
                 <outlet property="attachmentView" destination="l4w-QX-eOS" id="KsV-9A-dDt"/>
                 <outlet property="attachmentsTableView" destination="Gto-qF-XbD" id="on9-Ar-oSC"/>
                 <outlet property="borderBGView" destination="x8R-Mr-qce" id="kmH-ZK-eqh"/>
+                <outlet property="collapsedDateLabel" destination="LGD-VD-w1C" id="vFu-uu-jmJ"/>
                 <outlet property="collapsedDetailView" destination="oYk-NZ-Ec1" id="EKC-XG-2oO"/>
                 <outlet property="contactsCollapseLabel" destination="XDx-eF-08j" id="OwT-NY-LPh"/>
                 <outlet property="contactsExpandLabel" destination="HTR-0G-icb" id="W4P-a3-G3b"/>
+                <outlet property="expandedDateLabel" destination="L1I-Jj-9pO" id="Dkx-rx-HmV"/>
                 <outlet property="expandedDetailView" destination="j7W-SK-UmD" id="dZe-Yc-YIC"/>
                 <outlet property="heightConstraint" destination="nMQ-Id-iGW" id="5mf-lb-XqG"/>
                 <outlet property="miniAttachmentIconView" destination="YbZ-Ti-AdL" id="fgu-Jo-SV7"/>

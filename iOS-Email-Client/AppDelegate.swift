@@ -45,6 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Tell Realm to use this new configuration object for the default Realm
         Realm.Configuration.defaultConfiguration = config
+        if(DBManager.getLabel(SystemLabel.inbox.id) == nil){
+            createSystemLabels()
+        }
         
         self.window?.tintColor = UIColor.black
         
@@ -59,9 +62,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             initialVC = storyboard.instantiateInitialViewController()
         }
-    
+        
         self.replaceRootViewController(initialVC)
-        IQKeyboardManager.sharedManager().enable = true
+        IQKeyboardManager.shared.enable = true
         return true
     }
     
@@ -109,7 +112,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
+        WebSocketManager.sharedInstance.connect(account: myAccount!)
         return SnackbarController(rootViewController: drawerVC)
+    }
+    
+    func createSystemLabels(){
+        for systemLabel in SystemLabel.array {
+            let newLabel = Label(systemLabel.description)
+            newLabel.id = systemLabel.id
+            DBManager.store(newLabel)
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -137,7 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
         }
         
-        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true, signIn: false, completion: nil)
+        inboxVC.getPendingEvents(nil)
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -198,8 +210,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
         }
         
-        inboxVC.handleRefresh(inboxVC.refreshControl, automatic: true) {
-            completionHandler([])//completionHandler([.badge, .alert, .sound])
-        }
+        inboxVC.getPendingEvents(nil)
     }
 }

@@ -528,6 +528,10 @@ enum SystemLabel {
             return "Junk"
         case .trash:
             return "Trash"
+        case .important:
+            return "Important"
+        case .starred:
+            return "Starred"
         case .unread:
             return "Unread"
         case .all:
@@ -553,6 +557,11 @@ enum SystemLabel {
             return UIImage(named: "slider_allmail")
         }
     }
+    
+    static var array: [SystemLabel] {
+        let labels: [SystemLabel] = [.inbox, .draft, .sent, .junk, .trash, .starred, .important]
+        return labels
+    }
 }
 
 enum Commands:Int {
@@ -564,6 +573,13 @@ enum Commands:Int {
     case userStatus = 20
     case emailCreated = 54
     case fileCreated = 55
+}
+
+enum ContactType : String {
+    case from = "from"
+    case to = "to"
+    case cc = "cc"
+    case bcc = "bcc"
 }
 
 extension UIColor {
@@ -586,5 +602,37 @@ extension UIColor {
         getRed(&r, green: &g, blue: &b, alpha: &a)
         let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
         return String(format:"%06x", rgb)
+    }
+}
+
+var DJB_TYPE : UInt8 = 0x05;
+
+extension Data {
+    
+    func prependByte() -> Data {
+        guard self.count == 32 else {
+            return self
+        }
+        let myData = NSMutableData(bytes: &DJB_TYPE, length: 1)
+        myData.append(self)
+        return myData as Data
+    }
+    
+    func removeByte() -> Data {
+        guard self.count == 33 else {
+            return self
+        }
+        return self.suffix(from: 1)
+    }
+    
+    func customBase64String() -> String {
+        let dataPlus = self.prependByte()
+        let customBase64String = dataPlus.base64EncodedString()
+        return customBase64String
+    }
+    
+    func plainBase64String() -> String {
+        let customBase64String = self.base64EncodedString()
+        return customBase64String
     }
 }

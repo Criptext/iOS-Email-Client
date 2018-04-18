@@ -204,14 +204,6 @@ class ComposeViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        IQKeyboardManager.sharedManager().enable = false
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        IQKeyboardManager.sharedManager().enable = true
-    }
-    
     //MARK: - functions
     
     func add(_ attachment:File){
@@ -288,19 +280,8 @@ class ComposeViewController: UIViewController {
         
         let body = self.addAttachments(to: self.editorView.html)
         
-        //self.showSnackbar("Saving Draft...", attributedText: nil, buttons: "", permanent: true)
-        
-        //update draft
-        if self.isDraft, let emailDraft = self.emailDraft {
-            
-            return
-        }
-        
-        //let plainAttachments = self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail]
-        
         //create draft
         let emailDetail = Email()
-        emailDetail.id = emailDetail.incrementID()
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
         if(body.count > 100){
@@ -312,34 +293,52 @@ class ComposeViewController: UIViewController {
         }
         emailDetail.subject = subject
         emailDetail.date = Date()
-        emailDetail.isDraft = true
+        emailDetail.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         DBManager.store(emailDetail)
+        
         
         //create email contacts
         var emailContacts = [EmailContact]()
         self.toField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.to)
         }
         self.ccField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.cc)
         }
         self.bccField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.bcc)
         }
+        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: emailDetail, type: ContactType.from)
         
         DBManager.store(emailContacts)
         
+        emailDraft = emailDetail
+        
     }
     
-    func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: Email){
-        let emailContact = EmailContact()
-        emailContact.id = emailContact.incrementID()
-        emailContact.emailId = emailDetail.id
-        if(token.context == nil){
-            emailContact.contactMail = token.displayText
+    func getEmailFromToken(_ token: CLToken) -> String {
+        var email = ""
+        if let emailTemp = token.context as? NSString {
+            email = String(emailTemp)
+        } else {
+            email = token.displayText
         }
-        else{
-            emailContact.contactMail = token.context as! String
+        return email
+    }
+    
+    func fillEmailContacts(emailContacts: inout Array<EmailContact>, token: CLToken, emailDetail: Email, type: ContactType){
+        let email = getEmailFromToken(token)
+        let emailContact = EmailContact()
+        emailContact.email = emailDetail
+        emailContact.type = type.rawValue
+        if let contact = DBManager.getContact(email) {
+            emailContact.contact = contact
+        } else {
+            let newContact = Contact()
+            newContact.email = email
+            newContact.displayName = token.displayText
+            DBManager.store([newContact]);
+            emailContact.contact = newContact
         }
         emailContacts.append(emailContact)
     }
@@ -523,12 +522,7 @@ class ComposeViewController: UIViewController {
     
     func processEmailAddress(token: CLToken, criptextEmails: inout Array<Dictionary<String, Any>>, emailArray: inout Array<String>, type: String){
         
-        var email = ""
-        if let emailTemp = token.context as? NSString {
-            email = String(emailTemp)
-        } else {
-            email = token.displayText
-        }
+        let email = getEmailFromToken(token)
         
         if(email.contains(DOMAIN)){
             criptextEmails.append([
@@ -548,8 +542,7 @@ class ComposeViewController: UIViewController {
             "subject": subject,
             "criptextEmails": criptextEmails
             //"guestEmail": guestEmail
-        ], token: activeAccount.jwt) { (error) in
-            
+        ], token: activeAccount.jwt) { (error, data) in
             self.toggleInteraction(true)
             if let error = error {
                 self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
@@ -557,13 +550,26 @@ class ComposeViewController: UIViewController {
                 self.hideBlackBackground()
                 return
             }
-            
+            self.updateEmailData(data)
             self.dismiss(animated: true){
+                self.hideSnackbar()
                 (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
             }
             
         }
         
+    }
+    
+    func updateEmailData(_ data : Any?){
+        guard let myEmail = emailDraft else {
+            return
+        }
+        let keysArray = data as! Dictionary<String, Any>
+        let key = (keysArray["metadataKey"] as! Int32).description
+        let s3Key = keysArray["bodyKey"] as! String
+        let threadId = keysArray["threadId"] as! String
+        DBManager.updateEmail(myEmail, key: key, s3Key: s3Key, threadId: threadId)
+        DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
     }
     
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>, index: Int){
@@ -609,7 +615,7 @@ class ComposeViewController: UIViewController {
             
             let keysArray = response as! Array<Dictionary<String, Any>>
             keysArray.forEach({ (keys) in
-                
+                print(keys)
                 let contactRegistrationId = keys["registrationId"] as! Int32
                 var contactPrekeyPublic: Data? = nil
                 var preKeyId: Int32 = 0
@@ -639,29 +645,18 @@ class ComposeViewController: UIViewController {
     func prepareMail(){
         
         let subject = self.subjectField.text ?? "No Subject"
-        
-        var allContacts = [Contact]()
         var criptextEmails = [Dictionary<String, Any>]()
         var toArray = [String]()
         var ccArray = [String]()
         var bccArray = [String]()
         
         self.toField.allTokens.forEach { (token) in
-            if(token.context == nil){
-                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
-            }
             processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &toArray, type: "to")
         }
         self.ccField.allTokens.forEach { (token) in
-            if(token.context == nil){
-                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
-            }
             processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &ccArray, type: "cc")
         }
         self.bccField.allTokens.forEach { (token) in
-            if(token.context == nil){
-                allContacts.append(Contact(value: ["displayName": token.displayText, "email": token.displayText]))
-            }
             processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &bccArray, type: "bcc")
         }
         
@@ -688,7 +683,6 @@ class ComposeViewController: UIViewController {
             "bcc": bccArray
         ]
         
-        DBManager.store(allContacts)
         saveDraft()
         getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails, index: 0)
         

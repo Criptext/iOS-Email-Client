@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -95,7 +95,7 @@
                                     <rect key="frame" x="0.0" y="72" width="375" height="80"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3q-Py-Wbi">
-                                            <rect key="frame" x="13" y="8" width="71" height="18"/>
+                                            <rect key="frame" x="13" y="4" width="71" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="71" id="WDs-zi-GUM"/>
                                             </constraints>
@@ -104,7 +104,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gianni Carlo gianni@criptext.com Pedro Iniguez" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0o-YX-nMT">
-                                            <rect key="frame" x="84" y="8" width="289" height="65"/>
+                                            <rect key="frame" x="84" y="4" width="289" height="65"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="65" id="NS3-Vw-zAg"/>
                                             </constraints>
@@ -116,11 +116,11 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="l3q-Py-Wbi" firstAttribute="leading" secondItem="v1O-df-fPN" secondAttribute="leading" constant="13" id="0Nf-hC-umz"/>
-                                        <constraint firstItem="u0o-YX-nMT" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" constant="8" id="2ga-3Q-C8P"/>
                                         <constraint firstAttribute="height" constant="80" id="7u3-eL-Ny6"/>
+                                        <constraint firstItem="u0o-YX-nMT" firstAttribute="top" secondItem="l3q-Py-Wbi" secondAttribute="top" id="Eb8-zA-FPF"/>
                                         <constraint firstAttribute="trailing" secondItem="u0o-YX-nMT" secondAttribute="trailing" constant="2" id="HFI-f0-1th"/>
                                         <constraint firstItem="u0o-YX-nMT" firstAttribute="leading" secondItem="l3q-Py-Wbi" secondAttribute="trailing" id="q9W-QE-d52"/>
-                                        <constraint firstItem="l3q-Py-Wbi" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" constant="8" id="vFA-tx-dGh"/>
+                                        <constraint firstItem="l3q-Py-Wbi" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" constant="4" id="vFA-tx-dGh"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W5Z-k1-Tjq">

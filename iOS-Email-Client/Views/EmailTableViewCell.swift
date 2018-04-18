@@ -40,6 +40,8 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var miniAttachmentIconView: UIImageView!
     @IBOutlet weak var miniReadIconView: UIImageView!
     @IBOutlet weak var attachmentsTableView: UITableView!
+    @IBOutlet weak var collapsedDateLabel: UILabel!
+    @IBOutlet weak var expandedDateLabel: UILabel!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
     
@@ -82,7 +84,9 @@ class EmailTableViewCell: UITableViewCell{
         let preview = email.isUnsent ? "Unsent" : email.preview
         let numberOfLines = Utils.getNumberOfLines(preview, width: previewLabel.frame.width, fontSize: 17.0)
         previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
+        contactsCollapseLabel.text = email.fromContact!.displayName
         setCollapsedIcons(email)
+        collapsedDateLabel.text = email.getFormattedDate()
         if(email.isUnsent){
             previewLabel.textColor = .alertText
             borderBGView.layer.borderColor = UIColor.alertLight.cgColor
@@ -90,10 +94,14 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setExpandedContent(_ email: Email){
+        let toContacts = email.getContacts(type: .to)
         let content = email.content
         if(!loadedContent){
-            webView.loadHTMLString(content, baseURL: nil)
+            webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: nil)
         }
+        contactsExpandLabel.text = email.fromContact!.displayName
+        moreRecipientsLabel.text = toContacts.count > 1 ? "To \(toContacts.first!.displayName) & \(toContacts.count) more" : "To \(toContacts.first!.displayName)"
+        expandedDateLabel.text = email.getFormattedDate()
         setExpandedIcons(email)
     }
     
@@ -106,7 +114,7 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setExpandedIcons(_ email: Email){
-        let isSecure = email.secure
+        let isSecure = false
         let hasOpens = true
         let hasAttachments = true
         let isUnsent = email.isUnsent
@@ -212,10 +220,10 @@ extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 58.0
+        return 0
     }
 }

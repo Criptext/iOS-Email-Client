@@ -13,6 +13,7 @@ import SDWebImage
 import SwiftWebSocket
 import MIBadgeButton_Swift
 import SwiftyJSON
+import SignalProtocolFramework
 
 //delete
 import RealmSwift
@@ -100,20 +101,23 @@ class InboxViewController: UIViewController {
         definesPresentationContext = true
         
         self.navigationItem.searchController = self.searchController
-        self.refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:automatic:signIn:completion:)), for: UIControlEvents.valueChanged)
-        
         self.tableView.allowsMultipleSelection = true
 
         self.initBarButtonItems()
         
         self.setButtonItems(isEditing: false)
-        self.loadMails(from: .inbox, since: Date())
+        self.loadMails(from: selectedLabel, since: Date())
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.emailTrashed), name: NSNotification.Name(rawValue: "EmailTrashed"), object: nil)
         
         self.initFloatingButton()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        WebSocketManager.sharedInstance.addListener(identifier: "mailbox", listener: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -239,6 +243,26 @@ class InboxViewController: UIViewController {
                 break
             }
         }
+    }
+    
+    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
+        APIManager.getEvents(token: myAccount.jwt) { (error, data) in
+            refreshControl?.endRefreshing()
+            guard error == nil else {
+                print(error.debugDescription)
+                return
+            }
+            let eventsArray = data as! Array<Dictionary<String, Any>>
+            let eventHandler = EventHandler(account: self.myAccount)
+            eventHandler.eventDelegate = self
+            eventHandler.handleEvents(events: eventsArray)
+        }
+    }
+}
+
+extension InboxViewController: EventHandlerDelegate {
+    func didReceiveNewEmails() {
+        swapMailbox(labelId: selectedLabel, sender: nil)
     }
 }
 
@@ -416,33 +440,15 @@ extension InboxViewController{
         self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
     }
     
-    func didPressLabel(labelId: Int, sender: Any?){
+    func swapMailbox(labelId: Int, sender: Any?){
+        self.selectedLabel = labelId
+        loadMails(from: labelId, since: Date())
         self.navigationDrawerController?.closeLeftView()
     }
 }
 
 //MARK: - Side menu events
 extension InboxViewController {
-    func didChange(_ label:SystemLabel) {
-        self.titleBarButton.title = label.description.uppercased()
-        self.emailArray.removeAll()
-        self.threadHash.removeAll()
-        
-        if self.isCustomEditing {
-            self.didPressEdit()
-        }
-        
-        self.tableView.reloadData()
-        
-        
-        //        check if it should get emails or just handle refresh
-        self.loadMails(from: label, since: Date())
-        
-        self.statusBarButton.title = nil
-        self.refreshControl.beginRefreshing()
-        self.handleRefresh(self.refreshControl, automatic: false, signIn: false, completion: nil)
-        
-    }
     
     @IBAction func didPressOpenMenu(_ sender: UIBarButtonItem) {
         self.navigationDrawerController?.toggleLeftView()
@@ -555,7 +561,7 @@ extension InboxViewController{
         }
         self.emailArray.removeAll()
         self.threadHash.removeAll()
-        self.loadMails(from: SystemLabel.inbox, since: Date())
+        self.loadMails(from: selectedLabel, since: Date())
         self.tableView.reloadData()
     }
 }
@@ -717,152 +723,13 @@ extension InboxViewController{
         self.threadToOpen = nil
     }
     
-    func loadMails(from label:SystemLabel, since date:Date){
-        let tuple = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
-        
+    func loadMails(from label: Int, since date:Date){
+        let tuple = DBManager.getMails(from: label, since: date)
         self.emailArray = tuple.1
         self.tableView.reloadData()
         
         //@TODO: remove return statement and paginate mails from db
         return
-        
-        let tupleObject = DBManager.getMails(from: label, since: date, current: self.emailArray, current: self.threadHash)
-        
-        guard (tupleObject.1.count > 0 || tupleObject.0.count > 0) else {
-            //no more emails in DB
-            //fetch from cloud
-            print("=== FETCHING MAILS FROM CLOUD")
-            return
-        }
-        
-        for threadObject in tupleObject.0 {
-            if self.threadHash[threadObject.key] == nil {
-                self.threadHash[threadObject.key] = []
-                self.threadHash[threadObject.key]!.append(contentsOf: threadObject.value)
-            }
-            //do not add otherwise, fetching mails from DB guarantees to pull every mail for each thread
-        }
-        
-        for email in tupleObject.1 {
-            //verify this email isnt duplicate
-            if !self.emailArray.contains(where: { $0.threadId == email.threadId }) {
-                self.emailArray.append(email)
-            }
-        }
-        
-        self.emailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-        
-        self.tableView.reloadData()
-        CriptextSpinner.hide(from: self.view)
-    }
-    
-    @objc func handleRefresh(_ refreshControl: UIRefreshControl, automatic:Bool = false, signIn:Bool = false, completion: (() -> Void)?){
-        
-        if !automatic {
-            //DBManager.restoreState(self.currentUser)
-        }
-        
-//        if let nextPageToken = self.currentUser.nextPageToken(for: self.selectedLabel), nextPageToken == "0" {
-//            let fullString = NSMutableAttributedString(string: "")
-//
-//            let image1Attachment = NSTextAttachment()
-//            image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
-//
-//            let image1String = NSAttributedString(attachment: image1Attachment)
-//
-//            fullString.append(image1String)
-//            fullString.append(NSAttributedString(string: " Downloading emails..."))
-//            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-//
-//            self.getEmails("me", labels: [self.selectedLabel.id], completion: completion)
-//            return
-//        }
-        
-        guard !self.emailArray.isEmpty else {
-            self.refreshControl.endRefreshing()
-            self.hideSnackbar()
-            return
-        }
-        
-        if signIn {
-            let fullString = NSMutableAttributedString(string: "")
-            
-            let image1Attachment = NSTextAttachment()
-            image1Attachment.image = #imageLiteral(resourceName: "load-arrow")
-            
-            let image1String = NSAttributedString(attachment: image1Attachment)
-            
-            fullString.append(image1String)
-            fullString.append(NSAttributedString(string: " Refreshing \(self.selectedLabel.description)..."))
-            self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-        }
-        
-        //get updates
-        
-        self.updateAppIcon()
-    }
-
-    
-    // Used to fetch mails from cloud
-    func getEmails(_ userId:String, labels:[String], completion: (() -> Void)?){
-        
-        let fullString = NSMutableAttributedString(string: "")
-        
-        let image1Attachment = NSTextAttachment()
-        image1Attachment.image = #imageLiteral(resourceName: "down-arrow")
-        
-        let image1String = NSAttributedString(attachment: image1Attachment)
-        
-        fullString.append(image1String)
-        fullString.append(NSAttributedString(string: " Downloading emails..."))
-        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-        
-        self.footerActivity.startAnimating()
-//        APIManager.getMails(
-//            userId: userId,
-//            labels: labels,
-//            pageToken: pageToken
-//        ) { (parsedEmails, parsedContacts, error) in
-//            CriptextSpinner.hide(from: self.view)
-//            self.refreshControl.endRefreshing()
-//            self.footerActivity.stopAnimating()
-//
-//            if let contacts = parsedContacts {
-//                DBManager.store(contacts)
-//            }
-//
-//            guard var parsedEmails = parsedEmails else {
-//                print(String(describing: error?.localizedDescription))
-//                return
-//            }
-        
-//            if let firstEmail = parsedEmails.first,
-//                firstEmail.historyId > self.currentUser.historyId(for: self.selectedLabel) {
-//                DBManager.update(self.currentUser, historyId: firstEmail.historyId, label: self.selectedLabel)
-//            }
-            
-//            DBManager.update(self.currentUser, nextPageToken: (ticket.fetchedObject as! GTLRGmail_ListThreadsResponse).nextPageToken, label: self.selectedLabel)
-//            let now = Date()
-//            DBManager.update(self.currentUser, updateDate: now, label: self.selectedLabel)
-//            self.statusBarButton.title = "Updated Just Now"
-//
-//            self.hideSnackbar()
-//            self.addFetched(&parsedEmails)
-//
-//            if let completionHandler = completion {
-//                completionHandler()
-//            }
-//        }
-    }
-    
-    func addFetched(_ emails: inout [Email]){
-//        for email in emails {
-            //DBManager.store(email)
-            //add to array
-//        }
-        
-        self.emailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-        self.tableView.reloadData()
     }
 }
 
@@ -952,7 +819,7 @@ extension InboxViewController: UITableViewDataSource{
         }
         
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
-        
+        cell.senderLabel.text = email.fromContact?.displayName ?? "Unknown"
         cell.previewLabel.text = email.preview
         
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
@@ -1112,72 +979,22 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return
         }
         
-        let email:Email
-        if self.searchController.isActive && self.searchController.searchBar.text != "" {
-            self.searchController.searchBar.resignFirstResponder()
-            email = self.filteredEmailArray[indexPath.row]
-        }else {
-            email = self.emailArray[indexPath.row]
-        }
+        let selectedEmail = self.emailArray[indexPath.row]
+        let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId, label: 1)
+        let emailDetailData = EmailDetailData()
+        emailDetailData.emails = emails
+        emailDetailData.labels += emails.first!.labels
+        emailDetailData.subject = emails.first!.subject
         
-        let emp = EmailDetailData()
-        emp.emails = [email]
-        
-//        guard let emailArrayHash = self.threadHash[email.threadId] else{
-//            return
-//        }
+        emails.last?.isExpanded = true
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         if self.selectedLabel != SystemLabel.draft.id {
             let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
-            vc.emailData = emp
-            
-//            vc.currentUser = self.currentUser
-//            vc.currentEmail = email
-//            vc.selectedLabel = self.selectedLabel
-//            vc.currentEmailIndex = 0
-            
-            
-            if !email.unread {
-                self.navigationController?.pushViewController(vc, animated: true)
-                return
-            }
-            
-            //modify labels
-            
+            vc.emailData = emailDetailData
             self.navigationController?.pushViewController(vc, animated: true)
             return
-        }
-        
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let vcDraft = navComposeVC.childViewControllers.first as! ComposeViewController
-//        vcDraft.attachmentArray = Array(email.attachments)
-        vcDraft.emailDraft = email
-        vcDraft.isDraft = true
-        vcDraft.loadViewIfNeeded()
-//        for email in email.to.components(separatedBy: ",") {
-//            if email.isEmpty {
-//                continue
-//            }
-//            vcDraft.addToken(email, value: email, to: vcDraft.toField)
-//        }
-        
-        if email.subject != "No Subject" {
-            vcDraft.subjectField.text = email.subject
-        } else if email.subject != "(No Subject)" {
-            vcDraft.subjectField.text = email.subject
-        }
-        
-        vcDraft.editorView.html = email.content
-        vcDraft.isEdited = false
-        
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true) {
-            //needed here because rich editor triggers content change on did load
-            vcDraft.isEdited = false
-            vcDraft.scrollView.setContentOffset(CGPoint(x: 0, y: -64), animated: true)
         }
     }
     
@@ -1213,7 +1030,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         if email == lastEmail {
             if(searchController.searchBar.text == ""){
-                self.loadMails(from: SystemLabel.inbox, since: firstThreadEmail.date!)
+                self.loadMails(from: selectedLabel, since: firstThreadEmail.date!)
             }
             else{
                 self.loadSearchedMails()
