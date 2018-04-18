@@ -495,24 +495,7 @@ enum SystemLabel: Int {
     case all = -1
     
     var id: Int {
-        switch self {
-        case .inbox:
-            return 1
-        case .draft:
-            return 6
-        case .sent:
-            return 3
-        case .junk:
-            return 2
-        case .trash:
-            return 7
-        case .starred:
-            return 5
-        case .important:
-            return 4
-        default:
-            return -1
-        }
+        return self.rawValue
     }
     
     var description: String {
@@ -520,7 +503,7 @@ enum SystemLabel: Int {
         case .inbox:
             return "Inbox"
         case .draft:
-            return "Drafts"
+            return "Draft"
         case .sent:
             return "Sent"
         case .junk:

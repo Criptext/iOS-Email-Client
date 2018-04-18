@@ -13,6 +13,7 @@ protocol NavigationToolbarDelegate {
     func onArchiveThreads()
     func onTrashThreads()
     func onMarkThreads()
+    func onMoreOptions()
 }
 
 class NavigationToolbarView: UIView {
@@ -127,6 +128,7 @@ class NavigationToolbarView: UIView {
         moreButton.tintColor = UIColor(red:0.56, green:0.56, blue:0.58, alpha:1.0)
         moreButton.layer.backgroundColor = UIColor(red:0.31, green:0.32, blue:0.36, alpha:1.0).cgColor
         moreButton.layer.cornerRadius = 15.5
+        moreButton.addTarget(self, action: #selector(onMoreOptions), for: .touchUpInside)
         self.moreBarButton = UIBarButtonItem(customView: moreButton)
     }
     
@@ -144,5 +146,9 @@ class NavigationToolbarView: UIView {
     
     @objc func onMarkThreads(){
         toolbarDelegate?.onMarkThreads()
+    }
+    
+    @objc func onMoreOptions(){
+        toolbarDelegate?.onMoreOptions()
     }
 }

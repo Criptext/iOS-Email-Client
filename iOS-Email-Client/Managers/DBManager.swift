@@ -378,7 +378,6 @@ extension DBManager {
     
     class func store(_ label: Label){
         let realm = try! Realm()
-        label.incrementID()
         try! realm.write {
             realm.add(label, update: true)
         }
@@ -388,6 +387,12 @@ extension DBManager {
         let realm = try! Realm()
         
         return realm.object(ofType: Label.self, forPrimaryKey: labelId)
+    }
+    
+    class func getLabels() -> [Label]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(Label.self))
     }
     
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
@@ -405,6 +410,14 @@ extension DBManager {
                 }
                 email.labels.remove(at: index)
             }
+        }
+    }
+    
+    class func deleteAllLabels(){
+        let realm = try! Realm()
+        let results = realm.objects(Label.self)
+        try! realm.write() {
+            realm.delete(results)
         }
     }
 }

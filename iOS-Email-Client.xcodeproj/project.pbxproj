@@ -88,6 +88,10 @@
 		41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A275207C6466004BDF90 /* Crashlytics.framework */; };
 		41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A277207C6470004BDF90 /* Fabric.framework */; };
+		7C049F8920879CD5007A6213 /* LabelsUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */; };
+		7C049F8B20879CFA007A6213 /* LabelsUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C049F8A20879CFA007A6213 /* LabelsUIPopover.xib */; };
+		7C049F8D2087AB5F007A6213 /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */; };
+		7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */; };
 		7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */; };
 		7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AC20810CFD008F1395 /* EventHandler.swift */; };
 		7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
@@ -258,6 +262,10 @@
 		41EE748F207C68D700CCA685 /* CLTokenInputView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CLTokenInputView.framework; path = Carthage/Build/iOS/CLTokenInputView.framework; sourceTree = "<group>"; };
 		41F3A275207C6466004BDF90 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		41F3A277207C6470004BDF90 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsUIPopover.swift; sourceTree = "<group>"; };
+		7C049F8A20879CFA007A6213 /* LabelsUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelsUIPopover.xib; sourceTree = "<group>"; };
+		7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
+		7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelTableViewCell.xib; sourceTree = "<group>"; };
 		7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		7C13D8AC20810CFD008F1395 /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		7C13D8AE20810D75008F1395 /* SignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalHandler.swift; sourceTree = "<group>"; };
@@ -602,6 +610,10 @@
 				7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */,
 				7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */,
 				7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */,
+				7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */,
+				7C049F8A20879CFA007A6213 /* LabelsUIPopover.xib */,
+				7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */,
+				7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -737,6 +749,7 @@
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
 				412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */,
+				7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */,
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
@@ -766,6 +779,7 @@
 				7C63AB5A2056C7850053219F /* ContactsDetailUIPopover.xib in Resources */,
 				7C63AB56205330A00053219F /* ReadHistoryTableCell.xib in Resources */,
 				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
+				7C049F8B20879CFA007A6213 /* LabelsUIPopover.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
 				7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */,
@@ -846,6 +860,7 @@
 				41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */,
 				7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */,
 				7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */,
+				7C049F8920879CD5007A6213 /* LabelsUIPopover.swift in Sources */,
 				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
 				7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */,
@@ -929,6 +944,7 @@
 				41AAC529201A9FC300809C4D /* GenericUIPopover.swift in Sources */,
 				7C63AB58205332990053219F /* ReadHistoryTableCell.swift in Sources */,
 				7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */,
+				7C049F8D2087AB5F007A6213 /* LabelTableViewCell.swift in Sources */,
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,
 				7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */,
 				7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */,

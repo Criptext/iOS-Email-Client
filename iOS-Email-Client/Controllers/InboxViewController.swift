@@ -20,6 +20,10 @@ import RealmSwift
 
 class InboxViewController: UIViewController {
     
+    @IBOutlet weak var moreOptionsOverlay: UIView!
+    @IBOutlet weak var moreOptionsView: UIView!
+    @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var topToolbar: NavigationToolbarView!
@@ -109,7 +113,7 @@ class InboxViewController: UIViewController {
         
         self.initFloatingButton()
         topToolbar.toolbarDelegate = self
-        
+        self.initMoreOptionsView()
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
         WebSocketManager.sharedInstance.addListener(identifier: "mailbox", listener: self)
@@ -187,6 +191,38 @@ class InboxViewController: UIViewController {
         buttonCompose.layer.shadowPath = shadowPath.cgPath
     }
     
+    func initMoreOptionsView(){
+        moreOptionsView.isHidden = true
+        moreOptionsOverlay.isHidden = true
+        moreOptionsOverlay.alpha = 0.0
+        bottomMarginConstraint.constant = -98.0
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
+        self.moreOptionsOverlay.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    func showMoreOptions(){
+        self.moreOptionsView.isHidden = false
+        self.moreOptionsOverlay.isHidden = false
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
+            self.bottomMarginConstraint.constant = 0.0
+            self.moreOptionsOverlay.alpha = 1.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    @objc func closeMoreOptions(){
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseOut, animations: {
+            self.bottomMarginConstraint.constant = -98.0
+            self.moreOptionsOverlay.alpha = 0.0
+            self.view.layoutIfNeeded()
+        }, completion: {
+            finished in
+            self.moreOptionsView.isHidden = true
+            self.moreOptionsOverlay.isHidden = true
+        })
+    }
+    
     func startNetworkListener(){
         APIManager.reachabilityManager.startListening()
         APIManager.reachabilityManager.listener = { status in
@@ -202,6 +238,14 @@ class InboxViewController: UIViewController {
                 break
             }
         }
+    }
+    
+    @IBAction func onMoveToPress(_ sender: Any) {
+        handleMoveTo()
+    }
+    
+    @IBAction func onAddLabelsPress(_ sender: Any) {
+        handleAddLabels()
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
@@ -722,6 +766,79 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
 }
 
+extension InboxViewController : LabelsUIPopoverDelegate{
+    func handleAddLabels(){
+        let labelsPopover = LabelsUIPopover()
+        labelsPopover.headerTitle = "Add Labels"
+        labelsPopover.labels.append(contentsOf: DBManager.getLabels())
+        labelsPopover.delegate = self
+        if let indexPaths = tableView.indexPathsForSelectedRows{
+            for indexPath in indexPaths {
+                let email = emailArray[indexPath.row]
+                for label in email.labels {
+                    labelsPopover.selectedLabels[label.id] = label
+                }
+            }
+        }
+        presentPopover(labelsPopover)
+    }
+    
+    func handleMoveTo(){
+        let labelsPopover = LabelsUIPopover()
+        labelsPopover.headerTitle = "Move To"
+        labelsPopover.labels.append(contentsOf: DBManager.getLabels())
+        labelsPopover.delegate = self
+        presentPopover(labelsPopover)
+    }
+    
+    func presentPopover(_ popover: UIViewController){
+        popover.preferredContentSize = CGSize(width: 269, height: 300)
+        popover.popoverPresentationController?.sourceView = self.view
+        popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        popover.popoverPresentationController?.permittedArrowDirections = []
+        popover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(popover, animated: true){
+            self.bottomMarginConstraint.constant = -98.0
+            self.moreOptionsView.isHidden = true
+            self.moreOptionsOverlay.alpha = 0.0
+            self.moreOptionsOverlay.isHidden = true
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func setLabels(labels: [Int]) {
+        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+            return
+        }
+        self.didPressEdit()
+        self.tableView.reloadData()
+        var indexPathsToRemove = [IndexPath]()
+        for indexPath in indexPaths {
+            var removeEmail = false
+            let email = emailArray[indexPath.row]
+            let labelsToRemove = email.labels.reduce([Int]()) { (removeLabels, label) -> [Int] in
+                guard !labels.contains(label.id) else {
+                    return removeLabels
+                }
+                if(label.id == selectedLabel){
+                    removeEmail = true
+                }
+                return removeLabels + [label.id]
+            }
+            if(removeEmail){
+                indexPathsToRemove.append(indexPath)
+                self.emailArray.remove(at: indexPath.row)
+            }
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: labelsToRemove)
+        }
+        self.tableView.deleteRows(at: indexPathsToRemove, with: .left)
+    }
+    
+    func moveTo(labelId: Int) {
+        //TODO
+    }
+}
+
 extension InboxViewController: UINavigationControllerDelegate{
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         guard viewController == self else {
@@ -807,5 +924,9 @@ extension InboxViewController: NavigationToolbarDelegate {
             self.emailArray.remove(at: indexPath.row)
         }
         self.tableView.deleteRows(at: indexPaths, with: .left)
+    }
+    
+    func onMoreOptions() {
+        showMoreOptions()
     }
 }
