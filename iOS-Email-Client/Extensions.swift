@@ -484,16 +484,15 @@ enum Icon {
     }
 }
 
-enum SystemLabel {
-    case inbox
-    case draft
-    case sent
-    case junk
-    case trash
-    case starred
-    case important
-    case unread
-    case all
+enum SystemLabel: Int {
+    case inbox = 1
+    case draft = 6
+    case sent = 3
+    case junk = 2
+    case trash = 7
+    case starred = 5
+    case important = 4
+    case all = -1
     
     var id: Int {
         switch self {
@@ -532,12 +531,8 @@ enum SystemLabel {
             return "Important"
         case .starred:
             return "Starred"
-        case .unread:
-            return "Unread"
         case .all:
             return "All Mail"
-        default:
-            return ""
         }
     }
     

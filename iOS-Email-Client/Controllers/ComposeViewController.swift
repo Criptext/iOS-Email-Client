@@ -554,7 +554,6 @@ class ComposeViewController: UIViewController {
             self.updateEmailData(data)
             self.dismiss(animated: true){
                 self.hideSnackbar()
-                (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
             }
             
         }
