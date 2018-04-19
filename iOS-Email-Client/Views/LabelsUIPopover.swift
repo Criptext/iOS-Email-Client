@@ -75,7 +75,7 @@ extension LabelsUIPopover: UITableViewDelegate, UITableViewDataSource{
             cell.setAsDeselected()
         }
         if(type == .moveTo){
-            cell.checkView?.isHidden = true
+            cell.checkMarkView?.isHidden = true
         }
         return cell
     }

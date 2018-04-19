@@ -10,8 +10,8 @@ import Foundation
 
 class LabelTableViewCell : UITableViewCell {
     @IBOutlet weak var dotView: UIView!
-    @IBOutlet weak var checkView: UIImageView!
     @IBOutlet weak var descTextLabel: UILabel!
+    @IBOutlet weak var checkMarkView: CheckMarkUIView!
     
     func setLabel(_ text: String, color: UIColor){
         dotView.backgroundColor = color
@@ -19,10 +19,10 @@ class LabelTableViewCell : UITableViewCell {
     }
     
     func setAsSelected(){
-        checkView.image = #imageLiteral(resourceName: "switch_locked_on")
+        checkMarkView.setChecked(true)
     }
     
     func setAsDeselected(){
-        checkView.image = #imageLiteral(resourceName: "switch_locked_off")
+        checkMarkView.setChecked(false)
     }
 }

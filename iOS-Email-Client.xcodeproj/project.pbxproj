@@ -152,6 +152,7 @@
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
 		7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB4661203F0C9F007C9637 /* Feed.swift */; };
+		7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */; };
 		7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */; };
 		7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */; };
 		7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */; };
@@ -328,6 +329,7 @@
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
 		7CDB4661203F0C9F007C9637 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckMarkUIView.swift; sourceTree = "<group>"; };
 		7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemUIView.xib; sourceTree = "<group>"; };
 		7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemUIView.swift; sourceTree = "<group>"; };
 		7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewController.swift; sourceTree = "<group>"; };
@@ -614,6 +616,7 @@
 				7C049F8A20879CFA007A6213 /* LabelsUIPopover.xib */,
 				7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */,
 				7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */,
+				7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -915,6 +918,7 @@
 				954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */,
 				41AAC53E201A9FCD00809C4D /* Open.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
+				7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */,
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
 				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,

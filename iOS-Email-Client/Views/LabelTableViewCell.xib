@@ -30,36 +30,38 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CrM-8z-iG6">
-                    <rect key="frame" x="56" y="14" width="253" height="21"/>
+                    <rect key="frame" x="56" y="14" width="242" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nu5-EE-k0w">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nPL-Xs-mlo" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                     <rect key="frame" x="317" y="16" width="16" height="16"/>
+                    <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="16" id="CkZ-DC-NgB"/>
-                        <constraint firstAttribute="height" constant="16" id="aas-VE-Ycv"/>
+                        <constraint firstAttribute="height" constant="16" id="iRa-6c-sYR"/>
+                        <constraint firstAttribute="width" constant="16" id="yIK-Fq-3nu"/>
                     </constraints>
-                </imageView>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="nPL-Xs-mlo" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="57p-lI-wKK"/>
                 <constraint firstItem="K8F-th-Qo0" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="5lY-fY-7Qy"/>
-                <constraint firstAttribute="trailing" secondItem="nu5-EE-k0w" secondAttribute="trailing" constant="42" id="AlO-h6-k6e"/>
                 <constraint firstItem="CrM-8z-iG6" firstAttribute="leading" secondItem="K8F-th-Qo0" secondAttribute="trailing" constant="8" id="CXc-BT-Ekw"/>
                 <constraint firstItem="CrM-8z-iG6" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="ESI-O5-1c9"/>
-                <constraint firstItem="nu5-EE-k0w" firstAttribute="leading" secondItem="CrM-8z-iG6" secondAttribute="trailing" constant="8" id="c9m-AI-tBc"/>
-                <constraint firstItem="nu5-EE-k0w" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="jEv-9U-oly"/>
                 <constraint firstItem="K8F-th-Qo0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="38" id="kz4-78-xfP"/>
+                <constraint firstItem="nPL-Xs-mlo" firstAttribute="leading" secondItem="CrM-8z-iG6" secondAttribute="trailing" constant="19" id="uJT-jB-kP8"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="nPL-Xs-mlo" secondAttribute="trailing" constant="42" id="x4b-pr-SGI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="checkView" destination="nu5-EE-k0w" id="hih-z9-IQE"/>
+                <outlet property="checkMarkView" destination="nPL-Xs-mlo" id="j9e-oS-tLP"/>
                 <outlet property="descTextLabel" destination="CrM-8z-iG6" id="s1S-ud-TeW"/>
                 <outlet property="dotView" destination="K8F-th-Qo0" id="Hwj-5u-9m0"/>
             </connections>
+            <point key="canvasLocation" x="109.5" y="54"/>
         </view>
     </objects>
 </document>

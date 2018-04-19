@@ -848,11 +848,13 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     }
     
     func moveTo(labelId: Int) {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
-            return
-        }
         self.didPressEdit()
         self.tableView.reloadData()
+        guard labelId != selectedLabel,
+            let indexPaths = tableView.indexPathsForSelectedRows else {
+            return
+        }
+        
         for indexPath in indexPaths {
             let email = emailArray[indexPath.row]
             DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [labelId], removedLabelIds: [selectedLabel])
