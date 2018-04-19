@@ -127,6 +127,7 @@ class InboxViewController: UIViewController {
         }
         
         self.tableView.deselectRow(at: indexPath, animated: true)
+        self.tableView.reloadRows(at: [indexPath], with: .none)
         
         guard let indexArray = self.tableView.indexPathsForVisibleRows,
             let index = indexArray.first,
@@ -861,15 +862,6 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             emailArray.remove(at: indexPath.row)
         }
         self.tableView.deleteRows(at: indexPaths, with: .left)
-    }
-}
-
-extension InboxViewController: UINavigationControllerDelegate{
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        guard viewController == self else {
-            return
-        }
-        tableView.reloadData()
     }
 }
 
