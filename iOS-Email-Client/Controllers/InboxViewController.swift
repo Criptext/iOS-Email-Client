@@ -767,10 +767,22 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
 }
 
 extension InboxViewController : LabelsUIPopoverDelegate{
+    
+    func getMoveableLabels() -> [Label] {
+        let labels = DBManager.getLabels()
+        return labels.reduce([Label](), { (moveableLabels, label) -> [Label] in
+            guard label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
+                return moveableLabels
+            }
+            return moveableLabels + [label]
+        })
+    }
+    
     func handleAddLabels(){
         let labelsPopover = LabelsUIPopover()
         labelsPopover.headerTitle = "Add Labels"
-        labelsPopover.labels.append(contentsOf: DBManager.getLabels())
+        labelsPopover.type = .addLabels
+        labelsPopover.labels.append(contentsOf: getMoveableLabels())
         labelsPopover.delegate = self
         if let indexPaths = tableView.indexPathsForSelectedRows{
             for indexPath in indexPaths {
@@ -786,7 +798,8 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     func handleMoveTo(){
         let labelsPopover = LabelsUIPopover()
         labelsPopover.headerTitle = "Move To"
-        labelsPopover.labels.append(contentsOf: DBManager.getLabels())
+        labelsPopover.type = .moveTo
+        labelsPopover.labels.append(contentsOf: getMoveableLabels())
         labelsPopover.delegate = self
         presentPopover(labelsPopover)
     }
@@ -835,7 +848,17 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     }
     
     func moveTo(labelId: Int) {
-        //TODO
+        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+            return
+        }
+        self.didPressEdit()
+        self.tableView.reloadData()
+        for indexPath in indexPaths {
+            let email = emailArray[indexPath.row]
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [labelId], removedLabelIds: [selectedLabel])
+            emailArray.remove(at: indexPath.row)
+        }
+        self.tableView.deleteRows(at: indexPaths, with: .left)
     }
 }
 

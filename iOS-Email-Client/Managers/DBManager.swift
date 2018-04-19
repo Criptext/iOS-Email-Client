@@ -399,7 +399,11 @@ extension DBManager {
         let realm = try! Realm()
         try! realm.write {
             for labelId in addedLabelIds {
-                guard let label = self.getLabel(labelId) else {
+                let containLabel = email.labels.first(where: { (label) -> Bool in
+                    return label.id == labelId
+                })
+                guard containLabel == nil,
+                    let label = self.getLabel(labelId) else {
                     continue
                 }
                 email.labels.append(label)

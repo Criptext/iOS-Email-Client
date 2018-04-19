@@ -17,6 +17,7 @@ class LabelsUIPopover: BaseUIPopover {
     
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var bigCancelButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     var headerTitle = ""
@@ -39,16 +40,16 @@ class LabelsUIPopover: BaseUIPopover {
         tableView.dataSource = self
         tableView.register(UINib(nibName: "LabelTableViewCell", bundle: nil), forCellReuseIdentifier: "labeltablecell")
         titleLabel.text = headerTitle
+        if(type == .moveTo){
+            acceptButton.isHidden = true
+            cancelButton.isHidden = true
+        }else{
+            bigCancelButton.isHidden = true
+        }
     }
     
     @IBAction func onAcceptPress(_ sender: Any) {
-        switch(type){
-        case .addLabels:
-            delegate?.setLabels(labels: Array(selectedLabels.keys))
-            break
-        case .moveTo:
-            break
-        }
+        delegate?.setLabels(labels: Array(selectedLabels.keys))
         dismiss(animated: false, completion: nil)
     }
     
@@ -73,17 +74,29 @@ extension LabelsUIPopover: UITableViewDelegate, UITableViewDataSource{
         } else {
             cell.setAsDeselected()
         }
+        if(type == .moveTo){
+            cell.checkView?.isHidden = true
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let label = labels[indexPath.row]
-        if(selectedLabels[label.id] == label){
-            selectedLabels[label.id] = nil
-        }else{
-            selectedLabels[label.id] = label
+        switch(type){
+        case .addLabels:
+            if(selectedLabels[label.id] == label){
+                selectedLabels[label.id] = nil
+            }else{
+                selectedLabels[label.id] = label
+            }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            break
+        case .moveTo:
+            delegate?.moveTo(labelId: label.id)
+            dismiss(animated: false, completion: nil)
+            break
         }
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        
     }
 }
 

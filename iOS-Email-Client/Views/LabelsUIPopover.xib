@@ -14,6 +14,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LabelsUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="acceptButton" destination="MnZ-qO-enA" id="3ib-bL-TfB"/>
+                <outlet property="bigCancelButton" destination="Kqx-1a-CB3" id="ARD-Fw-GDb"/>
                 <outlet property="cancelButton" destination="m1z-nB-rnK" id="QS2-G1-VFK"/>
                 <outlet property="tableView" destination="teS-lG-T0G" id="tJT-hY-zjc"/>
                 <outlet property="titleLabel" destination="XKo-3G-jcA" id="ivo-s9-4Cy"/>
@@ -56,7 +57,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="7b7-DK-Ouy"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -64,6 +65,19 @@
                     <rect key="frame" x="0.0" y="56" width="269" height="194"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kqx-1a-CB3">
+                    <rect key="frame" x="0.0" y="260" width="269" height="40"/>
+                    <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="uD5-BE-sQh"/>
+                    </constraints>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" red="0.18823529410000001" green="0.1960784314" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onCancelPress:" destination="-1" eventType="touchUpInside" id="ery-9c-fzN"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -71,6 +85,7 @@
                 <constraint firstItem="MnZ-qO-enA" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="2xu-X9-Hat"/>
                 <constraint firstItem="MnZ-qO-enA" firstAttribute="leading" secondItem="m1z-nB-rnK" secondAttribute="trailing" id="78S-Ue-NLj"/>
                 <constraint firstItem="teS-lG-T0G" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="9nL-E4-3sT"/>
+                <constraint firstItem="Kqx-1a-CB3" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="EUP-Nw-2zr"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="MnZ-qO-enA" secondAttribute="trailing" id="GSf-by-GNU"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="MnZ-qO-enA" secondAttribute="bottom" id="O9k-6F-B6y"/>
                 <constraint firstItem="XKo-3G-jcA" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="25" id="RBU-ia-xnj"/>
@@ -79,7 +94,9 @@
                 <constraint firstItem="MnZ-qO-enA" firstAttribute="top" secondItem="teS-lG-T0G" secondAttribute="bottom" constant="10" id="Yu5-UL-JhK"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="XKo-3G-jcA" secondAttribute="trailing" constant="38" id="ZVR-cf-b0x"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="teS-lG-T0G" secondAttribute="trailing" id="b0y-QZ-QkS"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Kqx-1a-CB3" secondAttribute="trailing" id="fqW-Dm-jMB"/>
                 <constraint firstItem="m1z-nB-rnK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="nt5-n1-vps"/>
+                <constraint firstItem="Kqx-1a-CB3" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="oIG-HJ-TL4"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
