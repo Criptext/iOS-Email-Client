@@ -16,7 +16,7 @@ protocol ProgressDelegate {
 }
 
 class APIManager {
-    static let baseUrl = "http://54.245.42.9:8000"
+    static let baseUrl = "https://stage.mail.criptext.com"
     
     static let CODE_SUCESS = 0
     static let CODE_JWT_INVALID = 101

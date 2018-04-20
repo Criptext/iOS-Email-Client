@@ -20,6 +20,10 @@ import RealmSwift
 
 class InboxViewController: UIViewController {
     
+    @IBOutlet weak var moreOptionsOverlay: UIView!
+    @IBOutlet weak var moreOptionsView: UIView!
+    @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var topToolbar: NavigationToolbarView!
@@ -59,11 +63,11 @@ class InboxViewController: UIViewController {
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
-    var ws:WebSocket!
     var myAccount: Account!
     
     var originalNavigationRect:CGRect!
     var isCustomEditing = false
+    var unreadMails = 0
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -72,9 +76,6 @@ class InboxViewController: UIViewController {
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-//        CriptextSpinner.show(in: self.view, title: nil, image: UIImage(named: "icon_sent_chat.png"))
         
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
@@ -110,11 +111,9 @@ class InboxViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.emailTrashed), name: NSNotification.Name(rawValue: "EmailTrashed"), object: nil)
-        
         self.initFloatingButton()
-        
-        let refreshControl = UIRefreshControl()
+        topToolbar.toolbarDelegate = self
+        self.initMoreOptionsView()
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
         WebSocketManager.sharedInstance.addListener(identifier: "mailbox", listener: self)
@@ -128,6 +127,7 @@ class InboxViewController: UIViewController {
         }
         
         self.tableView.deselectRow(at: indexPath, animated: true)
+        self.tableView.reloadRows(at: [indexPath], with: .none)
         
         guard let indexArray = self.tableView.indexPathsForVisibleRows,
             let index = indexArray.first,
@@ -138,8 +138,6 @@ class InboxViewController: UIViewController {
         
     }
     
-    // When the view appears, ensure that the Gmail API service is authorized
-    // and perform API calls
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -156,39 +154,10 @@ class InboxViewController: UIViewController {
         self.fixedSpaceBarButton.width = 25.0
         self.flexibleSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         
-//        self.cancelBarButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(didPressEdit))
-        let derp = UIButton(type: .custom)
-        derp.frame = CGRect(x: 0, y: 0, width: 31, height: 31)
-        derp.setImage(#imageLiteral(resourceName: "menu-back"), for: .normal)
-        derp.layer.backgroundColor = UIColor.red.cgColor
-        derp.layer.cornerRadius = 15.5
-        derp.addTarget(self, action: #selector(didPressEdit), for: .touchUpInside)
-        
-        self.cancelBarButton = UIBarButtonItem(customView: derp)
-        
-        self.trashBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressTrash))
-        self.trashBarButton.tintColor = UIColor.white
-        
-        self.trashBarButton.isEnabled = false
-        self.archiveBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "archive-icon"), style: .plain, target: self, action: #selector(didPressArchive))
-        self.archiveBarButton.tintColor = UIColor.white
-        self.archiveBarButton.isEnabled = false
-        
-        self.markBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "mark_read"), style: .plain, target: self, action: #selector(didPressMark))
-        
-        self.deleteBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon"), style: .plain, target: self, action: #selector(didPressDelete))
-        self.deleteBarButton.tintColor = UIColor.white
-        self.counterBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
-        self.counterBarButton.tintColor = Icon.system.color
         self.titleBarButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Bold", size: 16.0)!, NSAttributedStringKey.foregroundColor: UIColor.white], for: .disabled)
         self.titleBarButton.isEnabled = false
-        
-        self.countBarButton.tintColor = UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)
         self.countBarButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Bold", size: 16.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
         self.countBarButton.isEnabled = false
-        
-        let attributescounter = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 20)]
-        self.counterBarButton.setTitleTextAttributes(attributescounter, for: .normal)
         
         self.menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu_white"), style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
         self.menuButton.tintColor = UIColor.white
@@ -202,7 +171,7 @@ class InboxViewController: UIViewController {
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(25, 12, 0, 10)
         activityButton.setImage(#imageLiteral(resourceName: "activity"), for: .normal)
         activityButton.tintColor = UIColor.white
-        activityButton.addTarget(self, action: #selector(didPressActivity), for: UIControlEvents.touchUpInside)
+        activityButton.addTarget(self, action: #selector(didPressActivityMenu), for: UIControlEvents.touchUpInside)
         self.activityBarButton = UIBarButtonItem(customView: activityButton)
         
         self.activityBarButton.tintColor = UIColor.white
@@ -213,11 +182,6 @@ class InboxViewController: UIViewController {
         self.statusBarButton.tintColor = UIColor.darkGray
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func initFloatingButton(){
         let shadowPath = UIBezierPath(rect: CGRect(x: 15, y: 15, width: 30, height: 30))
         buttonCompose.layer.shadowColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1).cgColor
@@ -226,6 +190,46 @@ class InboxViewController: UIViewController {
         buttonCompose.layer.shadowRadius = 15 //Here your control your blur
         buttonCompose.layer.masksToBounds =  false
         buttonCompose.layer.shadowPath = shadowPath.cgPath
+    }
+    
+    func initMoreOptionsView(){
+        moreOptionsView.isHidden = true
+        moreOptionsOverlay.isHidden = true
+        moreOptionsOverlay.alpha = 0.0
+        bottomMarginConstraint.constant = -98.0
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMoreOptions))
+        self.moreOptionsOverlay.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func toggleMoreOptions(){
+        guard self.moreOptionsView.isHidden else {
+            closeMoreOptions()
+            return
+        }
+        showMoreOptions()
+    }
+    
+    func showMoreOptions(){
+        self.moreOptionsView.isHidden = false
+        self.moreOptionsOverlay.isHidden = false
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
+            self.bottomMarginConstraint.constant = 0.0
+            self.moreOptionsOverlay.alpha = 1.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func closeMoreOptions(){
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseOut, animations: {
+            self.bottomMarginConstraint.constant = -98.0
+            self.moreOptionsOverlay.alpha = 0.0
+            self.view.layoutIfNeeded()
+        }, completion: {
+            finished in
+            self.moreOptionsView.isHidden = true
+            self.moreOptionsOverlay.isHidden = true
+        })
     }
     
     func startNetworkListener(){
@@ -243,6 +247,14 @@ class InboxViewController: UIViewController {
                 break
             }
         }
+    }
+    
+    @IBAction func onMoveToPress(_ sender: Any) {
+        handleMoveTo()
+    }
+    
+    @IBAction func onAddLabelsPress(_ sender: Any) {
+        handleAddLabels()
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
@@ -268,30 +280,25 @@ extension InboxViewController: EventHandlerDelegate {
 
 //MARK: - Modify mails actions
 extension InboxViewController{
-    @objc func didPressEdit() {
+    @objc func didPressEdit(reload: Bool) {
         self.isCustomEditing = !self.isCustomEditing
-//        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
         
         if self.isCustomEditing {
             self.topToolbar.counterButton.title = "1"
-            self.title = ""
-            self.navigationItem.leftBarButtonItems = [self.cancelBarButton, self.counterBarButton]
             self.topToolbar.isHidden = false
+            refreshControl.isEnabled = false
         }else{
             self.topToolbar.isHidden = true
             self.navigationController?.navigationBar.isHidden = false
-            self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
-            self.titleBarButton.title = self.selectedLabel.description.uppercased()
             self.navigationController?.navigationBar.frame = self.originalNavigationRect
-//            self.title = self.selectedLabel.description
-        }
-        
-        //disable toolbar buttons
-        if !self.isCustomEditing {
-            self.toggleToolbar(false)
+            refreshControl.isEnabled = true
+            unreadMails = 0
         }
         
         self.setButtonItems(isEditing: self.isCustomEditing)
+        if(reload){
+            self.tableView.reloadData()
+        }
     }
     
     @IBAction func didPressComposer(_ sender: UIButton) {
@@ -303,152 +310,28 @@ extension InboxViewController{
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
-    
-    
-    @objc func didPressActivity(_ sender: UIBarButtonItem) {
-        
-        
-    }
-    
-    @objc func didPressArchive(_ sender: UIBarButtonItem) {
-        guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows,
-            (self.selectedLabel == SystemLabel.inbox.id || self.selectedLabel == SystemLabel.junk.id) else {
-                if self.isCustomEditing {
-                    self.didPressEdit()
-                }
-            return
-        }
-        
-//        self.emailArray.remove(at: indexPath.row)
-        self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
-    }
-    
-    @objc func didPressTrash(_ sender: UIBarButtonItem) {
-        guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
-            if self.isCustomEditing {
-                self.didPressEdit()
-            }
-            return
-        }
-        
-//        let email = self.emailArray.remove(at: emailsIndexPath.first!.row)
-        self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
-    }
-    
-    @objc func emailTrashed(notification:Notification) -> Void {
-        guard let userInfo = notification.userInfo,
-            let emailTrashed  = userInfo["email"] as? Email else {
-                print("No userInfo found in notification")
-                return
-        }
-        
-        if let index = self.emailArray.index(of: emailTrashed) {
-            self.emailArray.remove(at: index)
-        }
-        
-        if var threadArray = self.threadHash[emailTrashed.threadId],
-            let index = threadArray.index(of: emailTrashed) {
-            threadArray.remove(at: index)
-            self.threadHash[emailTrashed.threadId] = threadArray
-        }
-        
-        self.tableView.reloadData()
-    }
-    
-    @objc func didPressMove(_ sender: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let moveVC = storyboard.instantiateViewController(withIdentifier: "MoveMailViewController") as! MoveMailViewController
-        
-        self.present(moveVC, animated: true, completion: nil)
-    }
-    
-    @objc func didPressMark(_ sender: UIBarButtonItem) {
-        
-        guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
-            return
-        }
-        
-        var markRead = true
-        
-        let emails = emailsIndexPath.map { return self.emailArray[$0.row] }
-        
-        var count = 0
-        
-        if count == emails.count {
-            markRead = false
-        }
-        
-        
-        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        var title = "Unread"
-        if markRead {
-            title = "Read"
-        }
-        
-        sheet.addAction(UIAlertAction(title: "Mark as \(title)" , style: .default) { (action) in
-            self.didPressEdit()
-            
-            let emailThreadIds = emailsIndexPath.map { return self.emailArray[$0.row].threadId }
-            
-            var addLabels:[String]?
-            var removeLabels:[String]?
-        })
-        
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        sheet.popoverPresentationController?.sourceView = self.view
-        sheet.popoverPresentationController?.sourceRect = CGRect(x: Double(self.view.bounds.size.width / 2.0), y: Double(self.view.bounds.size.height-45), width: 1.0, height: 1.0)
-        
-        self.present(sheet, animated: true, completion: nil)
-    }
-    
-    func didPressDeleteAll(_ sender: UIBarButtonItem) {
-        
-        if self.isCustomEditing {
-            self.didPressEdit()
-        }
-        
-        for email in self.emailArray {
-            if let hashEmails = self.threadHash[email.threadId] {
-                DBManager.delete(hashEmails)
-            }
-        }
-        self.emailArray.removeAll()
-        self.threadHash.removeAll()
-        self.tableView.reloadData()
-    }
-    
-    @objc func didPressDelete(_ sender: UIBarButtonItem) {
-        guard let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
-            if self.isCustomEditing {
-                self.didPressEdit()
-            }
-            return
-        }
-        
-        for indexPath in emailsIndexPath {
-            let threadId = self.emailArray[indexPath.row].threadId
-            
-            if let hashEmails = self.threadHash[threadId] {
-                DBManager.delete(hashEmails)
-                self.threadHash.removeValue(forKey: threadId)
-            }
-            self.emailArray.remove(at: indexPath.row)
-        }
-        self.tableView.deleteRows(at: emailsIndexPath, with: .fade)
-    }
-    
     func swapMailbox(labelId: Int, sender: Any?){
         self.selectedLabel = labelId
         loadMails(from: labelId, since: Date())
+        titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased()
         self.navigationDrawerController?.closeLeftView()
+    }
+    
+    func swapMarkIcon(){
+        if(unreadMails > 0){
+            topToolbar.setupMarkAsRead()
+        }else{
+            topToolbar.setupMarkAsUnread()
+        }
+        topToolbar.setItemsMenu()
     }
 }
 
 //MARK: - Side menu events
 extension InboxViewController {
+    @objc func didPressActivityMenu(){
+        self.navigationDrawerController?.openRightView()
+    }
     
     @IBAction func didPressOpenMenu(_ sender: UIBarButtonItem) {
         self.navigationDrawerController?.toggleLeftView()
@@ -457,249 +340,20 @@ extension InboxViewController {
     @IBAction func didPressSearch(_ sender: UIBarButtonItem) {
         self.searchController.searchBar.becomeFirstResponder()
     }
-    
-    func showSignature(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let signatureVC = storyboard.instantiateViewController(withIdentifier: "SignatureViewController") as! SignatureViewController
-        
-        self.navigationController?.childViewControllers.last!.present(signatureVC, animated: true, completion: nil)
-    }
-    
-    func showHeader(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let headerVC = storyboard.instantiateViewController(withIdentifier: "HeaderViewController") as! HeaderViewController
-        
-        self.navigationController?.childViewControllers.last!.present(headerVC, animated: true, completion: nil)
-    }
-    
-    func showShareDialog(){
-        
-        let linkUrl = "https://criptext.com/getapp"
-        let textInvite = "I'm using Criptext for Gmail, it allows me to have control over my emails. Install it now: "
-        let htmlInvite = "<html><body><p>\(textInvite)</p><p><a href='\(linkUrl)'>\(linkUrl)</a></p></body></html>"
-        
-        let textItem = ShareActivityItemProvider(placeholderItem: "wat")
-        
-        textItem.invitationText = textInvite
-        textItem.invitationTextMail = htmlInvite
-        textItem.subject = "Criptext for Gmail Invitation"
-        textItem.otherappsText = textInvite
-        
-        let urlItem = URLActivityItemProvider(placeholderItem: linkUrl)
-        
-        urlItem.urlInvite = URL(string: linkUrl)
-        
-        let shareVC = UIActivityViewController(activityItems: [textItem, urlItem], applicationActivities: nil)
-        
-        shareVC.excludedActivityTypes = [.airDrop, .assignToContact, .print, .saveToCameraRoll, .addToReadingList]
-        
-        shareVC.completionWithItemsHandler = { (type, completed, returnedItems, error) in
-            if !completed {
-                return
-            }
-            
-            if type == .copyToPasteboard {
-                self.showAlert(nil, message: "Copied to clipboard", style: .alert)
-            }
-        }
-        
-        shareVC.popoverPresentationController?.sourceView = self.view
-        shareVC.popoverPresentationController?.sourceRect = CGRect(x: Double(self.view.bounds.size.width / 2.0), y: Double(self.view.bounds.size.height-45), width: 1.0, height: 1.0)
-        
-        self.navigationController?.childViewControllers.last!.present(shareVC, animated: true, completion: nil)
-        
-    }
-    
-    func showSupport(){
-        
-        let body = "Type your message here...<br><br><br><br><br><br><br>Do not write below this line.<br>*****************************<br> Version: 1.2<br> Device: \(systemIdentifier()) <br> OS: iOS \(UIDevice.current.systemVersion)"
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let composeVC = navComposeVC.childViewControllers.first as! ComposeViewController
-        composeVC.loadViewIfNeeded()
-        composeVC.addToken("support@criptext.com", value: "support@criptext.com", to: composeVC.toField)
-        composeVC.subjectField.text = "Criptext iPhone Support"
-        composeVC.editorView.html = body
-        composeVC.thumbUpdated = true
-        
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
-    }
-    
-    func changeDefaultValue(_ isOn:Bool){
-        //DBManager.update(self.currentUser, switchValue: isOn)
-    }
-}
-
-//MARK: - Unwind Segues
-extension InboxViewController{
-    //move mail, unwind segue
-    @IBAction func selectedMailbox(_ segue:UIStoryboardSegue){
-        let vc = segue.source as! MoveMailViewController
-        
-        guard let selectedMailbox = vc.selectedMailbox,
-            let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
-            return
-        }
-        
-        if self.navigationController!.viewControllers.count > 1 {
-            self.navigationController?.popViewController(animated: true)
-        }
-        
-        if self.isCustomEditing {
-            self.didPressEdit()
-        }
-        
-        var removeLabels: [String]?
-        
-        for indexPath in emailsIndexPath {
-            let threadId = self.emailArray[indexPath.row].threadId
-        }
-        self.emailArray.removeAll()
-        self.threadHash.removeAll()
-        self.loadMails(from: selectedLabel, since: Date())
-        self.tableView.reloadData()
-    }
-}
-
-//MARK: - Websocket
-extension InboxViewController{
-    func startWebSocket(){
-        
-        let defaults = UserDefaults.standard
-        let since = defaults.integer(forKey: "lastSync")
-        self.ws = WebSocket("wss://com.criptext.com:3000?user_id=1&session_id=\(NSUUID().uuidString)&since=\(since)", subProtocols:["criptext-protocol"])
-        
-        self.ws.event.open = {
-            print("opened")
-        }
-        self.ws.event.close = { code, reason, clean in
-            print("close")
-            self.startWebSocket()
-        }
-        self.ws.event.error = { error in
-            print("error \(error)")
-        }
-        self.ws.event.message = { message in
-            guard let text = message as? String,
-                let mails = JSON.parse(text).array else {
-                    return
-            }
-            
-            print("recv: \(text)")
-            
-            var shouldReload = false
-            var lastSync = 0
-            var totalMailOpens = 0
-            for mail in mails {
-                let cmd = mail["cmd"].intValue
-                
-                switch cmd {
-                case Commands.userStatus.rawValue:
-                    let newStatus = mail["args"]["msg"].intValue
-                    //DBManager.update(self.currentUser, status:newStatus)
-                    
-                    if let plan = mail["args"]["plan"].string {
-                        
-                       // DBManager.update(self.currentUser, plan:plan.isEmpty ? "Free trial" : plan)
-                    }
-                    
-                case Commands.emailOpened.rawValue:
-                    
-                    //SEND NOTIFICATIONS TO ACTIVITY
-                    //NotificationCenter.default.post(name: Notification.Name.Activity.onMsgNotificationChange, object: nil, userInfo: ["token": token!])
-                    
-                    shouldReload = true
-                    
-                case Commands.emailUnsend.rawValue:
-                    //[{"cmd":4,"args":{"uid_from":1,"uid_to":"100","timestamp":1492039527,"msg":<token>},"timestamp":1492039527}]
-                    
-                    shouldReload = true
-                    
-                case Commands.fileOpened.rawValue:
-                    //[{"cmd":2,"args":{"uid_from":1,"uid_to":"100","location":"Guayaquil, EC","timestamp":1492039785,"file_token":"f2ao1vzakh85mij1ds17wncb40qenkp661dcxr","email_token":"967nl7v92fqrggb9j1ds1r7rzkdf6vfj2sf3l3di","file_name":"7-Activity-Inbox.png"},"timestamp":1492039785}]
-                    
-                    shouldReload = true
-                    
-                case Commands.fileDownloaded.rawValue:
-                    //[{"cmd":3,"args":{"uid_from":1,"uid_to":"100","location":"Guayaquil, EC","timestamp":1492039847,"file_token":"f2ao1vzakh85mij1ds17wncb40qenkp661dcxr","email_token":"967nl7v92fqrggb9j1ds1r7rzkdf6vfj2sf3l3di","file_name":"7-Activity-Inbox.png"},"timestamp":1492039847}]
-                    
-                    shouldReload = true
-                    
-                case Commands.emailCreated.rawValue:
-                    //[{"cmd":54,"args":{"uid_from":1,"uid_to":"100","timestamp":1492103587,"msg":"9814u5geuaulq5mij1gny37yfsnb0uoafrsh5mi:mayer@criptext.com"},"timestamp":1492103587}]
-                    break
-                    
-                case Commands.fileCreated.rawValue:
-                    //[{"cmd":55,"args":{"uid_from":1,"uid_to":"100","timestamp":1492103609,"msg":"9814u5geuaulq5mij1gny37yfsnb0uoafrsh5mi"},"timestamp":1492103609}]
-                    break
-                case Commands.emailMute.rawValue:
-                    //{"cmd":5,"args":{"uid_from":156,"uid_to":"5634","timestamp":1499355531, "msg":{"tokens":"fyehrgfgnfyndwgtrt54g,5gyuetyehwgy5egtyg","mute":"0"}},"timestamp":1499355531}
-                    
-                    break
-                    
-                default:
-                    print("unsupported command")
-                }
-                lastSync = mail["timestamp"].intValue
-            }
-            
-            //SAVE THE LAST SYNC
-            defaults.set(lastSync, forKey: "lastSync")
-            
-            //UPDATE BADGE
-            if(totalMailOpens > 0){
-                //DBManager.update(self.currentUser, badge: self.currentUser.badge + totalMailOpens)
-                //self.updateBadge(self.currentUser.badge)
-            }
-            
-            guard shouldReload, let indexPaths = self.tableView.indexPathsForVisibleRows else {
-                return
-            }
-            
-            self.tableView.reloadRows(at: indexPaths, with: .automatic)
-        }
-        
-    }
-    
-    func stopWebsocket(){
-        self.ws.event.close = {_,_,_ in }
-        self.ws.close()
-    }
-    
-    func updateBadge(_ count: Int){
-        
-        let activityButton = self.activityBarButton?.customView as! MIBadgeButton?
-        if(count == 0){
-            activityButton?.badgeString = ""
-        }
-        else{
-            activityButton?.badgeString = String(count)
-        }
-        
-    }
 }
 
 //MARK: - UIBarButton layout
 extension InboxViewController{
     func setButtonItems(isEditing: Bool){
         
-        if(!isEditing){
+        guard isEditing else {
             self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.searchBarButton, self.spaceBarButton]
+            self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
             return
         }
         
-        var items:[UIBarButtonItem] = []
-        
-        self.navigationItem.rightBarButtonItems = items
-    }
-    
-    func toggleToolbar(_ isEnabled:Bool){
-        
+        self.navigationItem.leftBarButtonItems = []
+        self.navigationItem.rightBarButtonItems = []
     }
 }
 
@@ -736,10 +390,7 @@ extension InboxViewController{
 //MARK: - Google SignIn Delegate
 extension InboxViewController{
     
-    //silent sign in callback
-   
     func signout(){
-        self.stopWebsocket()
         DBManager.signout()
         UIApplication.shared.applicationIconBadgeNumber = 0
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -760,14 +411,9 @@ extension InboxViewController: UIGestureRecognizerDelegate {
         
         let touchPt = touch.location(in: self.view)
         
-        guard let tappedView = self.view.hitTest(touchPt, with: nil) else {
+        guard self.view.hitTest(touchPt, with: nil) != nil else {
             return true
         }
-        
-        
-//        if gestureRecognizer == self.dismissTapGestureRecognizer && tappedView.isDescendant(of: self.contactTableView) && !self.contactTableView.isHidden {
-//            return false
-//        }
         
         return true
     }
@@ -806,12 +452,12 @@ extension InboxViewController: UITableViewDataSource{
         
         let isSentFolder = self.selectedLabel == SystemLabel.sent.id
         
-        //Set colors to initial state
+        cell.secureAttachmentImageView.isHidden = true
         cell.secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
         //Set row status
         if !email.unread || isSentFolder {
-            cell.backgroundColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+            cell.backgroundColor = UIColor(red:244/255, green:244/255, blue:244/255, alpha:1.0)
             cell.senderLabel.font = Font.regular.size(15)
         }else{
             cell.backgroundColor = UIColor.white
@@ -821,33 +467,24 @@ extension InboxViewController: UITableViewDataSource{
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
         cell.senderLabel.text = email.fromContact?.displayName ?? "Unknown"
         cell.previewLabel.text = email.preview
-        
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
-        
-        
         
         let size = cell.dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         cell.dateWidthConstraint.constant = size.width
         
-//        var senderText = (isSentFolder || self.selectedLabel == .draft) ? email.to : email.fromDisplayString
-        
-//        if self.currentUser.email == email.from && self.selectedLabel != .sent {
-//            senderText = "me"
-//        }
-        
-//        cell.senderLabel.text = senderText
-//
-//        if senderText.isEmpty {
-//            cell.senderLabel.text = "No Recipients"
-//        }
-        
         if self.isCustomEditing {
-            cell.avatarImageView.image = nil
-            cell.avatarImageView.layer.borderWidth = 1.0
-            cell.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
-            cell.avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+            if(cell.isSelected){
+                cell.backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
+                cell.avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
+                cell.avatarImageView.image = #imageLiteral(resourceName: "check")
+                cell.avatarImageView.tintColor = UIColor.white
+            } else {
+                cell.avatarImageView.image = nil
+                cell.avatarImageView.layer.borderWidth = 1.0
+                cell.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
+                cell.avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+            }
         } else {
-            
             let initials = cell.senderLabel.text!.replacingOccurrences(of: "\"", with: "")
             cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
             cell.avatarImageView.layer.borderWidth = 0.0
@@ -858,18 +495,6 @@ extension InboxViewController: UITableViewDataSource{
             cell.badgeWidthConstraint.constant = 0
             return cell
         }
-        
-//        let names = emailArrayHash.map { (mail) -> String in
-//            var senderText = mail.fromDisplayString
-//
-//            if self.currentUser.email == mail.from {
-//                senderText = "me"
-//            }
-//
-//            return senderText
-//        }
-//
-//        cell.senderLabel.text = Array(Set(names)).joined(separator: ", ")
         
         //check if unread among thread mails
         if emailArrayHash.contains(where: { return $0.unread }) {
@@ -922,15 +547,14 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return
         }
         
-        self.didPressEdit()
+        self.didPressEdit(reload: false)
         
         guard let indexPath = self.tableView.indexPath(for: cell) else {
             return
         }
         
         if self.tableView.indexPathsForSelectedRows == nil {
-//            print("count \(indexPaths.count)")
-            self.tableView.reloadData()
+            tableView.reloadData()
         }
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
@@ -941,12 +565,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         guard let indexPath = self.tableView.indexPath(for: cell) else {
             return
         }
-        
-//        if self.tableView.isEditing {
-//            
-//            return
-//        }
-        
         if cell.isSelected {
             self.tableView.deselectRow(at: indexPath, animated: true)
             self.tableView(tableView, didDeselectRowAt: indexPath)
@@ -963,18 +581,16 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             guard let indexPaths = tableView.indexPathsForSelectedRows else {
                 return
             }
-            
-            if indexPaths.count == 1 {
-                self.toggleToolbar(true)
+            let email = emailArray[indexPath.row]
+            if(email.unread){
+                unreadMails += 1
             }
-            
+            swapMarkIcon()
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
-            
+            cell.backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
             cell.avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
             cell.avatarImageView.image = #imageLiteral(resourceName: "check")
             cell.avatarImageView.tintColor = UIColor.white
-            
-            
             self.topToolbar.counterButton.title = "\(indexPaths.count)"
             return
         }
@@ -1005,15 +621,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         guard tableView.indexPathsForSelectedRows == nil else {
+            let email = emailArray[indexPath.row]
+            if(email.unread){
+                unreadMails -= 1
+            }
+            swapMarkIcon()
             self.topToolbar.counterButton.title = "\(tableView.indexPathsForSelectedRows!.count)"
-            let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
-            cell.avatarImageView.image = nil
+            tableView.reloadRows(at: [indexPath], with: .none)
             return
         }
         
-        self.toggleToolbar(false)
-        self.didPressEdit()
-        self.tableView.reloadData()
+        self.didPressEdit(reload: true)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -1043,13 +661,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        let email:Email
-        if self.searchController.isActive && self.searchController.searchBar.text != "" {
-            email = self.filteredEmailArray[indexPath.row]
-        }else {
-            email = self.emailArray[indexPath.row]
-        }
         
         guard self.selectedLabel != SystemLabel.trash.id else {
             return []
@@ -1137,5 +748,169 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
         self.filteredEmailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
         
         self.tableView.reloadData()
+    }
+}
+
+extension InboxViewController : LabelsUIPopoverDelegate{
+    
+    func getMoveableLabels() -> [Label] {
+        let labels = DBManager.getLabels()
+        return labels.reduce([Label](), { (moveableLabels, label) -> [Label] in
+            guard label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
+                return moveableLabels
+            }
+            return moveableLabels + [label]
+        })
+    }
+    
+    func handleAddLabels(){
+        let labelsPopover = LabelsUIPopover()
+        labelsPopover.headerTitle = "Add Labels"
+        labelsPopover.type = .addLabels
+        labelsPopover.labels.append(contentsOf: getMoveableLabels())
+        labelsPopover.delegate = self
+        if let indexPaths = tableView.indexPathsForSelectedRows{
+            for indexPath in indexPaths {
+                let email = emailArray[indexPath.row]
+                for label in email.labels {
+                    labelsPopover.selectedLabels[label.id] = label
+                }
+            }
+        }
+        presentPopover(labelsPopover)
+    }
+    
+    func handleMoveTo(){
+        let labelsPopover = LabelsUIPopover()
+        labelsPopover.headerTitle = "Move To"
+        labelsPopover.type = .moveTo
+        labelsPopover.labels.append(contentsOf: getMoveableLabels())
+        labelsPopover.delegate = self
+        presentPopover(labelsPopover)
+    }
+    
+    func presentPopover(_ popover: UIViewController){
+        popover.preferredContentSize = CGSize(width: 269, height: 300)
+        popover.popoverPresentationController?.sourceView = self.view
+        popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        popover.popoverPresentationController?.permittedArrowDirections = []
+        popover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(popover, animated: true){
+            self.bottomMarginConstraint.constant = -98.0
+            self.moreOptionsView.isHidden = true
+            self.moreOptionsOverlay.alpha = 0.0
+            self.moreOptionsOverlay.isHidden = true
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func setLabels(labels: [Int]) {
+        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+            return
+        }
+        self.didPressEdit(reload: true)
+        var indexPathsToRemove = [IndexPath]()
+        for indexPath in indexPaths {
+            var removeEmail = false
+            let email = emailArray[indexPath.row]
+            let labelsToRemove = email.labels.reduce([Int]()) { (removeLabels, label) -> [Int] in
+                guard !labels.contains(label.id) else {
+                    return removeLabels
+                }
+                if(label.id == selectedLabel){
+                    removeEmail = true
+                }
+                return removeLabels + [label.id]
+            }
+            if(removeEmail){
+                indexPathsToRemove.append(indexPath)
+                self.emailArray.remove(at: indexPath.row)
+            }
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: labelsToRemove)
+        }
+        self.tableView.deleteRows(at: indexPathsToRemove, with: .left)
+    }
+    
+    func moveTo(labelId: Int) {
+        guard labelId != selectedLabel,
+            let indexPaths = tableView.indexPathsForSelectedRows else {
+            self.didPressEdit(reload: true)
+            return
+        }
+        self.didPressEdit(reload: true)
+        for indexPath in indexPaths {
+            let email = emailArray[indexPath.row]
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [labelId], removedLabelIds: [selectedLabel])
+            emailArray.remove(at: indexPath.row)
+        }
+        self.tableView.deleteRows(at: indexPaths, with: .left)
+    }
+}
+
+extension InboxViewController: NavigationToolbarDelegate {
+    func onBackPress() {
+        guard !isCustomEditing else {
+            self.didPressEdit(reload: true)
+            return
+        }
+    }
+    
+    func onArchiveThreads() {
+        let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
+            self.archiveSelectedThreads()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        showAlert("Archive Threads", message: "The selected threads will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
+    }
+    
+    func onTrashThreads() {
+        let archiveAction = UIAlertAction(title: "Yes", style: .destructive){ (alert : UIAlertAction!) -> Void in
+            self.deleteSelectedThreads()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        showAlert("Delete Threads", message: "The selected threads will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])
+    }
+    
+    func onMarkThreads() {
+        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+            return
+        }
+        let unread = unreadMails <= 0
+        for indexPath in indexPaths {
+            let email = emailArray[indexPath.row]
+            DBManager.updateEmail(email, unread: unread)
+        }
+        self.didPressEdit(reload: true)
+    }
+    
+    func deleteSelectedThreads() {
+        handleSelectedThreads(addedLabelIds: [SystemLabel.trash.id])
+    }
+    
+    func archiveSelectedThreads(){
+        handleSelectedThreads(addedLabelIds: [])
+    }
+    
+    func handleSelectedThreads(addedLabelIds: [Int]){
+        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+            return
+        }
+        self.didPressEdit(reload: true)
+        for indexPath in indexPaths {
+            let email = emailArray[indexPath.row]
+            let labelsToRemove = email.labels.reduce([Int]()) { (labels, label) -> [Int] in
+                guard label.id != SystemLabel.sent.id && label.id != SystemLabel.draft.id else {
+                    return labels
+                }
+                return labels + [label.id]
+            }
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: labelsToRemove)
+            self.emailArray.remove(at: indexPath.row)
+        }
+        self.tableView.deleteRows(at: indexPaths, with: .left)
+    }
+    
+    func onMoreOptions() {
+        toggleMoreOptions()
     }
 }

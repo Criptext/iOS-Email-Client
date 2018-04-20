@@ -291,6 +291,7 @@ class ComposeViewController: UIViewController {
         else{
             emailDetail.preview = body
         }
+        emailDetail.unread = false
         emailDetail.subject = subject
         emailDetail.date = Date()
         emailDetail.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
@@ -553,7 +554,6 @@ class ComposeViewController: UIViewController {
             self.updateEmailData(data)
             self.dismiss(animated: true){
                 self.hideSnackbar()
-                (UIApplication.shared.delegate as! AppDelegate).triggerRefresh()
             }
             
         }

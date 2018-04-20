@@ -77,6 +77,7 @@ class EventHandler {
         email.s3Key = bodyKey
         email.preview = preview
         email.date = localDate
+        email.unread = true
         
         APIManager.getEmailBody(s3Key: email.s3Key, token: myAccount.jwt) { (error, data) in
             guard error == nil else {

@@ -157,6 +157,14 @@ extension DBManager {
         }
     }
     
+    class func updateEmail(_ email: Email, unread: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.unread = unread
+        }
+    }
+    
     class func deleteEmail(id:String){
         
         let realm = try! Realm()
@@ -370,7 +378,6 @@ extension DBManager {
     
     class func store(_ label: Label){
         let realm = try! Realm()
-        label.incrementID()
         try! realm.write {
             realm.add(label, update: true)
         }
@@ -382,11 +389,18 @@ extension DBManager {
         return realm.object(ofType: Label.self, forPrimaryKey: labelId)
     }
     
+    class func getLabels() -> [Label]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(Label.self))
+    }
+    
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
         let realm = try! Realm()
         try! realm.write {
             for labelId in addedLabelIds {
-                guard let label = self.getLabel(labelId) else {
+                guard !email.labels.contains(where: {$0.id == labelId}),
+                    let label = self.getLabel(labelId) else {
                     continue
                 }
                 email.labels.append(label)
@@ -399,6 +413,7 @@ extension DBManager {
             }
         }
     }
+    
 }
 
 //MARK: - Email Contact

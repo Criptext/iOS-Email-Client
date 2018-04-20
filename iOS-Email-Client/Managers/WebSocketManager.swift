@@ -54,9 +54,6 @@ extension WebSocketManager: WebSocketDelegate{
     
     func webSocketError(_ error: NSError) {
         print("Websocket - Error : \(NSError.debugDescription())")
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
-            self.connect(account: self.myAccount)
-        }
     }
     
     func webSocketMessageText(_ text: String) {

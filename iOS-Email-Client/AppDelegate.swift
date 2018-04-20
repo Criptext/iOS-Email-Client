@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
-        
+    
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
         WebSocketManager.sharedInstance.connect(account: myAccount!)
