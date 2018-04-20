@@ -84,6 +84,11 @@ class ComposeViewController: UIViewController {
     
     let DOMAIN = "jigl.com"
     
+    var initToContacts = [Contact]()
+    var initCcContacts = [Contact]()
+    var initSubject = ""
+    var initContent = ""
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,9 +99,6 @@ class ComposeViewController: UIViewController {
         self.sendBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
         self.sendSecureBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
         self.sendSecureBarButton.tintColor = .white
-        
-        let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
-        textField.font = Font.regular.size(14)
         
         self.editorView.placeholder = "Message"
         self.editorView.delegate = self
@@ -141,8 +143,6 @@ class ComposeViewController: UIViewController {
         self.contactTableView.isHidden = true
         
         self.editorView.isScrollEnabled = false
-        //self.editorView.html = "<br><br>" + self.currentUser.emailSignature
-        print(self.editorView.lineHeight)
         self.editorHeightConstraint.constant = 150
         
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
@@ -183,12 +183,21 @@ class ComposeViewController: UIViewController {
         }
         
         self.attachmentBarButton.badgeString = badgeString
-        
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
-        //Download gmail attachments if necessary
-        //self.download(self.attachmentArray.filter({$0.isEncrypted == false}) as! [AttachmentGmail], mail: self.emailDraft)
-        
+        subjectField.text = initSubject
+        if(!initContent.isEmpty){
+            editorView.html = initContent
+        }
+    }
+    
+    func setupInitContacts(){
+        for contact in initToContacts {
+            addToken(contact.displayName, value: contact.email, to: toField)
+        }
+        for contact in initCcContacts {
+            addToken(contact.displayName, value: contact.email, to: ccField)
+        }
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -202,6 +211,14 @@ class ComposeViewController: UIViewController {
             self.sendSecureBarButton.isEnabled = false
             self.sendBarButton.isEnabled = false
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        IQKeyboardManager.shared.enable = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        IQKeyboardManager.shared.enable = true
     }
     
     //MARK: - functions
@@ -249,16 +266,7 @@ class ComposeViewController: UIViewController {
         }
         
         self.attachmentBarButton.badgeString = badgeString
-        
         self.toggleAttachmentTable()
-    
-        do{
-            //try FileManager.default.removeItem(at: attachment.filePath)
-        }catch{
-            print("file already updated")
-        }
-        
-        //cancelling request just in case
         APIManager.cancelUpload(attachment.name)
         
         self.tableView.performUpdate({
@@ -281,7 +289,7 @@ class ComposeViewController: UIViewController {
         let body = self.addAttachments(to: self.editorView.html)
         
         //create draft
-        let emailDetail = Email()
+        let emailDetail = emailDraft ?? Email()
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
         if(body.count > 100){
@@ -1198,8 +1206,6 @@ extension ComposeViewController: AttachmentTableViewCellDelegate {
     }
     
     func tableViewCellDidTapReadOnly(_ cell: AttachmentTableViewCell) {
-        let indexPath = self.tableView.indexPath(for: cell)
-        var attachment = self.attachmentArray[indexPath!.row]
         self.tableView.reloadData()
     }
     
@@ -1346,7 +1352,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         
         self.contactTableView.isHidden = true
         
-        guard let text = view.text, text.characters.count > 0 else {
+        guard let text = view.text, text.count > 0 else {
             return
         }
         
@@ -1433,12 +1439,6 @@ extension ComposeViewController: RichEditorDelegate {
             if diff == -28  {
                 newOffset = CGPoint(x: offset.x, y: offset.y - 28)
             }
-            
-            //avoid this when populating a draft
-//            if self.isEdited && editor.isEditorLoaded {
-//                self.scrollView.setContentOffset(newOffset, animated: true)
-//            }
-            
         }
         
         guard height > 150 else {
@@ -1449,15 +1449,17 @@ extension ComposeViewController: RichEditorDelegate {
     }
     
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
-//        if !self.isEdited && editor.isEditorLoaded {
-            self.isEdited = true
-//        }
+        self.isEdited = true
     }
     
     func richEditorDidLoad(_ editor: RichEditorView) {
-        
         self.editorView.replace(font: "NunitoSans-Regular", css: "editor-style")
-        
+        if(!initSubject.isEmpty && initToContacts.count > 0){
+            self.setupInitContacts()
+            editorView.focus(at: CGPoint(x: 0.0, y: 0.0))
+        }else{
+            toField.beginEditing()
+        }
     }
     
     func richEditorTookFocus(_ editor: RichEditorView) {

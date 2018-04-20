@@ -5,7 +5,7 @@
 //  Created by Pedro Aim on 2/27/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
-
+import Material
 import Foundation
 
 class EmailDetailViewController: UIViewController {
@@ -34,13 +34,7 @@ class EmailDetailViewController: UIViewController {
         
         self.topToolbar.isHidden = true
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.topToolbar.removeFromSuperview()
-    }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -126,7 +120,8 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = tableView.dequeueReusableCell(withIdentifier: "emailTableFooterView")
+        let footerView = tableView.dequeueReusableCell(withIdentifier: "emailTableFooterView") as! EmailDetailFooterCell
+        footerView.delegate = self
         return footerView
     }
     
@@ -233,5 +228,69 @@ extension EmailDetailViewController: UIGestureRecognizerDelegate {
             return true
         }
         return false
+    }
+}
+
+extension EmailDetailViewController: EmailDetailFooterDelegate {
+    func onPressReply() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
+        
+        guard let lastEmail = emailData.emails.last,
+            let lastContact = emailData.emails.last?.fromContact else {
+            return
+        }
+        if(lastContact.email == "myaccount\(Constants.domain)"){
+            composeVC.initToContacts.append(contentsOf: emailData.emails.last!.getContacts(type: .to))
+        } else {
+            composeVC.initToContacts.append(lastContact)
+        }
+        composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
+        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
+
+        composeVC.initContent = replyBody
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+    }
+    
+    func onPressReplyAll() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
+        
+        guard let lastEmail = emailData.emails.last,
+            let lastContact = emailData.emails.last?.fromContact else {
+                return
+        }
+        for email in emailData.emails {
+            if(email.fromContact!.email != "myaccount\(Constants.domain)"){
+                composeVC.initToContacts.append(email.fromContact!)
+            }
+            composeVC.initToContacts.append(email.fromContact!)
+        }
+        composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
+        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
+        
+        composeVC.initContent = replyBody
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+    }
+    
+    func onPressForward() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
+        
+        guard let lastEmail = emailData.emails.last,
+            let lastContact = emailData.emails.last?.fromContact else {
+                return
+        }
+        composeVC.initSubject = emailData.subject.starts(with: "Fw: ") ? emailData.subject : "Fw: \(emailData.subject)"
+        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
+        
+        composeVC.initContent = replyBody
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
 }

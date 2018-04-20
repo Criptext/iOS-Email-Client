@@ -137,5 +137,22 @@ struct Constants {
     " <body>"
     
     static let htmlBottomWrapper = "</body></html>"
+    
+    static let imagePath = Bundle.main.path(forResource: "showmore.png", ofType: nil) ?? ""
+    
+    static let quoteHideScript = "var replybody = document.getElementsByTagName(\"blockquote\")[0];" +
+        "var newNode = document.createElement(\"img\");" +
+        "newNode.src = \"file://\(imagePath)\";" +
+        "newNode.width = 30;" +
+        "newNode.style.paddingTop = \"10px\";" +
+        "newNode.style.paddingBottom = \"10px\";" +
+        "replybody.style.display = \"none\";" +
+        "replybody.parentElement.insertBefore(newNode, replybody);" +
+        "newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ " +
+        "replybody.style.display = \"none\";} else {" +
+        "replybody.style.display = \"block\";} window.location.href = \"inapp://heightUpdate\";});"
+    
+    static let fullScript = "<html><head><style type='text/css'>body{ font-family: 'Helvetica Neue', Helvetica, Arial; margin:0; padding: 0px 30px;} hr {border: 0; height: 1px; background-color: #bdc3c7;}.show { display: block;}.hide:target + .show { display: inline;} .hide:target { display: block;} .content { display:block;} .hide:target ~ .content { display:inline;} </style></head><body></body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'></iframe><script>\(quoteHideScript)</script></html>"
+
 
 }

@@ -66,6 +66,10 @@ class Email: Object {
     func getFormattedDate() -> String {
         return DateUtils.conversationTime(date)
     }
+    
+    func getFullDate() -> String {
+        return DateUtils.prettyDate(date)
+    }
 }
 
 func ==(lhs: Email, rhs: Email) -> Bool {
