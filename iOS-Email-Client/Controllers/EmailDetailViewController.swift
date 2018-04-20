@@ -10,14 +10,12 @@ import Foundation
 
 class EmailDetailViewController: UIViewController {
     var emailData : EmailDetailData!
-    @IBOutlet weak var backgroundOverlayView: UIView!
     @IBOutlet weak var emailsTableView: UITableView!
-    @IBOutlet weak var optionsContainerView: UIView!
-    @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
     @IBOutlet weak var topToolbar: NavigationToolbarView!
+    @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
     
-    var tapGestureRecognizer:UITapGestureRecognizer!
     var myHeaderView : UIView?
+    var optionsEmail : Email?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +25,7 @@ class EmailDetailViewController: UIViewController {
         self.setupMoreOptionsViews()
         
         self.registerCellNibs()
+        self.topToolbar.toolbarDelegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,13 +64,7 @@ class EmailDetailViewController: UIViewController {
         emailsTableView.estimatedRowHeight = 108
         emailsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
         emailsTableView.estimatedSectionHeaderHeight = 56;
-        optionsContainerView.isHidden = false
-        backgroundOverlayView.isHidden = true
-        backgroundOverlayView.alpha = 0.0
-        optionsContainerOffsetConstraint.constant = -300.0
-        
-        self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
-        self.backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
+        moreOptionsContainerView.delegate = self
     }
     
     func registerCellNibs(){
@@ -79,18 +72,6 @@ class EmailDetailViewController: UIViewController {
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
             self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
         }
-    }
-    
-    @objc func closeMoreOptions(){
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseOut, animations: {
-            self.optionsContainerOffsetConstraint.constant = -300.0
-            self.backgroundOverlayView.alpha = 0.0
-            self.view.layoutIfNeeded()
-        }, completion: {
-            finished in
-                self.optionsContainerView.isHidden = true
-                self.backgroundOverlayView.isHidden = true
-        })
     }
 }
 
@@ -209,13 +190,20 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
     }
     
     func handleOptionsTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        self.optionsContainerView.isHidden = false
-        self.backgroundOverlayView.isHidden = false
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
-            self.optionsContainerOffsetConstraint.constant = 0.0
-            self.backgroundOverlayView.alpha = 1.0
-            self.view.layoutIfNeeded()
-        })
+        guard let indexPath = emailsTableView.indexPath(for: cell) else {
+            return
+        }
+        optionsEmail = emailData.emails[indexPath.row]
+        toggleMoreOptionsView()
+    }
+    
+    @objc func toggleMoreOptionsView(){
+        guard moreOptionsContainerView.isHidden else {
+            moreOptionsContainerView.closeMoreOptions()
+            optionsEmail = nil
+            return
+        }
+        moreOptionsContainerView.showMoreOptions()
     }
 }
 
@@ -292,5 +280,115 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         
         composeVC.initContent = replyBody
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+    }
+}
+
+extension EmailDetailViewController: NavigationToolbarDelegate {
+    func onBackPress() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func onArchiveThreads() {
+        //TO DO
+    }
+    
+    func onTrashThreads() {
+        //TO DO
+    }
+    
+    func onMarkThreads() {
+        //TO DO
+    }
+    
+    func onMoreOptions() {
+        toggleMoreOptionsView()
+    }
+}
+
+extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
+    func onReplyPress() {
+        self.toggleMoreOptionsView()
+        guard let email = optionsEmail else {
+            self.onPressReply()
+            return
+        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
+
+        if(email.fromContact!.email == "myaccount\(Constants.domain)"){
+            composeVC.initToContacts.append(contentsOf: email.getContacts(type: .to))
+        } else {
+            composeVC.initToContacts.append(email.fromContact!)
+        }
+        composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
+        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+        
+        composeVC.initContent = replyBody
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true)
+    }
+    
+    func onReplyAllPress() {
+        self.toggleMoreOptionsView()
+        guard let email = optionsEmail else {
+            self.onPressReply()
+            return
+        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
+        
+        for email in emailData.emails {
+            if(email.fromContact!.email != "myaccount\(Constants.domain)"){
+                composeVC.initToContacts.append(email.fromContact!)
+            }
+            composeVC.initCcContacts.append(contentsOf: email.getContacts(type: .cc))
+        }
+        composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
+        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+        
+        composeVC.initContent = replyBody
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true)
+    }
+    
+    func onForwardPress() {
+        self.toggleMoreOptionsView()
+        guard let email = optionsEmail else {
+            self.onPressReply()
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
+
+        composeVC.initSubject = email.subject.starts(with: "Fw: ") ? email.subject : "Fw: \(email.subject)"
+        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+        
+        composeVC.initContent = replyBody
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true)
+    }
+    
+    func onDeletePress() {
+        //TO DO
+    }
+    
+    func onMarkPress() {
+        //TO DO
+    }
+    
+    func onSpamPress() {
+        //TO DO
+    }
+    
+    func onPrintPress() {
+        //TO DO
+    }
+    
+    func onOverlayPress() {
+        self.toggleMoreOptionsView()
     }
 }

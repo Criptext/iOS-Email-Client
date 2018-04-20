@@ -25,7 +25,7 @@ class NavigationToolbarView: UIView {
     var toolbarDelegate : NavigationToolbarDelegate?
     var cancelBarButton: UIBarButtonItem!
     var fixedSpace1 = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
-    var counterButton = UIBarButtonItem(title: "1", style: .plain, target: self, action: nil)
+    var counterButton = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
     var centerLeftBarButton: UIBarButtonItem!
     var fixedSpace2 = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
     var centerBarButton: UIBarButtonItem!

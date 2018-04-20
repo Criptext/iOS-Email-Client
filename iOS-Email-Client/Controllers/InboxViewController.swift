@@ -34,8 +34,6 @@ class InboxViewController: UIViewController {
     var emailArray = [Email]()
     var filteredEmailArray = [Email]()
     var threadHash = [String:[Email]]()
-    //var attachmentHash = DBManager.getAllAttachments()
-    //var activities = DBManager.getAllActivities()
     var searchNextPageToken: String?
     
     var searchController = UISearchController(searchResultsController: nil)
@@ -596,7 +594,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         let selectedEmail = self.emailArray[indexPath.row]
-        let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId, label: 1)
+        let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId)
         let emailDetailData = EmailDetailData()
         emailDetailData.emails = emails
         emailDetailData.labels += emails.first!.labels
@@ -826,7 +824,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
                 indexPathsToRemove.append(indexPath)
                 self.emailArray.remove(at: indexPath.row)
             }
-            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: labelsToRemove)
+            DBManager.addRemoveLabelsFromThread(email.threadId, addedLabelIds: labels, removedLabelIds: labelsToRemove)
         }
         self.tableView.deleteRows(at: indexPathsToRemove, with: .left)
     }
@@ -840,7 +838,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         self.didPressEdit(reload: true)
         for indexPath in indexPaths {
             let email = emailArray[indexPath.row]
-            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [labelId], removedLabelIds: [selectedLabel])
+            DBManager.addRemoveLabelsFromThread(email.threadId, addedLabelIds: [labelId], removedLabelIds: [selectedLabel])
             emailArray.remove(at: indexPath.row)
         }
         self.tableView.deleteRows(at: indexPaths, with: .left)
@@ -904,7 +902,7 @@ extension InboxViewController: NavigationToolbarDelegate {
                 }
                 return labels + [label.id]
             }
-            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: labelsToRemove)
+            DBManager.addRemoveLabelsFromThread(email.threadId, addedLabelIds: [], removedLabelIds: labelsToRemove)
             self.emailArray.remove(at: indexPath.row)
         }
         self.tableView.deleteRows(at: indexPaths, with: .left)

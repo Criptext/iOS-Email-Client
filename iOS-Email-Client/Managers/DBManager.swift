@@ -64,13 +64,21 @@ extension DBManager {
     }
     
     class func getMails(from label: Int, since date:Date) -> ([String:[Email]], [Email]) {
-        var threadIds = Set<String>()
         let realm = try! Realm()
         let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@", label)).sorted(by: {$0.date! > $1.date!})
-        return ([:], emails)
+        var myEmails = [Email]()
+        var threadIds = Set<String>()
+        for email in emails {
+            guard !threadIds.contains(email.threadId) else {
+                continue
+            }
+            threadIds.insert(email.threadId)
+            myEmails.append(email)
+        }
+        return ([:], myEmails)
     }
     
-    class func getMailsbyThreadId(_ threadId: String, label: Int) -> [Email] {
+    class func getMailsbyThreadId(_ threadId: String) -> [Email] {
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "threadId == '\(threadId)'")
@@ -414,6 +422,12 @@ extension DBManager {
         }
     }
     
+    class func addRemoveLabelsFromThread(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int]){
+        let emails = getMailsbyThreadId(threadId)
+        for email in emails {
+            addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: removedLabelIds)
+        }
+    }
 }
 
 //MARK: - Email Contact

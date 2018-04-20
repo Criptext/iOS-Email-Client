@@ -137,6 +137,8 @@
 		7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */; };
 		7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */; };
 		7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */; };
+		7CB3B940208A57EF00EDD427 /* DetailMoreOptionsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB3B93F208A57EF00EDD427 /* DetailMoreOptionsUIView.swift */; };
+		7CB3B942208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB3B941208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib */; };
 		7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */; };
 		7CB44949207BBE0C009430EB /* MenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB44948207BBE0C009430EB /* MenuData.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
@@ -314,6 +316,8 @@
 		7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentHistoryTableCell.xib; sourceTree = "<group>"; };
 		7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentHistoryTableCell.swift; sourceTree = "<group>"; };
 		7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryUIPopover.swift; sourceTree = "<group>"; };
+		7CB3B93F208A57EF00EDD427 /* DetailMoreOptionsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMoreOptionsUIView.swift; sourceTree = "<group>"; };
+		7CB3B941208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailMoreOptionsUIView.xib; sourceTree = "<group>"; };
 		7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTableViewCell.swift; sourceTree = "<group>"; };
 		7CB44948207BBE0C009430EB /* MenuData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuData.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
@@ -617,6 +621,8 @@
 				7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */,
 				7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */,
 				7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */,
+				7CB3B93F208A57EF00EDD427 /* DetailMoreOptionsUIView.swift */,
+				7CB3B941208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -771,6 +777,7 @@
 				412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */,
 				41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */,
 				7C5FD822205C2FBB000E5F14 /* AttachmentTableViewCell.xib in Resources */,
+				7CB3B942208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib in Resources */,
 				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
 				41AAC54B201AA03E00809C4D /* showmore.png in Resources */,
 				412CB03B2037402D005D1B3F /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
@@ -876,6 +883,7 @@
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
+				7CB3B940208A57EF00EDD427 /* DetailMoreOptionsUIView.swift in Sources */,
 				7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */,
 				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				7C5FD826205C857C000E5F14 /* Utils.swift in Sources */,
