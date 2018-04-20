@@ -198,8 +198,16 @@ class InboxViewController: UIViewController {
         moreOptionsOverlay.alpha = 0.0
         bottomMarginConstraint.constant = -98.0
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeMoreOptions))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMoreOptions))
         self.moreOptionsOverlay.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func toggleMoreOptions(){
+        guard self.moreOptionsView.isHidden else {
+            closeMoreOptions()
+            return
+        }
+        showMoreOptions()
     }
     
     func showMoreOptions(){
@@ -212,7 +220,7 @@ class InboxViewController: UIViewController {
         })
     }
     
-    @objc func closeMoreOptions(){
+    func closeMoreOptions(){
         UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseOut, animations: {
             self.bottomMarginConstraint.constant = -98.0
             self.moreOptionsOverlay.alpha = 0.0
@@ -278,12 +286,12 @@ extension InboxViewController{
         if self.isCustomEditing {
             self.topToolbar.counterButton.title = "1"
             self.topToolbar.isHidden = false
-            tableView.refreshControl = nil
+            refreshControl.isEnabled = false
         }else{
             self.topToolbar.isHidden = true
             self.navigationController?.navigationBar.isHidden = false
             self.navigationController?.navigationBar.frame = self.originalNavigationRect
-            tableView.refreshControl = refreshControl
+            refreshControl.isEnabled = true
             unreadMails = 0
         }
         
@@ -867,7 +875,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
 
 extension InboxViewController: NavigationToolbarDelegate {
     func onBackPress() {
-        if(isCustomEditing){
+        guard !isCustomEditing else {
             self.didPressEdit()
             self.tableView.reloadData()
             return
@@ -944,6 +952,6 @@ extension InboxViewController: NavigationToolbarDelegate {
     }
     
     func onMoreOptions() {
-        showMoreOptions()
+        toggleMoreOptions()
     }
 }
