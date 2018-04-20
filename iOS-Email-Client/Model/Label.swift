@@ -42,3 +42,62 @@ class Label : Object {
         id = (realm.objects(Label.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
 }
+
+enum SystemLabel: Int {
+    case inbox = 1
+    case draft = 6
+    case sent = 3
+    case junk = 2
+    case trash = 7
+    case starred = 5
+    case important = 4
+    case all = -1
+    
+    var id: Int {
+        return self.rawValue
+    }
+    
+    var description: String {
+        switch self {
+        case .inbox:
+            return "Inbox"
+        case .draft:
+            return "Draft"
+        case .sent:
+            return "Sent"
+        case .junk:
+            return "Junk"
+        case .trash:
+            return "Trash"
+        case .important:
+            return "Important"
+        case .starred:
+            return "Starred"
+        case .all:
+            return "All Mail"
+        }
+    }
+    
+    var image: UIImage? {
+        switch self {
+        case .inbox:
+            return UIImage(named: "slider_inbox")
+        case .draft:
+            return UIImage(named: "slider_draft")
+        case .sent:
+            return UIImage(named: "slider_sent")
+        case .junk:
+            return UIImage(named: "slider_junk")
+        case .trash:
+            return UIImage(named: "slider_trash")
+        default:
+            return UIImage(named: "slider_allmail")
+        }
+    }
+    
+    static var array: [SystemLabel] {
+        let labels: [SystemLabel] = [.inbox, .draft, .sent, .junk, .trash, .starred, .important]
+        return labels
+    }
+}
+

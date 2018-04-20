@@ -399,10 +399,7 @@ extension DBManager {
         let realm = try! Realm()
         try! realm.write {
             for labelId in addedLabelIds {
-                let containLabel = email.labels.first(where: { (label) -> Bool in
-                    return label.id == labelId
-                })
-                guard containLabel == nil,
+                guard !email.labels.contains(where: {$0.id == labelId}),
                     let label = self.getLabel(labelId) else {
                     continue
                 }
@@ -417,13 +414,6 @@ extension DBManager {
         }
     }
     
-    class func deleteAllLabels(){
-        let realm = try! Realm()
-        let results = realm.objects(Label.self)
-        try! realm.write() {
-            realm.delete(results)
-        }
-    }
 }
 
 //MARK: - Email Contact

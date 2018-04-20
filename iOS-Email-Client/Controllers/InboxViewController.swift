@@ -280,7 +280,7 @@ extension InboxViewController: EventHandlerDelegate {
 
 //MARK: - Modify mails actions
 extension InboxViewController{
-    @objc func didPressEdit() {
+    @objc func didPressEdit(reload: Bool) {
         self.isCustomEditing = !self.isCustomEditing
         
         if self.isCustomEditing {
@@ -296,6 +296,9 @@ extension InboxViewController{
         }
         
         self.setButtonItems(isEditing: self.isCustomEditing)
+        if(reload){
+            self.tableView.reloadData()
+        }
     }
     
     @IBAction func didPressComposer(_ sender: UIButton) {
@@ -336,32 +339,6 @@ extension InboxViewController {
     
     @IBAction func didPressSearch(_ sender: UIBarButtonItem) {
         self.searchController.searchBar.becomeFirstResponder()
-    }
-}
-
-//MARK: - Unwind Segues
-extension InboxViewController{
-    //move mail, unwind segue
-    @IBAction func selectedMailbox(_ segue:UIStoryboardSegue){
-        let vc = segue.source as! MoveMailViewController
-        
-        guard let selectedMailbox = vc.selectedMailbox,
-            let emailsIndexPath = self.tableView.indexPathsForSelectedRows else {
-            return
-        }
-        
-        if self.navigationController!.viewControllers.count > 1 {
-            self.navigationController?.popViewController(animated: true)
-        }
-        
-        if self.isCustomEditing {
-            self.didPressEdit()
-        }
-        
-        self.emailArray.removeAll()
-        self.threadHash.removeAll()
-        self.loadMails(from: selectedLabel, since: Date())
-        self.tableView.reloadData()
     }
 }
 
@@ -570,14 +547,14 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return
         }
         
-        self.didPressEdit()
+        self.didPressEdit(reload: false)
         
         guard let indexPath = self.tableView.indexPath(for: cell) else {
             return
         }
         
         if self.tableView.indexPathsForSelectedRows == nil {
-            self.tableView.reloadData()
+            tableView.reloadData()
         }
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
@@ -654,8 +631,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return
         }
         
-        self.didPressEdit()
-        self.tableView.reloadData()
+        self.didPressEdit(reload: true)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -832,8 +808,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             return
         }
-        self.didPressEdit()
-        self.tableView.reloadData()
+        self.didPressEdit(reload: true)
         var indexPathsToRemove = [IndexPath]()
         for indexPath in indexPaths {
             var removeEmail = false
@@ -857,13 +832,12 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     }
     
     func moveTo(labelId: Int) {
-        self.didPressEdit()
-        self.tableView.reloadData()
         guard labelId != selectedLabel,
             let indexPaths = tableView.indexPathsForSelectedRows else {
+            self.didPressEdit(reload: true)
             return
         }
-        
+        self.didPressEdit(reload: true)
         for indexPath in indexPaths {
             let email = emailArray[indexPath.row]
             DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [labelId], removedLabelIds: [selectedLabel])
@@ -876,8 +850,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
 extension InboxViewController: NavigationToolbarDelegate {
     func onBackPress() {
         guard !isCustomEditing else {
-            self.didPressEdit()
-            self.tableView.reloadData()
+            self.didPressEdit(reload: true)
             return
         }
     }
@@ -907,36 +880,22 @@ extension InboxViewController: NavigationToolbarDelegate {
             let email = emailArray[indexPath.row]
             DBManager.updateEmail(email, unread: unread)
         }
-        self.didPressEdit()
-        self.tableView.reloadData()
+        self.didPressEdit(reload: true)
     }
     
     func deleteSelectedThreads() {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
-            return
-        }
-        self.didPressEdit()
-        self.tableView.reloadData()
-        for indexPath in indexPaths {
-            let email = emailArray[indexPath.row]
-            let labelsToRemove = email.labels.reduce([Int]()) { (labels, label) -> [Int] in
-                guard label.id != SystemLabel.sent.id && label.id != SystemLabel.draft.id else {
-                    return labels
-                }
-                return labels + [label.id]
-            }
-            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: labelsToRemove)
-            self.emailArray.remove(at: indexPath.row)
-        }
-        self.tableView.deleteRows(at: indexPaths, with: .left)
+        handleSelectedThreads(addedLabelIds: [SystemLabel.trash.id])
     }
     
     func archiveSelectedThreads(){
+        handleSelectedThreads(addedLabelIds: [])
+    }
+    
+    func handleSelectedThreads(addedLabelIds: [Int]){
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             return
         }
-        self.didPressEdit()
-        self.tableView.reloadData()
+        self.didPressEdit(reload: true)
         for indexPath in indexPaths {
             let email = emailArray[indexPath.row]
             let labelsToRemove = email.labels.reduce([Int]()) { (labels, label) -> [Int] in
@@ -945,7 +904,7 @@ extension InboxViewController: NavigationToolbarDelegate {
                 }
                 return labels + [label.id]
             }
-            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [], removedLabelIds: labelsToRemove)
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: labelsToRemove)
             self.emailArray.remove(at: indexPath.row)
         }
         self.tableView.deleteRows(at: indexPaths, with: .left)

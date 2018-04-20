@@ -23,7 +23,7 @@ class LabelsUIPopover: BaseUIPopover {
     var headerTitle = ""
     var labels = [Label]()
     var selectedLabels = [Int: Label]()
-    var type : LabelsAction = .addLabels
+    var type : ActionType = .addLabels
     var delegate : LabelsUIPopoverDelegate?
     
     init(){
@@ -69,38 +69,36 @@ extension LabelsUIPopover: UITableViewDelegate, UITableViewDataSource{
         let label = labels[indexPath.row]
         cell.setLabel(label.text, color: UIColor(hex: label.color))
         cell.selectionStyle = .none
-        if(selectedLabels[label.id] == label){
-            cell.setAsSelected()
-        } else {
-            cell.setAsDeselected()
-        }
         if(type == .moveTo){
             cell.checkMarkView?.isHidden = true
+            cell.dotView.isHidden = true
+        } else {
+            if(selectedLabels[label.id] == label){
+                cell.setAsSelected()
+            } else {
+                cell.setAsDeselected()
+            }
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let label = labels[indexPath.row]
-        switch(type){
-        case .addLabels:
-            if(selectedLabels[label.id] == label){
-                selectedLabels[label.id] = nil
-            }else{
-                selectedLabels[label.id] = label
-            }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-            break
-        case .moveTo:
+        guard type == .addLabels else {
             delegate?.moveTo(labelId: label.id)
             dismiss(animated: false, completion: nil)
-            break
+            return
         }
-        
+        if(selectedLabels[label.id] == label){
+            selectedLabels[label.id] = nil
+        }else{
+            selectedLabels[label.id] = label
+        }
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
 
-enum LabelsAction {
+enum ActionType {
     case moveTo
     case addLabels
 }
