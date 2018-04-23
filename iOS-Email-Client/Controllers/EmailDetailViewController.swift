@@ -10,12 +10,25 @@ import Foundation
 
 class EmailDetailViewController: UIViewController {
     var emailData : EmailDetailData!
+    var mailboxData : MailboxData?
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var topToolbar: NavigationToolbarView!
     @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
+    @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     
     var myHeaderView : UIView?
     var optionsEmail : Email?
+    var markAsRead : Bool {
+        get {
+            var value = false
+            for email in emailData.emails {
+                if(email.unread){
+                    value = true
+                }
+            }
+            return value
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +39,7 @@ class EmailDetailViewController: UIViewController {
         
         self.registerCellNibs()
         self.topToolbar.toolbarDelegate = self
+        self.generalOptionsContainerView.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,6 +87,15 @@ class EmailDetailViewController: UIViewController {
             self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
         }
     }
+    
+    func displayMarkIcon(){
+        if(markAsRead){
+            topToolbar.setupMarkAsRead()
+        } else {
+            topToolbar.setupMarkAsUnread()
+        }
+        topToolbar.setItemsMenu()
+    }
 }
 
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
@@ -118,6 +141,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         }
         let email = emailData.emails[indexPath.row]
         DBManager.updateEmail(email, unread: false)
+        displayMarkIcon()
         emailsTableView.reloadData()
     }
     
@@ -142,6 +166,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
             handleUnsendTap(cell, sender)
         case .options:
             handleOptionsTap(cell, sender)
+        case .reply:
+            handleReplyTap(cell, sender)
         default:
             return
         }
@@ -175,6 +201,14 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         presentPopover(contactsPopover, sender, height: CGFloat(50 + 2 * email.emailContacts.count * 20))
     }
     
+    func handleReplyTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        guard let indexPath = emailsTableView.indexPath(for: cell) else {
+            return
+        }
+        optionsEmail = emailData.emails[indexPath.row]
+        onReplyPress()
+    }
+    
     func handleUnsendTap(_ cell: EmailTableViewCell, _ sender: UIView){
         let unsentPopover = UnsentUIPopover()
         presentPopover(unsentPopover, sender, height: 68)
@@ -205,6 +239,14 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         }
         moreOptionsContainerView.showMoreOptions()
     }
+    
+    @objc func toggleGeneralOptionsView(){
+        guard generalOptionsContainerView.isHidden else {
+            generalOptionsContainerView.closeMoreOptions()
+            return
+        }
+        generalOptionsContainerView.showMoreOptions()
+    }
 }
 
 extension EmailDetailViewController: UIGestureRecognizerDelegate {
@@ -220,66 +262,64 @@ extension EmailDetailViewController: UIGestureRecognizerDelegate {
 }
 
 extension EmailDetailViewController: EmailDetailFooterDelegate {
-    func onPressReply() {
+    
+    func transitionToComposer(initParamsHandler: (ComposeViewController) -> Void){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-        
-        guard let lastEmail = emailData.emails.last,
-            let lastContact = emailData.emails.last?.fromContact else {
-            return
-        }
-        if(lastContact.email == "myaccount\(Constants.domain)"){
-            composeVC.initToContacts.append(contentsOf: emailData.emails.last!.getContacts(type: .to))
-        } else {
-            composeVC.initToContacts.append(lastContact)
-        }
-        composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
-        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
-
-        composeVC.initContent = replyBody
+        initParamsHandler(composeVC)
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+    }
+    
+    func onPressReply() {
+        transitionToComposer { (composeVC) in
+            guard let lastEmail = emailData.emails.last,
+                let lastContact = emailData.emails.last?.fromContact else {
+                    return
+            }
+            if(lastContact.email == "myaccount\(Constants.domain)"){
+                composeVC.initToContacts.append(contentsOf: emailData.emails.last!.getContacts(type: .to))
+            } else {
+                composeVC.initToContacts.append(lastContact)
+            }
+            composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
+            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
+            
+            composeVC.initContent = replyBody
+        }
     }
     
     func onPressReplyAll() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-        
-        guard let lastEmail = emailData.emails.last,
-            let lastContact = emailData.emails.last?.fromContact else {
-                return
-        }
-        for email in emailData.emails {
-            if(email.fromContact!.email != "myaccount\(Constants.domain)"){
+        transitionToComposer { (composeVC) in
+            guard let lastEmail = emailData.emails.last,
+                let lastContact = emailData.emails.last?.fromContact else {
+                    return
+            }
+            for email in emailData.emails {
+                if(email.fromContact!.email != "myaccount\(Constants.domain)"){
+                    composeVC.initToContacts.append(email.fromContact!)
+                }
                 composeVC.initToContacts.append(email.fromContact!)
             }
-            composeVC.initToContacts.append(email.fromContact!)
+            composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
+            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
+            
+            composeVC.initContent = replyBody
         }
-        composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
-        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
-        
-        composeVC.initContent = replyBody
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
     func onPressForward() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-        
-        guard let lastEmail = emailData.emails.last,
-            let lastContact = emailData.emails.last?.fromContact else {
-                return
+        transitionToComposer { (composeVC) in
+            guard let lastEmail = emailData.emails.last,
+                let lastContact = emailData.emails.last?.fromContact else {
+                    return
+            }
+            composeVC.initSubject = emailData.subject.starts(with: "Fw: ") ? emailData.subject : "Fw: \(emailData.subject)"
+            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
+            
+            composeVC.initContent = replyBody
         }
-        composeVC.initSubject = emailData.subject.starts(with: "Fw: ") ? emailData.subject : "Fw: \(emailData.subject)"
-        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
-        
-        composeVC.initContent = replyBody
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
 }
 
@@ -289,44 +329,55 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
     
     func onArchiveThreads() {
-        //TO DO
+        let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
+            self.setLabels(labels: [])
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        showAlert("Archive Threads", message: "The selected threads will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
     }
     
     func onTrashThreads() {
-        //TO DO
+        let archiveAction = UIAlertAction(title: "Yes", style: .destructive){ (alert : UIAlertAction!) -> Void in
+            self.setLabels(labels: [SystemLabel.trash.id])
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        showAlert("Delete Threads", message: "The selected threads will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])
     }
     
     func onMarkThreads() {
-        //TO DO
+        let unread = !markAsRead
+        for email in emailData.emails {
+            DBManager.updateEmail(email, unread: unread)
+        }
+        if(unread){
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     func onMoreOptions() {
-        toggleMoreOptionsView()
+        toggleGeneralOptionsView()
     }
 }
 
 extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     func onReplyPress() {
-        self.toggleMoreOptionsView()
+        moreOptionsContainerView.closeMoreOptions()
+        optionsEmail = nil
         guard let email = optionsEmail else {
             self.onPressReply()
             return
         }
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-
-        if(email.fromContact!.email == "myaccount\(Constants.domain)"){
-            composeVC.initToContacts.append(contentsOf: email.getContacts(type: .to))
-        } else {
-            composeVC.initToContacts.append(email.fromContact!)
+        transitionToComposer { (composeVC) in
+            if(email.fromContact!.email == "myaccount\(Constants.domain)"){
+                composeVC.initToContacts.append(contentsOf: email.getContacts(type: .to))
+            } else {
+                composeVC.initToContacts.append(email.fromContact!)
+            }
+            composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
+            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+            
+            composeVC.initContent = replyBody
         }
-        composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
-        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
-        
-        composeVC.initContent = replyBody
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true)
     }
     
     func onReplyAllPress() {
@@ -335,22 +386,18 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.onPressReply()
             return
         }
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-        
-        for email in emailData.emails {
-            if(email.fromContact!.email != "myaccount\(Constants.domain)"){
-                composeVC.initToContacts.append(email.fromContact!)
+        transitionToComposer { (composeVC) in
+            for email in emailData.emails {
+                if(email.fromContact!.email != "myaccount\(Constants.domain)"){
+                    composeVC.initToContacts.append(email.fromContact!)
+                }
+                composeVC.initCcContacts.append(contentsOf: email.getContacts(type: .cc))
             }
-            composeVC.initCcContacts.append(contentsOf: email.getContacts(type: .cc))
+            composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
+            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+            
+            composeVC.initContent = replyBody
         }
-        composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
-        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
-        
-        composeVC.initContent = replyBody
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true)
     }
     
     func onForwardPress() {
@@ -359,17 +406,12 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.onPressReply()
             return
         }
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-
-        composeVC.initSubject = email.subject.starts(with: "Fw: ") ? email.subject : "Fw: \(email.subject)"
-        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
-        
-        composeVC.initContent = replyBody
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true)
+        transitionToComposer { (composeVC) in
+            composeVC.initSubject = email.subject.starts(with: "Fw: ") ? email.subject : "Fw: \(email.subject)"
+            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+            
+            composeVC.initContent = replyBody
+        }
     }
     
     func onDeletePress() {
@@ -390,5 +432,88 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onOverlayPress() {
         self.toggleMoreOptionsView()
+    }
+}
+
+extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
+    func onDismissPress() {
+        toggleGeneralOptionsView()
+    }
+    
+    func onMoveToPress() {
+        handleMoveTo()
+    }
+    
+    func onAddLabesPress() {
+        handleAddLabels()
+    }
+}
+
+extension EmailDetailViewController : LabelsUIPopoverDelegate{
+    
+    func getMoveableLabels() -> [Label] {
+        let labels = DBManager.getLabels()
+        return labels.reduce([Label](), { (moveableLabels, label) -> [Label] in
+            guard label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
+                return moveableLabels
+            }
+            return moveableLabels + [label]
+        })
+    }
+    
+    func handleAddLabels(){
+        let labelsPopover = LabelsUIPopover()
+        labelsPopover.headerTitle = "Add Labels"
+        labelsPopover.type = .addLabels
+        labelsPopover.labels.append(contentsOf: getMoveableLabels())
+        labelsPopover.delegate = self
+        for label in emailData.labels {
+            labelsPopover.selectedLabels[label.id] = label
+        }
+        presentPopover(labelsPopover)
+    }
+    
+    func handleMoveTo(){
+        let labelsPopover = LabelsUIPopover()
+        labelsPopover.headerTitle = "Move To"
+        labelsPopover.type = .moveTo
+        labelsPopover.labels.append(contentsOf: getMoveableLabels())
+        labelsPopover.delegate = self
+        presentPopover(labelsPopover)
+    }
+    
+    func presentPopover(_ popover: UIViewController){
+        popover.preferredContentSize = CGSize(width: 269, height: 300)
+        popover.popoverPresentationController?.sourceView = self.view
+        popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        popover.popoverPresentationController?.permittedArrowDirections = []
+        popover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(popover, animated: true){
+            self.toggleGeneralOptionsView()
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func setLabels(labels: [Int]) {
+        let myLabels = emailData.labels
+        var removeMailboxRow = false
+        let labelsToRemove = myLabels.reduce([Int]()) { (removeLabels, label) -> [Int] in
+            guard !labels.contains(where: {$0 == label.id}) else {
+                return removeLabels
+            }
+            if(label.id == mailboxData?.selectedLabel){
+                removeMailboxRow = true
+            }
+            return removeLabels + [label.id]
+        }
+        DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: labels, removedLabelIds: labelsToRemove)
+        mailboxData?.removeSelectedRow = removeMailboxRow
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func moveTo(labelId: Int) {
+        DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: [labelId], removedLabelIds: [mailboxData!.selectedLabel])
+        mailboxData?.removeSelectedRow = true
+        self.navigationController?.popViewController(animated: true)
     }
 }

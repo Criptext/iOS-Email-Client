@@ -1,35 +1,30 @@
 //
-//  EmailDetailMoreOptionsView.swift
+//  GeneralMoreOptionsUIView.swift
 //  iOS-Email-Client
 //
-//  Created by Pedro Aim on 4/20/18.
+//  Created by Pedro Aim on 4/22/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
 import Foundation
 
-protocol DetailMoreOptionsViewDelegate{
-    func onReplyPress()
-    func onReplyAllPress()
-    func onForwardPress()
-    func onDeletePress()
-    func onMarkPress()
-    func onSpamPress()
-    func onPrintPress()
-    func onOverlayPress()
+protocol GeneralMoreOptionsViewDelegate {
+    func onDismissPress()
+    func onMoveToPress()
+    func onAddLabesPress()
 }
 
-class DetailMoreOptionsUIView: UIView {
+class GeneralMoreOptionsUIView : UIView {
     @IBOutlet weak var backgroundOverlayView: UIView!
     @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
     var tapGestureRecognizer:UITapGestureRecognizer!
     @IBOutlet var view: UIView!
-    var delegate: DetailMoreOptionsViewDelegate?
+    var delegate : GeneralMoreOptionsViewDelegate?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        UINib(nibName: "DetailMoreOptionsUIView", bundle: nil).instantiate(withOwner: self, options: nil)
+        UINib(nibName: "GeneralMoreOptionsUIView", bundle: nil).instantiate(withOwner: self, options: nil)
         addSubview(view)
         view.frame = self.bounds
         view.backgroundColor = .clear
@@ -38,16 +33,13 @@ class DetailMoreOptionsUIView: UIView {
         optionsContainerView.isHidden = false
         backgroundOverlayView.isHidden = true
         backgroundOverlayView.alpha = 0.0
-        optionsContainerOffsetConstraint.constant = -300.0
+        optionsContainerOffsetConstraint.constant = -98.0
         
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onDismiss))
         backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
     }
     
     func showMoreOptions(){
-        guard isHidden else {
-            return
-        }
         self.isHidden = false
         self.optionsContainerView.isHidden = false
         self.backgroundOverlayView.isHidden = false
@@ -59,11 +51,8 @@ class DetailMoreOptionsUIView: UIView {
     }
     
     func closeMoreOptions(){
-        guard !isHidden else {
-            return
-        }
         UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseOut, animations: {
-            self.optionsContainerOffsetConstraint.constant = -300.0
+            self.optionsContainerOffsetConstraint.constant = -98.0
             self.backgroundOverlayView.alpha = 0.0
             self.view.layoutIfNeeded()
         }, completion: {
@@ -75,19 +64,16 @@ class DetailMoreOptionsUIView: UIView {
     }
     
     @objc func onDismiss(){
-        delegate?.onOverlayPress()
+        delegate?.onDismissPress()
     }
     
-    @IBAction func onReplyPress(_ sender: Any) {
-        delegate?.onReplyPress()
+    @IBAction func onMoveToPress(_ sender: Any) {
+        delegate?.onMoveToPress()
     }
     
-    @IBAction func onReplyAllPress(_ sender: Any) {
-        delegate?.onReplyAllPress()
-    }
-    
-    @IBAction func onForwardPress(_ sender: Any) {
-        delegate?.onForwardPress()
+    @IBAction func onAddLabelsPress(_ sender: Any) {
+        delegate?.onAddLabesPress()
     }
     
 }
+

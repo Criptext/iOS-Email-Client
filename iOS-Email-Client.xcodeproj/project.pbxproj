@@ -97,6 +97,9 @@
 		7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
 		7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
+		7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */; };
+		7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */; };
+		7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884F208D367B003FA304 /* MailboxData.swift */; };
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
 		7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */; };
 		7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */; };
@@ -275,6 +278,9 @@
 		7C147B42203C9676004823DE /* SignalProtocolFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SignalProtocolFramework.framework; path = Carthage/Build/iOS/SignalProtocolFramework.framework; sourceTree = "<group>"; };
 		7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextAxolotlStore.swift; sourceTree = "<group>"; };
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralMoreOptionsUIView.swift; sourceTree = "<group>"; };
+		7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralMoreOptionsUIView.xib; sourceTree = "<group>"; };
+		7C1E884F208D367B003FA304 /* MailboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxData.swift; sourceTree = "<group>"; };
 		7C34E5FA20470D2100E71906 /* EmailDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailData.swift; sourceTree = "<group>"; };
 		7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyDetailUIView.swift; sourceTree = "<group>"; };
 		7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailFooterCell.swift; sourceTree = "<group>"; };
@@ -561,6 +567,7 @@
 				7C5FD82C20607602000E5F14 /* Label.swift */,
 				9568328F20753FBE007F8489 /* File.swift */,
 				7CB44948207BBE0C009430EB /* MenuData.swift */,
+				7C1E884F208D367B003FA304 /* MailboxData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -623,6 +630,8 @@
 				7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */,
 				7CB3B93F208A57EF00EDD427 /* DetailMoreOptionsUIView.swift */,
 				7CB3B941208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib */,
+				7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */,
+				7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -771,6 +780,7 @@
 				7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
+				7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
 				41AAC528201A9FC300809C4D /* DetailThreadTableViewCell.xib in Resources */,
@@ -882,6 +892,7 @@
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
+				7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
 				7CB3B940208A57EF00EDD427 /* DetailMoreOptionsUIView.swift in Sources */,
 				7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */,
@@ -908,6 +919,7 @@
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
 				41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */,
+				7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */,
 				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
 				7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */,

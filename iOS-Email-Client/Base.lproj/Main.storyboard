@@ -1305,16 +1305,24 @@
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1su-18-smw" customClass="DetailMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ffn-LR-DMI" customClass="GeneralMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="pwm-FM-Cnc" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="2IV-rk-JbB"/>
+                            <constraint firstItem="ffn-LR-DMI" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="2KE-EG-G1A"/>
+                            <constraint firstAttribute="trailing" secondItem="ffn-LR-DMI" secondAttribute="trailing" id="5uI-A7-d3B"/>
                             <constraint firstAttribute="bottom" secondItem="1su-18-smw" secondAttribute="bottom" id="5uW-lU-hmM"/>
+                            <constraint firstItem="ffn-LR-DMI" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="75f-7q-mV4"/>
                             <constraint firstAttribute="trailing" secondItem="1su-18-smw" secondAttribute="trailing" id="Bdi-g2-4n8"/>
                             <constraint firstItem="pwm-FM-Cnc" firstAttribute="top" secondItem="YLR-Gd-JFL" secondAttribute="bottom" id="M6O-0g-bIu"/>
                             <constraint firstItem="psb-7X-bXy" firstAttribute="top" secondItem="H88-ZN-H4B" secondAttribute="bottom" id="T7d-MC-ycK"/>
+                            <constraint firstAttribute="bottom" secondItem="ffn-LR-DMI" secondAttribute="bottom" id="a5u-AK-jAH"/>
                             <constraint firstItem="H88-ZN-H4B" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="ksC-OI-i28"/>
                             <constraint firstItem="1su-18-smw" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="sqT-eC-RNj"/>
                             <constraint firstAttribute="trailing" secondItem="H88-ZN-H4B" secondAttribute="trailing" id="t1V-pA-6iO"/>
@@ -1327,6 +1335,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="emailsTableView" destination="H88-ZN-H4B" id="roC-Vf-CEU"/>
+                        <outlet property="generalOptionsContainerView" destination="ffn-LR-DMI" id="B4L-yX-5ZG"/>
                         <outlet property="moreOptionsContainerView" destination="1su-18-smw" id="2GV-Cz-5pz"/>
                         <outlet property="topToolbar" destination="pwm-FM-Cnc" id="7BQ-Sn-zwh"/>
                     </connections>
