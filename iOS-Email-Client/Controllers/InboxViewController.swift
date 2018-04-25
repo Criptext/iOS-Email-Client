@@ -33,7 +33,6 @@ class InboxViewController: UIViewController {
     var spaceBarButton:UIBarButtonItem!
     var fixedSpaceBarButton:UIBarButtonItem!
     var flexibleSpaceBarButton:UIBarButtonItem!
-    var cancelBarButton:UIBarButtonItem!
     var searchBarButton:UIBarButtonItem!
     var activityBarButton:UIBarButtonItem!
     var composerBarButton:UIBarButtonItem!
@@ -47,14 +46,16 @@ class InboxViewController: UIViewController {
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
     
-    var footerView:UIView!
-    var footerActivity:UIActivityIndicatorView!
-    
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
     var myAccount: Account!
     var originalNavigationRect:CGRect!
     var mailboxData = MailboxData()
+    var searchMode : Bool {
+        get {
+            return self.searchController.isActive && self.searchController.searchBar.text != ""
+        }
+    }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -70,13 +71,7 @@ class InboxViewController: UIViewController {
         self.topToolbar.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: 8.0).isActive = true
         self.navigationController?.navigationBar.bringSubview(toFront: self.topToolbar)
         
-        self.footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 40.0))
-        self.footerView.backgroundColor = UIColor.clear
-        self.footerActivity = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        self.footerActivity.hidesWhenStopped = true
-        self.footerView.addSubview(self.footerActivity)
-        self.footerActivity.center = self.footerView.center
-        self.tableView.tableFooterView = self.footerView
+        self.tableView.register(UINib(nibName: "TableEndViewCell", bundle: nil), forCellReuseIdentifier: "EndCell")
         
         self.originalNavigationRect = self.navigationController?.navigationBar.frame
         
@@ -85,6 +80,8 @@ class InboxViewController: UIViewController {
         self.searchController.searchResultsUpdater = self as UISearchResultsUpdating
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
+        self.searchController.searchBar.barStyle = .black
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Regular", size: 18.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .normal)
         definesPresentationContext = true
         
         self.navigationItem.searchController = self.searchController
@@ -93,7 +90,6 @@ class InboxViewController: UIViewController {
         self.initBarButtonItems()
         
         self.setButtonItems(isEditing: false)
-        self.loadMails(from: mailboxData.selectedLabel, since: Date())
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
@@ -107,8 +103,10 @@ class InboxViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updateBadges()
         
-        guard let indexPath = self.tableView.indexPathForSelectedRow, !mailboxData.isCustomEditing else {
+        guard !searchMode,
+            let indexPath = self.tableView.indexPathForSelectedRow, !mailboxData.isCustomEditing else {
             return
         }
         
@@ -132,12 +130,6 @@ class InboxViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        self.footerView.frame = CGRect(origin: self.footerView.frame.origin, size: CGSize(width: size.width, height: self.footerView.frame.size.height) )
-        
-        self.footerActivity.frame = CGRect(origin: self.footerActivity.frame.origin, size: CGSize(width: size.width / 2, height: self.footerActivity.frame.size.height) )
     }
     
     func initBarButtonItems(){
@@ -285,6 +277,7 @@ extension InboxViewController{
             self.navigationController?.navigationBar.frame = self.originalNavigationRect
             refreshControl.isEnabled = true
             mailboxData.unreadMails = 0
+            updateBadges()
         }
         
         self.setButtonItems(isEditing: mailboxData.isCustomEditing)
@@ -303,8 +296,10 @@ extension InboxViewController{
     }
     
     func swapMailbox(labelId: Int, sender: Any?){
+        mailboxData.reachedEnd = false
         mailboxData.selectedLabel = labelId
-        loadMails(from: labelId, since: Date())
+        mailboxData.fetchWorker?.cancel()
+        loadMails(from: labelId, since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased()
         self.navigationDrawerController?.closeLeftView()
     }
@@ -316,6 +311,18 @@ extension InboxViewController{
             topToolbar.setupMarkAsUnread()
         }
         topToolbar.setItemsMenu()
+    }
+    
+    func updateBadges(){
+        guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
+                return
+        }
+        menuViewController.refreshBadges()
+        let label =  SystemLabel(rawValue: mailboxData.selectedLabel) ?? .all
+        let mailboxCounter = label == .draft
+            ? DBManager.getMails(from: mailboxData.selectedLabel, since: Date(), limit: 100).1.count
+            : DBManager.getUnreadMails(from: mailboxData.selectedLabel).count
+        countBarButton.title = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
     }
 }
 
@@ -361,7 +368,6 @@ extension InboxViewController{
         }
         
         let indexPath = IndexPath(row: index, section: 0)
-        print("selecting cell")
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         self.tableView(self.tableView , didSelectRowAt: indexPath)
@@ -369,13 +375,19 @@ extension InboxViewController{
         mailboxData.threadToOpen = nil
     }
     
-    func loadMails(from label: Int, since date:Date){
+    func loadMails(from label: Int, since date:Date, clear: Bool = false){
         let tuple = DBManager.getMails(from: label, since: date)
-        mailboxData.emailArray = tuple.1
+        mailboxData.loading = false
+        if(clear){
+            mailboxData.emailArray = tuple.1
+        } else {
+            mailboxData.emailArray.append(contentsOf: tuple.1)
+        }
+        if(tuple.1.count == 0){
+            mailboxData.reachedEnd = true
+        }
         self.tableView.reloadData()
-        
-        //@TODO: remove return statement and paginate mails from db
-        return
+        updateBadges()
     }
 }
 
@@ -413,14 +425,6 @@ extension InboxViewController: UIGestureRecognizerDelegate {
 
 //MARK: - NavigationDrawerController Delegate
 extension InboxViewController: NavigationDrawerControllerDelegate {
-    func navigationDrawerController(navigationDrawerController: NavigationDrawerController, willOpen position: NavigationDrawerPosition) {
-        self.updateAppIcon()
-    }
-    
-    func updateAppIcon() {
-        //check mails for badge
-    }
-    
     func navigationDrawerController(navigationDrawerController: NavigationDrawerController, didClose position: NavigationDrawerPosition) {
         guard position == .right,
             let feedVC = navigationDrawerController.rightViewController as? FeedViewController else {
@@ -428,15 +432,20 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
         }
         feedVC.feedsTableView.isEditing = false
     }
+    
 }
 
 //MARK: - TableView Datasource
 extension InboxViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if(tableView.numberOfRows(inSection: 0) == indexPath.row + 1){
+            return createFooterView()
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let email:Email
-        if self.searchController.isActive && self.searchController.searchBar.text != "" {
+        if searchMode {
             email = mailboxData.filteredEmailArray[indexPath.row]
         }else {
             email = mailboxData.emailArray[indexPath.row]
@@ -455,9 +464,13 @@ extension InboxViewController: UITableViewDataSource{
             cell.backgroundColor = UIColor.white
             cell.senderLabel.font = Font.bold.size(15)
         }
-        
+        let fromContact = email.fromContact!
+        if(fromContact.email == "\(myAccount.username)@jigl.com"){
+            cell.senderLabel.text = email.getContactsString()
+        }else{
+            cell.senderLabel.text = fromContact.displayName
+        }
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
-        cell.senderLabel.text = email.fromContact?.displayName ?? "Unknown"
         cell.previewLabel.text = email.preview
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
         
@@ -466,15 +479,9 @@ extension InboxViewController: UITableViewDataSource{
         
         if mailboxData.isCustomEditing {
             if(cell.isSelected){
-                cell.backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
-                cell.avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
-                cell.avatarImageView.image = #imageLiteral(resourceName: "check")
-                cell.avatarImageView.tintColor = UIColor.white
+                cell.setAsSelected()
             } else {
-                cell.avatarImageView.image = nil
-                cell.avatarImageView.layer.borderWidth = 1.0
-                cell.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
-                cell.avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+                cell.setAsNotSelected()
             }
         } else {
             let initials = cell.senderLabel.text!.replacingOccurrences(of: "\"", with: "")
@@ -482,43 +489,36 @@ extension InboxViewController: UITableViewDataSource{
             cell.avatarImageView.layer.borderWidth = 0.0
         }
         
-        guard let emailArrayHash = mailboxData.threadHash[email.threadId], emailArrayHash.count > 1 else{
-            cell.containerBadge.isHidden = true
-            cell.badgeWidthConstraint.constant = 0
-            return cell
-        }
-        
-        //check if unread among thread mails
-        if emailArrayHash.contains(where: { return $0.unread }) {
-            cell.backgroundColor = UIColor(red:0.96, green:0.98, blue:1.00, alpha:1.0)
-            cell.senderLabel.font = Font.bold.size(17)
-            cell.subjectLabel.font = Font.bold.size(17)
-        }
-        
-        cell.containerBadge.isHidden = false
-        
-        switch emailArrayHash.count {
-        case _ where emailArrayHash.count > 9:
-            cell.badgeWidthConstraint.constant = 20
-            break
-        case _ where emailArrayHash.count > 99:
-            cell.badgeWidthConstraint.constant = 25
-            break
-        default:
-            cell.badgeWidthConstraint.constant = 20
-            break
-        }
-        
-        cell.badgeLabel.text = String(emailArrayHash.count)
-        
+        cell.setBadge(email.counter)
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.searchController.isActive && self.searchController.searchBar.text != "" {
-            return mailboxData.filteredEmailArray.count
+        if searchMode {
+            return mailboxData.filteredEmailArray.count + 1
         }
-        return mailboxData.emailArray.count
+        return mailboxData.emailArray.count + 1
+    }
+    
+    func createFooterView() -> UITableViewCell {
+        let footerView = tableView.dequeueReusableCell(withIdentifier: "EndCell") as! TableEndViewCell
+        guard !mailboxData.reachedEnd else {
+            footerView.displayMessage("No more emails to load")
+            return footerView
+        }
+        footerView.displayLoader()
+        if(!mailboxData.loading){
+            mailboxData.loading = true
+            mailboxData.fetchWorker = DispatchWorkItem(block: {
+                if self.searchMode {
+                    self.loadSearchedMails(since: self.mailboxData.filteredEmailArray.last?.date ?? Date())
+                }else {
+                    self.loadMails(from: self.mailboxData.selectedLabel, since: self.mailboxData.emailArray.last?.date ?? Date())
+                }
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: mailboxData.fetchWorker!)
+        }
+        return footerView
     }
 }
 
@@ -579,15 +579,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             }
             swapMarkIcon()
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
-            cell.backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
-            cell.avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
-            cell.avatarImageView.image = #imageLiteral(resourceName: "check")
-            cell.avatarImageView.tintColor = UIColor.white
+            cell.setAsSelected()
             self.topToolbar.counterButton.title = "\(indexPaths.count)"
             return
         }
         
-        let selectedEmail = mailboxData.emailArray[indexPath.row]
+        let selectedEmail = searchMode ? mailboxData.filteredEmailArray[indexPath.row] : mailboxData.emailArray[indexPath.row]
         let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId)
         let emailDetailData = EmailDetailData()
         emailDetailData.emails = emails
@@ -628,28 +625,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.didPressEdit(reload: true)
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let lastEmail = (self.searchController.isActive  && self.searchController.searchBar.text != "") ? mailboxData.filteredEmailArray.last : mailboxData.emailArray.last,
-            let threadEmailArray = mailboxData.threadHash[lastEmail.threadId], let firstThreadEmail = threadEmailArray.first else {
-                return
-        }
-        
-        let email:Email
-        if self.searchController.isActive && self.searchController.searchBar.text != "" {
-            email = mailboxData.filteredEmailArray[indexPath.row]
-        }else {
-            email = mailboxData.emailArray[indexPath.row]
-        }
-        if email == lastEmail {
-            if(searchController.searchBar.text == ""){
-                self.loadMails(from: mailboxData.selectedLabel, since: firstThreadEmail.date!)
-            }
-            else{
-                self.loadSearchedMails()
-            }
-        }
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 79.0
     }
@@ -662,7 +637,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
             
-            if self.searchController.isActive && self.searchController.searchBar.text != "" {
+            if self.searchMode {
                 let emailRemoved = self.mailboxData.filteredEmailArray.remove(at: indexPath.row)
                 guard let index = self.mailboxData.emailArray.index(of: emailRemoved) else {
                     return
@@ -695,52 +670,31 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
-        mailboxData.filteredEmailArray = mailboxData.emailArray.filter { email in
-            return email.content.lowercased().contains(searchText.lowercased())
-                || email.subject.lowercased().contains(searchText.lowercased())
-        }
-        
-        self.tableView.reloadData()
-        
+        mailboxData.reachedEnd = false
+        mailboxData.loading = false
+        mailboxData.fetchWorker?.cancel()
         if(searchText != ""){
-            self.loadSearchedMails()
+            self.loadSearchedMails(since: Date(), clear: true)
+        } else {
+            tableView.reloadData()
         }
     }
     
-    func loadSearchedMails(){
-        //search emails
-    }
-    
-    func addSearchedFetched(_ emails:[Email]){
-        mailboxData.filteredEmailArray.removeAll()
-        for email in emails {
-            DBManager.store(email)
-            
-            if mailboxData.threadHash[email.threadId] == nil {
-                mailboxData.threadHash[email.threadId] = []
-            }
-            
-            var threadArray = mailboxData.threadHash[email.threadId]!
-            
-            if !threadArray.contains(email){
-                mailboxData.threadHash[email.threadId]!.append(email)
-            }
-            
-            threadArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-            
-            if !mailboxData.filteredEmailArray.contains(where: { $0.threadId == email.threadId }) {
-                mailboxData.filteredEmailArray.append(email)
-            }
-            
-            if let dummyEmail = mailboxData.filteredEmailArray.first(where: { $0.threadId == email.threadId }),
-                let index = mailboxData.filteredEmailArray.index(of: dummyEmail), email.date! > dummyEmail.date! {
-                mailboxData.filteredEmailArray[index] = email
-            }
+    func loadSearchedMails(since: Date, clear: Bool = false){
+        guard let searchParam = self.searchController.searchBar.text else {
+            return
         }
-        
-        mailboxData.filteredEmailArray.sort(by: { $0.date?.compare($1.date!) == ComparisonResult.orderedDescending })
-        
-        self.tableView.reloadData()
+        let emails = DBManager.getMails(since: since, searchParam: searchParam)
+        if(clear){
+            mailboxData.filteredEmailArray = emails
+        }else{
+            mailboxData.filteredEmailArray.append(contentsOf: emails)
+        }
+        if(emails.count == 0){
+            mailboxData.reachedEnd = true
+        }
+        mailboxData.loading = false
+        tableView.reloadData()
     }
 }
 
@@ -749,7 +703,10 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     func getMoveableLabels() -> [Label] {
         let labels = DBManager.getLabels()
         return labels.reduce([Label](), { (moveableLabels, label) -> [Label] in
-            guard label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
+            guard let systemLabel = SystemLabel.init(rawValue: label.id) else {
+                return moveableLabels + [label]
+            }
+            guard systemLabel != .draft && systemLabel != .sent else {
                 return moveableLabels
             }
             return moveableLabels + [label]

@@ -189,7 +189,7 @@ class SignUpViewController: UIViewController{
         let boldText  = " Recovery Email "
         let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
         
-        let textPart1 = "\nYou did not set a"
+        let textPart1 = "\nYou did NOT set a"
         let stringPart1 = NSMutableAttributedString(string:textPart1, attributes: normalAttrs)
         
         let textPart2 = "so account recovery is imposible if you forget your password. \n\nProceed without recovery email?"

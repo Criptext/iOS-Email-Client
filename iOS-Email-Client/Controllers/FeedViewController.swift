@@ -17,8 +17,6 @@ class FeedViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         feedsTableView.separatorStyle = .none
-        feedsData.mockFeeds()
-        feedsData.mockFeeds2()
         if(feedsData.newFeeds.isEmpty && feedsData.oldFeeds.isEmpty){
             noFeedsView.isHidden = false
             feedsTableView.isHidden = true
@@ -142,7 +140,6 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
             feedsData.loadingFeeds = true
             tableView.reloadRows(at: [indexPath], with: .automatic)
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10)){
-                self.feedsData.mockFeeds2()
                 self.feedsData.reachedEnd = true
                 self.feedsData.loadingFeeds = false
                 tableView.reloadData()

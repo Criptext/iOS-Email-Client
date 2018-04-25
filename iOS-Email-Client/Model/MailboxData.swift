@@ -16,5 +16,8 @@ class MailboxData {
     var threadToOpen:String?
     var isCustomEditing = false
     var unreadMails = 0
+    var reachedEnd = false
+    var loading = false
     var removeSelectedRow = false
+    var fetchWorker: DispatchWorkItem?
 }

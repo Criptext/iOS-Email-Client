@@ -13,7 +13,7 @@ class MoveMailViewController: UIViewController {
     
     var selectedLabel:SystemLabel!
     var selectedMailbox:SystemLabel?
-    var labels = [SystemLabel.inbox, SystemLabel.sent, SystemLabel.junk, SystemLabel.trash]
+    var labels = [SystemLabel.inbox, SystemLabel.sent, SystemLabel.spam, SystemLabel.trash]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,6 @@ extension MoveMailViewController: UITableViewDataSource {
         let label = labels[indexPath.row]
         
         cell.mailLabel.text = label.description
-        cell.mailImageView.image = label.image
         
         if self.selectedLabel == label {
             cell.selectionStyle = UITableViewCellSelectionStyle.none

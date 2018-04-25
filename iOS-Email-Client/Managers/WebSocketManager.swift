@@ -14,7 +14,7 @@ final class WebSocketManager: NSObject {
     var eventDelegates = [String: EventHandlerDelegate]()
     var socket : WebSocket!
     var myAccount : Account!
-    let SOCKET_URL = "ws://54.245.42.9:3001"
+    let SOCKET_URL = "ws://stage.socket.criptext.com"
     
     private override init(){
         super.init()
@@ -46,14 +46,14 @@ extension WebSocketManager: WebSocketDelegate{
     }
     
     func webSocketClose(_ code: Int, reason: String, wasClean: Bool) {
-        print("Websocket - Close : \(reason)")
+        print("Websocket - Close : \(code) -> \(reason)")
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
             self.connect(account: self.myAccount)
         }
     }
     
     func webSocketError(_ error: NSError) {
-        print("Websocket - Error : \(NSError.debugDescription())")
+        print("Websocket - Error : \(error.description)")
     }
     
     func webSocketMessageText(_ text: String) {

@@ -62,6 +62,8 @@ class EventHandler {
         let metadataKey = params["metadataKey"] as! Int32
         
         let dateFormatter = DateFormatter()
+        let timeZone = NSTimeZone(abbreviation: "UTC")
+        dateFormatter.timeZone = timeZone as TimeZone?
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let localDate = dateFormatter.date(from: date)
         

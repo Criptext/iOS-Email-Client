@@ -23,6 +23,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var starredMenuItem: MenuItemUIView!
     @IBOutlet weak var spamMenuItem: MenuItemUIView!
     @IBOutlet weak var trashMenuItem: MenuItemUIView!
+    @IBOutlet weak var allmailMenuItem: MenuItemUIView!
     @IBOutlet weak var labelsTableView: UITableView!
     @IBOutlet weak var labelsTapIconView: UIImageView!
     @IBOutlet weak var labelsTableHeightContraint: NSLayoutConstraint!
@@ -73,6 +74,16 @@ class MenuViewController: UIViewController{
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
         labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-up")
     }
+    
+    func refreshBadges(){
+        let inboxCounter = DBManager.getUnreadMails(from: SystemLabel.inbox.id).count
+        let draftCounter = DBManager.getMails(from: SystemLabel.draft.id, since: Date(), limit: 100).1.count
+        let spamCounter = DBManager.getUnreadMails(from: SystemLabel.spam.id).count
+        
+        inboxMenuItem.showBadge(inboxCounter)
+        draftMenuItem.showBadge(draftCounter)
+        spamMenuItem.showBadge(spamCounter)
+    }
 }
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource{
@@ -90,5 +101,4 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return LABEL_CELL_HEIGHT
     }
-
 }
