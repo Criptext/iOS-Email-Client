@@ -8,6 +8,7 @@
 
 import Foundation
 import Material
+import Alamofire
 
 class SignUpViewController: UIViewController{
     
@@ -28,7 +29,7 @@ class SignUpViewController: UIViewController{
     @IBOutlet weak var emailMark: UIImageView!
     
     var loadingAccount = false
-    
+    var apiRequest : DataRequest?
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -69,12 +70,28 @@ class SignUpViewController: UIViewController{
     }
     
     func checkUsername(){
-        guard !usernameTextField.isEmpty else {
+        guard !usernameTextField.isEmpty,
+            let username = usernameTextField.text else {
             let inputError = "please enter your username"
             usernameTextField.setStatus(.invalid, inputError)
             return
         }
-        usernameTextField.setStatus(.valid)
+        guard username.count >= 3 else {
+            let inputError = "use more than 2 characters"
+            usernameTextField.setStatus(.invalid, inputError)
+            return
+        }
+        
+        usernameTextField.setStatus(.none)
+        apiRequest?.cancel()
+        apiRequest = APIManager.checkAvailableUsername(username) { (error) in
+            guard error == nil else {
+                let criptextError = error as! CriptextError
+                self.usernameTextField.setStatus(.invalid, criptextError.code.description)
+                return
+            }
+            self.usernameTextField.setStatus(.valid)
+        }
     }
     
     func checkFullname(){

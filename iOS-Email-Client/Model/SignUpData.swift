@@ -10,7 +10,7 @@ import Foundation
 import SignalProtocolFramework
 
 class SignUpData{
-    let NUMBER_OF_PREKEYS = 50
+    let NUMBER_OF_PREKEYS = 100
     var username: String
     var password: String
     var fullname: String
@@ -19,7 +19,7 @@ class SignUpData{
         return username
     }
     var deviceId: Int = 1
-    var signedKeyId: Int32 = 0
+    var signedKeyId: Int32 = 1
     var store = CriptextAxolotlStore()
     var publicKeys: [String : Any]?
     var token: String?
@@ -38,7 +38,7 @@ class SignUpData{
         store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: signedPreKeyRecord)
         
         var keys = [[String: Any]]()
-        for index in 0..<NUMBER_OF_PREKEYS {
+        for index in 1...NUMBER_OF_PREKEYS {
             let keyData = generateKey(index: Int32(index), signedPreKeyPair: signedPreKeyPair, signedPreKeySignature: signedPreKeySignature!)
             keys.append(keyData)
         }
