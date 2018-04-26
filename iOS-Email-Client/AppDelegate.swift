@@ -13,6 +13,7 @@ import Material
 import UserNotifications
 import RealmSwift
 import IQKeyboardManagerSwift
+import CLTokenInputView
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -105,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let launchOptions = launchOptions,
             let notification = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary,
             let threadId = notification.object(forKey: "threadId") as? String  {
-            inboxVC.threadToOpen = threadId
+            inboxVC.mailboxData.threadToOpen = threadId
         }
         
         let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController

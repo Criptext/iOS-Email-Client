@@ -50,9 +50,9 @@ class Email: Object {
         return (realm.objects(Email.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
     
-    func getContacts(type: ContactType) -> List<Contact> {
+    func getContacts(type: ContactType, notEqual email: String = "") -> List<Contact> {
         let contacts = List<Contact>()
-        let predicate = NSPredicate(format: "type == '\(type.rawValue)'")
+        let predicate = NSPredicate(format: "type == '\(type.rawValue)' AND contact.email != '\(email)'")
         let emailContacts = self.emailContacts.filter(predicate)
         emailContacts.forEach { (emailContact) in
             guard let contact = emailContact.contact else {
@@ -62,9 +62,13 @@ class Email: Object {
         }
         return contacts
     }
-    
+        
     func getFormattedDate() -> String {
         return DateUtils.conversationTime(date)
+    }
+    
+    func getFullDate() -> String {
+        return DateUtils.prettyDate(date)
     }
 }
 

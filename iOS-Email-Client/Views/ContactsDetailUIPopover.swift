@@ -30,7 +30,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
         super.viewDidLoad()
         setFromContact()
         setToContacts()
-        dateLabel.text = email.getFormattedDate()
+        dateLabel.text = email.getFullDate()
         replyToView.isHidden = true
     }
     

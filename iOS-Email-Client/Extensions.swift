@@ -277,18 +277,11 @@ extension Notification.Name {
 
 extension String {
     init(htmlEncodedString: String) {
-//        let encodedData = htmlEncodedString.data(using: String.Encoding.utf8)!
-//        let attributedOptions = [ NSAttributedString.DocumentAttributeKey.documentType.rawValue: NSAttributedString.DocumentType.html,
-//                                  NSAttributedString.DocumentAttributeKey.characterEncoding: NSNumber(value: String.Encoding.utf8.rawValue)] as! [NSAttributedString.DocumentReadingOptionKey : Any]
-//
-//        guard let attributedString = try? NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil) else {
-//            self.init(htmlEncodedString)
-//            return
-//        }
-//
-//        self.init(attributedString.string)
-        
         self.init(htmlEncodedString)
+    }
+    
+    func removeHtmlTags() -> String{
+        return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
     }
 }
 

@@ -8,17 +8,25 @@
 
 import Foundation
 
+protocol EmailDetailFooterDelegate {
+    func onFooterReplyPress()
+    func onFooterReplyAllPress()
+    func onFooterForwardPress()
+}
+
 class EmailDetailFooterCell: UITableViewCell{
     
+    var delegate : EmailDetailFooterDelegate?
+    
     @IBAction func onPressReply(_ sender: Any) {
-        // TODO Reply feature
+        delegate?.onFooterReplyPress()
     }
     
     @IBAction func onPressReplyAll(_ sender: Any) {
-        // TODO Reply All feature
+        delegate?.onFooterReplyAllPress()
     }
     
     @IBAction func onPressForward(_ sender: Any) {
-        // TODO Forward feature
+        delegate?.onFooterForwardPress()
     }
 }
