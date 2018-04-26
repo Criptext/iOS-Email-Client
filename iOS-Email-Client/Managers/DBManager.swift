@@ -126,7 +126,7 @@ extension DBManager {
             guard resultEmails.count < limit else {
                 break
             }
-            if email.labels.contains(where: {$0.id == SystemLabel.draft.id}) {
+            guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
                 if(email.date! < date){
                     resultEmails.append(email)
                 }
@@ -388,6 +388,12 @@ extension DBManager {
         let realm = try! Realm()
         
         return Array(realm.objects(Label.self))
+    }
+    
+    class func getLabels(notIn ids: [Int]) -> [Label]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(Label.self).filter(NSPredicate(format: "NOT (id IN %@)", ids)))
     }
     
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){

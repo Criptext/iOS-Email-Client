@@ -569,11 +569,9 @@ class ComposeViewController: UIViewController {
     }
     
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>){
-        var index = 0
         var recipients = [String]()
         var knownAddresses = Dictionary<String, Int32>()
-        criptextEmails.forEach { (dictionary: Dictionary<String, Any>) in
-            
+        for (index, dictionary) in criptextEmails.enumerated(){
             var criptextEmail = dictionary
             let recipientId = criptextEmail["recipientId"] as! String
             let deviceId = criptextEmail["deviceId"] as! Int32
@@ -581,12 +579,10 @@ class ComposeViewController: UIViewController {
                 criptextEmail["body"] = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
                 criptextEmails[index] = criptextEmail
                 knownAddresses[recipientId] = deviceId
-                index += 1
             }
             else{
                 recipients.append(recipientId)
             }
-            
         }
         
         if(recipients.isEmpty){
@@ -609,9 +605,8 @@ class ComposeViewController: UIViewController {
                 self.toggleInteraction(true)
                 return
             }
-            index = 0
             let keysArray = response as! Array<Dictionary<String, Any>>
-            keysArray.forEach({ (keys) in
+            for (index, keys) in keysArray.enumerated() {
                 print(keys)
                 let contactRegistrationId = keys["registrationId"] as! Int32
                 var contactPrekeyPublic: Data? = nil
@@ -632,8 +627,7 @@ class ComposeViewController: UIViewController {
                 var criptextEmail = criptextEmailsCopy[index]
                 criptextEmail["body"] = self.encryptMessage(body: body, deviceId: keys["deviceId"] as! Int32, recipientId: keys["recipientId"] as! String, store: store)
                 criptextEmailsCopy[index] = criptextEmail
-                index += 1
-            })
+            }
         
             self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmailsCopy)
         }

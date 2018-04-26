@@ -95,5 +95,10 @@ enum SystemLabel: Int {
         let labels: [SystemLabel] = [.inbox, .draft, .sent, .spam, .trash, .starred, .important]
         return labels
     }
+    
+    static var idsArray: [Int] {
+        let labels: [Int] = [SystemLabel.inbox.id, SystemLabel.draft.id, SystemLabel.sent.id, SystemLabel.spam.id, SystemLabel.trash.id, SystemLabel.starred.id, SystemLabel.important.id]
+        return labels
+    }
 }
 

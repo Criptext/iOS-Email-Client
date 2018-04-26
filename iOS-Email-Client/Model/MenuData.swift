@@ -13,12 +13,7 @@ class MenuData {
     var labels : [Label] = []
     
     init(){
-        let allLabels = DBManager.getLabels()
-        for label in allLabels {
-            if(SystemLabel(rawValue: label.id) == nil){
-                labels.append(label)
-            }
-        }
+        labels.append(contentsOf: DBManager.getLabels(notIn: SystemLabel.idsArray))
     }
     
 }
