@@ -71,26 +71,10 @@ extension DBManager {
         let emails = label == SystemLabel.all.id
             ? Array(realm.objects(Email.self).sorted(by: {$0.date! > $1.date!}))
             : Array(realm.objects(Email.self).filter("ANY labels.id = %@", label).sorted(by: {$0.date! > $1.date!}))
-        var myEmails = [Email]()
-        var threadIds = Set<String>()
-        for email in emails {
-            guard myEmails.count < limit else {
-                break
-            }
-            guard label != SystemLabel.draft.id else {
-                if(email.date! < date){
-                    myEmails.append(email)
-                }
-                continue
-            }
-            guard !threadIds.contains(email.threadId) && email.date! < date else {
-                continue
-            }
-            email.counter = realm.objects(Email.self).filter("threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []).count
-            threadIds.insert(email.threadId)
-            myEmails.append(email)
-        }
-        return ([:], myEmails)
+        let resultEmails = customDistinctEmailThreads(emails: emails, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [])
+        })
+        return ([:], resultEmails)
     }
     
     class func getUnreadMails(from label: Int) -> [Email] {
@@ -129,26 +113,33 @@ extension DBManager {
     class func getMails(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE) -> [Email] {
         let realm = try! Realm()
         let emails = Array(realm.objects(Email.self).filter("ANY emailContacts.contact.displayName contains %@ OR preview contains %@ OR subject contains %@", searchParam, searchParam, searchParam).sorted(by: {$0.date! > $1.date!}))
-        var myEmails = [Email]()
+        return customDistinctEmailThreads(emails: emails, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
+            return NSPredicate(format: "threadId = %@", email.threadId)
+        })
+    }
+    
+    private class func customDistinctEmailThreads(emails: [Email], limit: Int, date: Date, emailFilter: (Email) -> NSPredicate) -> [Email] {
+        let realm = try! Realm()
+        var resultEmails = [Email]()
         var threadIds = Set<String>()
         for email in emails {
+            guard resultEmails.count < limit else {
+                break
+            }
             if email.labels.contains(where: {$0.id == SystemLabel.draft.id}) {
                 if(email.date! < date){
-                    myEmails.append(email)
+                    resultEmails.append(email)
                 }
                 continue
-            }
-            guard myEmails.count < limit else {
-                break
             }
             guard !threadIds.contains(email.threadId) && email.date! < date else {
                 continue
             }
-            email.counter = realm.objects(Email.self).filter("threadId = %@", email.threadId).count
+            email.counter = realm.objects(Email.self).filter(emailFilter(email)).count
             threadIds.insert(email.threadId)
-            myEmails.append(email)
+            resultEmails.append(email)
         }
-        return myEmails
+        return resultEmails
     }
     
     class func updateEmail(_ email: Email, key: String, s3Key: String, threadId: String){

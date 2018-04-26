@@ -298,7 +298,7 @@ extension InboxViewController{
     func swapMailbox(labelId: Int, sender: Any?){
         mailboxData.reachedEnd = false
         mailboxData.selectedLabel = labelId
-        mailboxData.fetchWorker?.cancel()
+        mailboxData.cancelFetchWorker()
         loadMails(from: labelId, since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased()
         self.navigationDrawerController?.closeLeftView()
@@ -377,7 +377,6 @@ extension InboxViewController{
     
     func loadMails(from label: Int, since date:Date, clear: Bool = false){
         let tuple = DBManager.getMails(from: label, since: date)
-        mailboxData.loading = false
         if(clear){
             mailboxData.emailArray = tuple.1
         } else {
@@ -386,6 +385,7 @@ extension InboxViewController{
         if(tuple.1.count == 0){
             mailboxData.reachedEnd = true
         }
+        mailboxData.fetchWorker = nil
         self.tableView.reloadData()
         updateBadges()
     }
@@ -507,8 +507,7 @@ extension InboxViewController: UITableViewDataSource{
             return footerView
         }
         footerView.displayLoader()
-        if(!mailboxData.loading){
-            mailboxData.loading = true
+        if(mailboxData.fetchWorker == nil){
             mailboxData.fetchWorker = DispatchWorkItem(block: {
                 if self.searchMode {
                     self.loadSearchedMails(since: self.mailboxData.filteredEmailArray.last?.date ?? Date())
@@ -671,8 +670,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
         mailboxData.reachedEnd = false
-        mailboxData.loading = false
-        mailboxData.fetchWorker?.cancel()
+        mailboxData.cancelFetchWorker()
         if(searchText != ""){
             self.loadSearchedMails(since: Date(), clear: true)
         } else {
@@ -693,7 +691,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
         if(emails.count == 0){
             mailboxData.reachedEnd = true
         }
-        mailboxData.loading = false
+        mailboxData.fetchWorker = nil
         tableView.reloadData()
     }
 }
