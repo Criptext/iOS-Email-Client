@@ -279,7 +279,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
             let lastContact = emailData.emails.last?.fromContact else {
                 return
         }
-        let contactsTo = (lastContact.email == emailData.myEmail) ? Array(lastEmail.getContacts(type: .to)) : [lastContact]
+        let contactsTo = (lastContact.email == emailData.accountEmail) ? Array(lastEmail.getContacts(type: .to)) : [lastContact]
         presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "Re:")
     }
     
@@ -289,7 +289,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         }
         var contactsTo = [Contact]()
         var contactsCc = [Contact]()
-        let myEmail = emailData.myEmail
+        let myEmail = emailData.accountEmail
         for email in emailData.emails {
             contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
             contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
@@ -352,7 +352,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         self.toggleMoreOptionsView()
         let email = emailData.emails[indexPath.row]
         let fromContact = email.fromContact!
-        let contactsTo = (fromContact.email == emailData.myEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
+        let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "Re:")
     }
     
@@ -366,7 +366,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let email = emailData.emails[indexPath.row]
         var contactsTo = [Contact]()
         var contactsCc = [Contact]()
-        let myEmail = emailData.myEmail
+        let myEmail = emailData.accountEmail
         contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
         contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
         contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))

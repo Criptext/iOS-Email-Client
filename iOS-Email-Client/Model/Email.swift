@@ -52,11 +52,10 @@ class Email: Object {
     
     func getContacts(type: ContactType, notEqual email: String = "") -> List<Contact> {
         let contacts = List<Contact>()
-        let predicate = NSPredicate(format: "type == '\(type.rawValue)'")
+        let predicate = NSPredicate(format: "type == '\(type.rawValue)' AND contact.email != '\(email)'")
         let emailContacts = self.emailContacts.filter(predicate)
         emailContacts.forEach { (emailContact) in
-            guard let contact = emailContact.contact,
-                contact.email != email else {
+            guard let contact = emailContact.contact else {
                 return
             }
             contacts.append(contact)

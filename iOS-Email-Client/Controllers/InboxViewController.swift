@@ -593,7 +593,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         emailDetailData.emails = emails
         emailDetailData.labels += emails.first!.labels
         emailDetailData.subject = emails.first!.subject
-        emailDetailData.myEmail = "\(myAccount.username)@\(Constants.domain)"
+        emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
         
         emails.last?.isExpanded = true
         

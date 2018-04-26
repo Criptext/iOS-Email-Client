@@ -61,14 +61,14 @@ class ContactManager {
             return Contact(value: ["displayName": contactString, "email": contactString])
         }
         let contactName = splittedContact[0].prefix((splittedContact[0].count - 1))
-        let email = splittedContact[1].prefix((splittedContact[1].count - 1))
+        let email = splittedContact[1].prefix((splittedContact[1].count - 1)).replacingOccurrences(of: ">", with: "")
         return Contact(value: ["displayName": contactName, "email": email])
     }
     
     class func parseEmailContacts(_ contactsString: String, email: Email, type: ContactType){
         let contacts = contactsString.split(separator: ",")
         contacts.forEach { (contactString) in
-            let contact = parseContact(contactsString)
+            let contact = parseContact(String(contactString))
             let emailContact = EmailContact()
             emailContact.contact = contact
             emailContact.email = email
