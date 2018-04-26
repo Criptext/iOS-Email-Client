@@ -16,5 +16,12 @@ class MailboxData {
     var threadToOpen:String?
     var isCustomEditing = false
     var unreadMails = 0
+    var reachedEnd = false
     var removeSelectedRow = false
+    var fetchWorker: DispatchWorkItem?
+    
+    func cancelFetchWorker(){
+        fetchWorker?.cancel()
+        fetchWorker = nil
+    }
 }

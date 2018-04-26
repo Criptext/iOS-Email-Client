@@ -13,12 +13,7 @@ class MenuData {
     var labels : [Label] = []
     
     init(){
-        mockCustomLabels()
+        labels.append(contentsOf: DBManager.getLabels(notIn: SystemLabel.idsArray))
     }
     
-    func mockCustomLabels(){
-        labels.append(Label("Custom 1"))
-        labels.append(Label("Custom 2"))
-        labels.append(Label("Custom 3"))
-    }
 }

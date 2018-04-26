@@ -47,7 +47,7 @@ enum SystemLabel: Int {
     case inbox = 1
     case draft = 6
     case sent = 3
-    case junk = 2
+    case spam = 2
     case trash = 7
     case starred = 5
     case important = 4
@@ -65,8 +65,8 @@ enum SystemLabel: Int {
             return "Draft"
         case .sent:
             return "Sent"
-        case .junk:
-            return "Junk"
+        case .spam:
+            return "Spam"
         case .trash:
             return "Trash"
         case .important:
@@ -78,25 +78,26 @@ enum SystemLabel: Int {
         }
     }
     
-    var image: UIImage? {
+    var rejectedLabelIds: [Int] {
         switch self {
-        case .inbox:
-            return UIImage(named: "slider_inbox")
+        case .inbox, .sent, .all, .starred:
+            return [SystemLabel.trash.id, SystemLabel.spam.id]
+        case .spam:
+            return [SystemLabel.trash.id]
         case .draft:
-            return UIImage(named: "slider_draft")
-        case .sent:
-            return UIImage(named: "slider_sent")
-        case .junk:
-            return UIImage(named: "slider_junk")
-        case .trash:
-            return UIImage(named: "slider_trash")
+            return [SystemLabel.trash.id, SystemLabel.spam.id, SystemLabel.inbox.id, SystemLabel.sent.id, SystemLabel.trash.id]
         default:
-            return UIImage(named: "slider_allmail")
+            return []
         }
     }
     
     static var array: [SystemLabel] {
-        let labels: [SystemLabel] = [.inbox, .draft, .sent, .junk, .trash, .starred, .important]
+        let labels: [SystemLabel] = [.inbox, .draft, .sent, .spam, .trash, .starred, .important]
+        return labels
+    }
+    
+    static var idsArray: [Int] {
+        let labels: [Int] = [SystemLabel.inbox.id, SystemLabel.draft.id, SystemLabel.sent.id, SystemLabel.spam.id, SystemLabel.trash.id, SystemLabel.starred.id, SystemLabel.important.id]
         return labels
     }
 }

@@ -12,6 +12,9 @@ import RealmSwift
 
 //MARK: - User related
 class DBManager {
+    
+    static let PAGINATION_SIZE = 5
+    
     class func getReference(_ obj:Object) -> ThreadSafeReference<Object> {
         return ThreadSafeReference(to: obj)
     }
@@ -63,9 +66,20 @@ extension DBManager {
         }
     }
     
-    class func getMails(from label: Int, since date:Date) -> ([String:[Email]], [Email]) {
+    class func getMails(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> ([String:[Email]], [Email]) {
         let realm = try! Realm()
-        let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@", label)).sorted(by: {$0.date! > $1.date!})
+        let emails = label == SystemLabel.all.id
+            ? Array(realm.objects(Email.self).sorted(by: {$0.date! > $1.date!}))
+            : Array(realm.objects(Email.self).filter("ANY labels.id = %@", label).sorted(by: {$0.date! > $1.date!}))
+        let resultEmails = customDistinctEmailThreads(emails: emails, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [])
+        })
+        return ([:], resultEmails)
+    }
+    
+    class func getUnreadMails(from label: Int) -> [Email] {
+        let realm = try! Realm()
+        let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true", label))
         var myEmails = [Email]()
         var threadIds = Set<String>()
         for email in emails {
@@ -75,7 +89,7 @@ extension DBManager {
             threadIds.insert(email.threadId)
             myEmails.append(email)
         }
-        return ([:], myEmails)
+        return myEmails
     }
     
     class func getMailsbyThreadId(_ threadId: String) -> [Email] {
@@ -96,63 +110,36 @@ extension DBManager {
         return results.first
     }
     
-    class func getPendingEmails() -> [Email]{
+    class func getMails(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE) -> [Email] {
         let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "needsSending == true")
-        let results = realm.objects(Email.self).filter(predicate)
-        
-        return Array(results)
+        let emails = Array(realm.objects(Email.self).filter("ANY emailContacts.contact.displayName contains %@ OR preview contains %@ OR subject contains %@", searchParam, searchParam, searchParam).sorted(by: {$0.date! > $1.date!}))
+        return customDistinctEmailThreads(emails: emails, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
+            return NSPredicate(format: "threadId = %@", email.threadId)
+        })
     }
     
-    class func getPendingDrafts() -> [Email]{
+    private class func customDistinctEmailThreads(emails: [Email], limit: Int, date: Date, emailFilter: (Email) -> NSPredicate) -> [Email] {
         let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "needsSaving == true")
-        let results = realm.objects(Email.self).filter(predicate)
-        
-        return Array(results)
-    }
-    
-    class func update(_ email:Email, labels:[String]){
-        let realm = try! Realm()
-        
-//        try! realm.write() {
-//            email.labelArraySerialized = labels.joined(separator: ",")
-//            email.labels = labels
-//        }
-    }
-    
-    class func update(_ email:Email, snippet:String){
-        let realm = try! Realm()
-        
-//        try! realm.write() {
-//            email.snippet = snippet
-//        }
-    }
-    
-    class func update(_ email:Email, nextPageToken:String?){
-        let realm = try! Realm()
-        
-//        try! realm.write() {
-//            email.nextPageToken = nextPageToken
-//        }
-    }
-    
-    class func update(_ email:Email, realToken:String){
-        let realm = try! Realm()
-        
-//        try! realm.write() {
-//            email.realCriptextToken = realToken
-//        }
-    }
-    
-    class func updateEmail(id:String, addLabels:[String]?, removeLabels:[String]?){
-        let realm = try! Realm()
-        
-        guard let email = realm.object(ofType: Email.self, forPrimaryKey: id) else {
-            return
+        var resultEmails = [Email]()
+        var threadIds = Set<String>()
+        for email in emails {
+            guard resultEmails.count < limit else {
+                break
+            }
+            guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
+                if(email.date! < date){
+                    resultEmails.append(email)
+                }
+                continue
+            }
+            guard !threadIds.contains(email.threadId) && email.date! < date else {
+                continue
+            }
+            email.counter = realm.objects(Email.self).filter(emailFilter(email)).count
+            threadIds.insert(email.threadId)
+            resultEmails.append(email)
         }
+        return resultEmails
     }
     
     class func updateEmail(_ email: Email, key: String, s3Key: String, threadId: String){
@@ -401,6 +388,12 @@ extension DBManager {
         let realm = try! Realm()
         
         return Array(realm.objects(Label.self))
+    }
+    
+    class func getLabels(notIn ids: [Int]) -> [Label]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(Label.self).filter(NSPredicate(format: "NOT (id IN %@)", ids)))
     }
     
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){

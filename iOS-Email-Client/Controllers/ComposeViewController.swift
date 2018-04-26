@@ -539,7 +539,6 @@ class ComposeViewController: UIViewController {
         APIManager.postMailRequest([
             "subject": subject,
             "criptextEmails": criptextEmails
-            //"guestEmail": guestEmail
         ], token: activeAccount.jwt) { (error, data) in
             self.toggleInteraction(true)
             if let error = error {
@@ -569,12 +568,10 @@ class ComposeViewController: UIViewController {
         DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
     }
     
-    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>, index: Int){
-        
+    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>){
         var recipients = [String]()
         var knownAddresses = Dictionary<String, Int32>()
-        criptextEmails.forEach { (dictionary: Dictionary<String, Any>) in
-            
+        for (index, dictionary) in criptextEmails.enumerated(){
             var criptextEmail = dictionary
             let recipientId = criptextEmail["recipientId"] as! String
             let deviceId = criptextEmail["deviceId"] as! Int32
@@ -586,7 +583,6 @@ class ComposeViewController: UIViewController {
             else{
                 recipients.append(recipientId)
             }
-            
         }
         
         if(recipients.isEmpty){
@@ -609,9 +605,8 @@ class ComposeViewController: UIViewController {
                 self.toggleInteraction(true)
                 return
             }
-            
             let keysArray = response as! Array<Dictionary<String, Any>>
-            keysArray.forEach({ (keys) in
+            for (index, keys) in keysArray.enumerated() {
                 print(keys)
                 let contactRegistrationId = keys["registrationId"] as! Int32
                 var contactPrekeyPublic: Data? = nil
@@ -632,7 +627,7 @@ class ComposeViewController: UIViewController {
                 var criptextEmail = criptextEmailsCopy[index]
                 criptextEmail["body"] = self.encryptMessage(body: body, deviceId: keys["deviceId"] as! Int32, recipientId: keys["recipientId"] as! String, store: store)
                 criptextEmailsCopy[index] = criptextEmail
-            })
+            }
         
             self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmailsCopy)
         }
@@ -681,7 +676,7 @@ class ComposeViewController: UIViewController {
         ]
         
         saveDraft()
-        getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails, index: 0)
+        getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails)
         
     }
     

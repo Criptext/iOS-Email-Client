@@ -52,24 +52,37 @@ class InboxTableViewCell: UITableViewCell {
         delegate.tableViewCellDidLongPress(self)
     }
     
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        
-        if editing {
-            self.containerBadge.backgroundColor = UIColor(red:0.76, green:0.76, blue:0.78, alpha:1.0)
-            self.tintColor = Icon.system.color
-            self.avatarImageView.layer.borderWidth = 1.0
-            self.avatarImageView.image = nil
-        } else {
-            self.tintColor = UIColor.black
-            self.avatarImageView.layer.borderWidth = 0.0
-        }
+    func setAsSelected(){
+        backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
+        avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
+        avatarImageView.image = #imageLiteral(resourceName: "check")
+        avatarImageView.tintColor = UIColor.white
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        if selected {
-            self.containerBadge.backgroundColor = UIColor(red:0.76, green:0.76, blue:0.78, alpha:1.0)
+    func setAsNotSelected(){
+        avatarImageView.image = nil
+        avatarImageView.layer.borderWidth = 1.0
+        avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
+        avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+    }
+    
+    func setBadge(_ value: Int){
+        guard value > 1 else {
+            containerBadge.isHidden = true
+            return
+        }
+        containerBadge.isHidden = false
+        badgeLabel.text = value.description
+        switch value {
+        case _ where value > 9:
+            badgeWidthConstraint.constant = 20
+            break
+        case _ where value > 99:
+            badgeWidthConstraint.constant = 25
+            break
+        default:
+            badgeWidthConstraint.constant = 20
+            break
         }
     }
 }

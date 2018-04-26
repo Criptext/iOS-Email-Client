@@ -87,7 +87,7 @@ class NavigationToolbarView: UIView {
     }
     
     func setupMarkAsUnread(){
-        centerRightBarButton = createButton(image: #imageLiteral(resourceName: "mark_unread"), wrapped: false, action: #selector(onMarkThreads))
+        centerRightBarButton = createButton(image: #imageLiteral(resourceName: "mark_unread").resize(toHeight: 35.0)!.withRenderingMode(.alwaysTemplate), wrapped: false, action: #selector(onMarkThreads))
     }
 
     func createButton(image: UIImage, wrapped: Bool, action: Selector) -> UIBarButtonItem {
