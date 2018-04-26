@@ -10,7 +10,7 @@ import Foundation
 
 class MenuViewController: UIViewController{
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
-    let MENU_CONTENT_HEIGHT : CGFloat = 720.0
+    let MENU_CONTENT_HEIGHT : CGFloat = 750.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
     @IBOutlet weak var scrollView: UIScrollView!
@@ -50,7 +50,7 @@ class MenuViewController: UIViewController{
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: 720)
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
     }
     
     @IBAction func onMenuItemLabelPress(_ sender: MenuItemUIView) {

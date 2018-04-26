@@ -75,19 +75,24 @@ class NavigationToolbarView: UIView {
     }
     
     func setupBarButtonItems(){
+        let archiveImage = #imageLiteral(resourceName: "archive-icon").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate)
+        let trashImage = #imageLiteral(resourceName: "delete-icon").resize(toHeight: 21.0)!.withRenderingMode(.alwaysTemplate)
+        
         cancelBarButton = createButton(image: #imageLiteral(resourceName: "menu-back"), wrapped: true, action: #selector(onBackPress))
-        centerLeftBarButton = createButton(image: #imageLiteral(resourceName: "archive-icon"), wrapped: false, action: #selector(onArchiveThreads))
-        centerBarButton = createButton(image: #imageLiteral(resourceName: "delete-icon"), wrapped: false, action: #selector(onTrashThreads))
+        centerLeftBarButton = createButton(image: archiveImage, wrapped: false, action: #selector(onArchiveThreads))
+        centerBarButton = createButton(image: trashImage, wrapped: false, action: #selector(onTrashThreads))
         setupMarkAsRead()
         moreBarButton = createButton(image: #imageLiteral(resourceName: "dots"), wrapped: true, action: #selector(onMoreOptions))
     }
     
     func setupMarkAsRead(){
-        centerRightBarButton = createButton(image: #imageLiteral(resourceName: "mark_read"), wrapped: false, action: #selector(onMarkThreads))
+        let markImage = #imageLiteral(resourceName: "mark_read").resize(toHeight: 23.0)!.withRenderingMode(.alwaysTemplate)
+        centerRightBarButton = createButton(image: markImage, wrapped: false, action: #selector(onMarkThreads))
     }
     
     func setupMarkAsUnread(){
-        centerRightBarButton = createButton(image: #imageLiteral(resourceName: "mark_unread").resize(toHeight: 35.0)!.withRenderingMode(.alwaysTemplate), wrapped: false, action: #selector(onMarkThreads))
+        let markImage = #imageLiteral(resourceName: "mark_unread").resize(toHeight: 18.0)!.withRenderingMode(.alwaysTemplate)
+        centerRightBarButton = createButton(image: markImage, wrapped: false, action: #selector(onMarkThreads))
     }
 
     func createButton(image: UIImage, wrapped: Bool, action: Selector) -> UIBarButtonItem {

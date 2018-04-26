@@ -30,8 +30,8 @@ class ReplyDetailUIView: UIButton{
         let borderLayer = CAShapeLayer()
         borderLayer.frame = bounds
         borderLayer.path  = maskPath.cgPath
-        borderLayer.lineWidth   = 4.0
-        borderLayer.strokeColor = UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1).cgColor
+        borderLayer.lineWidth   = 2.0
+        borderLayer.strokeColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1).cgColor
         borderLayer.fillColor   = UIColor.clear.cgColor
         
         layer.addSublayer(borderLayer)
