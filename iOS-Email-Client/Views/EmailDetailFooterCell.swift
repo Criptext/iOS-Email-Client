@@ -9,9 +9,9 @@
 import Foundation
 
 protocol EmailDetailFooterDelegate {
-    func onPressReply()
-    func onPressReplyAll()
-    func onPressForward()
+    func onFooterReplyPress()
+    func onFooterReplyAllPress()
+    func onFooterForwardPress()
 }
 
 class EmailDetailFooterCell: UITableViewCell{
@@ -19,14 +19,14 @@ class EmailDetailFooterCell: UITableViewCell{
     var delegate : EmailDetailFooterDelegate?
     
     @IBAction func onPressReply(_ sender: Any) {
-        delegate?.onPressReply()
+        delegate?.onFooterReplyPress()
     }
     
     @IBAction func onPressReplyAll(_ sender: Any) {
-        delegate?.onPressReplyAll()
+        delegate?.onFooterReplyAllPress()
     }
     
     @IBAction func onPressForward(_ sender: Any) {
-        delegate?.onPressForward()
+        delegate?.onFooterForwardPress()
     }
 }

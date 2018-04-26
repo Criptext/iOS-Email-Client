@@ -12,4 +12,5 @@ class EmailDetailData{
     var emails = [Email]()
     var labels = [Label]()
     var subject = ""
+    var myEmail = ""
 }

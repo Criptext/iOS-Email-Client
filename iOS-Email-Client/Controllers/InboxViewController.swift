@@ -593,6 +593,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         emailDetailData.emails = emails
         emailDetailData.labels += emails.first!.labels
         emailDetailData.subject = emails.first!.subject
+        emailDetailData.myEmail = "\(myAccount.username)@\(Constants.domain)"
         
         emails.last?.isExpanded = true
         
@@ -662,8 +663,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
             
             if self.searchController.isActive && self.searchController.searchBar.text != "" {
-                let emailTmp = self.mailboxData.filteredEmailArray.remove(at: indexPath.row)
-                guard let index = self.mailboxData.emailArray.index(of: emailTmp) else {
+                let emailRemoved = self.mailboxData.filteredEmailArray.remove(at: indexPath.row)
+                guard let index = self.mailboxData.emailArray.index(of: emailRemoved) else {
                     return
                 }
                 self.mailboxData.emailArray.remove(at: index)

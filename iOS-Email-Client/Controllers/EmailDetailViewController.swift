@@ -17,16 +17,9 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     
     var myHeaderView : UIView?
-    var optionsEmail : Email?
-    var markAsRead : Bool {
+    var hasUnreadEmails : Bool {
         get {
-            var value = false
-            for email in emailData.emails {
-                if(email.unread){
-                    value = true
-                }
-            }
-            return value
+            return emailData.emails.contains(where: {$0.unread})
         }
     }
     
@@ -88,8 +81,8 @@ class EmailDetailViewController: UIViewController {
         }
     }
     
-    func displayMarkIcon(){
-        if(markAsRead){
+    func displayMarkIcon(asRead: Bool){
+        if(asRead){
             topToolbar.setupMarkAsRead()
         } else {
             topToolbar.setupMarkAsUnread()
@@ -141,7 +134,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         }
         let email = emailData.emails[indexPath.row]
         DBManager.updateEmail(email, unread: false)
-        displayMarkIcon()
+        displayMarkIcon(asRead: hasUnreadEmails)
         emailsTableView.reloadData()
     }
     
@@ -168,8 +161,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
             handleOptionsTap(cell, sender)
         case .reply:
             handleReplyTap(cell, sender)
-        default:
-            return
         }
     }
     
@@ -205,7 +196,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
-        optionsEmail = emailData.emails[indexPath.row]
+        emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         onReplyPress()
     }
     
@@ -227,14 +218,21 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
-        optionsEmail = emailData.emails[indexPath.row]
+        emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         toggleMoreOptionsView()
+    }
+    
+    func deselectSelectedRow(){
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            return
+        }
+        emailsTableView.deselectRow(at: indexPath, animated: false)
     }
     
     @objc func toggleMoreOptionsView(){
         guard moreOptionsContainerView.isHidden else {
             moreOptionsContainerView.closeMoreOptions()
-            optionsEmail = nil
+            deselectSelectedRow()
             return
         }
         moreOptionsContainerView.showMoreOptions()
@@ -263,63 +261,48 @@ extension EmailDetailViewController: UIGestureRecognizerDelegate {
 
 extension EmailDetailViewController: EmailDetailFooterDelegate {
     
-    func transitionToComposer(initParamsHandler: (ComposeViewController) -> Void){
+    func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subjectPrefix: String){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-        initParamsHandler(composeVC)
+        composeVC.initToContacts.append(contentsOf: contactsTo)
+        composeVC.initCcContacts.append(contentsOf: contactsCc)
+        composeVC.initSubject = email.subject.starts(with: "\(subjectPrefix) ") ? email.subject : "\(subjectPrefix) \(email.subject)"
+        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+        composeVC.initContent = replyBody
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
-    func onPressReply() {
-        transitionToComposer { (composeVC) in
-            guard let lastEmail = emailData.emails.last,
-                let lastContact = emailData.emails.last?.fromContact else {
-                    return
-            }
-            if(lastContact.email == "myaccount\(Constants.domain)"){
-                composeVC.initToContacts.append(contentsOf: emailData.emails.last!.getContacts(type: .to))
-            } else {
-                composeVC.initToContacts.append(lastContact)
-            }
-            composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
-            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
-            
-            composeVC.initContent = replyBody
+    func onFooterReplyPress() {
+        guard let lastEmail = emailData.emails.last,
+            let lastContact = emailData.emails.last?.fromContact else {
+                return
         }
+        let contactsTo = (lastContact.email == emailData.myEmail) ? Array(lastEmail.getContacts(type: .to)) : [lastContact]
+        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "Re:")
     }
     
-    func onPressReplyAll() {
-        transitionToComposer { (composeVC) in
-            guard let lastEmail = emailData.emails.last,
-                let lastContact = emailData.emails.last?.fromContact else {
-                    return
-            }
-            for email in emailData.emails {
-                if(email.fromContact!.email != "myaccount\(Constants.domain)"){
-                    composeVC.initToContacts.append(email.fromContact!)
-                }
-                composeVC.initToContacts.append(email.fromContact!)
-            }
-            composeVC.initSubject = emailData.subject.starts(with: "Re: ") ? emailData.subject : "Re: \(emailData.subject)"
-            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
-            
-            composeVC.initContent = replyBody
+    func onFooterReplyAllPress() {
+        guard let lastEmail = emailData.emails.last else {
+                return
         }
+        var contactsTo = [Contact]()
+        var contactsCc = [Contact]()
+        let myEmail = emailData.myEmail
+        for email in emailData.emails {
+            contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
+            contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
+            contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
+        }
+        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "Re:")
     }
     
-    func onPressForward() {
-        transitionToComposer { (composeVC) in
-            guard let lastEmail = emailData.emails.last,
-                let lastContact = emailData.emails.last?.fromContact else {
-                    return
-            }
-            composeVC.initSubject = emailData.subject.starts(with: "Fw: ") ? emailData.subject : "Fw: \(emailData.subject)"
-            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(lastEmail.getFullDate()), \(lastContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + lastEmail.content + "</blockquote>")
-            
-            composeVC.initContent = replyBody
+    func onFooterForwardPress() {
+        guard let lastEmail = emailData.emails.last else {
+                return
         }
+        presentComposer(email: lastEmail, contactsTo: [], contactsCc: [], subjectPrefix: "Fw:")
     }
 }
 
@@ -345,7 +328,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
     
     func onMarkThreads() {
-        let unread = !markAsRead
+        let unread = !hasUnreadEmails
         for email in emailData.emails {
             DBManager.updateEmail(email, unread: unread)
         }
@@ -361,57 +344,44 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
 
 extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     func onReplyPress() {
-        moreOptionsContainerView.closeMoreOptions()
-        optionsEmail = nil
-        guard let email = optionsEmail else {
-            self.onPressReply()
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            self.onFooterReplyPress()
             return
         }
-        transitionToComposer { (composeVC) in
-            if(email.fromContact!.email == "myaccount\(Constants.domain)"){
-                composeVC.initToContacts.append(contentsOf: email.getContacts(type: .to))
-            } else {
-                composeVC.initToContacts.append(email.fromContact!)
-            }
-            composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
-            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
-            
-            composeVC.initContent = replyBody
-        }
+        self.toggleMoreOptionsView()
+        let email = emailData.emails[indexPath.row]
+        let fromContact = email.fromContact!
+        let contactsTo = (fromContact.email == emailData.myEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "Re:")
     }
     
     func onReplyAllPress() {
-        self.toggleMoreOptionsView()
-        guard let email = optionsEmail else {
-            self.onPressReply()
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            self.onFooterReplyAllPress()
             return
         }
-        transitionToComposer { (composeVC) in
-            for email in emailData.emails {
-                if(email.fromContact!.email != "myaccount\(Constants.domain)"){
-                    composeVC.initToContacts.append(email.fromContact!)
-                }
-                composeVC.initCcContacts.append(contentsOf: email.getContacts(type: .cc))
-            }
-            composeVC.initSubject = email.subject.starts(with: "Re: ") ? email.subject : "Re: \(email.subject)"
-            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
-            
-            composeVC.initContent = replyBody
-        }
+        self.toggleMoreOptionsView()
+        let email = emailData.emails[indexPath.row]
+        var contactsTo = [Contact]()
+        var contactsCc = [Contact]()
+        let myEmail = emailData.myEmail
+        contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
+        contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
+        contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "Re:")
     }
     
     func onForwardPress() {
-        self.toggleMoreOptionsView()
-        guard let email = optionsEmail else {
-            self.onPressReply()
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            self.onFooterReplyPress()
             return
         }
-        transitionToComposer { (composeVC) in
-            composeVC.initSubject = email.subject.starts(with: "Fw: ") ? email.subject : "Fw: \(email.subject)"
-            let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
-            
-            composeVC.initContent = replyBody
-        }
+        self.toggleMoreOptionsView()
+        let email = emailData.emails[indexPath.row]
+        presentComposer(email: email, contactsTo: [], contactsCc: [], subjectPrefix: "Fw:")
     }
     
     func onDeletePress() {

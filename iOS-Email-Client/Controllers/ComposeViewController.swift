@@ -93,6 +93,9 @@ class ComposeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
+        textField.font = Font.regular.size(14)
+        
         let defaults = UserDefaults.standard
         activeAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)
         
@@ -186,9 +189,7 @@ class ComposeViewController: UIViewController {
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
         subjectField.text = initSubject
-        if(!initContent.isEmpty){
-            editorView.html = initContent
-        }
+        editorView.html = initContent
     }
     
     func setupInitContacts(){
@@ -459,18 +460,6 @@ class ComposeViewController: UIViewController {
             }
             return true
         })
-    }
-    
-    func download (_ attachments:[File], mail:Email?) {
-        guard let emailDraft = mail, !attachments.isEmpty else {
-            return
-        }
-        for attachment in attachments {
-            //if FileManager.default.fileExists(atPath: (attachment.fileURL?.path)!) {
-                //DBManager.update(attachment, isUploaded: true)
-                continue
-            //}
-        }
     }
     
     func toggleInteraction(_ flag:Bool){
@@ -1085,7 +1074,6 @@ extension ComposeViewController: UITableViewDataSource {
         let attachment = self.attachmentArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentTableViewCell", for: indexPath) as! AttachmentTableViewCell
-        cell.delegate = self
         
         cell.nameLabel.text = attachment.name
         cell.sizeLabel.text = "\(attachment.size)"
@@ -1167,75 +1155,6 @@ extension ComposeViewController: UITableViewDelegate {
             self.addToken(contact.displayName, value: contact.email, to: focusInput)
             return
         }
-    }
-}
-
-//MARK: - Cell Delegate
-extension ComposeViewController: AttachmentTableViewCellDelegate {
-    func tableViewCellDidTapPassword(_ cell: AttachmentTableViewCell) {
-        let indexPath = self.tableView.indexPath(for: cell)
-        var attachment = self.attachmentArray[indexPath!.row]
-        
-        let alertController = UIAlertController(title: "Set password", message: "It must be longer than 5 characters and don't contain special characters", preferredStyle: .alert)
-        
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Password"
-            textField.isSecureTextEntry = true
-            textField.delegate = self
-            textField.addTarget(alertController, action: #selector(alertController.textDidChangeInLoginAlert), for: .editingChanged)
-        }
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Confirm Password"
-            textField.isSecureTextEntry = true
-            textField.delegate = self
-            textField.addTarget(alertController, action: #selector(alertController.textDidChangeInLoginAlert), for: .editingChanged)
-        }
-        
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        let okAction = UIAlertAction(title: "Ok", style: .default) { (action) in
-            //attachment.currentPassword = alertController.textFields?[0].text ?? ""
-            self.tableView.reloadData()
-        }
-        
-        okAction.isEnabled = false
-        alertController.addAction(okAction)
-        
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    func tableViewCellDidTapReadOnly(_ cell: AttachmentTableViewCell) {
-        self.tableView.reloadData()
-    }
-    
-    func tableViewCellDidLongPress(_ cell: AttachmentTableViewCell) {
-        
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
-            self.tableView.reloadData()
-            return
-        }
-        
-        let attachment = self.attachmentArray[indexPath.row]
-        
-        cell.holdGestureRecognizer.isEnabled = false
-        let alertController = UIAlertController(title: "Remove Attachment", message: "Are you sure you want to remove the attachment: \(attachment.name)", preferredStyle: .alert)
-        
-        alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { (action) in
-            cell.holdGestureRecognizer.isEnabled = true
-            
-            self.removeAttachment(at: indexPath)
-        })
-        
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            cell.holdGestureRecognizer.isEnabled = true
-        })
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {
-        
     }
 }
 

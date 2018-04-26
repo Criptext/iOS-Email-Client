@@ -199,7 +199,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="128MB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7vv-dj-mcZ">
-                                                                    <rect key="frame" x="263" y="17" width="57" height="16.5"/>
+                                                                    <rect key="frame" x="263" y="16.5" width="57" height="16.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="57" id="GRk-7K-MUR"/>
                                                                     </constraints>

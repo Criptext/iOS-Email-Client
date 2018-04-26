@@ -27,8 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         
         UIApplication.shared.statusBarStyle = .lightContent
-        let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
-        textField.font = Font.regular.size(14)
         
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
