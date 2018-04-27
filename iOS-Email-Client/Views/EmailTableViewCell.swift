@@ -110,26 +110,27 @@ class EmailTableViewCell: UITableViewCell{
     
     func setCollapsedIcons(_ email: Email){
         miniAttachmentIconView.isHidden = true
-        guard email.delivered != DeliveryStatus.NONE else {
+        guard email.status != .none else {
             miniReadIconView.isHidden = true
             return
         }
         
-        miniReadIconView.tintColor = (email.delivered == DeliveryStatus.OPENED) ?  .mainUI : .neutral
+        miniReadIconView.tintColor = (email.status == .opened) ?  .mainUI : .neutral
     }
     
     func setExpandedIcons(_ email: Email){
         let isUnsent = email.isUnsent
+        let isRead = email.status == .opened
         attachmentView.isHidden = true
-        guard email.delivered != DeliveryStatus.NONE else {
+        guard email.status != .none else {
             readView.isHidden = true
             unsendView.isHidden = true
             return
         }
         
-        readIconView.tintColor = (email.delivered == DeliveryStatus.OPENED) ?  .mainUI : .neutral
-        readView.layer.borderColor = (email.delivered == DeliveryStatus.OPENED) ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
-        readView.isUserInteractionEnabled = email.delivered == DeliveryStatus.OPENED
+        readIconView.tintColor = isRead ?  .mainUI : .neutral
+        readView.layer.borderColor = isRead ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
+        readView.isUserInteractionEnabled = isRead
         
         unsendIconView.tintColor =  isUnsent ?  .alert : .white
         unsendView.backgroundColor = isUnsent ? .white : .alert

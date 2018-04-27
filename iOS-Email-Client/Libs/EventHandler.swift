@@ -30,7 +30,7 @@ class EventHandler {
             }
         })
         asyncGroupCalls.notify(queue: .main) {
-            guard self.emails.count > 0 else {
+            guard !self.emails.isEmpty else {
                 return
             }
             self.eventDelegate?.didReceiveNewEmails(emails: self.emails)

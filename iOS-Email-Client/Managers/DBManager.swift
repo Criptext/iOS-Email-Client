@@ -152,7 +152,7 @@ extension DBManager {
             email.key = key
             email.s3Key = s3Key
             email.threadId = threadId
-            email.delivered = DeliveryStatus.SENT
+            email.status = .sent
         }
     }
     

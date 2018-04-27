@@ -11,6 +11,14 @@ import RealmSwift
 
 class Email: Object {
     
+    enum Status : Int {
+        case none = 0
+        case sent = 1
+        case delivered = 2
+        case opened = 3
+        case unsent = -1
+    }
+    
     @objc dynamic var id = 0
     @objc dynamic var key = ""
     @objc dynamic var threadId = ""
@@ -20,7 +28,7 @@ class Email: Object {
     @objc dynamic var content = ""
     @objc dynamic var preview = ""
     @objc dynamic var subject = ""
-    @objc dynamic var delivered = DeliveryStatus.NONE
+    @objc dynamic var delivered = Status.none.rawValue
     @objc dynamic var date : Date?
     let labels = List<Label>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
@@ -33,6 +41,14 @@ class Email: Object {
             return contact
         }
     }
+    var status: Status{
+        get {
+            return Status.init(rawValue: delivered)!
+        }
+        set(typeValue) {
+            self.delivered = typeValue.rawValue
+        }
+    }
     
     override static func primaryKey() -> String? {
         return "id"
@@ -43,7 +59,7 @@ class Email: Object {
     }
     
     var isUnsent: Bool{
-        return delivered == DeliveryStatus.UNSENT
+        return status == .unsent
     }
     
     func incrementID() -> Int {
@@ -93,12 +109,4 @@ class Email: Object {
 
 func ==(lhs: Email, rhs: Email) -> Bool {
     return lhs.id == rhs.id
-}
-
-struct DeliveryStatus {
-    static let NONE = 0
-    static let SENT = 1
-    static let DELIVERED = 2
-    static let OPENED = 3
-    static let UNSENT = -1
 }

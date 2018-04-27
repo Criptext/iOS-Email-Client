@@ -291,7 +291,7 @@ class ComposeViewController: UIViewController {
         
         //create draft
         let emailDetail = emailDraft ?? Email()
-        emailDetail.delivered = DeliveryStatus.NONE
+        emailDetail.status = .none
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
         if(body.count > 100){

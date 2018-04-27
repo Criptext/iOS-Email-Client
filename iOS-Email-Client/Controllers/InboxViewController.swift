@@ -375,7 +375,7 @@ extension InboxViewController{
         } else {
             mailboxData.emailArray.append(contentsOf: tuple.1)
         }
-        mailboxData.reachedEnd = tuple.1.count == 0
+        mailboxData.reachedEnd = tuple.1.isEmpty
         mailboxData.fetchWorker = nil
         self.tableView.reloadData()
         updateBadges()
@@ -680,7 +680,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
         }else{
             mailboxData.filteredEmailArray.append(contentsOf: emails)
         }
-        if(emails.count == 0){
+        if(emails.isEmpty){
             mailboxData.reachedEnd = true
         }
         mailboxData.fetchWorker = nil
