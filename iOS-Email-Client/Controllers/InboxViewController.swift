@@ -579,7 +579,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId)
         let emailDetailData = EmailDetailData()
         emailDetailData.emails = showOnlyDraft ? [selectedEmail] : emails
-        emailDetailData.labels += emails.first!.labels
+        for email in emails {
+            emailDetailData.labels += email.labels
+        }
         emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
         
@@ -627,17 +629,15 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
-            
-            if self.searchMode {
-                let emailRemoved = self.mailboxData.filteredEmailArray.remove(at: indexPath.row)
-                guard let index = self.mailboxData.emailArray.index(of: emailRemoved) else {
-                    return
+            let email = self.mailboxData.emailArray[indexPath.row]
+            let labelsToRemove = email.labels.reduce([Int]()) { (removeLabels, label) -> [Int] in
+                guard label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id  else {
+                    return removeLabels
                 }
-                self.mailboxData.emailArray.remove(at: index)
-            }else {
-                self.mailboxData.emailArray.remove(at: indexPath.row)
+                return removeLabels + [label.id]
             }
-            
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: labelsToRemove)
+            self.mailboxData.emailArray.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
         
@@ -647,7 +647,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return !mailboxData.isCustomEditing
+        return !mailboxData.isCustomEditing && !searchMode
     }
 }
 
@@ -744,25 +744,21 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         }
     }
     
-    func setLabels(labels: [Int]) {
+    func setLabels(_ labels: [Int]) {
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             return
         }
         self.didPressEdit(reload: true)
         var indexPathsToRemove = [IndexPath]()
         for indexPath in indexPaths {
-            var removeEmail = false
             let email = mailboxData.emailArray[indexPath.row]
             let labelsToRemove = email.labels.reduce([Int]()) { (removeLabels, label) -> [Int] in
-                guard !labels.contains(label.id) || label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id  else {
+                guard !labels.contains(label.id) && label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id  else {
                     return removeLabels
-                }
-                if(label.id == mailboxData.selectedLabel){
-                    removeEmail = true
                 }
                 return removeLabels + [label.id]
             }
-            if(removeEmail){
+            if !(labels.contains(mailboxData.selectedLabel) || (labels.isEmpty && mailboxData.selectedLabel != SystemLabel.all.id)) {
                 indexPathsToRemove.append(indexPath)
                 mailboxData.emailArray.remove(at: indexPath.row)
             }
@@ -785,7 +781,9 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             DBManager.addRemoveLabelsFromThread(email.threadId, addedLabelIds: [labelId], removedLabelIds: removeLabelsArray)
             mailboxData.emailArray.remove(at: indexPath.row)
         }
-        self.tableView.deleteRows(at: indexPaths, with: .left)
+        if(labelId != mailboxData.selectedLabel){
+            self.tableView.deleteRows(at: indexPaths, with: .left)
+        }
     }
 }
 
@@ -799,7 +797,7 @@ extension InboxViewController: NavigationToolbarDelegate {
     
     func onArchiveThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
-            self.archiveSelectedThreads()
+            self.setLabels([])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Archive Threads", message: "The selected threads will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
@@ -807,7 +805,7 @@ extension InboxViewController: NavigationToolbarDelegate {
     
     func onTrashThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.deleteSelectedThreads()
+            self.setLabels([SystemLabel.trash.id])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Delete Threads", message: "The selected threads will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])
@@ -823,33 +821,6 @@ extension InboxViewController: NavigationToolbarDelegate {
             DBManager.updateEmail(email, unread: unread)
         }
         self.didPressEdit(reload: true)
-    }
-    
-    func deleteSelectedThreads() {
-        handleSelectedThreads(addedLabelIds: [SystemLabel.trash.id])
-    }
-    
-    func archiveSelectedThreads(){
-        handleSelectedThreads(addedLabelIds: [])
-    }
-    
-    func handleSelectedThreads(addedLabelIds: [Int]){
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
-            return
-        }
-        self.didPressEdit(reload: true)
-        for indexPath in indexPaths {
-            let email = mailboxData.emailArray[indexPath.row]
-            let labelsToRemove = email.labels.reduce([Int]()) { (labels, label) -> [Int] in
-                guard label.id != SystemLabel.sent.id && label.id != SystemLabel.draft.id else {
-                    return labels
-                }
-                return labels + [label.id]
-            }
-            DBManager.addRemoveLabelsFromThread(email.threadId, addedLabelIds: [], removedLabelIds: labelsToRemove)
-            mailboxData.emailArray.remove(at: indexPath.row)
-        }
-        self.tableView.deleteRows(at: indexPaths, with: .left)
     }
     
     func onMoreOptions() {

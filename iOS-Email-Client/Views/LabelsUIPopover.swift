@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LabelsUIPopoverDelegate {
-    func setLabels(labels: [Int])
+    func setLabels(_ labels: [Int])
     func moveTo(labelId: Int)
 }
 
@@ -49,7 +49,7 @@ class LabelsUIPopover: BaseUIPopover {
     }
     
     @IBAction func onAcceptPress(_ sender: Any) {
-        delegate?.setLabels(labels: Array(selectedLabels.keys))
+        delegate?.setLabels(Array(selectedLabels.keys))
         dismiss(animated: false, completion: nil)
     }
     

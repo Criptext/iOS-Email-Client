@@ -10,7 +10,7 @@ import Foundation
 
 class EmailDetailViewController: UIViewController {
     var emailData : EmailDetailData!
-    var mailboxData : MailboxData?
+    var mailboxData : MailboxData!
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var topToolbar: NavigationToolbarView!
     @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
@@ -314,7 +314,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     
     func onArchiveThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
-            self.setLabels(labels: [])
+            self.setLabels([])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Archive Threads", message: "The selected threads will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
@@ -322,7 +322,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     
     func onTrashThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.setLabels(labels: [SystemLabel.trash.id])
+            self.moveTo(labelId: SystemLabel.trash.id)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Delete Threads", message: "The selected threads will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])
@@ -465,28 +465,28 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
         }
     }
     
-    func setLabels(labels: [Int]) {
+    func setLabels(_ labels: [Int]) {
         let myLabels = emailData.labels
-        var removeMailboxRow = false
         let labelsToRemove = myLabels.reduce([Int]()) { (removeLabels, label) -> [Int] in
-            guard !labels.contains(label.id) || label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id else {
+            guard !labels.contains(label.id) && label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
                 return removeLabels
-            }
-            if(label.id == mailboxData?.selectedLabel){
-                removeMailboxRow = true
             }
             return removeLabels + [label.id]
         }
         DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: labels, removedLabelIds: labelsToRemove)
-        mailboxData?.removeSelectedRow = removeMailboxRow
+        if !(labels.contains(mailboxData.selectedLabel) || (labels.isEmpty && mailboxData.selectedLabel != SystemLabel.all.id)) {
+            mailboxData.removeSelectedRow = true
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
     func moveTo(labelId: Int) {
-        let removeLabelsArray = (mailboxData!.selectedLabel == SystemLabel.draft.id
-            || mailboxData!.selectedLabel == SystemLabel.sent.id) ? [] : [mailboxData!.selectedLabel]
+        let removeLabelsArray = (mailboxData.selectedLabel == SystemLabel.draft.id
+            || mailboxData.selectedLabel == SystemLabel.sent.id) ? [] : [mailboxData.selectedLabel]
         DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: [labelId], removedLabelIds: removeLabelsArray)
-        mailboxData?.removeSelectedRow = true
+        if(labelId != mailboxData.selectedLabel){
+            mailboxData.removeSelectedRow = true
+        }
         self.navigationController?.popViewController(animated: true)
     }
 }
