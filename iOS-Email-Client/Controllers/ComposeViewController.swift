@@ -278,6 +278,9 @@ class ComposeViewController: UIViewController {
     }
     
     func saveDraft() {
+        if let draft = emailDraft {
+            DBManager.delete(draft)
+        }
         
         self.resignKeyboard()
         
@@ -290,7 +293,7 @@ class ComposeViewController: UIViewController {
         let body = self.addAttachments(to: self.editorView.html)
         
         //create draft
-        let emailDetail = emailDraft ?? Email()
+        let emailDetail = Email()
         emailDetail.status = .none
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
@@ -484,11 +487,13 @@ class ComposeViewController: UIViewController {
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: discardTitle, style: .destructive) { action in
             APIManager.cancelAllUploads()
+            
             self.dismiss(animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "Save Draft", style: .default) { action in
             APIManager.cancelAllUploads()
             self.saveDraft()
+            self.dismiss(animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         

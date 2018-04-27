@@ -322,7 +322,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     
     func onTrashThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.setLabels(labels: [SystemLabel.trash.id])
+            self.moveTo(labelId: SystemLabel.trash.id)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Delete Threads", message: "The selected threads will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])
@@ -469,7 +469,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
         let myLabels = emailData.labels
         var removeMailboxRow = false
         let labelsToRemove = myLabels.reduce([Int]()) { (removeLabels, label) -> [Int] in
-            guard !labels.contains(label.id) || label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id else {
+            guard !labels.contains(label.id) && label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
                 return removeLabels
             }
             if(label.id == mailboxData?.selectedLabel){
