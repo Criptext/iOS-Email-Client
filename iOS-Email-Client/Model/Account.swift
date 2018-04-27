@@ -11,6 +11,7 @@ import RealmSwift
 
 class Account: Object{
     @objc dynamic var username = ""
+    @objc dynamic var deviceId = 1
     @objc dynamic var name = ""
     @objc dynamic var password = ""
     @objc dynamic var jwt = ""

@@ -26,6 +26,23 @@ class APIManager {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
+    class func checkAvailableUsername(_ username: String, completion: @escaping ((Error?) -> Void)) -> DataRequest{
+        let url = "\(self.baseUrl)/user/available?username=\(username)"
+
+        return Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default).responseString{
+            (response) in
+            guard response.result.isSuccess else {
+                return
+            }
+            guard response.response?.statusCode == 200 else {
+                let criptextError = CriptextError(code: .invalidUsername)
+                completion(criptextError)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
     class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
         let url = "\(self.baseUrl)/user"
         
@@ -44,10 +61,10 @@ class APIManager {
         }
     }
     
-    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((Error?, String?) -> Void)){
+    class func loginRequest(_ username: String, _ password: String, deviceId: Int, completion: @escaping ((Error?, String?) -> Void)){
         let parameters = ["username": username,
                           "password": password,
-                          "deviceId": 1] as [String : Any]
+                          "deviceId": deviceId] as [String : Any]
         let url = "\(self.baseUrl)/user/auth"
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{
             (response) in

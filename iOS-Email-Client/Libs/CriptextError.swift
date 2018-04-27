@@ -28,11 +28,17 @@ class CriptextError : Error {
 
 enum ErrorCode: Int {
     case accountNotCreated = 1
+    case invalidUsername = 2
+    case noValidResponse = 100
     
     var description: String {
         switch self {
         case .accountNotCreated:
             return "Unable to create your Account"
+        case .invalidUsername:
+            return "Username already exists"
+        case .noValidResponse:
+            return "Couldn't get a valid response"
         }
     }
 }

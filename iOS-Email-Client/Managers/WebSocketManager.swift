@@ -22,7 +22,7 @@ final class WebSocketManager: NSObject {
     
     func connect(account: Account){
         myAccount = account
-        socket = WebSocket("\(SOCKET_URL)?recipientId=\(account.username)&deviceId=\(1)", subProtocol: "criptext-protocol")
+        socket = WebSocket("\(SOCKET_URL)?recipientId=\(account.username)&deviceId=\(account.deviceId)", subProtocol: "criptext-protocol")
         socket.delegate = self
     }
     
