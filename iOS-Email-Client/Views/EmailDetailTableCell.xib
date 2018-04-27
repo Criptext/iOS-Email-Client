@@ -28,24 +28,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYk-NZ-Ec1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9UB-5Z-Iw6">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9UB-5Z-Iw6" customClass="UIImageView">
                                         <rect key="frame" x="18" y="27" width="36" height="36"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PI" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYO-dx-CPL">
-                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
                                         <color key="backgroundColor" red="0.48627450979999998" green="0.70980392160000005" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstItem="EYO-dx-CPL" firstAttribute="centerX" secondItem="9UB-5Z-Iw6" secondAttribute="centerX" id="InJ-0V-u1d"/>
                                             <constraint firstAttribute="width" constant="36" id="ShT-Pv-CRm"/>
-                                            <constraint firstItem="EYO-dx-CPL" firstAttribute="centerY" secondItem="9UB-5Z-Iw6" secondAttribute="centerY" id="tWS-GD-Mi3"/>
                                             <constraint firstAttribute="height" constant="36" id="tkE-hy-O6K"/>
-                                            <constraint firstItem="EYO-dx-CPL" firstAttribute="height" secondItem="9UB-5Z-Iw6" secondAttribute="height" id="uOy-NO-S6a"/>
-                                            <constraint firstItem="EYO-dx-CPL" firstAttribute="width" secondItem="9UB-5Z-Iw6" secondAttribute="width" id="wlt-of-wki"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -380,6 +368,7 @@
                 <outlet property="expandedDateLabel" destination="L1I-Jj-9pO" id="Dkx-rx-HmV"/>
                 <outlet property="expandedDetailView" destination="j7W-SK-UmD" id="dZe-Yc-YIC"/>
                 <outlet property="heightConstraint" destination="nMQ-Id-iGW" id="5mf-lb-XqG"/>
+                <outlet property="initialsImageView" destination="9UB-5Z-Iw6" id="S54-rx-dmb"/>
                 <outlet property="miniAttachmentIconView" destination="YbZ-Ti-AdL" id="fgu-Jo-SV7"/>
                 <outlet property="miniReadIconView" destination="7AC-9b-VHc" id="PHf-TM-uCx"/>
                 <outlet property="moreRecipientsLabel" destination="TjS-60-oSo" id="KfN-uG-f2f"/>

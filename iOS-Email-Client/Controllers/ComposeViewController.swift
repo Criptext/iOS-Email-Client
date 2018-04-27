@@ -291,6 +291,7 @@ class ComposeViewController: UIViewController {
         
         //create draft
         let emailDetail = emailDraft ?? Email()
+        emailDetail.status = .none
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
         if(body.count > 100){
@@ -321,9 +322,7 @@ class ComposeViewController: UIViewController {
         self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: emailDetail, type: ContactType.from)
         
         DBManager.store(emailContacts)
-        
         emailDraft = emailDetail
-        
     }
     
     func getEmailFromToken(_ token: CLToken) -> String {

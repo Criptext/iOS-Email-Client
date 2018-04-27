@@ -67,13 +67,14 @@ extension DBManager {
     }
     
     class func getMails(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> ([String:[Email]], [Email]) {
+        let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
         let predicate1 = NSPredicate(format: "NOT (ANY labels.id IN %@)", rejectedLabels)
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
         let predicate = label == SystemLabel.all.id ? predicate1 : predicate2
         let emails = Array(realm.objects(Email.self).filter(predicate).sorted(by: {$0.date! > $1.date!}))
-        let resultEmails = customDistinctEmailThreads(emails: emails, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
+        let resultEmails = customDistinctEmailThreads(emails: emails, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
             return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
         return ([:], resultEmails)
@@ -151,6 +152,7 @@ extension DBManager {
             email.key = key
             email.s3Key = s3Key
             email.threadId = threadId
+            email.status = .sent
         }
     }
     

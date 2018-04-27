@@ -202,6 +202,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
     
     func handleUnsendTap(_ cell: EmailTableViewCell, _ sender: UIView){
         let unsentPopover = UnsentUIPopover()
+        unsentPopover.date = "Coming Soon!"
         presentPopover(unsentPopover, sender, height: 68)
     }
     

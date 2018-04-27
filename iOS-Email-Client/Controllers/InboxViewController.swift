@@ -98,7 +98,7 @@ class InboxViewController: UIViewController {
         self.initMoreOptionsView()
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
-        WebSocketManager.sharedInstance.addListener(identifier: "mailbox", listener: self)
+        WebSocketManager.sharedInstance.eventDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -245,8 +245,11 @@ class InboxViewController: UIViewController {
 }
 
 extension InboxViewController: EventHandlerDelegate {
-    func didReceiveNewEmails() {
-        loadMails(from: mailboxData.selectedLabel, since: Date(), clear: true)
+    func didReceiveNewEmails(emails: [Email]) {
+        guard !searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
+            return
+        }
+        loadMails(from: mailboxData.selectedLabel, since: Date(), clear: true, limit: tableView.numberOfRows(inSection: 0))
     }
 }
 
@@ -287,7 +290,6 @@ extension InboxViewController{
         if mailboxData.isCustomEditing {
             didPressEdit(reload: true)
         }
-        mailboxData.reachedEnd = false
         mailboxData.selectedLabel = labelId
         mailboxData.cancelFetchWorker()
         loadMails(from: labelId, since: Date(), clear: true)
@@ -366,16 +368,14 @@ extension InboxViewController{
         mailboxData.threadToOpen = nil
     }
     
-    func loadMails(from label: Int, since date:Date, clear: Bool = false){
-        let tuple = DBManager.getMails(from: label, since: date)
+    func loadMails(from label: Int, since date:Date, clear: Bool = false, limit: Int = 0){
+        let tuple = DBManager.getMails(from: label, since: date, limit: limit)
         if(clear){
             mailboxData.emailArray = tuple.1
         } else {
             mailboxData.emailArray.append(contentsOf: tuple.1)
         }
-        if(tuple.1.count == 0){
-            mailboxData.reachedEnd = true
-        }
+        mailboxData.reachedEnd = tuple.1.isEmpty
         mailboxData.fetchWorker = nil
         self.tableView.reloadData()
         updateBadges()
@@ -680,7 +680,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
         }else{
             mailboxData.filteredEmailArray.append(contentsOf: emails)
         }
-        if(emails.count == 0){
+        if(emails.isEmpty){
             mailboxData.reachedEnd = true
         }
         mailboxData.fetchWorker = nil

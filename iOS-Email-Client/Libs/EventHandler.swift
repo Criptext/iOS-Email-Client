@@ -9,12 +9,13 @@
 import Foundation
 
 protocol EventHandlerDelegate {
-    func didReceiveNewEmails()
+    func didReceiveNewEmails(emails: [Email])
 }
 
 class EventHandler {
     let myAccount : Account
     var eventDelegate : EventHandlerDelegate?
+    var emails = [Email]()
     
     init(account: Account){
         myAccount = account
@@ -29,7 +30,11 @@ class EventHandler {
             }
         })
         asyncGroupCalls.notify(queue: .main) {
-            self.eventDelegate?.didReceiveNewEmails()
+            guard !self.emails.isEmpty else {
+                return
+            }
+            self.eventDelegate?.didReceiveNewEmails(emails: self.emails)
+            self.emails.removeAll()
         }
     }
     
@@ -91,6 +96,7 @@ class EventHandler {
             email.preview = String(email.content.prefix(100)).removeHtmlTags()
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
+            self.emails.append(email)
             
             ContactManager.parseEmailContacts(from, email: email, type: .from)
             ContactManager.parseEmailContacts(to, email: email, type: .to)

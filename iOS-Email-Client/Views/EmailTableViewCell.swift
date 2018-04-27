@@ -42,6 +42,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var attachmentsTableView: UITableView!
     @IBOutlet weak var collapsedDateLabel: UILabel!
     @IBOutlet weak var expandedDateLabel: UILabel!
+    @IBOutlet weak var initialsImageView: UIImageView!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
     
@@ -99,38 +100,37 @@ class EmailTableViewCell: UITableViewCell{
         if(!loadedContent){
             webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: nil)
         }
-        contactsExpandLabel.text = email.fromContact!.displayName
-        moreRecipientsLabel.text = toContacts.count > 1 ? "To \(toContacts.first!.displayName) & \(toContacts.count) more" : "To \(toContacts.first!.displayName)"
+        let fromContactName = email.fromContact!.displayName
+        initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
+        contactsExpandLabel.text = fromContactName
+        moreRecipientsLabel.text = toContacts.count > 1 ? "To \(toContacts.first!.displayName) & \(toContacts.count - 1) more" : "To \(toContacts.first!.displayName)"
         expandedDateLabel.text = email.getFormattedDate()
         setExpandedIcons(email)
     }
     
     func setCollapsedIcons(_ email: Email){
-        let hasOpens = true
-        let hasAttachments = true
+        miniAttachmentIconView.isHidden = true
+        guard email.status != .none else {
+            miniReadIconView.isHidden = true
+            return
+        }
         
-        miniReadIconView.tintColor = hasOpens ?  .mainUI : .neutral
-        miniAttachmentIconView.tintColor = hasAttachments ?  .mainUI : .neutral
+        miniReadIconView.tintColor = (email.status == .opened) ?  .mainUI : .neutral
     }
     
     func setExpandedIcons(_ email: Email){
-        let isSecure = false
-        let hasOpens = true
-        let hasAttachments = true
         let isUnsent = email.isUnsent
-        
-        guard isSecure == true else {
+        let isRead = email.status == .opened
+        attachmentView.isHidden = true
+        guard email.status != .none else {
             readView.isHidden = true
-            attachmentView.isHidden = true
             unsendView.isHidden = true
             return
         }
         
-        readIconView.tintColor = hasOpens ?  .mainUI : .neutral
-        readView.layer.borderColor = hasOpens ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
-        
-        attachmentIconView.tintColor = hasAttachments ?  .mainUI : .neutral
-        attachmentView.layer.borderColor = hasAttachments ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
+        readIconView.tintColor = isRead ?  .mainUI : .neutral
+        readView.layer.borderColor = isRead ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
+        readView.isUserInteractionEnabled = isRead
         
         unsendIconView.tintColor =  isUnsent ?  .alert : .white
         unsendView.backgroundColor = isUnsent ? .white : .alert
