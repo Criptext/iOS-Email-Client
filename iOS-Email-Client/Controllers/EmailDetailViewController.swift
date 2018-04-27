@@ -10,7 +10,7 @@ import Foundation
 
 class EmailDetailViewController: UIViewController {
     var emailData : EmailDetailData!
-    var mailboxData : MailboxData?
+    var mailboxData : MailboxData!
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var topToolbar: NavigationToolbarView!
     @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
@@ -467,26 +467,26 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     
     func setLabels(labels: [Int]) {
         let myLabels = emailData.labels
-        var removeMailboxRow = false
         let labelsToRemove = myLabels.reduce([Int]()) { (removeLabels, label) -> [Int] in
             guard !labels.contains(label.id) && label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
                 return removeLabels
             }
-            if(label.id == mailboxData?.selectedLabel){
-                removeMailboxRow = true
-            }
             return removeLabels + [label.id]
         }
         DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: labels, removedLabelIds: labelsToRemove)
-        mailboxData?.removeSelectedRow = removeMailboxRow
+        if !(labels.contains(mailboxData.selectedLabel) || (labels.isEmpty && mailboxData.selectedLabel != SystemLabel.all.id)) {
+            mailboxData.removeSelectedRow = true
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
     func moveTo(labelId: Int) {
-        let removeLabelsArray = (mailboxData!.selectedLabel == SystemLabel.draft.id
-            || mailboxData!.selectedLabel == SystemLabel.sent.id) ? [] : [mailboxData!.selectedLabel]
+        let removeLabelsArray = (mailboxData.selectedLabel == SystemLabel.draft.id
+            || mailboxData.selectedLabel == SystemLabel.sent.id) ? [] : [mailboxData.selectedLabel]
         DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: [labelId], removedLabelIds: removeLabelsArray)
-        mailboxData?.removeSelectedRow = true
+        if(labelId != mailboxData.selectedLabel){
+            mailboxData.removeSelectedRow = true
+        }
         self.navigationController?.popViewController(animated: true)
     }
 }
