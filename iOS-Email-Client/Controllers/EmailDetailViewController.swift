@@ -314,7 +314,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     
     func onArchiveThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
-            self.setLabels(labels: [])
+            self.setLabels([])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Archive Threads", message: "The selected threads will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
@@ -465,7 +465,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
         }
     }
     
-    func setLabels(labels: [Int]) {
+    func setLabels(_ labels: [Int]) {
         let myLabels = emailData.labels
         let labelsToRemove = myLabels.reduce([Int]()) { (removeLabels, label) -> [Int] in
             guard !labels.contains(label.id) && label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {

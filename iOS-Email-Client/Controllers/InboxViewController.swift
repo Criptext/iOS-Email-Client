@@ -744,7 +744,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         }
     }
     
-    func setLabels(labels: [Int]) {
+    func setLabels(_ labels: [Int]) {
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             return
         }
@@ -797,7 +797,7 @@ extension InboxViewController: NavigationToolbarDelegate {
     
     func onArchiveThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
-            self.setLabels(labels: [])
+            self.setLabels([])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Archive Threads", message: "The selected threads will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
@@ -805,7 +805,7 @@ extension InboxViewController: NavigationToolbarDelegate {
     
     func onTrashThreads() {
         let archiveAction = UIAlertAction(title: "Yes", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.setLabels(labels: [SystemLabel.trash.id])
+            self.setLabels([SystemLabel.trash.id])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert("Delete Threads", message: "The selected threads will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])

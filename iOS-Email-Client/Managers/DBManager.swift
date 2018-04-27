@@ -13,7 +13,7 @@ import RealmSwift
 //MARK: - User related
 class DBManager {
     
-    static let PAGINATION_SIZE = 5
+    static let PAGINATION_SIZE = 20
     
     class func getReference(_ obj:Object) -> ThreadSafeReference<Object> {
         return ThreadSafeReference(to: obj)
