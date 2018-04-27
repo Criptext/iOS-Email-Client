@@ -11,7 +11,7 @@ import SwiftWebSocket
 
 final class WebSocketManager: NSObject {
     static let sharedInstance = WebSocketManager()
-    var eventDelegates = [String: EventHandlerDelegate]()
+    var eventDelegate : EventHandlerDelegate?
     var socket : WebSocket!
     var myAccount : Account!
     let SOCKET_URL = "ws://stage.socket.criptext.com"
@@ -29,14 +29,6 @@ final class WebSocketManager: NSObject {
     func close(){
         socket.event.close = {_,_,_ in }
         socket.close()
-    }
-    
-    func addListener(identifier: String, listener: EventHandlerDelegate){
-        eventDelegates[identifier] = listener
-    }
-    
-    func removeListener(identifier: String){
-        eventDelegates[identifier] = nil
     }
 }
 
@@ -71,9 +63,7 @@ extension WebSocketManager: WebSocketDelegate{
 }
 
 extension WebSocketManager: EventHandlerDelegate {
-    func didReceiveNewEmails() {
-        eventDelegates.values.forEach { (eventDelegate) in
-            eventDelegate.didReceiveNewEmails()
-        }
+    func didReceiveNewEmails(emails: [Email]) {
+        eventDelegate?.didReceiveNewEmails(emails: emails)
     }
 }

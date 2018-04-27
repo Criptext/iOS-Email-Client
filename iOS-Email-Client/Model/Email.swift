@@ -20,7 +20,7 @@ class Email: Object {
     @objc dynamic var content = ""
     @objc dynamic var preview = ""
     @objc dynamic var subject = ""
-    @objc dynamic var delivered = DeliveryStatus.SENT
+    @objc dynamic var delivered = DeliveryStatus.NONE
     @objc dynamic var date : Date?
     let labels = List<Label>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
@@ -96,8 +96,9 @@ func ==(lhs: Email, rhs: Email) -> Bool {
 }
 
 struct DeliveryStatus {
-    static let PENDING = 0
+    static let NONE = 0
     static let SENT = 1
     static let DELIVERED = 2
+    static let OPENED = 3
     static let UNSENT = -1
 }

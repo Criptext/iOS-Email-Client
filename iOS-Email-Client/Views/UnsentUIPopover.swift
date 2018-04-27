@@ -10,6 +10,7 @@ import Foundation
 
 class UnsentUIPopover: BaseUIPopover{
     @IBOutlet weak var dateLabel: UILabel!
+    var date: String?
     
     init() {
         super.init("UnsentUIPopover")
@@ -17,5 +18,10 @@ class UnsentUIPopover: BaseUIPopover{
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dateLabel.text = date
     }
 }

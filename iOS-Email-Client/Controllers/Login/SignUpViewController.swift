@@ -11,7 +11,7 @@ import Material
 import Alamofire
 
 class SignUpViewController: UIViewController{
-    
+    let MIN_USERNAME_LENGTH = 3
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var termsConditionsLabel: UIButton!
     @IBOutlet weak var createAccountButton: UIButton!
@@ -76,7 +76,7 @@ class SignUpViewController: UIViewController{
             usernameTextField.setStatus(.invalid, inputError)
             return
         }
-        guard username.count >= 3 else {
+        guard username.count >= MIN_USERNAME_LENGTH else {
             let inputError = "use more than 2 characters"
             usernameTextField.setStatus(.invalid, inputError)
             return

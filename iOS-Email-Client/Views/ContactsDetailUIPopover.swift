@@ -55,7 +55,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
         contacts.forEach { (contact) in
             let contactString = buildContactAttributedString(contact.displayName, contact.email)
             contactAttString.append(contactString)
-            guard contact != contacts.first && contact != contacts.last else {
+            guard contacts.count > 1 && contact != contacts.last else {
                 return
             }
             contactAttString.append(buildContactAttributedString("\n", "\n"))
