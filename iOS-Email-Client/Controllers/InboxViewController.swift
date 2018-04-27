@@ -118,18 +118,6 @@ class InboxViewController: UIViewController {
             self.tableView.deselectRow(at: indexPath, animated: true)
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
-        
-        guard let indexArray = self.tableView.indexPathsForVisibleRows,
-            let index = indexArray.first,
-            index.row == 0,
-            !self.searchController.isActive else {
-            return
-        }
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
     
     func initBarButtonItems(){
@@ -258,7 +246,7 @@ class InboxViewController: UIViewController {
 
 extension InboxViewController: EventHandlerDelegate {
     func didReceiveNewEmails() {
-        loadMails(from: mailboxData.selectedLabel, since: Date())
+        loadMails(from: mailboxData.selectedLabel, since: Date(), clear: true)
     }
 }
 
@@ -296,6 +284,9 @@ extension InboxViewController{
     }
     
     func swapMailbox(labelId: Int, sender: Any?){
+        if mailboxData.isCustomEditing {
+            didPressEdit(reload: true)
+        }
         mailboxData.reachedEnd = false
         mailboxData.selectedLabel = labelId
         mailboxData.cancelFetchWorker()
@@ -584,9 +575,10 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         let selectedEmail = searchMode ? mailboxData.filteredEmailArray[indexPath.row] : mailboxData.emailArray[indexPath.row]
+        let showOnlyDraft = selectedEmail.threadId.isEmpty && selectedEmail.labels.contains(where: {$0.id == SystemLabel.draft.id})
         let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId)
         let emailDetailData = EmailDetailData()
-        emailDetailData.emails = emails
+        emailDetailData.emails = showOnlyDraft ? [selectedEmail] : emails
         emailDetailData.labels += emails.first!.labels
         emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
@@ -655,7 +647,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        return !mailboxData.isCustomEditing
     }
 }
 
@@ -762,7 +754,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             var removeEmail = false
             let email = mailboxData.emailArray[indexPath.row]
             let labelsToRemove = email.labels.reduce([Int]()) { (removeLabels, label) -> [Int] in
-                guard !labels.contains(label.id) else {
+                guard !labels.contains(label.id) || label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id  else {
                     return removeLabels
                 }
                 if(label.id == mailboxData.selectedLabel){
@@ -786,9 +778,11 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             return
         }
         self.didPressEdit(reload: true)
+        let removeLabelsArray = (mailboxData.selectedLabel == SystemLabel.draft.id
+            || mailboxData.selectedLabel == SystemLabel.sent.id) ? [] : [mailboxData.selectedLabel]
         for indexPath in indexPaths {
             let email = mailboxData.emailArray[indexPath.row]
-            DBManager.addRemoveLabelsFromThread(email.threadId, addedLabelIds: [labelId], removedLabelIds: [mailboxData.selectedLabel])
+            DBManager.addRemoveLabelsFromThread(email.threadId, addedLabelIds: [labelId], removedLabelIds: removeLabelsArray)
             mailboxData.emailArray.remove(at: indexPath.row)
         }
         self.tableView.deleteRows(at: indexPaths, with: .left)

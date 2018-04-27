@@ -27,10 +27,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MnZ-qO-enA">
-                    <rect key="frame" x="134.5" y="260" width="134.5" height="40"/>
+                    <rect key="frame" x="134.5" y="254" width="134.5" height="46"/>
                     <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="VX8-0m-Zon"/>
+                        <constraint firstAttribute="height" constant="46" id="VX8-0m-Zon"/>
                     </constraints>
                     <state key="normal" title="Accept">
                         <color key="titleColor" red="0.18823529411764706" green="0.19607843137254902" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
@@ -40,10 +40,10 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m1z-nB-rnK">
-                    <rect key="frame" x="0.0" y="260" width="134.5" height="40"/>
+                    <rect key="frame" x="0.0" y="254" width="134.5" height="46"/>
                     <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="eKc-JK-sth"/>
+                        <constraint firstAttribute="height" constant="46" id="eKc-JK-sth"/>
                     </constraints>
                     <state key="normal" title="Cancel">
                         <color key="titleColor" red="0.18823529410000001" green="0.1960784314" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -62,14 +62,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="teS-lG-T0G">
-                    <rect key="frame" x="0.0" y="56" width="269" height="194"/>
+                    <rect key="frame" x="0.0" y="56" width="269" height="188"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kqx-1a-CB3">
-                    <rect key="frame" x="0.0" y="260" width="269" height="40"/>
+                    <rect key="frame" x="0.0" y="254" width="269" height="46"/>
                     <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="uD5-BE-sQh"/>
+                        <constraint firstAttribute="height" constant="46" id="uD5-BE-sQh"/>
                     </constraints>
                     <state key="normal" title="Cancel">
                         <color key="titleColor" red="0.18823529410000001" green="0.1960784314" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>

@@ -468,7 +468,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
         let myLabels = emailData.labels
         var removeMailboxRow = false
         let labelsToRemove = myLabels.reduce([Int]()) { (removeLabels, label) -> [Int] in
-            guard !labels.contains(where: {$0 == label.id}) else {
+            guard !labels.contains(label.id) || label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id else {
                 return removeLabels
             }
             if(label.id == mailboxData?.selectedLabel){
@@ -482,7 +482,9 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     }
     
     func moveTo(labelId: Int) {
-        DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: [labelId], removedLabelIds: [mailboxData!.selectedLabel])
+        let removeLabelsArray = (mailboxData!.selectedLabel == SystemLabel.draft.id
+            || mailboxData!.selectedLabel == SystemLabel.sent.id) ? [] : [mailboxData!.selectedLabel]
+        DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: [labelId], removedLabelIds: removeLabelsArray)
         mailboxData?.removeSelectedRow = true
         self.navigationController?.popViewController(animated: true)
     }

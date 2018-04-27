@@ -32,16 +32,9 @@ class InboxTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.avatarImageView.layer.borderWidth = 1.0
-        self.avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
-        
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         self.addGestureRecognizer(hold)
         self.holdGestureRecognizer = hold
-        
-        let view = UIView()
-        view.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
-        self.selectedBackgroundView = view
     }
     
     @objc func handleLongPress(_ gestureRecognizer:UILongPressGestureRecognizer){
@@ -57,6 +50,8 @@ class InboxTableViewCell: UITableViewCell {
         avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
         avatarImageView.image = #imageLiteral(resourceName: "check")
         avatarImageView.tintColor = UIColor.white
+        avatarImageView.layer.borderWidth = 1.0
+        avatarImageView.layer.borderColor = backgroundColor?.cgColor
     }
     
     func setAsNotSelected(){
