@@ -37,16 +37,26 @@ class ResetDeviceViewController: UIViewController{
     }
     
     @IBAction func onResetPress(_ sender: Any) {
-        if(failed){
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview")
-            self.present(controller, animated: true, completion: nil)
-            showFeedback(false)
+        guard let password = passwordTextField.text else {
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
-            self.showFeedback(false, "Incorrect Password")
-            self.failed = true
+        let email = loginData.email
+        let username = String(email.split(separator: "@")[0])
+        APIManager.loginRequest(username, password) { (responseError, responseData) in
+            if let error = responseError {
+                self.showFeedback(true, error.localizedDescription)
+                return
+            }
+            guard let data = responseData else {
+                return
+            }
+            let name = data["name"] as! String
+            let deviceId = data["deviceId"] as! Int
+            let token = data["token"] as! String
+            let signupData = SignUpData(username: username, password: password, fullname: name, optionalEmail: nil)
+            signupData.deviceId = deviceId
+            signupData.token = token
+            self.jumpToCreatingAccount(signupData: signupData)
         }
     }
     
@@ -70,9 +80,10 @@ class ResetDeviceViewController: UIViewController{
         errorLabel.text = message ?? ""
     }
     
-    func jumpToCreatingAccount(){
+    func jumpToCreatingAccount(signupData: SignUpData){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview")
+        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
+        controller.signupData = signupData
         self.present(controller, animated: true, completion: nil)
     }
     

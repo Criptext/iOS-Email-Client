@@ -26,6 +26,10 @@ class CreatingAccountViewController: UIViewController{
     func handleState(){
         switch(state){
         case .signupRequest:
+            guard signupData.deviceId == 1 else {
+                sendKeysRequest()
+                break
+            }
             sendSignUpRequest()
         case .accountCreate:
             createAccount()
@@ -39,6 +43,15 @@ class CreatingAccountViewController: UIViewController{
         progressBar.layer.sublayers![1].cornerRadius = 5
         progressBar.subviews[1].clipsToBounds = true
         handleState()
+    }
+    
+    func sendKeysRequest(){
+        feedbackLabel.text = "Generating keys..."
+        _ = signupData.buildDataForRequest()
+        self.animateProgress(50.0, 2.0) {
+            self.state = .accountCreate
+            self.handleState()
+        }
     }
     
     func sendSignUpRequest(){
@@ -65,6 +78,7 @@ class CreatingAccountViewController: UIViewController{
         myAccount.jwt = signupData.token!
         myAccount.regId = signupData.getRegId()
         myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""
+        myAccount.deviceId = signupData.deviceId
         DBManager.store(myAccount)
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")

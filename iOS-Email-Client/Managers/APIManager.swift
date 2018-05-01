@@ -61,18 +61,19 @@ class APIManager {
         }
     }
     
-    class func loginRequest(_ username: String, _ password: String, deviceId: Int, completion: @escaping ((Error?, String?) -> Void)){
+    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
         let parameters = ["username": username,
-                          "password": password,
-                          "deviceId": deviceId] as [String : Any]
+                          "password": password] as [String : Any]
         let url = "\(self.baseUrl)/user/auth"
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{
             (response) in
+            
             guard let value = response.result.value else {
                 completion(response.result.error, nil)
                 return
             }
-            completion(nil, value)
+            let data = Utils.convertToDictionary(text: value)
+            completion(nil, data)
         }
     }
     

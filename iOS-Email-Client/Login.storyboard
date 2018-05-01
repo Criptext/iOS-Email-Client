@@ -1218,6 +1218,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                     <userDefinedRuntimeAttribute type="color" keyPath="detailColor">
                                                         <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isVisibilityIconButtonEnabled" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onPasswordChange:" destination="SKd-jY-l7u" eventType="editingChanged" id="mAo-xh-j0X"/>

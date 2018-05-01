@@ -240,12 +240,6 @@ extension DBManager {
         }
     }
     
-    class func getKeysRecords() -> [CRPreKeyRecord] {
-        let realm = try! Realm()
-        
-        return Array(realm.objects(CRPreKeyRecord.self))
-    }
-    
     class func getKeyRecordById(id: Int32) -> CRPreKeyRecord?{
         let realm = try! Realm()
         
@@ -279,12 +273,6 @@ extension DBManager {
         try! realm.write {
             realm.add(keyRecords, update: true)
         }
-    }
-    
-    class func getKeysRecords() -> [CRSignedPreKeyRecord] {
-        let realm = try! Realm()
-        
-        return Array(realm.objects(CRSignedPreKeyRecord.self))
     }
     
     class func getSignedKeyRecordById(id: Int32) -> CRSignedPreKeyRecord?{

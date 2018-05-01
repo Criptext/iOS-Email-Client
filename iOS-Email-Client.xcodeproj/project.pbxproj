@@ -714,7 +714,7 @@
 					41B6AAAB2017987500D428B7 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 0920;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1127,7 +1127,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "iOS-Email-Client/iOS-Email-Client.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1136,9 +1136,10 @@
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.secure.email;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "c5750fe2-a042-4102-9129-a966c07ac329";
+				PROVISIONING_PROFILE_SPECIFIER = "Development Criptext Email";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS-Email-Client/Libs/iOS-Email-Client-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -1152,8 +1153,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "iOS-Email-Client/iOS-Email-Client.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1162,9 +1164,10 @@
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.secure.email;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "c5750fe2-a042-4102-9129-a966c07ac329";
+				PROVISIONING_PROFILE_SPECIFIER = "Development Criptext Email";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS-Email-Client/Libs/iOS-Email-Client-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

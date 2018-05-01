@@ -55,11 +55,8 @@ class SignUpViewController: UIViewController{
         case fullnameTextField:
             checkFullname()
             break
-        case passwordTextField:
+        case passwordTextField, confirmPasswordTextField:
             checkPassword()
-            break
-        case confirmPasswordTextField:
-            checkConfirmPassword()
             break
         case emailTextField:
             checkOptionalEmail()
@@ -104,32 +101,23 @@ class SignUpViewController: UIViewController{
     }
     
     func checkPassword(){
-        guard passwordTextField.text!.count >= Constants.MinCharactersPassword else {
+        passwordTextField.setStatus(.none)
+        confirmPasswordTextField.setStatus(.none)
+        guard let password = passwordTextField.text,
+            password.count >= Constants.MinCharactersPassword else {
             let inputError = "password must be at least 6 characters"
             passwordTextField.setStatus(.invalid, inputError)
             return
         }
         passwordTextField.setStatus(.valid)
-        if(!confirmPasswordTextField.isEmpty && confirmPasswordTextField.text != passwordTextField.text){
-            let inputError = "Passwords don't match"
-            confirmPasswordTextField.setStatus(.invalid, inputError)
-        }else if(confirmPasswordTextField.isEmpty && confirmPasswordTextField.text == passwordTextField.text){
-            confirmPasswordTextField.setStatus(.valid)
-        }
         
-    }
-    
-    func checkConfirmPassword(){
-        guard !passwordTextField.isEmpty else {
-            confirmPasswordTextField.setStatus(.none)
-            return
-        }
-        guard confirmPasswordTextField.text == passwordTextField.text else {
+        guard let confirmPassword = confirmPasswordTextField.text, confirmPassword == password else {
             let inputError = "Passwords don't match"
             confirmPasswordTextField.setStatus(.invalid, inputError)
             return
         }
         confirmPasswordTextField.setStatus(.valid)
+        
     }
     
     func checkOptionalEmail(){
