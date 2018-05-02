@@ -100,6 +100,7 @@
 		7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */; };
 		7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */; };
 		7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884F208D367B003FA304 /* MailboxData.swift */; };
+		7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D8039209A02D500B213F1 /* ComposerData.swift */; };
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
 		7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */; };
 		7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */; };
@@ -281,6 +282,7 @@
 		7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralMoreOptionsUIView.swift; sourceTree = "<group>"; };
 		7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralMoreOptionsUIView.xib; sourceTree = "<group>"; };
 		7C1E884F208D367B003FA304 /* MailboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxData.swift; sourceTree = "<group>"; };
+		7C2D8039209A02D500B213F1 /* ComposerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerData.swift; sourceTree = "<group>"; };
 		7C34E5FA20470D2100E71906 /* EmailDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailData.swift; sourceTree = "<group>"; };
 		7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyDetailUIView.swift; sourceTree = "<group>"; };
 		7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailFooterCell.swift; sourceTree = "<group>"; };
@@ -568,6 +570,7 @@
 				9568328F20753FBE007F8489 /* File.swift */,
 				7CB44948207BBE0C009430EB /* MenuData.swift */,
 				7C1E884F208D367B003FA304 /* MailboxData.swift */,
+				7C2D8039209A02D500B213F1 /* ComposerData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -892,6 +895,7 @@
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
+				7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */,
 				7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */,
 				41AAC503201A9FAD00809C4D /* HeaderViewController.swift in Sources */,
 				7CB3B940208A57EF00EDD427 /* DetailMoreOptionsUIView.swift in Sources */,

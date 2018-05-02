@@ -47,6 +47,21 @@ class EmailDetailViewController: UIViewController {
         self.topToolbar.isHidden = false
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        guard emailData.newEmail,
+            let email = emailData.emails.last else {
+            return
+        }
+        
+        email.isExpanded = true
+        let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
+        emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(emailData.emails.count - 1)")
+        emailsTableView.reloadData()
+        emailData.newEmail = false
+    }
+    
     func setupToolbar(){
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
@@ -266,12 +281,16 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composeVC = navComposeVC.viewControllers.first as! ComposeViewController
-        composeVC.initToContacts.append(contentsOf: contactsTo)
-        composeVC.initCcContacts.append(contentsOf: contactsCc)
-        composeVC.initSubject = email.subject.starts(with: "\(subjectPrefix) ") ? email.subject : "\(subjectPrefix) \(email.subject)"
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
+        let composerData = ComposerData()
+        composerData.initToContacts.append(contentsOf: contactsTo)
+        composerData.initCcContacts.append(contentsOf: contactsCc)
+        composerData.initSubject = email.subject.starts(with: "\(subjectPrefix) ") ? email.subject : "\(subjectPrefix) \(email.subject)"
         let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact!.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
-        composeVC.initContent = replyBody
+        composerData.initContent = replyBody
+        composerData.threadId = emailData.threadId
+        composerVC.composerData = composerData
+        composerVC.emailDetailData = self.emailData
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
@@ -350,7 +369,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.onFooterReplyPress()
             return
         }
-        self.toggleMoreOptionsView()
+        moreOptionsContainerView.closeMoreOptions()
+        deselectSelectedRow()
         let email = emailData.emails[indexPath.row]
         let fromContact = email.fromContact!
         let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]

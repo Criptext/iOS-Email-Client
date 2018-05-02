@@ -61,9 +61,6 @@ class ComposeViewController: UIViewController {
     
     let rowHeight:CGFloat = 65.0
     
-    var attachmentArray = [File]()
-    var contactArray = [Contact]()
-    
     let imagePicker = CICropPicker()
     
     var thumbUpdated = false
@@ -71,10 +68,6 @@ class ComposeViewController: UIViewController {
     var selectedTokenInputView:CLTokenInputView?
     
     var isEdited = false
-    
-    //draft
-    var isDraft = false
-    var emailDraft: Email?
     
     var sendBarButton:UIBarButtonItem!
     var sendSecureBarButton:UIBarButtonItem!
@@ -84,10 +77,8 @@ class ComposeViewController: UIViewController {
     
     let DOMAIN = "jigl.com"
     
-    var initToContacts = [Contact]()
-    var initCcContacts = [Contact]()
-    var initSubject = ""
-    var initContent = ""
+    var composerData: ComposerData!
+    var emailDetailData: EmailDetailData?
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -171,7 +162,7 @@ class ComposeViewController: UIViewController {
         activityButton.addTarget(self, action: #selector(didPressAttachment(_:)), for: UIControlEvents.touchUpInside)
         activityButton.tintColor = Icon.enabled.color
         
-        activityButton.tintColor = self.attachmentArray.isEmpty ? Icon.enabled.color : Icon.system.color
+        activityButton.tintColor = composerData.attachmentArray.isEmpty ? Icon.enabled.color : Icon.system.color
         self.attachmentBarButton = activityButton
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
         self.title = "New Secure Email"
@@ -181,22 +172,22 @@ class ComposeViewController: UIViewController {
         
         var badgeString = ""
         
-        if self.attachmentArray.count > 0 {
-            badgeString = "\(self.attachmentArray.count)"
+        if composerData.attachmentArray.count > 0 {
+            badgeString = "\(composerData.attachmentArray.count)"
         }
         
         self.attachmentBarButton.badgeString = badgeString
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
-        subjectField.text = initSubject
-        editorView.html = initContent
+        subjectField.text = composerData.initSubject
+        editorView.html = composerData.initContent
     }
     
     func setupInitContacts(){
-        for contact in initToContacts {
+        for contact in composerData.initToContacts {
             addToken(contact.displayName, value: contact.email, to: toField)
         }
-        for contact in initCcContacts {
+        for contact in composerData.initCcContacts {
             addToken(contact.displayName, value: contact.email, to: ccField)
         }
     }
@@ -226,7 +217,7 @@ class ComposeViewController: UIViewController {
     
     func add(_ attachment:File){
         self.attachmentBarButton.tintColor = Icon.system.color
-        self.attachmentArray.insert(attachment, at: 0)
+        composerData.attachmentArray.insert(attachment, at: 0)
         
         self.toggleAttachmentTable()
         
@@ -246,7 +237,7 @@ class ComposeViewController: UIViewController {
     
     func remove(_ attachment:File){
         
-        guard let index = self.attachmentArray.index(where: { (attach) -> Bool in
+        guard let index = composerData.attachmentArray.index(where: { (attach) -> Bool in
             return attach == attachment
         }) else {
             //if not found, do nothing
@@ -257,7 +248,7 @@ class ComposeViewController: UIViewController {
     }
     
     func removeAttachment(at indexPath:IndexPath){
-        let attachment = self.attachmentArray.remove(at: indexPath.row)
+        let attachment = composerData.attachmentArray.remove(at: indexPath.row)
         
         var badgeString = ""
         let badge = (Int(self.attachmentBarButton.badgeString ?? "1") ?? 1 ) - 1
@@ -278,7 +269,7 @@ class ComposeViewController: UIViewController {
     }
     
     func saveDraft() {
-        if let draft = emailDraft {
+        if let draft = composerData.emailDraft {
             DBManager.delete(draft)
         }
         
@@ -298,11 +289,12 @@ class ComposeViewController: UIViewController {
         emailDetail.key = "\(NSDate().timeIntervalSince1970)"
         emailDetail.content = body
         if(body.count > 100){
-            let index = body.index(body.startIndex, offsetBy: 100)
-            emailDetail.preview = String(body[..<index])
+            let bodyWithoutHtml = body.removeHtmlTags()
+            let index = bodyWithoutHtml.index(bodyWithoutHtml.startIndex, offsetBy: 100)
+            emailDetail.preview = String(bodyWithoutHtml[..<index])
         }
         else{
-            emailDetail.preview = body
+            emailDetail.preview = body.removeHtmlTags()
         }
         emailDetail.unread = false
         emailDetail.subject = subject
@@ -325,7 +317,7 @@ class ComposeViewController: UIViewController {
         self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: emailDetail, type: ContactType.from)
         
         DBManager.store(emailContacts)
-        emailDraft = emailDetail
+        composerData.emailDraft = emailDetail
     }
     
     func getEmailFromToken(_ token: CLToken) -> String {
@@ -383,11 +375,11 @@ class ComposeViewController: UIViewController {
     func toggleAttachmentTable(){
         
         var height = 303
-        if self.attachmentArray.count < 3 {
-            height = 108 + (self.attachmentArray.count * 65)
+        if composerData.attachmentArray.count < 3 {
+            height = 108 + (composerData.attachmentArray.count * 65)
         }
         
-        if self.attachmentArray.isEmpty {
+        if composerData.attachmentArray.isEmpty {
             height = 0
         }
         
@@ -423,7 +415,7 @@ class ComposeViewController: UIViewController {
     }
     
     func addAttachments(to body:String) -> String{
-        guard !self.attachmentArray.isEmpty else {
+        guard !composerData.attachmentArray.isEmpty else {
             return body
         }
         
@@ -433,7 +425,7 @@ class ComposeViewController: UIViewController {
             let elements = try doc.getElementsByClass("criptext_attachment")
             try elements.remove()
             
-            for attachment in self.attachmentArray {
+            for attachment in composerData.attachmentArray {
                 
                 var preTag:Element!
                 
@@ -455,7 +447,7 @@ class ComposeViewController: UIViewController {
     }
     
     func isAttachmentPending () -> Bool {
-        return (self.attachmentArray.contains { (attachment) -> Bool in
+        return (composerData.attachmentArray.contains { (attachment) -> Bool in
             if attachment.isUploaded {
                 //ignore those already uploaded
                 return false
@@ -482,7 +474,7 @@ class ComposeViewController: UIViewController {
             return
         }
         
-        let discardTitle = self.isDraft ? "Delete Changes" : "Discard"
+        let discardTitle = "Discard"
         
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: discardTitle, style: .destructive) { action in
@@ -539,11 +531,14 @@ class ComposeViewController: UIViewController {
     }
     
     func sendMail(subject: String, guestEmail: Dictionary<String, Any>, criptextEmails: Array<Any>){
-        
-        APIManager.postMailRequest([
+        var requestParams = [
             "subject": subject,
             "criptextEmails": criptextEmails
-        ], token: activeAccount.jwt) { (error, data) in
+            ] as [String : Any]
+        if let threadId = composerData.threadId {
+            requestParams["threadId"] = threadId
+        }
+        APIManager.postMailRequest(requestParams, token: activeAccount.jwt) { (error, data) in
             self.toggleInteraction(true)
             if let error = error {
                 self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
@@ -561,7 +556,7 @@ class ComposeViewController: UIViewController {
     }
     
     func updateEmailData(_ data : Any?){
-        guard let myEmail = emailDraft else {
+        guard let myEmail = composerData.emailDraft else {
             return
         }
         let keysArray = data as! Dictionary<String, Any>
@@ -570,6 +565,8 @@ class ComposeViewController: UIViewController {
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(myEmail, key: key, s3Key: s3Key, threadId: threadId)
         DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
+        emailDetailData?.emails.append(myEmail)
+        emailDetailData?.newEmail = true
     }
     
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>){
@@ -800,56 +797,25 @@ extension ComposeViewController: CICropPickerDelegate {
             
             self.add(attachment)
             
-//            APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
-//
-//                if let error = error as NSError?,
-//                    let errorObject = error.userInfo["error"] as? [String:String] {
-//
-//                    var actions = [UIAlertAction]()
-//
-//                    if error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
-//                        let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
-//                            UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
-//                        })
-//                        actions.append(proAction)
-//                    }
-//
-//                    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-//                    actions.append(okAction)
-//
-//                    self.showAlert(errorObject["title"], message: errorObject["description"], style: .alert, actions: actions)
-//                    //delete attachment
-//                    self.remove(attachment)
-//                    return
-//                }
-//
-//                guard let fileToken = fileToken else {
-//                    attachment.isUploaded = false
-//                    print(error!)
-//                    //show error in UI
-//                    return
-//                }
+            attachment.isUploaded = true
+            attachment.token = "123"
+            //store attachment in DB
             
-                attachment.isUploaded = true
-                attachment.token = "123"
-                //store attachment in DB
-                
-                //clean up local file not needed anymore
-                try? FileManager.default.removeItem(atPath:attachment.filePath)
-                
-                //update cell to hide progress bar
-                guard let index = self.attachmentArray.index(where: { (attach) -> Bool in
-                    return attach == attachment
-                }) else {
-                    //if not found, do nothing
-                    return
-                }
-                
-                let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
-                
-                cell.progressView.progress = 1
-                cell.progressView.isHidden = true
-            //}
+            //clean up local file not needed anymore
+            try? FileManager.default.removeItem(atPath:attachment.filePath)
+            
+            //update cell to hide progress bar
+            guard let index = self.composerData.attachmentArray.index(where: { (attach) -> Bool in
+                return attach == attachment
+            }) else {
+                //if not found, do nothing
+                return
+            }
+            
+            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
+            
+            cell.progressView.progress = 1
+            cell.progressView.isHidden = true
         }
     }
 }
@@ -932,54 +898,6 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         self.isEdited = true
         
         self.add(attachment)
-        
-//        APIManager.upload(data, id:attachment.fileName, fileName:attachment.fileName, mimeType:attachment.mimeType, from:self.currentUser, delegate: self) { (error, fileToken) in
-//
-//            if let error = error as NSError?,
-//            let errorObject = error.userInfo["error"] as? [String:String] {
-//                var actions = [UIAlertAction]()
-//
-//                if error.code == APIManager.CODE_FILE_SIZE_EXCEEDED {
-//                    let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
-//                        UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
-//                    })
-//                    actions.append(proAction)
-//                }
-//                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-//                actions.append(okAction)
-//
-//                self.showAlert(errorObject["title"], message: errorObject["description"], style: .alert, actions: actions)
-//
-//                //delete attachment
-//                self.remove(attachment)
-//                return
-//            }
-//
-//            guard let fileToken = fileToken else {
-//                attachment.isUploaded = false
-//                print(error!)
-//                //show error in UI
-//                return
-//            }
-//
-//            attachment.isUploaded = true
-//            attachment.fileToken = fileToken
-//
-//            try? FileManager.default.removeItem(atPath:attachment.filePath)
-//
-//            //update cell to hide progress bar
-//            guard let index = self.attachmentArray.index(where: { (attach) -> Bool in
-//                return attach == attachment
-//            }) else {
-//                //if not found, do nothing
-//                return
-//            }
-//
-//            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
-//
-//            cell.progressView.progress = 1
-//            cell.progressView.isHidden = true
-//        }
     }
 }
 
@@ -1042,14 +960,12 @@ extension ComposeViewController{
 extension ComposeViewController: ProgressDelegate {
     func updateProgress(_ percent: Double, for id: String) {
         
-        guard let index = self.attachmentArray.index(where: { (attachment) -> Bool in
+        guard let index = composerData.attachmentArray.index(where: { (attachment) -> Bool in
             return attachment.name == id
         }) else {
-            //if not found, do nothing
             return
         }
         
-//        let attachment = self.attachmentArray[index]
         let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
         cell.progressView.progress = Float(percent)
     }
@@ -1061,7 +977,7 @@ extension ComposeViewController: UITableViewDataSource {
         
         if tableView == self.contactTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath) as! ContactTableViewCell
-            let contact = self.contactArray[indexPath.row]
+            let contact = composerData.contactArray[indexPath.row]
             
             cell.nameLabel?.text = contact.displayName
             cell.emailLabel?.text = contact.email
@@ -1070,7 +986,7 @@ extension ComposeViewController: UITableViewDataSource {
             return cell
         }
         
-        let attachment = self.attachmentArray[indexPath.row]
+        let attachment = composerData.attachmentArray[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentTableViewCell", for: indexPath) as! AttachmentTableViewCell
         
@@ -1116,9 +1032,9 @@ extension ComposeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == self.contactTableView {
-            return self.contactArray.count
+            return composerData.contactArray.count
         }
-        return self.attachmentArray.count
+        return composerData.attachmentArray.count
     }
 }
 
@@ -1134,7 +1050,7 @@ extension ComposeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if tableView == self.contactTableView {
-            let contact = self.contactArray[indexPath.row]
+            let contact = composerData.contactArray[indexPath.row]
             
             print(contact.email)
             var focusInput:CLTokenInputView!
@@ -1238,11 +1154,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         self.toolbarView.isHidden = (view.text?.isEmpty)! ? false : true
         
         if !(text?.isEmpty)! {
-            self.contactArray = DBManager.getContacts(text ?? "")
+            composerData.contactArray = DBManager.getContacts(text ?? "")
             
-            self.contactTableView.isHidden = self.contactArray.isEmpty
-            self.toolbarHeightConstraint.constant = self.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0
-            self.toolbarView.isHidden = self.contactArray.isEmpty ? false : true
+            self.contactTableView.isHidden = composerData.contactArray.isEmpty
+            self.toolbarHeightConstraint.constant = composerData.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0
+            self.toolbarView.isHidden = composerData.contactArray.isEmpty ? false : true
             
             self.contactTableView.reloadData()
         }
@@ -1372,7 +1288,7 @@ extension ComposeViewController: RichEditorDelegate {
     
     func richEditorDidLoad(_ editor: RichEditorView) {
         self.editorView.replace(font: "NunitoSans-Regular", css: "editor-style")
-        if(!initSubject.isEmpty && initToContacts.count > 0){
+        if(!composerData.initSubject.isEmpty && composerData.initToContacts.count > 0){
             self.setupInitContacts()
             editorView.focus(at: CGPoint(x: 0.0, y: 0.0))
         }else{
