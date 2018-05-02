@@ -77,14 +77,10 @@ class APIManager {
         }
     }
     
-    class func sendKeysRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
-        let url = "\(self.baseUrl)/keybundle"
+    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
+        let url = ""
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            response.result.ifFailure {
-                completion(response.result.error)
-                return
-            }
             completion(nil)
         }
     }

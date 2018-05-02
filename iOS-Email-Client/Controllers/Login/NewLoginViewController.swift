@@ -16,7 +16,6 @@ class NewLoginViewController: UIViewController{
     @IBOutlet weak var errorImage: UIImageView!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var loginErrorLabel: UILabel!
-    var failed = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +100,7 @@ class NewLoginViewController: UIViewController{
                 self.showLoginError(error: "Username does not exist")
                 return
             }
-            self.jumpToLinkView()
+            self.jumpToLoginDeviceView()
         }
         
     }
@@ -111,15 +110,14 @@ class NewLoginViewController: UIViewController{
         self.toggleLoadingView(false)
         self.loginButton.isEnabled = false
         self.loginButton.alpha = 0.5
-        self.failed = true
     }
     
-    func jumpToLinkView(){
-        let email = usernameTextField.text! + "@criptext.com"
+    func jumpToLoginDeviceView(){
+        let email = usernameTextField.text! + Constants.domain
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "loginwaitview") as! LoginDeviceViewController
-        controller.loginData = LoginData(email)
-        self.navigationController?.pushViewController(controller, animated: true)
+        let loginDeviceVC = storyboard.instantiateViewController(withIdentifier: "loginwaitview") as! LoginDeviceViewController
+        loginDeviceVC.loginData = LoginData(email)
+        self.navigationController?.pushViewController(loginDeviceVC, animated: true)
         toggleLoadingView(false)
         clearErrors()
     }
