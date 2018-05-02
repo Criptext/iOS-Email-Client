@@ -20,9 +20,6 @@ class LoginDeviceViewController: UIViewController{
         self.failureDeviceView.isHidden = true
         self.waitingDeviceView.isHidden = false
         self.hourglassImage.transform = CGAffineTransform(rotationAngle: (20.0 * .pi) / 180.0)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)){
-            self.jumpToConnectDevice()
-        }
     }
     
     @IBAction func backButtonPress(_ sender: Any) {

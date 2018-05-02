@@ -61,29 +61,26 @@ class APIManager {
         }
     }
     
-    class func loginRequest(_ username: String, _ password: String, deviceId: Int, completion: @escaping ((Error?, String?) -> Void)){
+    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
         let parameters = ["username": username,
-                          "password": password,
-                          "deviceId": deviceId] as [String : Any]
+                          "password": password] as [String : Any]
         let url = "\(self.baseUrl)/user/auth"
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{
             (response) in
+            
             guard let value = response.result.value else {
                 completion(response.result.error, nil)
                 return
             }
-            completion(nil, value)
+            let data = Utils.convertToDictionary(text: value)
+            completion(nil, data)
         }
     }
     
-    class func sendKeysRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
-        let url = "\(self.baseUrl)/keybundle"
+    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
+        let url = ""
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            response.result.ifFailure {
-                completion(response.result.error)
-                return
-            }
             completion(nil)
         }
     }

@@ -16,7 +16,6 @@ class NewLoginViewController: UIViewController{
     @IBOutlet weak var errorImage: UIImageView!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var loginErrorLabel: UILabel!
-    var failed = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,25 +90,36 @@ class NewLoginViewController: UIViewController{
     }
     
     @IBAction func onLoginPress(_ sender: Any) {
-        toggleLoadingView(true)
-        if(failed){
-            let email = usernameTextField.text! + "@criptext.com"
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "loginwaitview") as! LoginDeviceViewController
-            controller.loginData = LoginData(email)
-        self.navigationController?.pushViewController(controller, animated: true)
-            toggleLoadingView(false)
-            clearErrors()
+        guard let username = usernameTextField.text else {
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
-            self.setLoginError("Username does not exist")
-            self.toggleLoadingView(false)
-            self.loginButton.isEnabled = false
-            self.loginButton.alpha = 0.5
-            self.failed = true
+        toggleLoadingView(true)
+        _ = APIManager.checkAvailableUsername(username) { (responseError) in
+            guard let error = responseError as? CriptextError,
+                error.code == .invalidUsername else {
+                self.showLoginError(error: "Username does not exist")
+                return
+            }
+            self.jumpToLoginDeviceView()
         }
         
+    }
+    
+    func showLoginError(error: String){
+        self.setLoginError(error)
+        self.toggleLoadingView(false)
+        self.loginButton.isEnabled = false
+        self.loginButton.alpha = 0.5
+    }
+    
+    func jumpToLoginDeviceView(){
+        let email = usernameTextField.text! + Constants.domain
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let loginDeviceVC = storyboard.instantiateViewController(withIdentifier: "loginwaitview") as! LoginDeviceViewController
+        loginDeviceVC.loginData = LoginData(email)
+        self.navigationController?.pushViewController(loginDeviceVC, animated: true)
+        toggleLoadingView(false)
+        clearErrors()
     }
     
     func setLoginError(_ message: String){
