@@ -74,6 +74,9 @@
                             <state key="normal" title="Delete">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onDeletePress:" destination="-1" eventType="touchUpInside" id="CzK-DU-f4U"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WAE-Yn-KsO">
                             <rect key="frame" x="15" y="175" width="345" height="25"/>
@@ -83,6 +86,9 @@
                             <state key="normal" title="Mark as Unread">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onMarkPress:" destination="-1" eventType="touchUpInside" id="SAa-S8-Br6"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Za1-6Y-W6N">
                             <rect key="frame" x="15" y="215" width="345" height="25"/>
@@ -92,6 +98,9 @@
                             <state key="normal" title="Mark as Spam">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onSpamPress:" destination="-1" eventType="touchUpInside" id="kmo-YR-Lql"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTf-Hb-35Y">
                             <rect key="frame" x="15" y="255" width="345" height="25"/>
@@ -101,6 +110,9 @@
                             <state key="normal" title="Print">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onPrintPress:" destination="-1" eventType="touchUpInside" id="dsb-Pq-n1u"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

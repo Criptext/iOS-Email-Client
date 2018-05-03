@@ -591,11 +591,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let selectedEmail = searchMode ? mailboxData.filteredEmailArray[indexPath.row] : mailboxData.emailArray[indexPath.row]
         let showOnlyDraft = selectedEmail.threadId.isEmpty && selectedEmail.labels.contains(where: {$0.id == SystemLabel.draft.id})
-        let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId)
+        let emails = DBManager.getThreadEmails(selectedEmail.threadId, label: mailboxData.selectedLabel)
         let emailDetailData = EmailDetailData(threadId: selectedEmail.threadId)
         emailDetailData.emails = showOnlyDraft ? [selectedEmail] : emails
         var labelsSet = Set<Label>()
         for email in emails {
+            email.isExpanded = email.unread
             labelsSet.formUnion(email.labels)
         }
         emailDetailData.labels = Array(labelsSet)

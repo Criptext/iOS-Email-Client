@@ -90,4 +90,20 @@ class DetailMoreOptionsUIView: UIView {
         delegate?.onForwardPress()
     }
     
+    @IBAction func onDeletePress(_ sender: Any) {
+        delegate?.onDeletePress()
+    }
+    
+    @IBAction func onMarkPress(_ sender: Any) {
+        delegate?.onMarkPress()
+    }
+    
+    @IBAction func onSpamPress(_ sender: Any) {
+        delegate?.onSpamPress()
+    }
+    
+    @IBAction func onPrintPress(_ sender: Any) {
+        delegate?.onPrintPress()
+    }
+    
 }

@@ -58,7 +58,7 @@ class EmailDetailViewController: UIViewController {
         emailData.emails.append(email)
         email.isExpanded = true
         let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
-        emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(emailData.emails.count - 1)")
+        emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.key)")
         emailsTableView.reloadData()
     }
     
@@ -90,9 +90,9 @@ class EmailDetailViewController: UIViewController {
     }
     
     func registerCellNibs(){
-        for index in 0..<self.emailData.emails.count{
+        for email in self.emailData.emails {
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
-            self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(index)")
+            self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.key)")
         }
     }
     
@@ -109,8 +109,8 @@ class EmailDetailViewController: UIViewController {
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "emailDetail\(indexPath.row)") as! EmailTableViewCell
         let email = emailData.emails[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "emailDetail\(email.key)") as! EmailTableViewCell
         cell.setContent(email)
         cell.delegate = self
         return cell
@@ -405,15 +405,49 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     }
     
     func onDeletePress() {
-        //TO DO
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            return
+        }
+        self.toggleMoreOptionsView()
+        moveEmail(to: SystemLabel.trash.id, indexPath: indexPath, title: "Delete Email", message: "Send the selected email to Trash")
     }
     
     func onMarkPress() {
-        //TO DO
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            return
+        }
+        self.toggleMoreOptionsView()
+        let email = emailData.emails[indexPath.row]
+        DBManager.updateEmail(email, unread: true)
+        email.isExpanded = false
+        emailsTableView.reloadData()
     }
     
     func onSpamPress() {
-        //TO DO
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            return
+        }
+        self.toggleMoreOptionsView()
+        moveEmail(to: SystemLabel.spam.id, indexPath: indexPath, title: "Mark as Spam", message: "Send the selected email to Spam")
+    }
+    
+    func moveEmail(to label: Int, indexPath: IndexPath, title: String, message: String){
+        let email = emailData.emails[indexPath.row]
+        let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
+            DBManager.setLabelsForEmail(email, labels: [label])
+            self.emailData.emails.remove(at: indexPath.row)
+            guard self.emailData.emails.count > 0 else{
+                self.mailboxData.removeSelectedRow = true
+                self.navigationController?.popViewController(animated: true)
+                return
+            }
+            self.emailsTableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        showAlert(title, message: message, style: .alert, actions: [archiveAction, cancelAction])
     }
     
     func onPrintPress() {
