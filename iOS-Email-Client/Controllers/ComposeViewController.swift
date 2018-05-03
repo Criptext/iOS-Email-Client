@@ -77,7 +77,7 @@ class ComposeViewController: UIViewController {
     
     let DOMAIN = "jigl.com"
     
-    var composerData: ComposerData!
+    var composerData = ComposerData()
     var emailDetailData: EmailDetailData?
     
     //MARK: - View lifecycle

@@ -117,7 +117,6 @@ class InboxViewController: UIViewController {
             return
         }
         let email = searchMode ? mailboxData.filteredEmailArray[indexPath.row] : mailboxData.emailArray[indexPath.row]
-        print(email.key)
         guard let refreshedRowEmail = DBManager.getThreadEmail(threadId: email.threadId, label: mailboxData.selectedLabel),
             email.key == refreshedRowEmail.key else {
             refreshEmailRows()
@@ -597,9 +596,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         emailDetailData.emails = showOnlyDraft ? [selectedEmail] : emails
         var labelsSet = Set<Label>()
         for email in emails {
-            for label in email.labels {
-                labelsSet.insert(label)
-            }
+            labelsSet.formUnion(email.labels)
         }
         emailDetailData.labels = Array(labelsSet)
         emailDetailData.subject = emails.first!.subject

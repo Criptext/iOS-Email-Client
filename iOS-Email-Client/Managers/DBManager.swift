@@ -99,7 +99,7 @@ extension DBManager {
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "threadId == '\(threadId)'")
-        let results = realm.objects(Email.self).filter(predicate)
+        let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
         
         return Array(results)
     }

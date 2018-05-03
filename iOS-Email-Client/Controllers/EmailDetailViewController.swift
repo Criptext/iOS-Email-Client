@@ -48,7 +48,7 @@ class EmailDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         guard emailData.newEmail,
             let email = emailData.emails.last else {
