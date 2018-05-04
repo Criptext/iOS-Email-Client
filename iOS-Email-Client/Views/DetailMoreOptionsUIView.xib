@@ -15,6 +15,7 @@
                 <outlet property="backgroundOverlayView" destination="cRL-Mk-Yl4" id="UnZ-1B-Hmr"/>
                 <outlet property="optionsContainerOffsetConstraint" destination="hiL-bi-nks" id="0CQ-YN-g9E"/>
                 <outlet property="optionsContainerView" destination="bO2-Ar-nLq" id="Vdm-8V-mEm"/>
+                <outlet property="spamButton" destination="Za1-6Y-W6N" id="uF9-6y-bFv"/>
                 <outlet property="view" destination="iN0-l3-epB" id="IiM-bf-qiP"/>
             </connections>
         </placeholder>

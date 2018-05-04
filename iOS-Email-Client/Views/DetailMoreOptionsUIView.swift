@@ -26,6 +26,7 @@ class DetailMoreOptionsUIView: UIView {
     var tapGestureRecognizer:UITapGestureRecognizer!
     @IBOutlet var view: UIView!
     var delegate: DetailMoreOptionsViewDelegate?
+    @IBOutlet weak var spamButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

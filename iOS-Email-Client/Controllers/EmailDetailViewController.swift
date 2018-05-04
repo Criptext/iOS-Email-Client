@@ -234,6 +234,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
+        moreOptionsContainerView.spamButton.setTitle(mailboxData.selectedLabel == SystemLabel.spam.id ? "Remove from Spam" : "Mark as Spam", for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         toggleMoreOptionsView()
     }
@@ -431,7 +432,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             return
         }
         self.toggleMoreOptionsView()
-        moveEmail(to: SystemLabel.spam.id, indexPath: indexPath, title: "Mark as Spam", message: "Send the selected email to Spam")
+        let isSpam = mailboxData.selectedLabel == SystemLabel.spam.id
+        let title = isSpam ? "Remove from Spam" : "Mark as Spam"
+        let message = "Send the selected email to \(isSpam ? "Inbox" : "Spam")"
+        moveEmail(to: isSpam ? SystemLabel.inbox.id : SystemLabel.spam.id, indexPath: indexPath, title: title, message: message)
     }
     
     func moveEmail(to label: Int, indexPath: IndexPath, title: String, message: String){
