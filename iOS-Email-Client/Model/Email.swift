@@ -29,15 +29,15 @@ class Email: Object {
     @objc dynamic var preview = ""
     @objc dynamic var subject = ""
     @objc dynamic var delivered = Status.none.rawValue
-    @objc dynamic var date : Date?
+    @objc dynamic var date = Date()
     let labels = List<Label>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
     var isExpanded = false
     var counter = 1
-    var fromContact : Contact? {
+    var fromContact : Contact {
         get {
             let predicate = NSPredicate(format: "type == '\(ContactType.from.rawValue)'")
-            let contact = emailContacts.filter(predicate).first?.contact
+            let contact = emailContacts.filter(predicate).first!.contact!
             return contact
         }
     }

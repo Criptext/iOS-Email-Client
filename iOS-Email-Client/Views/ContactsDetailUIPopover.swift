@@ -35,9 +35,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
     }
     
     func setFromContact(){
-        guard let contact = email.fromContact else {
-            return
-        }
+        let contact = email.fromContact
         fromEmailsLabel.attributedText = buildContactAttributedString(contact.displayName, contact.email)
     }
     

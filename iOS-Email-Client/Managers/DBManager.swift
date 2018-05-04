@@ -130,7 +130,7 @@ extension DBManager {
                 break
             }
             guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
-                if(email.date! < date){
+                if(email.date < date){
                     resultEmails.append(email)
                 }
                 continue
@@ -138,7 +138,7 @@ extension DBManager {
             guard !threadIds.contains(email.threadId) else {
                 continue
             }
-            guard email.date! < date else {
+            guard email.date < date else {
                 threadIds.insert(email.threadId)
                 continue
             }

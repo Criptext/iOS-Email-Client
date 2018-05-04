@@ -87,10 +87,10 @@ class EmailTableViewCell: UITableViewCell{
         let preview = email.isUnsent ? "Unsent" : email.preview
         let numberOfLines = Utils.getNumberOfLines(preview, width: previewLabel.frame.width, fontSize: 17.0)
         previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
-        contactsCollapseLabel.text = email.fromContact!.displayName
+        contactsCollapseLabel.text = email.fromContact.displayName
         setCollapsedIcons(email)
         collapsedDateLabel.text = email.getFormattedDate()
-        let fromContactName = email.fromContact!.displayName
+        let fromContactName = email.fromContact.displayName
         initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
         bottomMarginHeightConstraint.constant = 0
         if(email.isUnsent){
@@ -106,7 +106,7 @@ class EmailTableViewCell: UITableViewCell{
             webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: nil)
         }
         bottomMarginHeightConstraint.constant = MARGIN_HEIGHT
-        let fromContactName = email.fromContact!.displayName
+        let fromContactName = email.fromContact.displayName
         contactsExpandLabel.text = fromContactName
         moreRecipientsLabel.text = toContacts.count > 1 ? "To \(toContacts.first!.displayName) & \(toContacts.count - 1) more" : "To \(toContacts.first!.displayName)"
         expandedDateLabel.text = email.getFormattedDate()

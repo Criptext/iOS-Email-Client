@@ -14,7 +14,6 @@ class EmailDetailData{
     var subject = ""
     var accountEmail = ""
     var threadId : String
-    var newEmail = false
     init(threadId: String){
         self.threadId = threadId
     }

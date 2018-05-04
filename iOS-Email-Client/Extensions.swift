@@ -266,6 +266,8 @@ extension UITableView {
 
 extension Notification.Name {
     
+    public static let onNewEmail = Notification.Name(rawValue: "com.criptext.email.onnewemail")
+    
     public struct Activity {
         public static let onNewMessage = Notification.Name(rawValue: "com.criptext.email.onnewmessage")
         public static let onNewAttachment = Notification.Name(rawValue: "com.criptext.email.onnewattachment")

@@ -78,7 +78,6 @@ class ComposeViewController: UIViewController {
     let DOMAIN = "jigl.com"
     
     var composerData = ComposerData()
-    var emailDetailData: EmailDetailData?
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -290,8 +289,7 @@ class ComposeViewController: UIViewController {
         emailDetail.content = body
         if(body.count > 100){
             let bodyWithoutHtml = body.removeHtmlTags()
-            let index = bodyWithoutHtml.index(bodyWithoutHtml.startIndex, offsetBy: 100)
-            emailDetail.preview = String(bodyWithoutHtml[..<index])
+            emailDetail.preview = String(bodyWithoutHtml.prefix(100))
         }
         else{
             emailDetail.preview = body.removeHtmlTags()
@@ -565,8 +563,9 @@ class ComposeViewController: UIViewController {
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(myEmail, key: key, s3Key: s3Key, threadId: threadId)
         DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
-        emailDetailData?.emails.append(myEmail)
-        emailDetailData?.newEmail = true
+        var data = [String: Any]()
+        data["email"] = myEmail
+        NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
     }
     
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>){

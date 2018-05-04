@@ -470,7 +470,7 @@ extension InboxViewController: UITableViewDataSource{
             cell.backgroundColor = UIColor.white
             cell.senderLabel.font = Font.bold.size(15)
         }
-        let fromContact = email.fromContact!
+        let fromContact = email.fromContact
         if(fromContact.email == "\(myAccount.username)@jigl.com"){
             cell.senderLabel.text = email.getContactsString()
         }else{
