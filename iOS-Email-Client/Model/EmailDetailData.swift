@@ -13,4 +13,8 @@ class EmailDetailData{
     var labels = [Label]()
     var subject = ""
     var accountEmail = ""
+    var threadId : String
+    init(threadId: String){
+        self.threadId = threadId
+    }
 }

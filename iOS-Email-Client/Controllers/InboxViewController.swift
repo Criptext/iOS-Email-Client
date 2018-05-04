@@ -110,14 +110,25 @@ class InboxViewController: UIViewController {
             return
         }
         
-        if(mailboxData.removeSelectedRow){
+        guard !mailboxData.removeSelectedRow else {
             mailboxData.emailArray.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             mailboxData.removeSelectedRow = false
-        }else{
-            self.tableView.deselectRow(at: indexPath, animated: true)
-            self.tableView.reloadRows(at: [indexPath], with: .none)
+            return
         }
+        let email = searchMode ? mailboxData.filteredEmailArray[indexPath.row] : mailboxData.emailArray[indexPath.row]
+        guard let refreshedRowEmail = DBManager.getThreadEmail(threadId: email.threadId, label: mailboxData.selectedLabel),
+            email.key == refreshedRowEmail.key else {
+            refreshEmailRows()
+            return
+        }
+        if (searchMode) {
+            mailboxData.filteredEmailArray[indexPath.row] = refreshedRowEmail
+        } else {
+            mailboxData.emailArray[indexPath.row] = refreshedRowEmail
+        }
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        self.tableView.reloadRows(at: [indexPath], with: .none)
     }
     
     func initBarButtonItems(){
@@ -249,6 +260,10 @@ extension InboxViewController: EventHandlerDelegate {
         guard !searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
             return
         }
+        refreshEmailRows()
+    }
+    
+    func refreshEmailRows(){
         loadMails(from: mailboxData.selectedLabel, since: Date(), clear: true, limit: tableView.numberOfRows(inSection: 0))
     }
 }
@@ -455,7 +470,7 @@ extension InboxViewController: UITableViewDataSource{
             cell.backgroundColor = UIColor.white
             cell.senderLabel.font = Font.bold.size(15)
         }
-        let fromContact = email.fromContact!
+        let fromContact = email.fromContact
         if(fromContact.email == "\(myAccount.username)@jigl.com"){
             cell.senderLabel.text = email.getContactsString()
         }else{
@@ -577,11 +592,13 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         let selectedEmail = searchMode ? mailboxData.filteredEmailArray[indexPath.row] : mailboxData.emailArray[indexPath.row]
         let showOnlyDraft = selectedEmail.threadId.isEmpty && selectedEmail.labels.contains(where: {$0.id == SystemLabel.draft.id})
         let emails = DBManager.getMailsbyThreadId(selectedEmail.threadId)
-        let emailDetailData = EmailDetailData()
+        let emailDetailData = EmailDetailData(threadId: selectedEmail.threadId)
         emailDetailData.emails = showOnlyDraft ? [selectedEmail] : emails
+        var labelsSet = Set<Label>()
         for email in emails {
-            emailDetailData.labels += email.labels
+            labelsSet.formUnion(email.labels)
         }
+        emailDetailData.labels = Array(labelsSet)
         emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
         

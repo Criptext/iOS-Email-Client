@@ -293,10 +293,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
-                                <rect key="frame" x="0.0" y="196" width="375" height="114.5"/>
+                                <rect key="frame" x="0.0" y="196" width="375" height="227.5"/>
                                 <subviews>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
-                                        <rect key="frame" x="29" y="0.0" width="322" height="114.5"/>
+                                        <rect key="frame" x="18" y="0.0" width="333" height="227.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <wkWebViewConfiguration key="configuration">
                                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -306,7 +306,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="bUF-LT-65F" firstAttribute="leading" secondItem="tm2-e0-IDa" secondAttribute="leading" constant="29" id="0Oc-DR-asd"/>
+                                    <constraint firstItem="bUF-LT-65F" firstAttribute="leading" secondItem="tm2-e0-IDa" secondAttribute="leading" constant="18" id="0Oc-DR-asd"/>
                                     <constraint firstItem="bUF-LT-65F" firstAttribute="centerY" secondItem="tm2-e0-IDa" secondAttribute="centerY" id="9sJ-hc-khW"/>
                                     <constraint firstAttribute="height" priority="250" id="nMQ-Id-iGW"/>
                                     <constraint firstAttribute="trailing" secondItem="bUF-LT-65F" secondAttribute="trailing" constant="24" id="sEb-js-5e4"/>
@@ -314,12 +314,19 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gto-qF-XbD">
-                                <rect key="frame" x="0.0" y="310.5" width="375" height="680"/>
+                                <rect key="frame" x="0.0" y="423.5" width="375" height="552"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" id="USB-5e-poq"/>
                                 </constraints>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Spu-tg-Ust">
+                                <rect key="frame" x="0.0" y="975.5" width="375" height="15"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="eYk-iM-SgF"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.99878231095679015" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </stackView>
@@ -361,6 +368,7 @@
                 <outlet property="attachmentView" destination="l4w-QX-eOS" id="KsV-9A-dDt"/>
                 <outlet property="attachmentsTableView" destination="Gto-qF-XbD" id="on9-Ar-oSC"/>
                 <outlet property="borderBGView" destination="x8R-Mr-qce" id="kmH-ZK-eqh"/>
+                <outlet property="bottomMarginHeightConstraint" destination="eYk-iM-SgF" id="dpM-9a-XnY"/>
                 <outlet property="collapsedDateLabel" destination="LGD-VD-w1C" id="vFu-uu-jmJ"/>
                 <outlet property="collapsedDetailView" destination="oYk-NZ-Ec1" id="EKC-XG-2oO"/>
                 <outlet property="contactsCollapseLabel" destination="XDx-eF-08j" id="OwT-NY-LPh"/>
@@ -368,7 +376,7 @@
                 <outlet property="expandedDateLabel" destination="L1I-Jj-9pO" id="Dkx-rx-HmV"/>
                 <outlet property="expandedDetailView" destination="j7W-SK-UmD" id="dZe-Yc-YIC"/>
                 <outlet property="heightConstraint" destination="nMQ-Id-iGW" id="5mf-lb-XqG"/>
-                <outlet property="initialsImageView" destination="9UB-5Z-Iw6" id="S54-rx-dmb"/>
+                <outlet property="initialsImageView" destination="9UB-5Z-Iw6" id="ptg-fJ-Owd"/>
                 <outlet property="miniAttachmentIconView" destination="YbZ-Ti-AdL" id="fgu-Jo-SV7"/>
                 <outlet property="miniReadIconView" destination="7AC-9b-VHc" id="PHf-TM-uCx"/>
                 <outlet property="moreRecipientsLabel" destination="TjS-60-oSo" id="KfN-uG-f2f"/>

@@ -70,7 +70,7 @@ class EventHandler {
         let timeZone = NSTimeZone(abbreviation: "UTC")
         dateFormatter.timeZone = timeZone as TimeZone?
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let localDate = dateFormatter.date(from: date)
+        let localDate = dateFormatter.date(from: date) ?? Date()
         
         guard DBManager.getMailByKey(key: metadataKey.description) == nil else {
             finishCallback()

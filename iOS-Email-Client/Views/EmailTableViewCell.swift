@@ -17,7 +17,6 @@ protocol EmailTableViewCellDelegate {
 
 class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var webView: WKWebView!
-    var delegate: EmailTableViewCellDelegate?
     @IBOutlet weak var previewLabel: UILabel!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var collapsedDetailView: UIView!
@@ -43,8 +42,11 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var collapsedDateLabel: UILabel!
     @IBOutlet weak var expandedDateLabel: UILabel!
     @IBOutlet weak var initialsImageView: UIImageView!
+    @IBOutlet weak var bottomMarginHeightConstraint: NSLayoutConstraint!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
+    var delegate: EmailTableViewCellDelegate?
+    let MARGIN_HEIGHT : CGFloat = 15.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -85,9 +87,12 @@ class EmailTableViewCell: UITableViewCell{
         let preview = email.isUnsent ? "Unsent" : email.preview
         let numberOfLines = Utils.getNumberOfLines(preview, width: previewLabel.frame.width, fontSize: 17.0)
         previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
-        contactsCollapseLabel.text = email.fromContact!.displayName
+        contactsCollapseLabel.text = email.fromContact.displayName
         setCollapsedIcons(email)
         collapsedDateLabel.text = email.getFormattedDate()
+        let fromContactName = email.fromContact.displayName
+        initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
+        bottomMarginHeightConstraint.constant = 0
         if(email.isUnsent){
             previewLabel.textColor = .alertText
             borderBGView.layer.borderColor = UIColor.alertLight.cgColor
@@ -100,8 +105,8 @@ class EmailTableViewCell: UITableViewCell{
         if(!loadedContent){
             webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: nil)
         }
-        let fromContactName = email.fromContact!.displayName
-        initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
+        bottomMarginHeightConstraint.constant = MARGIN_HEIGHT
+        let fromContactName = email.fromContact.displayName
         contactsExpandLabel.text = fromContactName
         moreRecipientsLabel.text = toContacts.count > 1 ? "To \(toContacts.first!.displayName) & \(toContacts.count - 1) more" : "To \(toContacts.first!.displayName)"
         expandedDateLabel.text = email.getFormattedDate()
@@ -179,35 +184,15 @@ extension EmailTableViewCell{
 extension EmailTableViewCell: WKNavigationDelegate{
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        guard myHeight <= 0.0 else {
-            return
+        webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in
+            guard let height = result as? CGFloat else {
+                return
+            }
+            self.myHeight = height
+            self.heightConstraint.constant = height
+            self.delegate?.tableViewCellDidLoadContent(self)
+            self.loadedContent = true
         }
-        startObservingHeight()
-    }
-    
-    func startObservingHeight() {
-        let options = NSKeyValueObservingOptions([.new])
-        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: options, context: nil)
-    }
-    
-    func stopObservingHeight() {
-        webView.scrollView.removeObserver(self, forKeyPath: "contentSize", context: nil)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard let keypath = keyPath,
-            keypath == "contentSize" else {
-            super.observeValue(forKeyPath: nil, of: object, change: change, context: context)
-            return
-        }
-        myHeight = webView.scrollView.contentSize.height
-        heightConstraint.constant = self.myHeight
-        loadedContent = true
-        guard let delegate = self.delegate else {
-            return
-        }
-        delegate.tableViewCellDidLoadContent(self)
-        stopObservingHeight()
     }
 }
 
