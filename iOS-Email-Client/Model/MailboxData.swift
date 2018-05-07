@@ -19,6 +19,19 @@ class MailboxData {
     var reachedEnd = false
     var removeSelectedRow = false
     var fetchWorker: DispatchWorkItem?
+    var searchMode = false
+    var emails: [Email] {
+        get {
+            return searchMode ? filteredEmailArray : emailArray
+        }
+        set(newEmails) {
+            if(searchMode){
+                filteredEmailArray = newEmails
+            } else {
+                emailArray = newEmails
+            }
+        }
+    }
     
     func cancelFetchWorker(){
         fetchWorker?.cancel()

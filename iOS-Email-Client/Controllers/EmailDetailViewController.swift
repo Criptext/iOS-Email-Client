@@ -257,7 +257,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
-        moreOptionsContainerView.spamButton.setTitle(mailboxData.selectedLabel == SystemLabel.spam.id ? "Remove from Spam" : "Mark as Spam", for: .normal)
+        moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? "Remove from Spam" : "Mark as Spam", for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         toggleMoreOptionsView()
     }
@@ -456,7 +456,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             return
         }
         self.toggleMoreOptionsView()
-        let isSpam = mailboxData.selectedLabel == SystemLabel.spam.id
+        let isSpam = emailData.selectedLabel == SystemLabel.spam.id
         let title = isSpam ? "Remove from Spam" : "Mark as Spam"
         let message = "Send the selected email to \(isSpam ? "Inbox" : "Spam")"
         moveEmail(to: isSpam ? SystemLabel.inbox.id : SystemLabel.spam.id, indexPath: indexPath, title: title, message: message)
@@ -547,27 +547,16 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     }
     
     func setLabels(_ labels: [Int]) {
-        let myLabels = emailData.labels
-        let labelsToRemove = myLabels.reduce([Int]()) { (removeLabels, label) -> [Int] in
-            guard !labels.contains(label.id) && label.id != SystemLabel.draft.id && label.id != SystemLabel.sent.id else {
-                return removeLabels
-            }
-            return removeLabels + [label.id]
-        }
-        DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: labels, removedLabelIds: labelsToRemove)
-        if !(labels.contains(mailboxData.selectedLabel) || (labels.isEmpty && mailboxData.selectedLabel != SystemLabel.all.id)) {
+        DBManager.setLabelsForThread(emailData.threadId, labels: labels, currentLabel: emailData.selectedLabel)
+        if !(labels.contains(emailData.selectedLabel) || (labels.isEmpty && emailData.selectedLabel != SystemLabel.all.id)) {
             mailboxData.removeSelectedRow = true
         }
         self.navigationController?.popViewController(animated: true)
     }
     
     func moveTo(labelId: Int) {
-        let removeLabelsArray = (mailboxData.selectedLabel == SystemLabel.draft.id
-            || mailboxData.selectedLabel == SystemLabel.sent.id) ? [] : [mailboxData.selectedLabel]
-        DBManager.addRemoveLabelsFromThread(emailData.emails.first!.threadId, addedLabelIds: [labelId], removedLabelIds: removeLabelsArray)
-        if(labelId != mailboxData.selectedLabel){
-            mailboxData.removeSelectedRow = true
-        }
+        DBManager.setLabelsForThread(emailData.threadId, labels: [labelId], currentLabel: emailData.selectedLabel)
+        mailboxData.removeSelectedRow = true
         self.navigationController?.popViewController(animated: true)
     }
 }

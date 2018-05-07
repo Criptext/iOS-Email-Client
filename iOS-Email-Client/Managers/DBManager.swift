@@ -66,7 +66,7 @@ extension DBManager {
         }
     }
     
-    class func getMails(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> ([String:[Email]], [Email]) {
+    class func getMails(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> [Email] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
@@ -77,7 +77,7 @@ extension DBManager {
         let resultEmails = customDistinctEmailThreads(emails: emails, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
             return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
-        return ([:], resultEmails)
+        return resultEmails
     }
     
     class func getUnreadMails(from label: Int) -> [Email] {
@@ -124,9 +124,10 @@ extension DBManager {
     
     class func getMails(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE) -> [Email] {
         let realm = try! Realm()
-        let emails = realm.objects(Email.self).filter("ANY emailContacts.contact.displayName contains %@ OR preview contains %@ OR subject contains %@", searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false)
+        let rejectedLabels = SystemLabel.all.rejectedLabelIds
+        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@)", rejectedLabels, searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false)
         return customDistinctEmailThreads(emails: emails, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
-            return NSPredicate(format: "threadId = %@", email.threadId)
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
     }
     
@@ -434,6 +435,13 @@ extension DBManager {
         }
     }
     
+    class func setLabelsForThread(_ threadId: String, labels: [Int], currentLabel: Int){
+        let emails = getThreadEmails(threadId, label: currentLabel)
+        for email in emails {
+            setLabelsForEmail(email, labels: labels)
+        }
+    }
+    
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
         let realm = try! Realm()
         try! realm.write {
@@ -450,13 +458,6 @@ extension DBManager {
                 }
                 email.labels.remove(at: index)
             }
-        }
-    }
-    
-    class func addRemoveLabelsFromThread(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int]){
-        let emails = getMailsbyThreadId(threadId)
-        for email in emails {
-            addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: removedLabelIds)
         }
     }
 }
