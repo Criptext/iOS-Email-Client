@@ -267,8 +267,11 @@ class ComposeViewController: UIViewController {
         
     }
     
-    func saveDraft() {
+    func saveDraft() -> Email {
         if let draft = composerData.emailDraft {
+            var data = [String: Any]()
+            data["draftId"] = draft.key
+            NotificationCenter.default.post(name: .onDeleteDraft, object: nil, userInfo: data)
             DBManager.delete(draft)
         }
         
@@ -283,39 +286,41 @@ class ComposeViewController: UIViewController {
         let body = self.addAttachments(to: self.editorView.html)
         
         //create draft
-        let emailDetail = Email()
-        emailDetail.status = .none
-        emailDetail.key = "\(NSDate().timeIntervalSince1970)"
-        emailDetail.content = body
+        let draft = Email()
+        draft.status = .none
+        draft.key = "\(NSDate().timeIntervalSince1970)"
+        draft.content = body
         if(body.count > 100){
             let bodyWithoutHtml = body.removeHtmlTags()
-            emailDetail.preview = String(bodyWithoutHtml.prefix(100))
+            draft.preview = String(bodyWithoutHtml.prefix(100))
         }
         else{
-            emailDetail.preview = body.removeHtmlTags()
+            draft.preview = body.removeHtmlTags()
         }
-        emailDetail.unread = false
-        emailDetail.subject = subject
-        emailDetail.date = Date()
-        emailDetail.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
-        DBManager.store(emailDetail)
+        draft.unread = false
+        draft.subject = subject
+        draft.date = Date()
+        draft.key = "\(activeAccount.deviceId)\(Int(draft.date.timeIntervalSince1970))"
+        draft.threadId = composerData.threadId ?? ""
+        draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
+        DBManager.store(draft)
         
         
         //create email contacts
         var emailContacts = [EmailContact]()
         self.toField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.to)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: draft, type: ContactType.to)
         }
         self.ccField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.cc)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: draft, type: ContactType.cc)
         }
         self.bccField.allTokens.forEach { (token) in
-            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: emailDetail, type: ContactType.bcc)
+            self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: draft, type: ContactType.bcc)
         }
-        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: emailDetail, type: ContactType.from)
+        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: draft, type: ContactType.from)
         
         DBManager.store(emailContacts)
-        composerData.emailDraft = emailDetail
+        return draft
     }
     
     func getEmailFromToken(_ token: CLToken) -> String {
@@ -482,7 +487,9 @@ class ComposeViewController: UIViewController {
         })
         sheet.addAction(UIAlertAction(title: "Save Draft", style: .default) { action in
             APIManager.cancelAllUploads()
-            self.saveDraft()
+            let draft = self.saveDraft()
+            let data = ["email": draft]
+            NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
             self.dismiss(animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -675,7 +682,7 @@ class ComposeViewController: UIViewController {
             "bcc": bccArray
         ]
         
-        saveDraft()
+        composerData.emailDraft = saveDraft()
         getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails)
         
     }

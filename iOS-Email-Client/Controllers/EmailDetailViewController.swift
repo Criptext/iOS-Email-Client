@@ -35,6 +35,7 @@ class EmailDetailViewController: UIViewController {
         self.generalOptionsContainerView.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -59,6 +60,16 @@ class EmailDetailViewController: UIViewController {
         email.isExpanded = true
         let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
         emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.key)")
+        emailsTableView.reloadData()
+    }
+    
+    @objc func deleteDraft(notification: NSNotification){
+        guard let data = notification.userInfo,
+            let draftId = data["draftId"] as? String,
+            let draftIndex = emailData.emails.index(where: {$0.key == draftId}) else {
+                return
+        }
+        emailData.emails.remove(at: draftIndex)
         emailsTableView.reloadData()
     }
     
@@ -176,7 +187,19 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
             handleOptionsTap(cell, sender)
         case .reply:
             handleReplyTap(cell, sender)
+        case .edit:
+            handleEditTap(cell, sender)
         }
+    }
+    
+    func handleEditTap(_ cell: EmailTableViewCell, _ sender: UIView){
+        guard let indexPath = emailsTableView.indexPath(for: cell) else {
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        let contactsTo = Array(email.getContacts(type: .to))
+        let contactsCc = Array(email.getContacts(type: .cc))
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "")
     }
     
     func handleAttachmentTap(_ cell: EmailTableViewCell, _ sender: UIView){
@@ -286,10 +309,11 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         let composerData = ComposerData()
         composerData.initToContacts.append(contentsOf: contactsTo)
         composerData.initCcContacts.append(contentsOf: contactsCc)
-        composerData.initSubject = email.subject.starts(with: "\(subjectPrefix) ") ? email.subject : "\(subjectPrefix) \(email.subject)"
-        let replyBody = ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+        composerData.initSubject = email.isDraft ? email.subject : email.subject.starts(with: "\(subjectPrefix) ") ? email.subject : "\(subjectPrefix) \(email.subject)"
+        let replyBody = email.isDraft ? email.content : ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
         composerData.initContent = replyBody
         composerData.threadId = emailData.threadId
+        composerData.emailDraft = email.isDraft ? email : nil
         composerVC.composerData = composerData
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }

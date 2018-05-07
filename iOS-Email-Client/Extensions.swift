@@ -267,6 +267,7 @@ extension UITableView {
 extension Notification.Name {
     
     public static let onNewEmail = Notification.Name(rawValue: "com.criptext.email.onnewemail")
+    public static let onDeleteDraft = Notification.Name(rawValue: "com.criptext.email.ondeletedraft")
     
     public struct Activity {
         public static let onNewMessage = Notification.Name(rawValue: "com.criptext.email.onnewmessage")

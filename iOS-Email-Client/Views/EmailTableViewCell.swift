@@ -30,6 +30,8 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var moreRecipientsLabel: UILabel!
     @IBOutlet weak var optionsView: UIView!
     @IBOutlet weak var optionsIconView: UIImageView!
+    @IBOutlet weak var editView: UIView!
+    @IBOutlet weak var editIconView: UIImageView!
     @IBOutlet weak var replyView: UIView!
     @IBOutlet weak var replyIconView: UIImageView!
     @IBOutlet weak var webViewWrapperView: UIView!
@@ -105,6 +107,11 @@ class EmailTableViewCell: UITableViewCell{
         if(!loadedContent){
             webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: nil)
         }
+        let isDraft = email.labels.contains(where: {$0.id == SystemLabel.draft.id})
+        optionsView.isHidden = isDraft
+        replyView.isHidden = isDraft
+        editView.isHidden = !isDraft
+        
         bottomMarginHeightConstraint.constant = MARGIN_HEIGHT
         let fromContactName = email.fromContact.displayName
         contactsExpandLabel.text = fromContactName
@@ -152,16 +159,18 @@ class EmailTableViewCell: UITableViewCell{
             return
         }
         
-        if tappedView == self.attachmentView || tappedView == self.attachmentIconView{
+        if tappedView == self.attachmentView || tappedView == self.attachmentIconView {
             delegate.tableViewCellDidTapIcon(self, self.attachmentView, .attachment)
-        } else if tappedView == self.unsendView || tappedView == self.unsendIconView{
+        } else if tappedView == self.unsendView || tappedView == self.unsendIconView {
             delegate.tableViewCellDidTapIcon(self, self.unsendView, .unsend)
-        } else if tappedView == self.readView || tappedView == self.readIconView{
+        } else if tappedView == self.readView || tappedView == self.readIconView {
             delegate.tableViewCellDidTapIcon(self, self.readView, .read)
-        } else if tappedView == self.optionsView || tappedView == self.optionsIconView{
+        } else if tappedView == self.optionsView || tappedView == self.optionsIconView {
             delegate.tableViewCellDidTapIcon(self, self.optionsView, .options)
-        } else if tappedView == self.replyView || tappedView == self.replyIconView{
+        } else if tappedView == self.replyView || tappedView == self.replyIconView {
             delegate.tableViewCellDidTapIcon(self, self.replyView, .reply)
+        } else if tappedView == self.editView || tappedView == self.editIconView {
+            delegate.tableViewCellDidTapIcon(self, self.editView, .edit)
         } else if tappedView == self.moreRecipientsLabel{
             delegate.tableViewCellDidTapIcon(self, self.moreRecipientsLabel, .contacts)
         } else {
@@ -178,6 +187,7 @@ extension EmailTableViewCell{
         case options
         case reply
         case contacts
+        case edit
     }
 }
 
