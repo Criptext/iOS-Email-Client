@@ -13,8 +13,10 @@ class EmailDetailData{
     var labels = [Label]()
     var subject = ""
     var accountEmail = ""
+    var selectedLabel : Int
     var threadId : String
-    init(threadId: String){
+    init(threadId: String, label: Int){
         self.threadId = threadId
+        self.selectedLabel = label
     }
 }
