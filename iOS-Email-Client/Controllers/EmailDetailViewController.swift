@@ -443,7 +443,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
             DBManager.setLabelsForEmail(email, labels: [label])
             self.emailData.emails.remove(at: indexPath.row)
-            guard self.emailData.emails.count > 0 else{
+            guard !self.emailData.emails.isEmpty else{
                 self.mailboxData.removeSelectedRow = true
                 self.navigationController?.popViewController(animated: true)
                 return

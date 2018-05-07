@@ -431,7 +431,6 @@ extension DBManager {
                 }
                 email.labels.append(labelToAdd)
             }
-            print(email.labels)
         }
     }
     
