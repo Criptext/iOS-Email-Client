@@ -272,12 +272,38 @@
                                         <color key="textColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYm-hV-w11">
+                                        <rect key="frame" x="308" y="12.5" width="50" height="50"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="composer" translatesAutoresizingMaskIntoConstraints="NO" id="uMD-Ib-Tj2">
+                                                <rect key="frame" x="12.5" y="12.5" width="25" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="25" id="1D0-1v-is4"/>
+                                                    <constraint firstAttribute="height" constant="25" id="6mH-Bw-NyC"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                                        <color key="value" red="0.54117647059999996" green="0.56862745100000001" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="uMD-Ib-Tj2" firstAttribute="centerY" secondItem="rYm-hV-w11" secondAttribute="centerY" id="NKm-1D-aHl"/>
+                                            <constraint firstAttribute="height" constant="50" id="enA-x0-o7U"/>
+                                            <constraint firstAttribute="width" constant="50" id="iFv-T3-b9a"/>
+                                            <constraint firstItem="uMD-Ib-Tj2" firstAttribute="centerX" secondItem="rYm-hV-w11" secondAttribute="centerX" id="kjT-7I-cff"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="6U3-cC-TI0" firstAttribute="centerY" secondItem="Wnv-kq-RK4" secondAttribute="centerY" id="1Sw-9j-204"/>
+                                    <constraint firstAttribute="trailing" secondItem="rYm-hV-w11" secondAttribute="trailing" constant="17" id="3zo-VS-hsU"/>
                                     <constraint firstAttribute="trailing" secondItem="Wnv-kq-RK4" secondAttribute="trailing" constant="16" id="4ml-I1-L7p"/>
                                     <constraint firstItem="mp6-yr-tDY" firstAttribute="leading" secondItem="HTR-0G-icb" secondAttribute="trailing" id="Ag0-V1-hzA"/>
+                                    <constraint firstItem="rYm-hV-w11" firstAttribute="top" secondItem="nbg-Dv-yZM" secondAttribute="top" id="CVq-i3-UrM"/>
                                     <constraint firstItem="l4w-QX-eOS" firstAttribute="leading" secondItem="L1I-Jj-9pO" secondAttribute="trailing" constant="10" id="ECW-DX-yNX"/>
                                     <constraint firstItem="L1I-Jj-9pO" firstAttribute="leading" secondItem="HTR-0G-icb" secondAttribute="leading" id="Fm8-n1-LMG"/>
                                     <constraint firstItem="6U3-cC-TI0" firstAttribute="leading" secondItem="l4w-QX-eOS" secondAttribute="trailing" constant="13" id="Gom-Cr-oOQ"/>
@@ -378,6 +404,8 @@
                 <outlet property="collapsedDetailView" destination="oYk-NZ-Ec1" id="EKC-XG-2oO"/>
                 <outlet property="contactsCollapseLabel" destination="XDx-eF-08j" id="OwT-NY-LPh"/>
                 <outlet property="contactsExpandLabel" destination="HTR-0G-icb" id="W4P-a3-G3b"/>
+                <outlet property="editIconView" destination="uMD-Ib-Tj2" id="zUR-lM-ldo"/>
+                <outlet property="editView" destination="rYm-hV-w11" id="Uuj-vm-ekY"/>
                 <outlet property="expandedDateLabel" destination="L1I-Jj-9pO" id="Dkx-rx-HmV"/>
                 <outlet property="expandedDetailView" destination="j7W-SK-UmD" id="dZe-Yc-YIC"/>
                 <outlet property="heightConstraint" destination="nMQ-Id-iGW" id="5mf-lb-XqG"/>
@@ -403,6 +431,7 @@
     <resources>
         <image name="attachment" width="20" height="36"/>
         <image name="attachment_inbox" width="36" height="20"/>
+        <image name="composer" width="32" height="30"/>
         <image name="dots-options" width="24" height="6"/>
         <image name="icon-reply" width="55" height="48"/>
         <image name="read" width="36" height="21"/>

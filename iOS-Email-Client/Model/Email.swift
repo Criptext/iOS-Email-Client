@@ -62,6 +62,10 @@ class Email: Object {
         return status == .unsent
     }
     
+    var isDraft: Bool{
+        return labels.contains(where: {$0.id == SystemLabel.draft.id})
+    }
+    
     func incrementID() -> Int {
         let realm = try! Realm()
         return (realm.objects(Email.self).max(ofProperty: "id") as Int? ?? 0) + 1
@@ -93,7 +97,7 @@ class Email: Object {
         let contactsCc = getContacts(type: .cc)
         let contacts = contactsTo + contactsCc
         guard contacts.count > 1 else {
-            return contacts.first!.displayName
+            return contacts.first?.displayName ?? "<Empty Contact List>"
         }
         var contactsTitle = ""
         for contact in contacts {

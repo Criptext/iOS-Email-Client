@@ -269,6 +269,9 @@ class ComposeViewController: UIViewController {
     
     func saveDraft() {
         if let draft = composerData.emailDraft {
+            var data = [String: Any]()
+            data["draftId"] = draft.key
+            NotificationCenter.default.post(name: .onDeleteDraft, object: nil, userInfo: data)
             DBManager.delete(draft)
         }
         
@@ -297,6 +300,8 @@ class ComposeViewController: UIViewController {
         emailDetail.unread = false
         emailDetail.subject = subject
         emailDetail.date = Date()
+        emailDetail.key = "\(activeAccount.deviceId)\(Int(emailDetail.date.timeIntervalSince1970))"
+        emailDetail.threadId = composerData.threadId ?? ""
         emailDetail.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         DBManager.store(emailDetail)
         
@@ -483,6 +488,13 @@ class ComposeViewController: UIViewController {
         sheet.addAction(UIAlertAction(title: "Save Draft", style: .default) { action in
             APIManager.cancelAllUploads()
             self.saveDraft()
+            guard let draft = self.composerData.emailDraft else {
+                self.showAlert("Draft", message: "unable to save draft, please try again", style: .alert)
+                return
+            }
+            var data = [String: Any]()
+            data["email"] = draft
+            NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
             self.dismiss(animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))

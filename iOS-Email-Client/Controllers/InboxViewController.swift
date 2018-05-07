@@ -99,6 +99,8 @@ class InboxViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
         WebSocketManager.sharedInstance.eventDelegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -331,6 +333,16 @@ extension InboxViewController{
             ? DBManager.getMails(from: mailboxData.selectedLabel, since: Date(), limit: 100).1.count
             : DBManager.getUnreadMails(from: mailboxData.selectedLabel).count
         countBarButton.title = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
+    }
+    
+    @objc func deleteDraft(notification: NSNotification){
+        guard let data = notification.userInfo,
+            let draftId = data["draftId"] as? String,
+            let draftIndex = mailboxData.emailArray.index(where: {$0.key == draftId}) else {
+                return
+        }
+        mailboxData.emailArray.remove(at: draftIndex)
+        tableView.reloadData()
     }
 }
 
@@ -605,15 +617,31 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         emails.last?.isExpanded = true
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        if mailboxData.selectedLabel != SystemLabel.draft.id {
-            let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
-            vc.emailData = emailDetailData
-            vc.mailboxData = self.mailboxData
-            self.navigationController?.pushViewController(vc, animated: true)
+        guard mailboxData.selectedLabel != SystemLabel.draft.id else {
+            continueDraft(selectedEmail)
             return
         }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
+        vc.emailData = emailDetailData
+        vc.mailboxData = self.mailboxData
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func continueDraft(_ draft: Email){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
+        let composerData = ComposerData()
+        composerData.initToContacts = Array(draft.getContacts(type: .to))
+        composerData.initCcContacts = Array(draft.getContacts(type: .cc))
+        composerData.initSubject = draft.subject
+        composerData.initContent = draft.content
+        composerData.emailDraft = draft
+        composerVC.composerData = composerData
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
