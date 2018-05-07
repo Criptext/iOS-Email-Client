@@ -95,6 +95,15 @@ extension DBManager {
         return myEmails
     }
     
+    class func getThreadEmails(_ threadId: String, label: Int) -> [Email] {
+        let realm = try! Realm()
+        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
+        let predicate = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
+        let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
+        
+        return Array(results)
+    }
+    
     class func getMailsbyThreadId(_ threadId: String) -> [Email] {
         let realm = try! Realm()
         
@@ -402,6 +411,27 @@ extension DBManager {
         let realm = try! Realm()
         
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "NOT (id IN %@)", ids)))
+    }
+    
+    class func setLabelsForEmail(_ email: Email, labels: [Int]){
+        let realm = try! Realm()
+        try! realm.write {
+            let keepLabels = email.labels.reduce(List<Label>(), { (labels, label) -> List<Label> in
+                guard label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id else {
+                    return labels
+                }
+                return labels + [label]
+            })
+            email.labels.removeAll()
+            email.labels.append(objectsIn: keepLabels)
+            for label in labels {
+                guard label != SystemLabel.draft.id && label != SystemLabel.sent.id,
+                let labelToAdd = getLabel(label)  else {
+                    continue
+                }
+                email.labels.append(labelToAdd)
+            }
+        }
     }
     
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){

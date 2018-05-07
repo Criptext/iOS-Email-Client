@@ -26,6 +26,7 @@ class DetailMoreOptionsUIView: UIView {
     var tapGestureRecognizer:UITapGestureRecognizer!
     @IBOutlet var view: UIView!
     var delegate: DetailMoreOptionsViewDelegate?
+    @IBOutlet weak var spamButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -88,6 +89,22 @@ class DetailMoreOptionsUIView: UIView {
     
     @IBAction func onForwardPress(_ sender: Any) {
         delegate?.onForwardPress()
+    }
+    
+    @IBAction func onDeletePress(_ sender: Any) {
+        delegate?.onDeletePress()
+    }
+    
+    @IBAction func onMarkPress(_ sender: Any) {
+        delegate?.onMarkPress()
+    }
+    
+    @IBAction func onSpamPress(_ sender: Any) {
+        delegate?.onSpamPress()
+    }
+    
+    @IBAction func onPrintPress(_ sender: Any) {
+        delegate?.onPrintPress()
     }
     
 }

@@ -93,7 +93,7 @@ class EventHandler {
             }
             let signalMessage = data as! String
             email.content = SignalHandler.decryptMessage(signalMessage, account: self.myAccount)
-            email.preview = String(email.content.prefix(100)).removeHtmlTags()
+            email.preview = String(email.content.removeHtmlTags().prefix(100))
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
             self.emails.append(email)

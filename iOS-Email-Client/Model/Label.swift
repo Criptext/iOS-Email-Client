@@ -83,9 +83,11 @@ enum SystemLabel: Int {
         case .inbox, .sent, .all, .starred:
             return [SystemLabel.trash.id, SystemLabel.spam.id]
         case .spam:
-            return [SystemLabel.trash.id]
+            return [SystemLabel.trash.id, SystemLabel.inbox.id]
         case .draft:
-            return [SystemLabel.trash.id, SystemLabel.spam.id, SystemLabel.inbox.id, SystemLabel.sent.id, SystemLabel.trash.id]
+            return [SystemLabel.spam.id, SystemLabel.inbox.id, SystemLabel.sent.id, SystemLabel.trash.id]
+        case .trash:
+            return [SystemLabel.spam.id, SystemLabel.inbox.id]
         default:
             return []
         }
