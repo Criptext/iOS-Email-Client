@@ -667,7 +667,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
         
-        trashAction.backgroundColor = UIColor(patternImage: UIImage(named: "trash-action")!)
+        trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
         
         return [trashAction];
     }
