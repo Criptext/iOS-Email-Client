@@ -599,7 +599,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             labelsSet.formUnion(email.labels)
         }
         emailDetailData.labels = Array(labelsSet)
-        emailDetailData.subject = emails[0].subject
+        emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
         emails[emails.count - 1].isExpanded = true
         
