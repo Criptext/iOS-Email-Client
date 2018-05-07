@@ -488,8 +488,7 @@ class ComposeViewController: UIViewController {
         sheet.addAction(UIAlertAction(title: "Save Draft", style: .default) { action in
             APIManager.cancelAllUploads()
             let draft = self.saveDraft()
-            var data = [String: Any]()
-            data["email"] = draft
+            let data = ["email": draft]
             NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
             self.dismiss(animated: true, completion: nil)
         })
