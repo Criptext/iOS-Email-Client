@@ -63,13 +63,19 @@ class EmailTableViewCell: UITableViewCell{
     
     func setupView(){
         backgroundColor = .clear
-        webView.navigationDelegate = self
         heightConstraint.constant = myHeight
         unsendView.layer.borderWidth = 1
         readView.layer.borderWidth = 1
         attachmentView.layer.borderWidth = 1
         borderBGView.layer.borderWidth = 1
         borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
+        
+        webView.navigationDelegate = self
+        webView.configuration.userContentController.add(self, name: "iosListener")
+    }
+    
+    @objc func swiper(){
+        
     }
     
     func setContent(_ email: Email){
@@ -105,7 +111,7 @@ class EmailTableViewCell: UITableViewCell{
         let toContacts = email.getContacts(type: .to)
         let content = email.content
         if(!loadedContent){
-            webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: nil)
+            webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: URL(fileURLWithPath: Constants.imagePath))
         }
         let isDraft = email.labels.contains(where: {$0.id == SystemLabel.draft.id})
         optionsView.isHidden = isDraft
@@ -191,15 +197,23 @@ extension EmailTableViewCell{
     }
 }
 
-extension EmailTableViewCell: WKNavigationDelegate{
-
+extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler{
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        webViewEvaluateHeight(webView)
+    }
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in
+        webViewEvaluateHeight(webView)
+    }
+    
+    func webViewEvaluateHeight(_ webview: WKWebView){
+        webView.evaluateJavaScript("document.body.clientHeight") { (result, error) in
             guard let height = result as? CGFloat else {
                 return
             }
-            self.myHeight = height
-            self.heightConstraint.constant = height
+            self.myHeight = height + height * (self.webView.scrollView.zoomScale - 1)
+            self.heightConstraint.constant = height + height * (self.webView.scrollView.zoomScale - 1)
             self.delegate?.tableViewCellDidLoadContent(self)
             self.loadedContent = true
         }
