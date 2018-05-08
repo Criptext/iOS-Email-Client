@@ -97,6 +97,8 @@
 		7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
 		7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
+		7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */; };
+		7C1566A020A23AEB000CA8D2 /* TopbarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */; };
 		7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */; };
 		7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */; };
 		7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884F208D367B003FA304 /* MailboxData.swift */; };
@@ -279,6 +281,8 @@
 		7C147B42203C9676004823DE /* SignalProtocolFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SignalProtocolFramework.framework; path = Carthage/Build/iOS/SignalProtocolFramework.framework; sourceTree = "<group>"; };
 		7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextAxolotlStore.swift; sourceTree = "<group>"; };
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopbarUIView.xib; sourceTree = "<group>"; };
+		7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopbarUIView.swift; sourceTree = "<group>"; };
 		7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralMoreOptionsUIView.swift; sourceTree = "<group>"; };
 		7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralMoreOptionsUIView.xib; sourceTree = "<group>"; };
 		7C1E884F208D367B003FA304 /* MailboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxData.swift; sourceTree = "<group>"; };
@@ -635,6 +639,8 @@
 				7CB3B941208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib */,
 				7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */,
 				7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */,
+				7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */,
+				7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -786,6 +792,7 @@
 				7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
+				7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */,
 				41AAC528201A9FC300809C4D /* DetailThreadTableViewCell.xib in Resources */,
 				412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */,
 				41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */,
@@ -963,6 +970,7 @@
 				7CB44949207BBE0C009430EB /* MenuData.swift in Sources */,
 				7C5FD82D20607602000E5F14 /* Label.swift in Sources */,
 				7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */,
+				7C1566A020A23AEB000CA8D2 /* TopbarUIView.swift in Sources */,
 				7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */,
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
 				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,

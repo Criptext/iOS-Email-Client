@@ -51,7 +51,7 @@ class InboxTableViewCell: UITableViewCell {
         avatarImageView.image = #imageLiteral(resourceName: "check")
         avatarImageView.tintColor = UIColor.white
         avatarImageView.layer.borderWidth = 1.0
-        avatarImageView.layer.borderColor = backgroundColor?.cgColor
+        avatarImageView.layer.borderColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
     }
     
     func setAsNotSelected(){
