@@ -133,11 +133,11 @@ struct Constants {
     " <head>" +
     "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" +
     "  <meta name=\"viewport\" content=\"width=device-width,user-scalable=yes\">" +
-    "  <style type='text/css'>html, body { margin: 0px; padding: 0px } </style>" +
+        "  <style type='text/css'>html, body { margin: 0px; padding: 0px; height: auto; } </style>" +
     " </head>" +
     " <body>"
     
-    static let htmlBottomWrapper = "</body></html>"
+    static let htmlBottomWrapper = "</body><script>\(quoteHideScript)</script></html>"
     
     static let imagePath = Bundle.main.path(forResource: "showmore.png", ofType: nil) ?? ""
     
@@ -151,7 +151,7 @@ struct Constants {
         "replybody.parentElement.insertBefore(newNode, replybody);" +
         "newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ " +
         "replybody.style.display = \"none\";} else {" +
-        "replybody.style.display = \"block\";} window.location.href = \"inapp://heightUpdate\";});"
+        "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
     
     static let fullScript = "<html><head><style type='text/css'>body{ font-family: 'Helvetica Neue', Helvetica, Arial; margin:0; padding: 0px 30px;} hr {border: 0; height: 1px; background-color: #bdc3c7;}.show { display: block;}.hide:target + .show { display: inline;} .hide:target { display: block;} .content { display:block;} .hide:target ~ .content { display:inline;} </style></head><body></body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'></iframe><script>\(quoteHideScript)</script></html>"
 

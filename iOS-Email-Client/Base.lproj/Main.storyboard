@@ -48,7 +48,7 @@
                                         <rect key="frame" x="0.0" y="1" width="375" height="45"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVv-ct-ktg" userLabel="To Field" customClass="CLTokenInputView">
-                                                <rect key="frame" x="5" y="0.0" width="310" height="45"/>
+                                                <rect key="frame" x="5" y="0.0" width="318" height="45"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYK-my-H1N">
@@ -73,7 +73,7 @@
                                             <constraint firstAttribute="height" constant="45" id="Zte-n0-jta"/>
                                             <constraint firstItem="aVv-ct-ktg" firstAttribute="top" secondItem="Uhe-Qf-ZiZ" secondAttribute="top" id="aPg-c3-lqH"/>
                                             <constraint firstAttribute="bottom" secondItem="cYK-my-H1N" secondAttribute="bottom" id="fXh-N6-RPi"/>
-                                            <constraint firstItem="cYK-my-H1N" firstAttribute="leading" secondItem="aVv-ct-ktg" secondAttribute="trailing" constant="8" id="lFz-t0-fvy"/>
+                                            <constraint firstItem="cYK-my-H1N" firstAttribute="leading" secondItem="aVv-ct-ktg" secondAttribute="trailing" id="lFz-t0-fvy"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4oD-QO-TpV" userLabel="Cc Container">
