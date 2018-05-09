@@ -595,7 +595,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJq-0v-4GG" customClass="NavigationToolbarView" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJq-0v-4GG" customClass="TopbarUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
                                 <color key="backgroundColor" red="0.21517819169999999" green="0.22662246229999999" blue="0.27226996419999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -845,7 +845,7 @@
                         <outlet property="moreOptionsOverlay" destination="fhP-Ga-19D" id="Iie-9I-igy"/>
                         <outlet property="moreOptionsView" destination="BkL-l9-Des" id="D7Q-BG-Ufj"/>
                         <outlet property="tableView" destination="RGw-Kx-VBy" id="PUS-eO-VVj"/>
-                        <outlet property="topToolbar" destination="xJq-0v-4GG" id="uPC-Aj-nnE"/>
+                        <outlet property="topToolbar" destination="xJq-0v-4GG" id="ciI-OE-wd4"/>
                         <segue destination="Fwo-uj-A4U" kind="presentation" identifier="showHeader" id="iPf-mS-fgO"/>
                         <segue destination="U03-Od-wtY" kind="presentation" identifier="showComposer" id="Lr4-gz-kw3"/>
                         <segue destination="bgc-oZ-Vag" kind="show" id="J0x-Ob-YwV"/>
@@ -1072,7 +1072,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwm-FM-Cnc" customClass="NavigationToolbarView" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pwm-FM-Cnc" customClass="TopbarUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -1339,7 +1339,7 @@
                         <outlet property="emailsTableView" destination="H88-ZN-H4B" id="roC-Vf-CEU"/>
                         <outlet property="generalOptionsContainerView" destination="ffn-LR-DMI" id="B4L-yX-5ZG"/>
                         <outlet property="moreOptionsContainerView" destination="1su-18-smw" id="2GV-Cz-5pz"/>
-                        <outlet property="topToolbar" destination="pwm-FM-Cnc" id="7BQ-Sn-zwh"/>
+                        <outlet property="topToolbar" destination="pwm-FM-Cnc" id="gzS-4q-XjA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Wl-gk-N8t" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TopbarUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="archiveButton" destination="Nyi-gB-IcE" id="Yj8-VW-XzL"/>
+                <outlet property="counterLabel" destination="ZzR-h6-HXk" id="gVZ-Qo-Srg"/>
+                <outlet property="markButton" destination="Q4A-wm-n7M" id="q3D-Iv-yfl"/>
+                <outlet property="trashButton" destination="t76-18-SGy" id="mew-l6-7tq"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Y9V-DN-mbN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fy7-am-4BQ" customClass="CircleBackButton" customModule="iOS_Email_Client" customModuleProvider="target">
+                    <rect key="frame" x="16" y="7" width="31" height="31"/>
+                    <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="0.12661761886503067" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="31" id="17O-Tc-DCu"/>
+                        <constraint firstAttribute="width" constant="31" id="Hcy-2L-MlL"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="9" minY="9" maxX="9" maxY="9"/>
+                    <state key="normal" image="arrow-back"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                            <color key="value" red="0.55686274509803924" green="0.5607843137254902" blue="0.58039215686274503" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onBackPress:" destination="-1" eventType="touchUpInside" id="pO4-15-rMT"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzR-h6-HXk">
+                    <rect key="frame" x="69" y="12" width="30" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="evk-dG-gcc"/>
+                        <constraint firstAttribute="height" constant="21" id="gPC-ob-mOw"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nyi-gB-IcE">
+                    <rect key="frame" x="124" y="7" width="31" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="31" id="8rj-zq-k7o"/>
+                        <constraint firstAttribute="height" constant="31" id="HMT-fV-3Rc"/>
+                    </constraints>
+                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="7"/>
+                    <state key="normal" image="archive-icon"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                            <color key="value" red="0.55686274509803924" green="0.5607843137254902" blue="0.58039215686274503" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onArchivePress:" destination="-1" eventType="touchUpInside" id="uFN-Sl-ZCU"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t76-18-SGy">
+                    <rect key="frame" x="172" y="7" width="31" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="31" id="li9-VM-lL6"/>
+                        <constraint firstAttribute="width" constant="31" id="paR-uu-iwc"/>
+                    </constraints>
+                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="7"/>
+                    <state key="normal" image="delete-icon"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                            <color key="value" red="0.5568627451" green="0.56078431370000004" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onDeletePress:" destination="-1" eventType="touchUpInside" id="p3q-Ba-kAJ"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4A-wm-n7M">
+                    <rect key="frame" x="220" y="7" width="31" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="31" id="d5I-uO-ybY"/>
+                        <constraint firstAttribute="height" constant="31" id="wRR-yL-NLQ"/>
+                    </constraints>
+                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="7"/>
+                    <state key="normal" image="mark_read"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                            <color key="value" red="0.5568627451" green="0.56078431370000004" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onMarkAsReadPress:" destination="-1" eventType="touchUpInside" id="Y1A-XA-ndL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XSx-oc-jIH" customClass="CircleBackButton" customModule="iOS_Email_Client" customModuleProvider="target">
+                    <rect key="frame" x="327" y="7" width="31" height="31"/>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="0.12661761890000001" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="31" id="1RG-53-tFF"/>
+                        <constraint firstAttribute="width" constant="31" id="PFx-76-eUU"/>
+                    </constraints>
+                    <state key="normal" image="dots"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                            <color key="value" red="0.5568627451" green="0.56078431370000004" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onMoreOptionsPress:" destination="-1" eventType="touchUpInside" id="xtf-gj-XgI"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Fy7-am-4BQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Bxf-Km-NsX"/>
+                <constraint firstItem="XSx-oc-jIH" firstAttribute="centerY" secondItem="Fy7-am-4BQ" secondAttribute="centerY" id="EJB-Dg-IF8"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Fy7-am-4BQ" secondAttribute="bottom" constant="6.75" id="HOh-DC-CDw"/>
+                <constraint firstItem="Q4A-wm-n7M" firstAttribute="leading" secondItem="t76-18-SGy" secondAttribute="trailing" constant="17" id="Iq9-q9-eJY"/>
+                <constraint firstItem="ZzR-h6-HXk" firstAttribute="leading" secondItem="Fy7-am-4BQ" secondAttribute="trailing" constant="22" id="XFY-g5-2Zz"/>
+                <constraint firstItem="t76-18-SGy" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="c2V-v5-a1r"/>
+                <constraint firstItem="ZzR-h6-HXk" firstAttribute="centerY" secondItem="Fy7-am-4BQ" secondAttribute="centerY" id="h1D-jL-bWE"/>
+                <constraint firstItem="t76-18-SGy" firstAttribute="leading" secondItem="Nyi-gB-IcE" secondAttribute="trailing" constant="17" id="lO1-bt-aEn"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="XSx-oc-jIH" secondAttribute="trailing" constant="17" id="o0q-Aq-lew"/>
+                <constraint firstItem="Nyi-gB-IcE" firstAttribute="centerY" secondItem="t76-18-SGy" secondAttribute="centerY" id="q2x-Ry-2U5"/>
+                <constraint firstItem="Q4A-wm-n7M" firstAttribute="centerY" secondItem="t76-18-SGy" secondAttribute="centerY" id="rcq-rK-vMh"/>
+                <constraint firstItem="t76-18-SGy" firstAttribute="centerY" secondItem="Fy7-am-4BQ" secondAttribute="centerY" id="vI4-Qk-uOZ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="archive-icon" width="17" height="17"/>
+        <image name="arrow-back" width="17" height="14"/>
+        <image name="delete-icon" width="16" height="18"/>
+        <image name="dots" width="16" height="4"/>
+        <image name="mark_read" width="17" height="18"/>
+    </resources>
+</document>

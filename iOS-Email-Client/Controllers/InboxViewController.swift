@@ -26,7 +26,7 @@ class InboxViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
-    @IBOutlet weak var topToolbar: NavigationToolbarView!
+    @IBOutlet weak var topToolbar: TopbarUIView!
     @IBOutlet weak var buttonCompose: UIButton!
     
     var searchController = UISearchController(searchResultsController: nil)
@@ -90,7 +90,7 @@ class InboxViewController: UIViewController {
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         
         self.initFloatingButton()
-        topToolbar.toolbarDelegate = self
+        topToolbar.delegate = self
         self.initMoreOptionsView()
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.refreshControl = refreshControl
@@ -267,7 +267,7 @@ extension InboxViewController{
         mailboxData.isCustomEditing = !mailboxData.isCustomEditing
         
         if mailboxData.isCustomEditing {
-            self.topToolbar.counterButton.title = "1"
+            self.topToolbar.counterLabel.text = "1"
             self.topToolbar.isHidden = false
             refreshControl.isEnabled = false
         }else{
@@ -306,12 +306,7 @@ extension InboxViewController{
     }
     
     func swapMarkIcon(){
-        if(mailboxData.unreadMails > 0){
-            topToolbar.setupMarkAsRead()
-        }else{
-            topToolbar.setupMarkAsUnread()
-        }
-        topToolbar.setItemsMenu()
+        topToolbar.swapMarkTo(unread: mailboxData.unreadMails == 0)
     }
     
     func updateBadges(){
@@ -584,7 +579,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             swapMarkIcon()
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
             cell.setAsSelected()
-            self.topToolbar.counterButton.title = "\(indexPaths.count)"
+            self.topToolbar.counterLabel.text = "\(indexPaths.count)"
             return
         }
         
@@ -642,7 +637,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 mailboxData.unreadMails -= 1
             }
             swapMarkIcon()
-            self.topToolbar.counterButton.title = "\(tableView.indexPathsForSelectedRows!.count)"
+            self.topToolbar.counterLabel.text = "\(tableView.indexPathsForSelectedRows!.count)"
             tableView.reloadRows(at: [indexPath], with: .none)
             return
         }

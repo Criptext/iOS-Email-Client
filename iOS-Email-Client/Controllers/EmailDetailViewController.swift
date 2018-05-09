@@ -12,7 +12,7 @@ class EmailDetailViewController: UIViewController {
     var emailData : EmailDetailData!
     var mailboxData : MailboxData!
     @IBOutlet weak var emailsTableView: UITableView!
-    @IBOutlet weak var topToolbar: NavigationToolbarView!
+    @IBOutlet weak var topToolbar: TopbarUIView!
     @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
     @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     
@@ -31,7 +31,7 @@ class EmailDetailViewController: UIViewController {
         self.setupMoreOptionsViews()
         
         self.registerCellNibs()
-        self.topToolbar.toolbarDelegate = self
+        self.topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
@@ -108,12 +108,7 @@ class EmailDetailViewController: UIViewController {
     }
     
     func displayMarkIcon(asRead: Bool){
-        if(asRead){
-            topToolbar.setupMarkAsRead()
-        } else {
-            topToolbar.setupMarkAsUnread()
-        }
-        topToolbar.setItemsMenu()
+        topToolbar.swapMarkTo(unread: !asRead)
     }
 }
 
