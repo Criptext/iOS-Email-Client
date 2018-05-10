@@ -188,6 +188,11 @@
                                                     <constraint firstAttribute="width" constant="42" id="qBV-PP-aqa"/>
                                                 </constraints>
                                                 <state key="normal" image="arrow-back"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="backButtonPress:" destination="OMZ-WS-rzb" eventType="touchUpInside" id="Bh9-4d-84w"/>
                                                 </connections>
@@ -883,6 +888,11 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                     <constraint firstAttribute="height" constant="42" id="zVj-6j-52Z"/>
                                                 </constraints>
                                                 <state key="normal" image="arrow-back"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="backButtonPress:" destination="Msb-QW-zAf" eventType="touchUpInside" id="8gi-Ou-ltW"/>
                                                 </connections>
@@ -1140,7 +1150,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 <state key="normal" image="arrow-back"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
-                                                        <color key="value" red="1" green="1" blue="0.99880642361111116" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>

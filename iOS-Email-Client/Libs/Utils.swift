@@ -59,4 +59,15 @@ class Utils{
         }
         return nil
     }
+    
+    class func getUsernameFromEmailFormat(_ emailFormat: String) -> String? {
+        let email = NSString(string: emailFormat)
+        let pattern = "(?<=\\<).*(?=@)"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let matches = regex.matches(in: emailFormat, options: [], range: NSRange(location: 0, length: email.length))
+        guard let range = matches.first?.range else {
+            return nil
+        }
+        return email.substring(with: range)
+    }
 }

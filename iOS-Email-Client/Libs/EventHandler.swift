@@ -16,6 +16,7 @@ class EventHandler {
     let myAccount : Account
     var eventDelegate : EventHandlerDelegate?
     var emails = [Email]()
+    var successfulEvents = [Int32]()
     
     init(account: Account){
         myAccount = account
@@ -30,22 +31,31 @@ class EventHandler {
             }
         })
         asyncGroupCalls.notify(queue: .main) {
+            if(!self.successfulEvents.isEmpty){
+                APIManager.acknowledgeEvents(eventIds: self.successfulEvents, token: self.myAccount.jwt)
+            }
             guard !self.emails.isEmpty else {
                 return
             }
             self.eventDelegate?.didReceiveNewEmails(emails: self.emails)
             self.emails.removeAll()
+            self.successfulEvents.removeAll()
         }
     }
     
     func handleEvent(_ event: Dictionary<String, Any>, finishCallback: @escaping () -> Void){
         let cmd = event["cmd"] as! Int32
+        let rowId = event["rowid"] as? Int32
         guard let params = event["params"] as? [String : Any] ?? Utils.convertToDictionary(text: (event["params"] as! String)) else {
             return
         }
         switch(cmd){
         case Event.newEmail.rawValue:
-            self.handleNewEmailCommand(params: params){
+            self.handleNewEmailCommand(params: params){ successfulEvent in
+                if successfulEvent,
+                    let eventId = rowId {
+                    self.successfulEvents.append(eventId)
+                }
                 finishCallback()
             }
             break
@@ -54,7 +64,7 @@ class EventHandler {
         }
     }
     
-    func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping () -> Void){
+    func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool) -> Void){
         let threadId = params["threadId"] as! String
         let subject = params["subject"] as! String
         let from = params["from"] as! String
@@ -62,9 +72,9 @@ class EventHandler {
         let cc = params["cc"] as! String
         let bcc = params["bcc"] as! String
         let messageId = params["messageId"] as! String
-        let preview = params["preview"] as! String
         let date = params["date"] as! String
         let metadataKey = params["metadataKey"] as! Int32
+        let senderDeviceId = params["senderDeviceId"] as! Int32
         
         let dateFormatter = DateFormatter()
         let timeZone = NSTimeZone(abbreviation: "UTC")
@@ -73,7 +83,7 @@ class EventHandler {
         let localDate = dateFormatter.date(from: date) ?? Date()
         
         guard DBManager.getMailByKey(key: metadataKey.description) == nil else {
-            finishCallback()
+            finishCallback(true)
             return
         }
         
@@ -82,17 +92,17 @@ class EventHandler {
         email.subject = subject
         email.key = metadataKey.description
         email.messageId = messageId
-        email.preview = preview
         email.date = localDate
         email.unread = true
         
         APIManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
-            guard error == nil else {
-                finishCallback()
+            guard error == nil,
+                let username = Utils.getUsernameFromEmailFormat(from) else {
+                finishCallback(false)
                 return
             }
             let signalMessage = data as! String
-            email.content = SignalHandler.decryptMessage(signalMessage, account: self.myAccount)
+            email.content = SignalHandler.decryptMessage(signalMessage, account: self.myAccount, recipientId: username, deviceId: senderDeviceId)
             email.preview = String(email.content.removeHtmlTags().prefix(100))
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
@@ -102,7 +112,7 @@ class EventHandler {
             ContactManager.parseEmailContacts(to, email: email, type: .to)
             ContactManager.parseEmailContacts(cc, email: email, type: .cc)
             ContactManager.parseEmailContacts(bcc, email: email, type: .bcc)
-            finishCallback()
+            finishCallback(true)
         }
         
     }
