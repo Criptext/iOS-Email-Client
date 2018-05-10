@@ -22,7 +22,7 @@ class Email: Object {
     @objc dynamic var id = 0
     @objc dynamic var key = ""
     @objc dynamic var threadId = ""
-    @objc dynamic var s3Key = ""
+    @objc dynamic var messageId = ""
     @objc dynamic var unread = true
     @objc dynamic var secure = true
     @objc dynamic var content = ""

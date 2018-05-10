@@ -125,8 +125,8 @@ class APIManager {
         }
     }
     
-    class func getEmailBody(s3Key: String, token: String, completion: @escaping ((Any?, Any?) -> Void)){
-        let url = "\(self.baseUrl)/email/body/\(s3Key)"
+    class func getEmailBody(messageId: String, token: String, completion: @escaping ((Any?, Any?) -> Void)){
+        let url = "\(self.baseUrl)/email/body/\(messageId)"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             guard let value = response.result.value else {

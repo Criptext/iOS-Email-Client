@@ -39,7 +39,7 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var blackBackground: UIView!
-    @IBOutlet weak var attachmentContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentTableHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var contactTableView: UITableView!
@@ -53,6 +53,7 @@ class ComposeViewController: UIViewController {
     
     var expandedBbcSpacing:CGFloat = 45
     var expandedCcSpacing:CGFloat = 45
+    var attachmentOptionsHeight: CGFloat = 110
     
     var toolbarBottomConstraintInitialValue: CGFloat?
     var toolbarHeightConstraintInitialValue: CGFloat?
@@ -269,8 +270,7 @@ class ComposeViewController: UIViewController {
     
     func saveDraft() -> Email {
         if let draft = composerData.emailDraft {
-            var data = [String: Any]()
-            data["draftId"] = draft.key
+            let data = ["draftId": draft.key]
             NotificationCenter.default.post(name: .onDeleteDraft, object: nil, userInfo: data)
             DBManager.delete(draft)
         }
@@ -367,7 +367,7 @@ class ComposeViewController: UIViewController {
         
         self.navigationController?.navigationBar.layer.zPosition = flag ? -1 : 0
         
-        self.attachmentContainerHeightConstraint.constant = CGFloat(flag ? 110 : 0)
+        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? -attachmentOptionsHeight : 0)
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -482,7 +482,11 @@ class ComposeViewController: UIViewController {
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: discardTitle, style: .destructive) { action in
             APIManager.cancelAllUploads()
-            
+            if let draft = self.composerData.emailDraft {
+                let data = ["draftId": draft.key]
+                NotificationCenter.default.post(name: .onDeleteDraft, object: nil, userInfo: data)
+                DBManager.delete(draft)
+            }
             self.dismiss(animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "Save Draft", style: .default) { action in
@@ -566,9 +570,9 @@ class ComposeViewController: UIViewController {
         }
         let keysArray = data as! Dictionary<String, Any>
         let key = (keysArray["metadataKey"] as! Int32).description
-        let s3Key = keysArray["bodyKey"] as! String
+        let messageId = keysArray["messageId"] as! String
         let threadId = keysArray["threadId"] as! String
-        DBManager.updateEmail(myEmail, key: key, s3Key: s3Key, threadId: threadId)
+        DBManager.updateEmail(myEmail, key: key, messageId: messageId, threadId: threadId)
         DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         var data = [String: Any]()
         data["email"] = myEmail
@@ -1131,6 +1135,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let name = text?.replacingOccurrences(of: ",", with: "")
             
             if APIManager.isValidEmail(text: name!) {
+                let valueObject = NSString(string: name!)
                 let token = CLToken(displayText: name!, context: nil)
                 view.add(token)
             } else {
@@ -1142,7 +1147,8 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let name = text?.replacingOccurrences(of: " ", with: "")
             
             if APIManager.isValidEmail(text: name!) {
-                let token = CLToken(displayText: name!, context: nil)
+                let valueObject = NSString(string: name!)
+                let token = CLToken(displayText: name!, context: valueObject)
                 view.add(token)
             } else {
 //                view.textField.text = name
