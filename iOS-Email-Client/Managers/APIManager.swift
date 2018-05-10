@@ -126,7 +126,7 @@ class APIManager {
     }
     
     class func getEmailBody(messageId: String, token: String, completion: @escaping ((Any?, Any?) -> Void)){
-        let url = "\(self.baseUrl)/email/body/\(messageId)"
+        let url = "\(self.baseUrl)/email/body/\(messageId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             guard let value = response.result.value else {
@@ -137,82 +137,12 @@ class APIManager {
         }
     }
     
-    class func request(url:String, method:HTTPMethod, parameters:Parameters?, headers:HTTPHeaders?, completion:@escaping (DataResponse<String>) -> Void){
-        
-        if let parameters = parameters {
-            //try the request
-            Alamofire.request(url, method: method, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-                
-                
-                if let value = response.result.value,
-                    let dataFromString = value.data(using: .utf8, allowLossyConversion: false) {
-                    let jsonVar = try! JSON(data: dataFromString)
-                    
-                    let errorCode = jsonVar["error"].intValue
-                    
-                    //check if it failed due to jwt expired or wrong session
-                    if errorCode == CODE_JWT_INVALID || errorCode == CODE_SESSION_INVALID {
-                        //auth request
-                        
-                        completion(response)
-                        return
-                    }
-                }
-                
-                //return success to original request
-                completion(response)
-            }
-            return
-        }
-        
-        //try the request
-        Alamofire.request(url, method: method, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            
-            if let value = response.result.value,
-                let dataFromString = value.data(using: .utf8, allowLossyConversion: false) {
-                let jsonVar = try! JSON(data: dataFromString)
-                
-                let errorCode = jsonVar["error"].intValue
-                //check if it failed due to jwt expired or wrong session
-                if errorCode == CODE_JWT_INVALID || errorCode == CODE_SESSION_INVALID {
-                    
-                    completion(response)
-                    return
-                }
-            }
-            
-            
-            //return to original request
-            completion(response)
-        }
+    class func acknowledgeEvents(eventIds: [Int32], token: String){
+        let parameters = ["ids": eventIds] as [String : Any]
+        let url = "\(self.baseUrl)/event/ack"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
-    
-    class func parseDisplayString(_ value:String) -> String{
-        var toDisplayEmail = ""
-        for tag in value.components(separatedBy: ",") {
-            var copyTag = tag
-            
-            if let match = copyTag.range(of: " <[^ ]+", options: .regularExpression){
-                
-                copyTag.removeSubrange(match)
-                
-                if(toDisplayEmail == "") {
-                    toDisplayEmail = copyTag
-                }else{
-                    toDisplayEmail = toDisplayEmail + "," + copyTag
-                }
-            }else {
-                if(toDisplayEmail == "") {
-                    toDisplayEmail = copyTag
-                }else{
-                    toDisplayEmail = toDisplayEmail + "," + copyTag
-                }
-            }
-        }
-        
-        return toDisplayEmail
-    }
-
 }
 
 extension APIManager {
