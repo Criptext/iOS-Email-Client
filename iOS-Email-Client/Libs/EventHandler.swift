@@ -61,7 +61,7 @@ class EventHandler {
         let to = params["to"] as! String
         let cc = params["cc"] as! String
         let bcc = params["bcc"] as! String
-        let bodyKey = params["bodyKey"] as! String
+        let messageId = params["messageId"] as! String
         let preview = params["preview"] as! String
         let date = params["date"] as! String
         let metadataKey = params["metadataKey"] as! Int32
@@ -81,12 +81,12 @@ class EventHandler {
         email.threadId = threadId
         email.subject = subject
         email.key = metadataKey.description
-        email.s3Key = bodyKey
+        email.messageId = messageId
         email.preview = preview
         email.date = localDate
         email.unread = true
         
-        APIManager.getEmailBody(s3Key: email.s3Key, token: myAccount.jwt) { (error, data) in
+        APIManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
             guard error == nil else {
                 finishCallback()
                 return

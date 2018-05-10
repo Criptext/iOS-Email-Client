@@ -171,12 +171,12 @@ extension DBManager {
         return email
     }
     
-    class func updateEmail(_ email: Email, key: String, s3Key: String, threadId: String){
+    class func updateEmail(_ email: Email, key: String, messageId: String, threadId: String){
         let realm = try! Realm()
         
         try! realm.write() {
             email.key = key
-            email.s3Key = s3Key
+            email.messageId = messageId
             email.threadId = threadId
             email.status = .sent
         }
