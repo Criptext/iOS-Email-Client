@@ -89,7 +89,6 @@ class APIManager {
         let url = "\(self.baseUrl)/keybundle"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            
             switch(response.result) {
                 case .success(let value):
                     completion(nil, value)

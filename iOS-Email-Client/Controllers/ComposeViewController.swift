@@ -581,7 +581,7 @@ class ComposeViewController: UIViewController {
     
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>){
         var recipients = [String]()
-        var knownAddresses = Dictionary<String, Int32>()
+        var knownAddresses = Dictionary<String, [Int32]>()
         for (index, dictionary) in criptextEmails.enumerated(){
             var criptextEmail = dictionary
             let recipientId = criptextEmail["recipientId"] as! String
@@ -589,7 +589,7 @@ class ComposeViewController: UIViewController {
             if(store.containsSession(recipientId, deviceId: deviceId)){
                 criptextEmail["body"] = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
                 criptextEmails[index] = criptextEmail
-                knownAddresses[recipientId] = deviceId
+                knownAddresses[recipientId] = [deviceId]
             }
             else{
                 recipients.append(recipientId)
