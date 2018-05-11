@@ -78,7 +78,6 @@ class InboxViewController: UIViewController {
         self.searchController.searchBar.delegate = self
         self.searchController.searchBar.barStyle = .black
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Regular", size: 18.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .normal)
-        definesPresentationContext = true
         
         self.navigationItem.searchController = self.searchController
         self.tableView.allowsMultipleSelection = true
@@ -93,7 +92,7 @@ class InboxViewController: UIViewController {
         topToolbar.delegate = self
         self.initMoreOptionsView()
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
-        tableView.refreshControl = refreshControl
+        tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
