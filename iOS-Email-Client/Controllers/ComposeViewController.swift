@@ -79,6 +79,7 @@ class ComposeViewController: UIViewController {
     let DOMAIN = "jigl.com"
     
     var composerData = ComposerData()
+    let fileManager = CriptextFileManager()
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -181,6 +182,8 @@ class ComposeViewController: UIViewController {
         
         subjectField.text = composerData.initSubject
         editorView.html = composerData.initContent
+        
+        fileManager.delegate = self
     }
     
     func setupInitContacts(){
@@ -806,9 +809,16 @@ extension ComposeViewController: CICropPickerDelegate {
             self.isEdited = true
             
             self.add(attachment)
+            self.fileManager.registerFile(file: data, name: attachment.name){ (error, filetoken) in
+                guard let token = filetoken else {
+                    print(error?.localizedDescription ?? "Unable to upload file")
+                    return
+                }
+                attachment.token = token
+            }
             
             attachment.isUploaded = true
-            attachment.token = "123"
+            
             //store attachment in DB
             
             //clean up local file not needed anymore
@@ -823,9 +833,6 @@ extension ComposeViewController: CICropPickerDelegate {
             }
             
             let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
-            
-            cell.progressView.progress = 1
-            cell.progressView.isHidden = true
         }
     }
 }
@@ -908,6 +915,14 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         self.isEdited = true
         
         self.add(attachment)
+
+        fileManager.registerFile(file: data, name: trueName){ (error, filetoken) in
+            guard let token = filetoken else {
+                print(error?.localizedDescription ?? "Unable to upload file")
+                return
+            }
+            attachment.token = token
+        }
     }
 }
 
@@ -968,6 +983,10 @@ extension ComposeViewController{
 
 //MARK: - Progress Delegate
 extension ComposeViewController: ProgressDelegate {
+    func chunkUpdateProgress(_ percent: Double, for token: String, part: Int) {
+        
+    }
+    
     func updateProgress(_ percent: Double, for id: String) {
         
         guard let index = composerData.attachmentArray.index(where: { (attachment) -> Bool in
@@ -1007,7 +1026,7 @@ extension ComposeViewController: UITableViewDataSource {
         cell.lockImageView.tintColor = Icon.enabled.color
         cell.lockImageView.image = Icon.lock_open.image
         
-        cell.progressView.isHidden = attachment.isUploaded || cell.progressView.progress == 1
+        cell.progressView.isHidden = cell.progressView.progress == 1
         
         //image icon
         var imageIcon:UIImage!
@@ -1036,6 +1055,7 @@ extension ComposeViewController: UITableViewDataSource {
         }
         
         cell.typeImageView.image = imageIcon
+        cell.delegate = self
         
         return cell
     }
@@ -1081,6 +1101,23 @@ extension ComposeViewController: UITableViewDelegate {
             return
         }
     }
+}
+
+extension ComposeViewController: AttachmentTableViewCellDelegate{
+    func tableViewCellDidTapReadOnly(_ cell: AttachmentTableViewCell) {}
+    
+    func tableViewCellDidTapPassword(_ cell: AttachmentTableViewCell) {}
+    
+    func tableViewCellDidTapRemove(_ cell: AttachmentTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        fileManager.removeFile(filetoken: composerData.attachmentArray[indexPath.row].token)
+        composerData.attachmentArray.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .none)
+    }
+    
+    func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {}
 }
 
 //MARK: - UIGestureRecognizer Delegate
@@ -1266,6 +1303,18 @@ extension ComposeViewController: CNContactPickerDelegate {
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
         view.add(token)
+    }
+}
+
+extension ComposeViewController: CriptextFileDelegate {
+    func uploadProgressUpdate(filetoken: String, progress: Int) {
+        guard let index = composerData.attachmentArray.index(where: {$0.token == filetoken}) else {
+            return
+        }
+        
+        let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
+        let percentage = Float(progress)/100.0
+        cell.progressView.setProgress(percentage, animated: true)
     }
 }
 

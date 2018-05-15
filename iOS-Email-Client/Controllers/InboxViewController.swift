@@ -95,7 +95,7 @@ class InboxViewController: UIViewController {
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -239,7 +239,9 @@ class InboxViewController: UIViewController {
                 print(error.debugDescription)
                 return
             }
-            let eventsArray = data as! Array<Dictionary<String, Any>>
+            guard let eventsArray = data as? Array<Dictionary<String, Any>> else {
+                return
+            }
             let eventHandler = EventHandler(account: self.myAccount)
             eventHandler.eventDelegate = self
             eventHandler.handleEvents(events: eventsArray)

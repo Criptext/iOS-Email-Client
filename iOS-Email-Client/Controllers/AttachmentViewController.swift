@@ -78,6 +78,10 @@ extension AttachmentViewController: UIWebViewDelegate {
 }
 
 extension AttachmentViewController: ProgressDelegate {
+    func chunkUpdateProgress(_ percent: Double, for token: String, part: Int) {
+        
+    }
+    
     func updateProgress(_ percent: Double, for id: String) {
         
     }

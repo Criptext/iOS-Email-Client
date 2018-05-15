@@ -21,8 +21,13 @@ class File : Object {
     @objc dynamic var isUploaded = false
     @objc dynamic var mimeType = ""
     @objc dynamic var filePath = ""
+    var progress = -1
 
     override static func primaryKey() -> String? {
         return "token"
+    }
+    
+    override static func ignoredProperties() -> [String] {
+        return ["progress"]
     }
 }
