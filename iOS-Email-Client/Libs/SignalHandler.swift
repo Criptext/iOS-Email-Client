@@ -10,10 +10,10 @@ import Foundation
 import SignalProtocolFramework
 
 class SignalHandler {
-    class func decryptMessage(_ encryptedMessageB64: String, account: Account, recipientId: String, deviceId: Int32) -> String{
+    class func decryptMessage(_ encryptedMessageB64: String, messageType: Int, account: Account, recipientId: String, deviceId: Int32) -> String{
         let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
         let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: recipientId, deviceId: deviceId)
-        let incomingMessage : CipherMessage = axolotlStore.containsSession(recipientId, deviceId: deviceId)
+        let incomingMessage : CipherMessage = messageType == 1
             ? WhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
             : PreKeyWhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
         let plainText = sessionCipher?.decrypt(incomingMessage)

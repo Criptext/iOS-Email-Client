@@ -582,6 +582,10 @@ class ComposeViewController: UIViewController {
         NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
     }
     
+    func getMessageType(_ message: CipherMessage) -> Int {
+        return message is PreKeyWhisperMessage ? 3 : 1
+    }
+    
     func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>){
         var recipients = [String]()
         var knownAddresses = Dictionary<String, [Int32]>()
@@ -590,7 +594,9 @@ class ComposeViewController: UIViewController {
             let recipientId = criptextEmail["recipientId"] as! String
             let deviceId = criptextEmail["deviceId"] as! Int32
             if(store.containsSession(recipientId, deviceId: deviceId)){
-                criptextEmail["body"] = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
+                let message = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
+                criptextEmail["body"] = message.0
+                criptextEmail["messageType"] = message.1
                 criptextEmails[index] = criptextEmail
                 knownAddresses[recipientId] = [deviceId]
             }
@@ -639,7 +645,9 @@ class ComposeViewController: UIViewController {
                 sessionBuilder.processPrekeyBundle(contactPreKey)
                 
                 var criptextEmail = criptextEmailsCopy[index]
-                criptextEmail["body"] = self.encryptMessage(body: body, deviceId: keys["deviceId"] as! Int32, recipientId: keys["recipientId"] as! String, store: store)
+                let message = self.encryptMessage(body: body, deviceId: keys["deviceId"] as! Int32, recipientId: keys["recipientId"] as! String, store: store)
+                criptextEmail["body"] = message.0
+                criptextEmail["messageType"] = message.1
                 criptextEmailsCopy[index] = criptextEmail
             }
         
@@ -694,11 +702,13 @@ class ComposeViewController: UIViewController {
         
     }
     
-    func encryptMessage(body: String, deviceId: Int32, recipientId: String, store: CriptextAxolotlStore) -> String{
+    func encryptMessage(body: String, deviceId: Int32, recipientId: String, store: CriptextAxolotlStore) -> (String, Int) {
         
         let sessionCipher: SessionCipher = SessionCipher.init(axolotlStore: store, recipientId: String(recipientId), deviceId: deviceId)
         let outgoingMessage: CipherMessage = sessionCipher.encryptMessage(body.data(using: .utf8))
-        return outgoingMessage.serialized().base64EncodedString()
+        let messageText = outgoingMessage.serialized().base64EncodedString()
+        let messageType = getMessageType(outgoingMessage)
+        return (messageText, messageType)
         
     }
     
