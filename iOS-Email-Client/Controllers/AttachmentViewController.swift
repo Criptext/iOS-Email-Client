@@ -59,31 +59,8 @@ extension AttachmentViewController: UIWebViewDelegate {
         }
         
         CriptextSpinner.show(in: self.view, title: "Downloading")
-//        APIManager.download(from: url, to: fileURL, delegate: self) { (error, fileURL) in
-//            CriptextSpinner.hide(from: self.view)
-//            if let _ = error {
-//                self.showAlert("Network Error", message: "Please try again later", style: .alert)
-//                return
-//            }
-//            //show the file
-//            self.previewItem.previewItemURL = fileURL
-//            self.previewItem.previewItemTitle = self.currentAttachment.fileName
-//            self.previewController.reloadData()
-//            self.present(self.previewController, animated: true, completion: nil)
-//            return
-//        }
         
         return false
-    }
-}
-
-extension AttachmentViewController: ProgressDelegate {
-    func chunkUpdateProgress(_ percent: Double, for token: String, part: Int) {
-        
-    }
-    
-    func updateProgress(_ percent: Double, for id: String) {
-        
     }
 }
 

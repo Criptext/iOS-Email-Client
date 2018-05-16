@@ -9,7 +9,7 @@
 import Foundation
 
 class RSACipher {
-    class func encrypt(data: Data, keyData: Data, ivData: Data, operation: Int) -> Data {
+    class func encrypt(data: Data, keyData: Data, ivData: Data, operation: Int) -> Data? {
         let cryptLength = size_t(data.count + kCCBlockSizeAES128)
         var cryptData = Data(count: cryptLength)
         
@@ -28,12 +28,10 @@ class RSACipher {
             })
         }
         
-        if(UInt32(cryptStatus) == UInt32(kCCSuccess)){
-            cryptData.removeSubrange(numBytesEncrypted..<cryptData.count)
-        }else{
-            print("error: \(cryptStatus)")
+        guard UInt32(cryptStatus) == UInt32(kCCSuccess) else {
+            return nil
         }
-        
+        cryptData.removeSubrange(numBytesEncrypted..<cryptData.count)
         return cryptData
     }
 }
