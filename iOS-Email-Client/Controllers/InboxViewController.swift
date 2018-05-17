@@ -48,6 +48,11 @@ class InboxViewController: UIViewController {
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
+    @IBOutlet weak var envelopeImageView: UIImageView!
+    @IBOutlet weak var envelopeTitleView: UILabel!
+    @IBOutlet weak var envelopeSubtitleView: UILabel!
+    @IBOutlet weak var envelopeView: UIView!
+    
     var myAccount: Account!
     var originalNavigationRect:CGRect!
     var mailboxData = MailboxData()
@@ -401,6 +406,7 @@ extension InboxViewController{
         mailboxData.fetchWorker = nil
         self.tableView.reloadData()
         updateBadges()
+        showNoEmailsView(mailboxData.reachedEnd && mailboxData.emails.isEmpty)
     }
 }
 
@@ -519,6 +525,32 @@ extension InboxViewController: UITableViewDataSource{
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: mailboxData.fetchWorker!)
         }
         return footerView
+    }
+    
+    func showNoEmailsView(_ show: Bool){
+        envelopeView.isHidden = !show
+        guard show else {
+            return
+        }
+        switch(mailboxData.selectedLabel){
+        case SystemLabel.inbox.id:
+            setEnvelopeMessages(title: "There are no emails in your inbox", subtitle: "share your email address with a friend")
+        case SystemLabel.sent.id:
+            setEnvelopeMessages(title: "You have no emails sent", subtitle: "let's send one!")
+        case SystemLabel.draft.id:
+            setEnvelopeMessages(title: "There are no drafts", subtitle: "That's ok")
+        case SystemLabel.spam.id:
+            setEnvelopeMessages(title: "There's no spam", subtitle: "Cool!")
+        case SystemLabel.trash.id:
+            setEnvelopeMessages(title: "There's no trash", subtitle: "What a clean place!")
+        default:
+            setEnvelopeMessages(title: "There are no emails", subtitle: "It's a matter of time")
+        }
+    }
+    
+    func setEnvelopeMessages(title: String, subtitle: String){
+        envelopeTitleView.text = title
+        envelopeSubtitleView.text = subtitle
     }
 }
 
