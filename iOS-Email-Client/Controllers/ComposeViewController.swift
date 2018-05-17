@@ -527,7 +527,7 @@ class ComposeViewController: UIViewController {
         self.prepareMail()
     }
     
-    func processEmailAddress(token: CLToken, criptextEmails: inout Dictionary<String, String>, emailArray: inout Array<String>, type: String){
+    func processEmailAddress(token: CLToken, criptextEmails: inout [String: String], emailArray: inout [String], type: String){
         
         let email = getEmailFromToken(token)
         
@@ -539,7 +539,7 @@ class ComposeViewController: UIViewController {
         }
     }
     
-    func sendMail(subject: String, guestEmail: Dictionary<String, Any>, criptextEmails: Array<Any>){
+    func sendMail(subject: String, guestEmail: [String: Any], criptextEmails: [Any]){
         var requestParams = [
             "subject": subject,
             "criptextEmails": criptextEmails
@@ -568,7 +568,7 @@ class ComposeViewController: UIViewController {
         guard let myEmail = composerData.emailDraft else {
             return
         }
-        let keysArray = data as! Dictionary<String, Any>
+        let keysArray = data as! [String: Any]
         let key = (keysArray["metadataKey"] as! Int32).description
         let messageId = keysArray["messageId"] as! String
         let threadId = keysArray["threadId"] as! String
@@ -579,13 +579,13 @@ class ComposeViewController: UIViewController {
         NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
     }
     
-    func getMessageType(_ message: CipherMessage) -> Int {
-        return message is PreKeyWhisperMessage ? 3 : 1
+    func getMessageType(_ message: CipherMessage) -> MessageType {
+        return message is PreKeyWhisperMessage ? .preKey : .cipherText
     }
     
-    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: Dictionary<String, Any>){
+    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: [String: Any], criptextEmails: [String: Any]){
         var recipients = [String]()
-        var knownAddresses = Dictionary<String, [Int32]>()
+        var knownAddresses = [String: [Int32]]()
         var criptextEmailsData = [[String: Any]]()
         for (recipientId, type) in criptextEmails {
             let recipientSessions = DBManager.getSessionRecords(recipientId: recipientId)
@@ -597,7 +597,7 @@ class ComposeViewController: UIViewController {
                                      "deviceId": deviceId,
                                      "type": type,
                                      "body": message.0,
-                                     "messageType": message.1] as [String: Any]
+                                     "messageType": message.1.rawValue] as [String: Any]
                 criptextEmailsData.append(criptextEmail)
             }
             knownAddresses[recipientId] = deviceIds
@@ -610,14 +610,16 @@ class ComposeViewController: UIViewController {
         
         APIManager.getKeysRequest(params, token: activeAccount.jwt) { (err, response) in
             
-            guard err == nil else {
-                self.showAlert("Network Error", message: err?.localizedDescription, style: .alert)
+            guard let data = response else {
+                if let error = err {
+                    self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
+                }
                 self.hideSnackbar()
                 self.hideBlackBackground()
                 self.toggleInteraction(true)
                 return
             }
-            let keysArray = response as! Array<Dictionary<String, Any>>
+            let keysArray = data as! [[String: Any]]
             for keys in keysArray {
                 let recipientId = keys["recipientId"] as! String
                 let deviceId = keys["deviceId"] as! Int32
@@ -626,7 +628,7 @@ class ComposeViewController: UIViewController {
                 let contactRegistrationId = keys["registrationId"] as! Int32
                 var contactPrekeyPublic: Data? = nil
                 var preKeyId: Int32 = 0
-                if let prekey = keys["preKey"] as? Dictionary<String, Any>{
+                if let prekey = keys["preKey"] as? [String: Any]{
                     contactPrekeyPublic = Data(base64Encoded:(prekey["publicKey"] as! String))!
                     preKeyId = prekey["id"] as! Int32
                 }
@@ -645,10 +647,9 @@ class ComposeViewController: UIViewController {
                                      "deviceId": deviceId,
                                      "type": type,
                                      "body": message.0,
-                                     "messageType": message.1] as [String: Any]
+                                     "messageType": message.1.rawValue] as [String: Any]
                 criptextEmailsData.append(criptextEmail)
             }
-            print(criptextEmailsData)
             self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmailsData)
         }
     }
@@ -656,7 +657,7 @@ class ComposeViewController: UIViewController {
     func prepareMail(){
         
         let subject = self.subjectField.text ?? "No Subject"
-        var criptextEmails = Dictionary<String, String>()
+        var criptextEmails = [String: String]()
         var toArray = [String]()
         var ccArray = [String]()
         var bccArray = [String]()
@@ -699,7 +700,7 @@ class ComposeViewController: UIViewController {
         
     }
     
-    func encryptMessage(body: String, deviceId: Int32, recipientId: String, store: CriptextAxolotlStore) -> (String, Int) {
+    func encryptMessage(body: String, deviceId: Int32, recipientId: String, store: CriptextAxolotlStore) -> (String, MessageType) {
         
         let sessionCipher: SessionCipher = SessionCipher.init(axolotlStore: store, recipientId: String(recipientId), deviceId: deviceId)
         let outgoingMessage: CipherMessage = sessionCipher.encryptMessage(body.data(using: .utf8))

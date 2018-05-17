@@ -75,7 +75,7 @@ class EventHandler {
         let date = params["date"] as! String
         let metadataKey = params["metadataKey"] as! Int32
         let senderDeviceId = params["senderDeviceId"] as! Int32
-        let messageType = params["messageType"] as! Int
+        let messageType = MessageType.init(rawValue: (params["messageType"] as! Int))!
         
         let dateFormatter = DateFormatter()
         let timeZone = NSTimeZone(abbreviation: "UTC")
