@@ -124,7 +124,6 @@ class CriptextFileManager {
         }
         if !registeredFiles[fileIndex].chunksProgress.contains(where: {$0 != COMPLETE}){
             registeredFiles[fileIndex].status = .finish
-            print("FINISH UPLOAD \(filetoken)")
         }
     }
     
