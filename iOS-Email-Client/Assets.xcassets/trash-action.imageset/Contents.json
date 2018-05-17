@@ -7,12 +7,12 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "trash-action@2x.png",
+      "filename" : "trash-action2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "trash-action@3x.png",
+      "filename" : "trash-action3x.png",
       "scale" : "3x"
     }
   ],

@@ -132,7 +132,7 @@
                                                 </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="19"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSZ-LW-VX3" userLabel="Subject Button">
                                                 <rect key="frame" x="8" y="0.0" width="359" height="45"/>
@@ -527,7 +527,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="sye-0t-mfE" firstAttribute="top" secondItem="iDg-H7-8j8" secondAttribute="bottom" id="0ak-fH-kxr"/>
+                            <constraint firstItem="sye-0t-mfE" firstAttribute="top" secondItem="iDg-H7-8j8" secondAttribute="top" id="0ak-fH-kxr"/>
                             <constraint firstItem="9xK-7S-wAd" firstAttribute="top" secondItem="c58-aV-hT9" secondAttribute="bottom" id="1af-ci-02V"/>
                             <constraint firstItem="iDg-H7-8j8" firstAttribute="top" secondItem="9xK-7S-wAd" secondAttribute="bottom" id="6Iz-MU-oAh"/>
                             <constraint firstAttribute="trailing" secondItem="U42-me-sDa" secondAttribute="trailing" id="9Rv-Dg-sb5"/>
@@ -834,7 +834,7 @@
                             <constraint firstAttribute="trailing" secondItem="xaY-yy-tiI" secondAttribute="trailing" constant="18" id="J6e-Pb-0ci"/>
                             <constraint firstItem="xJq-0v-4GG" firstAttribute="top" secondItem="KuY-iB-HbS" secondAttribute="bottom" id="Jbf-Sm-xAb"/>
                             <constraint firstItem="RGw-Kx-VBy" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="Jyf-Hl-HgU"/>
-                            <constraint firstAttribute="bottom" secondItem="BkL-l9-Des" secondAttribute="bottom" id="SnE-NP-AbM"/>
+                            <constraint firstItem="9Hh-uJ-6CI" firstAttribute="top" secondItem="BkL-l9-Des" secondAttribute="bottom" id="SnE-NP-AbM"/>
                             <constraint firstAttribute="bottomMargin" secondItem="fhP-Ga-19D" secondAttribute="bottom" id="Vbn-18-Hl0"/>
                             <constraint firstAttribute="trailing" secondItem="RGw-Kx-VBy" secondAttribute="trailing" id="epY-zD-fMa"/>
                             <constraint firstItem="9Hh-uJ-6CI" firstAttribute="top" secondItem="RGw-Kx-VBy" secondAttribute="bottom" id="fue-n8-ZgB"/>
@@ -1039,7 +1039,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Ca0-zf-uom" firstAttribute="top" secondItem="qPA-C3-Jbt" secondAttribute="bottom" id="EFf-aK-eZV"/>
                             <constraint firstItem="rqy-hR-4tH" firstAttribute="centerX" secondItem="ui0-nE-WIa" secondAttribute="centerX" id="Hev-Nf-uz6"/>
@@ -1311,7 +1311,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1su-18-smw" customClass="DetailMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ffn-LR-DMI" customClass="GeneralMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -1324,7 +1324,7 @@
                             <constraint firstItem="pwm-FM-Cnc" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="2IV-rk-JbB"/>
                             <constraint firstItem="ffn-LR-DMI" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="2KE-EG-G1A"/>
                             <constraint firstAttribute="trailing" secondItem="ffn-LR-DMI" secondAttribute="trailing" id="5uI-A7-d3B"/>
-                            <constraint firstAttribute="bottom" secondItem="1su-18-smw" secondAttribute="bottom" id="5uW-lU-hmM"/>
+                            <constraint firstItem="psb-7X-bXy" firstAttribute="top" secondItem="1su-18-smw" secondAttribute="bottom" id="5uW-lU-hmM"/>
                             <constraint firstItem="ffn-LR-DMI" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="75f-7q-mV4"/>
                             <constraint firstAttribute="trailing" secondItem="1su-18-smw" secondAttribute="trailing" id="Bdi-g2-4n8"/>
                             <constraint firstItem="pwm-FM-Cnc" firstAttribute="top" secondItem="YLR-Gd-JFL" secondAttribute="bottom" id="M6O-0g-bIu"/>
@@ -1744,7 +1744,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="emN-So-ZQn" secondAttribute="bottom" id="USL-fe-JmC"/>
                             <constraint firstAttribute="trailing" secondItem="emN-So-ZQn" secondAttribute="trailing" id="lT8-LG-x0W"/>

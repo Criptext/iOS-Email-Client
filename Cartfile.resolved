@@ -1,5 +1,6 @@
 github "Alamofire/Alamofire" "4.7.2"
-github "CosmicMind/Material" "2.10.3"
+github "CosmicMind/Material" "2.15.0"
+github "CosmicMind/Motion" "1.4.0"
 github "Criptext/CICropPicker" "1.1.0"
 github "Criptext/MIBadgeButton-Swift" "0.8"
 github "Criptext/SignalProtocolSwift" "0.8"

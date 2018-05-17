@@ -139,6 +139,7 @@ class ComposeViewController: UIViewController {
         
         self.editorView.isScrollEnabled = false
         self.editorHeightConstraint.constant = 150
+        self.attachmentContainerBottomConstraint.constant = 50
         
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
         self.toolbarHeightConstraintInitialValue = toolbarHeightConstraint.constant
@@ -370,7 +371,7 @@ class ComposeViewController: UIViewController {
         
         self.navigationController?.navigationBar.layer.zPosition = flag ? -1 : 0
         
-        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? -attachmentOptionsHeight : 0)
+        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? -attachmentOptionsHeight : 50)
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -526,16 +527,12 @@ class ComposeViewController: UIViewController {
         self.prepareMail()
     }
     
-    func processEmailAddress(token: CLToken, criptextEmails: inout Array<Dictionary<String, Any>>, emailArray: inout Array<String>, type: String){
+    func processEmailAddress(token: CLToken, criptextEmails: inout Dictionary<String, String>, emailArray: inout Array<String>, type: String){
         
         let email = getEmailFromToken(token)
         
         if(email.contains(DOMAIN)){
-            criptextEmails.append([
-                "recipientId": String(email.split(separator: "@")[0]),
-                "deviceId": 1 as Int32,
-                "type": type
-                ])
+            criptextEmails[String(email.split(separator: "@")[0])] = type
         }
         else{
             emailArray.append("\(token.displayText) <\(email)>")
@@ -586,28 +583,24 @@ class ComposeViewController: UIViewController {
         return message is PreKeyWhisperMessage ? 3 : 1
     }
     
-    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: inout Array<Dictionary<String, Any>>){
+    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: Dictionary<String, Any>, criptextEmails: Dictionary<String, Any>){
         var recipients = [String]()
         var knownAddresses = Dictionary<String, [Int32]>()
-        for (index, dictionary) in criptextEmails.enumerated(){
-            var criptextEmail = dictionary
-            let recipientId = criptextEmail["recipientId"] as! String
-            let deviceId = criptextEmail["deviceId"] as! Int32
-            if(store.containsSession(recipientId, deviceId: deviceId)){
+        var criptextEmailsData = [[String: Any]]()
+        for (recipientId, type) in criptextEmails {
+            let recipientSessions = DBManager.getSessionRecords(recipientId: recipientId)
+            let deviceIds = recipientSessions.map { $0.deviceId }
+            recipients.append(recipientId)
+            for deviceId in deviceIds {
                 let message = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
-                criptextEmail["body"] = message.0
-                criptextEmail["messageType"] = message.1
-                criptextEmails[index] = criptextEmail
-                knownAddresses[recipientId] = [deviceId]
+                let criptextEmail = ["recipientId": recipientId,
+                                     "deviceId": deviceId,
+                                     "type": type,
+                                     "body": message.0,
+                                     "messageType": message.1] as [String: Any]
+                criptextEmailsData.append(criptextEmail)
             }
-            else{
-                recipients.append(recipientId)
-            }
-        }
-        
-        if(recipients.isEmpty){
-            self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmails)
-            return
+            knownAddresses[recipientId] = deviceIds
         }
         
         let params = [
@@ -615,10 +608,9 @@ class ComposeViewController: UIViewController {
             "knownAddresses": knownAddresses
             ] as [String : Any]
         
-        var criptextEmailsCopy = criptextEmails
         APIManager.getKeysRequest(params, token: activeAccount.jwt) { (err, response) in
             
-            if(err != nil){
+            guard err == nil else {
                 self.showAlert("Network Error", message: err?.localizedDescription, style: .alert)
                 self.hideSnackbar()
                 self.hideBlackBackground()
@@ -626,8 +618,11 @@ class ComposeViewController: UIViewController {
                 return
             }
             let keysArray = response as! Array<Dictionary<String, Any>>
-            for (index, keys) in keysArray.enumerated() {
-                print(keys)
+            for keys in keysArray {
+                let recipientId = keys["recipientId"] as! String
+                let deviceId = keys["deviceId"] as! Int32
+                let type = criptextEmails[recipientId] as! String
+                
                 let contactRegistrationId = keys["registrationId"] as! Int32
                 var contactPrekeyPublic: Data? = nil
                 var preKeyId: Int32 = 0
@@ -639,27 +634,29 @@ class ComposeViewController: UIViewController {
                 let contactSignedPrekeyPublic: Data = Data(base64Encoded:(keys["signedPreKeyPublic"] as! String))!
                 let contactSignedPrekeySignature: Data = Data(base64Encoded:(keys["signedPreKeySignature"] as! String))!
                 let contactIdentityPublicKey: Data = Data(base64Encoded:(keys["identityPublicKey"] as! String))!
-                let contactPreKey: PreKeyBundle = PreKeyBundle.init(registrationId: contactRegistrationId, deviceId: keys["deviceId"] as! Int32, preKeyId: preKeyId, preKeyPublic: contactPrekeyPublic, signedPreKeyPublic: contactSignedPrekeyPublic, signedPreKeyId: keys["signedPreKeyId"] as! Int32, signedPreKeySignature: contactSignedPrekeySignature, identityKey: contactIdentityPublicKey)
+                let contactPreKey: PreKeyBundle = PreKeyBundle.init(registrationId: contactRegistrationId, deviceId: deviceId, preKeyId: preKeyId, preKeyPublic: contactPrekeyPublic, signedPreKeyPublic: contactSignedPrekeyPublic, signedPreKeyId: keys["signedPreKeyId"] as! Int32, signedPreKeySignature: contactSignedPrekeySignature, identityKey: contactIdentityPublicKey)
                 
-                let sessionBuilder: SessionBuilder = SessionBuilder.init(axolotlStore: store, recipientId: keys["recipientId"] as! String, deviceId: keys["deviceId"] as! Int32)
+                let sessionBuilder: SessionBuilder = SessionBuilder.init(axolotlStore: store, recipientId: recipientId, deviceId: deviceId)
                 sessionBuilder.processPrekeyBundle(contactPreKey)
                 
-                var criptextEmail = criptextEmailsCopy[index]
-                let message = self.encryptMessage(body: body, deviceId: keys["deviceId"] as! Int32, recipientId: keys["recipientId"] as! String, store: store)
-                criptextEmail["body"] = message.0
-                criptextEmail["messageType"] = message.1
-                criptextEmailsCopy[index] = criptextEmail
+                
+                let message = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
+                let criptextEmail = ["recipientId": recipientId,
+                                     "deviceId": deviceId,
+                                     "type": type,
+                                     "body": message.0,
+                                     "messageType": message.1] as [String: Any]
+                criptextEmailsData.append(criptextEmail)
             }
-        
-            self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmailsCopy)
+            print(criptextEmailsData)
+            self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmailsData)
         }
-        
     }
     
     func prepareMail(){
         
         let subject = self.subjectField.text ?? "No Subject"
-        var criptextEmails = [Dictionary<String, Any>]()
+        var criptextEmails = Dictionary<String, String>()
         var toArray = [String]()
         var ccArray = [String]()
         var bccArray = [String]()
@@ -698,7 +695,7 @@ class ComposeViewController: UIViewController {
         ]
         
         composerData.emailDraft = saveDraft()
-        getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: &criptextEmails)
+        getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: criptextEmails)
         
     }
     

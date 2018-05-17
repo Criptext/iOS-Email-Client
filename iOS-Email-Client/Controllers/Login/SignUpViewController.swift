@@ -40,10 +40,15 @@ class SignUpViewController: UIViewController{
         view.addGestureRecognizer(tap)
         
         usernameTextField.markView = usernameMark
+        usernameTextField.font = Font.regular.size(17.0)
         fullnameTextField.markView = fullnameMark
+        fullnameTextField.font = Font.regular.size(17.0)
         passwordTextField.markView = passwordMark
+        passwordTextField.font = Font.regular.size(17.0)
         confirmPasswordTextField.markView = confirmPasswordMark
+        confirmPasswordTextField.font = Font.regular.size(17.0)
         emailTextField.markView = emailMark
+        emailTextField.font = Font.regular.size(17.0)
         checkToEnableDisableCreateButton()
     }
     
@@ -85,9 +90,11 @@ class SignUpViewController: UIViewController{
             guard error == nil else {
                 let criptextError = error as! CriptextError
                 self.usernameTextField.setStatus(.invalid, criptextError.code.description)
+                self.checkToEnableDisableCreateButton()
                 return
             }
             self.usernameTextField.setStatus(.valid)
+            self.checkToEnableDisableCreateButton()
         }
     }
     
