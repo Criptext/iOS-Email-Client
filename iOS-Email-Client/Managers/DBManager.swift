@@ -339,6 +339,14 @@ extension DBManager {
         }
     }
     
+    class func update(_ session: CRSessionRecord, sessionString: String){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            session.sessionRecord = sessionString
+        }
+    }
+    
     class func getSessionRecord(contactId: String, deviceId: Int32) -> CRSessionRecord?{
         let realm = try! Realm()
         

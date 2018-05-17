@@ -13,10 +13,12 @@ import RealmSwift
 
 protocol ProgressDelegate {
     func updateProgress(_ percent:Double, for id:String)
+    func chunkUpdateProgress(_ percent: Double, for token: String, part: Int)
 }
 
 class APIManager {
     static let baseUrl = "https://stage.mail.criptext.com"
+    static let fileServiceUrl = "https://services.criptext.com"
     
     static let CODE_SUCESS = 0
     static let CODE_JWT_INVALID = 101
@@ -141,6 +143,46 @@ class APIManager {
         let url = "\(self.baseUrl)/event/ack"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+    }
+    
+    class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
+        let url = "\(self.fileServiceUrl)/file/upload"
+        let headers = ["Authorization": "Basic \(token)"]
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            guard let value = response.result.value else {
+                completion(response.error, nil)
+                return
+            }
+            completion(nil, value)
+        }
+    }
+    
+    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, Any?) -> Void)){
+        let url = "\(self.fileServiceUrl)/file/chunk"
+        let headers = ["Authorization": "Basic \(token)"]
+        let filetoken = params["filetoken"] as! String
+        let part = params["part"] as! Int
+        Alamofire.upload(multipartFormData: { (multipartForm) in
+            for (key, value) in params {
+                multipartForm.append("\(value)".data(using: .utf8)!, withName: key)
+            }
+            multipartForm.append(chunk, withName: "chunk")
+            
+        }, usingThreshold: UInt64.init(), to: url, method: .post, headers: headers) { (result) in
+            switch(result){
+            case .success(let request, _, _):
+                request.uploadProgress(closure: { (progress) in
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                    progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
+                })
+                request.responseJSON(completionHandler: { (response) in
+                    completion(nil, "naisu ")
+                })
+            case .failure(_):
+                let error = CriptextError(code: .noValidResponse)
+                completion( error, nil)
+            }
+        }
     }
 }
 

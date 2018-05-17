@@ -11,7 +11,7 @@ import Foundation
 protocol AttachmentTableViewCellDelegate {
     func tableViewCellDidTapReadOnly(_ cell:AttachmentTableViewCell)
     func tableViewCellDidTapPassword(_ cell:AttachmentTableViewCell)
-    func tableViewCellDidLongPress(_ cell:AttachmentTableViewCell)
+    func tableViewCellDidTapRemove(_ cell:AttachmentTableViewCell)
     func tableViewCellDidTap(_ cell:AttachmentTableViewCell)
 }
 
@@ -55,22 +55,14 @@ class AttachmentTableViewCell: UITableViewCell {
         guard let delegate = self.delegate else {
             return
         }
-        delegate.tableViewCellDidLongPress(self)
+        delegate.tableViewCellDidTapRemove(self)
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
         guard let delegate = self.delegate else {
             return
         }
-        
-        let touchPt = gestureRecognizer.location(in: self.contentContainerView)
-        
-        guard let tappedView = self.hitTest(touchPt, with: nil) else {
-            return
-        }
-    
         delegate.tableViewCellDidTap(self)
-        
     }
     
     @objc func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
@@ -78,7 +70,7 @@ class AttachmentTableViewCell: UITableViewCell {
             return
         }
         
-        delegate.tableViewCellDidLongPress(self)
+        delegate.tableViewCellDidTapRemove(self)
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
