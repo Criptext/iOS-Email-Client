@@ -508,7 +508,7 @@ extension InboxViewController: UITableViewDataSource{
     func createFooterView() -> UITableViewCell {
         let footerView = tableView.dequeueReusableCell(withIdentifier: "EndCell") as! TableEndViewCell
         guard !mailboxData.reachedEnd else {
-            footerView.displayMessage("No more emails to load")
+            footerView.displayMessage("")
             return footerView
         }
         footerView.displayLoader()

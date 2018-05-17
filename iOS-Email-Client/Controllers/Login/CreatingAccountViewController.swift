@@ -47,12 +47,12 @@ class CreatingAccountViewController: UIViewController{
     
     func sendKeysRequest(){
         feedbackLabel.text = "Generating keys..."
-        let postData = [
-            "username": signupData.username,
-            "deviceId": signupData.deviceId,
-            "keybundle": signupData.buildDataForRequest()["keybundle"],
-            ]
-        APIManager.postKeybundle(params: postData, token: signupData.token!){ (error) in
+        let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
+        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (error) in
+            guard error == nil else {
+                self.displayErrorMessage()
+                return
+            }
             self.animateProgress(50.0, 2.0) {
                 self.state = .accountCreate
                 self.handleState()
@@ -73,6 +73,10 @@ class CreatingAccountViewController: UIViewController{
                 self.handleState()
             }
         }
+    }
+    
+    func sendNewKeysRequest(){
+        feedbackLabel.text = "Generating keys..."
     }
     
     func createAccount(){

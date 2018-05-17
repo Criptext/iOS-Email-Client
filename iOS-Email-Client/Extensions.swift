@@ -9,6 +9,7 @@
 import Foundation
 import MobileCoreServices
 import RichEditorView
+import SignalProtocolFramework
 
 extension UIColor {
     convenience init(hex: String) {
@@ -563,3 +564,9 @@ extension Data {
         return customBase64String
     }
 }
+
+enum MessageType: Int {
+    case cipherText = 1
+    case preKey = 3
+}
+

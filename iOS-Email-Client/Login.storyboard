@@ -11,6 +11,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+        <array key="NunitoSans-SemiBold.ttf">
+            <string>NunitoSans-SemiBold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="Dhb-1z-z92">
@@ -56,7 +64,7 @@
                                     <constraint firstAttribute="height" constant="44" id="QSw-DY-9sv"/>
                                     <constraint firstAttribute="width" constant="300" id="W15-zc-Ng2"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Log In">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -69,7 +77,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="bJ0-wu-pjk"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="28"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -78,7 +86,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JT0-mZ-8Az"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <state key="normal" title="Not registered? Sign up">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -87,11 +95,11 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-Fm-cgQ">
-                                <rect key="frame" x="202" y="395.5" width="119" height="20.5"/>
+                                <rect key="frame" x="202" y="394.5" width="119" height="23.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="kke-wn-nCO"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -110,7 +118,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="g6C-II-m0z"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -216,7 +224,7 @@
                                                     <constraint firstAttribute="height" constant="30" id="SDT-zq-QLa"/>
                                                     <constraint firstAttribute="width" constant="113" id="qfg-fo-wMo"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -269,8 +277,8 @@
                                                     <constraint firstAttribute="height" constant="30" id="ePx-9h-4Tj"/>
                                                 </constraints>
                                                 <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="textColor">
                                                         <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -305,7 +313,7 @@
                                                     <constraint firstAttribute="height" constant="30" id="f6A-2N-6dY"/>
                                                 </constraints>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="textColor">
@@ -342,7 +350,7 @@
                                                     <constraint firstAttribute="height" constant="30" id="mqZ-cq-n3F"/>
                                                 </constraints>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="textColor">
@@ -379,7 +387,7 @@
                                                     <constraint firstAttribute="height" constant="30" id="XFo-u4-bU8"/>
                                                 </constraints>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="textColor">
@@ -414,6 +422,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="eZO-Vh-vk9"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                 <state key="normal" title="Button">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
@@ -428,7 +437,7 @@
                                                     <constraint firstAttribute="height" constant="44" id="Hgq-hg-kd6"/>
                                                     <constraint firstAttribute="width" constant="300" id="dCC-qq-ncA"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                 <state key="normal" title="Create Account">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -658,7 +667,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Z4l-fx-GW1"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.2156862745" green="0.2666666667" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -668,7 +677,7 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVk-y1-1wB" customClass="CounterLabelUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="-0.5" width="41" height="20"/>
                                         <color key="backgroundColor" red="0.21568627450980393" green="0.26666666666666666" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
@@ -742,8 +751,8 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGe-4s-CNR">
-                                                <rect key="frame" x="33" y="97" width="309" height="32.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                                <rect key="frame" x="33" y="95.5" width="309" height="37"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -783,7 +792,7 @@
                                                         <string key="text">Device not approved.
 
 The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</string>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -807,7 +816,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="48" id="JEa-mR-rMd"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -818,7 +827,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                             <constraint firstAttribute="width" constant="300" id="FnF-6B-rS7"/>
                                                             <constraint firstAttribute="height" constant="44" id="bUz-Et-Mlu"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
                                                         <state key="normal" title="Resend it">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
@@ -836,7 +845,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20.5" id="skI-9t-dWd"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -887,6 +896,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                     <constraint firstAttribute="width" constant="42" id="Y1V-va-sOA"/>
                                                     <constraint firstAttribute="height" constant="42" id="zVj-6j-52Z"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
                                                 <state key="normal" image="arrow-back"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
@@ -897,22 +907,14 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                     <action selector="backButtonPress:" destination="Msb-QW-zAf" eventType="touchUpInside" id="8gi-Ou-ltW"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jek-k9-O5Z">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jek-k9-O5Z">
                                                 <rect key="frame" x="71" y="583" width="233" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="q4V-G7-AZ9"/>
                                                 </constraints>
-                                                <state key="normal">
-                                                    <attributedString key="attributedTitle">
-                                                        <fragment content="Can’t access to your device?">
-                                                            <attributes>
-                                                                <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <font key="NSFont" metaFont="system" size="15"/>
-                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                <integer key="NSUnderline" value="1"/>
-                                                            </attributes>
-                                                        </fragment>
-                                                    </attributedString>
+                                                <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="15"/>
+                                                <state key="normal" title="Can’t access to your device?">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isDividerHidden" value="YES"/>
@@ -1009,7 +1011,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="ukA-Up-4DZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1018,7 +1020,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Z62-Pi-Df0"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1165,28 +1167,28 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset Device" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NT8-w1-8Xk">
-                                                <rect key="frame" x="33" y="145.5" width="309" height="32.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                                <rect key="frame" x="33" y="143.5" width="309" height="37"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMf-wY-jdP">
-                                                <rect key="frame" x="33" y="188" width="309" height="48"/>
+                                                <rect key="frame" x="33" y="190.5" width="309" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="FXT-bk-n8F"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8N5-Z7-gsp">
-                                                <rect key="frame" x="37.5" y="426" width="300.5" height="44"/>
+                                                <rect key="frame" x="37.5" y="428.5" width="300.5" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="AJV-8N-tNH"/>
                                                     <constraint firstAttribute="height" constant="44" id="IDE-wd-lIU"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
                                                 <state key="normal" title="Reset">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -1200,15 +1202,15 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot?" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMV-2J-3gD">
-                                                <rect key="frame" x="57" y="378" width="261" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="57" y="378" width="261" height="23.5"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7VS-F9-Zdf" customClass="TextField" customModule="Material">
                                                 <rect key="frame" x="56" y="341" width="265" height="30"/>
                                                 <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="textColor">
@@ -1252,16 +1254,24 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="ehF-Am-sHC"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="O3S-ch-dG6">
+                                                <rect key="frame" x="178" y="440.5" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="2Un-Y3-w53"/>
+                                                    <constraint firstAttribute="width" constant="20" id="Duk-rf-yvJ"/>
+                                                </constraints>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="NT8-w1-8Xk" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="33" id="0kD-mx-EiH"/>
                                             <constraint firstAttribute="trailing" secondItem="xCo-DR-Qyr" secondAttribute="trailing" constant="26" id="3Qh-F5-p3c"/>
                                             <constraint firstItem="mSJ-Yq-oKk" firstAttribute="width" secondItem="7VS-F9-Zdf" secondAttribute="width" multiplier="0.99" id="5Ua-cE-iMf"/>
+                                            <constraint firstItem="O3S-ch-dG6" firstAttribute="centerX" secondItem="8N5-Z7-gsp" secondAttribute="centerX" id="A7U-UJ-Eyo"/>
                                             <constraint firstItem="8N5-Z7-gsp" firstAttribute="top" secondItem="dMV-2J-3gD" secondAttribute="bottom" constant="27" id="AK2-hK-Pya"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="centerY" secondItem="mGe-H4-qBL" secondAttribute="centerY" multiplier="1.1" id="Awx-Lb-gHQ"/>
                                             <constraint firstItem="dMV-2J-3gD" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="57" id="FXV-ef-0th"/>
@@ -1279,6 +1289,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                             <constraint firstAttribute="trailing" secondItem="hMf-wY-jdP" secondAttribute="trailing" constant="33" id="kZ3-YW-xaX"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="56" id="mjz-eD-Y80"/>
                                             <constraint firstAttribute="trailing" secondItem="NT8-w1-8Xk" secondAttribute="trailing" constant="33" id="nVM-bG-txm"/>
+                                            <constraint firstItem="O3S-ch-dG6" firstAttribute="centerY" secondItem="8N5-Z7-gsp" secondAttribute="centerY" id="s2f-rz-CxP"/>
                                             <constraint firstItem="bU8-ie-V7v" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="20" id="srN-hq-6Au"/>
                                             <constraint firstItem="NT8-w1-8Xk" firstAttribute="centerY" secondItem="mGe-H4-qBL" secondAttribute="centerY" multiplier="0.5" id="sxw-OB-DII"/>
                                             <constraint firstItem="Kaa-RK-1Lv" firstAttribute="centerY" secondItem="7VS-F9-Zdf" secondAttribute="centerY" id="v1D-T9-udD"/>
@@ -1318,6 +1329,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                         <outlet property="errorMark" destination="Kaa-RK-1Lv" id="4HI-Th-wmR"/>
                         <outlet property="passwordTextField" destination="7VS-F9-Zdf" id="Fu0-1D-AMN"/>
                         <outlet property="resetButton" destination="8N5-Z7-gsp" id="VLB-hi-7tM"/>
+                        <outlet property="resetLoaderView" destination="O3S-ch-dG6" id="Fhc-0a-hcW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fre-vs-ofe" userLabel="First Responder" sceneMemberID="firstResponder"/>

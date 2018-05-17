@@ -355,6 +355,14 @@ extension DBManager {
         return results.first
     }
     
+    class func getSessionRecords(recipientId: String) -> [CRSessionRecord] {
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "contactId == '\(recipientId)'")
+        let results = realm.objects(CRSessionRecord.self).filter(predicate)
+        return Array(results)
+    }
+    
     class func deleteSessionRecord(contactId: String, deviceId: Int32){
         let realm = try! Realm()
         

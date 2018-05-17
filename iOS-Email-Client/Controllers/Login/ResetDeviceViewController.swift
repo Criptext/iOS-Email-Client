@@ -16,11 +16,13 @@ class ResetDeviceViewController: UIViewController{
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var passwordTextField: TextField!
+    @IBOutlet weak var resetLoaderView: UIActivityIndicatorView!
     var loginData: LoginData!
     var failed = false
     
     override func viewDidLoad() {
         emailLabel.text = loginData.email
+        resetLoaderView.isHidden = true
         showFeedback(false)
         checkToEnableDisableResetButton()
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
@@ -40,9 +42,11 @@ class ResetDeviceViewController: UIViewController{
         guard let password = passwordTextField.text else {
             return
         }
+        showLoader(true)
         let email = loginData.email
         let username = String(email.split(separator: "@")[0])
         APIManager.loginRequest(username, password) { (responseError, responseData) in
+            self.showLoader(false)
             if let error = responseError {
                 self.showFeedback(true, error.localizedDescription)
                 return
@@ -66,7 +70,8 @@ class ResetDeviceViewController: UIViewController{
     
     func checkToEnableDisableResetButton(){
         let textCount = passwordTextField.text?.count ?? 0
-        resetButton.isEnabled = !(passwordTextField.isEmpty || textCount < Constants.MinCharactersPassword)
+        resetButton.isEnabled = !(passwordTextField.isEmpty || textCount < Constants.MinCharactersPassword) && resetLoaderView.isHidden
+        resetButton.setTitle(resetLoaderView.isHidden ? "Reset" : "", for: .normal)
         if(resetButton.isEnabled){
             resetButton.alpha = 1.0
         }else{
@@ -85,6 +90,16 @@ class ResetDeviceViewController: UIViewController{
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
         controller.signupData = signupData
         self.present(controller, animated: true, completion: nil)
+    }
+    
+    func showLoader(_ show: Bool){
+        resetLoaderView.isHidden = !show
+        checkToEnableDisableResetButton()
+        guard show else {
+            resetLoaderView.stopAnimating()
+            return
+        }
+        resetLoaderView.startAnimating()
     }
     
 }

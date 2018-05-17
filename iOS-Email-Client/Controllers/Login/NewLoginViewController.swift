@@ -36,6 +36,7 @@ class NewLoginViewController: UIViewController{
     }
     
     func usernameTextFieldInit(){
+        usernameTextField.font = Font.regular.size(17.0)
         usernameTextField.placeholder = "Username"
         usernameTextField.placeholderNormalColor = UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6)
         usernameTextField.textColor = UIColor.white
