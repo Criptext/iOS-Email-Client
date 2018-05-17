@@ -610,7 +610,7 @@ class ComposeViewController: UIViewController {
         
         APIManager.getKeysRequest(params, token: activeAccount.jwt) { (err, response) in
             
-            guard let data = response else {
+            guard let keysArray = response as? [[String: Any]] else {
                 if let error = err {
                     self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
                 }
@@ -619,7 +619,6 @@ class ComposeViewController: UIViewController {
                 self.toggleInteraction(true)
                 return
             }
-            let keysArray = data as! [[String: Any]]
             for keys in keysArray {
                 let recipientId = keys["recipientId"] as! String
                 let deviceId = keys["deviceId"] as! Int32
