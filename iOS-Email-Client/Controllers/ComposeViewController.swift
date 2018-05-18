@@ -753,17 +753,12 @@ extension ComposeViewController: CICropPickerDelegate {
             let mimeType = "image/png"
             
             self.isEdited = true
-            self.fileManager.registerFile(file: data, name: filename, mimeType: mimeType){ (err, filetoken) in
-                if let error = err {
-                    print(error.localizedDescription)
-                    return
-                }
-                self.tableView.performUpdate({
-                    self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-                }, completion: nil)
-                self.toggleAttachmentTable()
-                self.updateBadge()
-            }
+            self.fileManager.registerFile(file: data, name: filename, mimeType: mimeType)
+            self.tableView.performUpdate({
+                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+            }, completion: nil)
+            self.toggleAttachmentTable()
+            self.updateBadge()
         }
     }
     
@@ -810,17 +805,12 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         }
         
         self.isEdited = true
-        self.fileManager.registerFile(file: data, name: trueName, mimeType: mimeTypeForPath(path: trueName)){ (err, filetoken) in
-            if let error = err {
-                print(error.localizedDescription)
-                return
-            }
-            self.tableView.performUpdate({
-                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-            }, completion: nil)
-            self.toggleAttachmentTable()
-            self.updateBadge()
-        }
+        self.fileManager.registerFile(file: data, name: trueName, mimeType: mimeTypeForPath(path: trueName))
+        self.tableView.performUpdate({
+            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+        }, completion: nil)
+        self.toggleAttachmentTable()
+        self.updateBadge()
     }
 }
 
@@ -1005,6 +995,7 @@ extension ComposeViewController: AttachmentTableViewCellDelegate{
         }
         fileManager.removeFile(filetoken: fileManager.registeredFiles[indexPath.row].token)
         tableView.deleteRows(at: [indexPath], with: .none)
+        updateBadge()
     }
     
     func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {}

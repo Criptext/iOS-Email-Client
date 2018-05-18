@@ -25,7 +25,7 @@ class CriptextFileManager {
     var registeredFiles = [File]()
     var delegate : CriptextFileDelegate?
     
-    func registerFile(file fileData: Data, name: String, mimeType: String, completion: @escaping ((Error?, String?) -> Void)){
+    func registerFile(file fileData: Data, name: String, mimeType: String){
         let totalChunks = Int(floor(Double(fileData.count) / Double(chunkSize)))
         var chunks = [Data]()
         var chunksProgress = [Int]()
@@ -36,6 +36,10 @@ class CriptextFileManager {
             chunks.append(fileData.subdata(in: range))
             chunksProgress.append(PENDING)
         }
+        let fileRegistry = self.createRegistry(name: name, size: fileData.count, mimeType: mimeType)
+        fileRegistry.chunks = chunks
+        fileRegistry.chunksProgress = chunksProgress
+        self.registeredFiles.insert(fileRegistry, at: 0)
         let requestData = [
             "filesize": fileData.count,
             "filename": name,
@@ -44,25 +48,19 @@ class CriptextFileManager {
             ] as [String : Any]
         APIManager.registerFile(parameters: requestData, token: token) { (requestError, responseData) in
             if let error = requestError {
-                completion(error, nil)
                 print(error)
                 return
             }
             let fileResponse = responseData as! Dictionary<String, Any>
             let filetoken = fileResponse["filetoken"] as! String
-            let fileRegistry = self.createRegistry(name: name, size: fileData.count, mimeType: mimeType, filetoken: filetoken)
-            fileRegistry.chunks = chunks
-            fileRegistry.chunksProgress = chunksProgress
-            self.registeredFiles.insert(fileRegistry, at: 0)
+            fileRegistry.token = filetoken
             self.handleFileTurn()
-            completion(nil, filetoken)
         }
     }
     
-    private func createRegistry(name: String, size: Int, mimeType: String, filetoken: String) -> File {
+    private func createRegistry(name: String, size: Int, mimeType: String) -> File {
         let attachment = File()
         attachment.name = name
-        attachment.token = filetoken
         attachment.size = size
         attachment.mimeType = mimeType
         
@@ -108,11 +106,13 @@ class CriptextFileManager {
             "filetoken": filetoken
         ] as [String: Any]
         APIManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError, response) in
-            if let error = requestError {
-                print(error.localizedDescription)
+            guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
+                self.handleFileTurn()
                 return
             }
-            guard self.registeredFiles.contains(where: {$0.token == filetoken}) else {
+            if let error = requestError {
+                print(error.localizedDescription)
+                self.registeredFiles[fileIndex].requestStatus = .failed
                 self.handleFileTurn()
                 return
             }
