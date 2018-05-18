@@ -164,7 +164,7 @@ class ComposeViewController: UIViewController {
         activityButton.addTarget(self, action: #selector(didPressAttachment(_:)), for: UIControlEvents.touchUpInside)
         activityButton.tintColor = Icon.enabled.color
         
-        activityButton.tintColor = composerData.attachmentArray.isEmpty ? Icon.enabled.color : Icon.system.color
+        activityButton.tintColor = fileManager.registeredFiles.isEmpty ? Icon.enabled.color : Icon.system.color
         self.attachmentBarButton = activityButton
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
         self.title = "New Secure Email"
@@ -174,8 +174,8 @@ class ComposeViewController: UIViewController {
         
         var badgeString = ""
         
-        if composerData.attachmentArray.count > 0 {
-            badgeString = "\(composerData.attachmentArray.count)"
+        if fileManager.registeredFiles.count > 0 {
+            badgeString = "\(fileManager.registeredFiles.count)"
         }
         
         self.attachmentBarButton.badgeString = badgeString
@@ -217,31 +217,9 @@ class ComposeViewController: UIViewController {
         IQKeyboardManager.shared.enable = true
     }
     
-    //MARK: - functions
-    
-    func add(_ attachment:File){
-        self.attachmentBarButton.tintColor = Icon.system.color
-        composerData.attachmentArray.insert(attachment, at: 0)
-        
-        self.toggleAttachmentTable()
-        
-        self.tableView.performUpdate({
-            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-        }, completion: nil)
-        
-        var badgeString = ""
-        let badge = (Int(self.attachmentBarButton.badgeString ?? "0") ?? 0 ) + 1
-        
-        if badge > 0 {
-            badgeString = "\(badge)"
-        }
-        
-        self.attachmentBarButton.badgeString = badgeString
-    }
-    
     func remove(_ attachment:File){
         
-        guard let index = composerData.attachmentArray.index(where: { (attach) -> Bool in
+        guard let index = fileManager.registeredFiles.index(where: { (attach) -> Bool in
             return attach == attachment
         }) else {
             //if not found, do nothing
@@ -252,18 +230,10 @@ class ComposeViewController: UIViewController {
     }
     
     func removeAttachment(at indexPath:IndexPath){
-        let attachment = composerData.attachmentArray.remove(at: indexPath.row)
+        _ = fileManager.registeredFiles.remove(at: indexPath.row)
         
-        var badgeString = ""
-        let badge = (Int(self.attachmentBarButton.badgeString ?? "1") ?? 1 ) - 1
-        
-        if badge > 0 {
-            badgeString = "\(badge)"
-        }
-        
-        self.attachmentBarButton.badgeString = badgeString
+        self.updateBadge()
         self.toggleAttachmentTable()
-        APIManager.cancelUpload(attachment.name)
         
         self.tableView.performUpdate({
             self.tableView.deleteRows(at: [indexPath], with: .fade)
@@ -382,11 +352,11 @@ class ComposeViewController: UIViewController {
     func toggleAttachmentTable(){
         
         var height = 303
-        if composerData.attachmentArray.count > 3 {
-            height = 20 + (composerData.attachmentArray.count * 65)
+        if fileManager.registeredFiles.count > 3 {
+            height = 20 + (fileManager.registeredFiles.count * 65)
         }
         
-        if composerData.attachmentArray.isEmpty {
+        if fileManager.registeredFiles.isEmpty {
             height = 0
         }
         
@@ -422,7 +392,7 @@ class ComposeViewController: UIViewController {
     }
     
     func addAttachments(to body:String) -> String{
-        guard !composerData.attachmentArray.isEmpty else {
+        guard !fileManager.registeredFiles.isEmpty else {
             return body
         }
         
@@ -432,7 +402,7 @@ class ComposeViewController: UIViewController {
             let elements = try doc.getElementsByClass("criptext_attachment")
             try elements.remove()
             
-            for attachment in composerData.attachmentArray {
+            for attachment in fileManager.registeredFiles {
                 
                 var preTag:Element!
                 
@@ -454,7 +424,7 @@ class ComposeViewController: UIViewController {
     }
     
     func isAttachmentPending () -> Bool {
-        return (composerData.attachmentArray.contains { (attachment) -> Bool in
+        return (fileManager.registeredFiles.contains { (attachment) -> Bool in
             if attachment.isUploaded {
                 //ignore those already uploaded
                 return false
@@ -774,38 +744,33 @@ extension ComposeViewController: CICropPickerDelegate {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy_MM_dd"
         
-        
-        let tmpPath = NSTemporaryDirectory() + NSUUID().uuidString + ".png"
-        
         guard let data = UIImageJPEGRepresentation(image, 0.6) else {
             return
         }
         
-        try! data.write(to: URL(fileURLWithPath: tmpPath))
-        
         imagePicker.dismiss(animated: true){
-            let attachment = File()
-            
-            attachment.name = "Criptext_Image_\(formatter.string(from: currentDate)).png"
-            attachment.mimeType = "image/png"
-            attachment.filePath = tmpPath
-            attachment.size = data.count
+            let filename = "Criptext_Image_\(formatter.string(from: currentDate)).png"
+            let mimeType = "image/png"
             
             self.isEdited = true
-            
-            self.add(attachment)
-            self.fileManager.registerFile(file: data, name: attachment.name){ (error, filetoken) in
-                guard let token = filetoken else {
-                    print(error?.localizedDescription ?? "Unable to upload file")
+            self.fileManager.registerFile(file: data, name: filename, mimeType: mimeType){ (err, filetoken) in
+                if let error = err {
+                    print(error.localizedDescription)
                     return
                 }
-                attachment.token = token
+                self.tableView.performUpdate({
+                    self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                }, completion: nil)
+                self.toggleAttachmentTable()
+                self.updateBadge()
             }
-            
-            attachment.isUploaded = false
-            
-            try? FileManager.default.removeItem(atPath:attachment.filePath)
         }
+    }
+    
+    func updateBadge(){
+        self.attachmentBarButton.tintColor = Icon.system.color
+        let badgeCount = fileManager.registeredFiles.count
+        self.attachmentBarButton.badgeString =  badgeCount > 0 ? "\(badgeCount)" : ""
     }
 }
 
@@ -822,15 +787,6 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        
-        var fileAttributes: NSDictionary!
-        //Documentation states that the file might not be imported due to being accessed from somewhere else
-        do {
-            fileAttributes = try FileManager.default.attributesOfItem(atPath: url.path) as NSDictionary
-        }catch{
-            self.showAlert("Error", message: "File import fail, try again later", style: .alert)
-            return
-        }
         
         let trueName = url.lastPathComponent
         var finalPath = NSTemporaryDirectory() + "/" + NSUUID().uuidString + trueName
@@ -853,23 +809,17 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
             return
         }
         
-        let attachment = File()
-        
-        attachment.name = trueName
-        attachment.mimeType = mimeTypeForPath(path: trueName)
-        attachment.filePath = finalPath
-        attachment.size = Int(fileAttributes.fileSize())
-        
         self.isEdited = true
-        
-        self.add(attachment)
-
-        fileManager.registerFile(file: data, name: trueName){ (error, filetoken) in
-            guard let token = filetoken else {
-                print(error?.localizedDescription ?? "Unable to upload file")
+        self.fileManager.registerFile(file: data, name: trueName, mimeType: mimeTypeForPath(path: trueName)){ (err, filetoken) in
+            if let error = err {
+                print(error.localizedDescription)
                 return
             }
-            attachment.token = token
+            self.tableView.performUpdate({
+                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+            }, completion: nil)
+            self.toggleAttachmentTable()
+            self.updateBadge()
         }
     }
 }
@@ -936,15 +886,7 @@ extension ComposeViewController: ProgressDelegate {
     }
     
     func updateProgress(_ percent: Double, for id: String) {
-        
-        guard let index = composerData.attachmentArray.index(where: { (attachment) -> Bool in
-            return attachment.name == id
-        }) else {
-            return
-        }
-        
-        let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
-        cell.progressView.progress = Float(percent)
+
     }
 }
 
@@ -963,7 +905,7 @@ extension ComposeViewController: UITableViewDataSource {
             return cell
         }
         
-        let attachment = composerData.attachmentArray[indexPath.row]
+        let attachment = fileManager.registeredFiles[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentTableViewCell", for: indexPath) as! AttachmentTableViewCell
         
@@ -1013,7 +955,7 @@ extension ComposeViewController: UITableViewDataSource {
         if tableView == self.contactTableView {
             return composerData.contactArray.count
         }
-        return composerData.attachmentArray.count
+        return fileManager.registeredFiles.count
     }
 }
 
@@ -1061,8 +1003,7 @@ extension ComposeViewController: AttachmentTableViewCellDelegate{
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
-        fileManager.removeFile(filetoken: composerData.attachmentArray[indexPath.row].token)
-        composerData.attachmentArray.remove(at: indexPath.row)
+        fileManager.removeFile(filetoken: fileManager.registeredFiles[indexPath.row].token)
         tableView.deleteRows(at: [indexPath], with: .none)
     }
     
@@ -1122,7 +1063,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             
             if APIManager.isValidEmail(text: name!) {
                 let valueObject = NSString(string: name!)
-                let token = CLToken(displayText: name!, context: nil)
+                let token = CLToken(displayText: name!, context: valueObject)
                 view.add(token)
             } else {
 //                view.textField.text = name
@@ -1257,7 +1198,7 @@ extension ComposeViewController: CNContactPickerDelegate {
 
 extension ComposeViewController: CriptextFileDelegate {
     func uploadProgressUpdate(filetoken: String, progress: Int) {
-        guard let index = composerData.attachmentArray.index(where: {$0.token == filetoken}),
+        guard let index = fileManager.registeredFiles.index(where: {$0.token == filetoken}),
             let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
             return
         }

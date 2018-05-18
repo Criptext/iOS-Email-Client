@@ -22,13 +22,16 @@ class File : Object {
     @objc dynamic var mimeType = ""
     @objc dynamic var filePath = ""
     var progress = -1
+    var chunks = [Data]()
+    var chunksProgress = [Int]()
+    var requestStatus: uploadStatus = .pending
 
     override static func primaryKey() -> String? {
         return "token"
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["progress"]
+        return ["progress", "chunks", "chunksProgress", "requestStatus"]
     }
     
     func prettyPrintSize() -> String {
@@ -43,5 +46,12 @@ class File : Object {
             return "\(String(format: "%.2f", mySize/1000000)) MB"
         }
         return "\(String(format: "%.2f", mySize/1000000000)) GB"
+    }
+    
+    enum uploadStatus {
+        case pending
+        case uploading
+        case finish
+        case failed
     }
 }

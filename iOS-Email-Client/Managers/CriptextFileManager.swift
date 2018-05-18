@@ -8,15 +8,6 @@
 
 import Foundation
 
-struct UploadFile {
-    var name: String
-    var file: Data
-    var chunks: [Data]
-    var chunksProgress: [Int]
-    var status : CriptextFileManager.uploadStatus
-    var filetoken: String
-}
-
 protocol CriptextFileDelegate {
     func uploadProgressUpdate(filetoken: String, progress: Int)
 }
@@ -31,10 +22,10 @@ class CriptextFileManager {
         return "\(appId):\(appSecret)".data(using: .utf8)!.base64EncodedString()
     }
     var chunkSize = 512000
-    var registeredFiles = [UploadFile]()
+    var registeredFiles = [File]()
     var delegate : CriptextFileDelegate?
     
-    func registerFile(file fileData: Data, name: String, completion: @escaping ((Error?, String?) -> Void)){
+    func registerFile(file fileData: Data, name: String, mimeType: String, completion: @escaping ((Error?, String?) -> Void)){
         let totalChunks = Int(floor(Double(fileData.count) / Double(chunkSize)))
         var chunks = [Data]()
         var chunksProgress = [Int]()
@@ -59,27 +50,39 @@ class CriptextFileManager {
             }
             let fileResponse = responseData as! Dictionary<String, Any>
             let filetoken = fileResponse["filetoken"] as! String
-            let fileRegistry = UploadFile.init(name: name, file: fileData, chunks: chunks, chunksProgress: chunksProgress, status: .pending, filetoken: filetoken)
-            self.registeredFiles.append(fileRegistry)
+            let fileRegistry = self.createRegistry(name: name, size: fileData.count, mimeType: mimeType, filetoken: filetoken)
+            fileRegistry.chunks = chunks
+            fileRegistry.chunksProgress = chunksProgress
+            self.registeredFiles.insert(fileRegistry, at: 0)
             self.handleFileTurn()
             completion(nil, filetoken)
         }
     }
     
+    private func createRegistry(name: String, size: Int, mimeType: String, filetoken: String) -> File {
+        let attachment = File()
+        attachment.name = name
+        attachment.token = filetoken
+        attachment.size = size
+        attachment.mimeType = mimeType
+        
+        return attachment
+    }
+    
     private func handleFileTurn(){
-        for file in registeredFiles {
-            if(file.status == .pending){
-                startUpload(file.filetoken)
+        for file in registeredFiles.reversed() {
+            if(file.requestStatus == .pending){
+                startUpload(file.token)
                 break
             }
-            if(file.status == .uploading){
+            if(file.requestStatus == .uploading){
                 break
             }
         }
     }
     
     private func startUpload(_ filetoken: String){
-        guard let fileIndex = registeredFiles.index(where: {$0.filetoken == filetoken}) else {
+        guard let fileIndex = registeredFiles.index(where: {$0.token == filetoken}) else {
             handleFileTurn()
             return
         }
@@ -92,7 +95,7 @@ class CriptextFileManager {
                 break
             }
             let chunk = file.chunks[index]
-            registeredFiles[fileIndex].status = .uploading
+            registeredFiles[fileIndex].requestStatus = .uploading
             uploadChunk(chunk, filetoken: filetoken, part: index)
             return
         }
@@ -109,7 +112,7 @@ class CriptextFileManager {
                 print(error.localizedDescription)
                 return
             }
-            guard self.registeredFiles.contains(where: {$0.filetoken == filetoken}) else {
+            guard self.registeredFiles.contains(where: {$0.token == filetoken}) else {
                 self.handleFileTurn()
                 return
             }
@@ -119,25 +122,19 @@ class CriptextFileManager {
     }
     
     private func checkCompleteUpload(filetoken: String){
-        guard let fileIndex = registeredFiles.index(where: {$0.filetoken == filetoken}) else {
+        guard let fileIndex = registeredFiles.index(where: {$0.token == filetoken}) else {
             return
         }
         if !registeredFiles[fileIndex].chunksProgress.contains(where: {$0 != COMPLETE}){
-            registeredFiles[fileIndex].status = .finish
+            registeredFiles[fileIndex].requestStatus = .finish
         }
     }
     
     func removeFile(filetoken: String){
-        guard let index = registeredFiles.index(where: {$0.filetoken == filetoken}) else {
+        guard let index = registeredFiles.index(where: {$0.token == filetoken}) else {
             return
         }
         registeredFiles.remove(at: index)
-    }
-    
-    enum uploadStatus {
-        case pending
-        case uploading
-        case finish
     }
 }
 
@@ -147,7 +144,7 @@ extension CriptextFileManager: ProgressDelegate {
     }
     
     func chunkUpdateProgress(_ percent: Double, for token: String, part: Int) {
-        guard let fileIndex = registeredFiles.index(where: {$0.filetoken == token}) else {
+        guard let fileIndex = registeredFiles.index(where: {$0.token == token}) else {
             return
         }
         registeredFiles[fileIndex].chunksProgress[part] = Int(percent * 100)
