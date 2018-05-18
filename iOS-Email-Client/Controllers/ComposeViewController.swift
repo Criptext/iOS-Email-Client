@@ -382,8 +382,8 @@ class ComposeViewController: UIViewController {
     func toggleAttachmentTable(){
         
         var height = 303
-        if composerData.attachmentArray.count < 3 {
-            height = 108 + (composerData.attachmentArray.count * 65)
+        if composerData.attachmentArray.count > 3 {
+            height = 20 + (composerData.attachmentArray.count * 65)
         }
         
         if composerData.attachmentArray.isEmpty {
@@ -781,35 +781,13 @@ extension ComposeViewController: CICropPickerDelegate {
             return
         }
         
-        if data.count > 5000000 {
-            //deny basic user attaching file over 5 Mbs
-            var actions = [UIAlertAction]()
-            
-            let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
-                UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
-            })
-            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            
-            actions.append(proAction)
-            actions.append(okAction)
-            
-            self.showAlert(nil, message: "File size of 5 Mb limit exceeded. Upgrade to Pro to increase allowed file size to 100 Mb", style: .alert, actions: actions)
-            return
-        }
-        
-        if data.count > 100000000 {
-            //deny pro user attaching file over 100 Mbs
-            self.showAlert(nil, message: "File size of 100 Mb limit exceeded.", style: .alert)
-            return
-        }
-        
         try! data.write(to: URL(fileURLWithPath: tmpPath))
         
         imagePicker.dismiss(animated: true){
             let attachment = File()
             
             attachment.name = "Criptext_Image_\(formatter.string(from: currentDate)).png"
-            attachment.mimeType = "application/octet-stream"
+            attachment.mimeType = "image/png"
             attachment.filePath = tmpPath
             attachment.size = data.count
             
@@ -824,22 +802,9 @@ extension ComposeViewController: CICropPickerDelegate {
                 attachment.token = token
             }
             
-            attachment.isUploaded = true
+            attachment.isUploaded = false
             
-            //store attachment in DB
-            
-            //clean up local file not needed anymore
             try? FileManager.default.removeItem(atPath:attachment.filePath)
-            
-            //update cell to hide progress bar
-            guard let index = self.composerData.attachmentArray.index(where: { (attach) -> Bool in
-                return attach == attachment
-            }) else {
-                //if not found, do nothing
-                return
-            }
-            
-            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
         }
     }
 }
@@ -887,30 +852,6 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
             self.showAlert("Error", message: "File import fail, try again later", style: .alert)
             return
         }
-        
-        if data.count > 5000000 {
-            //deny basic user attaching file over 5 Mbs
-            var actions = [UIAlertAction]()
-            
-            let proAction = UIAlertAction(title: "Upgrate to Pro", style: .default, handler: { (action) in
-                UIApplication.shared.open(URL(string: "https://criptext.com/mpricing")!)
-            })
-            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            
-            actions.append(proAction)
-            actions.append(okAction)
-            
-            self.showAlert(nil, message: "File size of 5 Mb limit exceeded. Upgrade to Pro to increase allowed file size to 100 Mb", style: .alert, actions: actions)
-            return
-        }
-        
-        if data.count > 100000000 {
-            //deny pro user attaching file over 100 Mbs
-            self.showAlert(nil, message: "File size of 100 Mb limit exceeded.", style: .alert)
-            return
-        }
-        
-        //upload file to server
         
         let attachment = File()
         
@@ -1027,13 +968,14 @@ extension ComposeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentTableViewCell", for: indexPath) as! AttachmentTableViewCell
         
         cell.nameLabel.text = attachment.name
-        cell.sizeLabel.text = "\(attachment.size)"
+        cell.sizeLabel.text = attachment.prettyPrintSize()
         cell.lockImageView.image = Icon.lock.image
         
         cell.lockImageView.tintColor = Icon.enabled.color
         cell.lockImageView.image = Icon.lock_open.image
         
         cell.progressView.isHidden = cell.progressView.progress == 1
+        cell.successImageView.isHidden = cell.progressView.progress != 1
         
         //image icon
         var imageIcon:UIImage!
@@ -1315,13 +1257,18 @@ extension ComposeViewController: CNContactPickerDelegate {
 
 extension ComposeViewController: CriptextFileDelegate {
     func uploadProgressUpdate(filetoken: String, progress: Int) {
-        guard let index = composerData.attachmentArray.index(where: {$0.token == filetoken}) else {
+        guard let index = composerData.attachmentArray.index(where: {$0.token == filetoken}),
+            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
             return
         }
         
-        let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! AttachmentTableViewCell
         let percentage = Float(progress)/100.0
         cell.progressView.setProgress(percentage, animated: true)
+        guard progress == 100 else {
+            return
+        }
+        cell.successImageView.isHidden = false
+        cell.progressView.isHidden = true
     }
 }
 

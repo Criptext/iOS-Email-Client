@@ -30,4 +30,18 @@ class File : Object {
     override static func ignoredProperties() -> [String] {
         return ["progress"]
     }
+    
+    func prettyPrintSize() -> String {
+        let mySize = Float(size)
+        guard mySize >= 1000 else {
+            return "\(String(format: "%.2f", mySize)) Bytes"
+        }
+        guard mySize >= 1000000 else {
+            return "\(String(format: "%.2f", mySize/1000)) KB"
+        }
+        guard mySize >= 1000000000 else {
+            return "\(String(format: "%.2f", mySize/1000000)) MB"
+        }
+        return "\(String(format: "%.2f", mySize/1000000000)) GB"
+    }
 }

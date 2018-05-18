@@ -31,6 +31,7 @@ class Email: Object {
     @objc dynamic var delivered = Status.none.rawValue
     @objc dynamic var date = Date()
     let labels = List<Label>()
+    let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
     var isExpanded = false
     var counter = 1

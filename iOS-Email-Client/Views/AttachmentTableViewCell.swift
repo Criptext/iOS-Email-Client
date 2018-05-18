@@ -27,6 +27,7 @@ class AttachmentTableViewCell: UITableViewCell {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var viewClose: UIView!
     @IBOutlet weak var buttonClose: UIButton!
+    @IBOutlet weak var successImageView: UIImageView!
     
     var tapGestureRecognizer:UITapGestureRecognizer!
     var holdGestureRecognizer:UILongPressGestureRecognizer!
