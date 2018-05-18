@@ -742,17 +742,17 @@
                                     <outlet property="delegate" destination="gA0-rr-zOr" id="cuz-7q-AFN"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mwd-eq-N7c">
+                            <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mwd-eq-N7c">
                                 <rect key="frame" x="-0.5" y="-0.5" width="375" height="603"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="envelop" translatesAutoresizingMaskIntoConstraints="NO" id="qzp-lC-DPr">
-                                        <rect key="frame" x="131.5" y="193.5" width="112" height="65"/>
+                                        <rect key="frame" x="131.5" y="208.5" width="112" height="65"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="Lcn-1x-6wc"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Here are no emails" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nel-C4-iB9">
-                                        <rect key="frame" x="50" y="278.5" width="275" height="20"/>
+                                        <rect key="frame" x="50" y="288.5" width="275" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="hId-Vy-UB5"/>
                                         </constraints>
@@ -761,7 +761,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="but we love you anyway" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IrZ-fh-55m">
-                                        <rect key="frame" x="50" y="308.5" width="275" height="20"/>
+                                        <rect key="frame" x="50" y="313.5" width="275" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="kDo-H8-RfW"/>
                                         </constraints>
@@ -770,15 +770,15 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="nel-C4-iB9" firstAttribute="leading" secondItem="Mwd-eq-N7c" secondAttribute="leading" constant="50" id="9b7-yn-yfO"/>
                                     <constraint firstAttribute="trailing" secondItem="IrZ-fh-55m" secondAttribute="trailing" constant="50" id="JjM-qg-EHc"/>
                                     <constraint firstAttribute="trailing" secondItem="nel-C4-iB9" secondAttribute="trailing" constant="50" id="ThB-U3-JA2"/>
                                     <constraint firstItem="qzp-lC-DPr" firstAttribute="centerX" secondItem="Mwd-eq-N7c" secondAttribute="centerX" id="edK-f5-OMU"/>
-                                    <constraint firstItem="IrZ-fh-55m" firstAttribute="top" secondItem="nel-C4-iB9" secondAttribute="bottom" constant="10" id="jWN-H3-eLr"/>
-                                    <constraint firstItem="qzp-lC-DPr" firstAttribute="centerY" secondItem="Mwd-eq-N7c" secondAttribute="centerY" multiplier="0.75" id="nRm-MI-Qj8"/>
-                                    <constraint firstItem="nel-C4-iB9" firstAttribute="top" secondItem="qzp-lC-DPr" secondAttribute="bottom" constant="20" id="qad-2P-HXq"/>
+                                    <constraint firstItem="IrZ-fh-55m" firstAttribute="top" secondItem="nel-C4-iB9" secondAttribute="bottom" constant="5" id="jWN-H3-eLr"/>
+                                    <constraint firstItem="qzp-lC-DPr" firstAttribute="centerY" secondItem="Mwd-eq-N7c" secondAttribute="centerY" multiplier="0.8" id="nRm-MI-Qj8"/>
+                                    <constraint firstItem="nel-C4-iB9" firstAttribute="top" secondItem="qzp-lC-DPr" secondAttribute="bottom" constant="15" id="qad-2P-HXq"/>
                                     <constraint firstItem="IrZ-fh-55m" firstAttribute="leading" secondItem="Mwd-eq-N7c" secondAttribute="leading" constant="50" id="sXl-L1-heb"/>
                                     <constraint firstItem="nel-C4-iB9" firstAttribute="centerX" secondItem="qzp-lC-DPr" secondAttribute="centerX" id="vbW-Es-NBO"/>
                                 </constraints>

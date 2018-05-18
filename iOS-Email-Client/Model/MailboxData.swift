@@ -12,11 +12,24 @@ class MailboxData {
     var selectedLabel = SystemLabel.inbox.id
     var emailArray = [Email]()
     var filteredEmailArray = [Email]()
+    var emailReachedEnd = false
+    var filteredReachedEnd = false
     var threadHash = [String:[Email]]()
     var threadToOpen:String?
     var isCustomEditing = false
     var unreadMails = 0
-    var reachedEnd = false
+    var reachedEnd : Bool {
+        get {
+            return searchMode ? filteredReachedEnd : emailReachedEnd
+        }
+        set(reached) {
+            if(searchMode){
+                filteredReachedEnd = reached
+            } else {
+                emailReachedEnd = reached
+            }
+        }
+    }
     var removeSelectedRow = false
     var fetchWorker: DispatchWorkItem?
     var searchMode = false

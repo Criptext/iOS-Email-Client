@@ -532,6 +532,10 @@ extension InboxViewController: UITableViewDataSource{
         guard show else {
             return
         }
+        guard !mailboxData.searchMode else {
+            setEnvelopeMessages(title: "No search results", subtitle: "Trash and Spam are not displayed")
+            return
+        }
         switch(mailboxData.selectedLabel){
         case SystemLabel.inbox.id:
             setEnvelopeMessages(title: "There are no emails in your inbox", subtitle: "share your email address with a friend")
@@ -711,16 +715,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
 extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
     func updateSearchResults(for searchController: UISearchController) {
-        mailboxData.searchMode = self.searchController.isActive && self.searchController.searchBar.text != ""
+        mailboxData.searchMode = self.searchController.isActive && !searchController.searchBar.text!.isEmpty
         filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
     
-    func filterContentForSearchText(searchText: String, scope: String = "All") {
-        mailboxData.reachedEnd = false
+    func filterContentForSearchText(searchText: String) {
         mailboxData.cancelFetchWorker()
-        if(searchText.isEmpty){
+        if(!mailboxData.searchMode){
+            showNoEmailsView(mailboxData.reachedEnd && mailboxData.emails.isEmpty)
             tableView.reloadData()
         } else {
+            mailboxData.reachedEnd = false
             self.loadMails(since: Date(), clear: true)
         }
     }
