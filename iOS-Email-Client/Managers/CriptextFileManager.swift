@@ -110,8 +110,7 @@ class CriptextFileManager {
                 self.handleFileTurn()
                 return
             }
-            if let error = requestError {
-                print(error.localizedDescription)
+            guard requestError == nil else {
                 self.registeredFiles[fileIndex].requestStatus = .failed
                 self.handleFileTurn()
                 return

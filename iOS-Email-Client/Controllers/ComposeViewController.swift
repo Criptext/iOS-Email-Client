@@ -19,6 +19,11 @@ import IQKeyboardManagerSwift
 import SignalProtocolFramework
 
 class ComposeViewController: UIViewController {
+    let DEFAULT_ATTACHMENTS_HEIGHT = 303
+    let MAX_ROWS_BEFORE_CALC_HEIGHT = 3
+    let ATTACHMENT_ROW_HEIGHT = 65
+    let MARGIN_TOP = 20
+    
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
     @IBOutlet weak var bccField: CLTokenInputView!
@@ -348,10 +353,9 @@ class ComposeViewController: UIViewController {
     }
     
     func toggleAttachmentTable(){
-        
-        var height = 303
-        if fileManager.registeredFiles.count > 3 {
-            height = 20 + (fileManager.registeredFiles.count * 65)
+        var height = DEFAULT_ATTACHMENTS_HEIGHT
+        if fileManager.registeredFiles.count > MAX_ROWS_BEFORE_CALC_HEIGHT {
+            height = MARGIN_TOP + (fileManager.registeredFiles.count * ATTACHMENT_ROW_HEIGHT)
         }
         
         if fileManager.registeredFiles.isEmpty {
