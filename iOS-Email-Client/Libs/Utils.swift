@@ -70,4 +70,25 @@ class Utils{
         }
         return email.substring(with: range)
     }
+    
+    class func getImageByFileType(_ type: String) -> UIImage {
+        switch type {
+        case "application/pdf":
+            return #imageLiteral(resourceName: "attachment_pdf")
+        case _ where type.contains("application/msword") ||
+            type.contains("application/vnd.openxmlformats-officedocument.wordprocessingml") ||
+            type.contains("application/vnd.ms-word"):
+            return #imageLiteral(resourceName: "attachment_word")
+        case "image/png", "image/jpeg":
+            return #imageLiteral(resourceName: "attachment_image")
+        case _ where type.contains("application/vnd.ms-powerpoint") ||
+            type.contains("application/vnd.openxmlformats-officedocument.presentationml"):
+            return #imageLiteral(resourceName: "attachment_ppt")
+        case _ where type.contains("application/vnd.ms-excel") ||
+            type.contains("application/vnd.openxmlformats-officedocument.spreadsheetml"):
+            return #imageLiteral(resourceName: "attachment_excel")
+        default:
+            return #imageLiteral(resourceName: "attachment_generic")
+        }
+    }
 }

@@ -16,19 +16,19 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="1001" id="mtm-Bj-dEs" customClass="EmailTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="1001"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="586" id="mtm-Bj-dEs" customClass="EmailTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="586"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mtm-Bj-dEs" id="5te-0K-DXB">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="1000.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="585.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x8R-Mr-qce">
-                        <rect key="frame" x="0.0" y="4" width="375" height="992.5"/>
+                        <rect key="frame" x="0.0" y="4" width="375" height="577.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KaE-PD-svL">
-                        <rect key="frame" x="0.0" y="5" width="375" height="990.5"/>
+                        <rect key="frame" x="0.0" y="5" width="375" height="575.5"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYk-NZ-Ec1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
@@ -324,10 +324,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
-                                <rect key="frame" x="0.0" y="196" width="375" height="227.5"/>
+                                <rect key="frame" x="0.0" y="196" width="375" height="164.5"/>
                                 <subviews>
                                     <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
-                                        <rect key="frame" x="18" y="0.0" width="333" height="227.5"/>
+                                        <rect key="frame" x="18" y="0.0" width="333" height="164.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <wkWebViewConfiguration key="configuration">
                                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -345,14 +345,14 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gto-qF-XbD">
-                                <rect key="frame" x="0.0" y="423.5" width="375" height="552"/>
+                                <rect key="frame" x="0.0" y="360.5" width="375" height="200"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="750" id="USB-5e-poq"/>
+                                    <constraint firstAttribute="height" priority="750" constant="200" id="USB-5e-poq"/>
                                 </constraints>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Spu-tg-Ust">
-                                <rect key="frame" x="0.0" y="975.5" width="375" height="15"/>
+                                <rect key="frame" x="0.0" y="560.5" width="375" height="15"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="eYk-iM-SgF"/>
@@ -369,7 +369,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6QI-gH-SwO">
-                        <rect key="frame" x="0.0" y="995.5" width="375" height="5"/>
+                        <rect key="frame" x="0.0" y="580.5" width="375" height="5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="5" id="n42-ki-5wr"/>
@@ -397,6 +397,7 @@
             <connections>
                 <outlet property="attachmentIconView" destination="Uqg-nT-Nij" id="B6F-g3-dCa"/>
                 <outlet property="attachmentView" destination="l4w-QX-eOS" id="KsV-9A-dDt"/>
+                <outlet property="attachmentsTableHeightConstraint" destination="USB-5e-poq" id="0Jf-5S-Nl2"/>
                 <outlet property="attachmentsTableView" destination="Gto-qF-XbD" id="on9-Ar-oSC"/>
                 <outlet property="borderBGView" destination="x8R-Mr-qce" id="kmH-ZK-eqh"/>
                 <outlet property="bottomMarginHeightConstraint" destination="eYk-iM-SgF" id="dpM-9a-XnY"/>
@@ -425,7 +426,7 @@
                 <outlet property="webView" destination="bUF-LT-65F" id="0Wn-sq-XD4"/>
                 <outlet property="webViewWrapperView" destination="tm2-e0-IDa" id="BGn-II-V8l"/>
             </connections>
-            <point key="canvasLocation" x="63.5" y="482.5"/>
+            <point key="canvasLocation" x="63.5" y="275"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -1215,16 +1215,7 @@ extension ComposeViewController: RichEditorDelegate {
         
         let cgheight = CGFloat(height)
         let diff = cgheight - self.editorHeightConstraint.constant
-        
         let offset = self.scrollView.contentOffset
-        
-        //90 = to and subject fields + 45 = toolbar
-        if CGFloat(height + 90 + 25) > self.toolbarView.frame.origin.y {
-            var newOffset = CGPoint(x: offset.x, y: offset.y + 28)
-            if diff == -28  {
-                newOffset = CGPoint(x: offset.x, y: offset.y - 28)
-            }
-        }
         
         guard height > 150 else {
             return

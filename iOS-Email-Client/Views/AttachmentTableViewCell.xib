@@ -82,6 +82,7 @@
             <connections>
                 <outlet property="attachmentContainer" destination="m8Z-E0-HmE" id="f2P-nz-diP"/>
                 <outlet property="attachmentLabel" destination="ZP2-bJ-aKN" id="Guh-4Z-ix7"/>
+                <outlet property="typeView" destination="ax7-C4-FBi" id="Gai-cL-jIf"/>
             </connections>
             <point key="canvasLocation" x="-57.5" y="115"/>
         </view>

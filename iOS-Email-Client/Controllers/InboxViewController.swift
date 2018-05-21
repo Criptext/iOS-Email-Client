@@ -658,7 +658,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         composerData.initSubject = draft.subject
         composerData.initContent = draft.content
         composerData.emailDraft = draft
-        composerData.threadId = draft.threadId
+        if(!draft.threadId.isEmpty){
+            composerData.threadId = draft.threadId
+        }
         composerVC.composerData = composerData
         for file in draft.files {
             file.requestStatus = .finish
