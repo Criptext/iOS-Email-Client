@@ -9,11 +9,13 @@
 import Foundation
 
 class HistoryUIPopover: BaseUIPopover{
-    @IBOutlet weak var attachmentsTableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var historyTitleLabel: UILabel!
     @IBOutlet weak var historyTitleImage: UIImageView!
+    @IBOutlet weak var emptyMessageLabel: UILabel!
     var historyCellName: String!
     var historyTitleText: String!
+    var emptyMessage: String!
     var historyImage: UIImage!
     var cellHeight: CGFloat = 0
     
@@ -26,9 +28,11 @@ class HistoryUIPopover: BaseUIPopover{
     }
     
     override func viewDidLoad() {
-        attachmentsTableView.register(UINib(nibName: historyCellName, bundle: nil), forCellReuseIdentifier: "historyCell")
+        tableView.register(UINib(nibName: historyCellName, bundle: nil), forCellReuseIdentifier: "historyCell")
         historyTitleLabel.text = historyTitleText
         historyTitleImage.image = historyImage
+        emptyMessageLabel.text = emptyMessage
+        tableView.isHidden = true
     }
     
 }

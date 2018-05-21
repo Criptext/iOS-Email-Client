@@ -161,12 +161,13 @@ class ComposeViewController: UIViewController {
         activityButton.frame = CGRect(x:14, y:8, width:18, height:32)
         activityButton.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 5, 2)
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
-        activityButton.addTarget(self, action: #selector(didPressAttachment(_:)), for: UIControlEvents.touchUpInside)
         activityButton.tintColor = Icon.enabled.color
-        
         activityButton.tintColor = fileManager.registeredFiles.isEmpty ? Icon.enabled.color : Icon.system.color
+        activityButton.isUserInteractionEnabled = false
         self.attachmentBarButton = activityButton
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressAttachment(_:)))
+        self.attachmentButtonContainerView.addGestureRecognizer(tapGesture)
         self.title = "New Secure Email"
         self.navigationItem.rightBarButtonItem = self.sendSecureBarButton
         activityButton.setImage(Icon.attachment.vertical.image, for: .normal)
@@ -1225,6 +1226,9 @@ extension ComposeViewController: RichEditorDelegate {
     }
     
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
+        guard !content.isEmpty else {
+            return
+        }
         self.isEdited = true
     }
     

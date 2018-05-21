@@ -145,6 +145,7 @@ class EmailTableViewCell: UITableViewCell{
         guard email.status != .none else {
             readView.isHidden = true
             unsendView.isHidden = true
+            attachmentView.isHidden = true
             return
         }
         
@@ -154,7 +155,6 @@ class EmailTableViewCell: UITableViewCell{
         
         readIconView.tintColor = isRead ?  .mainUI : .neutral
         readView.layer.borderColor = isRead ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
-        readView.isUserInteractionEnabled = isRead
         
         unsendIconView.tintColor =  isUnsent ?  .alert : .white
         unsendView.backgroundColor = isUnsent ? .white : .alert
