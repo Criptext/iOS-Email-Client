@@ -264,19 +264,15 @@ class ComposeViewController: UIViewController {
         draft.status = .none
         draft.key = "\(NSDate().timeIntervalSince1970)"
         draft.content = body
-        if(body.count > 100){
-            let bodyWithoutHtml = body.removeHtmlTags()
-            draft.preview = String(bodyWithoutHtml.prefix(100))
-        }
-        else{
-            draft.preview = body.removeHtmlTags()
-        }
+        let bodyWithoutHtml = body.removeHtmlTags().replaceNewLineCharater(separator: " ")
+        draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
         draft.subject = subject
         draft.date = Date()
         draft.key = "\(activeAccount.deviceId)\(Int(draft.date.timeIntervalSince1970))"
         draft.threadId = composerData.threadId ?? ""
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
+        draft.files.append(objectsIn: fileManager.storeFiles())
         DBManager.store(draft)
         
         
@@ -294,6 +290,7 @@ class ComposeViewController: UIViewController {
         self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: draft, type: ContactType.from)
         
         DBManager.store(emailContacts)
+        
         return draft
     }
     
@@ -423,16 +420,6 @@ class ComposeViewController: UIViewController {
         }
     }
     
-    func isAttachmentPending () -> Bool {
-        return (fileManager.registeredFiles.contains { (attachment) -> Bool in
-            if attachment.isUploaded {
-                //ignore those already uploaded
-                return false
-            }
-            return true
-        })
-    }
-    
     func toggleInteraction(_ flag:Bool){
         self.sendBarButton.isEnabled = flag
         self.sendSecureBarButton.isEnabled = flag
@@ -451,6 +438,23 @@ class ComposeViewController: UIViewController {
             return
         }
         
+        guard fileManager.pendingAttachments() else {
+            handleExit()
+            return
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let sendAction = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
+            self.fileManager.registeredFiles = self.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
+            self.tableView.reloadData()
+            self.updateBadge()
+            self.handleExit()
+        })
+        self.showAlert("Pending Attachments", message: "Some attachments are being uploaded. Would you like to discard them and proceed?", style: .alert, actions: [cancelAction, sendAction])
+        return
+    }
+    
+    func handleExit(){
         let discardTitle = "Discard"
         
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -479,7 +483,7 @@ class ComposeViewController: UIViewController {
         self.resignKeyboard()
         
         //validate if there are no more attachments pending
-        guard !self.isAttachmentPending() else {
+        guard !fileManager.pendingAttachments() else {
             self.showAlert(nil, message: "Please wait for your attachments to finish processing", style: .alert)
             return
         }
@@ -906,8 +910,8 @@ extension ComposeViewController: UITableViewDataSource {
         cell.lockImageView.tintColor = Icon.enabled.color
         cell.lockImageView.image = Icon.lock_open.image
         
-        cell.progressView.isHidden = cell.progressView.progress == 1
-        cell.successImageView.isHidden = cell.progressView.progress != 1
+        cell.progressView.isHidden = attachment.requestStatus == .finish
+        cell.successImageView.isHidden = attachment.requestStatus != .finish
         
         //image icon
         var imageIcon:UIImage!

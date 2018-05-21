@@ -310,6 +310,10 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
         composerVC.composerData = composerData
+        for file in email.files {
+            file.requestStatus = .finish
+            composerVC.fileManager.registeredFiles.append(file)
+        }
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     

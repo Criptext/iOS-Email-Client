@@ -136,6 +136,15 @@ class CriptextFileManager {
         }
         registeredFiles.remove(at: index)
     }
+    
+    func pendingAttachments() -> Bool{
+        return registeredFiles.contains(where: {$0.requestStatus != .finish})
+    }
+    
+    func storeFiles() -> [File] {
+        DBManager.store(registeredFiles)
+        return registeredFiles
+    }
 }
 
 extension CriptextFileManager: ProgressDelegate {
