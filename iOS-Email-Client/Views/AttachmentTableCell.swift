@@ -11,6 +11,7 @@ import Foundation
 class AttachmentTableCell: UITableViewCell{
     @IBOutlet weak var attachmentLabel: UILabel!
     @IBOutlet weak var attachmentContainer: UIView!
+    @IBOutlet weak var typeView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,5 +35,9 @@ class AttachmentTableCell: UITableViewCell{
         
         myName.append(mySize)
         attachmentLabel.attributedText = myName
+    }
+    
+    func setAttachmentType(_ mimeType: String){
+        typeView.image = Utils.getImageByFileType(mimeType)
     }
 }

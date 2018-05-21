@@ -478,6 +478,25 @@ extension DBManager {
     }
 }
 
+//MARK: - File
+
+extension DBManager {
+    class func store(_ file: File){
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(file, update: true)
+        }
+    }
+    
+    class func store(_ files: [File]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(files, update: true)
+        }
+    }
+}
+
 //MARK: - Email Contact
 
 extension DBManager {

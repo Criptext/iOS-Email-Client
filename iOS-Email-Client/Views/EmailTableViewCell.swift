@@ -41,14 +41,17 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var miniAttachmentIconView: UIImageView!
     @IBOutlet weak var miniReadIconView: UIImageView!
     @IBOutlet weak var attachmentsTableView: UITableView!
+    @IBOutlet weak var attachmentsTableHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var collapsedDateLabel: UILabel!
     @IBOutlet weak var expandedDateLabel: UILabel!
     @IBOutlet weak var initialsImageView: UIImageView!
     @IBOutlet weak var bottomMarginHeightConstraint: NSLayoutConstraint!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
+    var attachments = [File]()
     var delegate: EmailTableViewCellDelegate?
     let MARGIN_HEIGHT : CGFloat = 15.0
+    let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -74,12 +77,12 @@ class EmailTableViewCell: UITableViewCell{
         webView.configuration.userContentController.add(self, name: "iosListener")
     }
     
-    @objc func swiper(){
-        
-    }
-    
     func setContent(_ email: Email){
         let isExpanded = email.isExpanded
+        attachments.removeAll()
+        attachments.append(contentsOf: email.files)
+        attachmentsTableView.reloadData()
+        attachmentsTableHeightConstraint.constant = ATTATCHMENT_CELL_HEIGHT * CGFloat(attachments.count)
         webViewWrapperView.isHidden = !isExpanded
         expandedDetailView.isHidden = !isExpanded
         attachmentsTableView.isHidden = !isExpanded
@@ -127,28 +130,31 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setCollapsedIcons(_ email: Email){
-        miniAttachmentIconView.isHidden = true
+        miniAttachmentIconView.isHidden = email.files.isEmpty
         guard email.status != .none else {
             miniReadIconView.isHidden = true
             return
         }
-        
+        miniAttachmentIconView.tintColor = .neutral
         miniReadIconView.tintColor = (email.status == .opened) ?  .mainUI : .neutral
     }
     
     func setExpandedIcons(_ email: Email){
         let isUnsent = email.isUnsent
         let isRead = email.status == .opened
-        attachmentView.isHidden = true
         guard email.status != .none else {
             readView.isHidden = true
             unsendView.isHidden = true
+            attachmentView.isHidden = true
             return
         }
         
+        attachmentView.isHidden = email.files.isEmpty
+        attachmentView.tintColor = .neutral
+        attachmentView.layer.borderColor = UIColor.neutral.cgColor
+        
         readIconView.tintColor = isRead ?  .mainUI : .neutral
         readView.layer.borderColor = isRead ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
-        readView.isUserInteractionEnabled = isRead
         
         unsendIconView.tintColor =  isUnsent ?  .alert : .white
         unsendView.backgroundColor = isUnsent ? .white : .alert
@@ -223,16 +229,18 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler{
 extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let attachment = attachments[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentTableCell") as! AttachmentTableCell
-        cell.setNameAndSize("Red Velvet Members.pdf", "23 MB")
+        cell.setNameAndSize(attachment.name, attachment.prettyPrintSize())
+        cell.setAttachmentType(attachment.mimeType)
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return attachments.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 0
+        return ATTATCHMENT_CELL_HEIGHT
     }
 }

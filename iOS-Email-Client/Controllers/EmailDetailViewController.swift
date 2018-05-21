@@ -201,18 +201,20 @@ extension EmailDetailViewController: EmailTableViewCellDelegate{
         let historyPopover = HistoryUIPopover()
         historyPopover.historyCellName = "AttachmentHistoryTableCell"
         historyPopover.historyTitleText = "Attachments History"
+        historyPopover.emptyMessage = "Your files have not been opened/downloaded yet"
         historyPopover.historyImage = #imageLiteral(resourceName: "attachment")
         historyPopover.cellHeight = 81.0
-        presentPopover(historyPopover, sender, height: 233)
+        presentPopover(historyPopover, sender, height: 130)
     }
     
     func handleReadTap(_ cell: EmailTableViewCell, _ sender: UIView){
         let historyPopover = HistoryUIPopover()
         historyPopover.historyCellName = "ReadHistoryTableCell"
         historyPopover.historyTitleText = "Read History"
+        historyPopover.emptyMessage = "Your email has not been opened yet"
         historyPopover.historyImage = #imageLiteral(resourceName: "read")
         historyPopover.cellHeight = 39.0
-        presentPopover(historyPopover, sender, height: 233)
+        presentPopover(historyPopover, sender, height: 130)
     }
     
     func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
@@ -310,6 +312,10 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
         composerVC.composerData = composerData
+        for file in email.files {
+            file.requestStatus = .finish
+            composerVC.fileManager.registeredFiles.append(file)
+        }
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     

@@ -194,8 +194,8 @@
                                                                         <constraint firstAttribute="width" constant="24" id="Q7O-0w-668"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is my sheep.pdf" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHH-Ed-ssr">
-                                                                    <rect key="frame" x="46" y="12.5" width="214" height="24"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is my sheep.pdf" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHH-Ed-ssr">
+                                                                    <rect key="frame" x="46" y="12.5" width="191" height="24"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="24" id="xaA-My-gtd"/>
                                                                     </constraints>
@@ -204,14 +204,30 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="128MB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7vv-dj-mcZ">
-                                                                    <rect key="frame" x="263" y="16.5" width="57" height="16.5"/>
+                                                                    <rect key="frame" x="240" y="17" width="80" height="16.5"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="57" id="GRk-7K-MUR"/>
+                                                                        <constraint firstAttribute="width" constant="80" id="GRk-7K-MUR"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="12"/>
                                                                     <color key="textColor" red="0.59601163864135742" green="0.59611696004867554" blue="0.59600502252578735" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="ZDF-6L-j1B">
+                                                                    <rect key="frame" x="31" y="29.5" width="14" height="14"/>
+                                                                    <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="14" id="D5W-eD-7mv"/>
+                                                                        <constraint firstAttribute="width" constant="14" id="ZOn-df-7Bd"/>
+                                                                    </constraints>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                            <integer key="value" value="7"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                                                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </imageView>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
@@ -220,10 +236,12 @@
                                                                 <constraint firstItem="cHH-Ed-ssr" firstAttribute="leading" secondItem="Qmp-NO-MEB" secondAttribute="trailing" constant="8" id="JWq-dp-Ui7"/>
                                                                 <constraint firstItem="sXd-o4-726" firstAttribute="leading" secondItem="a6Y-oB-d26" secondAttribute="leading" constant="15" id="SRU-BP-RwV"/>
                                                                 <constraint firstItem="7vv-dj-mcZ" firstAttribute="leading" secondItem="cHH-Ed-ssr" secondAttribute="trailing" constant="3" id="WTx-l1-Lma"/>
+                                                                <constraint firstItem="ZDF-6L-j1B" firstAttribute="bottom" secondItem="Qmp-NO-MEB" secondAttribute="bottom" constant="7" id="YXf-K9-P61"/>
                                                                 <constraint firstItem="Qmp-NO-MEB" firstAttribute="centerY" secondItem="a6Y-oB-d26" secondAttribute="centerY" id="faI-I3-apK"/>
                                                                 <constraint firstAttribute="trailing" secondItem="7vv-dj-mcZ" secondAttribute="trailing" constant="15" id="hVf-rf-ycc"/>
                                                                 <constraint firstItem="Qmp-NO-MEB" firstAttribute="leading" secondItem="a6Y-oB-d26" secondAttribute="leading" constant="14" id="kFg-uv-518"/>
                                                                 <constraint firstItem="cHH-Ed-ssr" firstAttribute="centerY" secondItem="a6Y-oB-d26" secondAttribute="centerY" id="mrs-tV-hwO"/>
+                                                                <constraint firstItem="ZDF-6L-j1B" firstAttribute="trailing" secondItem="Qmp-NO-MEB" secondAttribute="trailing" constant="7" id="tDU-mJ-HCH"/>
                                                                 <constraint firstItem="7vv-dj-mcZ" firstAttribute="leading" secondItem="cHH-Ed-ssr" secondAttribute="trailing" constant="3" id="vQf-4s-g8u"/>
                                                             </constraints>
                                                         </view>
@@ -276,6 +294,7 @@
                                                     <outlet property="nameLabel" destination="cHH-Ed-ssr" id="fpv-pP-alA"/>
                                                     <outlet property="progressView" destination="eXG-jj-OtT" id="HZL-dv-EJu"/>
                                                     <outlet property="sizeLabel" destination="7vv-dj-mcZ" id="cd2-RE-gHg"/>
+                                                    <outlet property="successImageView" destination="ZDF-6L-j1B" id="Qrc-7z-ATn"/>
                                                     <outlet property="typeImageView" destination="Qmp-NO-MEB" id="Lrg-0s-9v2"/>
                                                     <outlet property="viewClose" destination="BHr-nA-nox" id="NdZ-HQ-xlB"/>
                                                 </connections>
@@ -586,7 +605,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ihb-Z5-xfC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-836" y="2007"/>
+            <point key="canvasLocation" x="-836" y="2006.4467766116943"/>
         </scene>
         <!--Inbox View Controller-->
         <scene sceneID="yLP-Bp-waj">
@@ -745,7 +764,7 @@
                             <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mwd-eq-N7c">
                                 <rect key="frame" x="-0.5" y="-0.5" width="375" height="603"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="envelop" translatesAutoresizingMaskIntoConstraints="NO" id="qzp-lC-DPr">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="envelope" translatesAutoresizingMaskIntoConstraints="NO" id="qzp-lC-DPr">
                                         <rect key="frame" x="131.5" y="208.5" width="112" height="65"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="Lcn-1x-6wc"/>
@@ -756,7 +775,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="hId-Vy-UB5"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -765,7 +784,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="kDo-H8-RfW"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                         <color key="textColor" red="0.60720486111111116" green="0.60784313725490191" blue="0.60732631033182494" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -2260,7 +2279,7 @@
         <image name="color-bell" width="45" height="50"/>
         <image name="composer" width="32" height="30"/>
         <image name="delete-icon" width="16" height="18"/>
-        <image name="envelop" width="112" height="112"/>
+        <image name="envelope" width="112" height="112"/>
         <image name="formatting" width="15" height="18"/>
         <image name="icon-allmail" width="48" height="37"/>
         <image name="icon-draft" width="30" height="30"/>
@@ -2273,6 +2292,7 @@
         <image name="icon-spam" width="31" height="31"/>
         <image name="icon-starred" width="32" height="31"/>
         <image name="icon-support" width="33" height="32"/>
+        <image name="mark-success" width="28" height="28"/>
         <image name="muted" width="34" height="38"/>
         <image name="new-arrow-down" width="12" height="7"/>
         <image name="new-arrow-up" width="12" height="7"/>

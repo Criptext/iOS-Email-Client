@@ -658,7 +658,14 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         composerData.initSubject = draft.subject
         composerData.initContent = draft.content
         composerData.emailDraft = draft
+        if(!draft.threadId.isEmpty){
+            composerData.threadId = draft.threadId
+        }
         composerVC.composerData = composerData
+        for file in draft.files {
+            file.requestStatus = .finish
+            composerVC.fileManager.registeredFiles.append(file)
+        }
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
