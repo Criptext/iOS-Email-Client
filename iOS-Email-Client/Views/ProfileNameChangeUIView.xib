@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+        <array key="NunitoSans-SemiBold.ttf">
+            <string>NunitoSans-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileNameChangeViewController" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="nameTextField" destination="WB5-Un-Tan" id="Pvu-ig-Jax"/>
+                <outlet property="view" destination="iN0-l3-epB" id="RxX-wP-Oe4"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="178"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfM-2G-pON">
+                    <rect key="frame" x="138" y="22" width="99" height="23.5"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="99" id="u4k-k9-u3s"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WB5-Un-Tan" customClass="TextField" customModule="Material">
+                    <rect key="frame" x="25" y="72.5" width="325" height="30"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wJg-AJ-UXv">
+                    <rect key="frame" x="187.5" y="132" width="187.5" height="46"/>
+                    <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="bIt-Bu-gkO"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="15"/>
+                    <state key="normal" title="Ok">
+                        <color key="titleColor" red="0.18823529411764706" green="0.19607843137254902" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onOkPress:" destination="-1" eventType="touchUpInside" id="fGE-jA-JbP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWi-Fa-1cW">
+                    <rect key="frame" x="0.0" y="132" width="187.5" height="46"/>
+                    <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="Gdr-7c-DVQ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="15"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" red="0.18823529410000001" green="0.1960784314" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onCancelPress:" destination="-1" eventType="touchUpInside" id="rwV-dY-aGZ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="nfM-2G-pON" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="35F-yw-Xte"/>
+                <constraint firstItem="wJg-AJ-UXv" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="6Jt-Js-AxV"/>
+                <constraint firstItem="WB5-Un-Tan" firstAttribute="top" secondItem="nfM-2G-pON" secondAttribute="bottom" constant="27" id="PGj-Rv-q05"/>
+                <constraint firstItem="WB5-Un-Tan" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="WlX-fh-8ar"/>
+                <constraint firstItem="wJg-AJ-UXv" firstAttribute="leading" secondItem="JWi-Fa-1cW" secondAttribute="trailing" id="YQT-Jt-3xj"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="WB5-Un-Tan" secondAttribute="trailing" constant="25" id="Zqz-RL-up4"/>
+                <constraint firstItem="JWi-Fa-1cW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eW1-2E-LjY"/>
+                <constraint firstItem="nfM-2G-pON" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="22" id="mC4-8x-4HL"/>
+                <constraint firstItem="JWi-Fa-1cW" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="qCk-7f-bOC"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="wJg-AJ-UXv" secondAttribute="trailing" id="qex-8U-utX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="wJg-AJ-UXv" secondAttribute="bottom" id="t9x-8T-3xk"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="24.5" y="323.5"/>
+        </view>
+    </objects>
+</document>

@@ -556,6 +556,41 @@ extension InboxViewController: UITableViewDataSource{
         envelopeTitleView.text = title
         envelopeSubtitleView.text = subtitle
     }
+    
+    func goToSettings(){
+        self.navigationDrawerController?.closeLeftView()
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let generalVC = storyboard.instantiateViewController(withIdentifier: "redViewController") as! SettingsGeneralViewController
+        let labelsVC = storyboard.instantiateViewController(withIdentifier: "blueViewController")
+        let devicesVC = storyboard.instantiateViewController(withIdentifier: "greenViewController")
+        generalVC.myAccount = self.myAccount
+        let tabsVC = TabsController(viewControllers: [generalVC, labelsVC, devicesVC])
+        tabsVC.tabBarAlignment = .top
+        let tabBar = tabsVC.tabBar
+        tabBar.setLineColor(.mainUI, for: .selected)
+        tabBar.layer.masksToBounds = false
+        
+        let frame = CGRect(x: 0, y: tabBar.layer.height/2, width: self.view.frame.width, height: 6)
+        
+        let backgroundView = UIView(frame: frame)
+        tabBar.addSubview(backgroundView)
+        
+        let topColor = UIColor.black
+        let bottomColor = UIColor.clear
+        
+        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
+        let gradientLocations: [CGFloat] = [0.0, 1.0]
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.locations = gradientLocations as [NSNumber]?
+        gradientLayer.frame = frame
+        gradientLayer.opacity = 0.23
+        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+        backgroundView.layer.zPosition = 100
+        
+        self.navigationController?.pushViewController(tabsVC, animated: true)
+    }
 }
 
 //MARK: - TableView Delegate

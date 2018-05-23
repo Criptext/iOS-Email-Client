@@ -94,16 +94,19 @@ class CriptextFileManager {
             }
             let chunk = file.chunks[index]
             registeredFiles[fileIndex].requestStatus = .uploading
-            uploadChunk(chunk, filetoken: filetoken, part: index)
+            uploadChunk(chunk, file: file, part: index)
             return
         }
         handleFileTurn()
     }
     
-    private func uploadChunk(_ chunk: Data, filetoken: String, part: Int){
+    private func uploadChunk(_ chunk: Data, file: File, part: Int){
+        let filetoken = file.token
         let params = [
             "part": part,
-            "filetoken": filetoken
+            "filetoken": filetoken,
+            "filename": file.name,
+            "mimeType": file.mimeType
         ] as [String: Any]
         APIManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError, response) in
             guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
