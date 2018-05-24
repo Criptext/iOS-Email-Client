@@ -32,6 +32,7 @@ class CreatingAccountViewController: UIViewController{
             }
             sendSignUpRequest()
         case .accountCreate:
+            createActiveDevice()
             createAccount()
         }
     }
@@ -95,6 +96,15 @@ class CreatingAccountViewController: UIViewController{
         animateProgress(100.0, 2.0) {
             self.goToMailbox(myAccount.username)
         }
+    }
+    
+    func createActiveDevice(){
+        let device = Device()
+        device.uuid = UIDevice.current.identifierForVendor!.uuidString
+        device.name = systemIdentifier()
+        device.mobile = true
+        device.active = true
+        DBManager.store(device)
     }
     
     func displayErrorMessage(){

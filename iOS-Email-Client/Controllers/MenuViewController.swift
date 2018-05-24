@@ -27,6 +27,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var labelsTableView: UITableView!
     @IBOutlet weak var labelsTapIconView: UIImageView!
     @IBOutlet weak var labelsTableHeightContraint: NSLayoutConstraint!
+    @IBOutlet weak var settingsMenuItem: MenuItemUIView!
     var selectedMenuItem : MenuItemUIView?
     var mailboxVC : InboxViewController! {
         get {
@@ -83,6 +84,10 @@ class MenuViewController: UIViewController{
         inboxMenuItem.showBadge(inboxCounter)
         draftMenuItem.showBadge(draftCounter)
         spamMenuItem.showBadge(spamCounter)
+    }
+    
+    @IBAction func onSettingsMenuItemPress(_ sender: Any) {
+        mailboxVC.goToSettings()
     }
 }
 

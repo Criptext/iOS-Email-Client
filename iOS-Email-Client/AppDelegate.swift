@@ -121,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         for systemLabel in SystemLabel.array {
             let newLabel = Label(systemLabel.description)
             newLabel.id = systemLabel.id
+            newLabel.type = "system"
             DBManager.store(newLabel)
         }
     }
@@ -164,15 +165,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
-        
-        guard let snackVC = self.window?.rootViewController?.snackbarController,
-            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-            let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                return
-        }
-        
-        //register token for push
     }
 }
 

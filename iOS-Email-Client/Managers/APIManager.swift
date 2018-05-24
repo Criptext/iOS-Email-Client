@@ -167,11 +167,13 @@ class APIManager {
         let headers = ["Authorization": "Basic \(token)"]
         let filetoken = params["filetoken"] as! String
         let part = params["part"] as! Int
+        let filename = params["filename"] as! String
+        let mimeType = params["mimeType"] as! String
         Alamofire.upload(multipartFormData: { (multipartForm) in
             for (key, value) in params {
                 multipartForm.append("\(value)".data(using: .utf8)!, withName: key)
             }
-            multipartForm.append(chunk, withName: "chunk")
+            multipartForm.append(chunk, withName: "chunk", fileName: filename, mimeType: mimeType)
             
         }, usingThreshold: UInt64.init(), to: url, method: .post, headers: headers) { (result) in
             switch(result){
