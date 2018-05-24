@@ -28,7 +28,7 @@ class SettingsLabelsViewController: UITableViewController {
         
         cell.labelLabel.text = label.text
         cell.checkMarkView.setChecked(true)
-        guard label.id > 6 else {
+        guard label.type == "custom" else {
             cell.colorDotsContainer.isHidden = true
             cell.checkMarkView.isHidden = true
             return cell

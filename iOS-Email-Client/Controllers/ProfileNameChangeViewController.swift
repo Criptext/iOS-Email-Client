@@ -21,6 +21,11 @@ class ProfileNameChangeViewController: BaseUIPopover {
         nameTextField.text = currentName
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        nameTextField.becomeFirstResponder()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

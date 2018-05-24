@@ -13,7 +13,9 @@ import Realm
 class Label : Object {
     @objc dynamic var id : Int = 0
     @objc dynamic var text : String = ""
-    @objc dynamic var color : String = "#dddddd"
+    @objc dynamic var color : String = "dddddd"
+    @objc dynamic var type : String = "custom"
+    @objc dynamic var visible : Bool = true
     
     init(_ labelText: String) {
         super.init()

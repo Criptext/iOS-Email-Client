@@ -54,10 +54,24 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == 1 && indexPath.row == 0 else {
-            return
+        let text = menus[sections[indexPath.section]]![indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch(text){
+        case "Profile Name":
+            presentPopover()
+        case "Signature":
+            goToSignature()
+        default:
+            break
         }
-        presentPopover()
+        
+    }
+    
+    func goToSignature(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let signatureVC = storyboard.instantiateViewController(withIdentifier: "signatureEditorViewController")
+        
+        self.navigationController?.pushViewController(signatureVC, animated: true)
     }
     
     func presentPopover(){

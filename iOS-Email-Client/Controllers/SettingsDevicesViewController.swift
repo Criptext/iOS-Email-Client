@@ -10,18 +10,7 @@ import Foundation
 
 class SettingsDevicesViewController: UITableViewController {
     
-    let devices = [["name": "Samsung Galaxy S8",
-                    "location": "Guayaquil - 12 hours ago",
-                    "active": true,
-                    "mobile": true],
-                   ["name": "Mac Book Pro",
-                    "location": "Guayaquil - 12 hours ago",
-                    "active": false,
-                    "mobile": false],
-                   ["name": "Iphone X",
-                    "location": "Quito - 23 hours ago",
-                    "active": false,
-                    "mobile": true]]
+    let devices = DBManager.getDevices()
     
     override func viewDidLoad() {
         tabItem.title = "Devices"
@@ -37,15 +26,11 @@ class SettingsDevicesViewController: UITableViewController {
         let device = devices[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsDeviceCell") as! SettingsDeviceTableViewCell
         
-        let name = device["name"] as! String
-        let location = device["location"] as! String
-        let active = device["active"] as! Bool
-        let mobile = device["mobile"] as! Bool
-        
-        cell.deviceImageView.image = mobile ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
-        cell.deviceNameLabel.text = name
-        cell.deviceLocationLabel.text = location
-        cell.currentDeviceLabel.isHidden = !active
+        cell.deviceImageView.image = device.mobile ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
+        cell.deviceNameLabel.text = device.name
+        cell.deviceLocationLabel.text = device.location
+        cell.currentDeviceLabel.isHidden = !device.active
+        cell.deviceLocationLabel.isHidden = !device.active
         
         return cell
     }
