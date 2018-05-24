@@ -561,9 +561,9 @@ extension InboxViewController: UITableViewDataSource{
         self.navigationDrawerController?.closeLeftView()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let generalVC = storyboard.instantiateViewController(withIdentifier: "redViewController") as! SettingsGeneralViewController
-        let labelsVC = storyboard.instantiateViewController(withIdentifier: "blueViewController")
-        let devicesVC = storyboard.instantiateViewController(withIdentifier: "greenViewController")
+        let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
+        let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController")
+        let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController")
         generalVC.myAccount = self.myAccount
         let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
         tabsVC.edgesForExtendedLayout = []

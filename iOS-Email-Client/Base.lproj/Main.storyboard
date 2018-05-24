@@ -1422,7 +1422,7 @@
         <!--Settings Labels View Controller-->
         <scene sceneID="dBV-ib-q5v">
             <objects>
-                <tableViewController storyboardIdentifier="blueViewController" id="cxx-G7-GYN" customClass="SettingsLabelsViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="settingsLabelsViewController" id="cxx-G7-GYN" customClass="SettingsLabelsViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="cxO-ff-8Xa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1564,7 +1564,7 @@
         <!--Settings General View Controller-->
         <scene sceneID="BKf-HO-wC2">
             <objects>
-                <tableViewController storyboardIdentifier="redViewController" id="2Gr-In-2gE" customClass="SettingsGeneralViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="settingsGeneralViewController" id="2Gr-In-2gE" customClass="SettingsGeneralViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" sectionIndexMinimumDisplayRowCount="4" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="9i4-Mz-Usn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1768,7 +1768,7 @@
         <!--Settings Devices View Controller-->
         <scene sceneID="KZp-Rf-w7f">
             <objects>
-                <tableViewController storyboardIdentifier="greenViewController" id="eJ2-QO-0Em" customClass="SettingsDevicesViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="settingsDevicesViewController" id="eJ2-QO-0Em" customClass="SettingsDevicesViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="FWb-Zn-XWW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
