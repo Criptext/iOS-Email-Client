@@ -56,7 +56,6 @@
 		41AAC545201AA01500809C4D /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC544201AA01400809C4D /* DBManager.swift */; };
 		41AAC547201AA01F00809C4D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC546201AA01F00809C4D /* Extensions.swift */; };
 		41AAC549201AA02C00809C4D /* editor-style.css in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC548201AA02C00809C4D /* editor-style.css */; };
-		41AAC54B201AA03E00809C4D /* showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC54A201AA03E00809C4D /* showmore.png */; };
 		41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC54C201AA04F00809C4D /* GoogleService-Info.plist */; };
 		41AAC54F201AA05E00809C4D /* mark_read.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC54E201AA05E00809C4D /* mark_read.png */; };
 		41AAC551201AA06500809C4D /* mark_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC550201AA06500809C4D /* mark_unread.png */; };
@@ -166,6 +165,7 @@
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
 		7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */; };
+		7CD7A59120B76B990079B797 /* showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CD7A59020B76B970079B797 /* showmore.png */; };
 		7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
 		7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
@@ -248,7 +248,6 @@
 		41AAC544201AA01400809C4D /* DBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 		41AAC546201AA01F00809C4D /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		41AAC548201AA02C00809C4D /* editor-style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "editor-style.css"; sourceTree = "<group>"; };
-		41AAC54A201AA03E00809C4D /* showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = showmore.png; sourceTree = "<group>"; };
 		41AAC54C201AA04F00809C4D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41AAC54E201AA05E00809C4D /* mark_read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mark_read.png; sourceTree = "<group>"; };
 		41AAC550201AA06500809C4D /* mark_unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mark_unread.png; sourceTree = "<group>"; };
@@ -366,6 +365,7 @@
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
 		7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		7CD7A59020B76B970079B797 /* showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = showmore.png; path = "../../../../Downloads/iOS - icono/showmore.png"; sourceTree = "<group>"; };
 		7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSessionStore.swift; sourceTree = "<group>"; };
 		7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
@@ -565,8 +565,8 @@
 				41B6AAD020179E4E00D428B7 /* Views */,
 				41B6AACF20179D2100D428B7 /* Model */,
 				41B6AAAF2017987500D428B7 /* AppDelegate.swift */,
-				41AAC54A201AA03E00809C4D /* showmore.png */,
 				41B6AAB32017987500D428B7 /* Main.storyboard */,
+				7CD7A59020B76B970079B797 /* showmore.png */,
 				41B6AAB62017987500D428B7 /* Assets.xcassets */,
 				41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */,
 				41B6AABB2017987500D428B7 /* Info.plist */,
@@ -853,7 +853,6 @@
 				7C5FD822205C2FBB000E5F14 /* AttachmentTableViewCell.xib in Resources */,
 				7CB3B942208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib in Resources */,
 				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
-				41AAC54B201AA03E00809C4D /* showmore.png in Resources */,
 				412CB03B2037402D005D1B3F /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
 				412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */,
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
@@ -865,6 +864,7 @@
 				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
 				7C049F8B20879CFA007A6213 /* LabelsUIPopover.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
+				7CD7A59120B76B990079B797 /* showmore.png in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
 				7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */,
 				7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */,

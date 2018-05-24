@@ -100,7 +100,8 @@ class InboxViewController: UIViewController {
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)        
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -335,6 +336,15 @@ extension InboxViewController{
         }
         mailboxData.emails.remove(at: draftIndex)
         tableView.reloadData()
+    }
+    
+    @objc func refreshNewEmail(notification: NSNotification){
+        guard let data = notification.userInfo,
+            let email = data["email"] as? Email,
+            email.labels.contains(where: {$0.id == mailboxData.selectedLabel}) else {
+                return
+        }
+        refreshEmailRows()
     }
 }
 
