@@ -188,7 +188,7 @@ class ComposeViewController: UIViewController {
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
         subjectField.text = composerData.initSubject
-        editorView.html = composerData.initContent
+        editorView.html = composerData.initContent + (composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")
         
         fileManager.delegate = self
     }
@@ -1221,6 +1221,17 @@ extension ComposeViewController: RichEditorDelegate {
         let cgheight = CGFloat(height)
         let diff = cgheight - self.editorHeightConstraint.constant
         let offset = self.scrollView.contentOffset
+        
+        if CGFloat(height + 90 + 25) > self.toolbarView.frame.origin.y {
+            var newOffset = CGPoint(x: offset.x, y: offset.y + 28)
+            if diff == -28  {
+                newOffset = CGPoint(x: offset.x, y: offset.y - 28)
+            }
+
+            if self.isEdited && !editor.webView.isLoading {
+                self.scrollView.setContentOffset(newOffset, animated: true)
+            }
+        }
         
         guard height > 150 else {
             return

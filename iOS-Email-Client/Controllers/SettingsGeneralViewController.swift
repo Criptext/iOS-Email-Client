@@ -69,14 +69,14 @@ class SettingsGeneralViewController: UITableViewController{
     
     func goToSignature(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let signatureVC = storyboard.instantiateViewController(withIdentifier: "signatureEditorViewController")
-        
+        let signatureVC = storyboard.instantiateViewController(withIdentifier: "signatureEditorViewController") as! SignatureEditorViewController
+        signatureVC.myAccount = myAccount
         self.navigationController?.pushViewController(signatureVC, animated: true)
     }
     
     func presentPopover(){
         let changeNamePopover = ProfileNameChangeViewController()
-        changeNamePopover.currentName = myAccount.name
+        changeNamePopover.myAccount = myAccount
         changeNamePopover.preferredContentSize = CGSize(width: 270, height: 178)
         changeNamePopover.popoverPresentationController?.sourceView = self.view
         changeNamePopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)

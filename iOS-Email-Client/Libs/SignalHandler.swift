@@ -17,7 +17,7 @@ class SignalHandler {
             ? WhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
             : PreKeyWhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
         let plainText = sessionCipher?.decrypt(incomingMessage)
-        let plainTextString = NSString(data:plainText!, encoding:String.Encoding.ascii.rawValue)
+        let plainTextString = NSString(data: plainText!, encoding: String.Encoding.utf8.rawValue)
         print("decrypted: \(String(describing: plainTextString))")
         return plainTextString! as String
     }

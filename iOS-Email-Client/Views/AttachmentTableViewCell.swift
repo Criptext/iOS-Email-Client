@@ -67,11 +67,7 @@ class AttachmentTableViewCell: UITableViewCell {
     }
     
     @objc func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
-        guard let delegate = self.delegate else {
-            return
-        }
         
-        delegate.tableViewCellDidTapRemove(self)
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {

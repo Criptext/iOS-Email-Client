@@ -361,7 +361,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             self.setLabels([])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        showAlert("Archive Threads", message: "The selected threads will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
+        showAlert("Archive Emails", message: "Emails will be displayed only in ALL MAIL", style: .alert, actions: [archiveAction, cancelAction])
     }
     
     func onTrashThreads() {
@@ -369,7 +369,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             self.moveTo(labelId: SystemLabel.trash.id)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        showAlert("Delete Threads", message: "The selected threads will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])
+        showAlert("Delete Emails", message: "Emails will be moved to Trash", style: .alert, actions: [archiveAction, cancelAction])
     }
     
     func onMarkThreads() {

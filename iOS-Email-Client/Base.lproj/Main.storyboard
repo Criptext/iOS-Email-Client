@@ -35,7 +35,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2A-K4-V0b">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="548"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="otC-Sy-dru" userLabel="ViewSeparetor">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
@@ -425,7 +425,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="0.03660611579754601" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="dFZ-Fr-BI7" firstAttribute="leading" secondItem="N3R-WH-lLb" secondAttribute="trailing" constant="14" id="3GW-vY-5f3"/>
                                     <constraint firstAttribute="trailing" secondItem="dFZ-Fr-BI7" secondAttribute="trailing" constant="14" id="Elm-y5-bQ5"/>
@@ -550,7 +550,7 @@
                             <constraint firstItem="9xK-7S-wAd" firstAttribute="top" secondItem="c58-aV-hT9" secondAttribute="bottom" id="1af-ci-02V"/>
                             <constraint firstItem="iDg-H7-8j8" firstAttribute="top" secondItem="9xK-7S-wAd" secondAttribute="bottom" id="6Iz-MU-oAh"/>
                             <constraint firstAttribute="trailing" secondItem="U42-me-sDa" secondAttribute="trailing" id="9Rv-Dg-sb5"/>
-                            <constraint firstItem="9xK-7S-wAd" firstAttribute="top" secondItem="f2A-K4-V0b" secondAttribute="bottom" id="FVT-Rs-hJz"/>
+                            <constraint firstItem="iDg-H7-8j8" firstAttribute="top" secondItem="f2A-K4-V0b" secondAttribute="bottom" id="FVT-Rs-hJz"/>
                             <constraint firstItem="f2A-K4-V0b" firstAttribute="top" secondItem="3KV-4L-vEo" secondAttribute="top" id="HTo-Fb-eKb"/>
                             <constraint firstItem="sye-0t-mfE" firstAttribute="leading" secondItem="3KV-4L-vEo" secondAttribute="leading" id="Hgb-Kd-jir"/>
                             <constraint firstItem="U42-me-sDa" firstAttribute="top" secondItem="3KV-4L-vEo" secondAttribute="top" id="NTc-QK-xcu"/>
@@ -1742,23 +1742,24 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eM-lg-clQ" customClass="RichEditorView" customModule="RichEditorView">
-                                <rect key="frame" x="16" y="85" width="343" height="582"/>
+                                <rect key="frame" x="27" y="100" width="324" height="567"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="5eM-lg-clQ" secondAttribute="trailing" id="4YI-Y4-oBZ"/>
                             <constraint firstItem="TlD-VH-mNM" firstAttribute="top" secondItem="MNI-o6-ntf" secondAttribute="bottom" id="EOD-y0-7Q7"/>
-                            <constraint firstItem="5eM-lg-clQ" firstAttribute="leading" secondItem="KbG-HE-lCi" secondAttribute="leadingMargin" id="OFg-M8-KDd"/>
+                            <constraint firstItem="5eM-lg-clQ" firstAttribute="leading" secondItem="KbG-HE-lCi" secondAttribute="leading" constant="27" id="Gyc-SL-3Ud"/>
                             <constraint firstItem="XEm-A7-hFA" firstAttribute="top" secondItem="5eM-lg-clQ" secondAttribute="bottom" id="Q3E-Ui-Vjn"/>
                             <constraint firstAttribute="trailing" secondItem="TlD-VH-mNM" secondAttribute="trailing" id="RvY-PM-vNH"/>
-                            <constraint firstItem="5eM-lg-clQ" firstAttribute="top" secondItem="TlD-VH-mNM" secondAttribute="bottom" id="gmP-Yg-Jy1"/>
+                            <constraint firstAttribute="trailing" secondItem="5eM-lg-clQ" secondAttribute="trailing" constant="24" id="TLl-20-6Bq"/>
+                            <constraint firstItem="5eM-lg-clQ" firstAttribute="top" secondItem="TlD-VH-mNM" secondAttribute="bottom" constant="15" id="gmP-Yg-Jy1"/>
                             <constraint firstItem="TlD-VH-mNM" firstAttribute="leading" secondItem="KbG-HE-lCi" secondAttribute="leading" id="uqy-ws-eyP"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="richEditor" destination="5eM-lg-clQ" id="Gts-hS-89S"/>
+                        <outlet property="signatureEnableSwitch" destination="cb5-Ym-zzt" id="pRy-aZ-iGb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TGU-as-XWL" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -182,6 +182,7 @@
 		7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */; };
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
+		7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */; };
 		7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFF2EE720766532002B19DB /* MenuViewController.swift */; };
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
 		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
@@ -382,6 +383,7 @@
 		7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTableViewCell.swift; sourceTree = "<group>"; };
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
+		7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		7CFF2EE720766532002B19DB /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				41AAC542201AA00000809C4D /* ContactManager.swift */,
 				41AAC544201AA01400809C4D /* DBManager.swift */,
 				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
+				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -956,6 +959,7 @@
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
+				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
