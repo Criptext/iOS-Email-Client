@@ -848,9 +848,9 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             return
         }
         self.didPressEdit(reload: true)
-        let orderedIndexPath = indexPaths.sorted{$0.row > $1.row}
+        let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
         var indexPathsToRemove = [IndexPath]()
-        for indexPath in orderedIndexPath {
+        for indexPath in orderedIndexPaths {
             let email = mailboxData.emails[indexPath.row]
             if !(labels.contains(mailboxData.selectedLabel) || (labels.isEmpty && mailboxData.selectedLabel != SystemLabel.all.id)) {
                 indexPathsToRemove.append(indexPath)
@@ -870,8 +870,8 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             return
         }
         self.didPressEdit(reload: true)
-        let orderedIndexPath = indexPaths.sorted{$0.row > $1.row}
-        for indexPath in orderedIndexPath {
+        let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
+        for indexPath in orderedIndexPaths {
             let email = mailboxData.emails[indexPath.row]
             DBManager.setLabelsForThread(email.threadId, labels: [labelId], currentLabel: mailboxData.selectedLabel)
             mailboxData.emails.remove(at: indexPath.row)
