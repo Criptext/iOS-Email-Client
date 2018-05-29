@@ -84,7 +84,7 @@ class EventHandler {
         let localDate = dateFormatter.date(from: date) ?? Date()
         
         if let email = DBManager.getMailByKey(key: metadataKey.description) {
-            if(!email.labels.contains(where: {$0.id == SystemLabel.inbox.id})){
+            if(email.labels.count == 1 && email.labels.first!.id == SystemLabel.sent.id){
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
                 self.emails.append(email)
             }

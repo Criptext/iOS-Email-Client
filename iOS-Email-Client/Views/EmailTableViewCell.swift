@@ -62,6 +62,16 @@ class EmailTableViewCell: UITableViewCell{
         attachmentsTableView.dataSource = self
         let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
         attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentTableCell")
+        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard keyPath == "contentSize" else {
+            return
+        }
+        if( webView.scrollView.contentSize.height != self.myHeight) {
+            webView.scrollView.contentSize = CGSize(width: webView.scrollView.contentSize.width, height: self.myHeight)
+        }
     }
     
     func setupView(){
@@ -73,7 +83,10 @@ class EmailTableViewCell: UITableViewCell{
         borderBGView.layer.borderWidth = 1
         borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
         
+        webView.scrollView.bouncesZoom = false
+        webView.scrollView.bounces = false
         webView.navigationDelegate = self
+        webView.scrollView.delegate = self
         webView.configuration.userContentController.add(self, name: "iosListener")
     }
     
@@ -123,8 +136,9 @@ class EmailTableViewCell: UITableViewCell{
         
         bottomMarginHeightConstraint.constant = MARGIN_HEIGHT
         let fromContactName = email.fromContact.displayName
+        let allContacts = toContacts + email.getContacts(type: .cc) + email.getContacts(type: .bcc)
         contactsExpandLabel.text = fromContactName
-        moreRecipientsLabel.text = toContacts.count > 1 ? "To \(toContacts.first!.displayName) & \(toContacts.count - 1) more" : "To \(toContacts.first!.displayName)"
+        moreRecipientsLabel.text = allContacts.count > 1 ? "To \(allContacts.first!.displayName) & \(allContacts.count - 1) more" : "To \(allContacts.first!.displayName)"
         expandedDateLabel.text = email.getFormattedDate()
         setExpandedIcons(email)
     }
@@ -203,7 +217,30 @@ extension EmailTableViewCell{
     }
 }
 
-extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler{
+extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate{
+    
+    /*func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        guard offsetY > 0 else {
+            return
+        }
+        scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: 0), animated: false)
+        
+        guard let tableView = self.superview as? UITableView else {
+            return
+        }
+        let newOffsetY = tableView.contentOffset.y + offsetY
+        guard newOffsetY <= tableView.contentSize.height - tableView.bounds.height else {
+            return
+        }
+        print("TABLE HOORAY!! \(tableView.contentOffset.y) ==> \(newOffsetY)")
+        tableView.setContentOffset(CGPoint(x: tableView.contentOffset.x, y: newOffsetY), animated: false)
+    }*/
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: 0), animated: false)
+        webViewEvaluateHeight(self.webView)
+    }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         webViewEvaluateHeight(webView)
@@ -214,7 +251,8 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler{
     }
     
     func webViewEvaluateHeight(_ webview: WKWebView){
-        webView.evaluateJavaScript("document.body.clientHeight") { (result, error) in
+        let jsString = "document.body.clientHeight + (document.body.childNodes[0].offsetTop || 0)"
+        webView.evaluateJavaScript(jsString) { (result, error) in
             guard let height = result as? CGFloat else {
                 return
             }

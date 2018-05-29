@@ -331,7 +331,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <wkWebViewConfiguration key="configuration">
                                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                            <wkPreferences key="preferences"/>
+                                            <wkPreferences key="preferences" minimumFontSize="16"/>
                                         </wkWebViewConfiguration>
                                     </wkWebView>
                                 </subviews>
