@@ -100,7 +100,8 @@ class InboxViewController: UIViewController {
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)        
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -335,6 +336,15 @@ extension InboxViewController{
         }
         mailboxData.emails.remove(at: draftIndex)
         tableView.reloadData()
+    }
+    
+    @objc func refreshNewEmail(notification: NSNotification){
+        guard let data = notification.userInfo,
+            let email = data["email"] as? Email,
+            email.labels.contains(where: {$0.id == mailboxData.selectedLabel}) else {
+                return
+        }
+        refreshEmailRows()
     }
 }
 
@@ -751,7 +761,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return !mailboxData.isCustomEditing && !mailboxData.searchMode
+        return indexPath.row != mailboxData.emails.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
     }
 }
 
@@ -838,8 +848,9 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             return
         }
         self.didPressEdit(reload: true)
+        let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
         var indexPathsToRemove = [IndexPath]()
-        for indexPath in indexPaths {
+        for indexPath in orderedIndexPaths {
             let email = mailboxData.emails[indexPath.row]
             if !(labels.contains(mailboxData.selectedLabel) || (labels.isEmpty && mailboxData.selectedLabel != SystemLabel.all.id)) {
                 indexPathsToRemove.append(indexPath)
@@ -848,6 +859,8 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             DBManager.setLabelsForThread(email.threadId, labels: labels, currentLabel: mailboxData.selectedLabel)
         }
         self.tableView.deleteRows(at: indexPathsToRemove, with: .left)
+        updateBadges()
+        showNoEmailsView(mailboxData.reachedEnd && mailboxData.emails.isEmpty)
     }
     
     func moveTo(labelId: Int) {
@@ -857,12 +870,15 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             return
         }
         self.didPressEdit(reload: true)
-        for indexPath in indexPaths {
+        let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
+        for indexPath in orderedIndexPaths {
             let email = mailboxData.emails[indexPath.row]
             DBManager.setLabelsForThread(email.threadId, labels: [labelId], currentLabel: mailboxData.selectedLabel)
             mailboxData.emails.remove(at: indexPath.row)
         }
         self.tableView.deleteRows(at: indexPaths, with: .left)
+        updateBadges()
+        showNoEmailsView(mailboxData.reachedEnd && mailboxData.emails.isEmpty)
     }
 }
 

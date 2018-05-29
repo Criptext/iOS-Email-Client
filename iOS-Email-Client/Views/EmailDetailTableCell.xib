@@ -275,7 +275,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYm-hV-w11">
                                         <rect key="frame" x="308" y="12.5" width="50" height="50"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="composer" translatesAutoresizingMaskIntoConstraints="NO" id="uMD-Ib-Tj2">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-edit" translatesAutoresizingMaskIntoConstraints="NO" id="uMD-Ib-Tj2">
                                                 <rect key="frame" x="12.5" y="12.5" width="25" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="25" id="1D0-1v-is4"/>
@@ -432,8 +432,8 @@
     <resources>
         <image name="attachment" width="20" height="36"/>
         <image name="attachment_inbox" width="36" height="20"/>
-        <image name="composer" width="32" height="30"/>
         <image name="dots-options" width="24" height="6"/>
+        <image name="icon-edit" width="24" height="24"/>
         <image name="icon-reply" width="55" height="48"/>
         <image name="read" width="36" height="21"/>
         <image name="unsend-icon" width="33" height="29"/>

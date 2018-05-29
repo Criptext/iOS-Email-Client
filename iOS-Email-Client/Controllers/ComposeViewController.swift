@@ -23,6 +23,10 @@ class ComposeViewController: UIViewController {
     let MAX_ROWS_BEFORE_CALC_HEIGHT = 3
     let ATTACHMENT_ROW_HEIGHT = 65
     let MARGIN_TOP = 20
+    let CONTACT_FIELDS_HEIGHT = 90
+    let ENTER_LINE_HEIGHT : CGFloat = 28.0
+    let TOOLBAR_MARGIN_HEIGHT = 25
+    let COMPOSER_MIN_HEIGHT = 150
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
@@ -188,7 +192,7 @@ class ComposeViewController: UIViewController {
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
         subjectField.text = composerData.initSubject
-        editorView.html = composerData.initContent
+        editorView.html = composerData.initContent + (composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")
         
         fileManager.delegate = self
     }
@@ -1217,12 +1221,22 @@ extension ComposeViewController: CriptextFileDelegate {
 extension ComposeViewController: RichEditorDelegate {
     
     func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
-        
         let cgheight = CGFloat(height)
         let diff = cgheight - self.editorHeightConstraint.constant
         let offset = self.scrollView.contentOffset
         
-        guard height > 150 else {
+        if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) > self.toolbarView.frame.origin.y {
+            var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
+            if diff == -ENTER_LINE_HEIGHT  {
+                newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
+            }
+
+            if self.isEdited && !editor.webView.isLoading {
+                self.scrollView.setContentOffset(newOffset, animated: true)
+            }
+        }
+        
+        guard height > COMPOSER_MIN_HEIGHT else {
             return
         }
         

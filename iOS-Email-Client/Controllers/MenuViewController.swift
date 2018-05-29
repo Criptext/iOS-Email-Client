@@ -52,6 +52,10 @@ class MenuViewController: UIViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
+        guard nameLabel.text != mailboxVC.myAccount.name else {
+            return
+        }
+        setupAccountInfo(mailboxVC.myAccount)
     }
     
     @IBAction func onMenuItemLabelPress(_ sender: MenuItemUIView) {

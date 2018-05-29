@@ -83,7 +83,11 @@ class EventHandler {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let localDate = dateFormatter.date(from: date) ?? Date()
         
-        guard DBManager.getMailByKey(key: metadataKey.description) == nil else {
+        if let email = DBManager.getMailByKey(key: metadataKey.description) {
+            if(!email.labels.contains(where: {$0.id == SystemLabel.inbox.id})){
+                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
+                self.emails.append(email)
+            }
             finishCallback(true)
             return
         }

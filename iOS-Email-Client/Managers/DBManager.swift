@@ -49,6 +49,23 @@ extension DBManager {
         
         return realm.object(ofType: Account.self, forPrimaryKey: username)
     }
+    
+    class func update(account: Account, name: String){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.name = name
+        }
+    }
+    
+    class func update(account: Account, signature: String, enabled: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.signature = signature
+            account.signatureEnabled = enabled
+        }
+    }
 }
 
 //MARK: - Device related
