@@ -219,24 +219,6 @@ extension EmailTableViewCell{
 
 extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate{
     
-    /*func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        guard offsetY > 0 else {
-            return
-        }
-        scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: 0), animated: false)
-        
-        guard let tableView = self.superview as? UITableView else {
-            return
-        }
-        let newOffsetY = tableView.contentOffset.y + offsetY
-        guard newOffsetY <= tableView.contentSize.height - tableView.bounds.height else {
-            return
-        }
-        print("TABLE HOORAY!! \(tableView.contentOffset.y) ==> \(newOffsetY)")
-        tableView.setContentOffset(CGPoint(x: tableView.contentOffset.x, y: newOffsetY), animated: false)
-    }*/
-    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: 0), animated: false)
         webViewEvaluateHeight(self.webView)

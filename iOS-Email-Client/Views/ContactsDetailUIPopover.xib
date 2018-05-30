@@ -20,13 +20,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactsDetailUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
+                <outlet property="ccEmailsTableView" destination="iGu-em-TB3" id="dcV-jf-KFo"/>
+                <outlet property="ccViewHeightConstraint" destination="PsO-v1-Ana" id="CZo-Zv-w3D"/>
                 <outlet property="dateLabel" destination="dWG-qe-VNX" id="rjw-um-Umh"/>
                 <outlet property="fromEmailsLabel" destination="3jT-CD-mq9" id="hcN-mg-fXS"/>
                 <outlet property="replyToEmailsLabel" destination="wZE-Zu-ENE" id="3Ia-EX-ZBL"/>
                 <outlet property="replyToView" destination="OjR-Gy-YFW" id="hau-lg-9Ic"/>
-                <outlet property="toEmailsLabel" destination="u0o-YX-nMT" id="s5y-QY-FkE"/>
+                <outlet property="toEmailsTableView" destination="Dk3-Av-dMY" id="m01-De-Q2L"/>
                 <outlet property="toHeightConstraint" destination="7u3-eL-Ny6" id="ETT-4W-LI9"/>
-                <outlet property="toLabelHeightConstraint" destination="NS3-Vw-zAg" id="sY7-ed-iwX"/>
+                <outlet property="toLabelHeightConstraint" destination="DMC-9s-YCA" id="3O1-Qx-fxe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="dWv-2L-x75"/>
             </connections>
         </placeholder>
@@ -39,7 +41,7 @@
                     <rect key="frame" x="0.0" y="10" width="375" height="265"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="nPT-Dn-Uoj">
-                            <rect key="frame" x="0.0" y="6" width="375" height="188"/>
+                            <rect key="frame" x="0.0" y="6" width="375" height="268"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rCT-ZV-mZa">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
@@ -103,7 +105,7 @@
                                     <rect key="frame" x="0.0" y="72" width="375" height="80"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3q-Py-Wbi">
-                                            <rect key="frame" x="13" y="4" width="71" height="20.5"/>
+                                            <rect key="frame" x="20" y="13" width="71" height="20.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="71" id="WDs-zi-GUM"/>
                                             </constraints>
@@ -111,28 +113,62 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gianni Carlo gianni@criptext.com Pedro Iniguez" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0o-YX-nMT">
-                                            <rect key="frame" x="84" y="4" width="289" height="65"/>
+                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dk3-Av-dMY">
+                                            <rect key="frame" x="73" y="4" width="300" height="65"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="65" id="NS3-Vw-zAg"/>
+                                                <constraint firstAttribute="height" constant="65" id="DMC-9s-YCA"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <connections>
+                                                <outlet property="dataSource" destination="-1" id="Mgs-Vt-fbO"/>
+                                                <outlet property="delegate" destination="-1" id="aqF-Ry-zBA"/>
+                                            </connections>
+                                        </tableView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="l3q-Py-Wbi" firstAttribute="leading" secondItem="v1O-df-fPN" secondAttribute="leading" constant="13" id="0Nf-hC-umz"/>
+                                        <constraint firstItem="l3q-Py-Wbi" firstAttribute="leading" secondItem="v1O-df-fPN" secondAttribute="leading" constant="20" id="0Nf-hC-umz"/>
                                         <constraint firstAttribute="height" constant="80" id="7u3-eL-Ny6"/>
-                                        <constraint firstItem="u0o-YX-nMT" firstAttribute="top" secondItem="l3q-Py-Wbi" secondAttribute="top" id="Eb8-zA-FPF"/>
-                                        <constraint firstAttribute="trailing" secondItem="u0o-YX-nMT" secondAttribute="trailing" constant="2" id="HFI-f0-1th"/>
-                                        <constraint firstItem="u0o-YX-nMT" firstAttribute="leading" secondItem="l3q-Py-Wbi" secondAttribute="trailing" id="q9W-QE-d52"/>
-                                        <constraint firstItem="l3q-Py-Wbi" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" constant="4" id="vFA-tx-dGh"/>
+                                        <constraint firstAttribute="trailing" secondItem="Dk3-Av-dMY" secondAttribute="trailing" constant="2" id="VwW-Yu-Jtd"/>
+                                        <constraint firstItem="Dk3-Av-dMY" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" constant="4" id="fLW-Ja-eYe"/>
+                                        <constraint firstItem="Dk3-Av-dMY" firstAttribute="leading" secondItem="l3q-Py-Wbi" secondAttribute="trailing" constant="-18" id="iTy-Mb-bnu"/>
+                                        <constraint firstItem="l3q-Py-Wbi" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" constant="13" id="vFA-tx-dGh"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgv-dp-zAu">
+                                    <rect key="frame" x="0.0" y="152" width="375" height="80"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cc:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K6u-fW-bgL">
+                                            <rect key="frame" x="20" y="13" width="71" height="20.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="71" id="S6E-Md-FL0"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iGu-em-TB3">
+                                            <rect key="frame" x="73" y="4" width="300" height="72"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="-1" id="Y2k-mt-eyc"/>
+                                                <outlet property="delegate" destination="-1" id="MSx-RR-THa"/>
+                                            </connections>
+                                        </tableView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="iGu-em-TB3" firstAttribute="top" secondItem="hgv-dp-zAu" secondAttribute="top" constant="4" id="0st-Jy-72c"/>
+                                        <constraint firstItem="iGu-em-TB3" firstAttribute="leading" secondItem="K6u-fW-bgL" secondAttribute="trailing" constant="-18" id="OLW-zR-CIm"/>
+                                        <constraint firstAttribute="height" constant="80" id="PsO-v1-Ana"/>
+                                        <constraint firstItem="K6u-fW-bgL" firstAttribute="top" secondItem="hgv-dp-zAu" secondAttribute="top" constant="13" id="bNA-3n-TMO"/>
+                                        <constraint firstAttribute="bottom" secondItem="iGu-em-TB3" secondAttribute="bottom" constant="4" id="s9P-Gy-Zqa"/>
+                                        <constraint firstAttribute="trailing" secondItem="iGu-em-TB3" secondAttribute="trailing" constant="2" id="vsY-MA-jiT"/>
+                                        <constraint firstItem="K6u-fW-bgL" firstAttribute="leading" secondItem="hgv-dp-zAu" secondAttribute="leading" constant="20" id="zSE-a4-hCk"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W5Z-k1-Tjq">
-                                    <rect key="frame" x="0.0" y="152" width="375" height="36"/>
+                                    <rect key="frame" x="0.0" y="232" width="375" height="36"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3RR-uJ-Byk">
                                             <rect key="frame" x="13" y="8.5" width="71" height="20.5"/>

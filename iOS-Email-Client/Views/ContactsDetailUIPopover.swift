@@ -12,10 +12,12 @@ class ContactsDetailUIPopover: BaseUIPopover{
     @IBOutlet weak var fromEmailsLabel: UILabel!
     @IBOutlet weak var replyToEmailsLabel: UILabel!
     @IBOutlet weak var replyToView: UIView!
-    @IBOutlet weak var toEmailsLabel: UILabel!
+    @IBOutlet weak var toEmailsTableView: UITableView!
+    @IBOutlet weak var ccEmailsTableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var toHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var toLabelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ccViewHeightConstraint: NSLayoutConstraint!
     var email: Email!
     
     init(){
@@ -29,36 +31,16 @@ class ContactsDetailUIPopover: BaseUIPopover{
     override func viewDidLoad() {
         super.viewDidLoad()
         setFromContact()
-        setToContacts()
         dateLabel.text = email.getFullDate()
         replyToView.isHidden = true
+        toLabelHeightConstraint.constant = CGFloat(email.getContacts(type: .to).count * 40)
+        toHeightConstraint.constant = CGFloat(email.getContacts(type: .to).count * 40)
+        ccViewHeightConstraint.constant = CGFloat(email.getContacts(type: .cc).count * 40)
     }
     
     func setFromContact(){
         let contact = email.fromContact
         fromEmailsLabel.attributedText = buildContactAttributedString(contact.displayName, contact.email)
-    }
-    
-    func setToContacts(){
-        let attributedText = buildContactsAttributedString()
-        toEmailsLabel.attributedText = attributedText
-        let toViewHeight = Utils.getLabelHeight(attributedText, width: toEmailsLabel.frame.width, fontSize: 15.0)
-        toHeightConstraint.constant = toViewHeight + 8.0
-        toLabelHeightConstraint.constant = toViewHeight
-    }
-    
-    func buildContactsAttributedString() -> NSMutableAttributedString{
-        let contacts = email.getContacts(type: .to)
-        let contactAttString = NSMutableAttributedString()
-        contacts.forEach { (contact) in
-            let contactString = buildContactAttributedString(contact.displayName, contact.email)
-            contactAttString.append(contactString)
-            guard contacts.count > 1 && contact != contacts.last else {
-                return
-            }
-            contactAttString.append(buildContactAttributedString("\n", "\n"))
-        }
-        return contactAttString
     }
     
     func buildContactAttributedString(_ name: String, _ email: String) -> NSMutableAttributedString{
@@ -72,4 +54,45 @@ class ContactsDetailUIPopover: BaseUIPopover{
         stringPart1.append(stringPart2)
         return stringPart1
     }
+}
+
+extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableView == toEmailsTableView ? numberOfToRows() : numberOfCcRows()
+    }
+    
+    func numberOfToRows() -> Int{
+        return email.getContacts(type: .to).count
+    }
+    
+    func numberOfCcRows() -> Int{
+        return email.getContacts(type: .cc).count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView == toEmailsTableView ? cellForToRowAt(indexPath) : cellForCcRowAt(indexPath)
+    }
+    
+    func cellForToRowAt(_ indexPath: IndexPath) -> UITableViewCell{
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "toCell")
+        let contact = email.getContacts(type: .to)[indexPath.row]
+        cell.textLabel?.numberOfLines = 2
+        cell.imageView?.isHidden = true
+        cell.textLabel?.isUserInteractionEnabled = true
+        cell.textLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
+        return cell
+        
+    }
+    
+    func cellForCcRowAt(_ indexPath: IndexPath) -> UITableViewCell{
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "toCell")
+        let contact = email.getContacts(type: .cc)[indexPath.row]
+        cell.textLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40.0
+    }
+    
 }
