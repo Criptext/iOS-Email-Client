@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LabelsUIPopoverDelegate {
-    func setLabels(_ labels: [Int])
+    func setLabels(added: [Int], removed: [Int])
     func moveTo(labelId: Int)
 }
 
@@ -49,12 +49,35 @@ class LabelsUIPopover: BaseUIPopover {
     }
     
     @IBAction func onAcceptPress(_ sender: Any) {
-        delegate?.setLabels(Array(selectedLabels.keys))
+        let removedLabels = labels.reduce([Int]()) { (rf, label) -> [Int] in
+            guard selectedLabels[label.id] != nil else {
+                return rf  + [label.id]
+            }
+            return rf
+        }
+        delegate?.setLabels(added: Array(selectedLabels.keys), removed: removedLabels)
         dismiss(animated: false, completion: nil)
     }
     
     @IBAction func onCancelPress(_ sender: Any) {
         dismiss(animated: false, completion: nil)
+    }
+    
+    func preparePopover(rootView: UIViewController, height: Int){
+        self.preferredContentSize = CGSize(width: 269, height: height)
+        self.popoverPresentationController?.sourceView = rootView.view
+        self.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: rootView.view.frame.size.width, height: rootView.view.frame.size.height)
+        self.popoverPresentationController?.permittedArrowDirections = []
+        self.popoverPresentationController?.backgroundColor = UIColor.white
+    }
+    
+    class func instantiate(type: ActionType, selectedLabel: Int) -> LabelsUIPopover {
+        let labelsPopover = LabelsUIPopover()
+        labelsPopover.type = type
+        labelsPopover.headerTitle = type == .moveTo ? "Move To" : "Add labels"
+        let labels = type == .moveTo ? Label.getMoveableLabels(label: selectedLabel) : Label.getSettableLabels()
+        labelsPopover.labels.append(contentsOf: labels)
+        return labelsPopover
     }
 }
 

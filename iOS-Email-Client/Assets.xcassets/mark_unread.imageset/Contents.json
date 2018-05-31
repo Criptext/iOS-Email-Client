@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "3 copy 3.png",
+      "filename" : "icMailClosed.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "3 copy 3@2x.png",
+      "filename" : "icMailClosed2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "3 copy 3@3x.png",
+      "filename" : "icMailClosed3x.png",
       "scale" : "3x"
     }
   ],

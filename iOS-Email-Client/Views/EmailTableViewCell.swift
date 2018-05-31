@@ -8,9 +8,10 @@
 
 import Foundation
 import WebKit
+import RealmSwift
 
 protocol EmailTableViewCellDelegate {
-    func tableViewCellDidLoadContent(_ cell:EmailTableViewCell)
+    func tableViewCellDidLoadContent(_ cell:EmailTableViewCell, email: Email)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
 }
@@ -48,7 +49,10 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var bottomMarginHeightConstraint: NSLayoutConstraint!
     var loadedContent = false
     var myHeight : CGFloat = 0.0
-    var attachments = [File]()
+    var email: Email!
+    var attachments : List<File> {
+        return email.files
+    }
     var delegate: EmailTableViewCellDelegate?
     let MARGIN_HEIGHT : CGFloat = 15.0
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
@@ -91,9 +95,8 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setContent(_ email: Email){
+        self.email = email
         let isExpanded = email.isExpanded
-        attachments.removeAll()
-        attachments.append(contentsOf: email.files)
         attachmentsTableView.reloadData()
         attachmentsTableHeightConstraint.constant = ATTATCHMENT_CELL_HEIGHT * CGFloat(attachments.count)
         webViewWrapperView.isHidden = !isExpanded
@@ -240,7 +243,7 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
             }
             self.myHeight = height + height * (self.webView.scrollView.zoomScale - 1)
             self.heightConstraint.constant = height + height * (self.webView.scrollView.zoomScale - 1)
-            self.delegate?.tableViewCellDidLoadContent(self)
+            self.delegate?.tableViewCellDidLoadContent(self, email: self.email)
             self.loadedContent = true
         }
     }

@@ -117,7 +117,8 @@ extension DBManager {
     
     class func getUnreadMails(from label: Int) -> [Email] {
         let realm = try! Realm()
-        let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true", label))
+        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
+        let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@)", label, rejectedLabels))
         var myEmails = [Email]()
         var threadIds = Set<String>()
         for email in emails {
@@ -243,6 +244,15 @@ extension DBManager {
     }
     
     class func delete(_ emails:[Email]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(emails)
+        }
+    }
+    
+    class func deleteThreads(_ threadId: String, label: Int){
+        let emails = getThreadEmails(threadId, label: label)
         let realm = try! Realm()
         
         try! realm.write {
@@ -447,6 +457,12 @@ extension DBManager {
         }
     }
     
+    class func getLabels(type: String) -> [Label]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(Label.self).filter(NSPredicate(format: "type = %@", type)))
+    }
+    
     class func getLabel(_ labelId: Int) -> Label?{
         let realm = try! Realm()
         
@@ -490,6 +506,13 @@ extension DBManager {
         let emails = getThreadEmails(threadId, label: currentLabel)
         for email in emails {
             setLabelsForEmail(email, labels: labels)
+        }
+    }
+    
+    class func addRemoveLabelsForThreads(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int){
+        let emails = getThreadEmails(threadId, label: currentLabel)
+        for email in emails {
+            addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: removedLabelIds)
         }
     }
     

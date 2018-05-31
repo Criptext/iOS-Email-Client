@@ -43,6 +43,20 @@ class Label : Object {
         let realm = try! Realm()
         id = (realm.objects(Label.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
+    
+    class func getMoveableLabels(label: Int) -> [Label] {
+        let moveableLabels = (SystemLabel.init(rawValue: label) ?? .starred).moveableLabels
+        return moveableLabels.map({ (label) -> Label in
+            return DBManager.getLabel(label.id)!
+        })
+    }
+    
+    class func getSettableLabels() -> [Label] {
+        var settableLabels = DBManager.getLabels(type: "custom")
+        settableLabels.append(DBManager.getLabel(SystemLabel.starred.id)!)
+        settableLabels.append(DBManager.getLabel(SystemLabel.important.id)!)
+        return settableLabels
+    }
 }
 
 enum SystemLabel: Int {
@@ -80,18 +94,46 @@ enum SystemLabel: Int {
         }
     }
     
+    var hexColor: String {
+        switch self {
+        case .inbox:
+            return "0091ff"
+        case .draft:
+            return "666666"
+        case .sent:
+            return "1a9759"
+        case .spam:
+            return "ff0000"
+        case .trash:
+            return "b00e0e"
+        case .important:
+            return "ff9d32"
+        case .starred:
+            return "ffdf32"
+        case .all:
+            return "000000"
+        }
+    }
+    
+    var moveableLabels: [SystemLabel] {
+        switch self {
+        case .inbox, .sent, .important, .starred:
+            return [.trash, .spam]
+        case .draft, .spam:
+            return []
+        case .trash:
+            return [.spam]
+        case .all:
+            return [.inbox, .spam, .trash]
+        }
+    }
+    
     var rejectedLabelIds: [Int] {
         switch self {
-        case .inbox, .sent, .all, .starred:
-            return [SystemLabel.trash.id, SystemLabel.spam.id]
-        case .spam:
-            return [SystemLabel.trash.id, SystemLabel.inbox.id]
-        case .draft:
-            return [SystemLabel.spam.id, SystemLabel.inbox.id, SystemLabel.sent.id, SystemLabel.trash.id]
-        case .trash:
-            return [SystemLabel.spam.id, SystemLabel.inbox.id]
-        default:
+        case .spam, .trash, .draft:
             return []
+        default:
+            return [SystemLabel.trash.id, SystemLabel.spam.id]
         }
     }
     

@@ -10,7 +10,7 @@ import Foundation
 
 class MenuViewController: UIViewController{
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
-    let MENU_CONTENT_HEIGHT : CGFloat = 750.0
+    let MENU_CONTENT_HEIGHT : CGFloat = 820.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
     @IBOutlet weak var scrollView: UIScrollView!
@@ -21,6 +21,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var sentMenuItem: MenuItemUIView!
     @IBOutlet weak var draftMenuItem: MenuItemUIView!
     @IBOutlet weak var starredMenuItem: MenuItemUIView!
+    @IBOutlet weak var importantMenuItem: MenuItemUIView!
     @IBOutlet weak var spamMenuItem: MenuItemUIView!
     @IBOutlet weak var trashMenuItem: MenuItemUIView!
     @IBOutlet weak var allmailMenuItem: MenuItemUIView!
