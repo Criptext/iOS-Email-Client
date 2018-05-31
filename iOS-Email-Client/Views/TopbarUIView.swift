@@ -47,12 +47,23 @@ class TopbarUIView: UIView {
         delegate?.onMoreOptions()
     }
     
+    func swapLeftIcon(labelId: Int){
+        switch(labelId){
+        case SystemLabel.trash.id, SystemLabel.spam.id:
+            archiveButton.setImage(#imageLiteral(resourceName: "icon-inbox").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+        case SystemLabel.draft.id, SystemLabel.all.id:
+            archiveButton.setImage(#imageLiteral(resourceName: "icon-inbox").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+        default:
+            archiveButton.setImage(#imageLiteral(resourceName: "archive-icon").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+        }
+    }
+        
     func swapMarkTo(unread: Bool){
         guard unread else {
-            markButton.setImage(#imageLiteral(resourceName: "mark_read").resize(toHeight: 23.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+            markButton.setImage(#imageLiteral(resourceName: "mark_read").resize(toHeight: 24.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
             return
         }
-        markButton.setImage(#imageLiteral(resourceName: "mark_unread").resize(toHeight: 18.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+        markButton.setImage(#imageLiteral(resourceName: "mark_unread").resize(toHeight: 24.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
 }

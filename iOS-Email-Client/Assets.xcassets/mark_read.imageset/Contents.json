@@ -7,12 +7,12 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "icMailOpened@2x.png",
+      "filename" : "icMailOpened2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icMailOpened@3x.png",
+      "filename" : "icMailOpened3x.png",
       "scale" : "3x"
     }
   ],

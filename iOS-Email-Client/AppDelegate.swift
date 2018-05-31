@@ -121,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         for systemLabel in SystemLabel.array {
             let newLabel = Label(systemLabel.description)
             newLabel.id = systemLabel.id
+            newLabel.color = systemLabel.hexColor
             newLabel.type = "system"
             DBManager.store(newLabel)
         }
