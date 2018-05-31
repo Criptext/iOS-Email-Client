@@ -58,35 +58,15 @@ class ContactsDetailUIPopover: BaseUIPopover{
 
 extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableView == toEmailsTableView ? numberOfToRows() : numberOfCcRows()
-    }
-    
-    func numberOfToRows() -> Int{
-        return email.getContacts(type: .to).count
-    }
-    
-    func numberOfCcRows() -> Int{
-        return email.getContacts(type: .cc).count
+        let type : ContactType = tableView == toEmailsTableView ? .to : .cc
+        return email.getContacts(type: type).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView == toEmailsTableView ? cellForToRowAt(indexPath) : cellForCcRowAt(indexPath)
-    }
-    
-    func cellForToRowAt(_ indexPath: IndexPath) -> UITableViewCell{
         let cell = UITableViewCell(style: .default, reuseIdentifier: "toCell")
-        let contact = email.getContacts(type: .to)[indexPath.row]
+        let type : ContactType = tableView == toEmailsTableView ? .to : .cc
+        let contact = email.getContacts(type: type)[indexPath.row]
         cell.textLabel?.numberOfLines = 2
-        cell.imageView?.isHidden = true
-        cell.textLabel?.isUserInteractionEnabled = true
-        cell.textLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
-        return cell
-        
-    }
-    
-    func cellForCcRowAt(_ indexPath: IndexPath) -> UITableViewCell{
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "toCell")
-        let contact = email.getContacts(type: .cc)[indexPath.row]
         cell.textLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
         return cell
     }
