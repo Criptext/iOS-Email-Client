@@ -1143,8 +1143,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         } else {
             self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
         }
-//        let token = CLToken(displayText: text, context: nil)
-//        view.add(token)
     }
     
     func tokenInputView(_ view: CLTokenInputView, didRemove token: CLToken) {

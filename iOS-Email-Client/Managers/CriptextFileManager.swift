@@ -219,7 +219,10 @@ class CriptextFileManager {
     
     func getFilesRequestData() -> [[String: Any]] {
         return registeredFiles.map({ (file) -> [String: Any] in
-            return ["token": file.token]
+            return ["token": file.token,
+                    "name": file.name,
+                    "size": file.size,
+                    "mimeType": file.mimeType]
         })
     }
 }

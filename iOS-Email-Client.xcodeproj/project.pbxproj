@@ -102,6 +102,10 @@
 		7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */; };
 		7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884F208D367B003FA304 /* MailboxData.swift */; };
 		7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20EA3620B478F300E17543 /* SettingsGeneralViewController.swift */; };
+		7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0420C6E0270019321E /* EventHandlerTests.swift */; };
+		7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0720C6E08E0019321E /* MockAPIManager.swift */; };
+		7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0920C6E5270019321E /* MockSignalHandler.swift */; };
+		7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */; };
 		7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229820A4A53900F077FD /* UtilsTests.swift */; };
 		7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */; };
 		7C26229D20AA39B300F077FD /* RSACipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229C20AA39B300F077FD /* RSACipher.swift */; };
@@ -302,6 +306,10 @@
 		7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralMoreOptionsUIView.xib; sourceTree = "<group>"; };
 		7C1E884F208D367B003FA304 /* MailboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxData.swift; sourceTree = "<group>"; };
 		7C20EA3620B478F300E17543 /* SettingsGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralViewController.swift; sourceTree = "<group>"; };
+		7C247E0420C6E0270019321E /* EventHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerTests.swift; sourceTree = "<group>"; };
+		7C247E0720C6E08E0019321E /* MockAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIManager.swift; sourceTree = "<group>"; };
+		7C247E0920C6E5270019321E /* MockSignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSignalHandler.swift; sourceTree = "<group>"; };
+		7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerSpyDelegate.swift; sourceTree = "<group>"; };
 		7C26229820A4A53900F077FD /* UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
 		7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextFileManager.swift; sourceTree = "<group>"; };
 		7C26229C20AA39B300F077FD /* RSACipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSACipher.swift; sourceTree = "<group>"; };
@@ -585,6 +593,7 @@
 		41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				7C247E0620C6E0470019321E /* Supporting Files */,
 				7C26229720A4A50A00F077FD /* Cases */,
 				41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */,
 				41B6AAC62017987500D428B7 /* Info.plist */,
@@ -693,10 +702,21 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		7C247E0620C6E0470019321E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7C247E0720C6E08E0019321E /* MockAPIManager.swift */,
+				7C247E0920C6E5270019321E /* MockSignalHandler.swift */,
+				7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		7C26229720A4A50A00F077FD /* Cases */ = {
 			isa = PBXGroup;
 			children = (
 				7C26229820A4A53900F077FD /* UtilsTests.swift */,
+				7C247E0420C6E0270019321E /* EventHandlerTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -1062,8 +1082,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
 				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,
+				7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */,
 				7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */,
+				7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */,
+				7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
