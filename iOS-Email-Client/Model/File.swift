@@ -24,14 +24,15 @@ class File : Object {
     var progress = -1
     var chunks = [Data]()
     var chunksProgress = [Int]()
-    var requestStatus: uploadStatus = .pending
+    var requestType: CriptextFileManager.RequestType = .upload
+    var requestStatus: uploadStatus = .none
 
     override static func primaryKey() -> String? {
         return "token"
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["progress", "chunks", "chunksProgress", "requestStatus"]
+        return ["progress", "chunks", "chunksProgress", "requestStatus", "requestType"]
     }
     
     func prettyPrintSize() -> String {
@@ -49,8 +50,9 @@ class File : Object {
     }
     
     enum uploadStatus {
+        case none
         case pending
-        case uploading
+        case processing
         case finish
         case failed
     }

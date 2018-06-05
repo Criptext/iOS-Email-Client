@@ -523,9 +523,12 @@ class ComposeViewController: UIViewController {
     }
     
     func sendMail(subject: String, guestEmail: [String: Any], criptextEmails: [Any]){
+        let files = fileManager.getFilesRequestData()
+        print(files)
         var requestParams = [
             "subject": subject,
-            "criptextEmails": criptextEmails
+            "criptextEmails": criptextEmails,
+            "files": files
             ] as [String : Any]
         if let threadId = composerData.threadId {
             requestParams["threadId"] = threadId
@@ -557,6 +560,7 @@ class ComposeViewController: UIViewController {
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(myEmail, key: key, messageId: messageId, threadId: threadId)
         DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
+        fileManager.updateFiles(emailId: key)
         var data = [String: Any]()
         data["email"] = myEmail
         NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
@@ -1201,19 +1205,28 @@ extension ComposeViewController: CNContactPickerDelegate {
 }
 
 extension ComposeViewController: CriptextFileDelegate {
-    func uploadProgressUpdate(filetoken: String, progress: Int) {
-        guard let index = fileManager.registeredFiles.index(where: {$0.token == filetoken}),
-            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
-            return
-        }
-        
-        let percentage = Float(progress)/100.0
-        cell.progressView.setProgress(percentage, animated: true)
-        guard progress == 100 else {
+    func finishRequest(file: File, success: Bool) {
+        guard let cell = getCellForFile(file) else {
             return
         }
         cell.successImageView.isHidden = false
         cell.progressView.isHidden = true
+    }
+    
+    func uploadProgressUpdate(file: File, progress: Int) {
+        guard let cell = getCellForFile(file) else {
+            return
+        }
+        let percentage = Float(progress)/100.0
+        cell.progressView.setProgress(percentage, animated: true)
+    }
+    
+    func getCellForFile(_ file: File) -> AttachmentTableViewCell? {
+        guard let index = fileManager.registeredFiles.index(where: {$0.token == file.token}),
+            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
+                return nil
+        }
+        return cell
     }
 }
 

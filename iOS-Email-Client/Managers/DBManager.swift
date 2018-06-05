@@ -553,6 +553,14 @@ extension DBManager {
             realm.add(files, update: true)
         }
     }
+    
+    class func update(file: File, emailId: String){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            file.emailId = emailId
+        }
+    }
 }
 
 //MARK: - Email Contact

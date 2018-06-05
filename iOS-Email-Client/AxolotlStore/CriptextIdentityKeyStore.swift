@@ -48,11 +48,16 @@ extension CriptextIdentityKeyStore: IdentityKeyStore{
         if(idKeyPair.publicKey() == identityKey || direction == .incoming){
             return true
         }
+        
         guard direction == .outgoing,
-            let trustedDevice = DBManager.getTrustedDevice(recipientId: recipientId),
-            let trustedData = Data(base64Encoded: trustedDevice.identityB64) else {
+            let trustedDevice = DBManager.getTrustedDevice(recipientId: recipientId) else {
+            return true
+        }
+        
+        guard let trustedData = Data(base64Encoded: trustedDevice.identityB64) else {
             return false
         }
+        
         return trustedData == identityKey
     }
 }
