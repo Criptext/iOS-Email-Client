@@ -162,7 +162,7 @@ class APIManager {
         }
     }
     
-    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, Any?) -> Void)){
+    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/chunk"
         let headers = ["Authorization": "Basic \(token)"]
         let filetoken = params["filetoken"] as! String
@@ -182,11 +182,21 @@ class APIManager {
                     progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
                 })
                 request.responseJSON(completionHandler: { (response) in
-                    completion(nil, "naisu ")
+                    if let error = response.error {
+                        print(error.localizedDescription)
+                        completion(error)
+                        return
+                    }
+                    guard response.response?.statusCode == 200 else {
+                        let criptextError = CriptextError(code: .noValidResponse)
+                        completion(criptextError)
+                        return
+                    }
+                    completion(nil)
                 })
             case .failure(_):
                 let error = CriptextError(code: .noValidResponse)
-                completion( error, nil)
+                completion(error)
             }
         }
     }

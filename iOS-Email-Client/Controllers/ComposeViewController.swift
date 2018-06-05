@@ -1015,7 +1015,12 @@ extension ComposeViewController: AttachmentTableViewCellDelegate{
         updateBadge()
     }
     
-    func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {}
+    func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        fileManager.registerFile(file: fileManager.registeredFiles[indexPath.row])
+    }
 }
 
 //MARK: - UIGestureRecognizer Delegate
@@ -1207,8 +1212,7 @@ extension ComposeViewController: CriptextFileDelegate {
         guard let cell = getCellForFile(file) else {
             return
         }
-        cell.successImageView.isHidden = false
-        cell.progressView.isHidden = true
+        cell.setMarkIcon(success: success)
     }
     
     func uploadProgressUpdate(file: File, progress: Int) {
@@ -1216,6 +1220,8 @@ extension ComposeViewController: CriptextFileDelegate {
             return
         }
         let percentage = Float(progress)/100.0
+        cell.successImageView.isHidden = true
+        cell.progressView.isHidden = false
         cell.progressView.setProgress(percentage, animated: true)
     }
     

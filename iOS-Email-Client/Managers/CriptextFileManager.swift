@@ -148,13 +148,15 @@ class CriptextFileManager {
             "filename": file.name,
             "mimeType": file.mimeType
         ] as [String: Any]
-        APIManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError, response) in
+        APIManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError) in
             guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
                 self.handleFileTurn()
                 return
             }
             guard requestError == nil else {
                 self.registeredFiles[fileIndex].requestStatus = .failed
+                self.chunkUpdateProgress(Double(self.PENDING)/100.0, for: file.token, part: part + 1)
+                self.delegate?.finishRequest(file: file, success: false)
                 self.handleFileTurn()
                 return
             }
