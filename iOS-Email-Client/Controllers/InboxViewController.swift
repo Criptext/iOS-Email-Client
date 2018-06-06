@@ -489,12 +489,10 @@ extension InboxViewController: UITableViewDataSource{
             cell.backgroundColor = UIColor.white
             cell.senderLabel.font = Font.bold.size(15)
         }
-        let fromContact = email.fromContact
-        if(fromContact.email == "\(myAccount.username)@jigl.com"){
-            cell.senderLabel.text = email.getContactsString()
-        }else{
-            cell.senderLabel.text = fromContact.displayName
-        }
+        
+        let participants = email.getContactsString()
+        let useTo = mailboxData.selectedLabel == SystemLabel.sent.id || mailboxData.selectedLabel == SystemLabel.draft.id
+        cell.senderLabel.text = participants.isEmpty ? "<Empty Contact List>" : "\(useTo ? "To: " : "")\(participants)"
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
         cell.previewLabel.text = email.preview
         cell.dateLabel.text = DateUtils.conversationTime(email.date)

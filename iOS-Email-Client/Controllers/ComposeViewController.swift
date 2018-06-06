@@ -267,14 +267,14 @@ class ComposeViewController: UIViewController {
             subject = "No Subject"
         }
         
-        let body = self.addAttachments(to: self.editorView.html)
+        let body = self.editorView.html
         
         //create draft
         let draft = Email()
         draft.status = .none
         draft.key = "\(NSDate().timeIntervalSince1970)"
         draft.content = body
-        let bodyWithoutHtml = body.removeHtmlTags().replaceNewLineCharater(separator: " ")
+        let bodyWithoutHtml = self.editorView.text
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
         draft.subject = subject

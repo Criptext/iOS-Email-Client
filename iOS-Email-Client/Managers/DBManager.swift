@@ -109,7 +109,10 @@ extension DBManager {
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
         let predicate = label == SystemLabel.all.id ? predicate1 : predicate2
         let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false)
-        let resultEmails = customDistinctEmailThreads(emails: emails, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
+        let resultEmails = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
+            guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
+                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, email.threadId)
+            }
             return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
         return resultEmails
@@ -134,7 +137,9 @@ extension DBManager {
     class func getThreadEmails(_ threadId: String, label: Int) -> [Email] {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        let predicate = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
+        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
+        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
+        let predicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
         let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
         
         return Array(results)
@@ -162,12 +167,12 @@ extension DBManager {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.all.rejectedLabelIds
         let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@)", rejectedLabels, searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false)
-        return customDistinctEmailThreads(emails: emails, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
+        return customDistinctEmailThreads(emails: emails, label: SystemLabel.all.id, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
             return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
     }
     
-    private class func customDistinctEmailThreads(emails: Results<Email>, limit: Int, date: Date, emailFilter: (Email) -> NSPredicate) -> [Email] {
+    private class func customDistinctEmailThreads(emails: Results<Email>, label: Int, limit: Int, date: Date, emailFilter: (Email) -> NSPredicate) -> [Email] {
         let realm = try! Realm()
         var resultEmails = [Email]()
         var threadIds = Set<String>()
@@ -178,6 +183,8 @@ extension DBManager {
             guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
                 if(email.date < date){
                     resultEmails.append(email)
+                    email.participants.formUnion(email.getContacts(type: .to))
+                    email.participants.formUnion(email.getContacts(type: .cc))
                 }
                 continue
             }
@@ -188,7 +195,18 @@ extension DBManager {
                 threadIds.insert(email.threadId)
                 continue
             }
-            email.counter = realm.objects(Email.self).filter(emailFilter(email)).count
+            let threadEmails = realm.objects(Email.self).filter(emailFilter(email))
+            for threadEmail in threadEmails {
+                if(label == SystemLabel.sent.id){
+                    if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
+                        email.participants.formUnion(threadEmail.getContacts(type: .to))
+                        email.participants.formUnion(threadEmail.getContacts(type: .cc))
+                    }
+                }else{
+                    email.participants.formUnion(threadEmail.getContacts(type: .from))
+                }
+            }
+            email.counter = threadEmails.count
             threadIds.insert(email.threadId)
             resultEmails.append(email)
         }
@@ -202,7 +220,9 @@ extension DBManager {
         guard let email = realm.objects(Email.self).filter(threadsPredicate).sorted(byKeyPath: "date", ascending: false).first else {
             return nil
         }
-        let mailsPredicate = NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
+        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
+        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
+        let mailsPredicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
         email.counter = realm.objects(Email.self).filter(mailsPredicate).count
         return email
     }

@@ -16,3 +16,7 @@ class Contact: Object {
         return "email"
     }
 }
+
+func ==(lhs: Contact, rhs: Contact) -> Bool {
+    return lhs.email == rhs.email
+}
