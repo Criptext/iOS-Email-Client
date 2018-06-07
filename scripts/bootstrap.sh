@@ -1,2 +1,3 @@
 #!/bin/bash
-carthage bootstrap $@ --platform iphoneos --no-use-binaries || exit $?
+carthage bootstrap --platform iOS --no-use-binaries
+cp Cartfile.resolved Carthage

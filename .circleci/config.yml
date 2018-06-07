@@ -1,37 +1,24 @@
 version: 2
 jobs:
-  build:
-
-    # Specify the Xcode version to use
+  build-and-test:
     macos:
-      xcode: "9.3"
-
-    dependencies:
-      cache_directories:
-        - "Carthage"
-        - "CartfileDiff"
-      pre:
-        - bash ./cartfile-diff-install.sh
-
+      xcode: "9.3.0"
     steps:
       - checkout
-
-      # Build the app and run tests
+      - restore_cache:
+          keys:
+            - criptext-carthage
+      - run: bash ./scripts/intelligent-bootstrap.sh
+      - save_cache:
+          key: criptext-carthage
+          paths:
+            - ./Carthage
       - run:
-          name: Build and run tests
+          name: Build and run rests
           command: fastlane scan
-          environment:
-            SCAN_DEVICE: iPhone 6S
-            SCAN_SCHEME: iOS-Email-ClientTests
 
-      # Collect XML test results data to show in the UI,
-      # and save the same XML files under test-results folder
-      # in the Artifacts tab
-      - store_test_results:
-          path: test_output/report.xml
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: scan-test-results
-      - store_artifacts:
-          path: ~/Library/Logs/scan
-          destination: scan-logs
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build-and-test
