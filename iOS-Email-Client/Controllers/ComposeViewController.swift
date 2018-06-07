@@ -524,7 +524,6 @@ class ComposeViewController: UIViewController {
     
     func sendMail(subject: String, guestEmail: [String: Any], criptextEmails: [Any]){
         let files = fileManager.getFilesRequestData()
-        print(files)
         var requestParams = [
             "subject": subject,
             "criptextEmails": criptextEmails,
