@@ -85,6 +85,7 @@ class InboxViewController: UIViewController {
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Regular", size: 18.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .normal)
         
         self.navigationItem.searchController = self.searchController
+        self.definesPresentationContext = true
         self.tableView.allowsMultipleSelection = true
 
         self.initBarButtonItems()

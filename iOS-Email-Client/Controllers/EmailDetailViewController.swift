@@ -315,9 +315,11 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
         composerVC.composerData = composerData
-        for file in email.files {
-            file.requestStatus = .finish
-            composerVC.fileManager.registeredFiles.append(file)
+        if(email.isDraft){
+            for file in email.files {
+                file.requestStatus = .finish
+                composerVC.fileManager.registeredFiles.append(file)
+            }
         }
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
@@ -388,10 +390,15 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     func onMarkThreads() {
         let unread = !hasUnreadEmails
         for email in emailData.emails {
+            if(email.unread){
+                email.isExpanded = !unread
+            }
             DBManager.updateEmail(email, unread: unread)
         }
         if(unread){
             self.navigationController?.popViewController(animated: true)
+        } else {
+            self.emailsTableView.reloadData()
         }
     }
     
@@ -484,6 +491,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         DBManager.updateEmail(email, unread: true)
         email.isExpanded = false
         emailsTableView.reloadData()
+        displayMarkIcon(asRead: true)
     }
     
     func onSpamPress() {
