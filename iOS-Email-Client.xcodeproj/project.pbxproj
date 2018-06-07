@@ -102,6 +102,8 @@
 		7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */; };
 		7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884F208D367B003FA304 /* MailboxData.swift */; };
 		7C1E987A20C9B96A003205F8 /* showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E987920C9B969003205F8 /* showmore.png */; };
+		7C1E987C20C9E052003205F8 /* EmailSetPasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E987B20C9E052003205F8 /* EmailSetPasswordUIPopover.xib */; };
+		7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */; };
 		7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20EA3620B478F300E17543 /* SettingsGeneralViewController.swift */; };
 		7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0420C6E0270019321E /* EventHandlerTests.swift */; };
 		7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0720C6E08E0019321E /* MockAPIManager.swift */; };
@@ -306,6 +308,8 @@
 		7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralMoreOptionsUIView.xib; sourceTree = "<group>"; };
 		7C1E884F208D367B003FA304 /* MailboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxData.swift; sourceTree = "<group>"; };
 		7C1E987920C9B969003205F8 /* showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = showmore.png; sourceTree = "<group>"; };
+		7C1E987B20C9E052003205F8 /* EmailSetPasswordUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailSetPasswordUIPopover.xib; sourceTree = "<group>"; };
+		7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSetPasswordViewController.swift; sourceTree = "<group>"; };
 		7C20EA3620B478F300E17543 /* SettingsGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralViewController.swift; sourceTree = "<group>"; };
 		7C247E0420C6E0270019321E /* EventHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerTests.swift; sourceTree = "<group>"; };
 		7C247E0720C6E08E0019321E /* MockAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIManager.swift; sourceTree = "<group>"; };
@@ -520,6 +524,7 @@
 				7C7F2FF620B5E29900A2CB32 /* ProfileNameChangeViewController.swift */,
 				7C5E403F20B706860027C61F /* CustomTabsController.swift */,
 				7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */,
+				7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -698,6 +703,7 @@
 				7C7F2FEE20B4BE6400A2CB32 /* LabelsLabelTableViewCell.swift */,
 				7C7F2FF220B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift */,
 				7C7F2FF420B5DB6F00A2CB32 /* ProfileNameChangeUIView.xib */,
+				7C1E987B20C9E052003205F8 /* EmailSetPasswordUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -888,6 +894,7 @@
 				7C049F8B20879CFA007A6213 /* LabelsUIPopover.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				7C1E987A20C9B96A003205F8 /* showmore.png in Resources */,
+				7C1E987C20C9E052003205F8 /* EmailSetPasswordUIPopover.xib in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
 				7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */,
 				7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */,
@@ -1042,6 +1049,7 @@
 				7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */,
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
 				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
+				7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
 				7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */,
