@@ -501,6 +501,7 @@ extension InboxViewController: UITableViewDataSource{
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
         cell.previewLabel.text = email.preview
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
+        cell.setReadStatus(status: email.status)
         
         let size = cell.dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         cell.dateWidthConstraint.constant = size.width
@@ -688,6 +689,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
         emails[emails.count - 1].isExpanded = true
+        
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
             continueDraft(selectedEmail)
