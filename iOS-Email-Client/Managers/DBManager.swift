@@ -587,6 +587,25 @@ extension DBManager {
 
 extension DBManager {
     
+    class func store(_ open: Open){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(open, update: true)
+        }
+    }
+    
+    class func openExists(emailId: String, type: Int, contactId: String) -> Bool {
+        let realm = try! Realm()
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND emailId == '\(emailId)' AND type == \(type)")
+        let results = realm.objects(Open.self).filter(predicate)
+        return results.count > 0
+    }
+}
+
+//MARK: - Opens
+extension DBManager {
+    
     class func store(_ emailContacts:[EmailContact]){
         let realm = try! Realm()
         

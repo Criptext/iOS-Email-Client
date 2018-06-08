@@ -257,6 +257,10 @@ class InboxViewController: UIViewController {
 }
 
 extension InboxViewController: EventHandlerDelegate {
+    func didReceiveOpens(opens: [Open]) {
+        //TODO
+    }
+    
     func didReceiveNewEmails(emails: [Email]) {
         guard !mailboxData.searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
             return

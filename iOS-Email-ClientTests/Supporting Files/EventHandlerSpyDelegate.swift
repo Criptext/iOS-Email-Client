@@ -12,14 +12,24 @@ import Foundation
 
 class EventHandlerSpyDelegate: EventHandlerDelegate {
     var expectation: XCTestExpectation?
-    var delegateResult: [Email]?
+    var delegateEmails: [Email]?
+    var delegateOpens: [Open]?
     
     func didReceiveNewEmails(emails: [Email]) {
         guard let expect = expectation else {
             XCTFail("Unable to parse that one mail")
             return
         }
-        delegateResult = emails
+        delegateEmails = emails
+        expect.fulfill()
+    }
+    
+    func didReceiveOpens(opens: [Open]) {
+        guard let expect = expectation else {
+            XCTFail("Unable to parse opens")
+            return
+        }
+        delegateOpens = opens
         expect.fulfill()
     }
 }

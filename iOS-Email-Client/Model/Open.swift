@@ -12,27 +12,21 @@ import Realm
 
 class Open: Object {
     
-    @objc dynamic var timestamp: Double = 0
-    @objc dynamic var location: String = ""
-    @objc dynamic var type: Int = 1//1 open, 2 download
-    
-    init(fromTimestamp timestamp: Double, fromLocation location: String, fromType type: Int) {
-        super.init()
-        self.timestamp = timestamp
-        self.location = location
-        self.type = type
-    }
-    
-    required init(realm: RLMRealm, schema: RLMObjectSchema) {
-        super.init(realm: realm, schema: schema)
-    }
-    
-    required init() {
-        super.init()
-    }
-    
-    required init(value: Any, schema: RLMSchema) {
-        super.init(value: value, schema: schema)
-    }
+    @objc dynamic var id = 0
+    @objc dynamic var date = Date()
+    @objc dynamic var location = ""
+    @objc dynamic var type = 1//1 open, 2 download
+    @objc dynamic var emailId = ""
+    @objc dynamic var contactId = ""
+    @objc dynamic var fileId: String?
+    @objc dynamic var newer = true
 
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    func incrementID() -> Int {
+        let realm = try! Realm()
+        return (realm.objects(Open.self).max(ofProperty: "id") as Int? ?? 0) + 1
+    }
 }

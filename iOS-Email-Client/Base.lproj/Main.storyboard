@@ -1578,7 +1578,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="11" width="117" height="23.5"/>
+                                            <rect key="frame" x="27" y="10" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
