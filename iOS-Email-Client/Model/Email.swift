@@ -33,6 +33,7 @@ class Email: Object {
     let labels = List<Label>()
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
+    var participants = Set<Contact>()
     var isExpanded = false
     var counter = 1
     var fromContact : Contact {
@@ -56,7 +57,7 @@ class Email: Object {
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["isExpanded", "counter"]
+        return ["isExpanded", "counter", "participants"]
     }
     
     var isUnsent: Bool{
@@ -94,19 +95,20 @@ class Email: Object {
     }
     
     func getContactsString() -> String{
-        let contactsTo = getContacts(type: .to)
-        let contactsCc = getContacts(type: .cc)
-        let contacts = contactsTo + contactsCc
-        guard contacts.count > 1 else {
-            return contacts.first?.displayName ?? "<Empty Contact List>"
-        }
         var contactsTitle = ""
-        for contact in contacts {
-            if(contact.displayName.contains("@")){
+        for contact in participants {
+            guard !contact.displayName.contains("@") else {
                 contactsTitle += "\(contact.displayName.split(separator: "@")[0]), "
                 continue
             }
-            contactsTitle += "\(contact.displayName), "
+            guard participants.count > 1 else {
+                contactsTitle += "\(contact.displayName), "
+                continue
+            }
+            contactsTitle += "\(contact.displayName.split(separator: " ")[0]), "
+        }
+        guard participants.count > 0 else {
+            return contactsTitle
         }
         return String(contactsTitle.prefix(contactsTitle.count - 2))
     }

@@ -85,6 +85,7 @@ class InboxViewController: UIViewController {
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Regular", size: 18.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .normal)
         
         self.navigationItem.searchController = self.searchController
+        self.definesPresentationContext = true
         self.tableView.allowsMultipleSelection = true
 
         self.initBarButtonItems()
@@ -489,12 +490,10 @@ extension InboxViewController: UITableViewDataSource{
             cell.backgroundColor = UIColor.white
             cell.senderLabel.font = Font.bold.size(15)
         }
-        let fromContact = email.fromContact
-        if(fromContact.email == "\(myAccount.username)@jigl.com"){
-            cell.senderLabel.text = email.getContactsString()
-        }else{
-            cell.senderLabel.text = fromContact.displayName
-        }
+        
+        let participants = email.getContactsString()
+        let useTo = mailboxData.selectedLabel == SystemLabel.sent.id || mailboxData.selectedLabel == SystemLabel.draft.id
+        cell.senderLabel.text = participants.isEmpty ? "<Empty Contact List>" : "\(useTo ? "To: " : "")\(participants)"
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
         cell.previewLabel.text = email.preview
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
@@ -602,7 +601,7 @@ extension InboxViewController: UITableViewDataSource{
         let navSettingsVC = UINavigationController(rootViewController: tabsVC)
         navSettingsVC.navigationBar.barStyle = .blackTranslucent
         navSettingsVC.navigationBar.barTintColor = .lightText
-        let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.regular.size(17)] as! [NSAttributedStringKey : Any]
+        let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.regular.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         self.navigationController?.childViewControllers.last!.present(navSettingsVC, animated: true, completion: nil)
     }

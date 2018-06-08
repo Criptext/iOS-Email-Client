@@ -315,9 +315,11 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
         composerVC.composerData = composerData
-        for file in email.files {
-            file.requestStatus = .finish
-            composerVC.fileManager.registeredFiles.append(file)
+        if(email.isDraft){
+            for file in email.files {
+                file.requestStatus = .finish
+                composerVC.fileManager.registeredFiles.append(file)
+            }
         }
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
@@ -388,10 +390,15 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     func onMarkThreads() {
         let unread = !hasUnreadEmails
         for email in emailData.emails {
+            if(email.unread){
+                email.isExpanded = !unread
+            }
             DBManager.updateEmail(email, unread: unread)
         }
         if(unread){
             self.navigationController?.popViewController(animated: true)
+        } else {
+            self.emailsTableView.reloadData()
         }
     }
     
@@ -449,7 +456,29 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             return
         }
         self.toggleMoreOptionsView()
-        moveEmail(to: SystemLabel.trash.id, indexPath: indexPath, title: "Delete Email", message: "Send the selected email to Trash")
+        let email = emailData.emails[indexPath.row]
+        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.draft.id else {
+            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
+            self.removeEmail(indexPath: indexPath)
+            return
+        }
+        
+        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
+            DBManager.delete(email)
+            self.removeEmail(indexPath: indexPath)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        showAlert("Delete Email", message: "The selected email will be PERMANENTLY deleted", style: .alert, actions: [deleteAction, cancelAction])
+    }
+    
+    func removeEmail(indexPath: IndexPath){
+        emailData.emails.remove(at: indexPath.row)
+        if(emailData.emails.isEmpty){
+            mailboxData.removeSelectedRow = true
+            navigationController?.popViewController(animated: true)
+        }else{
+            emailsTableView.reloadData()
+        }
     }
     
     func onMarkPress() {
@@ -462,6 +491,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         DBManager.updateEmail(email, unread: true)
         email.isExpanded = false
         emailsTableView.reloadData()
+        displayMarkIcon(asRead: true)
     }
     
     func onSpamPress() {
@@ -471,25 +501,12 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         self.toggleMoreOptionsView()
         let isSpam = emailData.selectedLabel == SystemLabel.spam.id
-        let title = isSpam ? "Remove from Spam" : "Mark as Spam"
-        let message = "Send the selected email to \(isSpam ? "Inbox" : "Spam")"
-        moveEmail(to: isSpam ? SystemLabel.inbox.id : SystemLabel.spam.id, indexPath: indexPath, title: title, message: message)
-    }
-    
-    func moveEmail(to label: Int, indexPath: IndexPath, title: String, message: String){
+        let isTrash = emailData.selectedLabel == SystemLabel.trash.id
+        let removeLabel = isSpam ? [SystemLabel.spam.id] : isTrash ? [SystemLabel.trash.id] : []
+        let addLabel = isSpam ? [] : [SystemLabel.spam.id]
         let email = emailData.emails[indexPath.row]
-        let archiveAction = UIAlertAction(title: "Yes", style: .default){ (alert : UIAlertAction!) -> Void in
-            DBManager.setLabelsForEmail(email, labels: [label])
-            self.emailData.emails.remove(at: indexPath.row)
-            guard !self.emailData.emails.isEmpty else{
-                self.mailboxData.removeSelectedRow = true
-                self.navigationController?.popViewController(animated: true)
-                return
-            }
-            self.emailsTableView.reloadData()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        showAlert(title, message: message, style: .alert, actions: [archiveAction, cancelAction])
+        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
+        self.removeEmail(indexPath: indexPath)
     }
     
     func onPrintPress() {

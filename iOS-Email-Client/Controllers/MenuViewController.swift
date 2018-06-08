@@ -10,7 +10,7 @@ import Foundation
 
 class MenuViewController: UIViewController{
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
-    let MENU_CONTENT_HEIGHT : CGFloat = 820.0
+    let MENU_CONTENT_HEIGHT : CGFloat = 880.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
     @IBOutlet weak var scrollView: UIScrollView!
