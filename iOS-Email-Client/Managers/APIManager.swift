@@ -183,7 +183,6 @@ class APIManager {
                 })
                 request.responseJSON(completionHandler: { (response) in
                     if let error = response.error {
-                        print(error.localizedDescription)
                         completion(error)
                         return
                     }
@@ -228,7 +227,6 @@ class APIManager {
                 progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
             }.response { (response) in
                 if let error = response.error {
-                    print(error.localizedDescription)
                     completion(error, nil)
                     return
                 }
