@@ -267,13 +267,11 @@ class ComposeViewController: UIViewController {
             subject = "No Subject"
         }
         
-        let body = self.editorView.html
-        
         //create draft
         let draft = Email()
         draft.status = .none
         draft.key = "\(NSDate().timeIntervalSince1970)"
-        draft.content = body
+        draft.content = self.editorView.html
         let bodyWithoutHtml = self.editorView.text
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
@@ -324,7 +322,7 @@ class ComposeViewController: UIViewController {
         } else {
             let newContact = Contact()
             newContact.email = email
-            newContact.displayName = token.displayText
+            newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
             DBManager.store([newContact]);
             emailContact.contact = newContact
         }
@@ -569,7 +567,9 @@ class ComposeViewController: UIViewController {
         return message is PreKeyWhisperMessage ? .preKey : .cipherText
     }
     
-    func getSessionAndEncrypt(subject: String, body: String, store: CriptextAxolotlStore, guestEmail: [String: Any], criptextEmails: [String: Any]){
+    func getSessionAndEncrypt(subject: String, body: String, guestEmail: [String: Any], criptextEmails: [String: Any]){
+        let store = CriptextAxolotlStore.init(self.activeAccount.regId, self.activeAccount.identityB64)
+        
         var recipients = [String]()
         var knownAddresses = [String: [Int32]]()
         var criptextEmailsData = [[String: Any]]()
@@ -641,7 +641,6 @@ class ComposeViewController: UIViewController {
     
     func prepareMail(){
         
-        let subject = self.subjectField.text ?? "No Subject"
         var criptextEmails = [String: String]()
         var toArray = [String]()
         var ccArray = [String]()
@@ -657,14 +656,25 @@ class ComposeViewController: UIViewController {
             processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &bccArray, type: "bcc")
         }
         
-        let body = self.editorView.html
+        let guestEmail = [
+            "to": toArray,
+            "cc": ccArray,
+            "bcc": bccArray
+        ]
         
-        self.toggleInteraction(false)
-        
-        if toField.allTokens.isEmpty {
+        guard toArray.isEmpty && ccArray.isEmpty && bccArray.isEmpty else {
+            self.presentPopover(guestEmail: guestEmail, criptextEmails: criptextEmails)
             return
         }
         
+        handleSendMail(guestEmail: guestEmail, criptextEmails: criptextEmails)
+    }
+    
+    func handleSendMail(guestEmail: [String: Any], criptextEmails: [String: Any]){
+        let body = self.editorView.html
+        let subject = self.subjectField.text ?? "No Subject"
+        
+        self.toggleInteraction(false)
         let fullString = NSMutableAttributedString(string: "")
         let image1Attachment = NSTextAttachment()
         image1Attachment.image = #imageLiteral(resourceName: "lock")
@@ -673,16 +683,21 @@ class ComposeViewController: UIViewController {
         fullString.append(NSAttributedString(string: " Sending email..."))
         self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
         
-        let store = CriptextAxolotlStore.init(self.activeAccount.regId, self.activeAccount.identityB64)
-        let guestEmail = [
-            "to": toArray,
-            "cc": ccArray,
-            "bcc": bccArray
-        ]
-        
         composerData.emailDraft = saveDraft()
-        getSessionAndEncrypt(subject: subject, body: body, store: store, guestEmail: guestEmail, criptextEmails: criptextEmails)
-        
+        getSessionAndEncrypt(subject: subject, body: body, guestEmail: guestEmail, criptextEmails: criptextEmails)
+    }
+    
+    func presentPopover(guestEmail: [String: Any], criptextEmails: [String: Any]){
+        let setPassPopover = EmailSetPasswordViewController()
+        setPassPopover.guestEmails = guestEmail
+        setPassPopover.criptextEmails = criptextEmails
+        setPassPopover.delegate = self
+        setPassPopover.preferredContentSize = CGSize(width: 270, height: 300)
+        setPassPopover.popoverPresentationController?.sourceView = self.view
+        setPassPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        setPassPopover.popoverPresentationController?.permittedArrowDirections = []
+        setPassPopover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(setPassPopover, animated: true)
     }
     
     func encryptMessage(body: String, deviceId: Int32, recipientId: String, store: CriptextAxolotlStore) -> (String, MessageType) {
@@ -827,6 +842,12 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         }, completion: nil)
         self.toggleAttachmentTable()
         self.updateBadge()
+    }
+}
+
+extension ComposeViewController: emailSetPasswordDelegate {
+    func setPassword(guestEmails: [String : Any], criptextEmails: [String : Any], password: String) {
+        handleSendMail(guestEmail: guestEmails, criptextEmails: criptextEmails)
     }
 }
 
