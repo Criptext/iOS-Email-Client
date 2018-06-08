@@ -22,6 +22,7 @@ class EmailDetailViewController: UIViewController {
             return emailData.emails.contains(where: {$0.unread})
         }
     }
+    let fileManager = CriptextFileManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,8 @@ class EmailDetailViewController: UIViewController {
         self.registerCellNibs()
         self.topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
+        
+        fileManager.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
@@ -162,6 +165,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
         emailsTableView.reloadData()
+    }
+    
+    func tableViewCellDidTapAttachment(file: File) {
+        fileManager.registerFile(file: file)
     }
     
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType) {
@@ -321,7 +328,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
                 return
         }
         let contactsTo = (lastContact.email == emailData.accountEmail) ? Array(lastEmail.getContacts(type: .to)) : [lastContact]
-        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "Re:")
+        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "RE:")
     }
     
     func onFooterReplyAllPress() {
@@ -336,14 +343,14 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
             contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
             contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
         }
-        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "Re:")
+        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "RE:")
     }
     
     func onFooterForwardPress() {
         guard let lastEmail = emailData.emails.last else {
                 return
         }
-        presentComposer(email: lastEmail, contactsTo: [], contactsCc: [], subjectPrefix: "Fw:")
+        presentComposer(email: lastEmail, contactsTo: [], contactsCc: [], subjectPrefix: "FW:")
     }
 }
 
@@ -405,7 +412,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let email = emailData.emails[indexPath.row]
         let fromContact = email.fromContact
         let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "Re:")
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subjectPrefix: "RE:")
     }
     
     func onReplyAllPress() {
@@ -422,7 +429,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
         contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
         contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "Re:")
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "RE:")
     }
     
     func onForwardPress() {
@@ -552,5 +559,50 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
             mailboxData.removeSelectedRow = true
             self.navigationController?.popViewController(animated: true)
         }
+    }
+}
+
+extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractionControllerDelegate {
+    
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        return self
+    }
+    
+    func uploadProgressUpdate(file: File, progress: Int) {
+        guard let attachmentCell = getCellFromFile(file) else {
+            return
+        }
+        attachmentCell.markImageView.isHidden = true
+        attachmentCell.progressView.isHidden = false
+        attachmentCell.progressView.setProgress(Float(progress)/100.0, animated: true)
+    }
+    
+    func finishRequest(file: File, success: Bool) {
+        if(success){
+            var wholeFile = Data()
+            for chunk in file.chunks {
+                wholeFile.append(chunk)
+            }
+            let tmpPath = NSTemporaryDirectory() + file.name
+            try! wholeFile.write(to: URL(fileURLWithPath: tmpPath))
+            
+            let viewer = UIDocumentInteractionController(url: URL(fileURLWithPath: tmpPath))
+            viewer.delegate = self
+            viewer.presentPreview(animated: true)
+        }
+        guard let attachmentCell = getCellFromFile(file) else {
+            return
+        }
+        attachmentCell.setMarkIcon(success: success)
+    }
+    
+    func getCellFromFile(_ file: File) -> AttachmentTableCell? {
+        guard let emailIndex = emailData.emails.index(where: {$0.key == file.emailId}),
+            let index = emailData.emails[emailIndex].files.index(where: {$0.token == file.token}),
+            let emailCell = self.emailsTableView.cellForRow(at: IndexPath(row: emailIndex, section: 0)) as? EmailTableViewCell,
+            let attachmentCell = emailCell.attachmentsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
+                return nil
+        }
+        return attachmentCell
     }
 }

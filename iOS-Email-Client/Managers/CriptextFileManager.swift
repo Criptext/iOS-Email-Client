@@ -9,7 +9,8 @@
 import Foundation
 
 protocol CriptextFileDelegate {
-    func uploadProgressUpdate(filetoken: String, progress: Int)
+    func uploadProgressUpdate(file: File, progress: Int)
+    func finishRequest(file: File, success: Bool)
 }
 
 class CriptextFileManager {
@@ -25,6 +26,11 @@ class CriptextFileManager {
     var registeredFiles = [File]()
     var delegate : CriptextFileDelegate?
     
+    enum RequestType {
+        case upload
+        case download
+    }
+    
     func registerFile(file fileData: Data, name: String, mimeType: String){
         let totalChunks = Int(floor(Double(fileData.count) / Double(chunkSize)))
         var chunks = [Data]()
@@ -37,6 +43,7 @@ class CriptextFileManager {
             chunksProgress.append(PENDING)
         }
         let fileRegistry = self.createRegistry(name: name, size: fileData.count, mimeType: mimeType)
+        fileRegistry.requestType = .upload
         fileRegistry.chunks = chunks
         fileRegistry.chunksProgress = chunksProgress
         self.registeredFiles.insert(fileRegistry, at: 0)
@@ -58,28 +65,57 @@ class CriptextFileManager {
         }
     }
     
+    func registerFile(file: File){
+        if let myFile = registeredFiles.first(where: {$0.token == file.token}) {
+            if(myFile.requestStatus == .failed){
+                myFile.requestStatus = .pending
+                self.handleFileTurn()
+            } else if (myFile.requestStatus == . finish) {
+                delegate?.finishRequest(file: myFile, success: true)
+            }
+            return
+        }
+        file.requestStatus = .pending
+        file.requestType = .download
+        registeredFiles.append(file)
+        APIManager.getFileMetadata(filetoken: file.token, token: self.token) { (requestError, responseData) in
+            guard let metadata = responseData?["file"] as? [String: Any] else {
+                file.requestStatus = .failed
+                return
+            }
+            let totalChunks = metadata["chunks"] as! Int
+            var chunksProgress = [Int]()
+            for _ in 1...totalChunks {
+                chunksProgress.append(self.PENDING)
+            }
+            file.chunks = [Data]()
+            file.chunksProgress = chunksProgress
+            self.handleFileTurn()
+        }
+    }
+    
     private func createRegistry(name: String, size: Int, mimeType: String) -> File {
         let attachment = File()
         attachment.name = name
         attachment.size = size
         attachment.mimeType = mimeType
-        
+        attachment.requestStatus = .pending
         return attachment
     }
     
     private func handleFileTurn(){
         for file in registeredFiles.reversed() {
             if(file.requestStatus == .pending){
-                startUpload(file.token)
+                startRequest(file.token)
                 break
             }
-            if(file.requestStatus == .uploading){
+            if(file.requestStatus == .processing){
                 break
             }
         }
     }
     
-    private func startUpload(_ filetoken: String){
+    private func startRequest(_ filetoken: String){
         guard let fileIndex = registeredFiles.index(where: {$0.token == filetoken}) else {
             handleFileTurn()
             return
@@ -92,9 +128,13 @@ class CriptextFileManager {
             if(progress != PENDING){
                 break
             }
-            let chunk = file.chunks[index]
-            registeredFiles[fileIndex].requestStatus = .uploading
-            uploadChunk(chunk, file: file, part: index)
+            registeredFiles[fileIndex].requestStatus = .processing
+            if(file.requestType == .upload){
+                let chunk = file.chunks[index]
+                uploadChunk(chunk, file: file, part: index)
+            } else {
+                downloadChunk(file: file, part: index)
+            }
             return
         }
         handleFileTurn()
@@ -103,32 +143,57 @@ class CriptextFileManager {
     private func uploadChunk(_ chunk: Data, file: File, part: Int){
         let filetoken = file.token
         let params = [
-            "part": part,
+            "part": part + 1,
             "filetoken": filetoken,
             "filename": file.name,
             "mimeType": file.mimeType
         ] as [String: Any]
-        APIManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError, response) in
+        APIManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError) in
             guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
                 self.handleFileTurn()
                 return
             }
             guard requestError == nil else {
                 self.registeredFiles[fileIndex].requestStatus = .failed
+                self.chunkUpdateProgress(Double(self.PENDING)/100.0, for: file.token, part: part + 1)
+                self.delegate?.finishRequest(file: file, success: false)
                 self.handleFileTurn()
                 return
             }
+            file.chunksProgress[part] = self.COMPLETE
             self.checkCompleteUpload(filetoken: filetoken)
-            self.startUpload(filetoken)
+            self.startRequest(filetoken)
+        }
+    }
+    
+    private func downloadChunk(file: File, part: Int){
+        let filetoken = file.token
+        APIManager.downloadChunk(filetoken: filetoken, part: part + 1, token: self.token, progressDelegate: self) { (requestError, chunkData) in
+            guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
+                self.handleFileTurn()
+                return
+            }
+            guard requestError == nil else {
+                self.registeredFiles[fileIndex].requestStatus = .failed
+                self.chunkUpdateProgress(Double(self.PENDING)/100.0, for: file.token, part: part + 1)
+                self.delegate?.finishRequest(file: file, success: false)
+                self.handleFileTurn()
+                return
+            }
+            file.chunksProgress[part] = self.COMPLETE
+            file.chunks.append(chunkData!)
+            self.checkCompleteUpload(filetoken: filetoken)
+            self.startRequest(filetoken)
         }
     }
     
     private func checkCompleteUpload(filetoken: String){
-        guard let fileIndex = registeredFiles.index(where: {$0.token == filetoken}) else {
+        guard let file = registeredFiles.first(where: {$0.token == filetoken}) else {
             return
         }
-        if !registeredFiles[fileIndex].chunksProgress.contains(where: {$0 != COMPLETE}){
-            registeredFiles[fileIndex].requestStatus = .finish
+        if !file.chunksProgress.contains(where: {$0 != COMPLETE}){
+            file.requestStatus = .finish
+            self.delegate?.finishRequest(file: file, success: true)
         }
     }
     
@@ -147,6 +212,21 @@ class CriptextFileManager {
         DBManager.store(registeredFiles)
         return registeredFiles
     }
+    
+    func updateFiles(emailId: String){
+        for file in registeredFiles {
+            DBManager.update(file: file, emailId: emailId)
+        }
+    }
+    
+    func getFilesRequestData() -> [[String: Any]] {
+        return registeredFiles.map({ (file) -> [String: Any] in
+            return ["token": file.token,
+                    "name": file.name,
+                    "size": file.size,
+                    "mimeType": file.mimeType]
+        })
+    }
 }
 
 extension CriptextFileManager: ProgressDelegate {
@@ -155,16 +235,18 @@ extension CriptextFileManager: ProgressDelegate {
     }
     
     func chunkUpdateProgress(_ percent: Double, for token: String, part: Int) {
-        guard let fileIndex = registeredFiles.index(where: {$0.token == token}) else {
+        guard let file = registeredFiles.first(where: {$0.token == token}) else {
             return
         }
-        registeredFiles[fileIndex].chunksProgress[part] = Int(percent * 100)
-        let totalProgress = registeredFiles[fileIndex].chunksProgress.reduce(0) { (sum, individualProgress) -> Int in
+        file.chunksProgress[part - 1] = Int(percent * 100)
+        let totalProgress = file.chunksProgress.reduce(0) { (sum, individualProgress) -> Int in
             guard individualProgress != PENDING else {
                 return sum
             }
             return sum + individualProgress
-        } / registeredFiles[fileIndex].chunksProgress.count
-        delegate?.uploadProgressUpdate(filetoken: token, progress: totalProgress)
+        } / file.chunksProgress.count
+        print("Progress: \(totalProgress) - Current Part: \(part)")
+        file.progress = totalProgress
+        delegate?.uploadProgressUpdate(file: file, progress: totalProgress)
     }
 }

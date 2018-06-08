@@ -162,7 +162,7 @@ class APIManager {
         }
     }
     
-    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, Any?) -> Void)){
+    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/chunk"
         let headers = ["Authorization": "Basic \(token)"]
         let filetoken = params["filetoken"] as! String
@@ -179,16 +179,64 @@ class APIManager {
             switch(result){
             case .success(let request, _, _):
                 request.uploadProgress(closure: { (progress) in
-                    print("Upload Progress: \(progress.fractionCompleted)")
                     progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
                 })
                 request.responseJSON(completionHandler: { (response) in
-                    completion(nil, "naisu ")
+                    if let error = response.error {
+                        completion(error)
+                        return
+                    }
+                    guard response.response?.statusCode == 200 else {
+                        let criptextError = CriptextError(code: .noValidResponse)
+                        completion(criptextError)
+                        return
+                    }
+                    completion(nil)
                 })
             case .failure(_):
                 let error = CriptextError(code: .noValidResponse)
-                completion( error, nil)
+                completion(error)
             }
+        }
+    }
+    
+    class func getFileMetadata(filetoken: String, token: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
+        let url = "\(self.fileServiceUrl)/file/\(filetoken)"
+        let headers = ["Authorization": "Basic \(token)"]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON{
+            (response) in
+            guard response.response?.statusCode == 200,
+                let responseData = response.result.value as? [String: Any] else {
+                let criptextError = CriptextError(code: .noValidResponse)
+                completion(criptextError, nil)
+                return
+            }
+            completion(nil, responseData)
+        }
+    }
+    
+    class func downloadChunk(filetoken: String, part: Int, token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, Data?) -> Void)){
+        let url = "\(self.fileServiceUrl)/file/\(filetoken)/chunk/\(part)"
+        let headers = ["Authorization": "Basic \(token)"]
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURL = documentsURL.appendingPathComponent("\(filetoken).part\(part)")
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+            return (fileURL, [.removePreviousFile])
+        }
+        Alamofire.download(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers, to: destination).downloadProgress { (progress) in
+                progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
+            }.response { (response) in
+                if let error = response.error {
+                    completion(error, nil)
+                    return
+                }
+                guard response.response?.statusCode == 200 else {
+                    let criptextError = CriptextError(code: .noValidResponse)
+                    completion(criptextError, nil)
+                    return
+                }
+                let fileData = FileManager.default.contents(atPath: fileURL.path)
+                completion(nil, fileData)
         }
     }
 }

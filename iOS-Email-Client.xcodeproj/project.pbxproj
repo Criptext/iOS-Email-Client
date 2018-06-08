@@ -101,7 +101,12 @@
 		7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */; };
 		7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */; };
 		7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E884F208D367B003FA304 /* MailboxData.swift */; };
+		7C1E987A20C9B96A003205F8 /* showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E987920C9B969003205F8 /* showmore.png */; };
 		7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20EA3620B478F300E17543 /* SettingsGeneralViewController.swift */; };
+		7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0420C6E0270019321E /* EventHandlerTests.swift */; };
+		7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0720C6E08E0019321E /* MockAPIManager.swift */; };
+		7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0920C6E5270019321E /* MockSignalHandler.swift */; };
+		7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */; };
 		7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229820A4A53900F077FD /* UtilsTests.swift */; };
 		7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */; };
 		7C26229D20AA39B300F077FD /* RSACipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229C20AA39B300F077FD /* RSACipher.swift */; };
@@ -165,7 +170,6 @@
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
 		7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */; };
-		7CD7A59120B76B990079B797 /* showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CD7A59020B76B970079B797 /* showmore.png */; };
 		7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
 		7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
@@ -301,7 +305,12 @@
 		7C1E884B208D1193003FA304 /* GeneralMoreOptionsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralMoreOptionsUIView.swift; sourceTree = "<group>"; };
 		7C1E884D208D11CA003FA304 /* GeneralMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralMoreOptionsUIView.xib; sourceTree = "<group>"; };
 		7C1E884F208D367B003FA304 /* MailboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxData.swift; sourceTree = "<group>"; };
+		7C1E987920C9B969003205F8 /* showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = showmore.png; sourceTree = "<group>"; };
 		7C20EA3620B478F300E17543 /* SettingsGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralViewController.swift; sourceTree = "<group>"; };
+		7C247E0420C6E0270019321E /* EventHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerTests.swift; sourceTree = "<group>"; };
+		7C247E0720C6E08E0019321E /* MockAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIManager.swift; sourceTree = "<group>"; };
+		7C247E0920C6E5270019321E /* MockSignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSignalHandler.swift; sourceTree = "<group>"; };
+		7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerSpyDelegate.swift; sourceTree = "<group>"; };
 		7C26229820A4A53900F077FD /* UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
 		7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextFileManager.swift; sourceTree = "<group>"; };
 		7C26229C20AA39B300F077FD /* RSACipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSACipher.swift; sourceTree = "<group>"; };
@@ -366,7 +375,6 @@
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
 		7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		7CD7A59020B76B970079B797 /* showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = showmore.png; path = "../../../../Downloads/iOS - icono/showmore.png"; sourceTree = "<group>"; };
 		7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSessionStore.swift; sourceTree = "<group>"; };
 		7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
@@ -569,13 +577,13 @@
 				41B6AACF20179D2100D428B7 /* Model */,
 				41B6AAAF2017987500D428B7 /* AppDelegate.swift */,
 				41B6AAB32017987500D428B7 /* Main.storyboard */,
-				7CD7A59020B76B970079B797 /* showmore.png */,
 				41B6AAB62017987500D428B7 /* Assets.xcassets */,
 				41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */,
 				41B6AABB2017987500D428B7 /* Info.plist */,
 				41AAC54C201AA04F00809C4D /* GoogleService-Info.plist */,
 				41AAC54E201AA05E00809C4D /* mark_read.png */,
 				41AAC550201AA06500809C4D /* mark_unread.png */,
+				7C1E987920C9B969003205F8 /* showmore.png */,
 				7CBD20BD2024B09F00D70B87 /* Login.storyboard */,
 				7C8D6C73203735E000AB96EF /* Constants.swift */,
 			);
@@ -585,6 +593,7 @@
 		41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				7C247E0620C6E0470019321E /* Supporting Files */,
 				7C26229720A4A50A00F077FD /* Cases */,
 				41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */,
 				41B6AAC62017987500D428B7 /* Info.plist */,
@@ -693,10 +702,21 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		7C247E0620C6E0470019321E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7C247E0720C6E08E0019321E /* MockAPIManager.swift */,
+				7C247E0920C6E5270019321E /* MockSignalHandler.swift */,
+				7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		7C26229720A4A50A00F077FD /* Cases */ = {
 			isa = PBXGroup;
 			children = (
 				7C26229820A4A53900F077FD /* UtilsTests.swift */,
+				7C247E0420C6E0270019321E /* EventHandlerTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -867,7 +887,7 @@
 				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
 				7C049F8B20879CFA007A6213 /* LabelsUIPopover.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
-				7CD7A59120B76B990079B797 /* showmore.png in Resources */,
+				7C1E987A20C9B96A003205F8 /* showmore.png in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
 				7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */,
 				7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */,
@@ -1062,8 +1082,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
 				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,
+				7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */,
 				7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */,
+				7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */,
+				7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

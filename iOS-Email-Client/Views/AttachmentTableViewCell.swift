@@ -70,15 +70,15 @@ class AttachmentTableViewCell: UITableViewCell {
         
     }
     
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if highlighted {
-            self.contentContainerView.backgroundColor = UIColor.lightGray
-        }else{
-            self.contentContainerView.backgroundColor = UIColor(hex:"FAFAFA")
+    func setMarkIcon(success: Bool){
+        successImageView.isHidden = false
+        guard success else {
+            successImageView.image = #imageLiteral(resourceName: "mark-error")
+            successImageView.backgroundColor = .alert
+            return
         }
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        //do nothing
+        progressView.isHidden = true
+        successImageView.image = #imageLiteral(resourceName: "mark-success")
+        successImageView.backgroundColor = .mainUI
     }
 }

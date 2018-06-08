@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m8Z-E0-HmE">
-                    <rect key="frame" x="27" y="10" width="324" height="48"/>
+                    <rect key="frame" x="18" y="10" width="339" height="48"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment_pdf" translatesAutoresizingMaskIntoConstraints="NO" id="ax7-C4-FBi">
                             <rect key="frame" x="7" y="8" width="32" height="32"/>
@@ -32,7 +32,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZP2-bJ-aKN">
-                            <rect key="frame" x="49" y="13" width="236" height="21"/>
+                            <rect key="frame" x="49" y="13" width="251" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="wz8-C2-UP9"/>
                             </constraints>
@@ -41,7 +41,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-download" translatesAutoresizingMaskIntoConstraints="NO" id="pH5-Rc-G60">
-                            <rect key="frame" x="296" y="16.5" width="12" height="15"/>
+                            <rect key="frame" x="311" y="16.5" width="12" height="15"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="12" id="Qas-AR-2yn"/>
                                 <constraint firstAttribute="height" constant="15" id="rlJ-d9-Veg"/>
@@ -52,16 +52,41 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </imageView>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0U8-2L-2CC">
+                            <rect key="frame" x="0.0" y="46" width="339" height="2"/>
+                            <color key="progressTintColor" red="0.0" green="0.4577052593" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </progressView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="Rme-5L-Q7E">
+                            <rect key="frame" x="32" y="33" width="14" height="14"/>
+                            <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="14" id="IQV-gT-WUC"/>
+                                <constraint firstAttribute="height" constant="14" id="RBq-fy-uip"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="7"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="pH5-Rc-G60" firstAttribute="leading" secondItem="ZP2-bJ-aKN" secondAttribute="trailing" constant="11" id="5L3-Tr-sFg"/>
+                        <constraint firstItem="Rme-5L-Q7E" firstAttribute="bottom" secondItem="ax7-C4-FBi" secondAttribute="bottom" constant="7" id="Lw7-cz-827"/>
                         <constraint firstAttribute="height" constant="48" id="Me3-yT-ZT9"/>
+                        <constraint firstAttribute="bottom" secondItem="0U8-2L-2CC" secondAttribute="bottom" id="NXi-0Y-ATU"/>
                         <constraint firstItem="ZP2-bJ-aKN" firstAttribute="centerY" secondItem="ax7-C4-FBi" secondAttribute="centerY" id="Qwb-yJ-wOy"/>
                         <constraint firstItem="ZP2-bJ-aKN" firstAttribute="leading" secondItem="ax7-C4-FBi" secondAttribute="trailing" constant="10" id="XLT-1z-7lQ"/>
+                        <constraint firstAttribute="trailing" secondItem="0U8-2L-2CC" secondAttribute="trailing" id="bQf-0B-bab"/>
+                        <constraint firstItem="Rme-5L-Q7E" firstAttribute="trailing" secondItem="ax7-C4-FBi" secondAttribute="trailing" constant="7" id="bnE-XG-6os"/>
                         <constraint firstItem="pH5-Rc-G60" firstAttribute="centerY" secondItem="m8Z-E0-HmE" secondAttribute="centerY" id="eHZ-Xt-nPX"/>
                         <constraint firstItem="ax7-C4-FBi" firstAttribute="centerY" secondItem="m8Z-E0-HmE" secondAttribute="centerY" id="hED-D2-abQ"/>
                         <constraint firstAttribute="trailing" secondItem="pH5-Rc-G60" secondAttribute="trailing" constant="16" id="nvw-SR-Ow0"/>
+                        <constraint firstItem="0U8-2L-2CC" firstAttribute="leading" secondItem="m8Z-E0-HmE" secondAttribute="leading" id="utG-jo-mEy"/>
                         <constraint firstItem="ax7-C4-FBi" firstAttribute="leading" secondItem="m8Z-E0-HmE" secondAttribute="leading" constant="7" id="yUU-K1-TDY"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -74,14 +99,16 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="m8Z-E0-HmE" firstAttribute="centerY" secondItem="OWh-t1-UXx" secondAttribute="centerY" id="2D8-1O-LdG"/>
-                <constraint firstItem="OWh-t1-UXx" firstAttribute="trailing" secondItem="m8Z-E0-HmE" secondAttribute="trailing" constant="24" id="2oD-72-FrH"/>
-                <constraint firstItem="m8Z-E0-HmE" firstAttribute="leading" secondItem="OWh-t1-UXx" secondAttribute="leading" constant="27" id="rXc-gy-n2a"/>
+                <constraint firstItem="OWh-t1-UXx" firstAttribute="trailing" secondItem="m8Z-E0-HmE" secondAttribute="trailing" constant="18" id="2oD-72-FrH"/>
+                <constraint firstItem="m8Z-E0-HmE" firstAttribute="leading" secondItem="OWh-t1-UXx" secondAttribute="leading" constant="18" id="rXc-gy-n2a"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="OWh-t1-UXx"/>
             <connections>
                 <outlet property="attachmentContainer" destination="m8Z-E0-HmE" id="f2P-nz-diP"/>
                 <outlet property="attachmentLabel" destination="ZP2-bJ-aKN" id="Guh-4Z-ix7"/>
+                <outlet property="markImageView" destination="Rme-5L-Q7E" id="jQA-RL-frL"/>
+                <outlet property="progressView" destination="0U8-2L-2CC" id="BGh-zC-vpj"/>
                 <outlet property="typeView" destination="ax7-C4-FBi" id="Gai-cL-jIf"/>
             </connections>
             <point key="canvasLocation" x="-57.5" y="115"/>
@@ -90,5 +117,6 @@
     <resources>
         <image name="attachment_pdf" width="80" height="80"/>
         <image name="icon-download" width="30" height="38"/>
+        <image name="mark-success" width="28" height="28"/>
     </resources>
 </document>

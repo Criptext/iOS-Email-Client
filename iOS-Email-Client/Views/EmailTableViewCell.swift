@@ -14,6 +14,7 @@ protocol EmailTableViewCellDelegate {
     func tableViewCellDidLoadContent(_ cell:EmailTableViewCell, email: Email)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
+    func tableViewCellDidTapAttachment(file: File)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -254,8 +255,8 @@ extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let attachment = attachments[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentTableCell") as! AttachmentTableCell
-        cell.setNameAndSize(attachment.name, attachment.prettyPrintSize())
-        cell.setAttachmentType(attachment.mimeType)
+        cell.setFields(attachment)
+        cell.delegate = self
         return cell
     }
     
@@ -265,5 +266,16 @@ extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return ATTATCHMENT_CELL_HEIGHT
+    }
+}
+
+extension EmailTableViewCell: AttachmentTableCellDelegate {
+    func tableCellDidTap(_ cell: AttachmentTableCell) {
+        guard let indexPath = attachmentsTableView.indexPath(for: cell) else {
+            return
+        }
+        
+        let file = attachments[indexPath.row]
+        delegate?.tableViewCellDidTapAttachment(file: file)
     }
 }

@@ -110,6 +110,10 @@ class Email: Object {
         }
         return String(contactsTitle.prefix(contactsTitle.count - 2))
     }
+    
+    func getFiles() -> [File] {
+        return Array(files)
+    }
 }
 
 func ==(lhs: Email, rhs: Email) -> Bool {

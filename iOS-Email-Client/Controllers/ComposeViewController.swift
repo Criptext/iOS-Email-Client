@@ -523,9 +523,11 @@ class ComposeViewController: UIViewController {
     }
     
     func sendMail(subject: String, guestEmail: [String: Any], criptextEmails: [Any]){
+        let files = fileManager.getFilesRequestData()
         var requestParams = [
             "subject": subject,
-            "criptextEmails": criptextEmails
+            "criptextEmails": criptextEmails,
+            "files": files
             ] as [String : Any]
         if let threadId = composerData.threadId {
             requestParams["threadId"] = threadId
@@ -557,6 +559,7 @@ class ComposeViewController: UIViewController {
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(myEmail, key: key, messageId: messageId, threadId: threadId)
         DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
+        fileManager.updateFiles(emailId: key)
         var data = [String: Any]()
         data["email"] = myEmail
         NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
@@ -1011,7 +1014,12 @@ extension ComposeViewController: AttachmentTableViewCellDelegate{
         updateBadge()
     }
     
-    func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {}
+    func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        fileManager.registerFile(file: fileManager.registeredFiles[indexPath.row])
+    }
 }
 
 //MARK: - UIGestureRecognizer Delegate
@@ -1139,8 +1147,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         } else {
             self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
         }
-//        let token = CLToken(displayText: text, context: nil)
-//        view.add(token)
     }
     
     func tokenInputView(_ view: CLTokenInputView, didRemove token: CLToken) {
@@ -1201,19 +1207,29 @@ extension ComposeViewController: CNContactPickerDelegate {
 }
 
 extension ComposeViewController: CriptextFileDelegate {
-    func uploadProgressUpdate(filetoken: String, progress: Int) {
-        guard let index = fileManager.registeredFiles.index(where: {$0.token == filetoken}),
-            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
+    func finishRequest(file: File, success: Bool) {
+        guard let cell = getCellForFile(file) else {
             return
         }
-        
+        cell.setMarkIcon(success: success)
+    }
+    
+    func uploadProgressUpdate(file: File, progress: Int) {
+        guard let cell = getCellForFile(file) else {
+            return
+        }
         let percentage = Float(progress)/100.0
+        cell.successImageView.isHidden = true
+        cell.progressView.isHidden = false
         cell.progressView.setProgress(percentage, animated: true)
-        guard progress == 100 else {
-            return
+    }
+    
+    func getCellForFile(_ file: File) -> AttachmentTableViewCell? {
+        guard let index = fileManager.registeredFiles.index(where: {$0.token == file.token}),
+            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
+                return nil
         }
-        cell.successImageView.isHidden = false
-        cell.progressView.isHidden = true
+        return cell
     }
 }
 

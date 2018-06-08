@@ -17,6 +17,8 @@ class EventHandler {
     var eventDelegate : EventHandlerDelegate?
     var emails = [Email]()
     var successfulEvents = [Int32]()
+    var apiManager : APIManager.Type = APIManager.self
+    var signalHandler: SignalHandler.Type = SignalHandler.self
     
     init(account: Account){
         myAccount = account
@@ -32,7 +34,7 @@ class EventHandler {
         })
         asyncGroupCalls.notify(queue: .main) {
             if(!self.successfulEvents.isEmpty){
-                APIManager.acknowledgeEvents(eventIds: self.successfulEvents, token: self.myAccount.jwt)
+                self.apiManager.acknowledgeEvents(eventIds: self.successfulEvents, token: self.myAccount.jwt)
             }
             guard !self.emails.isEmpty else {
                 return
@@ -76,6 +78,7 @@ class EventHandler {
         let metadataKey = params["metadataKey"] as! Int32
         let senderDeviceId = params["senderDeviceId"] as! Int32
         let messageType = MessageType.init(rawValue: (params["messageType"] as! Int))!
+        let files = params["files"] as? [[String: Any]]
         
         let dateFormatter = DateFormatter()
         let timeZone = NSTimeZone(abbreviation: "UTC")
@@ -100,14 +103,20 @@ class EventHandler {
         email.date = localDate
         email.unread = true
         
-        APIManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
+        if let attachments = files {
+            for attachment in attachments {
+                handleAttachment(attachment, email: email)
+            }
+        }
+        
+        apiManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
             guard error == nil,
                 let username = Utils.getUsernameFromEmailFormat(from) else {
                 finishCallback(false)
                 return
             }
             let signalMessage = data as! String
-            email.content = SignalHandler.decryptMessage(signalMessage, messageType: messageType, account: self.myAccount, recipientId: username, deviceId: senderDeviceId)
+            email.content = self.signalHandler.decryptMessage(signalMessage, messageType: messageType, account: self.myAccount, recipientId: username, deviceId: senderDeviceId)
             email.preview = String(email.content.removeHtmlTags().prefix(100))
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
@@ -119,7 +128,19 @@ class EventHandler {
             ContactManager.parseEmailContacts(bcc, email: email, type: .bcc)
             finishCallback(true)
         }
-        
+    }
+    
+    func handleAttachment(_ attachment: [String: Any], email: Email) {
+        let file = File()
+        file.token = attachment["token"] as! String
+        file.size = attachment["size"] as! Int
+        file.name = attachment["name"] as! String
+        file.mimeType = mimeTypeForPath(path: file.name)
+        file.date = email.date
+        file.readOnly = attachment["read_only"] as? Int ?? 0
+        file.emailId = email.key
+        DBManager.store(file)
+        email.files.append(file)
     }
 }
 
