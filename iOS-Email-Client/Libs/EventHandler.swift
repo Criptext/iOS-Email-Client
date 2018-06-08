@@ -140,7 +140,13 @@ class EventHandler {
                 return
             }
             let signalMessage = data as! String
-            email.content = self.signalHandler.decryptMessage(signalMessage, messageType: messageType, account: self.myAccount, recipientId: username, deviceId: senderDeviceId)
+            let exception = tryBlock {
+                email.content = self.signalHandler.decryptMessage(signalMessage, messageType: messageType, account: self.myAccount, recipientId: username, deviceId: senderDeviceId)
+            }
+            guard exception == nil else {
+                finishCallback(false)
+                return
+            }
             email.preview = String(email.content.removeHtmlTags().prefix(100))
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
