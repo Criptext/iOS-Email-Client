@@ -51,19 +51,19 @@ class EventHandler {
             if(!successfulEvents.isEmpty){
                 self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
             }
-            self.checkForEmails(emails)
-            self.checkForOpens(opens)
+            self.notify(emails: emails)
+            self.notify(opens: opens)
         }
     }
     
-    func checkForEmails(_ emails: [Email]){
+    func notify(emails: [Email]){
         guard !emails.isEmpty else {
             return
         }
         self.eventDelegate?.didReceiveNewEmails(emails: emails)
     }
     
-    func checkForOpens(_ opens: [Open]){
+    func notify(opens: [Open]){
         guard !opens.isEmpty else {
             return
         }
@@ -74,35 +74,28 @@ class EventHandler {
         let cmd = event["cmd"] as! Int32
         let rowId = event["rowid"] as? Int32
         guard let params = event["params"] as? [String : Any] ?? Utils.convertToDictionary(text: (event["params"] as! String)) else {
+            finishCallback(nil, nil)
             return
         }
         switch(cmd){
         case Event.newEmail.rawValue:
             self.handleNewEmailCommand(params: params){ (successfulEvent, email)  in
-                if successfulEvent,
-                    let eventId = rowId {
-                    if let newEmail = email {
-                        finishCallback(eventId, newEmail)
-                    } else {
-                        finishCallback(eventId, nil)
-                    }
+                guard successfulEvent,
+                    let eventId = rowId else {
+                    finishCallback(nil, nil)
                     return
                 }
-                finishCallback(nil, nil)
+                finishCallback(eventId, email)
             }
             break
         case Event.openEmail.rawValue:
             self.handleOpenEmailCommand(params: params){ (successfulEvent, open) in
-                if successfulEvent,
-                    let eventId = rowId {
-                    if let newOpen = open {
-                        finishCallback(eventId, newOpen)
-                    } else {
-                        finishCallback(eventId, nil)
-                    }
-                    return
+                guard successfulEvent,
+                    let eventId = rowId else {
+                        finishCallback(nil, nil)
+                        return
                 }
-                finishCallback(nil, nil)
+                finishCallback(eventId, open)
             }
             break
         default:
