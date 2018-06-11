@@ -16,9 +16,6 @@ protocol EventHandlerDelegate {
 class EventHandler {
     let myAccount : Account
     var eventDelegate : EventHandlerDelegate?
-    var emails = [Email]()
-    var opens = [Open]()
-    var successfulEvents = [Int32]()
     var apiManager : APIManager.Type = APIManager.self
     var signalHandler: SignalHandler.Type = SignalHandler.self
     
@@ -27,40 +24,53 @@ class EventHandler {
     }
     
     func handleEvents(events: Array<Dictionary<String, Any>>){
+        var emails = [Email]()
+        var opens = [Open]()
+        var successfulEvents = [Int32]()
         let asyncGroupCalls = DispatchGroup()
         events.forEach({ (event) in
             asyncGroupCalls.enter()
-            self.handleEvent(event){
+            self.handleEvent(event){ (successfulEventId, data) in
+                guard let eventId = successfulEventId else {
+                    asyncGroupCalls.leave()
+                    return
+                }
+                successfulEvents.append(eventId)
+                switch(data){
+                case is Email:
+                    emails.append(data as! Email)
+                case is Open:
+                    opens.append(data as! Open)
+                default:
+                    break
+                }
                 asyncGroupCalls.leave()
             }
         })
         asyncGroupCalls.notify(queue: .main) {
-            if(!self.successfulEvents.isEmpty){
-                self.apiManager.acknowledgeEvents(eventIds: self.successfulEvents, token: self.myAccount.jwt)
+            if(!successfulEvents.isEmpty){
+                self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
             }
-            self.checkForEmails()
-            self.checkForOpens()
-            self.successfulEvents.removeAll()
+            self.checkForEmails(emails)
+            self.checkForOpens(opens)
         }
     }
     
-    func checkForEmails(){
-        guard !self.emails.isEmpty else {
+    func checkForEmails(_ emails: [Email]){
+        guard !emails.isEmpty else {
             return
         }
-        self.eventDelegate?.didReceiveNewEmails(emails: self.emails)
-        self.emails.removeAll()
+        self.eventDelegate?.didReceiveNewEmails(emails: emails)
     }
     
-    func checkForOpens(){
-        guard !self.opens.isEmpty else {
+    func checkForOpens(_ opens: [Open]){
+        guard !opens.isEmpty else {
             return
         }
-        self.eventDelegate?.didReceiveOpens(opens: self.opens)
-        self.opens.removeAll()
+        self.eventDelegate?.didReceiveOpens(opens: opens)
     }
     
-    func handleEvent(_ event: Dictionary<String, Any>, finishCallback: @escaping () -> Void){
+    func handleEvent(_ event: Dictionary<String, Any>, finishCallback: @escaping (_ successfulEventId : Int32?, _ data: Any?) -> Void){
         let cmd = event["cmd"] as! Int32
         let rowId = event["rowid"] as? Int32
         guard let params = event["params"] as? [String : Any] ?? Utils.convertToDictionary(text: (event["params"] as! String)) else {
@@ -68,21 +78,31 @@ class EventHandler {
         }
         switch(cmd){
         case Event.newEmail.rawValue:
-            self.handleNewEmailCommand(params: params){ successfulEvent in
+            self.handleNewEmailCommand(params: params){ (successfulEvent, email)  in
                 if successfulEvent,
                     let eventId = rowId {
-                    self.successfulEvents.append(eventId)
+                    if let newEmail = email {
+                        finishCallback(eventId, newEmail)
+                    } else {
+                        finishCallback(eventId, nil)
+                    }
+                    return
                 }
-                finishCallback()
+                finishCallback(nil, nil)
             }
             break
         case Event.openEmail.rawValue:
-            self.handleOpenEmailCommand(params: params){ successfulEvent in
+            self.handleOpenEmailCommand(params: params){ (successfulEvent, open) in
                 if successfulEvent,
                     let eventId = rowId {
-                    self.successfulEvents.append(eventId)
+                    if let newOpen = open {
+                        finishCallback(eventId, newOpen)
+                    } else {
+                        finishCallback(eventId, nil)
+                    }
+                    return
                 }
-                finishCallback()
+                finishCallback(nil, nil)
             }
             break
         default:
@@ -90,7 +110,7 @@ class EventHandler {
         }
     }
     
-    func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool) -> Void){
+    func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Email?) -> Void){
         let threadId = params["threadId"] as! String
         let subject = params["subject"] as! String
         let from = params["from"] as! String
@@ -113,9 +133,10 @@ class EventHandler {
         if let email = DBManager.getMailByKey(key: metadataKey.description) {
             if(email.labels.count == 1 && email.labels.first!.id == SystemLabel.sent.id){
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
-                self.emails.append(email)
+                finishCallback(true, email)
+                return
             }
-            finishCallback(true)
+            finishCallback(true, nil)
             return
         }
         
@@ -129,14 +150,15 @@ class EventHandler {
         
         if let attachments = files {
             for attachment in attachments {
-                handleAttachment(attachment, email: email)
+                let file = handleAttachment(attachment, email: email)
+                email.files.append(file)
             }
         }
         
         apiManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
             guard error == nil,
                 let username = Utils.getUsernameFromEmailFormat(from) else {
-                finishCallback(false)
+                finishCallback(false, nil)
                 return
             }
             let signalMessage = data as! String
@@ -144,23 +166,22 @@ class EventHandler {
                 email.content = self.signalHandler.decryptMessage(signalMessage, messageType: messageType, account: self.myAccount, recipientId: username, deviceId: senderDeviceId)
             }
             guard exception == nil else {
-                finishCallback(false)
+                finishCallback(false, nil)
                 return
             }
             email.preview = String(email.content.removeHtmlTags().prefix(100))
             email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
-            self.emails.append(email)
             
             ContactManager.parseEmailContacts(from, email: email, type: .from)
             ContactManager.parseEmailContacts(to, email: email, type: .to)
             ContactManager.parseEmailContacts(cc, email: email, type: .cc)
             ContactManager.parseEmailContacts(bcc, email: email, type: .bcc)
-            finishCallback(true)
+            finishCallback(true, email)
         }
     }
     
-    func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool) -> Void){
+    func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ open: Open?) -> Void){
         let type = params["type"] as! Int
         let emailId = String(params["metadataKey"] as! Int)
         let from = params["from"] as! String
@@ -174,16 +195,15 @@ class EventHandler {
         open.fileId = fileId
         open.date = Utils.getLocalDate(from: date)
         guard !DBManager.openExists(emailId: emailId, type: type, contactId: from) else {
-            finishCallback(true)
+            finishCallback(true, nil)
             return
         }
         open.id = open.incrementID()
         DBManager.store(open)
-        opens.append(open)
-        finishCallback(true)
+        finishCallback(true, open)
     }
     
-    func handleAttachment(_ attachment: [String: Any], email: Email) {
+    func handleAttachment(_ attachment: [String: Any], email: Email) -> File {
         let file = File()
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
@@ -193,7 +213,7 @@ class EventHandler {
         file.readOnly = attachment["read_only"] as? Int ?? 0
         file.emailId = email.key
         DBManager.store(file)
-        email.files.append(file)
+        return file
     }
 }
 

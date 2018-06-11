@@ -62,13 +62,13 @@ class SignatureEditorViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             return
         }
-        let returnSave = UIAlertAction(title: "Save and return", style: .default){ (alert : UIAlertAction!) -> Void in
+        let saveAction = UIAlertAction(title: "Save and return", style: .default){ (alert : UIAlertAction!) -> Void in
             self.saveAndReturn()
         }
-        let returnDontSave = UIAlertAction(title: "Return without saving", style: .destructive){ (alert : UIAlertAction!) -> Void in
+        let discardAction = UIAlertAction(title: "Return without saving", style: .destructive){ (alert : UIAlertAction!) -> Void in
             self.navigationController?.popViewController(animated: true)
         }
-        showAlert("Unsaved Changes", message: "You have made changes that were not saved. Do you wish to save and return?", style: .alert, actions: [returnSave, returnDontSave])
+        showAlert("Unsaved Changes", message: "You have made changes that were not saved. Do you wish to save and return?", style: .alert, actions: [saveAction, discardAction])
     }
     
     @objc func saveAndReturn(){

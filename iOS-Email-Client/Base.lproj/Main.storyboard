@@ -2311,7 +2311,6 @@
                     </view>
                     <size key="freeformSize" width="375" height="900"/>
                     <connections>
-                        <outlet property="ScrollInnerViewHeightConstraint" destination="z3X-vw-XSp" id="HzG-mm-loc"/>
                         <outlet property="allmailMenuItem" destination="wTx-cH-PhY" id="eH1-nz-nYm"/>
                         <outlet property="avatarImage" destination="vYb-Fk-pQR" id="LIs-2b-tNA"/>
                         <outlet property="draftMenuItem" destination="3tM-4B-FoX" id="ZOf-pv-Qw0"/>
@@ -2321,6 +2320,7 @@
                         <outlet property="labelsTableView" destination="vA9-AV-fgK" id="XOn-v5-bhB"/>
                         <outlet property="labelsTapIconView" destination="RLw-GA-FAh" id="TOT-YX-mTo"/>
                         <outlet property="nameLabel" destination="RrI-XR-Cjh" id="1CC-Jm-2tA"/>
+                        <outlet property="scrollInnerViewHeightConstraint" destination="z3X-vw-XSp" id="HzG-mm-loc"/>
                         <outlet property="scrollView" destination="emN-So-ZQn" id="KeL-81-ubm"/>
                         <outlet property="sentMenuItem" destination="BrT-p6-ByL" id="GQP-mG-dkW"/>
                         <outlet property="settingsMenuItem" destination="GMd-T7-3IZ" id="sJ1-3K-erv"/>
