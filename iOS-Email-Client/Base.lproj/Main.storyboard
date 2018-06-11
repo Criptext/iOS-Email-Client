@@ -1514,7 +1514,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create new label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBg-vD-6yw">
-                                            <rect key="frame" x="29" y="11" width="275" height="23.5"/>
+                                            <rect key="frame" x="29" y="10" width="275" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1862,7 +1862,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cryptext System Version 1.3.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snm-6a-b2Z">
-                                            <rect key="frame" x="27" y="22" width="321" height="23.5"/>
+                                            <rect key="frame" x="27" y="21" width="321" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.72549019607843135" green="0.72549019607843135" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -2128,7 +2128,6 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="63" id="F46-Oh-y6d"/>
                                                     <constraint firstAttribute="trailing" secondItem="RLw-GA-FAh" secondAttribute="trailing" constant="56" id="N3F-IE-ouY"/>
                                                     <constraint firstItem="RLw-GA-FAh" firstAttribute="centerY" secondItem="Rb8-hg-EV2" secondAttribute="centerY" id="mx0-H3-kuM"/>
                                                     <constraint firstAttribute="height" constant="63" id="pEd-qD-7xo"/>
@@ -2288,13 +2287,13 @@
                                             <constraint firstItem="3tM-4B-FoX" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="vCn-Rb-o89"/>
                                             <constraint firstItem="M5G-oW-Ngf" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="vQV-E9-tqt"/>
                                             <constraint firstItem="Rb8-hg-EV2" firstAttribute="top" secondItem="Mfd-QN-y7t" secondAttribute="bottom" id="wxq-en-3ZG"/>
+                                            <constraint firstAttribute="height" constant="880" id="z3X-vw-XSp"/>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.98765659041394338" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="cd4-gP-Pk8" firstAttribute="width" secondItem="emN-So-ZQn" secondAttribute="width" id="CkW-9v-qA8"/>
-                                    <constraint firstItem="cd4-gP-Pk8" firstAttribute="height" secondItem="emN-So-ZQn" secondAttribute="height" id="KnL-NC-JNh"/>
                                     <constraint firstAttribute="trailing" secondItem="cd4-gP-Pk8" secondAttribute="trailing" id="MI9-jb-eEC"/>
                                     <constraint firstAttribute="bottom" secondItem="cd4-gP-Pk8" secondAttribute="bottom" id="RPn-w7-fP5"/>
                                     <constraint firstItem="cd4-gP-Pk8" firstAttribute="leading" secondItem="emN-So-ZQn" secondAttribute="leading" id="aPY-KL-cqf"/>
@@ -2312,6 +2311,7 @@
                     </view>
                     <size key="freeformSize" width="375" height="900"/>
                     <connections>
+                        <outlet property="ScrollInnerViewHeightConstraint" destination="z3X-vw-XSp" id="HzG-mm-loc"/>
                         <outlet property="allmailMenuItem" destination="wTx-cH-PhY" id="eH1-nz-nYm"/>
                         <outlet property="avatarImage" destination="vYb-Fk-pQR" id="LIs-2b-tNA"/>
                         <outlet property="draftMenuItem" destination="3tM-4B-FoX" id="ZOf-pv-Qw0"/>

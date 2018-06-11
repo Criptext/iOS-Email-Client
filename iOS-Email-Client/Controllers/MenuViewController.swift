@@ -10,7 +10,7 @@ import Foundation
 
 class MenuViewController: UIViewController{
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
-    let MENU_CONTENT_HEIGHT : CGFloat = 880.0
+    let MENU_CONTENT_HEIGHT : CGFloat = 860.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
     @IBOutlet weak var scrollView: UIScrollView!
@@ -28,6 +28,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var labelsTableView: UITableView!
     @IBOutlet weak var labelsTapIconView: UIImageView!
     @IBOutlet weak var labelsTableHeightContraint: NSLayoutConstraint!
+    @IBOutlet weak var ScrollInnerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var settingsMenuItem: MenuItemUIView!
     var selectedMenuItem : MenuItemUIView?
     var mailboxVC : InboxViewController! {
@@ -53,6 +54,7 @@ class MenuViewController: UIViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
+        ScrollInnerViewHeightConstraint.constant = MENU_CONTENT_HEIGHT
         guard nameLabel.text != mailboxVC.myAccount.name else {
             return
         }
@@ -72,12 +74,14 @@ class MenuViewController: UIViewController{
             menuData.expandedLabels = true
             labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-down")
             scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT + labelsHeight)
+            ScrollInnerViewHeightConstraint.constant = MENU_CONTENT_HEIGHT + labelsHeight
             labelsTableHeightContraint.constant = labelsHeight
             return
         }
         menuData.expandedLabels = false
         labelsTableHeightContraint.constant = 0.0
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
+        ScrollInnerViewHeightConstraint.constant = MENU_CONTENT_HEIGHT
         labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-up")
     }
     
