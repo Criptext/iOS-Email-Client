@@ -150,6 +150,10 @@ class APIManager {
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
     
+    class func notifyOpen(emailId: String){
+        //TODO
+    }
+    
     class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
         let headers = ["Authorization": "Basic \(token)"]

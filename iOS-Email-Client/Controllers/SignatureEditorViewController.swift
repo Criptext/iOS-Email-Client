@@ -14,15 +14,19 @@ class SignatureEditorViewController: UIViewController {
     @IBOutlet weak var richEditor: RichEditorView!
     @IBOutlet weak var signatureEnableSwitch: UISwitch!
     @IBOutlet weak var OnOffLabel: UILabel!
+    var isEdited = false
     var myAccount: Account!
     var keyboardManager: KeyboardManager!
     
     override func viewDidLoad() {
         navigationItem.title = "Signature"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(saveAndReturn))
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         signatureEnableSwitch.isOn = myAccount.signatureEnabled
         richEditor.isEditingEnabled = signatureEnableSwitch.isOn
         OnOffLabel.text = myAccount.signatureEnabled ? "On" : "Off"
+        richEditor.delegate = self
         richEditor.html = myAccount.signature
         richEditor.placeholder = "Signature"
         richEditor.setTextColor(.green)
@@ -42,6 +46,7 @@ class SignatureEditorViewController: UIViewController {
     }
     
     @IBAction func onSwitchToggle(_ sender: Any) {
+        isEdited = true
         richEditor.isEditingEnabled = signatureEnableSwitch.isOn
         OnOffLabel.text = signatureEnableSwitch.isOn ? "On" : "Off"
         if(signatureEnableSwitch.isOn){
@@ -53,7 +58,29 @@ class SignatureEditorViewController: UIViewController {
     }
     
     @objc func goBack(){
+        guard isEdited else {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+        let saveAction = UIAlertAction(title: "Save and return", style: .default){ (alert : UIAlertAction!) -> Void in
+            self.saveAndReturn()
+        }
+        let discardAction = UIAlertAction(title: "Return without saving", style: .destructive){ (alert : UIAlertAction!) -> Void in
+            self.navigationController?.popViewController(animated: true)
+        }
+        showAlert("Unsaved Changes", message: "You have made changes that were not saved. Do you wish to save and return?", style: .alert, actions: [saveAction, discardAction])
+    }
+    
+    @objc func saveAndReturn(){
         DBManager.update(account: myAccount, signature: richEditor.html, enabled: signatureEnableSwitch.isOn)
         navigationController?.popViewController(animated: true)
+    }
+}
+
+extension SignatureEditorViewController: RichEditorDelegate {
+    func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
+        if(myAccount.signature != content){
+            isEdited = true
+        }
     }
 }

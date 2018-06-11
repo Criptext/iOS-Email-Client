@@ -145,15 +145,6 @@ extension DBManager {
         return Array(results)
     }
     
-    class func getMailsbyThreadId(_ threadId: String) -> [Email] {
-        let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "threadId == '\(threadId)'")
-        let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
-        
-        return Array(results)
-    }
-    
     class func getMailByKey(key:String) -> Email?{
         let realm = try! Realm()
         
@@ -223,7 +214,18 @@ extension DBManager {
         let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
         let mailsPredicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
-        email.counter = realm.objects(Email.self).filter(mailsPredicate).count
+        let threadEmails = realm.objects(Email.self).filter(mailsPredicate)
+        for threadEmail in threadEmails {
+            if(label == SystemLabel.sent.id){
+                if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
+                    email.participants.formUnion(threadEmail.getContacts(type: .to))
+                    email.participants.formUnion(threadEmail.getContacts(type: .cc))
+                }
+            }else{
+                email.participants.formUnion(threadEmail.getContacts(type: .from))
+            }
+        }
+        email.counter = threadEmails.count
         return email
     }
     
@@ -585,6 +587,25 @@ extension DBManager {
 
 //MARK: - Email Contact
 
+extension DBManager {
+    
+    class func store(_ open: Open){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(open, update: true)
+        }
+    }
+    
+    class func openExists(emailId: String, type: Int, contactId: String) -> Bool {
+        let realm = try! Realm()
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND emailId == '\(emailId)' AND type == \(type)")
+        let results = realm.objects(Open.self).filter(predicate)
+        return results.count > 0
+    }
+}
+
+//MARK: - Opens
 extension DBManager {
     
     class func store(_ emailContacts:[EmailContact]){

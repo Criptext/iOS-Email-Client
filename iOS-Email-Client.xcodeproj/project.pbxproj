@@ -388,6 +388,7 @@
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
 		7CDB4661203F0C9F007C9637 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		7CE548E820CB400F0046D12F /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckMarkUIView.swift; sourceTree = "<group>"; };
 		7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemUIView.xib; sourceTree = "<group>"; };
 		7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemUIView.swift; sourceTree = "<group>"; };
@@ -541,6 +542,7 @@
 				7C13D8AE20810D75008F1395 /* SignalHandler.swift */,
 				7C55B88B20863D7900BA96E8 /* CriptextError.swift */,
 				7C26229C20AA39B300F077FD /* RSACipher.swift */,
+				7CE548E820CB400F0046D12F /* ExceptionCatcher.h */,
 			);
 			path = Libs;
 			sourceTree = "<group>";

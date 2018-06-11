@@ -39,6 +39,8 @@ class EmailDetailViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
+        
+        displayMarkIcon(asRead: hasUnreadEmails)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -153,8 +155,11 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
-        DBManager.updateEmail(email, unread: false)
-        displayMarkIcon(asRead: hasUnreadEmails)
+        if(email.unread){
+            DBManager.updateEmail(email, unread: false)
+            displayMarkIcon(asRead: hasUnreadEmails)
+            APIManager.notifyOpen(emailId: email.key)
+        }
         emailsTableView.reloadData()
     }
     

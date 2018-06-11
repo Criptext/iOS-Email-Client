@@ -257,6 +257,10 @@ class InboxViewController: UIViewController {
 }
 
 extension InboxViewController: EventHandlerDelegate {
+    func didReceiveOpens(opens: [Open]) {
+        //TODO
+    }
+    
     func didReceiveNewEmails(emails: [Email]) {
         guard !mailboxData.searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
             return
@@ -497,6 +501,7 @@ extension InboxViewController: UITableViewDataSource{
         cell.subjectLabel.text = email.subject == "" ? "(No Subject)" : email.subject
         cell.previewLabel.text = email.preview
         cell.dateLabel.text = DateUtils.conversationTime(email.date)
+        cell.setReadStatus(status: email.status)
         
         let size = cell.dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         cell.dateWidthConstraint.constant = size.width
@@ -684,6 +689,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
         emails[emails.count - 1].isExpanded = true
+        
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
             continueDraft(selectedEmail)

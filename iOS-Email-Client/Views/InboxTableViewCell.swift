@@ -25,6 +25,8 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var badgeLabel: UILabel!
     @IBOutlet weak var badgeWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dateWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var readWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var readImageView: UIImageView!
     
     var holdGestureRecognizer:UILongPressGestureRecognizer!
     var delegate:InboxTableViewCellDelegate?
@@ -43,6 +45,27 @@ class InboxTableViewCell: UITableViewCell {
         }
         
         delegate.tableViewCellDidLongPress(self)
+    }
+    
+    func setReadStatus(status: Email.Status){
+        readWidthConstraint.constant = status == .none ? 0.0 : 17.0
+        readImageView.isHidden = status == .none
+        switch(status){
+        case .none:
+            break
+        case .sent:
+            readImageView.image = #imageLiteral(resourceName: "double-check")
+            readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+        case .delivered:
+            readImageView.image = #imageLiteral(resourceName: "double-check")
+            readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+        case .opened:
+            readImageView.image = #imageLiteral(resourceName: "double-check")
+            readImageView.tintColor = .mainUI
+        case .unsent:
+            readWidthConstraint.constant = 0.0
+            readImageView.isHidden = true
+        }
     }
     
     func setAsSelected(){

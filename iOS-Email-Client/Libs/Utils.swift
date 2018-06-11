@@ -91,4 +91,12 @@ class Utils{
             return #imageLiteral(resourceName: "attachment_generic")
         }
     }
+    
+    class func getLocalDate(from date: String) -> Date{
+        let dateFormatter = DateFormatter()
+        let timeZone = NSTimeZone(abbreviation: "UTC")
+        dateFormatter.timeZone = timeZone as TimeZone?
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter.date(from: date) ?? Date()
+    }
 }
