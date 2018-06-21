@@ -13,10 +13,20 @@ class FeedViewController: UIViewController{
     var feedsData: FeedsData = FeedsData()
     @IBOutlet weak var noFeedsView: UIView!
     @IBOutlet weak var feedsTableView: UITableView!
+    var mailboxVC : InboxViewController! {
+        get {
+            return self.navigationDrawerController?.rootViewController.childViewControllers.first as? InboxViewController
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         feedsTableView.separatorStyle = .none
+        feedsTableView.register(UINib(nibName: "TableEndViewCell", bundle: nil), forCellReuseIdentifier: "EndCell")
+        loadFeeds()
+    }
+    
+    func checkIfFeedsEmpty(){
         if(feedsData.newFeeds.isEmpty && feedsData.oldFeeds.isEmpty){
             noFeedsView.isHidden = false
             feedsTableView.isHidden = true
@@ -24,7 +34,32 @@ class FeedViewController: UIViewController{
             noFeedsView.isHidden = true
             feedsTableView.isHidden = false
         }
-        feedsTableView.register(UINib(nibName: "TableEndViewCell", bundle: nil), forCellReuseIdentifier: "EndCell")
+    }
+    
+    func loadFeeds(clear: Bool = false){
+        let date = clear ? Date() : feedsData.oldFeeds.last?.date ?? (feedsData.newFeeds.last?.date ?? Date())
+        let opens = DBManager.getFeeds(since: date, limit: 20)
+        if(clear){
+            feedsData.newFeeds = opens.0
+            feedsData.oldFeeds = opens.1
+        } else {
+            feedsData.newFeeds.append(contentsOf: opens.0)
+            feedsData.oldFeeds.append(contentsOf: opens.1)
+        }
+        self.feedsData.loadingFeeds = false
+        if(opens.0.isEmpty && opens.1.isEmpty){
+            self.feedsData.reachedEnd = true
+        }
+        checkIfFeedsEmpty()
+        feedsTableView.reloadData()
+    }
+    
+    func viewOpened(){
+        loadFeeds(clear: true)
+    }
+    
+    func viewClosed() {
+        DBManager.updateAllFeeds(newer: true)
     }
 }
 
@@ -35,10 +70,10 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
             return buildLastRow()
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "feedTableCellView", for: indexPath) as! FeedTableViewCell
-        let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        cell.setLabels(feed.message, feed.subject, feed.getFormattedDate())
-        cell.setIcons(isOpen: feed.isOpen, isMuted: feed.isMuted)
-        cell.handleViewed(isNew: feed.isNew)
+        let open = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
+        cell.setLabels(open.header, open.subject, open.formattedDate)
+        cell.setIcons(isOpen: open.type == 1, isMuted: open.isMuted)
+        cell.handleViewed(isNew: open.newer)
         return cell
     }
     
@@ -85,7 +120,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         let action = UIContextualAction(style: .normal, title: feed.isMuted ? "Unmute" : "Mute" ){
             (action, view, completion) in
-            feed.isMuted = !feed.isMuted
+            DBManager.updateEmail(feed.email, muted: !feed.isMuted)
             tableView.reloadRows(at: [indexPath], with: .fade)
             completion(true)
         }
@@ -110,19 +145,23 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
             return
         }
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        feed.isNew = false
-        tableView.reloadRows(at: [indexPath], with: .fade)
+        let workingLabel = feed.email.isSpam ? SystemLabel.spam.id : (feed.email.isTrash ? SystemLabel.trash.id : SystemLabel.sent.id)
+        mailboxVC.goToEmailDetail(selectedEmail: feed.email, selectedLabel: workingLabel)
     }
     
     func deleteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
         let action = UIContextualAction(style: .destructive, title: "Delete"){
             (action, view, completion) in
+            let feed: FeedItem
             if(indexPath.section == 0){
+                feed = self.feedsData.newFeeds[indexPath.row]
                 self.feedsData.newFeeds.remove(at: indexPath.row)
             }else{
+                feed = self.feedsData.oldFeeds[indexPath.row]
                 self.feedsData.oldFeeds.remove(at: indexPath.row)
             }
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            DBManager.delete(feed: feed)
             completion(true)
         }
         action.image = #imageLiteral(resourceName: "delete-icon")
@@ -131,19 +170,13 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        guard !feedsData.loadingFeeds && !feedsData.reachedEnd else {
+        guard !feedsData.loadingFeeds && !feedsData.reachedEnd && isLoaderRow(indexPath) else {
             return
         }
-
-        if(isLoaderRow(indexPath)){
-            feedsData.loadingFeeds = true
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10)){
-                self.feedsData.reachedEnd = true
-                self.feedsData.loadingFeeds = false
-                tableView.reloadData()
-            }
+        feedsData.loadingFeeds = true
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){
+            self.loadFeeds()
         }
     }
     

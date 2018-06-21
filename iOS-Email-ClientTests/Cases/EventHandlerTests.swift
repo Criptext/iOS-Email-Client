@@ -17,12 +17,19 @@ class EventHandlerTests: XCTestCase {
         """
     
     let opensString = """
-        {"events":[{"rowid":43554,"cmd":2,"params":{\"type\":1,\"metadataKey\":243,\"from\":\"velvet@jigl.com\",\"date\":\"2018-06-05 15:54:50\"}}]}
+        {"events":[{"rowid":43554,"cmd":2,"params":{\"type\":1,\"metadataKey\":243,\"from\":\"velvet\",\"date\":\"2018-06-05 15:54:50\"}}]}
         """
     
     override func setUp() {
         DBManager.signout()
         createSystemLabels()
+        let newEmail = Email()
+        newEmail.key = "243"
+        DBManager.store(newEmail)
+        let newContact = Contact()
+        newContact.email = "velvet@jigl.com"
+        newContact.displayName = "The Velvet"
+        DBManager.store([newContact])
     }
     
     func createSystemLabels(){
@@ -84,7 +91,7 @@ class EventHandlerTests: XCTestCase {
                 return
             }
             XCTAssert(opens.count == 1)
-            XCTAssert(opens[0].contactId == "velvet@jigl.com")
+            XCTAssert(opens[0].contact.email == "velvet@jigl.com")
         }
     }
     

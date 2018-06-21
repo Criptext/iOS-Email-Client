@@ -30,6 +30,8 @@ class Email: Object {
     @objc dynamic var subject = ""
     @objc dynamic var delivered = Status.none.rawValue
     @objc dynamic var date = Date()
+    @objc dynamic var isMuted = false
+    
     let labels = List<Label>()
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
@@ -66,6 +68,14 @@ class Email: Object {
     
     var isDraft: Bool{
         return labels.contains(where: {$0.id == SystemLabel.draft.id})
+    }
+    
+    var isTrash: Bool{
+        return labels.contains(where: {$0.id == SystemLabel.trash.id})
+    }
+    
+    var isSpam: Bool{
+        return labels.contains(where: {$0.id == SystemLabel.spam.id})
     }
     
     func incrementID() -> Int {

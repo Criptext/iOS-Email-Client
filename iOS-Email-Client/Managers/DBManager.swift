@@ -101,6 +101,15 @@ extension DBManager {
         }
     }
     
+    class func getMail(key: String) -> Email? {
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "key == '\(key)'")
+        let results = realm.objects(Email.self).filter(predicate)
+        
+        return results.first
+    }
+    
     class func getMails(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> [Email] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
@@ -245,6 +254,14 @@ extension DBManager {
         
         try! realm.write() {
             email.unread = unread
+        }
+    }
+    
+    class func updateEmail(_ email: Email, muted: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.isMuted = muted
         }
     }
     
@@ -585,27 +602,67 @@ extension DBManager {
     }
 }
 
-//MARK: - Email Contact
+//MARK: - Feed
 
 extension DBManager {
     
-    class func store(_ open: Open){
+    class func store(_ feed: FeedItem){
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(open, update: true)
+            realm.add(feed, update: true)
         }
     }
     
-    class func openExists(emailId: String, type: Int, contactId: String) -> Bool {
+    class func feedExists(emailId: String, type: Int, contactId: String) -> Bool {
         let realm = try! Realm()
-        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND emailId == '\(emailId)' AND type == \(type)")
-        let results = realm.objects(Open.self).filter(predicate)
+        let predicate = NSPredicate(format: "contact.email == '\(contactId)' AND email.key == '\(emailId)' AND type == \(type)")
+        let results = realm.objects(FeedItem.self).filter(predicate)
         return results.count > 0
+    }
+    
+    class func getFeeds(since date: Date, limit: Int) -> ([FeedItem], [FeedItem]){
+        let realm = try! Realm()
+        
+        let feeds = realm.objects(FeedItem.self).filter("date < %@", date).sorted(byKeyPath: "date", ascending: false)
+        var newFeeds = [FeedItem]()
+        var oldFeeds = [FeedItem]()
+        
+        for (index, feed) in feeds.enumerated() {
+            guard index < limit else {
+                break
+            }
+            guard feed.newer else {
+                oldFeeds.append(feed)
+                continue
+            }
+            newFeeds.append(feed)
+        }
+        
+        return (newFeeds, oldFeeds)
+    }
+    
+    class func updateAllFeeds(newer: Bool){
+        let realm = try! Realm()
+        
+        let feeds = realm.objects(FeedItem.self).filter("newer = true").sorted(byKeyPath: "date", ascending: false)
+        try! realm.write {
+            for feed in feeds {
+                feed.newer = false
+            }
+        }
+    }
+    
+    class func delete(feed: FeedItem){
+        let realm = try! Realm()
+
+        try! realm.write() {
+            realm.delete(feed)
+        }
     }
 }
 
-//MARK: - Opens
+//MARK: - Email Contact
 extension DBManager {
     
     class func store(_ emailContacts:[EmailContact]){

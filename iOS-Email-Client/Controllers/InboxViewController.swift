@@ -257,7 +257,7 @@ class InboxViewController: UIViewController {
 }
 
 extension InboxViewController: EventHandlerDelegate {
-    func didReceiveOpens(opens: [Open]) {
+    func didReceiveOpens(opens: [FeedItem]) {
         //TODO
     }
     
@@ -466,6 +466,15 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
             return
         }
         feedVC.feedsTableView.isEditing = false
+        feedVC.viewClosed()
+    }
+    
+    func navigationDrawerController(navigationDrawerController: NavigationDrawerController, willOpen position: NavigationDrawerPosition) {
+        guard position == .right,
+            let feedVC = navigationDrawerController.rightViewController as? FeedViewController else {
+                return
+        }
+        feedVC.viewOpened()
     }
     
 }
@@ -676,15 +685,22 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         let selectedEmail = mailboxData.emails[indexPath.row]
-        let showOnlyDraft = selectedEmail.threadId.isEmpty && selectedEmail.labels.contains(where: {$0.id == SystemLabel.draft.id})
-        let emails = DBManager.getThreadEmails(selectedEmail.threadId, label: mailboxData.selectedLabel)
-        let emailDetailData = EmailDetailData(threadId: selectedEmail.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : mailboxData.selectedLabel)
+        goToEmailDetail(selectedEmail: selectedEmail, selectedLabel: mailboxData.selectedLabel)
+    }
+    
+    func goToEmailDetail(selectedEmail: Email, selectedLabel: Int){
+        self.navigationDrawerController?.closeRightView()
+        
+        let showOnlyDraft = selectedEmail.threadId.isEmpty && selectedEmail.isDraft
+        let emails = DBManager.getThreadEmails(selectedEmail.threadId, label: selectedLabel)
+        let emailDetailData = EmailDetailData(threadId: selectedEmail.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
         emailDetailData.emails = showOnlyDraft ? [selectedEmail] : emails
         var labelsSet = Set<Label>()
         for email in emails {
             email.isExpanded = email.unread
             labelsSet.formUnion(email.labels)
         }
+        emailDetailData.selectedLabel = selectedLabel
         emailDetailData.labels = Array(labelsSet)
         emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
@@ -700,6 +716,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
         vc.emailData = emailDetailData
         vc.mailboxData = self.mailboxData
+        vc.myAccount = self.myAccount
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
