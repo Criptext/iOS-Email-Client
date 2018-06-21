@@ -642,7 +642,7 @@ class ComposeViewController: UIViewController {
     
     func prepareMail(){
         
-        var criptextEmails = [String: String]()
+        var criptextEmails = [activeAccount.username: "peer"] as [String: String]
         var toArray = [String]()
         var ccArray = [String]()
         var bccArray = [String]()

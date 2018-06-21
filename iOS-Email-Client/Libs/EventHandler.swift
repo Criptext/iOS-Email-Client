@@ -124,7 +124,7 @@ class EventHandler {
         let localDate = dateFormatter.date(from: date) ?? Date()
         
         if let email = DBManager.getMailByKey(key: metadataKey.description) {
-            if(email.labels.count == 1 && email.labels.first!.id == SystemLabel.sent.id){
+            if(isMeARecipient(email: email)){
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
                 finishCallback(true, email)
                 return
@@ -163,13 +163,19 @@ class EventHandler {
                 return
             }
             email.preview = String(email.content.removeHtmlTags().prefix(100))
-            email.labels.append(DBManager.getLabel(SystemLabel.inbox.id)!)
             DBManager.store(email)
             
             ContactManager.parseEmailContacts(from, email: email, type: .from)
             ContactManager.parseEmailContacts(to, email: email, type: .to)
             ContactManager.parseEmailContacts(cc, email: email, type: .cc)
             ContactManager.parseEmailContacts(bcc, email: email, type: .bcc)
+            
+            if(self.isFromMe(email: email)){
+                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
+            }
+            if(self.isMeARecipient(email: email)){
+                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
+            }
             finishCallback(true, email)
         }
     }
@@ -208,6 +214,21 @@ class EventHandler {
         file.emailId = email.key
         DBManager.store(file)
         return file
+    }
+    
+    func isMeARecipient(email: Email) -> Bool {
+        let accountEmail = "\(myAccount.username)@jigl.com"
+        let bccContacts = Array(email.getContacts(type: .bcc))
+        let ccContacts = Array(email.getContacts(type: .cc))
+        let toContacts = Array(email.getContacts(type: .to))
+        return bccContacts.contains(where: {$0.email == accountEmail})
+            || ccContacts.contains(where: {$0.email == accountEmail})
+            || toContacts.contains(where: {$0.email == accountEmail})
+    }
+    
+    func isFromMe(email: Email) -> Bool {
+        let accountEmail = "\(myAccount.username)@jigl.com"
+        return accountEmail == email.fromContact.email
     }
 }
 
