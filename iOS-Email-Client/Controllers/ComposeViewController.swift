@@ -524,9 +524,10 @@ class ComposeViewController: UIViewController {
         let files = fileManager.getFilesRequestData()
         var requestParams = [
             "subject": subject,
-            "criptextEmails": criptextEmails,
-            "files": files
-            ] as [String : Any]
+            "criptextEmails": criptextEmails] as [String : Any]
+        if (!files.isEmpty) {
+            requestParams["files"] = files
+        }
         if let threadId = composerData.threadId {
             requestParams["threadId"] = threadId
         }

@@ -11,6 +11,7 @@ import Foundation
 class EmailDetailViewController: UIViewController {
     var emailData : EmailDetailData!
     var mailboxData : MailboxData!
+    var myAccount: Account!
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var topToolbar: TopbarUIView!
     @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
@@ -51,7 +52,7 @@ class EmailDetailViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.topToolbar.swapLeftIcon(labelId: mailboxData.selectedLabel)
+        self.topToolbar.swapLeftIcon(labelId: emailData.selectedLabel)
         self.topToolbar.isHidden = false
     }
     
@@ -155,12 +156,16 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
-        if(email.unread){
-            DBManager.updateEmail(email, unread: false)
-            displayMarkIcon(asRead: hasUnreadEmails)
-            APIManager.notifyOpen(emailId: email.key)
+        guard email.unread else {
+            emailsTableView.reloadData()
+            return
         }
+        DBManager.updateEmail(email, unread: false)
+        displayMarkIcon(asRead: hasUnreadEmails)
         emailsTableView.reloadData()
+        if(email.fromContact.email != emailData.accountEmail){
+            APIManager.notifyOpen(key: Int(email.key)!, token: myAccount.jwt)
+        }
     }
     
     func tableViewCellDidTap(_ cell: EmailTableViewCell) {
@@ -367,19 +372,19 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
     
     func onArchiveThreads() {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.draft.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.all.id else {
+        guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.draft.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.all.id else {
             self.moveTo(labelId: SystemLabel.all.id)
             return
         }
-        guard mailboxData.selectedLabel != SystemLabel.draft.id && mailboxData.selectedLabel != SystemLabel.all.id else {
+        guard emailData.selectedLabel != SystemLabel.draft.id && emailData.selectedLabel != SystemLabel.all.id else {
             setLabels(added: [SystemLabel.inbox.id], removed: [])
             return
         }
-        setLabels(added: [], removed: [mailboxData.selectedLabel])
+        setLabels(added: [], removed: [emailData.selectedLabel])
     }
     
     func onTrashThreads() {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.draft.id else {
+        guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.draft.id else {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
@@ -462,7 +467,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         self.toggleMoreOptionsView()
         let email = emailData.emails[indexPath.row]
-        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.draft.id else {
+        guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.draft.id else {
             DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
             self.removeEmail(indexPath: indexPath)
             return
@@ -540,7 +545,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
 extension EmailDetailViewController : LabelsUIPopoverDelegate{
     
     func handleAddLabels(){
-        let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel)
+        let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: emailData.selectedLabel)
         for label in emailData.labels {
             labelsPopover.selectedLabels[label.id] = label
         }
@@ -548,7 +553,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     }
     
     func handleMoveTo(){
-        let labelsPopover = LabelsUIPopover.instantiate(type: .moveTo, selectedLabel: mailboxData.selectedLabel)
+        let labelsPopover = LabelsUIPopover.instantiate(type: .moveTo, selectedLabel: emailData.selectedLabel)
         presentPopover(labelsPopover, height: Constants.basePopoverHeight + labelsPopover.labels.count * Constants.labelPopoverHeight)
     }
     
@@ -568,7 +573,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     func moveTo(labelId: Int) {
         let removeLabels = labelId == SystemLabel.all.id
             ? [SystemLabel.inbox.id]
-            : mailboxData.selectedLabel == SystemLabel.trash.id && labelId == SystemLabel.spam.id ? [SystemLabel.trash.id] : []
+            : emailData.selectedLabel == SystemLabel.trash.id && labelId == SystemLabel.spam.id ? [SystemLabel.trash.id] : []
         let addLabels = labelId == SystemLabel.all.id
             ? []
             : [labelId]
@@ -576,8 +581,8 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     }
     
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool){
-        DBManager.addRemoveLabelsForThreads(emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: mailboxData.selectedLabel)
-        if(removed.contains(where: {$0 == mailboxData.selectedLabel}) || forceRemove){
+        DBManager.addRemoveLabelsForThreads(emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: emailData.selectedLabel)
+        if(removed.contains(where: {$0 == emailData.selectedLabel}) || forceRemove){
             mailboxData.removeSelectedRow = true
             self.navigationController?.popViewController(animated: true)
         }

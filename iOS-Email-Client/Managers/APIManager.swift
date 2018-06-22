@@ -150,8 +150,13 @@ class APIManager {
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
     
-    class func notifyOpen(emailId: String){
-        //TODO
+    class func notifyOpen(key: Int, token: String){
+        let url = "\(self.baseUrl)/event/open"
+        let headers = ["Authorization": "Bearer \(token)"]
+        let params = [
+            "metadataKeys": [key]
+        ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
     }
     
     class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){

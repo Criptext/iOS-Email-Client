@@ -9,8 +9,8 @@
 import Foundation
 
 class FeedsData{
-    var oldFeeds: [Feed] = []
-    var newFeeds: [Feed] = []
+    var oldFeeds: [FeedItem] = []
+    var newFeeds: [FeedItem] = []
     var loadingFeeds = false
     var reachedEnd = false
 }

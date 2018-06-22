@@ -49,7 +49,7 @@
 		41AAC539201A9FCD00809C4D /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
 		41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */; };
 		41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */; };
-		41AAC53E201A9FCD00809C4D /* Open.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC535201A9FCD00809C4D /* Open.swift */; };
+		41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC535201A9FCD00809C4D /* FeedItem.swift */; };
 		41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC536201A9FCD00809C4D /* PreviewItem.swift */; };
 		41AAC541201A9FF500809C4D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC540201A9FF500809C4D /* APIManager.swift */; };
 		41AAC543201AA00000809C4D /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC542201AA00000809C4D /* ContactManager.swift */; };
@@ -180,7 +180,6 @@
 		7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */; };
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
-		7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB4661203F0C9F007C9637 /* Feed.swift */; };
 		7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */; };
 		7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */; };
 		7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */; };
@@ -248,7 +247,7 @@
 		41AAC530201A9FCD00809C4D /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLActivityItemProvider.swift; sourceTree = "<group>"; };
 		41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityItemProvider.swift; sourceTree = "<group>"; };
-		41AAC535201A9FCD00809C4D /* Open.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Open.swift; sourceTree = "<group>"; };
+		41AAC535201A9FCD00809C4D /* FeedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		41AAC536201A9FCD00809C4D /* PreviewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewItem.swift; sourceTree = "<group>"; };
 		41AAC540201A9FF500809C4D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		41AAC542201AA00000809C4D /* ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
@@ -387,7 +386,6 @@
 		7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
-		7CDB4661203F0C9F007C9637 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		7CE548E820CB400F0046D12F /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckMarkUIView.swift; sourceTree = "<group>"; };
 		7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemUIView.xib; sourceTree = "<group>"; };
@@ -613,7 +611,7 @@
 			children = (
 				41AAC530201A9FCD00809C4D /* Contact.swift */,
 				41AAC52E201A9FCC00809C4D /* Email.swift */,
-				41AAC535201A9FCD00809C4D /* Open.swift */,
+				41AAC535201A9FCD00809C4D /* FeedItem.swift */,
 				41AAC536201A9FCD00809C4D /* PreviewItem.swift */,
 				41AAC534201A9FCD00809C4D /* ShareActivityItemProvider.swift */,
 				41AAC533201A9FCD00809C4D /* URLActivityItemProvider.swift */,
@@ -622,7 +620,6 @@
 				7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */,
 				7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */,
 				7CDB465F203F0C2A007C9637 /* FeedsData.swift */,
-				7CDB4661203F0C9F007C9637 /* Feed.swift */,
 				7C154FD2204DEBAF00D72F6E /* Account.swift */,
 				7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */,
 				7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */,
@@ -975,7 +972,6 @@
 			files = (
 				7C7F2FED20B4B65700A2CB32 /* SettingsLabelsViewController.swift in Sources */,
 				41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */,
-				7CDB4662203F0C9F007C9637 /* Feed.swift in Sources */,
 				7C7F2FF920B6059800A2CB32 /* Device.swift in Sources */,
 				7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */,
 				7C049F8920879CD5007A6213 /* LabelsUIPopover.swift in Sources */,
@@ -1045,7 +1041,7 @@
 				7C7F2FF320B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift in Sources */,
 				7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */,
 				954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */,
-				41AAC53E201A9FCD00809C4D /* Open.swift in Sources */,
+				41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C7F2FF120B4D2C400A2CB32 /* SettingsDevicesViewController.swift in Sources */,
 				7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */,

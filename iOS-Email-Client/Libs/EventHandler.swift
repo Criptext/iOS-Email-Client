@@ -10,7 +10,7 @@ import Foundation
 
 protocol EventHandlerDelegate {
     func didReceiveNewEmails(emails: [Email])
-    func didReceiveOpens(opens: [Open])
+    func didReceiveOpens(opens: [FeedItem])
 }
 
 class EventHandler {
@@ -25,7 +25,7 @@ class EventHandler {
     
     func handleEvents(events: Array<Dictionary<String, Any>>){
         var emails = [Email]()
-        var opens = [Open]()
+        var opens = [FeedItem]()
         var successfulEvents = [Int32]()
         let asyncGroupCalls = DispatchGroup()
         events.forEach({ (event) in
@@ -39,8 +39,8 @@ class EventHandler {
                 switch(data){
                 case is Email:
                     emails.append(data as! Email)
-                case is Open:
-                    opens.append(data as! Open)
+                case is FeedItem:
+                    opens.append(data as! FeedItem)
                 default:
                     break
                 }
@@ -63,7 +63,7 @@ class EventHandler {
         self.eventDelegate?.didReceiveNewEmails(emails: emails)
     }
     
-    func notify(opens: [Open]){
+    func notify(opens: [FeedItem]){
         guard !opens.isEmpty else {
             return
         }
@@ -174,23 +174,24 @@ class EventHandler {
         }
     }
     
-    func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ open: Open?) -> Void){
-        let type = params["type"] as! Int
+    func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ open: FeedItem?) -> Void){
         let emailId = String(params["metadataKey"] as! Int)
         let from = params["from"] as! String
         let fileId = params["file"] as? String
         let date = params["date"] as! String
         
-        let open = Open()
-        open.contactId = from
-        open.emailId = emailId
-        open.type = type
+        let open = FeedItem()
         open.fileId = fileId
+        open.isNew = true
         open.date = Utils.getLocalDate(from: date)
-        guard !DBManager.openExists(emailId: emailId, type: type, contactId: from) else {
+        guard !DBManager.feedExists(emailId: emailId, type: open.type, contactId: "\(from)@jigl.com"),
+            let contact = DBManager.getContact("\(from)@jigl.com"),
+            let email = DBManager.getMail(key: emailId) else {
             finishCallback(true, nil)
             return
         }
+        open.email = email
+        open.contact = contact
         open.id = open.incrementID()
         DBManager.store(open)
         finishCallback(true, open)
