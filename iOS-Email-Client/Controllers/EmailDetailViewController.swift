@@ -164,7 +164,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         displayMarkIcon(asRead: hasUnreadEmails)
         emailsTableView.reloadData()
         if(email.fromContact.email != emailData.accountEmail){
-            APIManager.notifyOpen(messageId: email.messageId, token: myAccount.jwt)
+            APIManager.notifyOpen(key: Int(email.key)!, token: myAccount.jwt)
         }
     }
     

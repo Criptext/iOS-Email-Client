@@ -632,7 +632,7 @@ extension DBManager {
             guard index < limit else {
                 break
             }
-            guard feed.newer else {
+            guard feed.isNew else {
                 oldFeeds.append(feed)
                 continue
             }
@@ -642,13 +642,13 @@ extension DBManager {
         return (newFeeds, oldFeeds)
     }
     
-    class func updateAllFeeds(newer: Bool){
+    class func updateAllFeeds(isNew: Bool){
         let realm = try! Realm()
         
-        let feeds = realm.objects(FeedItem.self).filter("newer = true").sorted(byKeyPath: "date", ascending: false)
+        let feeds = realm.objects(FeedItem.self).filter("isNew = true").sorted(byKeyPath: "date", ascending: false)
         try! realm.write {
             for feed in feeds {
-                feed.newer = false
+                feed.isNew = false
             }
         }
     }

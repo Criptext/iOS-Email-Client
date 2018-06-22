@@ -175,7 +175,6 @@ class EventHandler {
     }
     
     func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ open: FeedItem?) -> Void){
-        print("OPEN EVENT ----> \(params)")
         let emailId = String(params["metadataKey"] as! Int)
         let from = params["from"] as! String
         let fileId = params["file"] as? String
@@ -183,7 +182,7 @@ class EventHandler {
         
         let open = FeedItem()
         open.fileId = fileId
-        open.newer = true
+        open.isNew = true
         open.date = Utils.getLocalDate(from: date)
         guard !DBManager.feedExists(emailId: emailId, type: open.type, contactId: "\(from)@jigl.com"),
             let contact = DBManager.getContact("\(from)@jigl.com"),

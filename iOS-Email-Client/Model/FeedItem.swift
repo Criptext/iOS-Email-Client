@@ -20,7 +20,7 @@ class FeedItem: Object {
     @objc dynamic var email : Email!
     @objc dynamic var contact : Contact!
     @objc dynamic var fileId: String?
-    @objc dynamic var newer = true
+    @objc dynamic var isNew = true
     
     var isMuted: Bool {
         return email.isMuted

@@ -38,16 +38,16 @@ class FeedViewController: UIViewController{
     
     func loadFeeds(clear: Bool = false){
         let date = clear ? Date() : feedsData.oldFeeds.last?.date ?? (feedsData.newFeeds.last?.date ?? Date())
-        let opens = DBManager.getFeeds(since: date, limit: 20)
+        let feeds = DBManager.getFeeds(since: date, limit: 20)
         if(clear){
-            feedsData.newFeeds = opens.0
-            feedsData.oldFeeds = opens.1
+            feedsData.newFeeds = feeds.0
+            feedsData.oldFeeds = feeds.1
         } else {
-            feedsData.newFeeds.append(contentsOf: opens.0)
-            feedsData.oldFeeds.append(contentsOf: opens.1)
+            feedsData.newFeeds.append(contentsOf: feeds.0)
+            feedsData.oldFeeds.append(contentsOf: feeds.1)
         }
         self.feedsData.loadingFeeds = false
-        if(opens.0.isEmpty && opens.1.isEmpty){
+        if(feeds.0.isEmpty && feeds.1.isEmpty){
             self.feedsData.reachedEnd = true
         }
         checkIfFeedsEmpty()
@@ -59,7 +59,7 @@ class FeedViewController: UIViewController{
     }
     
     func viewClosed() {
-        DBManager.updateAllFeeds(newer: true)
+        DBManager.updateAllFeeds(isNew: true)
     }
 }
 
@@ -70,10 +70,10 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
             return buildLastRow()
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "feedTableCellView", for: indexPath) as! FeedTableViewCell
-        let open = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        cell.setLabels(open.header, open.subject, open.formattedDate)
-        cell.setIcons(isOpen: open.type == 1, isMuted: open.isMuted)
-        cell.handleViewed(isNew: open.newer)
+        let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
+        cell.setLabels(feed.header, feed.subject, feed.formattedDate)
+        cell.setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
+        cell.handleViewed(isNew: feed.isNew)
         return cell
     }
     
