@@ -190,8 +190,8 @@ class EventHandler {
         open.fileId = fileId
         open.isNew = true
         open.date = Utils.getLocalDate(from: date)
-        guard !DBManager.feedExists(emailId: emailId, type: open.type, contactId: "\(from)@jigl.com"),
-            let contact = DBManager.getContact("\(from)@jigl.com"),
+        guard !DBManager.feedExists(emailId: emailId, type: open.type, contactId: "\(from)\(Constants.domain)"),
+            let contact = DBManager.getContact("\(from)\(Constants.domain)"),
             let email = DBManager.getMail(key: emailId) else {
             finishCallback(true, nil)
             return
@@ -217,7 +217,7 @@ class EventHandler {
     }
     
     func isMeARecipient(email: Email) -> Bool {
-        let accountEmail = "\(myAccount.username)@jigl.com"
+        let accountEmail = "\(myAccount.username)\(Constants.domain)"
         let bccContacts = Array(email.getContacts(type: .bcc))
         let ccContacts = Array(email.getContacts(type: .cc))
         let toContacts = Array(email.getContacts(type: .to))
@@ -227,7 +227,7 @@ class EventHandler {
     }
     
     func isFromMe(email: Email) -> Bool {
-        let accountEmail = "\(myAccount.username)@jigl.com"
+        let accountEmail = "\(myAccount.username)\(Constants.domain)"
         return accountEmail == email.fromContact.email
     }
 }
