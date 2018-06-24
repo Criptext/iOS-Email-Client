@@ -569,6 +569,23 @@ class ComposeViewController: UIViewController {
     }
     
     func getSessionAndEncrypt(subject: String, body: String, guestEmail: [String: Any], criptextEmails: [String: Any]){
+        let sendMailAsyncTask = SendMailAsyncTask(threadId: composerData.threadId, subject: subject, body: body, guestEmails: guestEmail, criptextEmails: criptextEmails, files: fileManager.getFilesRequestData())
+        sendMailAsyncTask.start { (error, data) in
+            self.toggleInteraction(true)
+            if let error = error {
+                self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
+                self.hideSnackbar()
+                self.hideBlackBackground()
+                return
+            }
+            self.updateEmailData(data)
+            self.dismiss(animated: true){
+                self.hideSnackbar()
+            }
+        }
+        return
+        
+        
         let store = CriptextAxolotlStore.init(self.activeAccount.regId, self.activeAccount.identityB64)
         
         var recipients = [String]()
