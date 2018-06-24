@@ -258,7 +258,10 @@ class InboxViewController: UIViewController {
 
 extension InboxViewController: EventHandlerDelegate {
     func didReceiveOpens(opens: [FeedItem]) {
-        //TODO
+        guard let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
+                return
+        }
+        feedVC.loadFeeds(clear: true)
     }
     
     func didReceiveNewEmails(emails: [Email]) {
@@ -451,15 +454,6 @@ extension InboxViewController: NavigationDrawerControllerDelegate {
         feedVC.feedsTableView.isEditing = false
         feedVC.viewClosed()
     }
-    
-    func navigationDrawerController(navigationDrawerController: NavigationDrawerController, willOpen position: NavigationDrawerPosition) {
-        guard position == .right,
-            let feedVC = navigationDrawerController.rightViewController as? FeedViewController else {
-                return
-        }
-        feedVC.viewOpened()
-    }
-    
 }
 
 //MARK: - TableView Datasource

@@ -54,12 +54,9 @@ class FeedViewController: UIViewController{
         feedsTableView.reloadData()
     }
     
-    func viewOpened(){
-        loadFeeds(clear: true)
-    }
-    
     func viewClosed() {
         DBManager.updateAllFeeds(isNew: true)
+        loadFeeds(clear: true)
     }
 }
 
