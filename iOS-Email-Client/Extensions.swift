@@ -134,16 +134,6 @@ extension UIViewController {
             return
         }
         
-//        let fullString = NSMutableAttributedString(string: "Start of text")
-//        
-//        let image1Attachment = NSTextAttachment()
-//        image1Attachment.image = #imageLiteral(resourceName: "inbox-forward-icon")
-//        
-//        let image1String = NSAttributedString(attachment: image1Attachment)
-//        
-//        fullString.append(image1String)
-//        fullString.append(NSAttributedString(string: "End of text meh"))
-        
         if let attributedText = attributedText {
             snackbarVC.snackbar.attributedText = attributedText
         } else {
@@ -155,7 +145,7 @@ extension UIViewController {
         snackbarVC.animate(snackbar: .visible, delay: 0)
         
         if !permanent {
-            snackbarVC.animate(snackbar: .hidden, delay: 3.5)
+            snackbarVC.animate(snackbar: .hidden, delay: 2.5)
         }
     }
     
@@ -175,7 +165,7 @@ extension UIViewController {
         guard let snackbarVC = self.snackbarController else {
             return
         }
-        snackbarVC.animate(snackbar: .hidden, delay: 1)
+        snackbarVC.animate(snackbar: .hidden, delay: 0.5)
     }
 }
 

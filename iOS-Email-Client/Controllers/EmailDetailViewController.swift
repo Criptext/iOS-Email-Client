@@ -38,7 +38,6 @@ class EmailDetailViewController: UIViewController {
         
         fileManager.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
         
         displayMarkIcon(asRead: hasUnreadEmails)
@@ -54,19 +53,6 @@ class EmailDetailViewController: UIViewController {
         super.viewDidAppear(animated)
         self.topToolbar.swapLeftIcon(labelId: emailData.selectedLabel)
         self.topToolbar.isHidden = false
-    }
-    
-    @objc func refreshNewEmail(notification: NSNotification){
-        guard let data = notification.userInfo,
-            let email = data["email"] as? Email,
-            email.threadId == emailData.threadId else {
-                return
-        }
-        emailData.emails.append(email)
-        email.isExpanded = true
-        let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
-        emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.key)")
-        emailsTableView.reloadData()
     }
     
     @objc func deleteDraft(notification: NSNotification){
@@ -122,9 +108,18 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "emailDetail\(email.key)") as! EmailTableViewCell
+        let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
         cell.setContent(email)
         cell.delegate = self
+        return cell
+    }
+    
+    func reuseOrCreateCell(identifier: String) -> UITableViewCell {
+        guard let cell = emailsTableView.dequeueReusableCell(withIdentifier: identifier) else {
+            let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
+            emailsTableView.register(nib, forCellReuseIdentifier: identifier)
+            return reuseOrCreateCell(identifier: identifier)
+        }
         return cell
     }
     
@@ -324,6 +319,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.initContent = replyBody
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
+        composerVC.delegate = self
         composerVC.composerData = composerData
         if(email.isDraft){
             for file in email.files {
@@ -631,5 +627,20 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
                 return nil
         }
         return attachmentCell
+    }
+}
+
+extension EmailDetailViewController: ComposerSendMailDelegate {
+    func sendMail(account: Account, email: Email, threadId: String?, subject: String, body: String, guestEmails: [String : Any], criptextEmails: [String : Any], files: [[String : Any]]) {
+        guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController,
+            email.threadId == emailData.threadId else {
+            return
+        }
+        
+        emailData.emails.append(email)
+        email.isExpanded = true
+        emailsTableView.reloadData()
+        
+        inboxViewController.sendMail(account: account, email: email, threadId: threadId, subject: subject, body: body, guestEmails: guestEmails, criptextEmails: criptextEmails, files: files)
     }
 }

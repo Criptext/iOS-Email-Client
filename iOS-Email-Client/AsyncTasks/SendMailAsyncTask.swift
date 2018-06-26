@@ -19,25 +19,30 @@ class SendMailAsyncTask {
     let criptextEmails: [String: Any]
     let files: [[String: Any]]
     
-    init(threadId: String?, subject: String, body: String, guestEmails: [String: Any], criptextEmails: [String: Any], files: [[String: Any]]){
+    let username: String
+    let emailRef: ThreadSafeReference<Object>
+    
+    init(account: Account, email: Email, threadId: String?, subject: String, body: String, guestEmails: [String: Any], criptextEmails: [String: Any], files: [[String: Any]]){
         self.subject = subject
         self.body = body
         self.guestEmails = guestEmails
         self.criptextEmails = criptextEmails
         self.files = files
         self.threadId = threadId
+        
+        self.username = account.username
+        self.emailRef = DBManager.getReference(email)
     }
     
     func start(completion: @escaping ((Error?, Any?) -> Void)){
-        DispatchQueue.global(qos: .background).async {
-            self.getSessionAndEncrypt(completion: completion)
+        let queue = DispatchQueue(label: "com.email.sendmail", qos: .background, attributes: .concurrent)
+        queue.async {
+            self.getSessionAndEncrypt(queue: queue, completion: completion)
         }
     }
     
-    func getSessionAndEncrypt(completion: @escaping ((Error?, Any?) -> Void)){
-        let defaults = UserDefaults.standard
-        let myAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)!
-        print(myAccount)
+    private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){
+        let myAccount = DBManager.getAccountByUsername(self.username)!
         var recipients = [String]()
         var knownAddresses = [String: [Int32]]()
         var criptextEmailsData = [[String: Any]]()
@@ -62,19 +67,21 @@ class SendMailAsyncTask {
             "knownAddresses": knownAddresses
             ] as [String : Any]
         
-        APIManager.getKeysRequest(params, token: myAccount.jwt) { (err, response) in
+        APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { (err, response) in
+            let myAccount = DBManager.getAccountByUsername(self.username)!
             guard let keysArray = response as? [[String: Any]] else {
-                completion(err, nil)
+                self.handleResponseInMainThread {
+                    completion(err, nil)
+                }
                 return
             }
-            let myAccount2 = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)!
             for keys in keysArray {
                 let recipientId = keys["recipientId"] as! String
                 let deviceId = keys["deviceId"] as! Int32
                 let type = self.criptextEmails[recipientId] as! String
                 
-                SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount2)
-                let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount2)
+                SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
+                let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
                 let criptextEmail = ["recipientId": recipientId,
                                      "deviceId": deviceId,
                                      "type": type,
@@ -82,14 +89,12 @@ class SendMailAsyncTask {
                                      "messageType": message.1.rawValue] as [String: Any]
                 criptextEmailsData.append(criptextEmail)
             }
-            self.sendMail(criptextEmails: criptextEmailsData, completion: completion)
+            self.sendMail(myAccount: myAccount, criptextEmails: criptextEmailsData, queue: queue, completion: completion)
         }
     }
     
-    func sendMail(criptextEmails: [Any], completion: @escaping ((Error?, Any?) -> Void)){
-        let defaults = UserDefaults.standard
-        let myAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)!
-        print(myAccount)
+    private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){
+        let myAccount = DBManager.getAccountByUsername(self.username)!
         var requestParams = [
             "subject": subject,
             "criptextEmails": criptextEmails] as [String : Any]
@@ -99,12 +104,52 @@ class SendMailAsyncTask {
         if let thread = self.threadId {
             requestParams["threadId"] = thread
         }
-        APIManager.postMailRequest(requestParams, token: myAccount.jwt) { (error, data) in
+        APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { (error, data) in
             if let error = error {
-                completion(error, nil)
+                self.handleResponseInMainThread {
+                    completion(error, nil)
+                }
                 return
             }
-            completion(nil, data)
+            self.updateEmailData(data)
+            self.handleResponseInMainThread {
+                completion(nil, data)
+            }
+        }
+    }
+    
+    func setEmailAsFailed(){
+        guard let email = DBManager.getObject(emailRef) as? Email else {
+            return
+        }
+        DBManager.updateEmail(email, status: .fail)
+    }
+    
+    func updateEmailData(_ data : Any?){
+        guard let email = DBManager.getObject(emailRef) as? Email else {
+            return
+        }
+        let keysArray = data as! [String: Any]
+        let key = (keysArray["metadataKey"] as! Int32).description
+        let messageId = keysArray["messageId"] as! String
+        let threadId = keysArray["threadId"] as! String
+        DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
+        DBManager.updateEmail(email, status: .delivered)
+        updateFiles(emailId: key)
+    }
+    
+    func updateFiles(emailId: String){
+        for file in files {
+            guard let filetoken = file["token"] as? String else {
+                continue
+            }
+            DBManager.update(filetoken: filetoken, emailId: emailId)
+        }
+    }
+    
+    private func handleResponseInMainThread(completionHandler: @escaping () -> Void){
+        DispatchQueue.main.async {
+            completionHandler()
         }
     }
     

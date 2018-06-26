@@ -142,6 +142,7 @@ extension DBManager {
         var threadIds = Set<String>()
         for email in emails {
             let thread = Thread()
+            thread.date = email.date
             thread.lastEmail = email
             guard threads.count < limit else {
                 break
@@ -315,6 +316,14 @@ extension DBManager {
         try! realm.write {
             realm.delete(emails)
         }
+    }
+    
+    class func getEmailFailed() -> Email? {
+        let realm = try! Realm()
+        let hasFailed = NSPredicate(format: "delivered == %@", Email.Status.fail.rawValue)
+        let results = realm.objects(Email.self).filter(hasFailed)
+        
+        return results.first
     }
 }
 
@@ -611,9 +620,18 @@ extension DBManager {
         }
     }
     
-    class func update(file: File, emailId: String){
+    class func getFile(_ filetoken: String) -> File?{
         let realm = try! Realm()
         
+        return realm.object(ofType: File.self, forPrimaryKey: filetoken)
+    }
+    
+    class func update(filetoken: String, emailId: String){
+        guard let file = getFile(filetoken) else {
+            return
+        }
+        
+        let realm = try! Realm()
         try! realm.write() {
             file.emailId = emailId
         }
