@@ -136,6 +136,7 @@
 		7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5B2056D1170053219F /* ContactsDetailUIPopover.swift */; };
 		7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */; };
 		7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5F205816470053219F /* UnsentUIPopover.swift */; };
+		7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69BADC20DC4A2E001ABD5B /* Thread.swift */; };
 		7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
 		7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */; };
 		7C7F2FEB20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FEA20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift */; };
@@ -342,6 +343,7 @@
 		7C63AB5B2056D1170053219F /* ContactsDetailUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailUIPopover.swift; sourceTree = "<group>"; };
 		7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsentUIPopover.xib; sourceTree = "<group>"; };
 		7C63AB5F205816470053219F /* UnsentUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsentUIPopover.swift; sourceTree = "<group>"; };
+		7C69BADC20DC4A2E001ABD5B /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIPopover.swift; sourceTree = "<group>"; };
 		7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTapTableCellView.swift; sourceTree = "<group>"; };
 		7C7F2FEA20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -631,6 +633,7 @@
 				7C1E884F208D367B003FA304 /* MailboxData.swift */,
 				7C2D8039209A02D500B213F1 /* ComposerData.swift */,
 				7C7F2FF820B6059800A2CB32 /* Device.swift */,
+				7C69BADC20DC4A2E001ABD5B /* Thread.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1017,6 +1020,7 @@
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
 				7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
+				7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */,
 				41AAC527201A9FC300809C4D /* CriptextSpinner.swift in Sources */,
 				7C7F2FF720B5E29900A2CB32 /* ProfileNameChangeViewController.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,

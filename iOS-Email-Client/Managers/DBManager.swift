@@ -110,7 +110,7 @@ extension DBManager {
         return results.first
     }
     
-    class func getMails(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> [Email] {
+    class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> [Thread] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
@@ -118,13 +118,109 @@ extension DBManager {
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
         let predicate = label == SystemLabel.all.id ? predicate1 : predicate2
         let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false)
-        let resultEmails = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
+        let threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
             guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
                 return NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, email.threadId)
             }
             return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
-        return resultEmails
+        return threads
+    }
+    
+    class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE) -> [Thread] {
+        let realm = try! Realm()
+        let rejectedLabels = SystemLabel.all.rejectedLabelIds
+        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@)", rejectedLabels, searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false)
+        return customDistinctEmailThreads(emails: emails, label: SystemLabel.all.id, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
+        })
+    }
+    
+    private class func customDistinctEmailThreads(emails: Results<Email>, label: Int, limit: Int, date: Date, emailFilter: (Email) -> NSPredicate) -> [Thread] {
+        let realm = try! Realm()
+        var threads = [Thread]()
+        var threadIds = Set<String>()
+        for email in emails {
+            let thread = Thread()
+            thread.lastEmail = email
+            guard threads.count < limit else {
+                break
+            }
+            guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
+                if(email.date < date){
+                    threads.append(thread)
+                    thread.participants.formUnion(email.getContacts(type: .to))
+                    thread.participants.formUnion(email.getContacts(type: .cc))
+                }
+                continue
+            }
+            guard !threadIds.contains(email.threadId) else {
+                continue
+            }
+            guard email.date < date else {
+                threadIds.insert(thread.threadId)
+                continue
+            }
+            let threadEmails = realm.objects(Email.self).filter(emailFilter(email)).sorted(byKeyPath: "date", ascending: true)
+            thread.lastEmail = threadEmails.last ?? email
+            for threadEmail in threadEmails {
+                if(label == SystemLabel.sent.id){
+                    if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
+                        thread.participants.formUnion(threadEmail.getContacts(type: .to))
+                        thread.participants.formUnion(threadEmail.getContacts(type: .cc))
+                    }
+                }else{
+                    thread.participants.formUnion(threadEmail.getContacts(type: .from))
+                }
+            }
+            thread.unread = threadEmails.contains(where: {$0.unread})
+            thread.counter = threadEmails.count
+            thread.subject = threadEmails.first!.subject
+            threadIds.insert(thread.threadId)
+            threads.append(thread)
+        }
+        return threads
+    }
+    
+    public class func getThread(threadId: String, label: Int) -> Thread? {
+        let thread = Thread()
+        let realm = try! Realm()
+        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
+        let threadsPredicate = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
+        guard let email = realm.objects(Email.self).filter(threadsPredicate).sorted(byKeyPath: "date", ascending: false).first else {
+            return nil
+        }
+        thread.lastEmail = email
+        thread.date = email.date
+        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
+        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
+        let mailsPredicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
+        let threadEmails = realm.objects(Email.self).filter(mailsPredicate).sorted(byKeyPath: "date", ascending: true)
+        for threadEmail in threadEmails {
+            if(label == SystemLabel.sent.id){
+                if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
+                    thread.participants.formUnion(threadEmail.getContacts(type: .to))
+                    thread.participants.formUnion(threadEmail.getContacts(type: .cc))
+                }
+            }else{
+                thread.participants.formUnion(threadEmail.getContacts(type: .from))
+            }
+        }
+        thread.unread = threadEmails.contains(where: {$0.unread})
+        thread.subject = threadEmails.first!.subject
+        thread.counter = threadEmails.count
+        return thread
+    }
+    
+    class func getThreadEmails(_ threadId: String, label: Int) -> [Email] {
+        let realm = try! Realm()
+        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
+        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
+        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
+        let predicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
+        let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
+        
+        return Array(results)
     }
     
     class func getUnreadMails(from label: Int) -> [Email] {
@@ -143,17 +239,6 @@ extension DBManager {
         return myEmails
     }
     
-    class func getThreadEmails(_ threadId: String, label: Int) -> [Email] {
-        let realm = try! Realm()
-        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
-        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
-        let predicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
-        let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
-        
-        return Array(results)
-    }
-    
     class func getMailByKey(key:String) -> Email?{
         let realm = try! Realm()
         
@@ -163,79 +248,12 @@ extension DBManager {
         return results.first
     }
     
-    class func getMails(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE) -> [Email] {
+    class func updateEmail(_ email: Email, status: Email.Status){
         let realm = try! Realm()
-        let rejectedLabels = SystemLabel.all.rejectedLabelIds
-        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@)", rejectedLabels, searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false)
-        return customDistinctEmailThreads(emails: emails, label: SystemLabel.all.id, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
-            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
-        })
-    }
-    
-    private class func customDistinctEmailThreads(emails: Results<Email>, label: Int, limit: Int, date: Date, emailFilter: (Email) -> NSPredicate) -> [Email] {
-        let realm = try! Realm()
-        var resultEmails = [Email]()
-        var threadIds = Set<String>()
-        for email in emails {
-            guard resultEmails.count < limit else {
-                break
-            }
-            guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
-                if(email.date < date){
-                    resultEmails.append(email)
-                    email.participants.formUnion(email.getContacts(type: .to))
-                    email.participants.formUnion(email.getContacts(type: .cc))
-                }
-                continue
-            }
-            guard !threadIds.contains(email.threadId) else {
-                continue
-            }
-            guard email.date < date else {
-                threadIds.insert(email.threadId)
-                continue
-            }
-            let threadEmails = realm.objects(Email.self).filter(emailFilter(email))
-            for threadEmail in threadEmails {
-                if(label == SystemLabel.sent.id){
-                    if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
-                        email.participants.formUnion(threadEmail.getContacts(type: .to))
-                        email.participants.formUnion(threadEmail.getContacts(type: .cc))
-                    }
-                }else{
-                    email.participants.formUnion(threadEmail.getContacts(type: .from))
-                }
-            }
-            email.counter = threadEmails.count
-            threadIds.insert(email.threadId)
-            resultEmails.append(email)
+        
+        try! realm.write() {
+            email.status = status
         }
-        return resultEmails
-    }
-    
-    public class func getThreadEmail(threadId: String, label: Int) -> Email? {
-        let realm = try! Realm()
-        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        let threadsPredicate = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
-        guard let email = realm.objects(Email.self).filter(threadsPredicate).sorted(byKeyPath: "date", ascending: false).first else {
-            return nil
-        }
-        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
-        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
-        let mailsPredicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
-        let threadEmails = realm.objects(Email.self).filter(mailsPredicate)
-        for threadEmail in threadEmails {
-            if(label == SystemLabel.sent.id){
-                if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
-                    email.participants.formUnion(threadEmail.getContacts(type: .to))
-                    email.participants.formUnion(threadEmail.getContacts(type: .cc))
-                }
-            }else{
-                email.participants.formUnion(threadEmail.getContacts(type: .from))
-            }
-        }
-        email.counter = threadEmails.count
-        return email
     }
     
     class func updateEmail(_ email: Email, key: String, messageId: String, threadId: String){

@@ -54,12 +54,9 @@ class FeedViewController: UIViewController{
         feedsTableView.reloadData()
     }
     
-    func viewOpened(){
-        loadFeeds(clear: true)
-    }
-    
     func viewClosed() {
         DBManager.updateAllFeeds(isNew: true)
+        loadFeeds(clear: true)
     }
 }
 
@@ -146,7 +143,10 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         }
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         let workingLabel = feed.email.isSpam ? SystemLabel.spam.id : (feed.email.isTrash ? SystemLabel.trash.id : SystemLabel.sent.id)
-        mailboxVC.goToEmailDetail(selectedEmail: feed.email, selectedLabel: workingLabel)
+        guard let selectedThread = DBManager.getThread(threadId: feed.email.threadId, label: workingLabel) else {
+            return
+        }
+        mailboxVC.goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel)
     }
     
     func deleteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{

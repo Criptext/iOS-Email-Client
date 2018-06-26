@@ -171,6 +171,7 @@ class EventHandler {
             ContactManager.parseEmailContacts(bcc, email: email, type: .bcc)
             
             if(self.isFromMe(email: email)){
+                DBManager.updateEmail(email, status: .sent)
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
             }
             if(self.isMeARecipient(email: email)){

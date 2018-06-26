@@ -103,12 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let inboxVC = rootVC.childViewControllers.first as! InboxViewController
         
         inboxVC.myAccount = myAccount
-        if let launchOptions = launchOptions,
-            let notification = launchOptions[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary,
-            let threadId = notification.object(forKey: "threadId") as? String  {
-            inboxVC.mailboxData.threadToOpen = threadId
-        }
-        
         let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
     
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
@@ -176,22 +170,6 @@ extension AppDelegate: UISplitViewControllerDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        guard let threadId = response.notification.request.content.userInfo["threadId"] as? String,
-            let snackVC = self.window?.rootViewController?.snackbarController,
-            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-            let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                completionHandler()
-                return
-        }
-        
-        inboxVC.open(threadId: threadId)
-        
-        completionHandler()
-    }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         // Delivers a notification to an app running in the foreground.

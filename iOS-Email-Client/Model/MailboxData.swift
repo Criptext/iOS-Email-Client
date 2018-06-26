@@ -10,12 +10,10 @@ import Foundation
 
 class MailboxData {
     var selectedLabel = SystemLabel.inbox.id
-    var emailArray = [Email]()
-    var filteredEmailArray = [Email]()
+    var emailArray = [Thread]()
+    var filteredEmailArray = [Thread]()
     var emailReachedEnd = false
     var filteredReachedEnd = false
-    var threadHash = [String:[Email]]()
-    var threadToOpen:String?
     var isCustomEditing = false
     var unreadMails = 0
     var reachedEnd : Bool {
@@ -33,7 +31,7 @@ class MailboxData {
     var removeSelectedRow = false
     var fetchWorker: DispatchWorkItem?
     var searchMode = false
-    var emails: [Email] {
+    var threads: [Thread] {
         get {
             return searchMode ? filteredEmailArray : emailArray
         }

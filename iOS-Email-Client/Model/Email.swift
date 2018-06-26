@@ -35,9 +35,7 @@ class Email: Object {
     let labels = List<Label>()
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
-    var participants = Set<Contact>()
     var isExpanded = false
-    var counter = 1
     var fromContact : Contact {
         get {
             let predicate = NSPredicate(format: "type == '\(ContactType.from.rawValue)'")
@@ -59,7 +57,7 @@ class Email: Object {
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["isExpanded", "counter", "participants"]
+        return ["isExpanded"]
     }
     
     var isUnsent: Bool{
@@ -102,25 +100,6 @@ class Email: Object {
     
     func getFullDate() -> String {
         return DateUtils.prettyDate(date)
-    }
-    
-    func getContactsString() -> String{
-        var contactsTitle = ""
-        for contact in participants {
-            guard !contact.displayName.contains("@") else {
-                contactsTitle += "\(contact.displayName.split(separator: "@")[0]), "
-                continue
-            }
-            guard participants.count > 1 else {
-                contactsTitle += "\(contact.displayName), "
-                continue
-            }
-            contactsTitle += "\(contact.displayName.split(separator: " ")[0]), "
-        }
-        guard participants.count > 0 else {
-            return contactsTitle
-        }
-        return String(contactsTitle.prefix(contactsTitle.count - 2))
     }
     
     func getFiles() -> [File] {
