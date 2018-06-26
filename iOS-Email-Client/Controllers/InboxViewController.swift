@@ -102,6 +102,7 @@ class InboxViewController: UIViewController {
         WebSocketManager.sharedInstance.eventDelegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
+        self.sendFailEmail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -929,7 +930,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     
     func sendMail(email: Email) {
         showSendingSnackBar(message: "  Sending email...", permanent: true)
-        reloadIfSentMailbox()
+        reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
         sendMailAsyncTask.start { (error, data) in
             if let error = error {
@@ -938,12 +939,12 @@ extension InboxViewController: ComposerSendMailDelegate {
                 return
             }
             self.showSendingSnackBar(message: "  Email sent!!!", permanent: false)
-            self.reloadIfSentMailbox()
+            self.reloadIfSentMailbox(email: email)
         }
     }
     
-    func reloadIfSentMailbox(){
-        if( SystemLabel(rawValue: self.mailboxData.selectedLabel) == .sent ){
+    func reloadIfSentMailbox(email: Email){
+        if( SystemLabel(rawValue: self.mailboxData.selectedLabel) == .sent || mailboxData.threads.contains(where: {$0.threadId == email.threadId}) ){
             self.refreshThreadRows()
         }
     }

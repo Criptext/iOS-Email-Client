@@ -139,6 +139,7 @@
 		7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69BADC20DC4A2E001ABD5B /* Thread.swift */; };
 		7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
 		7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */; };
+		7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */; };
 		7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */; };
 		7C7F2FEB20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FEA20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift */; };
 		7C7F2FED20B4B65700A2CB32 /* SettingsLabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FEC20B4B65700A2CB32 /* SettingsLabelsViewController.swift */; };
@@ -347,6 +348,7 @@
 		7C69BADC20DC4A2E001ABD5B /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIPopover.swift; sourceTree = "<group>"; };
 		7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailAsyncTask.swift; sourceTree = "<group>"; };
+		7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
 		7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTapTableCellView.swift; sourceTree = "<group>"; };
 		7C7F2FEA20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		7C7F2FEC20B4B65700A2CB32 /* SettingsLabelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLabelsViewController.swift; sourceTree = "<group>"; };
@@ -728,6 +730,7 @@
 			children = (
 				7C26229820A4A53900F077FD /* UtilsTests.swift */,
 				7C247E0420C6E0270019321E /* EventHandlerTests.swift */,
+				7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -1104,6 +1107,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */,
 				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
 				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,
 				7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */,
@@ -1308,6 +1312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65NU4336S4;
@@ -1325,6 +1330,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65NU4336S4;

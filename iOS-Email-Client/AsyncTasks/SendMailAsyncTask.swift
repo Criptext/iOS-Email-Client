@@ -159,6 +159,7 @@ class SendMailAsyncTask {
         APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { (error, data) in
             if let error = error {
                 self.handleResponseInMainThread {
+                    self.setEmailAsFailed()
                     completion(error, nil)
                 }
                 return

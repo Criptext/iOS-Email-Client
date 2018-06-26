@@ -320,7 +320,7 @@ extension DBManager {
     
     class func getEmailFailed() -> Email? {
         let realm = try! Realm()
-        let hasFailed = NSPredicate(format: "delivered == %@", Email.Status.fail.rawValue)
+        let hasFailed = NSPredicate(format: "delivered == \(Email.Status.fail.rawValue)")
         let results = realm.objects(Email.self).filter(hasFailed)
         
         return results.first
