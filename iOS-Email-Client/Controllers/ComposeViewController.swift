@@ -19,7 +19,7 @@ import IQKeyboardManagerSwift
 import SignalProtocolFramework
 
 protocol ComposerSendMailDelegate {
-    func sendMail(account: Account, email: Email, threadId: String?, subject: String, body: String, guestEmails: [String: Any], criptextEmails: [String: Any], files: [[String: Any]])
+    func sendMail(email: Email)
 }
 
 class ComposeViewController: UIViewController {
@@ -513,73 +513,34 @@ class ComposeViewController: UIViewController {
         self.prepareMail()
     }
     
-    func processEmailAddress(token: CLToken, criptextEmails: inout [String: String], emailArray: inout [String], type: String){
-        
-        let email = getEmailFromToken(token)
-        
-        if(email.contains(DOMAIN)){
-            criptextEmails[String(email.split(separator: "@")[0])] = type
-        }
-        else{
-            emailArray.append("\(token.displayText) <\(email)>")
-        }
-    }
-    
-    func sendMailInMainController(subject: String, body: String, guestEmail: [String: Any], criptextEmails: [String: Any]){
+    func sendMailInMainController(){
         guard let email = composerData.emailDraft else {
             return
         }
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: .sending)
         self.dismiss(animated: true){
-            self.delegate?.sendMail(account: self.activeAccount, email: email, threadId: self.composerData.threadId, subject: subject, body: body, guestEmails: guestEmail, criptextEmails: criptextEmails, files: self.fileManager.getFilesRequestData())
+            self.delegate?.sendMail(email: email)
         }
     }
     
     func prepareMail(){
+        let draftEmail = saveDraft()
+        composerData.emailDraft = draftEmail
         
-        var criptextEmails = [activeAccount.username: "peer"] as [String: String]
-        var toArray = [String]()
-        var ccArray = [String]()
-        var bccArray = [String]()
+        let containsNonCriptextEmail = draftEmail.getContacts(type: .to).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .cc).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .bcc).contains(where: {!$0.email.contains(Constants.domain)})
         
-        self.toField.allTokens.forEach { (token) in
-            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &toArray, type: "to")
-        }
-        self.ccField.allTokens.forEach { (token) in
-            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &ccArray, type: "cc")
-        }
-        self.bccField.allTokens.forEach { (token) in
-            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &bccArray, type: "bcc")
-        }
-        
-        let guestEmail = [
-            "to": toArray,
-            "cc": ccArray,
-            "bcc": bccArray
-        ]
-        
-        guard toArray.isEmpty && ccArray.isEmpty && bccArray.isEmpty else {
-            self.presentPopover(guestEmail: guestEmail, criptextEmails: criptextEmails)
+        guard !containsNonCriptextEmail else {
+            self.presentPopover()
             return
         }
         
-        handleSendMail(guestEmail: guestEmail, criptextEmails: criptextEmails)
-    }
-    
-    func handleSendMail(guestEmail: [String: Any], criptextEmails: [String: Any]){
-        let body = self.editorView.html
-        let subject = self.subjectField.text ?? "No Subject"
-        
         self.toggleInteraction(false)
-        composerData.emailDraft = saveDraft()
-        sendMailInMainController(subject: subject, body: body, guestEmail: guestEmail, criptextEmails: criptextEmails)
+        sendMailInMainController()
     }
     
-    func presentPopover(guestEmail: [String: Any], criptextEmails: [String: Any]){
+    func presentPopover(){
         let setPassPopover = EmailSetPasswordViewController()
-        setPassPopover.guestEmails = guestEmail
-        setPassPopover.criptextEmails = criptextEmails
         setPassPopover.delegate = self
         setPassPopover.preferredContentSize = CGSize(width: 270, height: 300)
         setPassPopover.popoverPresentationController?.sourceView = self.view
@@ -725,8 +686,9 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
 }
 
 extension ComposeViewController: emailSetPasswordDelegate {
-    func setPassword(guestEmails: [String : Any], criptextEmails: [String : Any], password: String) {
-        handleSendMail(guestEmail: guestEmails, criptextEmails: criptextEmails)
+    func setPassword(password: String) {
+        self.toggleInteraction(false)
+        sendMailInMainController()
     }
 }
 

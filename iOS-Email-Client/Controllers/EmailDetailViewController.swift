@@ -631,7 +631,7 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
 }
 
 extension EmailDetailViewController: ComposerSendMailDelegate {
-    func sendMail(account: Account, email: Email, threadId: String?, subject: String, body: String, guestEmails: [String : Any], criptextEmails: [String : Any], files: [[String : Any]]) {
+    func sendMail(email: Email) {
         guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController,
             email.threadId == emailData.threadId else {
             return
@@ -641,6 +641,6 @@ extension EmailDetailViewController: ComposerSendMailDelegate {
         email.isExpanded = true
         emailsTableView.reloadData()
         
-        inboxViewController.sendMail(account: account, email: email, threadId: threadId, subject: subject, body: body, guestEmails: guestEmails, criptextEmails: criptextEmails, files: files)
+        inboxViewController.sendMail(email: email)
     }
 }

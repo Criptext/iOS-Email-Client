@@ -15,23 +15,75 @@ class SendMailAsyncTask {
     let threadId: String?
     let subject: String
     let body: String
-    let guestEmails: [String: Any]
-    let criptextEmails: [String: Any]
-    let files: [[String: Any]]
+    let guestEmails: [String: Any]!
+    let criptextEmails: [String: Any]!
+    let files: [[String: Any]]!
     
     let username: String
     let emailRef: ThreadSafeReference<Object>
     
-    init(account: Account, email: Email, threadId: String?, subject: String, body: String, guestEmails: [String: Any], criptextEmails: [String: Any], files: [[String: Any]]){
-        self.subject = subject
-        self.body = body
-        self.guestEmails = guestEmails
-        self.criptextEmails = criptextEmails
-        self.files = files
-        self.threadId = threadId
+    init(account: Account, email: Email){
+        let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email)
         
         self.username = account.username
+        self.subject = email.subject
+        self.body = email.content
+        self.threadId = email.threadId.isEmpty ? nil : email.threadId
+        self.guestEmails = recipients.0
+        self.criptextEmails = recipients.1
+        self.files = SendMailAsyncTask.getFilesRequestData(email: email)
         self.emailRef = DBManager.getReference(email)
+    }
+    
+    private class func getFilesRequestData(email: Email) -> [[String: Any]]{
+        return email.files.map { (file) -> [String: Any] in
+            return ["token": file.token,
+                    "name": file.name,
+                    "size": file.size,
+                    "mimeType": file.mimeType]
+        }
+    }
+    
+    private class func getRecipientEmails(username: String, email: Email) -> ([String: Any], [String: Any]) {
+        var criptextEmails = [username: "peer"] as [String: String]
+        var toArray = [String]()
+        var ccArray = [String]()
+        var bccArray = [String]()
+        
+        let toContacts = email.getContacts(type: .to)
+        for contact in toContacts {
+            if(contact.email.contains(Constants.domain)){
+                criptextEmails[String(contact.email.split(separator: "@")[0])] = "to"
+            } else {
+                toArray.append(contact.email)
+            }
+        }
+        
+        let ccContacts = email.getContacts(type: .cc)
+        for contact in ccContacts {
+            if(contact.email.contains(Constants.domain)){
+                criptextEmails[String(contact.email.split(separator: "@")[0])] = "cc"
+            } else {
+                ccArray.append(contact.email)
+            }
+        }
+        
+        let bccContacts = email.getContacts(type: .bcc)
+        for contact in bccContacts {
+            if(contact.email.contains(Constants.domain)){
+                criptextEmails[String(contact.email.split(separator: "@")[0])] = "bcc"
+            } else {
+                bccArray.append(contact.email)
+            }
+        }
+        
+        let guestEmails = [
+            "to": toArray,
+            "cc": ccArray,
+            "bcc": bccArray
+        ]
+        
+        return (guestEmails, criptextEmails)
     }
     
     func start(completion: @escaping ((Error?, Any?) -> Void)){

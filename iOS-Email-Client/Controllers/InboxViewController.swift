@@ -924,63 +924,13 @@ extension InboxViewController: ComposerSendMailDelegate {
         guard let email = DBManager.getEmailFailed() else {
             return
         }
+        sendMail(email: email)
     }
     
-    func getFilesRequestData(email: Email) -> [[String: Any]]{
-        return email.files.map { (file) -> [String: Any] in
-            return ["token": file.token,
-                    "name": file.name,
-                    "size": file.size,
-                    "mimeType": file.mimeType]
-        }
-    }
-    
-    func getRecipientEmails(email: Email) -> ([String: Any], [String: Any]) {
-        var criptextEmails = [myAccount.username: "peer"] as [String: String]
-        var toArray = [String]()
-        var ccArray = [String]()
-        var bccArray = [String]()
-        
-        let toContacts = email.getContacts(type: .to)
-        for contact in toContacts {
-            if(contact.email.contains(Constants.domain)){
-                criptextEmails[String(contact.email.split(separator: "@")[0])] = "to"
-            } else {
-                toArray.append(contact.email)
-            }
-        }
-        
-        let ccContacts = email.getContacts(type: .cc)
-        for contact in ccContacts {
-            if(contact.email.contains(Constants.domain)){
-                criptextEmails[String(contact.email.split(separator: "@")[0])] = "cc"
-            } else {
-                ccArray.append(contact.email)
-            }
-        }
-        
-        let bccContacts = email.getContacts(type: .bcc)
-        for contact in bccContacts {
-            if(contact.email.contains(Constants.domain)){
-                criptextEmails[String(contact.email.split(separator: "@")[0])] = "bcc"
-            } else {
-                bccArray.append(contact.email)
-            }
-        }
-        
-        let guestEmails = [
-            "to": toArray,
-            "cc": ccArray,
-            "bcc": bccArray
-        ]
-        
-        return (guestEmails, criptextEmails)
-    }
-    
-    func sendMail(account: Account, email: Email, threadId: String?, subject: String, body: String, guestEmails: [String : Any], criptextEmails: [String : Any], files: [[String : Any]]) {
+    func sendMail(email: Email) {
         showSendingSnackBar(message: "  Sending email...", permanent: true)
         reloadIfSentMailbox()
-        let sendMailAsyncTask = SendMailAsyncTask(account: account, email: email, threadId: threadId, subject: subject, body: body, guestEmails: guestEmails, criptextEmails: criptextEmails, files: files)
+        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
         sendMailAsyncTask.start { (error, data) in
             if let error = error {
                 self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
