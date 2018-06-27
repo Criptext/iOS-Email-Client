@@ -13,10 +13,12 @@ class Email: Object {
     
     enum Status : Int {
         case none = 0
-        case sent = 1
-        case delivered = 2
-        case opened = 3
+        case sending = 1
+        case sent = 2
+        case delivered = 3
+        case opened = 4
         case unsent = -1
+        case fail = -2
     }
     
     @objc dynamic var id = 0

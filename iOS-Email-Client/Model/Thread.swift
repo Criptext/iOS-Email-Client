@@ -50,5 +50,4 @@ class Thread {
         }
         return String(contactsTitle.prefix(contactsTitle.count - 2))
     }
-    
 }

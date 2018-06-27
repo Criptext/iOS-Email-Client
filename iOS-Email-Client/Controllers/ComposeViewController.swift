@@ -18,6 +18,10 @@ import MIBadgeButton_Swift
 import IQKeyboardManagerSwift
 import SignalProtocolFramework
 
+protocol ComposerSendMailDelegate {
+    func sendMail(email: Email)
+}
+
 class ComposeViewController: UIViewController {
     let DEFAULT_ATTACHMENTS_HEIGHT = 303
     let MAX_ROWS_BEFORE_CALC_HEIGHT = 3
@@ -89,6 +93,8 @@ class ComposeViewController: UIViewController {
     
     var composerData = ComposerData()
     let fileManager = CriptextFileManager()
+    
+    var delegate : ComposerSendMailDelegate?
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -270,7 +276,6 @@ class ComposeViewController: UIViewController {
         //create draft
         let draft = Email()
         draft.status = .none
-        draft.key = "\(NSDate().timeIntervalSince1970)"
         draft.content = self.editorView.html
         let bodyWithoutHtml = self.editorView.text
         draft.preview = String(bodyWithoutHtml.prefix(100))
@@ -508,190 +513,34 @@ class ComposeViewController: UIViewController {
         self.prepareMail()
     }
     
-    func processEmailAddress(token: CLToken, criptextEmails: inout [String: String], emailArray: inout [String], type: String){
-        
-        let email = getEmailFromToken(token)
-        
-        if(email.contains(DOMAIN)){
-            criptextEmails[String(email.split(separator: "@")[0])] = type
-        }
-        else{
-            emailArray.append("\(token.displayText) <\(email)>")
-        }
-    }
-    
-    func sendMail(subject: String, guestEmail: [String: Any], criptextEmails: [Any]){
-        let files = fileManager.getFilesRequestData()
-        var requestParams = [
-            "subject": subject,
-            "criptextEmails": criptextEmails] as [String : Any]
-        if (!files.isEmpty) {
-            requestParams["files"] = files
-        }
-        if let threadId = composerData.threadId {
-            requestParams["threadId"] = threadId
-        }
-        APIManager.postMailRequest(requestParams, token: activeAccount.jwt) { (error, data) in
-            self.toggleInteraction(true)
-            if let error = error {
-                self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
-                self.hideSnackbar()
-                self.hideBlackBackground()
-                return
-            }
-            self.updateEmailData(data)
-            self.dismiss(animated: true){
-                self.hideSnackbar()
-            }
-            
-        }
-        
-    }
-    
-    func updateEmailData(_ data : Any?){
-        guard let myEmail = composerData.emailDraft else {
+    func sendMailInMainController(){
+        guard let email = composerData.emailDraft else {
             return
         }
-        let keysArray = data as! [String: Any]
-        let key = (keysArray["metadataKey"] as! Int32).description
-        let messageId = keysArray["messageId"] as! String
-        let threadId = keysArray["threadId"] as! String
-        DBManager.updateEmail(myEmail, key: key, messageId: messageId, threadId: threadId)
-        DBManager.addRemoveLabelsFromEmail(myEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
-        fileManager.updateFiles(emailId: key)
-        var data = [String: Any]()
-        data["email"] = myEmail
-        NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
-    }
-    
-    func getMessageType(_ message: CipherMessage) -> MessageType {
-        return message is PreKeyWhisperMessage ? .preKey : .cipherText
-    }
-    
-    func getSessionAndEncrypt(subject: String, body: String, guestEmail: [String: Any], criptextEmails: [String: Any]){
-        let store = CriptextAxolotlStore.init(self.activeAccount.regId, self.activeAccount.identityB64)
-        
-        var recipients = [String]()
-        var knownAddresses = [String: [Int32]]()
-        var criptextEmailsData = [[String: Any]]()
-        for (recipientId, type) in criptextEmails {
-            let recipientSessions = DBManager.getSessionRecords(recipientId: recipientId)
-            let deviceIds = recipientSessions.map { $0.deviceId }
-            recipients.append(recipientId)
-            for deviceId in deviceIds {
-                let message = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
-                let criptextEmail = ["recipientId": recipientId,
-                                     "deviceId": deviceId,
-                                     "type": type,
-                                     "body": message.0,
-                                     "messageType": message.1.rawValue] as [String: Any]
-                criptextEmailsData.append(criptextEmail)
-            }
-            knownAddresses[recipientId] = deviceIds
-        }
-        
-        let params = [
-            "recipients": recipients,
-            "knownAddresses": knownAddresses
-            ] as [String : Any]
-        
-        APIManager.getKeysRequest(params, token: activeAccount.jwt) { (err, response) in
-            
-            guard let keysArray = response as? [[String: Any]] else {
-                if let error = err {
-                    self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
-                }
-                self.hideSnackbar()
-                self.hideBlackBackground()
-                self.toggleInteraction(true)
-                return
-            }
-            for keys in keysArray {
-                let recipientId = keys["recipientId"] as! String
-                let deviceId = keys["deviceId"] as! Int32
-                let type = criptextEmails[recipientId] as! String
-                
-                let contactRegistrationId = keys["registrationId"] as! Int32
-                var contactPrekeyPublic: Data? = nil
-                var preKeyId: Int32 = 0
-                if let prekey = keys["preKey"] as? [String: Any]{
-                    contactPrekeyPublic = Data(base64Encoded:(prekey["publicKey"] as! String))!
-                    preKeyId = prekey["id"] as! Int32
-                }
-                
-                let contactSignedPrekeyPublic: Data = Data(base64Encoded:(keys["signedPreKeyPublic"] as! String))!
-                let contactSignedPrekeySignature: Data = Data(base64Encoded:(keys["signedPreKeySignature"] as! String))!
-                let contactIdentityPublicKey: Data = Data(base64Encoded:(keys["identityPublicKey"] as! String))!
-                let contactPreKey: PreKeyBundle = PreKeyBundle.init(registrationId: contactRegistrationId, deviceId: deviceId, preKeyId: preKeyId, preKeyPublic: contactPrekeyPublic, signedPreKeyPublic: contactSignedPrekeyPublic, signedPreKeyId: keys["signedPreKeyId"] as! Int32, signedPreKeySignature: contactSignedPrekeySignature, identityKey: contactIdentityPublicKey)
-                
-                let sessionBuilder: SessionBuilder = SessionBuilder.init(axolotlStore: store, recipientId: recipientId, deviceId: deviceId)
-                sessionBuilder.processPrekeyBundle(contactPreKey)
-                
-                
-                let message = self.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, store: store)
-                let criptextEmail = ["recipientId": recipientId,
-                                     "deviceId": deviceId,
-                                     "type": type,
-                                     "body": message.0,
-                                     "messageType": message.1.rawValue] as [String: Any]
-                criptextEmailsData.append(criptextEmail)
-            }
-            self.sendMail(subject: subject, guestEmail: guestEmail, criptextEmails: criptextEmailsData)
+        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
+        DBManager.updateEmail(email, status: .sending)
+        self.dismiss(animated: true){
+            self.delegate?.sendMail(email: email)
         }
     }
     
     func prepareMail(){
+        let draftEmail = saveDraft()
+        composerData.emailDraft = draftEmail
         
-        var criptextEmails = [activeAccount.username: "peer"] as [String: String]
-        var toArray = [String]()
-        var ccArray = [String]()
-        var bccArray = [String]()
+        let containsNonCriptextEmail = draftEmail.getContacts(type: .to).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .cc).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .bcc).contains(where: {!$0.email.contains(Constants.domain)})
         
-        self.toField.allTokens.forEach { (token) in
-            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &toArray, type: "to")
-        }
-        self.ccField.allTokens.forEach { (token) in
-            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &ccArray, type: "cc")
-        }
-        self.bccField.allTokens.forEach { (token) in
-            processEmailAddress(token: token, criptextEmails: &criptextEmails, emailArray: &bccArray, type: "bcc")
-        }
-        
-        let guestEmail = [
-            "to": toArray,
-            "cc": ccArray,
-            "bcc": bccArray
-        ]
-        
-        guard toArray.isEmpty && ccArray.isEmpty && bccArray.isEmpty else {
-            self.presentPopover(guestEmail: guestEmail, criptextEmails: criptextEmails)
+        guard !containsNonCriptextEmail else {
+            self.presentPopover()
             return
         }
         
-        handleSendMail(guestEmail: guestEmail, criptextEmails: criptextEmails)
-    }
-    
-    func handleSendMail(guestEmail: [String: Any], criptextEmails: [String: Any]){
-        let body = self.editorView.html
-        let subject = self.subjectField.text ?? "No Subject"
-        
         self.toggleInteraction(false)
-        let fullString = NSMutableAttributedString(string: "")
-        let image1Attachment = NSTextAttachment()
-        image1Attachment.image = #imageLiteral(resourceName: "lock")
-        let image1String = NSAttributedString(attachment: image1Attachment)
-        fullString.append(image1String)
-        fullString.append(NSAttributedString(string: " Sending email..."))
-        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: true)
-        
-        composerData.emailDraft = saveDraft()
-        getSessionAndEncrypt(subject: subject, body: body, guestEmail: guestEmail, criptextEmails: criptextEmails)
+        sendMailInMainController()
     }
     
-    func presentPopover(guestEmail: [String: Any], criptextEmails: [String: Any]){
+    func presentPopover(){
         let setPassPopover = EmailSetPasswordViewController()
-        setPassPopover.guestEmails = guestEmail
-        setPassPopover.criptextEmails = criptextEmails
         setPassPopover.delegate = self
         setPassPopover.preferredContentSize = CGSize(width: 270, height: 300)
         setPassPopover.popoverPresentationController?.sourceView = self.view
@@ -699,16 +548,6 @@ class ComposeViewController: UIViewController {
         setPassPopover.popoverPresentationController?.permittedArrowDirections = []
         setPassPopover.popoverPresentationController?.backgroundColor = UIColor.white
         self.present(setPassPopover, animated: true)
-    }
-    
-    func encryptMessage(body: String, deviceId: Int32, recipientId: String, store: CriptextAxolotlStore) -> (String, MessageType) {
-        
-        let sessionCipher: SessionCipher = SessionCipher.init(axolotlStore: store, recipientId: String(recipientId), deviceId: deviceId)
-        let outgoingMessage: CipherMessage = sessionCipher.encryptMessage(body.data(using: .utf8))
-        let messageText = outgoingMessage.serialized().base64EncodedString()
-        let messageType = getMessageType(outgoingMessage)
-        return (messageText, messageType)
-        
     }
     
     @IBAction func didPressCC(_ sender: UIButton) {
@@ -847,8 +686,9 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
 }
 
 extension ComposeViewController: emailSetPasswordDelegate {
-    func setPassword(guestEmails: [String : Any], criptextEmails: [String : Any], password: String) {
-        handleSendMail(guestEmail: guestEmails, criptextEmails: criptextEmails)
+    func setPassword(password: String) {
+        self.toggleInteraction(false)
+        sendMailInMainController()
     }
 }
 

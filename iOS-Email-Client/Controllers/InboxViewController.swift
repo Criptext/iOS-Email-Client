@@ -102,7 +102,7 @@ class InboxViewController: UIViewController {
         WebSocketManager.sharedInstance.eventDelegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshNewEmail(notification:)), name: .onNewEmail, object: nil)
+        self.sendFailEmail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -305,6 +305,8 @@ extension InboxViewController{
         
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
+        composerVC.delegate = self
         
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
@@ -345,15 +347,6 @@ extension InboxViewController{
         }
         mailboxData.threads.remove(at: draftIndex)
         tableView.reloadData()
-    }
-    
-    @objc func refreshNewEmail(notification: NSNotification){
-        guard let data = notification.userInfo,
-            let email = data["email"] as? Email,
-            email.labels.contains(where: {$0.id == mailboxData.selectedLabel}) else {
-                return
-        }
-        refreshThreadRows()
     }
 }
 
@@ -521,7 +514,7 @@ extension InboxViewController: UITableViewDataSource{
         footerView.displayLoader()
         if(mailboxData.fetchWorker == nil){
             mailboxData.fetchWorker = DispatchWorkItem(block: {
-                self.loadMails(since: self.mailboxData.threads.last?.lastEmail.date ?? Date())
+                self.loadMails(since: self.mailboxData.threads.last?.date ?? Date())
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: mailboxData.fetchWorker!)
         }
@@ -709,6 +702,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         if(!draft.threadId.isEmpty){
             composerData.threadId = draft.threadId
         }
+        composerVC.delegate = self
         composerVC.composerData = composerData
         for file in draft.files {
             file.requestStatus = .finish
@@ -922,5 +916,47 @@ extension InboxViewController: NavigationToolbarDelegate {
     
     func onMoreOptions() {
         toggleMoreOptions()
+    }
+}
+
+extension InboxViewController: ComposerSendMailDelegate {
+    
+    func sendFailEmail(){
+        guard let email = DBManager.getEmailFailed() else {
+            return
+        }
+        sendMail(email: email)
+    }
+    
+    func sendMail(email: Email) {
+        showSendingSnackBar(message: "  Sending email...", permanent: true)
+        reloadIfSentMailbox(email: email)
+        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
+        sendMailAsyncTask.start { (error, data) in
+            if let error = error {
+                self.showAlert("Network Error", message: error.localizedDescription, style: .alert)
+                self.hideSnackbar()
+                return
+            }
+            self.showSendingSnackBar(message: "  Email sent!!!", permanent: false)
+            self.reloadIfSentMailbox(email: email)
+        }
+    }
+    
+    func reloadIfSentMailbox(email: Email){
+        if( SystemLabel(rawValue: self.mailboxData.selectedLabel) == .sent || mailboxData.threads.contains(where: {$0.threadId == email.threadId}) ){
+            self.refreshThreadRows()
+        }
+    }
+    
+    func showSendingSnackBar(message: String, permanent: Bool) {
+        let fullString = NSMutableAttributedString(string: "")
+        let image1Attachment = NSTextAttachment()
+        image1Attachment.image = #imageLiteral(resourceName: "lock")
+        let image1String = NSAttributedString(attachment: image1Attachment)
+        let attrs = [NSAttributedStringKey.font : Font.bold.size(16)!, NSAttributedStringKey.foregroundColor : UIColor.white]
+        fullString.append(image1String)
+        fullString.append(NSAttributedString(string: message, attributes: attrs))
+        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
     }
 }

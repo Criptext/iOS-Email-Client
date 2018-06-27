@@ -48,7 +48,7 @@ class InboxTableViewCell: UITableViewCell {
     }
     
     func setReadStatus(status: Email.Status){
-        readWidthConstraint.constant = status == .none ? 0.0 : 17.0
+        readWidthConstraint.constant = status == .none ? 0.0 : 23.0
         readImageView.isHidden = status == .none
         switch(status){
         case .none:
@@ -65,6 +65,9 @@ class InboxTableViewCell: UITableViewCell {
         case .unsent:
             readWidthConstraint.constant = 0.0
             readImageView.isHidden = true
+        case .sending, .fail:
+            readImageView.image = #imageLiteral(resourceName: "expiration-email-icon")
+            readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         }
     }
     

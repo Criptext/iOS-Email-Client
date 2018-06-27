@@ -92,10 +92,10 @@ class APIManager {
         }
     }
     
-    class func getKeysRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
+    class func getKeysRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){
         let url = "\(self.baseUrl)/keybundle/find"
         let headers = ["Authorization": "Bearer \(token)"]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             switch(response.result) {
                 case .success(let value):
                     completion(nil, value)
@@ -107,10 +107,10 @@ class APIManager {
         }
     }
     
-    class func postMailRequest(_ params: [String : Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
+    class func postMailRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){
         let url = "\(self.baseUrl)/email"
         let headers = ["Authorization": "Bearer \(token)"]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             guard let value = response.result.value else {
                 completion(response.error, nil)
                 return

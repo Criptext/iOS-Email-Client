@@ -10,14 +10,12 @@ import Foundation
 import Material
 
 protocol emailSetPasswordDelegate {
-    func setPassword(guestEmails: [String: Any], criptextEmails: [String: Any], password: String)
+    func setPassword(password: String)
 }
 
 class EmailSetPasswordViewController: BaseUIPopover {
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var repeatPasswordTextField: TextField!
-    var guestEmails = [String: Any]()
-    var criptextEmails = [String: Any]()
     var delegate : emailSetPasswordDelegate?
     
     init(){
@@ -39,7 +37,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
             return
         }
         self.dismiss(animated: true, completion: nil)
-        self.delegate?.setPassword(guestEmails: self.guestEmails, criptextEmails: self.criptextEmails, password: password)
+        self.delegate?.setPassword(password: password)
     }
     @IBAction func onCancelPress(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

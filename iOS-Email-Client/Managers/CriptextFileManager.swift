@@ -213,12 +213,6 @@ class CriptextFileManager {
         return registeredFiles
     }
     
-    func updateFiles(emailId: String){
-        for file in registeredFiles {
-            DBManager.update(file: file, emailId: emailId)
-        }
-    }
-    
     func getFilesRequestData() -> [[String: Any]] {
         return registeredFiles.map({ (file) -> [String: Any] in
             return ["token": file.token,
