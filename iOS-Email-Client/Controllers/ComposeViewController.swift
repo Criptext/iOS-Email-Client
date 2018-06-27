@@ -20,6 +20,8 @@ import SignalProtocolFramework
 
 protocol ComposerSendMailDelegate {
     func sendMail(email: Email)
+    func newDraft(draft: Email)
+    func deleteDraft(draftId: String)
 }
 
 class ComposeViewController: UIViewController {
@@ -260,8 +262,7 @@ class ComposeViewController: UIViewController {
     
     func saveDraft() -> Email {
         if let draft = composerData.emailDraft {
-            let data = ["draftId": draft.key]
-            NotificationCenter.default.post(name: .onDeleteDraft, object: nil, userInfo: data)
+            delegate?.deleteDraft(draftId: draft.key)
             DBManager.delete(draft)
         }
         
@@ -283,7 +284,7 @@ class ComposeViewController: UIViewController {
         draft.subject = subject
         draft.date = Date()
         draft.key = "\(activeAccount.deviceId)\(Int(draft.date.timeIntervalSince1970))"
-        draft.threadId = composerData.threadId ?? ""
+        draft.threadId = composerData.threadId ?? draft.key
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.storeFiles())
         DBManager.store(draft)
@@ -473,8 +474,7 @@ class ComposeViewController: UIViewController {
         sheet.addAction(UIAlertAction(title: discardTitle, style: .destructive) { action in
             APIManager.cancelAllUploads()
             if let draft = self.composerData.emailDraft {
-                let data = ["draftId": draft.key]
-                NotificationCenter.default.post(name: .onDeleteDraft, object: nil, userInfo: data)
+                self.delegate?.deleteDraft(draftId: draft.key)
                 DBManager.delete(draft)
             }
             self.dismiss(animated: true, completion: nil)
@@ -482,8 +482,7 @@ class ComposeViewController: UIViewController {
         sheet.addAction(UIAlertAction(title: "Save Draft", style: .default) { action in
             APIManager.cancelAllUploads()
             let draft = self.saveDraft()
-            let data = ["email": draft]
-            NotificationCenter.default.post(name: .onNewEmail, object: nil, userInfo: data)
+            self.delegate?.newDraft(draft: draft)
             self.dismiss(animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))

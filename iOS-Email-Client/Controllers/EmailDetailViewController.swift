@@ -35,10 +35,7 @@ class EmailDetailViewController: UIViewController {
         self.registerCellNibs()
         self.topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
-        
         fileManager.delegate = self
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
         
         displayMarkIcon(asRead: hasUnreadEmails)
     }
@@ -53,16 +50,6 @@ class EmailDetailViewController: UIViewController {
         super.viewDidAppear(animated)
         self.topToolbar.swapLeftIcon(labelId: emailData.selectedLabel)
         self.topToolbar.isHidden = false
-    }
-    
-    @objc func deleteDraft(notification: NSNotification){
-        guard let data = notification.userInfo,
-            let draftId = data["draftId"] as? String,
-            let draftIndex = emailData.emails.index(where: {$0.key == draftId}) else {
-                return
-        }
-        emailData.emails.remove(at: draftIndex)
-        emailsTableView.reloadData()
     }
     
     func setupToolbar(){
@@ -631,6 +618,20 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
 }
 
 extension EmailDetailViewController: ComposerSendMailDelegate {
+    func newDraft(draft: Email) {
+        emailData.emails.append(draft)
+        draft.isExpanded = true
+        emailsTableView.reloadData()
+    }
+    
+    func deleteDraft(draftId: String) {
+        guard let draftIndex = emailData.emails.index(where: {$0.key == draftId}) else {
+                return
+        }
+        emailData.emails.remove(at: draftIndex)
+        emailsTableView.reloadData()
+    }
+    
     func sendMail(email: Email) {
         guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController,
             email.threadId == emailData.threadId else {

@@ -25,8 +25,11 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var badgeLabel: UILabel!
     @IBOutlet weak var badgeWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dateWidthConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var subjectWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var readWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var readImageView: UIImageView!
+    @IBOutlet weak var starredImageView: UIImageView!
     
     var holdGestureRecognizer:UILongPressGestureRecognizer!
     var delegate:InboxTableViewCellDelegate?
@@ -45,6 +48,39 @@ class InboxTableViewCell: UITableViewCell {
         }
         
         delegate.tableViewCellDidLongPress(self)
+    }
+    
+    func setFields(thread: Thread, label: Int){
+        let isSentFolder = label == SystemLabel.sent.id
+        
+        secureAttachmentImageView.isHidden = true
+        secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
+        
+        if !thread.unread || isSentFolder {
+            backgroundColor = UIColor(red:244/255, green:244/255, blue:244/255, alpha:1.0)
+            senderLabel.font = Font.regular.size(15)
+        }else{
+            backgroundColor = UIColor.white
+            senderLabel.font = Font.bold.size(15)
+        }
+        
+        let participants = thread.getContactsString()
+        let useTo = label == SystemLabel.sent.id || label == SystemLabel.draft.id
+        senderLabel.text = participants.isEmpty ? "<Empty Contact List>" : "\(useTo ? "To: " : "")\(participants)"
+        subjectLabel.text = thread.subject == "" ? "(No Subject)" : thread.subject
+        previewLabel.text = thread.preview
+        dateLabel.text = thread.getFormattedDate()
+        
+        let size = dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
+        dateWidthConstraint.constant = size.width
+        
+        let subjectSize = subjectLabel.sizeThatFits(CGSize(width: 250, height: 20))
+        subjectWidthConstraint.constant = subjectSize.width
+        
+        setReadStatus(status: thread.status)
+        setBadge(thread.counter)
+        starredImageView.isHidden = !thread.isStarred
+        secureAttachmentImageView.isHidden = !thread.hasAttachments
     }
     
     func setReadStatus(status: Email.Status){
