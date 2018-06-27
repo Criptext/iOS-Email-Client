@@ -73,7 +73,7 @@ class EmailDetailViewController: UIViewController {
     
     func setupMoreOptionsViews(){
         emailsTableView.rowHeight = UITableViewAutomaticDimension
-        emailsTableView.estimatedRowHeight = 108
+        emailsTableView.estimatedRowHeight = 75
         emailsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
         emailsTableView.estimatedSectionHeaderHeight = 56;
         moreOptionsContainerView.delegate = self

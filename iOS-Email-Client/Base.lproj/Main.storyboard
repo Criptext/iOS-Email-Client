@@ -204,7 +204,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="128MB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7vv-dj-mcZ">
-                                                                    <rect key="frame" x="240" y="17" width="80" height="16.5"/>
+                                                                    <rect key="frame" x="240" y="16.5" width="80" height="16.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="80" id="GRk-7K-MUR"/>
                                                                     </constraints>
@@ -638,7 +638,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfx-S0-hVs">
-                                                    <rect key="frame" x="72" y="16" width="49.5" height="20"/>
+                                                    <rect key="frame" x="72" y="16" width="116" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="Zst-d0-TBV"/>
                                                     </constraints>
@@ -656,7 +656,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPT-s1-oSH">
-                                                    <rect key="frame" x="226" y="16" width="130" height="16"/>
+                                                    <rect key="frame" x="226" y="18" width="130" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="16" id="67R-zh-Sk6"/>
                                                         <constraint firstAttribute="width" constant="130" id="84C-6X-exO"/>
@@ -722,7 +722,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment_inbox" translatesAutoresizingMaskIntoConstraints="NO" id="UIJ-IR-1G9">
-                                                    <rect key="frame" x="198" y="15.5" width="18" height="17"/>
+                                                    <rect key="frame" x="198" y="17.5" width="18" height="17"/>
                                                     <color key="tintColor" red="0.83520287275314331" green="0.83534681797027588" blue="0.8351936936378479" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="Rc6-0l-C0F"/>
@@ -750,17 +750,18 @@
                                                 <constraint firstItem="HjE-2P-Xa0" firstAttribute="leading" secondItem="bTS-Ap-zGj" secondAttribute="leading" constant="18" id="Gal-ZN-Daj"/>
                                                 <constraint firstItem="plx-qW-utu" firstAttribute="centerY" secondItem="3Jt-xU-pVS" secondAttribute="centerY" id="HXT-e6-Hgo"/>
                                                 <constraint firstItem="HjE-2P-Xa0" firstAttribute="centerY" secondItem="bTS-Ap-zGj" secondAttribute="centerY" id="MZ0-cU-edc"/>
+                                                <constraint firstItem="UIJ-IR-1G9" firstAttribute="leading" secondItem="vfx-S0-hVs" secondAttribute="trailing" constant="10" id="N5d-jp-cg2"/>
                                                 <constraint firstItem="8aL-Yg-J9u" firstAttribute="centerY" secondItem="TyM-xa-owd" secondAttribute="centerY" id="Rkd-W5-Ngi"/>
-                                                <constraint firstItem="3Jt-xU-pVS" firstAttribute="top" secondItem="BPT-s1-oSH" secondAttribute="bottom" constant="4" id="TSh-QS-Fp9"/>
                                                 <constraint firstItem="UIJ-IR-1G9" firstAttribute="centerY" secondItem="BPT-s1-oSH" secondAttribute="centerY" id="Tqp-Yd-lBi"/>
+                                                <constraint firstItem="BPT-s1-oSH" firstAttribute="centerY" secondItem="vfx-S0-hVs" secondAttribute="centerY" id="UIN-Fn-mjm"/>
                                                 <constraint firstItem="3vI-M6-Owh" firstAttribute="centerY" secondItem="TyM-xa-owd" secondAttribute="centerY" id="UcJ-VN-LMo"/>
                                                 <constraint firstItem="vfx-S0-hVs" firstAttribute="leading" secondItem="HjE-2P-Xa0" secondAttribute="trailing" constant="18" id="VpA-gu-KXe"/>
                                                 <constraint firstItem="3vI-M6-Owh" firstAttribute="trailing" secondItem="BPT-s1-oSH" secondAttribute="trailing" id="elm-2c-vCc"/>
                                                 <constraint firstItem="TyM-xa-owd" firstAttribute="top" secondItem="3Jt-xU-pVS" secondAttribute="bottom" id="hiS-dG-K7b"/>
                                                 <constraint firstAttribute="trailing" secondItem="TyM-xa-owd" secondAttribute="trailing" constant="50" id="k4O-JG-U1w"/>
+                                                <constraint firstItem="3Jt-xU-pVS" firstAttribute="top" secondItem="vfx-S0-hVs" secondAttribute="bottom" id="mwA-S5-gfE"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="BPT-s1-oSH" secondAttribute="trailing" constant="4" id="oG7-qW-qY2"/>
                                                 <constraint firstItem="plx-qW-utu" firstAttribute="leading" secondItem="3Jt-xU-pVS" secondAttribute="trailing" constant="7" id="pWR-vv-FMq"/>
-                                                <constraint firstItem="BPT-s1-oSH" firstAttribute="top" secondItem="vfx-S0-hVs" secondAttribute="top" id="wXB-PR-vgr"/>
                                                 <constraint firstItem="8aL-Yg-J9u" firstAttribute="leading" secondItem="3Jt-xU-pVS" secondAttribute="leading" id="x2R-aN-6Sk"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1028,7 +1029,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yesterday" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="38w-hq-5ve">
-                                                    <rect key="frame" x="295" y="34" width="60" height="15.5"/>
+                                                    <rect key="frame" x="295" y="34.5" width="60" height="15.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="Npk-B4-BKI"/>
                                                     </constraints>
@@ -1529,7 +1530,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create new label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBg-vD-6yw">
-                                            <rect key="frame" x="29" y="10.5" width="275" height="23.5"/>
+                                            <rect key="frame" x="29" y="10" width="275" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1604,7 +1605,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="10" width="117" height="23.5"/>
+                                            <rect key="frame" x="27" y="10.5" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1734,7 +1735,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbm-oq-FDu">
-                                        <rect key="frame" x="27" y="21.5" width="23" height="23.5"/>
+                                        <rect key="frame" x="27" y="21" width="23" height="23.5"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                         <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1835,7 +1836,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="amW-Di-fUH">
-                                            <rect key="frame" x="61" y="13.5" width="159" height="40"/>
+                                            <rect key="frame" x="61" y="13" width="159" height="40"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Samsung Galaxy S8" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3s-zY-auf">
                                                     <rect key="frame" x="0.0" y="0.0" width="159" height="22"/>
@@ -1877,7 +1878,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cryptext System Version 1.3.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snm-6a-b2Z">
-                                            <rect key="frame" x="27" y="21" width="321" height="23.5"/>
+                                            <rect key="frame" x="27" y="21.5" width="321" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.72549019607843135" green="0.72549019607843135" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
