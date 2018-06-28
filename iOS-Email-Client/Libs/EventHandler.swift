@@ -200,6 +200,7 @@ class EventHandler {
         open.email = email
         open.contact = contact
         open.id = open.incrementID()
+        DBManager.updateEmail(email, status: .opened)
         DBManager.store(open)
         finishCallback(true, open)
     }

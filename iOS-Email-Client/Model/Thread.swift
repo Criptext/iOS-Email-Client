@@ -28,6 +28,10 @@ class Thread {
         return Email.Status(rawValue: lastEmail.delivered) ?? .none
     }
     
+    var isStarred : Bool {
+        return lastEmail.labels.contains(where: {$0.id == SystemLabel.starred.id})
+    }
+    
     func getFormattedDate() -> String {
         return DateUtils.conversationTime(date)
     }

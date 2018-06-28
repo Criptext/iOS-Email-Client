@@ -101,7 +101,6 @@ class InboxViewController: UIViewController {
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteDraft(notification:)), name: .onDeleteDraft, object: nil)
         self.sendFailEmail()
     }
     
@@ -120,7 +119,8 @@ class InboxViewController: UIViewController {
             return
         }
         let thread = mailboxData.threads[indexPath.row]
-        guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
+        guard !thread.lastEmail.isInvalidated,
+            let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
             thread.lastEmail.key == refreshedRowThread.lastEmail.key else {
             refreshThreadRows()
             return
@@ -258,6 +258,13 @@ class InboxViewController: UIViewController {
 
 extension InboxViewController: EventHandlerDelegate {
     func didReceiveOpens(opens: [FeedItem]) {
+        let pathsToUpdate = opens.reduce([IndexPath]()) { (result, open) -> [IndexPath] in
+            guard let index = mailboxData.threads.index(where: {$0.threadId == open.email.threadId}) else {
+                return result
+            }
+            return result + [IndexPath(row: index, section: 0)]
+        }
+        tableView.reloadRows(at: pathsToUpdate, with: .automatic)
         guard let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
                 return
         }
@@ -337,16 +344,6 @@ extension InboxViewController{
             ? DBManager.getThreads(from: mailboxData.selectedLabel, since: Date(), limit: 100).count
             : DBManager.getUnreadMails(from: mailboxData.selectedLabel).count
         countBarButton.title = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
-    }
-    
-    @objc func deleteDraft(notification: NSNotification){
-        guard let data = notification.userInfo,
-            let draftId = data["draftId"] as? String,
-            let draftIndex = mailboxData.threads.index(where: {$0.lastEmail.key == draftId}) else {
-                return
-        }
-        mailboxData.threads.remove(at: draftIndex)
-        tableView.reloadData()
     }
 }
 
@@ -459,31 +456,8 @@ extension InboxViewController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let thread = mailboxData.threads[indexPath.row]
+        cell.setFields(thread: thread, label: mailboxData.selectedLabel)
         
-        let isSentFolder = mailboxData.selectedLabel == SystemLabel.sent.id
-        
-        cell.secureAttachmentImageView.isHidden = true
-        cell.secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
-        
-        //Set row status
-        if !thread.unread || isSentFolder {
-            cell.backgroundColor = UIColor(red:244/255, green:244/255, blue:244/255, alpha:1.0)
-            cell.senderLabel.font = Font.regular.size(15)
-        }else{
-            cell.backgroundColor = UIColor.white
-            cell.senderLabel.font = Font.bold.size(15)
-        }
-        
-        let participants = thread.getContactsString()
-        let useTo = mailboxData.selectedLabel == SystemLabel.sent.id || mailboxData.selectedLabel == SystemLabel.draft.id
-        cell.senderLabel.text = participants.isEmpty ? "<Empty Contact List>" : "\(useTo ? "To: " : "")\(participants)"
-        cell.subjectLabel.text = thread.subject == "" ? "(No Subject)" : thread.subject
-        cell.previewLabel.text = thread.preview
-        cell.dateLabel.text = thread.getFormattedDate()
-        cell.setReadStatus(status: thread.status)
-        
-        let size = cell.dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
-        cell.dateWidthConstraint.constant = size.width
         
         if mailboxData.isCustomEditing {
             if(cell.isSelected){
@@ -496,8 +470,6 @@ extension InboxViewController: UITableViewDataSource{
             cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
             cell.avatarImageView.layer.borderWidth = 0.0
         }
-        
-        cell.setBadge(thread.counter)
         return cell
     }
     
@@ -920,6 +892,13 @@ extension InboxViewController: NavigationToolbarDelegate {
 }
 
 extension InboxViewController: ComposerSendMailDelegate {
+    func newDraft(draft: Email) {
+        guard mailboxData.selectedLabel == SystemLabel.draft.id else {
+            return
+        }
+        self.refreshThreadRows()
+    }
+    
     
     func sendFailEmail(){
         guard let email = DBManager.getEmailFailed() else {
@@ -958,5 +937,13 @@ extension InboxViewController: ComposerSendMailDelegate {
         fullString.append(image1String)
         fullString.append(NSAttributedString(string: message, attributes: attrs))
         self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
+    }
+    
+    func deleteDraft(draftId: String) {
+        guard let draftIndex = mailboxData.threads.index(where: {$0.lastEmail.key == draftId}) else {
+                return
+        }
+        mailboxData.threads.remove(at: draftIndex)
+        tableView.reloadData()
     }
 }

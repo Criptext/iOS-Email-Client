@@ -149,9 +149,10 @@ extension DBManager {
             }
             guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
                 if(email.date < date){
-                    threads.append(thread)
+                    thread.subject = email.subject
                     thread.participants.formUnion(email.getContacts(type: .to))
                     thread.participants.formUnion(email.getContacts(type: .cc))
+                    threads.append(thread)
                 }
                 continue
             }
@@ -173,6 +174,9 @@ extension DBManager {
                 }else{
                     thread.participants.formUnion(threadEmail.getContacts(type: .from))
                 }
+                if(!thread.hasAttachments && threadEmail.files.count > 0){
+                    thread.hasAttachments = true
+                }
             }
             thread.unread = threadEmails.contains(where: {$0.unread})
             thread.counter = threadEmails.count
@@ -191,7 +195,6 @@ extension DBManager {
         guard let email = realm.objects(Email.self).filter(threadsPredicate).sorted(byKeyPath: "date", ascending: false).first else {
             return nil
         }
-        thread.lastEmail = email
         thread.date = email.date
         let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
@@ -206,7 +209,11 @@ extension DBManager {
             }else{
                 thread.participants.formUnion(threadEmail.getContacts(type: .from))
             }
+            if(!thread.hasAttachments && threadEmail.files.count > 0){
+                thread.hasAttachments = true
+            }
         }
+        thread.lastEmail = threadEmails.last ?? email
         thread.unread = threadEmails.contains(where: {$0.unread})
         thread.subject = threadEmails.first!.subject
         thread.counter = threadEmails.count
