@@ -9,10 +9,16 @@
 import Foundation
 import TagListView
 
+protocol EmailHeaderDelegate {
+    func onStarPressed()
+}
+
 class EmailDetailHeaderCell: UITableViewCell{
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var subjectHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelsListView: TagListView!
+    @IBOutlet weak var starButton: UIButton!
+    var delegate: EmailHeaderDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,14 +31,18 @@ class EmailDetailHeaderCell: UITableViewCell{
     }
     
     func addLabels(_ labels: [Label]){
-        guard labelsListView.tagViews.count == 0 else {
-            return
-        }
+        labelsListView.removeAllTags()
+        var starredColor = UIColor.lightText
         for label in labels {
+            guard label.id != SystemLabel.starred.id else {
+                starredColor = UIColor(hex: label.color)
+                continue
+            }
             let tag = labelsListView.addTag(label.text)
             tag.tagBackgroundColor = UIColor(hex: label.color)
         }
         labelsListView.invalidateIntrinsicContentSize()
+        starButton.tintColor = starredColor
     }
     
     func setSubject(_ subject: String){
@@ -42,4 +52,7 @@ class EmailDetailHeaderCell: UITableViewCell{
         subjectHeightConstraint.constant = myHeight
     }
     
+    @IBAction func onStarButtonPressed(_ sender: Any) {
+        delegate?.onStarPressed()
+    }
 }

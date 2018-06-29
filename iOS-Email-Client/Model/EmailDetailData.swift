@@ -19,4 +19,12 @@ class EmailDetailData{
         self.threadId = threadId
         self.selectedLabel = label
     }
+    
+    func rebuildLabels(){
+        var labelsSet = Set<Label>()
+        for email in emails {
+            labelsSet.formUnion(email.labels)
+        }
+        labels = Array(labelsSet)
+    }
 }

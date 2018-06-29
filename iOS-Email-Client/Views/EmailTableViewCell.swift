@@ -36,6 +36,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var readIconWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var contactsWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomMarginView: UIView!
+    @IBOutlet weak var attachmentsTopMarginView: UIView!
     @IBOutlet weak var dateWidthConstraint: NSLayoutConstraint!
     
     
@@ -46,7 +47,6 @@ class EmailTableViewCell: UITableViewCell{
         return email.files
     }
     var delegate: EmailTableViewCellDelegate?
-    let MARGIN_HEIGHT : CGFloat = 15.0
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
     
     override func awakeFromNib() {
@@ -98,8 +98,6 @@ class EmailTableViewCell: UITableViewCell{
         let size = dateLabel.sizeThatFits(CGSize(width: 100.0, height: 19))
         dateWidthConstraint.constant = size.width
         
-        
-        
         miniAttachmentIconView.isHidden = email.files.count == 0
         webViewWrapperView.isHidden = !isExpanded
         attachmentsTableView.isHidden = !isExpanded
@@ -136,7 +134,8 @@ class EmailTableViewCell: UITableViewCell{
         let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
         contactsWidthConstraint.constant = size.width
         if(!loadedContent){
-            webView.loadHTMLString(Constants.htmlTopWrapper + email.content + Constants.htmlBottomWrapper, baseURL: URL(fileURLWithPath: Constants.imagePath))
+            let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
+            webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.content)\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
         }
     }
     
