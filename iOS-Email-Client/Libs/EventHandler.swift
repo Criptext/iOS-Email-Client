@@ -187,6 +187,11 @@ class EventHandler {
         let fileId = params["file"] as? String
         let date = params["date"] as! String
         
+        guard from != myAccount.username else {
+            finishCallback(true, nil)
+            return
+        }
+        
         let open = FeedItem()
         open.fileId = fileId
         open.isNew = true

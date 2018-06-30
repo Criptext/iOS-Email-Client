@@ -10,6 +10,7 @@ import Foundation
 import SignalProtocolFramework
 
 class FeedViewController: UIViewController{
+    let HEADER_HEIGHT : CGFloat = 42.0
     var feedsData: FeedsData = FeedsData()
     @IBOutlet weak var noFeedsView: UIView!
     @IBOutlet weak var feedsTableView: UITableView!
@@ -91,13 +92,16 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if(section == 0){
-            return "NEW"
+            return feedsData.newFeeds.count > 0 ? "NEW" : nil
         }
-        return "OLDER"
+        return feedsData.oldFeeds.count > 0 ? "OLDER" : nil
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(42)
+        if(section == 0){
+            return feedsData.newFeeds.count > 0 ? HEADER_HEIGHT : 0.0
+        }
+        return feedsData.oldFeeds.count > 0 ? HEADER_HEIGHT : 0.0
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -129,7 +133,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func buildLastRow() -> UITableViewCell{
         let footerView = feedsTableView.dequeueReusableCell(withIdentifier: "EndCell") as! TableEndViewCell
         if(feedsData.reachedEnd){
-            footerView.displayMessage("No more activities")
+            footerView.displayMessage("")
         }else{
             footerView.displayLoader()
         }

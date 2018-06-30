@@ -249,10 +249,7 @@ class ComposeViewController: UIViewController {
     
     func removeAttachment(at indexPath:IndexPath){
         _ = fileManager.registeredFiles.remove(at: indexPath.row)
-        
-        self.updateBadge()
         self.toggleAttachmentTable()
-        
         self.tableView.performUpdate({
             self.tableView.deleteRows(at: [indexPath], with: .fade)
             
@@ -460,7 +457,6 @@ class ComposeViewController: UIViewController {
         let sendAction = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
             self.fileManager.registeredFiles = self.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
             self.tableView.reloadData()
-            self.updateBadge()
             self.handleExit()
         })
         self.showAlert("Pending Attachments", message: "Some attachments are being uploaded. Would you like to discard them and proceed?", style: .alert, actions: [cancelAction, sendAction])
@@ -628,14 +624,7 @@ extension ComposeViewController: CICropPickerDelegate {
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
             }, completion: nil)
             self.toggleAttachmentTable()
-            self.updateBadge()
         }
-    }
-    
-    func updateBadge(){
-        self.attachmentBarButton.tintColor = Icon.system.color
-        let badgeCount = fileManager.registeredFiles.count
-        self.attachmentBarButton.badgeString =  badgeCount > 0 ? "\(badgeCount)" : ""
     }
 }
 
@@ -680,7 +669,6 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
         }, completion: nil)
         self.toggleAttachmentTable()
-        self.updateBadge()
     }
 }
 
@@ -872,7 +860,6 @@ extension ComposeViewController: AttachmentTableViewCellDelegate{
         }
         fileManager.removeFile(filetoken: fileManager.registeredFiles[indexPath.row].token)
         tableView.deleteRows(at: [indexPath], with: .none)
-        updateBadge()
     }
     
     func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {
@@ -1121,10 +1108,16 @@ extension ComposeViewController: RichEditorDelegate {
     }
     
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
-        guard !content.isEmpty else {
+        guard !self.isEdited else {
             return
         }
-        self.isEdited = true
+        if(!content.isEmpty && !activeAccount.signatureEnabled){
+            self.isEdited = true
+        }
+        let signature = activeAccount.signature
+        if(!content.isEmpty && !content.replacingOccurrences(of: "<br/> \(signature)", with: "").replacingOccurrences(of: "<br> \(signature)", with: "").isEmpty){
+            self.isEdited = true
+        }
     }
     
     func richEditorDidLoad(_ editor: RichEditorView) {

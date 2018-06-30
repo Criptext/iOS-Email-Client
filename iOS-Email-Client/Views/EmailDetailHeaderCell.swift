@@ -28,7 +28,7 @@ class EmailDetailHeaderCell: UITableViewCell{
     
     func addLabels(_ labels: [Label]){
         labelsListView.removeAllTags()
-        var starredColor = UIColor.lightText
+        var starredColor = UIColor(red: 142/255, green: 143/255, blue: 149/255, alpha: 1.0)
         for label in labels {
             guard label.id != SystemLabel.starred.id else {
                 starredColor = UIColor(hex: label.color)
