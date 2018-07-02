@@ -11,14 +11,18 @@ import Material
 
 class ProfileNameChangeViewController: BaseUIPopover {
     @IBOutlet weak var nameTextField: TextField!
-    var myAccount: Account!
+    @IBOutlet weak var titleLabel: UILabel!
+    var myTitle = ""
+    var initInputText = ""
+    var onOk: ((String) -> Void)?
     
     init(){
         super.init("ProfileNameChangeUIView")
     }
     
     override func viewDidLoad() {
-        nameTextField.text = myAccount.name
+        titleLabel.text = myTitle
+        nameTextField.text = initInputText
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -31,7 +35,7 @@ class ProfileNameChangeViewController: BaseUIPopover {
     }
     
     @IBAction func onOkPress(_ sender: Any) {
-        DBManager.update(account: myAccount, name: nameTextField.text as! String)
+        self.onOk?(nameTextField.text!)
         self.dismiss(animated: true, completion: nil)
     }
     

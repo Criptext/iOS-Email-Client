@@ -1,7 +1,7 @@
+git "file:///Users/hirobreak/Documents/git/CICropPicker" "1.1.1"
 github "Alamofire/Alamofire" "4.7.2"
 github "CosmicMind/Material" "2.15.0"
 github "CosmicMind/Motion" "1.4.0"
-github "Criptext/CICropPicker" "1.1.0"
 github "Criptext/MIBadgeButton-Swift" "0.8"
 github "Criptext/SignalProtocolSwift" "0.8"
 github "Criptext/UIImageView-Letters" "1.1.5"

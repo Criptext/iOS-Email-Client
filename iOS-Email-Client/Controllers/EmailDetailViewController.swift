@@ -315,7 +315,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.initToContacts.append(contentsOf: contactsTo)
         composerData.initCcContacts.append(contentsOf: contactsCc)
         composerData.initSubject = email.isDraft ? email.subject : email.subject.starts(with: "\(subjectPrefix) ") ? email.subject : "\(subjectPrefix) \(email.subject)"
-        let replyBody = email.isDraft ? email.content : ("<br><pre class=\"criptext-remove-this\"></pre>" + "On \(email.getFullDate()), \(email.fromContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote>")
+        let replyBody = email.isDraft ? email.content : ("<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + "On \(email.getFullDate()), \(email.fromContact.email) wrote:<br>" + email.content + "</blockquote>")
         composerData.initContent = replyBody
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
