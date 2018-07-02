@@ -9,16 +9,12 @@
 import Foundation
 import TagListView
 
-protocol EmailHeaderDelegate {
-    func onStarPressed()
-}
-
 class EmailDetailHeaderCell: UITableViewCell{
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var subjectHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelsListView: TagListView!
     @IBOutlet weak var starButton: UIButton!
-    var delegate: EmailHeaderDelegate?
+    var onStarPressed: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -53,6 +49,6 @@ class EmailDetailHeaderCell: UITableViewCell{
     }
     
     @IBAction func onStarButtonPressed(_ sender: Any) {
-        delegate?.onStarPressed()
+        self.onStarPressed?()
     }
 }
