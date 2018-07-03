@@ -9,6 +9,9 @@ import Material
 import Foundation
 
 class EmailDetailViewController: UIViewController {
+    let ESTIMATED_ROW_HEIGHT : CGFloat = 75
+    let ESTIMATED_SECTION_HEADER_HEIGHT : CGFloat = 65
+    
     var emailData : EmailDetailData!
     var mailboxData : MailboxData!
     var myAccount: Account!
@@ -73,9 +76,9 @@ class EmailDetailViewController: UIViewController {
     
     func setupMoreOptionsViews(){
         emailsTableView.rowHeight = UITableViewAutomaticDimension
-        emailsTableView.estimatedRowHeight = 108
+        emailsTableView.estimatedRowHeight = ESTIMATED_ROW_HEIGHT
         emailsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
-        emailsTableView.estimatedSectionHeaderHeight = 56;
+        emailsTableView.estimatedSectionHeaderHeight = ESTIMATED_SECTION_HEADER_HEIGHT;
         moreOptionsContainerView.delegate = self
     }
     
@@ -121,6 +124,9 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
         let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableHeaderView") as! EmailDetailHeaderCell
         headerView.addLabels(emailData.labels)
         headerView.setSubject(emailData.subject)
+        headerView.onStarPressed = { [weak self] in
+            self?.onStarPressed()
+        }
         myHeaderView = headerView
         return myHeaderView
     }
@@ -565,9 +571,13 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool){
         DBManager.addRemoveLabelsForThreads(emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: emailData.selectedLabel)
-        if(removed.contains(where: {$0 == emailData.selectedLabel}) || forceRemove){
+        emailData.rebuildLabels()
+        if(forceRemove){
             mailboxData.removeSelectedRow = true
             self.navigationController?.popViewController(animated: true)
+        } else {
+            myHeaderView = nil
+            emailsTableView.reloadData()
         }
     }
 }
@@ -643,5 +653,14 @@ extension EmailDetailViewController: ComposerSendMailDelegate {
         emailsTableView.reloadData()
         
         inboxViewController.sendMail(email: email)
+    }
+}
+
+extension EmailDetailViewController {
+    func onStarPressed() {
+        let threadIsStarred = emailData.labels.contains(where: {$0.id == SystemLabel.starred.id})
+        let addedLabels = threadIsStarred ? [] : [SystemLabel.starred.id]
+        let removedLabels = threadIsStarred ? [SystemLabel.starred.id] : []
+        setLabels(added: addedLabels, removed: removedLabels)
     }
 }

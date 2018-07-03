@@ -191,7 +191,7 @@ extension DBManager {
         let thread = Thread()
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        let threadsPredicate = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
+        let threadsPredicate = NSPredicate(format: "threadId == %@ AND ANY labels.id = %d AND NOT (ANY labels.id IN %@)", threadId, label, rejectedLabels)
         guard let email = realm.objects(Email.self).filter(threadsPredicate).sorted(byKeyPath: "date", ascending: false).first else {
             return nil
         }

@@ -21,33 +21,25 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var previewLabel: UILabel!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var collapsedDetailView: UIView!
-    @IBOutlet weak var expandedDetailView: UIView!
-    @IBOutlet weak var unsendView: UIView!
-    @IBOutlet weak var unsendIconView: UIImageView!
-    @IBOutlet weak var attachmentView: UIView!
-    @IBOutlet weak var attachmentIconView: UIImageView!
-    @IBOutlet weak var readView: UIView!
-    @IBOutlet weak var readIconView: UIImageView!
-    @IBOutlet weak var moreRecipientsLabel: UILabel!
-    @IBOutlet weak var optionsView: UIView!
-    @IBOutlet weak var optionsIconView: UIImageView!
-    @IBOutlet weak var editView: UIView!
-    @IBOutlet weak var editIconView: UIImageView!
-    @IBOutlet weak var replyView: UIView!
-    @IBOutlet weak var replyIconView: UIImageView!
     @IBOutlet weak var webViewWrapperView: UIView!
     @IBOutlet weak var borderBGView: UIView!
     @IBOutlet weak var contactsCollapseLabel: UILabel!
-    @IBOutlet weak var contactsExpandLabel: UILabel!
     @IBOutlet weak var miniAttachmentIconView: UIImageView!
     @IBOutlet weak var miniReadIconView: UIImageView!
     @IBOutlet weak var attachmentsTableView: UITableView!
     @IBOutlet weak var attachmentsTableHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var collapsedDateLabel: UILabel!
-    @IBOutlet weak var expandedDateLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var initialsImageView: UIImageView!
-    @IBOutlet weak var bottomMarginHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var moreOptionsContainerView: UIView!
+    @IBOutlet weak var moreInfoContainerView: UIButton!
+    @IBOutlet weak var contactsLabel: UILabel!
+    @IBOutlet weak var readIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var contactsWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomMarginView: UIView!
+    @IBOutlet weak var attachmentsTopMarginView: UIView!
+    @IBOutlet weak var dateWidthConstraint: NSLayoutConstraint!
+    
+    
     var loadedContent = false
     var myHeight : CGFloat = 0.0
     var email: Email!
@@ -55,7 +47,6 @@ class EmailTableViewCell: UITableViewCell{
         return email.files
     }
     var delegate: EmailTableViewCellDelegate?
-    let MARGIN_HEIGHT : CGFloat = 15.0
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
     
     override func awakeFromNib() {
@@ -82,9 +73,6 @@ class EmailTableViewCell: UITableViewCell{
     func setupView(){
         backgroundColor = .clear
         heightConstraint.constant = myHeight
-        unsendView.layer.borderWidth = 1
-        readView.layer.borderWidth = 1
-        attachmentView.layer.borderWidth = 1
         borderBGView.layer.borderWidth = 1
         borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
         
@@ -98,85 +86,81 @@ class EmailTableViewCell: UITableViewCell{
     func setContent(_ email: Email){
         self.email = email
         let isExpanded = email.isExpanded
+        
         attachmentsTableView.reloadData()
         attachmentsTableHeightConstraint.constant = ATTATCHMENT_CELL_HEIGHT * CGFloat(attachments.count)
+        
+        setReadStatus(status: email.status)
+        dateLabel.text = email.getFormattedDate()
+        contactsCollapseLabel.text = email.fromContact.displayName
+        let fromContactName = email.fromContact.displayName
+        initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
+        let size = dateLabel.sizeThatFits(CGSize(width: 100.0, height: 19))
+        dateWidthConstraint.constant = size.width
+        
+        miniAttachmentIconView.isHidden = email.files.count == 0
         webViewWrapperView.isHidden = !isExpanded
-        expandedDetailView.isHidden = !isExpanded
         attachmentsTableView.isHidden = !isExpanded
-        collapsedDetailView.isHidden = isExpanded
+        previewLabel.isHidden = isExpanded
+        moreOptionsContainerView.isHidden = !isExpanded
+        moreInfoContainerView.isHidden = !isExpanded
+        contactsLabel.isHidden = !isExpanded
+        bottomMarginView.isHidden = !isExpanded
+        
         if(isExpanded){
             setExpandedContent(email)
         }else{
             setCollapsedContent(email)
         }
-    }
-    
-    func setCollapsedContent(_ email: Email){
-        let preview = email.isUnsent ? "Unsent" : email.preview
-        let numberOfLines = Utils.getNumberOfLines(preview, width: previewLabel.frame.width, fontSize: 17.0)
-        previewLabel.text = "\(preview)\(numberOfLines >= 2 ? "" : "\n")"
-        contactsCollapseLabel.text = email.fromContact.displayName
-        setCollapsedIcons(email)
-        collapsedDateLabel.text = email.getFormattedDate()
-        let fromContactName = email.fromContact.displayName
-        initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
-        bottomMarginHeightConstraint.constant = 0
+        
         if(email.isUnsent){
             previewLabel.textColor = .alertText
             borderBGView.layer.borderColor = UIColor.alertLight.cgColor
         }
     }
     
+    func setCollapsedContent(_ email: Email){
+        previewLabel.text = email.isUnsent ? "Unsent" : email.preview
+    }
+    
     func setExpandedContent(_ email: Email){
-        let toContacts = email.getContacts(type: .to)
-        let content = email.content
+        let allContacts = email.getContacts(type: .to) + email.getContacts(type: .cc) + email.getContacts(type: .bcc)
+        contactsLabel.text = allContacts.reduce("", { (result, contact) -> String in
+            if(result.isEmpty){
+                return contact.displayName
+            }
+            return "\(result), \(contact.displayName)"
+        })
+        let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
+        contactsWidthConstraint.constant = size.width
         if(!loadedContent){
-            webView.loadHTMLString(Constants.htmlTopWrapper + content + Constants.htmlBottomWrapper, baseURL: URL(fileURLWithPath: Constants.imagePath))
+            let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
+            webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.content)\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
         }
-        let isDraft = email.labels.contains(where: {$0.id == SystemLabel.draft.id})
-        optionsView.isHidden = isDraft
-        replyView.isHidden = isDraft
-        editView.isHidden = !isDraft
-        
-        bottomMarginHeightConstraint.constant = MARGIN_HEIGHT
-        let fromContactName = email.fromContact.displayName
-        let allContacts = toContacts + email.getContacts(type: .cc) + email.getContacts(type: .bcc)
-        contactsExpandLabel.text = fromContactName
-        moreRecipientsLabel.text = allContacts.count > 1 ? "To \(allContacts.first!.displayName) & \(allContacts.count - 1) more" : "To \(allContacts.first!.displayName)"
-        expandedDateLabel.text = email.getFormattedDate()
-        setExpandedIcons(email)
     }
     
-    func setCollapsedIcons(_ email: Email){
-        miniAttachmentIconView.isHidden = email.files.isEmpty
-        guard email.status != .none else {
+    func setReadStatus(status: Email.Status){
+        readIconWidthConstraint.constant = status == .none ? 0.0 : 16.0
+        miniReadIconView.isHidden = status == .none
+        switch(status){
+        case .none:
+            break
+        case .sent:
+            miniReadIconView.image = #imageLiteral(resourceName: "double-check")
+            miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+        case .delivered:
+            miniReadIconView.image = #imageLiteral(resourceName: "double-check")
+            miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+        case .opened:
+            miniReadIconView.image = #imageLiteral(resourceName: "double-check")
+            miniReadIconView.tintColor = .mainUI
+        case .unsent:
+            readIconWidthConstraint.constant = 0.0
             miniReadIconView.isHidden = true
-            return
+        case .sending, .fail:
+            miniReadIconView.image = #imageLiteral(resourceName: "expiration-email-icon")
+            miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         }
-        miniAttachmentIconView.tintColor = .neutral
-        miniReadIconView.tintColor = (email.status == .opened) ?  .mainUI : .neutral
-    }
-    
-    func setExpandedIcons(_ email: Email){
-        let isUnsent = email.isUnsent
-        let isRead = email.status == .opened
-        guard email.status != .none else {
-            readView.isHidden = true
-            unsendView.isHidden = true
-            attachmentView.isHidden = true
-            return
-        }
-        
-        attachmentView.isHidden = email.files.isEmpty
-        attachmentView.tintColor = .neutral
-        attachmentView.layer.borderColor = UIColor.neutral.cgColor
-        
-        readIconView.tintColor = isRead ?  .mainUI : .neutral
-        readView.layer.borderColor = isRead ?  UIColor.mainUILight.cgColor : UIColor.neutral.cgColor
-        
-        unsendIconView.tintColor =  isUnsent ?  .alert : .white
-        unsendView.backgroundColor = isUnsent ? .white : .alert
-        unsendView.layer.borderColor = isUnsent ?  UIColor.alertLight.cgColor : UIColor.alert.cgColor
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
@@ -189,20 +173,10 @@ class EmailTableViewCell: UITableViewCell{
             return
         }
         
-        if tappedView == self.attachmentView || tappedView == self.attachmentIconView {
-            delegate.tableViewCellDidTapIcon(self, self.attachmentView, .attachment)
-        } else if tappedView == self.unsendView || tappedView == self.unsendIconView {
-            delegate.tableViewCellDidTapIcon(self, self.unsendView, .unsend)
-        } else if tappedView == self.readView || tappedView == self.readIconView {
-            delegate.tableViewCellDidTapIcon(self, self.readView, .read)
-        } else if tappedView == self.optionsView || tappedView == self.optionsIconView {
-            delegate.tableViewCellDidTapIcon(self, self.optionsView, .options)
-        } else if tappedView == self.replyView || tappedView == self.replyIconView {
-            delegate.tableViewCellDidTapIcon(self, self.replyView, .reply)
-        } else if tappedView == self.editView || tappedView == self.editIconView {
-            delegate.tableViewCellDidTapIcon(self, self.editView, .edit)
-        } else if tappedView == self.moreRecipientsLabel{
-            delegate.tableViewCellDidTapIcon(self, self.moreRecipientsLabel, .contacts)
+        if tappedView == self.moreOptionsContainerView {
+            delegate.tableViewCellDidTapIcon(self, self.moreOptionsContainerView, .options)
+        } else if tappedView == self.moreInfoContainerView {
+            delegate.tableViewCellDidTapIcon(self, self.moreInfoContainerView, .contacts)
         } else {
             delegate.tableViewCellDidTap(self)
         }
