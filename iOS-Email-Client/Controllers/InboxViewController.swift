@@ -326,7 +326,7 @@ extension InboxViewController{
         mailboxData.selectedLabel = labelId
         mailboxData.cancelFetchWorker()
         loadMails(since: Date(), clear: true)
-        titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased()
+        titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
         topToolbar.swapLeftIcon(labelId: labelId)
         self.navigationDrawerController?.closeLeftView()
     }

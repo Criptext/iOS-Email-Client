@@ -530,6 +530,13 @@ extension DBManager {
         }
     }
     
+    class func updateLabel(_ label: Label, visible: Bool){
+        let realm = try! Realm()
+        try! realm.write {
+            label.visible = visible
+        }
+    }
+    
     class func getLabels(type: String) -> [Label]{
         let realm = try! Realm()
         
