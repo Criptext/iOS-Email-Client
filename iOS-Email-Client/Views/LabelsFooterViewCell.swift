@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LabelsFooterViewCell: UITableViewCell {
+class LabelsFooterViewCell: UITableViewHeaderFooterView {
     var onTapCell: (() -> Void)?
     
     override func awakeFromNib() {

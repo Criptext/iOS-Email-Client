@@ -19,7 +19,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileNameChangeViewController" customModule="iOS_Email_Client" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SingleTextInputViewController" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="nameTextField" destination="WB5-Un-Tan" id="Pvu-ig-Jax"/>
                 <outlet property="titleLabel" destination="nfM-2G-pON" id="7Gp-mW-8cf"/>

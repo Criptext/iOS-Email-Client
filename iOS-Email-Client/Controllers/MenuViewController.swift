@@ -45,6 +45,12 @@ class MenuViewController: UIViewController{
         labelsTableHeightContraint.constant = 0.0
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        menuData.reloadLabels()
+        labelsTableView.reloadData()
+    }
+    
     func setupAccountInfo(_ myAccount: Account){
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.username + Constants.domain
@@ -113,5 +119,11 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return LABEL_CELL_HEIGHT
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let label = menuData.labels[indexPath.row]
+        selectedMenuItem?.showAsSelected(false)
+        mailboxVC.swapMailbox(labelId: label.id, sender: nil)
     }
 }

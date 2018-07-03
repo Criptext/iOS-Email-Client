@@ -204,7 +204,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="128MB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7vv-dj-mcZ">
-                                                                    <rect key="frame" x="240" y="17" width="80" height="16.5"/>
+                                                                    <rect key="frame" x="240" y="16.5" width="80" height="16.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="80" id="GRk-7K-MUR"/>
                                                                     </constraints>
@@ -1029,7 +1029,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yesterday" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="38w-hq-5ve">
-                                                    <rect key="frame" x="295" y="34" width="60" height="15.5"/>
+                                                    <rect key="frame" x="295" y="34.5" width="60" height="15.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="Npk-B4-BKI"/>
                                                     </constraints>
@@ -1542,43 +1542,8 @@
                                     <outlet property="labelLabel" destination="dTw-Eb-nbH" id="CRL-hG-DgQ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsAddLabel" id="G66-Dp-B6g" customClass="LabelsFooterViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="G66-Dp-B6g" id="JE7-nO-fUm">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create new label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBg-vD-6yw">
-                                            <rect key="frame" x="29" y="10.5" width="275" height="23.5"/>
-                                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-plus" translatesAutoresizingMaskIntoConstraints="NO" id="aae-7e-gin">
-                                            <rect key="frame" x="333" y="13.5" width="15" height="15"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="15" id="OHi-5K-WJS"/>
-                                                <constraint firstAttribute="width" constant="15" id="u24-71-cIo"/>
-                                            </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                                    <color key="value" red="0.0" green="0.56735869984567888" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="aae-7e-gin" firstAttribute="leading" secondItem="eBg-vD-6yw" secondAttribute="trailing" constant="29" id="YIR-67-103"/>
-                                        <constraint firstItem="aae-7e-gin" firstAttribute="centerY" secondItem="JE7-nO-fUm" secondAttribute="centerY" id="afc-Q4-LVT"/>
-                                        <constraint firstItem="eBg-vD-6yw" firstAttribute="leading" secondItem="JE7-nO-fUm" secondAttribute="leading" constant="29" id="flt-RW-II5"/>
-                                        <constraint firstItem="eBg-vD-6yw" firstAttribute="centerY" secondItem="JE7-nO-fUm" secondAttribute="centerY" id="fwt-q5-wXZ"/>
-                                        <constraint firstAttribute="trailing" secondItem="aae-7e-gin" secondAttribute="trailing" constant="27" id="qqM-jb-6Zw"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelHeader" id="fzs-UX-w9w">
-                                <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fzs-UX-w9w" id="yZf-oF-Odk">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -1625,7 +1590,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="11" width="117" height="23.5"/>
+                                            <rect key="frame" x="27" y="10.5" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1755,7 +1720,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbm-oq-FDu">
-                                        <rect key="frame" x="27" y="21.5" width="23" height="23.5"/>
+                                        <rect key="frame" x="27" y="21" width="23" height="23.5"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                         <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1856,7 +1821,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="amW-Di-fUH">
-                                            <rect key="frame" x="61" y="13.5" width="159" height="40"/>
+                                            <rect key="frame" x="61" y="13" width="159" height="40"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Samsung Galaxy S8" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3s-zY-auf">
                                                     <rect key="frame" x="0.0" y="0.0" width="159" height="22"/>
@@ -1898,7 +1863,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cryptext System Version 1.3.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snm-6a-b2Z">
-                                            <rect key="frame" x="27" y="22" width="321" height="23.5"/>
+                                            <rect key="frame" x="27" y="21.5" width="321" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.72549019607843135" green="0.72549019607843135" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -2795,7 +2760,6 @@
         <image name="icon-forward" width="55" height="60"/>
         <image name="icon-inbox" width="18" height="17"/>
         <image name="icon-label" width="33" height="33"/>
-        <image name="icon-plus" width="28" height="29"/>
         <image name="icon-reply" width="55" height="48"/>
         <image name="icon-reply-all" width="55" height="38"/>
         <image name="icon-settings" width="32" height="32"/>

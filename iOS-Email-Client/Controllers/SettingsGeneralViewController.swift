@@ -75,7 +75,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func presentPopover(){
-        let changeNamePopover = ProfileNameChangeViewController()
+        let changeNamePopover = SingleTextInputViewController()
         changeNamePopover.myTitle = "Change Name"
         changeNamePopover.onOk = { text in
             DBManager.update(account: self.myAccount, name: text)

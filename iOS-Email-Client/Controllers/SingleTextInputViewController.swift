@@ -9,7 +9,7 @@
 import Foundation
 import Material
 
-class ProfileNameChangeViewController: BaseUIPopover {
+class SingleTextInputViewController: BaseUIPopover {
     @IBOutlet weak var nameTextField: TextField!
     @IBOutlet weak var titleLabel: UILabel!
     var myTitle = ""
@@ -17,7 +17,7 @@ class ProfileNameChangeViewController: BaseUIPopover {
     var onOk: ((String) -> Void)?
     
     init(){
-        super.init("ProfileNameChangeUIView")
+        super.init("SingleTextInputUIPopover")
     }
     
     override func viewDidLoad() {
