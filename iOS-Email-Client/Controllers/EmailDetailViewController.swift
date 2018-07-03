@@ -92,6 +92,13 @@ class EmailDetailViewController: UIViewController {
     func displayMarkIcon(asRead: Bool){
         topToolbar.swapMarkTo(unread: !asRead)
     }
+    
+    func incomingEmail(email: Email){
+        guard email.threadId == emailData.threadId else {
+            return
+        }
+        emailsTableView.reloadData()
+    }
 }
 
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{

@@ -78,6 +78,7 @@ class InboxViewController: UIViewController {
         
         self.startNetworkListener()
         
+        self.edgesForExtendedLayout = UIRectEdge()
         self.searchController.searchResultsUpdater = self as UISearchResultsUpdating
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
@@ -899,7 +900,6 @@ extension InboxViewController: ComposerSendMailDelegate {
         self.refreshThreadRows()
     }
     
-    
     func sendFailEmail(){
         guard let email = DBManager.getEmailFailed() else {
             return
@@ -919,7 +919,15 @@ extension InboxViewController: ComposerSendMailDelegate {
             }
             self.showSendingSnackBar(message: "  Email sent!!!", permanent: false)
             self.reloadIfSentMailbox(email: email)
+            self.notifyEmailDetailController(email: email)
         }
+    }
+    
+    func notifyEmailDetailController(email: Email){
+        guard let emailDetailVC = self.navigationController?.viewControllers.first(where: {$0 is EmailDetailViewController}) as? EmailDetailViewController else {
+            return
+        }
+        emailDetailVC.incomingEmail(email: email)
     }
     
     func reloadIfSentMailbox(email: Email){

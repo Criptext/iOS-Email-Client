@@ -141,7 +141,6 @@ extension UIViewController {
         }
         
         snackbarVC.snackbar.backgroundColor = Icon.system.color
-        
         snackbarVC.animate(snackbar: .visible, delay: 0)
         
         if !permanent {

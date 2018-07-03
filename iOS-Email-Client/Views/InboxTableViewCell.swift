@@ -13,6 +13,7 @@ protocol InboxTableViewCellDelegate {
 }
 
 class InboxTableViewCell: UITableViewCell {
+    let SUBJECT_MAX_WIDTH : CGFloat = 250.0
     @IBOutlet weak var senderLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -74,8 +75,8 @@ class InboxTableViewCell: UITableViewCell {
         let size = dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         dateWidthConstraint.constant = size.width
         
-        let subjectSize = subjectLabel.sizeThatFits(CGSize(width: 250, height: 20))
-        subjectWidthConstraint.constant = subjectSize.width
+        let subjectSize = subjectLabel.sizeThatFits(CGSize(width: SUBJECT_MAX_WIDTH, height: 20))
+        subjectWidthConstraint.constant = subjectSize.width > SUBJECT_MAX_WIDTH ? SUBJECT_MAX_WIDTH : subjectSize.width
         
         setReadStatus(status: thread.status)
         setBadge(thread.counter)
