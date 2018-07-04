@@ -181,9 +181,31 @@ class CriptextFileManager {
                 return
             }
             file.chunksProgress[part] = self.COMPLETE
-            file.chunks.append(chunkData!)
             self.checkCompleteUpload(filetoken: filetoken)
             self.startRequest(filetoken)
+        }
+    }
+    
+    private func mergeFileChunks(filetoken: String){
+        guard let file = registeredFiles.first(where: {$0.token == filetoken}) else {
+            return
+        }
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURL = documentsURL.appendingPathComponent(file.name)
+        for part in 1...file.chunksProgress.count {
+            let capacity = 4096
+            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: capacity)
+            let chunkURL = documentsURL.appendingPathComponent("\(filetoken).part\(part)")
+            let chunkStream = InputStream(fileAtPath: chunkURL.path)!
+            chunkStream.open()
+            while (chunkStream.hasBytesAvailable) {
+                chunkStream.read(buffer, maxLength: capacity)
+                let fileStream = OutputStream(toFileAtPath: fileURL.path, append: true)!
+                fileStream.open()
+                fileStream.write(buffer, maxLength: capacity)
+                fileStream.close()
+            }
+            chunkStream.close()
         }
     }
     
@@ -193,6 +215,9 @@ class CriptextFileManager {
         }
         if !file.chunksProgress.contains(where: {$0 != COMPLETE}){
             file.requestStatus = .finish
+            if(file.requestType == .download){
+                self.mergeFileChunks(filetoken: filetoken)
+            }
             self.delegate?.finishRequest(file: file, success: true)
         }
     }

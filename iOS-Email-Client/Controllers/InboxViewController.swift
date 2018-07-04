@@ -327,7 +327,7 @@ extension InboxViewController{
         mailboxData.cancelFetchWorker()
         loadMails(since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
-        topToolbar.swapLeftIcon(labelId: labelId)
+        topToolbar.swapTrashIcon(labelId: labelId)
         self.navigationDrawerController?.closeLeftView()
     }
     
@@ -851,16 +851,8 @@ extension InboxViewController: NavigationToolbarDelegate {
         }
     }
     
-    func onArchiveThreads() {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.draft.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.all.id else {
-            self.moveTo(labelId: SystemLabel.all.id)
-            return
-        }
-        guard mailboxData.selectedLabel != SystemLabel.draft.id && mailboxData.selectedLabel != SystemLabel.all.id else {
-            setLabels(added: [SystemLabel.inbox.id], removed: [])
-            return
-        }
-        setLabels(added: [], removed: [mailboxData.selectedLabel])
+    func onMoveThreads() {
+        handleMoveTo()
     }
     
     func onTrashThreads() {
@@ -889,6 +881,18 @@ extension InboxViewController: NavigationToolbarDelegate {
     
     func onMoreOptions() {
         toggleMoreOptions()
+    }
+    
+    func archiveThreads() {
+        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.draft.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.all.id else {
+            self.moveTo(labelId: SystemLabel.all.id)
+            return
+        }
+        guard mailboxData.selectedLabel != SystemLabel.draft.id && mailboxData.selectedLabel != SystemLabel.all.id else {
+            setLabels(added: [SystemLabel.inbox.id], removed: [])
+            return
+        }
+        setLabels(added: [], removed: [mailboxData.selectedLabel])
     }
 }
 

@@ -22,8 +22,6 @@
 		412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */; };
 		412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */; };
 		412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */; };
-		414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 414E7D4B203F2A860088C647 /* NavigationToolbarView.xib */; };
-		414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */; };
 		41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */; };
 		41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */; };
 		41AAC4FF201A9FAD00809C4D /* MoveMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */; };
@@ -225,8 +223,6 @@
 		412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Regular.ttf"; sourceTree = "<group>"; };
 		412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
 		412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		414E7D4B203F2A860088C647 /* NavigationToolbarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationToolbarView.xib; sourceTree = "<group>"; };
-		414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationToolbarView.swift; sourceTree = "<group>"; };
 		41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
 		41AAC4F1201A9FAC00809C4D /* MoveMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveMailViewController.swift; sourceTree = "<group>"; };
@@ -672,8 +668,6 @@
 				7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */,
 				7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */,
 				7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */,
-				414E7D4B203F2A860088C647 /* NavigationToolbarView.xib */,
-				414E7D4D203F2B8A0088C647 /* NavigationToolbarView.swift */,
 				7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */,
 				7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */,
 				7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */,
@@ -913,7 +907,6 @@
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
 				7C63AB5A2056C7850053219F /* ContactsDetailUIPopover.xib in Resources */,
 				7C63AB56205330A00053219F /* ReadHistoryTableCell.xib in Resources */,
-				414E7D4C203F2A860088C647 /* NavigationToolbarView.xib in Resources */,
 				7C049F8B20879CFA007A6213 /* LabelsUIPopover.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				7C1E987A20C9B96A003205F8 /* showmore.png in Resources */,
@@ -1037,7 +1030,6 @@
 				7C8C2F7020EAB87D00FC145E /* LabelsFooterViewCell.swift in Sources */,
 				7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */,
 				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,
-				414E7D4E203F2B8A0088C647 /* NavigationToolbarView.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
 				7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */,
