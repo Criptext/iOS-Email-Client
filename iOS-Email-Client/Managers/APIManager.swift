@@ -244,7 +244,6 @@ class APIManager {
                     completion(criptextError, nil)
                     return
                 }
-                //let fileData = FileManager.default.contents(atPath: fileURL.path)
                 completion(nil, fileURL.path)
         }
     }

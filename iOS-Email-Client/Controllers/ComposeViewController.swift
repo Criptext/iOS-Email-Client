@@ -606,20 +606,20 @@ class ComposeViewController: UIViewController {
 extension ComposeViewController: CICropPickerDelegate {
     func imagePicker(_ imagePicker: UIImagePickerController!, pickedImage image: UIImage!) {
         
-        let currentDate = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy_MM_dd"
-        
+        let currentDate = Date().timeIntervalSince1970
         guard let data = UIImageJPEGRepresentation(image, 0.6) else {
             return
         }
         
         imagePicker.dismiss(animated: true){
-            let filename = "Criptext_Image_\(formatter.string(from: currentDate)).png"
+            let filename = "Criptext_Image_\(currentDate).png"
             let mimeType = "image/png"
             
+            let fileURL = CriptextFileManager.getURLForFile(name: filename)
+            try! data.write(to: fileURL)
+            
             self.isEdited = true
-            self.fileManager.registerFile(file: data, name: filename, mimeType: mimeType)
+            self.fileManager.registerFile(filepath: fileURL.path, name: filename, mimeType: mimeType)
             self.tableView.performUpdate({
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
             }, completion: nil)
@@ -642,29 +642,9 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         
-        let trueName = url.lastPathComponent
-        var finalPath = NSTemporaryDirectory() + "/" + NSUUID().uuidString + trueName
-        
-        if trueName.contains(" ") {
-            finalPath = finalPath.replacingOccurrences(of: " ", with: "_")
-        }
-        
-        let fileURL = URL(fileURLWithPath: finalPath.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)
-        
-        do {
-            try FileManager.default.moveItem(at: url, to: fileURL)
-        }catch{
-            self.showAlert("Error", message: "File import fail, try again later", style: .alert)
-            return
-        }
-        
-        guard let data = FileManager.default.contents(atPath: finalPath) else {
-            self.showAlert("Error", message: "File import fail, try again later", style: .alert)
-            return
-        }
-        
+        let filename = url.lastPathComponent
         self.isEdited = true
-        self.fileManager.registerFile(file: data, name: trueName, mimeType: mimeTypeForPath(path: trueName))
+        self.fileManager.registerFile(filepath: url.path, name: filename, mimeType: mimeTypeForPath(path: filename))
         self.tableView.performUpdate({
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
         }, completion: nil)

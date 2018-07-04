@@ -31,24 +31,21 @@ class CriptextFileManager {
         case download
     }
     
-    func registerFile(file fileData: Data, name: String, mimeType: String){
-        let totalChunks = Int(floor(Double(fileData.count) / Double(chunkSize)))
-        var chunks = [Data]()
+    func registerFile(filepath: String, name: String, mimeType: String){
+        let fileAttributes = try! FileManager.default.attributesOfItem(atPath: filepath)
+        let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
+        let totalChunks = Int(floor(Double(fileSize) / Double(chunkSize)))
         var chunksProgress = [Int]()
-        for chunkNumber in 0...totalChunks {
-            let rangeStart = chunkNumber * chunkSize
-            let rangeEnd = chunkNumber == totalChunks ? fileData.count : (chunkNumber + 1) * chunkSize
-            let range = Range<Data.Index>(rangeStart..<rangeEnd)
-            chunks.append(fileData.subdata(in: range))
+        for _ in 0...totalChunks {
             chunksProgress.append(PENDING)
         }
-        let fileRegistry = self.createRegistry(name: name, size: fileData.count, mimeType: mimeType)
+        let fileRegistry = self.createRegistry(name: name, size: fileSize, mimeType: mimeType)
+        fileRegistry.filepath = filepath
         fileRegistry.requestType = .upload
-        fileRegistry.chunks = chunks
         fileRegistry.chunksProgress = chunksProgress
         self.registeredFiles.insert(fileRegistry, at: 0)
         let requestData = [
-            "filesize": fileData.count,
+            "filesize": fileSize,
             "filename": name,
             "totalChunks": totalChunks + 1,
             "chunkSize": chunkSize
@@ -66,6 +63,9 @@ class CriptextFileManager {
     }
     
     func registerFile(file: File){
+        guard !alreadyDownloaded(file: file) else {
+            return
+        }
         if let myFile = registeredFiles.first(where: {$0.token == file.token}) {
             if(myFile.requestStatus == .failed){
                 myFile.requestStatus = .pending
@@ -88,9 +88,22 @@ class CriptextFileManager {
             for _ in 1...totalChunks {
                 chunksProgress.append(self.PENDING)
             }
-            file.chunks = [Data]()
             file.chunksProgress = chunksProgress
             self.handleFileTurn()
+        }
+    }
+    
+    private func alreadyDownloaded(file: File) -> Bool {
+        let fileURL = CriptextFileManager.getURLForFile(name: file.name)
+        do {
+            let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+            let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
+            if(fileSize == file.size) {
+                self.delegate?.finishRequest(file: file, success: true)
+            }
+            return fileSize == file.size
+        } catch {
+            return false
         }
     }
     
@@ -130,7 +143,7 @@ class CriptextFileManager {
             }
             registeredFiles[fileIndex].requestStatus = .processing
             if(file.requestType == .upload){
-                let chunk = file.chunks[index]
+                let chunk = getChunkData(file: file, index: index)
                 uploadChunk(chunk, file: file, part: index)
             } else {
                 downloadChunk(file: file, part: index)
@@ -138,6 +151,14 @@ class CriptextFileManager {
             return
         }
         handleFileTurn()
+    }
+    
+    private func getChunkData(file: File, index: Int) -> Data{
+        let fileHandle = FileHandle(forReadingAtPath: file.filepath)!
+        fileHandle.seek(toFileOffset: UInt64(index * chunkSize))
+        let data = fileHandle.readData(ofLength: chunkSize)
+        fileHandle.closeFile()
+        return data
     }
     
     private func uploadChunk(_ chunk: Data, file: File, part: Int){
@@ -190,22 +211,18 @@ class CriptextFileManager {
         guard let file = registeredFiles.first(where: {$0.token == filetoken}) else {
             return
         }
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let fileURL = documentsURL.appendingPathComponent(file.name)
+        let fileURL = CriptextFileManager.getURLForFile(name: file.name)
         for part in 1...file.chunksProgress.count {
-            let capacity = 4096
-            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: capacity)
-            let chunkURL = documentsURL.appendingPathComponent("\(filetoken).part\(part)")
-            let chunkStream = InputStream(fileAtPath: chunkURL.path)!
-            chunkStream.open()
-            while (chunkStream.hasBytesAvailable) {
-                chunkStream.read(buffer, maxLength: capacity)
-                let fileStream = OutputStream(toFileAtPath: fileURL.path, append: true)!
-                fileStream.open()
-                fileStream.write(buffer, maxLength: capacity)
-                fileStream.close()
+            let chunkURL = CriptextFileManager.getURLForFile(name: "\(filetoken).part\(part)")
+            let chunkData = try! Data(contentsOf: chunkURL)
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                let fileHandle = try! FileHandle(forUpdating: fileURL)
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(chunkData)
+                fileHandle.closeFile()
+            } else {
+                try! chunkData.write(to: fileURL, options: Data.WritingOptions.atomic)
             }
-            chunkStream.close()
         }
     }
     
@@ -245,6 +262,11 @@ class CriptextFileManager {
                     "size": file.size,
                     "mimeType": file.mimeType]
         })
+    }
+    
+    static func getURLForFile(name: String) -> URL {
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return documentsURL.appendingPathComponent(name)
     }
 }
 
