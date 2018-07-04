@@ -50,7 +50,7 @@
 		41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC535201A9FCD00809C4D /* FeedItem.swift */; };
 		41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC536201A9FCD00809C4D /* PreviewItem.swift */; };
 		41AAC541201A9FF500809C4D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC540201A9FF500809C4D /* APIManager.swift */; };
-		41AAC543201AA00000809C4D /* ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC542201AA00000809C4D /* ContactManager.swift */; };
+		41AAC543201AA00000809C4D /* ContactUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC542201AA00000809C4D /* ContactUtils.swift */; };
 		41AAC545201AA01500809C4D /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC544201AA01400809C4D /* DBManager.swift */; };
 		41AAC547201AA01F00809C4D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC546201AA01F00809C4D /* Extensions.swift */; };
 		41AAC549201AA02C00809C4D /* editor-style.css in Resources */ = {isa = PBXBuildFile; fileRef = 41AAC548201AA02C00809C4D /* editor-style.css */; };
@@ -251,7 +251,7 @@
 		41AAC535201A9FCD00809C4D /* FeedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		41AAC536201A9FCD00809C4D /* PreviewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewItem.swift; sourceTree = "<group>"; };
 		41AAC540201A9FF500809C4D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
-		41AAC542201AA00000809C4D /* ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactManager.swift; sourceTree = "<group>"; };
+		41AAC542201AA00000809C4D /* ContactUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUtils.swift; sourceTree = "<group>"; };
 		41AAC544201AA01400809C4D /* DBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 		41AAC546201AA01F00809C4D /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		41AAC548201AA02C00809C4D /* editor-style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "editor-style.css"; sourceTree = "<group>"; };
@@ -478,7 +478,7 @@
 			children = (
 				7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */,
 				41AAC540201A9FF500809C4D /* APIManager.swift */,
-				41AAC542201AA00000809C4D /* ContactManager.swift */,
+				41AAC542201AA00000809C4D /* ContactUtils.swift */,
 				41AAC544201AA01400809C4D /* DBManager.swift */,
 				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
 				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
@@ -1026,7 +1026,7 @@
 				7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */,
 				7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */,
 				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
-				41AAC543201AA00000809C4D /* ContactManager.swift in Sources */,
+				41AAC543201AA00000809C4D /* ContactUtils.swift in Sources */,
 				7C8C2F7020EAB87D00FC145E /* LabelsFooterViewCell.swift in Sources */,
 				7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */,
 				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,

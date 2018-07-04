@@ -51,7 +51,7 @@ class InboxTableViewCell: UITableViewCell {
         delegate.tableViewCellDidLongPress(self)
     }
     
-    func setFields(thread: Thread, label: Int){
+    func setFields(thread: Thread, label: Int, myEmail: String){
         let isSentFolder = label == SystemLabel.sent.id
         
         secureAttachmentImageView.isHidden = true
@@ -65,7 +65,7 @@ class InboxTableViewCell: UITableViewCell {
             senderLabel.font = Font.bold.size(15)
         }
         
-        let participants = thread.getContactsString()
+        let participants = thread.getContactsString(replaceWithMe: myEmail)
         let useTo = label == SystemLabel.sent.id || label == SystemLabel.draft.id
         senderLabel.text = participants.isEmpty ? "<Empty Contact List>" : "\(useTo ? "To: " : "")\(participants)"
         subjectLabel.text = thread.subject == "" ? "(No Subject)" : thread.subject

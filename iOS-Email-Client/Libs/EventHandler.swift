@@ -165,10 +165,10 @@ class EventHandler {
             email.preview = String(email.content.removeHtmlTags().prefix(100))
             DBManager.store(email)
             
-            ContactManager.parseEmailContacts(from, email: email, type: .from)
-            ContactManager.parseEmailContacts(to, email: email, type: .to)
-            ContactManager.parseEmailContacts(cc, email: email, type: .cc)
-            ContactManager.parseEmailContacts(bcc, email: email, type: .bcc)
+            ContactUtils.parseEmailContacts(from, email: email, type: .from)
+            ContactUtils.parseEmailContacts(to, email: email, type: .to)
+            ContactUtils.parseEmailContacts(cc, email: email, type: .cc)
+            ContactUtils.parseEmailContacts(bcc, email: email, type: .bcc)
             
             if(self.isFromMe(email: email)){
                 DBManager.updateEmail(email, status: .sent)

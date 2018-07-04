@@ -457,8 +457,7 @@ extension InboxViewController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let thread = mailboxData.threads[indexPath.row]
-        cell.setFields(thread: thread, label: mailboxData.selectedLabel)
-        
+        cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
         
         if mailboxData.isCustomEditing {
             if(cell.isSelected){
@@ -467,7 +466,7 @@ extension InboxViewController: UITableViewDataSource{
                 cell.setAsNotSelected()
             }
         } else {
-            let initials = cell.senderLabel.text!.replacingOccurrences(of: "\"", with: "")
+            let initials = thread.lastEmail.fromContact.displayName
             cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
             cell.avatarImageView.layer.borderWidth = 0.0
         }

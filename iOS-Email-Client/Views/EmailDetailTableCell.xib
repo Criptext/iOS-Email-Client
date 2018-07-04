@@ -258,6 +258,8 @@
                 <outlet property="moreOptionsContainerView" destination="J60-E3-nju" id="Rwt-KE-CaS"/>
                 <outlet property="previewLabel" destination="uDR-zl-Siw" id="UCg-U2-Vcy"/>
                 <outlet property="readIconWidthConstraint" destination="Clv-S1-Nre" id="j5k-6a-Str"/>
+                <outlet property="readStatusContentMarginConstraint" destination="CW4-gg-yXO" id="HHf-n5-zt0"/>
+                <outlet property="readStatusMarginConstraint" destination="WQR-Th-pVs" id="eS2-QD-aTN"/>
                 <outlet property="webView" destination="bUF-LT-65F" id="0Wn-sq-XD4"/>
                 <outlet property="webViewWrapperView" destination="tm2-e0-IDa" id="BGn-II-V8l"/>
             </connections>

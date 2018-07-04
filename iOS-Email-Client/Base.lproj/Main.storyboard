@@ -1222,7 +1222,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="IMq-37-buh"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                                    <state key="normal" title="Button" image="starred_empty"/>
+                                                    <state key="normal" image="starred_empty"/>
                                                     <connections>
                                                         <action selector="onStarButtonPressed:" destination="egv-Jd-zFn" eventType="touchUpInside" id="nH1-Au-YoH"/>
                                                     </connections>

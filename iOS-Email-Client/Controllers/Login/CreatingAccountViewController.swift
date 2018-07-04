@@ -91,6 +91,10 @@ class CreatingAccountViewController: UIViewController{
         myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""
         myAccount.deviceId = signupData.deviceId
         DBManager.store(myAccount)
+        let myContact = Contact()
+        myContact.displayName = myAccount.name
+        myContact.email = "\(myAccount.username)\(Constants.domain)"
+        DBManager.store([myContact])
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")
         animateProgress(100.0, 2.0) {
