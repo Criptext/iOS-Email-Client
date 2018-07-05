@@ -224,7 +224,7 @@ class APIManager {
         }
     }
     
-    class func downloadChunk(filetoken: String, part: Int, token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, Data?) -> Void)){
+    class func downloadChunk(filetoken: String, part: Int, token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, String?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/\(filetoken)/chunk/\(part)"
         let headers = ["Authorization": "Basic \(token)"]
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -244,8 +244,7 @@ class APIManager {
                     completion(criptextError, nil)
                     return
                 }
-                let fileData = FileManager.default.contents(atPath: fileURL.path)
-                completion(nil, fileData)
+                completion(nil, fileURL.path)
         }
     }
 }

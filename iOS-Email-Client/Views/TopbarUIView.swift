@@ -8,6 +8,14 @@
 
 import Foundation
 
+protocol NavigationToolbarDelegate {
+    func onBackPress()
+    func onMoveThreads()
+    func onTrashThreads()
+    func onMarkThreads()
+    func onMoreOptions()
+}
+
 class TopbarUIView: UIView {
     @IBOutlet var view: UIView!
     @IBOutlet weak var counterLabel: UILabel!
@@ -22,8 +30,7 @@ class TopbarUIView: UIView {
         addSubview(view)
         view.frame = self.bounds
         archiveButton.imageView?.contentMode = .scaleAspectFit
-        archiveButton.setImage(#imageLiteral(resourceName: "archive-icon").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
-        trashButton.setImage(#imageLiteral(resourceName: "delete-icon").resize(toHeight: 22.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+        trashButton.imageView?.contentMode = .scaleAspectFit
         markButton.setImage(#imageLiteral(resourceName: "mark_read").resize(toHeight: 23.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
@@ -32,7 +39,7 @@ class TopbarUIView: UIView {
     }
     
     @IBAction func onArchivePress(_ sender: Any) {
-        delegate?.onArchiveThreads()
+        delegate?.onMoveThreads()
     }
     
     @IBAction func onDeletePress(_ sender: Any) {
@@ -47,14 +54,12 @@ class TopbarUIView: UIView {
         delegate?.onMoreOptions()
     }
     
-    func swapLeftIcon(labelId: Int){
+    func swapTrashIcon(labelId: Int){
         switch(labelId){
         case SystemLabel.trash.id, SystemLabel.spam.id:
-            archiveButton.setImage(#imageLiteral(resourceName: "icon-inbox").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
-        case SystemLabel.draft.id, SystemLabel.all.id:
-            archiveButton.setImage(#imageLiteral(resourceName: "icon-inbox").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+            trashButton.setImage(#imageLiteral(resourceName: "toolbar_trash_permanent"), for: .normal)
         default:
-            archiveButton.setImage(#imageLiteral(resourceName: "archive-icon").resize(toHeight: 20.0)!.withRenderingMode(.alwaysTemplate), for: .normal)
+            trashButton.setImage(#imageLiteral(resourceName: "toolbar-trash"), for: .normal)
         }
     }
         

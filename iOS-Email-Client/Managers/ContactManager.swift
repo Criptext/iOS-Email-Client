@@ -9,7 +9,7 @@
 import Foundation
 import Contacts
 
-class ContactManager {
+class ContactUtils {
     static let store = CNContactStore()
     
     class func getContacts(completion: @escaping ((Bool, [Contact]?) -> Void)){
@@ -58,7 +58,10 @@ class ContactManager {
     private class func parseContact(_ contactString: String) -> Contact {
         let splittedContact = contactString.split(separator: "<")
         guard splittedContact.count > 1 else {
-            return Contact(value: ["displayName": contactString, "email": contactString])
+            if let existingContact = DBManager.getContact(contactString) {
+                return existingContact
+            }
+            return Contact(value: ["displayName": contactString.split(separator: "@")[0], "email": contactString])
         }
         let contactName = splittedContact[0].prefix((splittedContact[0].count - 1))
         let email = splittedContact[1].prefix((splittedContact[1].count - 1)).replacingOccurrences(of: ">", with: "")

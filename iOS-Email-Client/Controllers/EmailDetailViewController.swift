@@ -51,7 +51,7 @@ class EmailDetailViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.topToolbar.swapLeftIcon(labelId: emailData.selectedLabel)
+        self.topToolbar.swapTrashIcon(labelId: emailData.selectedLabel)
         self.topToolbar.isHidden = false
     }
     
@@ -315,7 +315,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.initToContacts.append(contentsOf: contactsTo)
         composerData.initCcContacts.append(contentsOf: contactsCc)
         composerData.initSubject = email.isDraft ? email.subject : email.subject.starts(with: "\(subjectPrefix) ") ? email.subject : "\(subjectPrefix) \(email.subject)"
-        let replyBody = email.isDraft ? email.content : ("<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + "On \(email.getFullDate()), \(email.fromContact.email) wrote:<br>" + email.content + "</blockquote>")
+        let replyBody = email.isDraft ? email.content : ("<br><div id=\"criptext_quote\">On \(email.getFullDate()), \(email.fromContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
         composerData.initContent = replyBody
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
@@ -367,16 +367,8 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func onArchiveThreads() {
-        guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.draft.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.all.id else {
-            self.moveTo(labelId: SystemLabel.all.id)
-            return
-        }
-        guard emailData.selectedLabel != SystemLabel.draft.id && emailData.selectedLabel != SystemLabel.all.id else {
-            setLabels(added: [SystemLabel.inbox.id], removed: [])
-            return
-        }
-        setLabels(added: [], removed: [emailData.selectedLabel])
+    func onMoveThreads() {
+        handleMoveTo()
     }
     
     func onTrashThreads() {
@@ -410,6 +402,18 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     
     func onMoreOptions() {
         toggleGeneralOptionsView()
+    }
+    
+    func archiveThreads(){
+        guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.draft.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.all.id else {
+            self.moveTo(labelId: SystemLabel.all.id)
+            return
+        }
+        guard emailData.selectedLabel != SystemLabel.draft.id && emailData.selectedLabel != SystemLabel.all.id else {
+            setLabels(added: [SystemLabel.inbox.id], removed: [])
+            return
+        }
+        setLabels(added: [], removed: [emailData.selectedLabel])
     }
 }
 
@@ -557,7 +561,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
         popover.delegate = self
         popover.preparePopover(rootView: self, height: height)
         self.present(popover, animated: true){
-            self.toggleGeneralOptionsView()
+            self.generalOptionsContainerView.closeMoreOptions()
             self.view.layoutIfNeeded()
         }
     }
@@ -606,14 +610,9 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
     
     func finishRequest(file: File, success: Bool) {
         if(success){
-            var wholeFile = Data()
-            for chunk in file.chunks {
-                wholeFile.append(chunk)
-            }
-            let tmpPath = NSTemporaryDirectory() + file.name
-            try! wholeFile.write(to: URL(fileURLWithPath: tmpPath))
-            
-            let viewer = UIDocumentInteractionController(url: URL(fileURLWithPath: tmpPath))
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let fileURL = documentsURL.appendingPathComponent(file.name)
+            let viewer = UIDocumentInteractionController(url: fileURL)
             viewer.delegate = self
             viewer.presentPreview(animated: true)
         }

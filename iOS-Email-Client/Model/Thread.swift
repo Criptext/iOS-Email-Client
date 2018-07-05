@@ -36,18 +36,19 @@ class Thread {
         return DateUtils.conversationTime(date)
     }
     
-    func getContactsString() -> String{
+    func getContactsString(replaceWithMe email: String) -> String{
         var contactsTitle = ""
         for contact in participants {
+            let contactName = contact.email == email ? "Me" : contact.displayName
             guard !contact.displayName.contains("@") else {
-                contactsTitle += "\(contact.displayName.split(separator: "@")[0]), "
+                contactsTitle += "\(contactName), "
                 continue
             }
             guard participants.count > 1 else {
-                contactsTitle += "\(contact.displayName), "
+                contactsTitle += "\(contactName), "
                 continue
             }
-            contactsTitle += "\(contact.displayName.split(separator: " ")[0]), "
+            contactsTitle += "\(contactName), "
         }
         guard participants.count > 0 else {
             return contactsTitle

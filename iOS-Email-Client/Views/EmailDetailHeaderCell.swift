@@ -28,17 +28,17 @@ class EmailDetailHeaderCell: UITableViewCell{
     
     func addLabels(_ labels: [Label]){
         labelsListView.removeAllTags()
-        var starredColor = UIColor(red: 142/255, green: 143/255, blue: 149/255, alpha: 1.0)
+        var starredImage = #imageLiteral(resourceName: "starred_empty")
         for label in labels {
             guard label.id != SystemLabel.starred.id else {
-                starredColor = UIColor(hex: label.color)
+                starredImage = #imageLiteral(resourceName: "starred_full")
                 continue
             }
             let tag = labelsListView.addTag(label.text)
             tag.tagBackgroundColor = UIColor(hex: label.color)
         }
         labelsListView.invalidateIntrinsicContentSize()
-        starButton.tintColor = starredColor
+        starButton.setImage(starredImage, for: .normal)
     }
     
     func setSubject(_ subject: String){

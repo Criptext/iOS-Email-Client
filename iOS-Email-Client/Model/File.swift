@@ -22,7 +22,7 @@ class File : Object {
     @objc dynamic var mimeType = ""
     @objc dynamic var filePath = ""
     var progress = -1
-    var chunks = [Data]()
+    var filepath = ""
     var chunksProgress = [Int]()
     var requestType: CriptextFileManager.RequestType = .upload
     var requestStatus: uploadStatus = .none
@@ -32,7 +32,7 @@ class File : Object {
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["progress", "chunks", "chunksProgress", "requestStatus", "requestType"]
+        return ["progress", "filepath", "chunksProgress", "requestStatus", "requestType"]
     }
     
     func prettyPrintSize() -> String {

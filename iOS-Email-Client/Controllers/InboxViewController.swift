@@ -327,7 +327,7 @@ extension InboxViewController{
         mailboxData.cancelFetchWorker()
         loadMails(since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
-        topToolbar.swapLeftIcon(labelId: labelId)
+        topToolbar.swapTrashIcon(labelId: labelId)
         self.navigationDrawerController?.closeLeftView()
     }
     
@@ -457,8 +457,7 @@ extension InboxViewController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let thread = mailboxData.threads[indexPath.row]
-        cell.setFields(thread: thread, label: mailboxData.selectedLabel)
-        
+        cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
         
         if mailboxData.isCustomEditing {
             if(cell.isSelected){
@@ -467,7 +466,7 @@ extension InboxViewController: UITableViewDataSource{
                 cell.setAsNotSelected()
             }
         } else {
-            let initials = cell.senderLabel.text!.replacingOccurrences(of: "\"", with: "")
+            let initials = thread.lastEmail.fromContact.displayName
             cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
             cell.avatarImageView.layer.borderWidth = 0.0
         }
@@ -851,16 +850,8 @@ extension InboxViewController: NavigationToolbarDelegate {
         }
     }
     
-    func onArchiveThreads() {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.draft.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.all.id else {
-            self.moveTo(labelId: SystemLabel.all.id)
-            return
-        }
-        guard mailboxData.selectedLabel != SystemLabel.draft.id && mailboxData.selectedLabel != SystemLabel.all.id else {
-            setLabels(added: [SystemLabel.inbox.id], removed: [])
-            return
-        }
-        setLabels(added: [], removed: [mailboxData.selectedLabel])
+    func onMoveThreads() {
+        handleMoveTo()
     }
     
     func onTrashThreads() {
@@ -889,6 +880,18 @@ extension InboxViewController: NavigationToolbarDelegate {
     
     func onMoreOptions() {
         toggleMoreOptions()
+    }
+    
+    func archiveThreads() {
+        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.draft.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.all.id else {
+            self.moveTo(labelId: SystemLabel.all.id)
+            return
+        }
+        guard mailboxData.selectedLabel != SystemLabel.draft.id && mailboxData.selectedLabel != SystemLabel.all.id else {
+            setLabels(added: [SystemLabel.inbox.id], removed: [])
+            return
+        }
+        setLabels(added: [], removed: [mailboxData.selectedLabel])
     }
 }
 

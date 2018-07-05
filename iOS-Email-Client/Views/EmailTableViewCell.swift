@@ -38,6 +38,8 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var bottomMarginView: UIView!
     @IBOutlet weak var attachmentsTopMarginView: UIView!
     @IBOutlet weak var dateWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var readStatusMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var readStatusContentMarginConstraint: NSLayoutConstraint!
     
     
     var loadedContent = false
@@ -48,6 +50,8 @@ class EmailTableViewCell: UITableViewCell{
     }
     var delegate: EmailTableViewCellDelegate?
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
+    let RECIPIENTS_MAX_WIDTH: CGFloat = 130.0
+    let READ_STATUS_MARGIN: CGFloat = 5.0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -127,12 +131,12 @@ class EmailTableViewCell: UITableViewCell{
         let allContacts = email.getContacts(type: .to) + email.getContacts(type: .cc) + email.getContacts(type: .bcc)
         contactsLabel.text = allContacts.reduce("", { (result, contact) -> String in
             if(result.isEmpty){
-                return contact.displayName
+                return "To \(contact.displayName)"
             }
             return "\(result), \(contact.displayName)"
         })
         let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
-        contactsWidthConstraint.constant = size.width
+        contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
         if(!loadedContent){
             let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
             webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.content)\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
@@ -141,6 +145,8 @@ class EmailTableViewCell: UITableViewCell{
     
     func setReadStatus(status: Email.Status){
         readIconWidthConstraint.constant = status == .none ? 0.0 : 16.0
+        readStatusMarginConstraint.constant = status == .none ? 0.0 : READ_STATUS_MARGIN
+        readStatusContentMarginConstraint.constant = status == .none ? 0.0 : READ_STATUS_MARGIN
         miniReadIconView.isHidden = status == .none
         switch(status){
         case .none:
