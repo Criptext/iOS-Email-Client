@@ -555,6 +555,7 @@ extension Data {
 }
 
 enum MessageType: Int {
+    case none = 0
     case cipherText = 1
     case preKey = 3
 }
