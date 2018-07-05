@@ -34,20 +34,16 @@ class CriptextFileManager {
     func registerFile(filepath: String, name: String, mimeType: String){
         let fileAttributes = try! FileManager.default.attributesOfItem(atPath: filepath)
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
-        let totalChunks = Int(floor(Double(fileSize) / Double(chunkSize)))
-        var chunksProgress = [Int]()
-        for _ in 0...totalChunks {
-            chunksProgress.append(PENDING)
-        }
+        let totalChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
         let fileRegistry = self.createRegistry(name: name, size: fileSize, mimeType: mimeType)
         fileRegistry.filepath = filepath
         fileRegistry.requestType = .upload
-        fileRegistry.chunksProgress = chunksProgress
+        fileRegistry.chunksProgress = Array(repeating: PENDING, count: totalChunks)
         self.registeredFiles.insert(fileRegistry, at: 0)
         let requestData = [
             "filesize": fileSize,
             "filename": name,
-            "totalChunks": totalChunks + 1,
+            "totalChunks": totalChunks,
             "chunkSize": chunkSize
             ] as [String : Any]
         APIManager.registerFile(parameters: requestData, token: token) { (requestError, responseData) in
@@ -64,6 +60,7 @@ class CriptextFileManager {
     
     func registerFile(file: File){
         guard !alreadyDownloaded(file: file) else {
+            self.delegate?.finishRequest(file: file, success: true)
             return
         }
         if let myFile = registeredFiles.first(where: {$0.token == file.token}) {
@@ -84,11 +81,7 @@ class CriptextFileManager {
                 return
             }
             let totalChunks = metadata["chunks"] as! Int
-            var chunksProgress = [Int]()
-            for _ in 1...totalChunks {
-                chunksProgress.append(self.PENDING)
-            }
-            file.chunksProgress = chunksProgress
+            file.chunksProgress = Array(repeating: self.PENDING, count: totalChunks)
             self.handleFileTurn()
         }
     }
@@ -98,9 +91,6 @@ class CriptextFileManager {
         do {
             let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
-            if(fileSize == file.size) {
-                self.delegate?.finishRequest(file: file, success: true)
-            }
             return fileSize == file.size
         } catch {
             return false
