@@ -62,8 +62,7 @@ class SettingsLabelsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let label = labels[indexPath.row]
-        let isDisabled = label.id == SystemLabel.starred.id
-        guard !isDisabled else {
+        guard label.id != SystemLabel.starred.id else {
             return
         }
         DBManager.updateLabel(label, visible: !label.visible)

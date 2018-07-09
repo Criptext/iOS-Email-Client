@@ -17,6 +17,11 @@ protocol GeneralMoreOptionsViewDelegate {
 }
 
 class GeneralMoreOptionsUIView : UIView {
+    let COLLAPSED_HEIGHT : CGFloat = 0.0
+    let COLLAPSED_MARGIN : CGFloat = 0.0
+    let OPTION_HEIGHT : CGFloat = 25.0
+    let OPTION_MARGIN : CGFloat = 15.0
+    let OPTION_VERTICAL_SPACE : CGFloat = 49.0
     @IBOutlet weak var backgroundOverlayView: UIView!
     @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
@@ -53,46 +58,46 @@ class GeneralMoreOptionsUIView : UIView {
     }
     
     func handleCurrentLabel(currentLabel: Int){
-        moveTopMarginConstraint.constant = 15
-        moveButtonHeightConstraint.constant = 25
-        restoreTopMarginConstraint.constant = 15
-        restoreButtonHeightConstraint.constant = 25
-        archiveTopMarginConstraint.constant = 15
-        archiveButtonHeightConstraint.constant = 25
+        moveTopMarginConstraint.constant = OPTION_MARGIN
+        moveButtonHeightConstraint.constant = OPTION_HEIGHT
+        restoreTopMarginConstraint.constant = OPTION_MARGIN
+        restoreButtonHeightConstraint.constant = OPTION_HEIGHT
+        archiveTopMarginConstraint.constant = OPTION_MARGIN
+        archiveButtonHeightConstraint.constant = OPTION_HEIGHT
         switch currentLabel {
         case SystemLabel.draft.id:
-            moveTopMarginConstraint.constant = 0
-            moveButtonHeightConstraint.constant = 0
-            archiveTopMarginConstraint.constant = 0
-            archiveButtonHeightConstraint.constant = 0
-            restoreTopMarginConstraint.constant = 0
-            restoreButtonHeightConstraint.constant = 0
-            optionsHeightConstraint.constant = 49.0
-            neededHeight = -49.0
+            moveTopMarginConstraint.constant = COLLAPSED_MARGIN
+            moveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            archiveTopMarginConstraint.constant = COLLAPSED_MARGIN
+            archiveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            restoreTopMarginConstraint.constant = COLLAPSED_MARGIN
+            restoreButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE
+            neededHeight = -OPTION_VERTICAL_SPACE
         case SystemLabel.spam.id:
-            moveTopMarginConstraint.constant = 0
-            moveButtonHeightConstraint.constant = 0
-            archiveTopMarginConstraint.constant = 0
-            archiveButtonHeightConstraint.constant = 0
-            optionsHeightConstraint.constant = 98.0
-            neededHeight = -98.0
+            moveTopMarginConstraint.constant = COLLAPSED_MARGIN
+            moveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            archiveTopMarginConstraint.constant = COLLAPSED_MARGIN
+            archiveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 2
+            neededHeight = -(OPTION_VERTICAL_SPACE * 2)
         case SystemLabel.trash.id:
-            archiveTopMarginConstraint.constant = 0
-            archiveButtonHeightConstraint.constant = 0
-            optionsHeightConstraint.constant = 147
-            neededHeight = -147.0
+            archiveTopMarginConstraint.constant = COLLAPSED_MARGIN
+            archiveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 3
+            neededHeight = -(OPTION_VERTICAL_SPACE * 3)
         case SystemLabel.all.id:
-            archiveTopMarginConstraint.constant = 0
-            archiveButtonHeightConstraint.constant = 0
-            restoreTopMarginConstraint.constant = 0
-            restoreButtonHeightConstraint.constant = 0
-            optionsHeightConstraint.constant = 98.0
-            neededHeight = -98.0
+            archiveTopMarginConstraint.constant = COLLAPSED_MARGIN
+            archiveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            restoreTopMarginConstraint.constant = COLLAPSED_MARGIN
+            restoreButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 2
+            neededHeight = -(OPTION_VERTICAL_SPACE * 2)
         default:
-            restoreTopMarginConstraint.constant = 0
-            restoreButtonHeightConstraint.constant = 0
-            optionsHeightConstraint.constant = 147
-            neededHeight = -147.0
+            restoreTopMarginConstraint.constant = COLLAPSED_MARGIN
+            restoreButtonHeightConstraint.constant = COLLAPSED_HEIGHT
+            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 3
+            neededHeight = -(OPTION_VERTICAL_SPACE * 3)
         }
         self.view.layoutIfNeeded()
     }

@@ -99,13 +99,12 @@ class EmailDetailViewController: UIViewController {
     }
     
     func incomingEmail(email: Email){
-        guard email.threadId == emailData.threadId else {
+        guard email.threadId == emailData.threadId,
+            let index = emailData.emails.index(where: {$0.id == email.id}),
+            let cell = emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell else {
             return
         }
-        if let index = emailData.emails.index(where: {$0.id == email.id}),
-            let cell = emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell{
-            cell.setReadStatus(status: email.status)
-        }
+        cell.setReadStatus(status: email.status)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -188,8 +187,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
         cell.setContent(email)
-        cell.layoutIfNeeded()
         emailsTableView.beginUpdates()
+        cell.layoutIfNeeded()
         emailsTableView.endUpdates()
     }
     

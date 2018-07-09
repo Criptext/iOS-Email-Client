@@ -17,6 +17,9 @@ protocol NavigationToolbarDelegate {
 }
 
 class TopbarUIView: UIView {
+    let HORIZONTAL_CENTER : CGFloat = 0.0
+    let MARK_LEFT_MARGIN : CGFloat = 17.0
+    let ADJUST_MARGIN_FOR_LESS_ICONS : CGFloat = 31.0
     @IBOutlet var view: UIView!
     @IBOutlet weak var counterLabel: UILabel!
     @IBOutlet weak var archiveButton: UIButton!
@@ -58,8 +61,8 @@ class TopbarUIView: UIView {
     
     func swapTrashIcon(labelId: Int){
         archiveButton.isHidden = false
-        markButtonLeadingConstraint.constant = 17.0
-        trashButtonXConstraint.constant = 0
+        markButtonLeadingConstraint.constant = MARK_LEFT_MARGIN
+        trashButtonXConstraint.constant = HORIZONTAL_CENTER
         
         switch(labelId){
         case SystemLabel.trash.id:
@@ -67,8 +70,8 @@ class TopbarUIView: UIView {
         case SystemLabel.spam.id, SystemLabel.draft.id:
             trashButton.setImage(#imageLiteral(resourceName: "toolbar_trash_permanent"), for: .normal)
             archiveButton.isHidden = true
-            markButtonLeadingConstraint.constant = 31.0
-            trashButtonXConstraint.constant = -31
+            markButtonLeadingConstraint.constant = ADJUST_MARGIN_FOR_LESS_ICONS
+            trashButtonXConstraint.constant = -ADJUST_MARGIN_FOR_LESS_ICONS
         default:
             trashButton.setImage(#imageLiteral(resourceName: "toolbar-trash"), for: .normal)
         }

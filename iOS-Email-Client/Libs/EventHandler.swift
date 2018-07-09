@@ -114,7 +114,7 @@ class EventHandler {
         let date = params["date"] as! String
         let metadataKey = params["metadataKey"] as! Int32
         let senderDeviceId = params["senderDeviceId"] as? Int32
-        let messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? 0))!
+        let messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? MessageType.none.rawValue))!
         let files = params["files"] as? [[String: Any]]
         
         let dateFormatter = DateFormatter()
@@ -150,12 +150,8 @@ class EventHandler {
         
         apiManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
             guard error == nil,
-                let username = Utils.getUsernameFromEmailFormat(from) else {
-                finishCallback(false, nil)
-                return
-            }
-            let body = self.handleBodyByMessageType(messageType, body: data as! String, recipientId: username, senderDeviceId: senderDeviceId)
-            guard let content = body else {
+                let username = Utils.getUsernameFromEmailFormat(from),
+                let content = self.handleBodyByMessageType(messageType, body: data as! String, recipientId: username, senderDeviceId: senderDeviceId) else {
                 finishCallback(false, nil)
                 return
             }
@@ -184,12 +180,9 @@ class EventHandler {
             let deviceId = senderDeviceId else {
             return body
         }
-        var trueBody = ""
-        let exception = tryBlock {
+        var trueBody : String?
+        tryBlock {
             trueBody = self.signalHandler.decryptMessage(body, messageType: messageType, account: self.myAccount, recipientId: recipientId, deviceId: deviceId)
-        }
-        guard exception == nil else {
-            return nil
         }
         return trueBody
     }
