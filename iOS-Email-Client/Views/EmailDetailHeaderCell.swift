@@ -9,7 +9,7 @@
 import Foundation
 import TagListView
 
-class EmailDetailHeaderCell: UITableViewCell{
+class EmailDetailHeaderCell: UITableViewHeaderFooterView{
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var subjectHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelsListView: TagListView!
@@ -30,6 +30,9 @@ class EmailDetailHeaderCell: UITableViewCell{
         labelsListView.removeAllTags()
         var starredImage = #imageLiteral(resourceName: "starred_empty")
         for label in labels {
+            guard label.id != SystemLabel.inbox.id && label.id != SystemLabel.sent.id else {
+                continue
+            }
             guard label.id != SystemLabel.starred.id else {
                 starredImage = #imageLiteral(resourceName: "starred_full")
                 continue
@@ -39,6 +42,7 @@ class EmailDetailHeaderCell: UITableViewCell{
         }
         labelsListView.invalidateIntrinsicContentSize()
         starButton.setImage(starredImage, for: .normal)
+        labelsListView.isHidden = labelsListView.tagViews.count == 0
     }
     
     func setSubject(_ subject: String){

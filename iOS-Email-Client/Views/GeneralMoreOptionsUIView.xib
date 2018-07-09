@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -17,9 +17,16 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GeneralMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
+                <outlet property="archiveButtonHeightConstraint" destination="ypr-3r-5cI" id="9tY-8V-1Ht"/>
+                <outlet property="archiveTopMarginConstraint" destination="ZlA-ds-udh" id="uzV-KX-OM8"/>
                 <outlet property="backgroundOverlayView" destination="RKg-ih-58I" id="gNY-9F-Nsn"/>
+                <outlet property="moveButtonHeightConstraint" destination="7dh-sQ-zvP" id="JLD-wW-Jur"/>
+                <outlet property="moveTopMarginConstraint" destination="pl7-1A-3UR" id="epx-Fw-4GL"/>
                 <outlet property="optionsContainerOffsetConstraint" destination="sMS-K2-DHF" id="eBQ-Lx-72W"/>
                 <outlet property="optionsContainerView" destination="VAv-gl-3zw" id="3oh-Uu-YIf"/>
+                <outlet property="optionsHeightConstraint" destination="vou-gD-IIJ" id="G6X-Bb-R6g"/>
+                <outlet property="restoreButtonHeightConstraint" destination="efe-tg-RB4" id="dVF-zb-h7R"/>
+                <outlet property="restoreTopMarginConstraint" destination="9Xb-MJ-vOi" id="dPT-Ww-VmD"/>
                 <outlet property="view" destination="iN0-l3-epB" id="cfM-oT-q34"/>
             </connections>
         </placeholder>
@@ -33,9 +40,9 @@
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29572469325153372" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAv-gl-3zw">
-                    <rect key="frame" x="0.0" y="569" width="375" height="98"/>
+                    <rect key="frame" x="0.0" y="471" width="375" height="196"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKZ-wq-bH5">
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKZ-wq-bH5">
                             <rect key="frame" x="15" y="15" width="345" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="7dh-sQ-zvP"/>
@@ -48,7 +55,7 @@
                                 <action selector="onMoveToPress:" destination="-1" eventType="touchUpInside" id="5W1-Tu-uCg"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C61-BJ-sbc">
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C61-BJ-sbc">
                             <rect key="frame" x="15" y="55" width="345" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="cxl-Fi-ydr"/>
@@ -61,15 +68,47 @@
                                 <action selector="onAddLabelsPress:" destination="-1" eventType="touchUpInside" id="5Xt-R0-E7h"/>
                             </connections>
                         </button>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vBp-c7-A3X">
+                            <rect key="frame" x="15" y="95" width="345" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="ypr-3r-5cI"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                            <state key="normal" title="Archive">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onArchivePress:" destination="-1" eventType="touchUpInside" id="3mQ-W3-w9M"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7qk-DY-Kui">
+                            <rect key="frame" x="15" y="135" width="345" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="efe-tg-RB4"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                            <state key="normal" title="Restore">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onRestorePress:" destination="-1" eventType="touchUpInside" id="sAV-T7-Guf"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="top" secondItem="vBp-c7-A3X" secondAttribute="bottom" constant="15" id="9Xb-MJ-vOi"/>
+                        <constraint firstAttribute="trailing" secondItem="vBp-c7-A3X" secondAttribute="trailing" constant="15" id="9fY-5J-sOo"/>
                         <constraint firstItem="C61-BJ-sbc" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="NNr-PP-Jvk"/>
+                        <constraint firstItem="vBp-c7-A3X" firstAttribute="top" secondItem="C61-BJ-sbc" secondAttribute="bottom" constant="15" id="ZlA-ds-udh"/>
                         <constraint firstItem="C61-BJ-sbc" firstAttribute="top" secondItem="nKZ-wq-bH5" secondAttribute="bottom" constant="15" id="dzB-y2-Caz"/>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="fs2-nt-rpx"/>
+                        <constraint firstAttribute="trailing" secondItem="7qk-DY-Kui" secondAttribute="trailing" constant="15" id="nnU-A7-8Qr"/>
                         <constraint firstAttribute="trailing" secondItem="nKZ-wq-bH5" secondAttribute="trailing" constant="15" id="nwN-fe-InC"/>
                         <constraint firstItem="nKZ-wq-bH5" firstAttribute="top" secondItem="VAv-gl-3zw" secondAttribute="top" constant="15" id="pl7-1A-3UR"/>
                         <constraint firstItem="nKZ-wq-bH5" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="skF-zN-eVS"/>
-                        <constraint firstAttribute="height" constant="98" id="vou-gD-IIJ"/>
+                        <constraint firstItem="vBp-c7-A3X" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="vIq-NE-4dq"/>
+                        <constraint firstAttribute="height" constant="196" id="vou-gD-IIJ"/>
                         <constraint firstAttribute="trailing" secondItem="C61-BJ-sbc" secondAttribute="trailing" constant="15" id="wWK-rl-Dkc"/>
                     </constraints>
                 </view>

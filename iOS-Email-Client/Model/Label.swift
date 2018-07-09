@@ -52,7 +52,7 @@ class Label : Object {
     }
     
     class func getSettableLabels() -> [Label] {
-        var settableLabels = DBManager.getLabels(type: "custom")
+        var settableLabels = DBManager.getActiveCustomLabels()
         settableLabels.append(DBManager.getLabel(SystemLabel.starred.id)!)
         settableLabels.append(DBManager.getLabel(SystemLabel.important.id)!)
         return settableLabels

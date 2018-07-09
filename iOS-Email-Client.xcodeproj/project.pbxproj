@@ -180,6 +180,8 @@
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
 		7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
 		7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */; };
+		7CDB424620EED69600BE26F0 /* EmailTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CDB424520EED69600BE26F0 /* EmailTableHeaderView.xib */; };
+		7CDB424820EED84600BE26F0 /* EmailTableFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CDB424720EED84600BE26F0 /* EmailTableFooterView.xib */; };
 		7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */; };
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
@@ -389,6 +391,8 @@
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextIdentityKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSignedPreKeyRecord.swift; sourceTree = "<group>"; };
+		7CDB424520EED69600BE26F0 /* EmailTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailTableHeaderView.xib; sourceTree = "<group>"; };
+		7CDB424720EED84600BE26F0 /* EmailTableFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailTableFooterView.xib; sourceTree = "<group>"; };
 		7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
@@ -711,6 +715,8 @@
 				7C1E987B20C9E052003205F8 /* EmailSetPasswordUIPopover.xib */,
 				7C8C2F6F20EAB87D00FC145E /* LabelsFooterViewCell.swift */,
 				7C1F3B4920EBE8B000F39E89 /* LabelsFooterTableViewCell.xib */,
+				7CDB424520EED69600BE26F0 /* EmailTableHeaderView.xib */,
+				7CDB424720EED84600BE26F0 /* EmailTableFooterView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -908,11 +914,13 @@
 				7C63AB5A2056C7850053219F /* ContactsDetailUIPopover.xib in Resources */,
 				7C63AB56205330A00053219F /* ReadHistoryTableCell.xib in Resources */,
 				7C049F8B20879CFA007A6213 /* LabelsUIPopover.xib in Resources */,
+				7CDB424820EED84600BE26F0 /* EmailTableFooterView.xib in Resources */,
 				41AAC51C201A9FC300809C4D /* OpenViewCell.xib in Resources */,
 				7C1E987A20C9B96A003205F8 /* showmore.png in Resources */,
 				7C1E987C20C9E052003205F8 /* EmailSetPasswordUIPopover.xib in Resources */,
 				412CB0392037402D005D1B3F /* NunitoSans-BlackItalic.ttf in Resources */,
 				7C63AB5420532C9A0053219F /* ReadHistoryUIPopover.xib in Resources */,
+				7CDB424620EED69600BE26F0 /* EmailTableHeaderView.xib in Resources */,
 				7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */,
 				41AAC54D201AA05000809C4D /* GoogleService-Info.plist in Resources */,
 			);

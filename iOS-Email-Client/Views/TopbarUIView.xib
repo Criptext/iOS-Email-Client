@@ -15,7 +15,9 @@
                 <outlet property="archiveButton" destination="Nyi-gB-IcE" id="Yj8-VW-XzL"/>
                 <outlet property="counterLabel" destination="ZzR-h6-HXk" id="gVZ-Qo-Srg"/>
                 <outlet property="markButton" destination="Q4A-wm-n7M" id="q3D-Iv-yfl"/>
+                <outlet property="markButtonLeadingConstraint" destination="Iq9-q9-eJY" id="RJ8-Gn-b8O"/>
                 <outlet property="trashButton" destination="t76-18-SGy" id="mew-l6-7tq"/>
+                <outlet property="trashButtonXConstraint" destination="c2V-v5-a1r" id="2Yr-8O-vZk"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Y9V-DN-mbN"/>
             </connections>
         </placeholder>
@@ -92,7 +94,7 @@
                         <constraint firstAttribute="width" constant="31" id="d5I-uO-ybY"/>
                         <constraint firstAttribute="height" constant="31" id="wRR-yL-NLQ"/>
                     </constraints>
-                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="7"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="5"/>
                     <state key="normal" image="mark_read"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">

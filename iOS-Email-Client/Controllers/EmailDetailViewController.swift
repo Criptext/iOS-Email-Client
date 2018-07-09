@@ -10,7 +10,7 @@ import Foundation
 
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
-    let ESTIMATED_SECTION_HEADER_HEIGHT : CGFloat = 65
+    let ESTIMATED_SECTION_HEADER_HEIGHT : CGFloat = 50
     
     var emailData : EmailDetailData!
     var mailboxData : MailboxData!
@@ -41,6 +41,7 @@ class EmailDetailViewController: UIViewController {
         fileManager.delegate = self
         
         displayMarkIcon(asRead: hasUnreadEmails)
+        generalOptionsContainerView.handleCurrentLabel(currentLabel: emailData.selectedLabel)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -83,6 +84,10 @@ class EmailDetailViewController: UIViewController {
     }
     
     func registerCellNibs(){
+        let headerNib = UINib(nibName: "EmailTableHeaderView", bundle: nil)
+        self.emailsTableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "emailTableHeaderView")
+        let footerNib = UINib(nibName: "EmailTableFooterView", bundle: nil)
+        self.emailsTableView.register(footerNib, forHeaderFooterViewReuseIdentifier: "emailTableFooterView")
         for email in self.emailData.emails {
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
             self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.key)")
@@ -97,7 +102,15 @@ class EmailDetailViewController: UIViewController {
         guard email.threadId == emailData.threadId else {
             return
         }
-        emailsTableView.reloadData()
+        if let index = emailData.emails.index(where: {$0.id == email.id}),
+            let cell = emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell{
+            cell.setReadStatus(status: email.status)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        let email = emailData.emails[indexPath.row]
+        return email.isExpanded ? email.cellHeight : ESTIMATED_ROW_HEIGHT
     }
 }
 
@@ -128,7 +141,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
         guard myHeaderView == nil else {
             return myHeaderView
         }
-        let headerView = tableView.dequeueReusableCell(withIdentifier: "emailTableHeaderView") as! EmailDetailHeaderCell
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "emailTableHeaderView") as! EmailDetailHeaderCell
         headerView.addLabels(emailData.labels)
         headerView.setSubject(emailData.subject)
         headerView.onStarPressed = { [weak self] in
@@ -139,7 +152,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = tableView.dequeueReusableCell(withIdentifier: "emailTableFooterView") as! EmailDetailFooterCell
+        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "emailTableFooterView") as! EmailDetailFooterCell
         footerView.delegate = self
         return footerView
     }
@@ -150,14 +163,19 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
+    
+    func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
+        email.cellHeight = height
+        emailsTableView.beginUpdates()
+        emailsTableView.endUpdates()
+    }
+    
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
         guard email.unread else {
-            emailsTableView.reloadData()
             return
         }
         DBManager.updateEmail(email, unread: false)
         displayMarkIcon(asRead: hasUnreadEmails)
-        emailsTableView.reloadData()
         if(email.fromContact.email != emailData.accountEmail){
             APIManager.notifyOpen(key: Int(email.key)!, token: myAccount.jwt)
         }
@@ -169,7 +187,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
-        emailsTableView.reloadData()
+        cell.setContent(email)
+        cell.layoutIfNeeded()
+        emailsTableView.beginUpdates()
+        emailsTableView.endUpdates()
     }
     
     func tableViewCellDidTapAttachment(file: File) {
@@ -405,14 +426,12 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
     
     func archiveThreads(){
-        guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.draft.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.all.id else {
-            self.moveTo(labelId: SystemLabel.all.id)
-            return
-        }
-        guard emailData.selectedLabel != SystemLabel.draft.id && emailData.selectedLabel != SystemLabel.all.id else {
-            setLabels(added: [SystemLabel.inbox.id], removed: [])
-            return
-        }
+        toggleGeneralOptionsView()
+        setLabels(added: [], removed: [SystemLabel.inbox.id])
+    }
+    
+    func restoreThreads(){
+        toggleGeneralOptionsView()
         setLabels(added: [], removed: [emailData.selectedLabel])
     }
 }
@@ -540,6 +559,14 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
     func onAddLabesPress() {
         handleAddLabels()
     }
+    
+    func onRestorePress() {
+        self.restoreThreads()
+    }
+    
+    func onArchivePress() {
+        self.archiveThreads()
+    }
 }
 
 extension EmailDetailViewController : LabelsUIPopoverDelegate{
@@ -657,7 +684,6 @@ extension EmailDetailViewController: ComposerSendMailDelegate {
         emailData.emails.append(email)
         email.isExpanded = true
         emailsTableView.reloadData()
-        
         inboxViewController.sendMail(email: email)
     }
 }
