@@ -113,8 +113,8 @@ class EventHandler {
         let messageId = params["messageId"] as! String
         let date = params["date"] as! String
         let metadataKey = params["metadataKey"] as! Int32
-        let senderDeviceId = params["senderDeviceId"] as! Int32
-        let messageType = MessageType.init(rawValue: (params["messageType"] as! Int))!
+        let senderDeviceId = params["senderDeviceId"] as? Int32
+        let messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? MessageType.none.rawValue))!
         let files = params["files"] as? [[String: Any]]
         
         let dateFormatter = DateFormatter()
@@ -150,18 +150,12 @@ class EventHandler {
         
         apiManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
             guard error == nil,
-                let username = Utils.getUsernameFromEmailFormat(from) else {
+                let username = Utils.getUsernameFromEmailFormat(from),
+                let content = self.handleBodyByMessageType(messageType, body: data as! String, recipientId: username, senderDeviceId: senderDeviceId) else {
                 finishCallback(false, nil)
                 return
             }
-            let signalMessage = data as! String
-            let exception = tryBlock {
-                email.content = self.signalHandler.decryptMessage(signalMessage, messageType: messageType, account: self.myAccount, recipientId: username, deviceId: senderDeviceId)
-            }
-            guard exception == nil else {
-                finishCallback(false, nil)
-                return
-            }
+            email.content = content
             email.preview = String(email.content.removeHtmlTags().prefix(100))
             DBManager.store(email)
             
@@ -179,6 +173,18 @@ class EventHandler {
             }
             finishCallback(true, email)
         }
+    }
+    
+    func handleBodyByMessageType(_ messageType: MessageType, body: String, recipientId: String, senderDeviceId: Int32?) -> String? {
+        guard messageType != .none,
+            let deviceId = senderDeviceId else {
+            return body
+        }
+        var trueBody : String?
+        tryBlock {
+            trueBody = self.signalHandler.decryptMessage(body, messageType: messageType, account: self.myAccount, recipientId: recipientId, deviceId: deviceId)
+        }
+        return trueBody
     }
     
     func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ open: FeedItem?) -> Void){

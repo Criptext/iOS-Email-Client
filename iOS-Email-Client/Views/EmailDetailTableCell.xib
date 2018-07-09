@@ -93,7 +93,7 @@
                                             <constraint firstAttribute="height" constant="9.5" id="z3F-MV-zOd"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To me, Allison, Daniel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fU-IW-zLs">
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To me, Allison, Daniel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fU-IW-zLs">
                                         <rect key="frame" x="92" y="39" width="130" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="130" id="Dj3-m3-xRK"/>
@@ -109,6 +109,9 @@
                                         <state key="normal" title="more">
                                             <color key="titleColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onMorePress:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="AmC-m6-JZ8"/>
+                                        </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J60-E3-nju">
                                         <rect key="frame" x="325" y="34" width="40" height="30"/>

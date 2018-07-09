@@ -18,7 +18,7 @@ class MenuData {
     
     func reloadLabels(){
         labels.removeAll()
-        labels.append(contentsOf: DBManager.getLabels(notIn: SystemLabel.idsArray))
+        labels.append(contentsOf: DBManager.getActiveCustomLabels())
     }
     
 }

@@ -12,7 +12,8 @@ class SettingsLabelsViewController: UITableViewController {
     var labels = [Label]()
     
     override func viewDidLoad() {
-        labels.append(contentsOf: DBManager.getLabels())
+        labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
+        labels.append(contentsOf: DBManager.getLabels(type: "custom"))
         tabItem.title = "Labels"
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
@@ -26,17 +27,11 @@ class SettingsLabelsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let label = labels[indexPath.row]
+        let isDisabled = label.id == SystemLabel.starred.id
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsLabelCell") as! LabelsLabelTableViewCell
         
         cell.labelLabel.text = label.text
-        cell.checkMarkView.setChecked(label.visible)
-        guard label.type == "custom" else {
-            cell.colorDotsContainer.isHidden = true
-            cell.checkMarkView.isHidden = true
-            return cell
-        }
-        cell.checkMarkView.isHidden = false
-        cell.colorDotsContainer.isHidden = false
+        cell.checkMarkView.setChecked(label.visible, disabled: isDisabled)
         cell.colorDotsView.backgroundColor = UIColor(hex: label.color)
         return cell
     }
@@ -67,7 +62,7 @@ class SettingsLabelsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let label = labels[indexPath.row]
-        guard label.type == "custom" else {
+        guard label.id != SystemLabel.starred.id else {
             return
         }
         DBManager.updateLabel(label, visible: !label.visible)

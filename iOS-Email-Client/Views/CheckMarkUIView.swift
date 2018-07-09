@@ -33,14 +33,14 @@ class CheckMarkUIView : UIView {
         addSubview(checkImageView)
     }
     
-    func setChecked(_ checked: Bool){
+    func setChecked(_ checked: Bool, disabled: Bool = false){
         checkImageView.isHidden = !checked
         guard checked else {
-            backgroundColor = .white
+            backgroundColor = disabled ? .lightIcon : .white
             layer.borderColor = UIColor.lightIcon.cgColor
             return
         }
-        backgroundColor = .mainUI
-        layer.borderColor = UIColor.mainUI.cgColor
+        backgroundColor = disabled ? .lightIcon : .mainUI
+        layer.borderColor = disabled ? UIColor.lightIcon.cgColor : UIColor.mainUI.cgColor
     }
 }

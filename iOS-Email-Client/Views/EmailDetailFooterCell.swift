@@ -14,7 +14,7 @@ protocol EmailDetailFooterDelegate {
     func onFooterForwardPress()
 }
 
-class EmailDetailFooterCell: UITableViewCell{
+class EmailDetailFooterCell: UITableViewHeaderFooterView{
     
     var delegate : EmailDetailFooterDelegate?
     

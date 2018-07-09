@@ -11,6 +11,7 @@ import WebKit
 import RealmSwift
 
 protocol EmailTableViewCellDelegate {
+    func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email)
     func tableViewCellDidLoadContent(_ cell:EmailTableViewCell, email: Email)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
@@ -181,12 +182,17 @@ class EmailTableViewCell: UITableViewCell{
         
         if tappedView == self.moreOptionsContainerView {
             delegate.tableViewCellDidTapIcon(self, self.moreOptionsContainerView, .options)
-        } else if tappedView == self.moreInfoContainerView {
+        } else if tappedView == self.moreInfoContainerView || tappedView == self.contactsLabel {
             delegate.tableViewCellDidTapIcon(self, self.moreInfoContainerView, .contacts)
         } else {
             delegate.tableViewCellDidTap(self)
         }
     }
+    
+    @IBAction func onMorePress(_ sender: Any) {
+        delegate?.tableViewCellDidTapIcon(self, self.moreInfoContainerView, .contacts)
+    }
+    
 }
 
 extension EmailTableViewCell{
@@ -213,19 +219,24 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.delegate?.tableViewCellDidLoadContent(self, email: self.email)
         webViewEvaluateHeight(webView)
     }
     
-    func webViewEvaluateHeight(_ webview: WKWebView){
+    func webViewEvaluateHeight(_ webview: WKWebView, didZoom: Bool = false){
         let jsString = "document.body.clientHeight + (document.body.childNodes[0].offsetTop || 0)"
         webView.evaluateJavaScript(jsString) { (result, error) in
             guard let height = result as? CGFloat else {
                 return
             }
-            self.myHeight = height + height * (self.webView.scrollView.zoomScale - 1)
-            self.heightConstraint.constant = height + height * (self.webView.scrollView.zoomScale - 1)
-            self.delegate?.tableViewCellDidLoadContent(self, email: self.email)
+            let newHeight = height + height * (self.webView.scrollView.zoomScale - 1)
+            guard newHeight != self.myHeight else {
+                return
+            }
+            self.myHeight = newHeight
+            self.heightConstraint.constant = newHeight
             self.loadedContent = true
+            self.delegate?.tableViewCellDidChangeHeight(newHeight, email: self.email)
         }
     }
 }

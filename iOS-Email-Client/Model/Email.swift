@@ -38,6 +38,7 @@ class Email: Object {
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
     var isExpanded = false
+    var cellHeight : CGFloat = 70.0
     var fromContact : Contact {
         get {
             let predicate = NSPredicate(format: "type == '\(ContactType.from.rawValue)'")

@@ -17,11 +17,16 @@ protocol NavigationToolbarDelegate {
 }
 
 class TopbarUIView: UIView {
+    let HORIZONTAL_CENTER : CGFloat = 0.0
+    let MARK_LEFT_MARGIN : CGFloat = 17.0
+    let ADJUST_MARGIN_FOR_LESS_ICONS : CGFloat = 31.0
     @IBOutlet var view: UIView!
     @IBOutlet weak var counterLabel: UILabel!
     @IBOutlet weak var archiveButton: UIButton!
     @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var markButton: UIButton!
+    @IBOutlet weak var trashButtonXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var markButtonLeadingConstraint: NSLayoutConstraint!
     var delegate: NavigationToolbarDelegate?
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,9 +60,18 @@ class TopbarUIView: UIView {
     }
     
     func swapTrashIcon(labelId: Int){
+        archiveButton.isHidden = false
+        markButtonLeadingConstraint.constant = MARK_LEFT_MARGIN
+        trashButtonXConstraint.constant = HORIZONTAL_CENTER
+        
         switch(labelId){
-        case SystemLabel.trash.id, SystemLabel.spam.id:
+        case SystemLabel.trash.id:
             trashButton.setImage(#imageLiteral(resourceName: "toolbar_trash_permanent"), for: .normal)
+        case SystemLabel.spam.id, SystemLabel.draft.id:
+            trashButton.setImage(#imageLiteral(resourceName: "toolbar_trash_permanent"), for: .normal)
+            archiveButton.isHidden = true
+            markButtonLeadingConstraint.constant = ADJUST_MARGIN_FOR_LESS_ICONS
+            trashButtonXConstraint.constant = -ADJUST_MARGIN_FOR_LESS_ICONS
         default:
             trashButton.setImage(#imageLiteral(resourceName: "toolbar-trash"), for: .normal)
         }

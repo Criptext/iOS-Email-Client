@@ -113,7 +113,7 @@ extension DBManager {
     class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> [Thread] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
-        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
+        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
         let predicate1 = NSPredicate(format: "NOT (ANY labels.id IN %@)", rejectedLabels)
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
         let predicate = label == SystemLabel.all.id ? predicate1 : predicate2
@@ -190,7 +190,7 @@ extension DBManager {
     public class func getThread(threadId: String, label: Int) -> Thread? {
         let thread = Thread()
         let realm = try! Realm()
-        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
+        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
         let threadsPredicate = NSPredicate(format: "threadId == %@ AND ANY labels.id = %d AND NOT (ANY labels.id IN %@)", threadId, label, rejectedLabels)
         guard let email = realm.objects(Email.self).filter(threadsPredicate).sorted(byKeyPath: "date", ascending: false).first else {
             return nil
@@ -322,6 +322,13 @@ extension DBManager {
         
         try! realm.write {
             realm.delete(emails)
+        }
+    }
+    
+    class func updateThread(threadId: String, currentLabel: Int, unread: Bool){
+        let emails = getThreadEmails(threadId, label: currentLabel)
+        for email in emails {
+            updateEmail(email, unread: unread)
         }
     }
     
@@ -541,6 +548,12 @@ extension DBManager {
         let realm = try! Realm()
         
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "type = %@", type)))
+    }
+    
+    class func getActiveCustomLabels() -> [Label]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(Label.self).filter(NSPredicate(format: "type = 'custom' and visible = true")))
     }
     
     class func getLabel(_ labelId: Int) -> Label?{

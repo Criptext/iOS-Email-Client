@@ -20,10 +20,7 @@ import RealmSwift
 
 class InboxViewController: UIViewController {
     
-    @IBOutlet weak var moreOptionsOverlay: UIView!
-    @IBOutlet weak var moreOptionsView: UIView!
-    @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var topToolbar: TopbarUIView!
@@ -97,12 +94,13 @@ class InboxViewController: UIViewController {
         
         self.initFloatingButton()
         topToolbar.delegate = self
-        self.initMoreOptionsView()
+        self.generalOptionsContainerView.delegate = self
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
         self.sendFailEmail()
+        self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -175,44 +173,12 @@ class InboxViewController: UIViewController {
         buttonCompose.layer.shadowPath = shadowPath.cgPath
     }
     
-    func initMoreOptionsView(){
-        moreOptionsView.isHidden = true
-        moreOptionsOverlay.isHidden = true
-        moreOptionsOverlay.alpha = 0.0
-        bottomMarginConstraint.constant = -98.0
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleMoreOptions))
-        self.moreOptionsOverlay.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
     @objc func toggleMoreOptions(){
-        guard self.moreOptionsView.isHidden else {
-            closeMoreOptions()
+        guard generalOptionsContainerView.isHidden else {
+            generalOptionsContainerView.closeMoreOptions()
             return
         }
-        showMoreOptions()
-    }
-    
-    func showMoreOptions(){
-        self.moreOptionsView.isHidden = false
-        self.moreOptionsOverlay.isHidden = false
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
-            self.bottomMarginConstraint.constant = 0.0
-            self.moreOptionsOverlay.alpha = 1.0
-            self.view.layoutIfNeeded()
-        })
-    }
-    
-    func closeMoreOptions(){
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseOut, animations: {
-            self.bottomMarginConstraint.constant = -98.0
-            self.moreOptionsOverlay.alpha = 0.0
-            self.view.layoutIfNeeded()
-        }, completion: {
-            finished in
-            self.moreOptionsView.isHidden = true
-            self.moreOptionsOverlay.isHidden = true
-        })
+        generalOptionsContainerView.showMoreOptions()
     }
     
     func startNetworkListener(){
@@ -230,14 +196,6 @@ class InboxViewController: UIViewController {
                 break
             }
         }
-    }
-    
-    @IBAction func onMoveToPress(_ sender: Any) {
-        handleMoveTo()
-    }
-    
-    @IBAction func onAddLabelsPress(_ sender: Any) {
-        handleAddLabels()
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
@@ -329,6 +287,7 @@ extension InboxViewController{
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
         topToolbar.swapTrashIcon(labelId: labelId)
         self.navigationDrawerController?.closeLeftView()
+        self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
     }
     
     func swapMarkIcon(){
@@ -778,13 +737,8 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     func presentPopover(_ popover: LabelsUIPopover, height: Int){
         popover.delegate = self
         popover.preparePopover(rootView: self, height: height)
-        self.present(popover, animated: true){
-            self.bottomMarginConstraint.constant = -98.0
-            self.moreOptionsView.isHidden = true
-            self.moreOptionsOverlay.alpha = 0.0
-            self.moreOptionsOverlay.isHidden = true
-            self.view.layoutIfNeeded()
-        }
+        self.generalOptionsContainerView.closeMoreOptions()
+        self.present(popover, animated: true)
     }
     
     func setLabels(added: [Int], removed: [Int]) {
@@ -873,7 +827,8 @@ extension InboxViewController: NavigationToolbarDelegate {
         let unread = mailboxData.unreadMails <= 0
         for indexPath in indexPaths {
             let thread = mailboxData.threads[indexPath.row]
-            DBManager.updateEmail(thread.lastEmail, unread: unread)
+            DBManager.updateThread(threadId: thread.threadId, currentLabel: mailboxData.selectedLabel, unread: unread)
+            thread.unread = unread
         }
         self.didPressEdit(reload: true)
     }
@@ -883,14 +838,12 @@ extension InboxViewController: NavigationToolbarDelegate {
     }
     
     func archiveThreads() {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id || mailboxData.selectedLabel == SystemLabel.draft.id || mailboxData.selectedLabel == SystemLabel.spam.id || mailboxData.selectedLabel == SystemLabel.all.id else {
-            self.moveTo(labelId: SystemLabel.all.id)
-            return
-        }
-        guard mailboxData.selectedLabel != SystemLabel.draft.id && mailboxData.selectedLabel != SystemLabel.all.id else {
-            setLabels(added: [SystemLabel.inbox.id], removed: [])
-            return
-        }
+        generalOptionsContainerView.closeMoreOptions()
+        setLabels(added: [], removed: [SystemLabel.inbox.id])
+    }
+    
+    func restoreThreads() {
+        generalOptionsContainerView.closeMoreOptions()
         setLabels(added: [], removed: [mailboxData.selectedLabel])
     }
 }
@@ -956,5 +909,27 @@ extension InboxViewController: ComposerSendMailDelegate {
         }
         mailboxData.threads.remove(at: draftIndex)
         tableView.reloadData()
+    }
+}
+
+extension InboxViewController: GeneralMoreOptionsViewDelegate{
+    func onDismissPress() {
+        self.toggleMoreOptions()
+    }
+    
+    func onMoveToPress() {
+        self.handleMoveTo()
+    }
+    
+    func onAddLabesPress() {
+        self.handleAddLabels()
+    }
+    
+    func onArchivePress() {
+        self.archiveThreads()
+    }
+    
+    func onRestorePress() {
+        self.restoreThreads()
     }
 }
