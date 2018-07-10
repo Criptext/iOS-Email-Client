@@ -182,6 +182,8 @@ class ComposeViewController: UIViewController {
         activityButton.tintColor = fileManager.registeredFiles.isEmpty ? Icon.enabled.color : Icon.system.color
         activityButton.isUserInteractionEnabled = false
         self.attachmentBarButton = activityButton
+        self.attachmentButtonContainerView.layer.borderColor = UIColor.white.cgColor
+        self.attachmentButtonContainerView.layer.borderWidth = 2.0
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressAttachment(_:)))
         self.attachmentButtonContainerView.addGestureRecognizer(tapGesture)

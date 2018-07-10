@@ -58,6 +58,14 @@ extension DBManager {
         }
     }
     
+    class func update(account: Account, lastSeen: Date){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.lastTimeFeedOpened = lastSeen
+        }
+    }
+    
     class func update(account: Account, signature: String, enabled: Bool){
         let realm = try! Realm()
         
@@ -684,7 +692,7 @@ extension DBManager {
         return results.count > 0
     }
     
-    class func getFeeds(since date: Date, limit: Int) -> ([FeedItem], [FeedItem]){
+    class func getFeeds(since date: Date, limit: Int, lastSeen: Date) -> ([FeedItem], [FeedItem]){
         let realm = try! Realm()
         
         let feeds = realm.objects(FeedItem.self).filter("date < %@", date).sorted(byKeyPath: "date", ascending: false)
@@ -695,7 +703,7 @@ extension DBManager {
             guard index < limit else {
                 break
             }
-            guard feed.isNew else {
+            guard feed.date > lastSeen else {
                 oldFeeds.append(feed)
                 continue
             }
@@ -705,15 +713,11 @@ extension DBManager {
         return (newFeeds, oldFeeds)
     }
     
-    class func updateAllFeeds(isNew: Bool){
+    class func getNewFeedsCount(since date: Date) -> Int{
         let realm = try! Realm()
         
-        let feeds = realm.objects(FeedItem.self).filter("isNew = true").sorted(byKeyPath: "date", ascending: false)
-        try! realm.write {
-            for feed in feeds {
-                feed.isNew = false
-            }
-        }
+        let feeds = realm.objects(FeedItem.self).filter("date > %@", date).sorted(byKeyPath: "date", ascending: false)
+        return feeds.count
     }
     
     class func delete(feed: FeedItem){

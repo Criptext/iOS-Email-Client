@@ -200,7 +200,6 @@ class EventHandler {
         
         let open = FeedItem()
         open.fileId = fileId
-        open.isNew = true
         open.date = Utils.getLocalDate(from: date)
         guard !DBManager.feedExists(emailId: emailId, type: open.type, contactId: "\(from)\(Constants.domain)"),
             let contact = DBManager.getContact("\(from)\(Constants.domain)"),

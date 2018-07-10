@@ -24,56 +24,67 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BFa-V6-her">
-                        <rect key="frame" x="18" y="10" width="291" height="80"/>
+                        <rect key="frame" x="18" y="13" width="291" height="78.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your People in The Club" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTl-IH-UYB">
-                                <rect key="frame" x="0.0" y="0.0" width="291" height="21"/>
+                                <rect key="frame" x="0.0" y="0.0" width="291" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="TTh-wB-JM0"/>
+                                    <constraint firstAttribute="height" constant="20" id="TTh-wB-JM0"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8IB-g2-2FE">
-                                <rect key="frame" x="0.0" y="21" width="291" height="10"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="20" width="291" height="8"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="10" id="BUX-V1-zZu"/>
+                                    <constraint firstAttribute="height" constant="8" id="BUX-V1-zZu"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BYX-ne-mnQ" customClass="TagListView" customModule="TagListView">
-                                <rect key="frame" x="0.0" y="31" width="291" height="49"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="28" width="291" height="48.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4S-ZL-oQp">
+                                <rect key="frame" x="0.0" y="76.5" width="291" height="2"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="C9F-gf-RUR"/>
+                                </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XvK-dg-nx2">
-                        <rect key="frame" x="317" y="25" width="50" height="50"/>
+                        <rect key="frame" x="317" y="13" width="50" height="25"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="2ao-Oc-NNb"/>
-                            <constraint firstAttribute="height" constant="50" id="Ye8-Wj-z8S"/>
+                            <constraint firstAttribute="height" constant="25" id="Mrk-2D-9vN"/>
                         </constraints>
-                        <inset key="imageEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
+                        <inset key="imageEdgeInsets" minX="15" minY="3" maxX="15" maxY="2"/>
                         <state key="normal" image="starred_empty"/>
                         <connections>
                             <action selector="onStarButtonPressed:" destination="jAh-4q-lEH" eventType="touchUpInside" id="Thd-E7-0Uh"/>
                         </connections>
                     </button>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="BFa-V6-her" firstAttribute="leading" secondItem="2ee-Vr-DTR" secondAttribute="leading" constant="18" id="8Hi-vy-MDh"/>
                     <constraint firstAttribute="trailing" secondItem="XvK-dg-nx2" secondAttribute="trailing" constant="8" id="8uc-6n-E0M"/>
-                    <constraint firstItem="BFa-V6-her" firstAttribute="top" secondItem="2ee-Vr-DTR" secondAttribute="top" constant="10" id="Gf3-hA-vxh"/>
-                    <constraint firstAttribute="bottom" secondItem="BFa-V6-her" secondAttribute="bottom" constant="10" id="Ir5-4e-ifl"/>
-                    <constraint firstItem="XvK-dg-nx2" firstAttribute="centerY" secondItem="2ee-Vr-DTR" secondAttribute="centerY" id="NCe-5C-zDk"/>
+                    <constraint firstItem="BFa-V6-her" firstAttribute="top" secondItem="2ee-Vr-DTR" secondAttribute="top" constant="13" id="Gf3-hA-vxh"/>
+                    <constraint firstAttribute="bottom" secondItem="BFa-V6-her" secondAttribute="bottom" constant="8" id="Ir5-4e-ifl"/>
+                    <constraint firstItem="XvK-dg-nx2" firstAttribute="top" secondItem="wTl-IH-UYB" secondAttribute="top" id="dEO-A9-N1e"/>
                     <constraint firstItem="XvK-dg-nx2" firstAttribute="leading" secondItem="BFa-V6-her" secondAttribute="trailing" constant="8" id="qNa-XI-gce"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.96851271390000004" green="0.96889704470000004" blue="0.97216635939999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="labelsListView" destination="BYX-ne-mnQ" id="OGg-yf-HHe"/>
+                <outlet property="marginBottomView" destination="X4S-ZL-oQp" id="Jhh-Uk-bys"/>
+                <outlet property="marginTopView" destination="8IB-g2-2FE" id="pXR-7R-0dm"/>
                 <outlet property="starButton" destination="XvK-dg-nx2" id="xMB-tV-kaT"/>
                 <outlet property="subjectHeightConstraint" destination="TTh-wB-JM0" id="7CH-TI-Cai"/>
                 <outlet property="subjectLabel" destination="wTl-IH-UYB" id="nqc-2m-u0Y"/>

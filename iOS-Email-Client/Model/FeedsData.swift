@@ -11,6 +11,7 @@ import Foundation
 class FeedsData{
     var oldFeeds: [FeedItem] = []
     var newFeeds: [FeedItem] = []
+    var lastSeen = Date()
     var loadingFeeds = false
     var reachedEnd = false
 }

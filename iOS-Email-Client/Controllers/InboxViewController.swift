@@ -147,9 +147,10 @@ class InboxViewController: UIViewController {
         
         // Set batButtonItems
         let activityButton = MIBadgeButton(type: .custom)
-        activityButton.badgeString = ""
-        activityButton.frame = CGRect(x:0, y:0, width:16.8, height:20.7)
-        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(25, 12, 0, 10)
+        let badgeCounter = DBManager.getNewFeedsCount(since: myAccount.lastTimeFeedOpened)
+        activityButton.badgeString = badgeCounter > 0 ? badgeCounter.description : ""
+        activityButton.frame = CGRect(x:0, y:0, width: 16, height: 20)
+        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(0, 1, 2, 0)
         activityButton.setImage(#imageLiteral(resourceName: "activity"), for: .normal)
         activityButton.tintColor = UIColor.white
         activityButton.addTarget(self, action: #selector(didPressActivityMenu), for: UIControlEvents.touchUpInside)
@@ -224,10 +225,13 @@ extension InboxViewController: EventHandlerDelegate {
             return result + [IndexPath(row: index, section: 0)]
         }
         tableView.reloadRows(at: pathsToUpdate, with: .automatic)
-        guard let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
+        guard let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController,
+            let activityButton = self.activityBarButton.customView as? MIBadgeButton else {
                 return
         }
         feedVC.loadFeeds(clear: true)
+        let badgeCounter = feedVC.feedsData.newFeeds.count
+        activityButton.badgeString = badgeCounter > 0 ? badgeCounter.description : ""
     }
     
     func didReceiveNewEmails(emails: [Email]) {
@@ -398,11 +402,15 @@ extension InboxViewController: UIGestureRecognizerDelegate {
 extension InboxViewController: NavigationDrawerControllerDelegate {
     func navigationDrawerController(navigationDrawerController: NavigationDrawerController, didClose position: NavigationDrawerPosition) {
         guard position == .right,
-            let feedVC = navigationDrawerController.rightViewController as? FeedViewController else {
+            let feedVC = navigationDrawerController.rightViewController as? FeedViewController,
+            let activityButton = self.activityBarButton.customView as? MIBadgeButton else {
             return
         }
+        DBManager.update(account: myAccount, lastSeen: Date())
         feedVC.feedsTableView.isEditing = false
         feedVC.viewClosed()
+        let badgeCounter = feedVC.feedsData.newFeeds.count
+        activityButton.badgeString = badgeCounter > 0 ? badgeCounter.description : ""
     }
 }
 
