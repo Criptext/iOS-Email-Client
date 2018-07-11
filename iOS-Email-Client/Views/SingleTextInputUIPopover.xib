@@ -45,6 +45,9 @@
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <action selector="onDidEndOnExit:" destination="-1" eventType="editingDidEndOnExit" id="gE1-eB-SqF"/>
+                    </connections>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wJg-AJ-UXv">
                     <rect key="frame" x="187.5" y="132" width="187.5" height="46"/>

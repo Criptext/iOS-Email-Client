@@ -27,6 +27,13 @@ class ResetDeviceViewController: UIViewController{
         checkToEnableDisableResetButton()
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
+        passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+    }
+    
+    @objc func onDonePress(_ sender: Any){
+        if(resetButton.isEnabled){
+            self.onResetPress(sender)
+        }
     }
     
     @objc func hideKeyboard(){
@@ -52,6 +59,7 @@ class ResetDeviceViewController: UIViewController{
                 return
             }
             guard let data = responseData else {
+                self.showFeedback(true, "Unable to sign-in. Please try again.")
                 return
             }
             let name = data["name"] as! String
@@ -61,6 +69,12 @@ class ResetDeviceViewController: UIViewController{
             signupData.deviceId = deviceId
             signupData.token = token
             self.jumpToCreatingAccount(signupData: signupData)
+        }
+    }
+    
+    @IBAction func textfieldDidEndOnExit(_ sender: Any) {
+        if(resetButton.isEnabled){
+            self.onResetPress(sender)
         }
     }
     

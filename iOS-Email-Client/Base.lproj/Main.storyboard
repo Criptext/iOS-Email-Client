@@ -133,6 +133,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="19"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <connections>
+                                                    <action selector="onDidEndOnExit:" destination="Rmr-j3-9Sc" eventType="editingDidEndOnExit" id="fS3-7a-vVe"/>
+                                                </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSZ-LW-VX3" userLabel="Subject Button">
                                                 <rect key="frame" x="8" y="0.0" width="359" height="45"/>

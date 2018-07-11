@@ -50,6 +50,38 @@ class SignUpViewController: UIViewController{
         emailTextField.markView = emailMark
         emailTextField.font = Font.regular.size(17.0)
         checkToEnableDisableCreateButton()
+        usernameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        fullnameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        confirmPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        emailTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+    }
+    
+    
+    
+    @objc func onDonePress(_ sender: Any){
+        switch(sender as? StatusTextField){
+        case usernameTextField:
+            fullnameTextField.becomeFirstResponder()
+            break
+        case fullnameTextField:
+            passwordTextField.becomeFirstResponder()
+            break
+        case passwordTextField:
+            confirmPasswordTextField.becomeFirstResponder()
+            break
+        case confirmPasswordTextField:
+            emailTextField.becomeFirstResponder()
+            break
+        default:
+            if(createAccountButton.isEnabled){
+                createAccountPress(sender)
+            }
+        }
+    }
+    
+    @IBAction func onDidEndOnExit(_ sender: Any) {
+        onDonePress(sender)
     }
     
     @IBAction func inputEditEnd(_ sender: TextField){

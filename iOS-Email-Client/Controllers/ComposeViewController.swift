@@ -115,6 +115,7 @@ class ComposeViewController: UIViewController {
         self.editorView.placeholder = "Message"
         self.editorView.delegate = self
         self.subjectField.delegate = self
+        self.subjectField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         
         self.toField.fieldName = "To"
         self.toField.tintColor = Icon.system.color
@@ -205,6 +206,25 @@ class ComposeViewController: UIViewController {
         editorView.html = composerData.initContent + (composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")
         
         fileManager.delegate = self
+    }
+    
+    @objc func onDonePress(_ sender: Any){
+        switch(sender as? UIView){
+        case toField:
+            subjectField.becomeFirstResponder()
+            break
+        case subjectField:
+            editorView.becomeFirstResponder()
+            break
+        default:
+            if(self.sendBarButton.isEnabled){
+                self.didPressSend(sendBarButton)
+            }
+        }
+    }
+    
+    @IBAction func onDidEndOnExit(_ sender: Any) {
+        self.onDonePress(sender)
     }
     
     func setupInitContacts(){
@@ -715,18 +735,6 @@ extension ComposeViewController{
     }
 }
 
-
-//MARK: - Progress Delegate
-extension ComposeViewController: ProgressDelegate {
-    func chunkUpdateProgress(_ percent: Double, for token: String, part: Int) {
-        
-    }
-    
-    func updateProgress(_ percent: Double, for id: String) {
-
-    }
-}
-
 //MARK: - TableView Data Source
 extension ComposeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -987,7 +995,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
     }
     
     func tokenInputView(_ view: CLTokenInputView, didChangeHeightTo height: CGFloat) {
-        
         if view == self.toField {
             self.toHeightConstraint.constant = height
             if self.toField.isEditing {
@@ -1006,6 +1013,22 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 self.contactTableViewTopConstraint.constant = self.ccField.bounds.height + height
             }
         }
+    }
+    
+    func tokenInputViewShouldReturn(_ view: CLTokenInputView) -> Bool {
+        switch(view){
+        case toField:
+            if(self.bccHeightConstraint.constant == 0){
+                subjectField.becomeFirstResponder()
+                break
+            }
+            ccField.beginEditing()
+        case ccField:
+            bccField.beginEditing()
+        default:
+            subjectField.becomeFirstResponder()
+        }
+        return false
     }
 }
 
