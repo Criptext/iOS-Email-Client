@@ -11,13 +11,16 @@ import SignalProtocolFramework
 
 class FeedViewController: UIViewController{
     let HEADER_HEIGHT : CGFloat = 42.0
-    var feedsData: FeedsData = FeedsData()
+    var feedsData = FeedsData()
     @IBOutlet weak var noFeedsView: UIView!
     @IBOutlet weak var feedsTableView: UITableView!
     var mailboxVC : InboxViewController! {
         get {
             return self.navigationDrawerController?.rootViewController.childViewControllers.first as? InboxViewController
         }
+    }
+    var lastSeen : Date {
+        return mailboxVC.myAccount.lastTimeFeedOpened
     }
     
     override func viewDidLoad() {
@@ -39,7 +42,7 @@ class FeedViewController: UIViewController{
     
     func loadFeeds(clear: Bool = false){
         let date = clear ? Date() : feedsData.oldFeeds.last?.date ?? (feedsData.newFeeds.last?.date ?? Date())
-        let feeds = DBManager.getFeeds(since: date, limit: 20)
+        let feeds = DBManager.getFeeds(since: date, limit: 20, lastSeen: lastSeen)
         if(clear){
             feedsData.newFeeds = feeds.0
             feedsData.oldFeeds = feeds.1
@@ -56,7 +59,6 @@ class FeedViewController: UIViewController{
     }
     
     func viewClosed() {
-        DBManager.updateAllFeeds(isNew: true)
         loadFeeds(clear: true)
     }
 }
@@ -71,7 +73,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         cell.setLabels(feed.header, feed.subject, feed.formattedDate)
         cell.setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
-        cell.handleViewed(isNew: feed.isNew)
+        cell.handleViewed(isNew: feed.date > lastSeen)
         return cell
     }
     

@@ -12,13 +12,13 @@ import RealmSwift
 class Email: Object {
     
     enum Status : Int {
-        case none = 0
-        case sending = 1
-        case sent = 2
-        case delivered = 3
-        case opened = 4
-        case unsent = -1
-        case fail = -2
+        case none = 3
+        case sending = 4
+        case sent = 5
+        case delivered = 6
+        case opened = 7
+        case unsent = 2
+        case fail = 1
     }
     
     @objc dynamic var id = 0

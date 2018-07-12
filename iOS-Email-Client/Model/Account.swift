@@ -19,6 +19,7 @@ class Account: Object{
     @objc dynamic var regId : Int32 = 0
     @objc dynamic var signature = ""
     @objc dynamic var signatureEnabled = false
+    @objc dynamic var lastTimeFeedOpened = Date()
     
     override static func primaryKey() -> String? {
         return "username"

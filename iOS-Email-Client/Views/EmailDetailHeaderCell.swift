@@ -14,6 +14,8 @@ class EmailDetailHeaderCell: UITableViewHeaderFooterView{
     @IBOutlet weak var subjectHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var labelsListView: TagListView!
     @IBOutlet weak var starButton: UIButton!
+    @IBOutlet weak var marginTopView: UIView!
+    @IBOutlet weak var marginBottomView: UIView!
     var onStarPressed: (() -> Void)?
     
     override func awakeFromNib() {
@@ -42,7 +44,10 @@ class EmailDetailHeaderCell: UITableViewHeaderFooterView{
         }
         labelsListView.invalidateIntrinsicContentSize()
         starButton.setImage(starredImage, for: .normal)
-        labelsListView.isHidden = labelsListView.tagViews.count == 0
+        let hideTagsViews = labelsListView.tagViews.count == 0
+        marginTopView.isHidden = hideTagsViews
+        marginBottomView.isHidden = hideTagsViews
+        labelsListView.isHidden = hideTagsViews
     }
     
     func setSubject(_ subject: String){
