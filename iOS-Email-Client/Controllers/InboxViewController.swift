@@ -225,13 +225,12 @@ extension InboxViewController: EventHandlerDelegate {
             return result + [IndexPath(row: index, section: 0)]
         }
         tableView.reloadRows(at: pathsToUpdate, with: .automatic)
-        guard let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController,
-            let activityButton = self.activityBarButton.customView as? MIBadgeButton else {
+        guard let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
                 return
         }
         feedVC.loadFeeds(clear: true)
         let badgeCounter = feedVC.feedsData.newFeeds.count
-        activityButton.badgeString = badgeCounter > 0 ? badgeCounter.description : ""
+        updateFeedsBadge(counter: badgeCounter)
     }
     
     func didReceiveNewEmails(emails: [Email]) {
@@ -308,6 +307,13 @@ extension InboxViewController{
             ? DBManager.getThreads(from: mailboxData.selectedLabel, since: Date(), limit: 100).count
             : DBManager.getUnreadMails(from: mailboxData.selectedLabel).count
         countBarButton.title = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
+    }
+    
+    func updateFeedsBadge(counter: Int){
+        guard let activityButton = self.activityBarButton.customView as? MIBadgeButton else {
+            return
+        }
+        activityButton.badgeString = counter > 0 ? counter.description : ""
     }
 }
 
@@ -402,15 +408,14 @@ extension InboxViewController: UIGestureRecognizerDelegate {
 extension InboxViewController: NavigationDrawerControllerDelegate {
     func navigationDrawerController(navigationDrawerController: NavigationDrawerController, didClose position: NavigationDrawerPosition) {
         guard position == .right,
-            let feedVC = navigationDrawerController.rightViewController as? FeedViewController,
-            let activityButton = self.activityBarButton.customView as? MIBadgeButton else {
+            let feedVC = navigationDrawerController.rightViewController as? FeedViewController else {
             return
         }
         DBManager.update(account: myAccount, lastSeen: Date())
         feedVC.feedsTableView.isEditing = false
         feedVC.viewClosed()
         let badgeCounter = feedVC.feedsData.newFeeds.count
-        activityButton.badgeString = badgeCounter > 0 ? badgeCounter.description : ""
+        updateFeedsBadge(counter: badgeCounter)
     }
 }
 
