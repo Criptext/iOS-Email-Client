@@ -23,6 +23,7 @@ class SingleTextInputViewController: BaseUIPopover {
     override func viewDidLoad() {
         titleLabel.text = myTitle
         nameTextField.text = initInputText
+        nameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -34,8 +35,18 @@ class SingleTextInputViewController: BaseUIPopover {
         super.init(coder: aDecoder)
     }
     
+    @objc func onDonePress(_ sender: Any){
+        self.onOkPress(sender)
+    }
+    
+    @IBAction func onDidEndOnExit(_ sender: Any) {
+        self.onOkPress(sender)
+    }
+    
     @IBAction func onOkPress(_ sender: Any) {
-        self.onOk?(nameTextField.text!)
+        if(!nameTextField.text!.isEmpty){
+            self.onOk?(nameTextField.text!)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

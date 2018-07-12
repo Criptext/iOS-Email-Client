@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -54,6 +54,7 @@
                                     <constraint firstAttribute="height" constant="30" id="azt-Go-Cgg"/>
                                 </constraints>
                                 <connections>
+                                    <action selector="textfieldDidEndOnExit:" destination="xiP-Yr-e9p" eventType="editingDidEndOnExit" id="jjo-ta-PRz"/>
                                     <action selector="usernameChange:" destination="xiP-Yr-e9p" eventType="editingChanged" id="SJ5-Ju-UN9"/>
                                 </connections>
                             </view>
@@ -95,7 +96,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-Fm-cgQ">
-                                <rect key="frame" x="202" y="395.5" width="119" height="20"/>
+                                <rect key="frame" x="202" y="394" width="119" height="23.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="kke-wn-nCO"/>
                                 </constraints>
@@ -269,6 +270,7 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="inputEditEnd:" destination="OMZ-WS-rzb" eventType="editingChanged" id="G4L-WO-LhT"/>
+                                                    <action selector="onDidEndOnExit:" destination="OMZ-WS-rzb" eventType="editingDidEndOnExit" id="ct9-Fe-iFV"/>
                                                 </connections>
                                             </view>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WAM-eM-sVg" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -305,6 +307,7 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="inputEditEnd:" destination="OMZ-WS-rzb" eventType="editingChanged" id="kbB-RI-LkO"/>
+                                                    <action selector="onDidEndOnExit:" destination="OMZ-WS-rzb" eventType="editingDidEndOnExit" id="PHd-cA-XkO"/>
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z8F-vI-hLI" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -342,6 +345,7 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="inputEditEnd:" destination="OMZ-WS-rzb" eventType="editingChanged" id="Q9W-2C-hW9"/>
+                                                    <action selector="onDidEndOnExit:" destination="OMZ-WS-rzb" eventType="editingDidEndOnExit" id="YoE-ZW-gb1"/>
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BJd-tc-Byi" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -379,6 +383,7 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="inputEditEnd:" destination="OMZ-WS-rzb" eventType="editingChanged" id="IR8-Ct-EYt"/>
+                                                    <action selector="onDidEndOnExit:" destination="OMZ-WS-rzb" eventType="editingDidEndOnExit" id="47k-IR-8FF"/>
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lKE-K8-r13" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -415,6 +420,7 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="inputEditEnd:" destination="OMZ-WS-rzb" eventType="editingChanged" id="i1i-Oo-pto"/>
+                                                    <action selector="onDidEndOnExit:" destination="OMZ-WS-rzb" eventType="editingDidEndOnExit" id="I3R-ID-kIr"/>
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="MIl-CE-AOA">
@@ -751,7 +757,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGe-4s-CNR">
-                                                <rect key="frame" x="33" y="97.5" width="309" height="31.5"/>
+                                                <rect key="frame" x="33" y="95" width="309" height="37"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1167,13 +1173,13 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NT8-w1-8Xk">
-                                                <rect key="frame" x="33" y="146.5" width="309" height="31.5"/>
+                                                <rect key="frame" x="33" y="144" width="309" height="37"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMf-wY-jdP">
-                                                <rect key="frame" x="33" y="188" width="309" height="48"/>
+                                                <rect key="frame" x="33" y="191" width="309" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="FXT-bk-n8F"/>
                                                 </constraints>
@@ -1182,7 +1188,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8N5-Z7-gsp">
-                                                <rect key="frame" x="37.5" y="425" width="300.5" height="44"/>
+                                                <rect key="frame" x="37.5" y="428.5" width="300.5" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="AJV-8N-tNH"/>
@@ -1202,7 +1208,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot?" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMV-2J-3gD">
-                                                <rect key="frame" x="57" y="378" width="261" height="20"/>
+                                                <rect key="frame" x="57" y="378" width="261" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1239,6 +1245,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onPasswordChange:" destination="SKd-jY-l7u" eventType="editingChanged" id="mAo-xh-j0X"/>
+                                                    <action selector="textfieldDidEndOnExit:" destination="SKd-jY-l7u" eventType="editingDidEndOnExit" id="OtF-ra-sB5"/>
                                                 </connections>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="Kaa-RK-1Lv">
@@ -1259,7 +1266,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="O3S-ch-dG6">
-                                                <rect key="frame" x="178" y="437" width="20" height="20"/>
+                                                <rect key="frame" x="178" y="440.5" width="20" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="2Un-Y3-w53"/>
                                                     <constraint firstAttribute="width" constant="20" id="Duk-rf-yvJ"/>

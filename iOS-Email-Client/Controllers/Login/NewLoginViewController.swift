@@ -43,6 +43,7 @@ class NewLoginViewController: UIViewController{
         usernameTextField.dividerNormalColor = UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
         usernameTextField.dividerActiveColor = UIColor.white
         usernameTextField.placeholderActiveScale = 0
+        usernameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
     }
     
     func loginButtonInit(){
@@ -59,6 +60,10 @@ class NewLoginViewController: UIViewController{
     
         normalString.append(attributedString)
         signupButton.setAttributedTitle(normalString, for: .normal)
+    }
+    
+    @objc func onDonePress(_ sender: Any){
+        self.onLoginPress(sender)
     }
     
     func toggleLoadingView(_ show: Bool){
@@ -104,6 +109,10 @@ class NewLoginViewController: UIViewController{
             self.jumpToLoginDeviceView()
         }
         
+    }
+    
+    @IBAction func textfieldDidEndOnExit(_ sender: Any) {
+        self.onLoginPress(sender)
     }
     
     func showLoginError(error: String){
