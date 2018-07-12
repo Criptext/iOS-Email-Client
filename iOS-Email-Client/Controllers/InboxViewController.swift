@@ -19,6 +19,8 @@ import SignalProtocolFramework
 import RealmSwift
 
 class InboxViewController: UIViewController {
+    let BOTTOM_PADDING : CGFloat = 18.0
+    let SNACKBAR_PADDING : CGFloat = 83.0
     
     @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     @IBOutlet weak var tableView: UITableView!
@@ -49,6 +51,7 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var envelopeTitleView: UILabel!
     @IBOutlet weak var envelopeSubtitleView: UILabel!
     @IBOutlet weak var envelopeView: UIView!
+    @IBOutlet weak var composeButtonBottomConstraint: NSLayoutConstraint!
     
     var myAccount: Account!
     var originalNavigationRect:CGRect!
@@ -944,5 +947,23 @@ extension InboxViewController: GeneralMoreOptionsViewDelegate{
     
     func onRestorePress() {
         self.restoreThreads()
+    }
+}
+
+extension InboxViewController: SnackbarControllerDelegate {
+    func snackbarController(snackbarController: SnackbarController, willShow snackbar: Snackbar) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.25) {
+            self.composeButtonBottomConstraint.constant = self.SNACKBAR_PADDING
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func snackbarController(snackbarController: SnackbarController, willHide snackbar: Snackbar) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.25) {
+            self.composeButtonBottomConstraint.constant = self.BOTTOM_PADDING
+            self.view.layoutIfNeeded()
+        }
     }
 }

@@ -130,17 +130,17 @@ extension UIViewController {
     }
     
     func showSnackbar(_ title:String, attributedText:NSAttributedString?, buttons:String, permanent:Bool){
-        guard let snackbarVC = self.snackbarController else {
+        guard let snackbarVC = self.snackbarController as? CriptextSnackbarController else {
             return
         }
         
         if let attributedText = attributedText {
-            snackbarVC.snackbar.attributedText = attributedText
+            snackbarVC.customSnackbar.attributedText = attributedText
         } else {
-            snackbarVC.snackbar.text = title
+            snackbarVC.customSnackbar.text = title
         }
         
-        snackbarVC.snackbar.backgroundColor = Icon.system.color
+        snackbarVC.customSnackbar.backgroundColor = Icon.system.color
         snackbarVC.animate(snackbar: .visible, delay: 0)
         
         if !permanent {
@@ -149,14 +149,14 @@ extension UIViewController {
     }
     
     func setSnackbar(_ title:String, attributedText:NSAttributedString?){
-        guard let snackbarVC = self.snackbarController else {
+        guard let snackbarVC = self.snackbarController as? CriptextSnackbarController else {
             return
         }
         
         if let attributedText = attributedText {
-            snackbarVC.snackbar.attributedText = attributedText
+            snackbarVC.customSnackbar.attributedText = attributedText
         } else {
-            snackbarVC.snackbar.text = title
+            snackbarVC.customSnackbar.text = title
         }
     }
     
@@ -551,6 +551,12 @@ extension Data {
     func plainBase64String() -> String {
         let customBase64String = self.base64EncodedString()
         return customBase64String
+    }
+}
+
+extension UIWindow {
+    class func getBottomMargin(window: UIWindow?) -> CGFloat {
+        return window?.safeAreaInsets.bottom ?? 0.0
     }
 }
 

@@ -108,7 +108,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
         WebSocketManager.sharedInstance.connect(account: myAccount!)
-        return SnackbarController(rootViewController: drawerVC)
+        let paddingBottom = window?.safeAreaInsets.bottom ?? 0.0
+        let snackbarController = CriptextSnackbarController(rootViewController: drawerVC)
+        snackbarController.setBottomPadding(padding: paddingBottom)
+        snackbarController.delegate = inboxVC
+        return snackbarController
     }
     
     func createSystemLabels(){
