@@ -14,10 +14,12 @@ class ContactsDetailUIPopover: BaseUIPopover{
     @IBOutlet weak var replyToView: UIView!
     @IBOutlet weak var toEmailsTableView: UITableView!
     @IBOutlet weak var ccEmailsTableView: UITableView!
+    @IBOutlet weak var bccEmailsTableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var toHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var toLabelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var ccViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bccViewHeightConstraint: NSLayoutConstraint!
     var email: Email!
     
     init(){
@@ -33,9 +35,15 @@ class ContactsDetailUIPopover: BaseUIPopover{
         setFromContact()
         dateLabel.text = email.getFullDate()
         replyToView.isHidden = true
-        toLabelHeightConstraint.constant = CGFloat(email.getContacts(type: .to).count * 40)
-        toHeightConstraint.constant = CGFloat(email.getContacts(type: .to).count * 40)
-        ccViewHeightConstraint.constant = CGFloat(email.getContacts(type: .cc).count * 40)
+        toHeightConstraint.constant = CGFloat(email.getContacts(type: .to).count * 28)
+        ccViewHeightConstraint.constant = CGFloat(email.getContacts(type: .cc).count * 28)
+        bccViewHeightConstraint.constant = CGFloat(email.getContacts(type: .bcc).count * 28)
+        toEmailsTableView.register(UINib(nibName: "ContactTableViewCell", bundle: nil), forCellReuseIdentifier: "contactCell")
+        ccEmailsTableView.register(UINib(nibName: "ContactTableViewCell", bundle: nil), forCellReuseIdentifier: "contactCell")
+        bccEmailsTableView.register(UINib(nibName: "ContactTableViewCell", bundle: nil), forCellReuseIdentifier: "contactCell")
+        ccEmailsTableView.isScrollEnabled = false
+        toEmailsTableView.isScrollEnabled = false;
+        bccEmailsTableView.isScrollEnabled = false;
     }
     
     func setFromContact(){
@@ -58,21 +66,33 @@ class ContactsDetailUIPopover: BaseUIPopover{
 
 extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let type : ContactType = tableView == toEmailsTableView ? .to : .cc
+        let type = typeFromTableView(tableView)
         return email.getContacts(type: type).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "toCell")
-        let type : ContactType = tableView == toEmailsTableView ? .to : .cc
+        let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell") as! PlainContactTableViewCell
+        let type = typeFromTableView(tableView)
         let contact = email.getContacts(type: type)[indexPath.row]
-        cell.textLabel?.numberOfLines = 2
-        cell.textLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
+        cell.contactLabel?.numberOfLines = 2
+        cell.contactLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40.0
+        return 25.0
+    }
+    
+    func typeFromTableView(_ tableView: UITableView) -> ContactType {
+        switch(tableView){
+        case ccEmailsTableView:
+            return .cc
+        case bccEmailsTableView:
+            print(email.getContacts(type: .bcc))
+            return .bcc
+        default:
+            return .to
+        }
     }
     
 }

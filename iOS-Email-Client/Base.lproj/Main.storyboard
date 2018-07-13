@@ -1260,26 +1260,6 @@
                                     <outlet property="labelLabel" destination="dTw-Eb-nbH" id="CRL-hG-DgQ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelHeader" id="fzs-UX-w9w">
-                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fzs-UX-w9w" id="yZf-oF-Odk">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show in label list" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEM-qw-2ix">
-                                            <rect key="frame" x="29" y="12" width="324" height="20.5"/>
-                                            <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="15"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="BEM-qw-2ix" secondAttribute="trailing" constant="22" id="0bd-sD-zZr"/>
-                                        <constraint firstItem="BEM-qw-2ix" firstAttribute="centerY" secondItem="yZf-oF-Odk" secondAttribute="centerY" id="2Ke-Ga-JyD"/>
-                                        <constraint firstItem="BEM-qw-2ix" firstAttribute="leading" secondItem="yZf-oF-Odk" secondAttribute="leading" constant="29" id="XYx-OP-glI"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="cxx-G7-GYN" id="K0k-4v-ngj"/>

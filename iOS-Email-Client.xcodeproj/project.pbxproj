@@ -174,6 +174,9 @@
 		7CB3B942208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB3B941208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib */; };
 		7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */; };
 		7CB44949207BBE0C009430EB /* MenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB44948207BBE0C009430EB /* MenuData.swift */; };
+		7CB60A7720F8068900C9090C /* LabelsHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB60A7620F8068900C9090C /* LabelsHeaderTableViewCell.xib */; };
+		7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */; };
+		7CB60A7B20F81A5600C9090C /* PlainContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
@@ -388,6 +391,9 @@
 		7CB3B941208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailMoreOptionsUIView.xib; sourceTree = "<group>"; };
 		7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTableViewCell.swift; sourceTree = "<group>"; };
 		7CB44948207BBE0C009430EB /* MenuData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuData.swift; sourceTree = "<group>"; };
+		7CB60A7620F8068900C9090C /* LabelsHeaderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelsHeaderTableViewCell.xib; sourceTree = "<group>"; };
+		7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
+		7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainContactTableViewCell.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
@@ -724,6 +730,9 @@
 				7C1F3B4920EBE8B000F39E89 /* LabelsFooterTableViewCell.xib */,
 				7CDB424520EED69600BE26F0 /* EmailTableHeaderView.xib */,
 				7CDB424720EED84600BE26F0 /* EmailTableFooterView.xib */,
+				7CB60A7620F8068900C9090C /* LabelsHeaderTableViewCell.xib */,
+				7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */,
+				7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -895,10 +904,12 @@
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
+				7CB60A7720F8068900C9090C /* LabelsHeaderTableViewCell.xib in Resources */,
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
 				7C7F2FF520B5DB6F00A2CB32 /* SingleTextInputUIPopover.xib in Resources */,
 				412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */,
 				7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */,
+				7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */,
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
@@ -1038,6 +1049,7 @@
 				7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */,
 				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				7C5FD826205C857C000E5F14 /* Utils.swift in Sources */,
+				7CB60A7B20F81A5600C9090C /* PlainContactTableViewCell.swift in Sources */,
 				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
 				41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */,
 				7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */,

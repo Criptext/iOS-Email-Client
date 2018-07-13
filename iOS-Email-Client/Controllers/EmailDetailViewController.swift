@@ -252,7 +252,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let email = emailData.emails[indexPath.row]
         let contactsPopover = ContactsDetailUIPopover()
         contactsPopover.email = email
-        presentPopover(contactsPopover, sender, height: CGFloat(50 + 2 * email.emailContacts.count * 20))
+        presentPopover(contactsPopover, sender, height: min(CGFloat(70 + email.emailContacts.count * 28), 300.0))
     }
     
     func handleReplyTap(_ cell: EmailTableViewCell, _ sender: UIView){

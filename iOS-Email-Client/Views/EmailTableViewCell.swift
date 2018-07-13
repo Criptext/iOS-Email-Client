@@ -19,6 +19,7 @@ protocol EmailTableViewCellDelegate {
 }
 
 class EmailTableViewCell: UITableViewCell{
+    @IBOutlet weak var infoViewContainer: UIView!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var previewLabel: UILabel!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!

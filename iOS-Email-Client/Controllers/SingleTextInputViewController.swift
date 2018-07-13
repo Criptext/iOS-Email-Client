@@ -44,10 +44,12 @@ class SingleTextInputViewController: BaseUIPopover {
     }
     
     @IBAction func onOkPress(_ sender: Any) {
-        if(!nameTextField.text!.isEmpty){
-            self.onOk?(nameTextField.text!)
+        let text = nameTextField.text!
+        self.dismiss(animated: true){ [weak self] in
+            if(!text.isEmpty){
+                self?.onOk?(text)
+            }
         }
-        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func onCancelPress(_ sender: Any) {

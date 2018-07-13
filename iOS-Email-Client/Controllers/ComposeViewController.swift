@@ -559,7 +559,7 @@ class ComposeViewController: UIViewController {
     func presentPopover(){
         let setPassPopover = EmailSetPasswordViewController()
         setPassPopover.delegate = self
-        setPassPopover.preferredContentSize = CGSize(width: 270, height: 300)
+        setPassPopover.preferredContentSize = CGSize(width: 270, height: 340)
         setPassPopover.popoverPresentationController?.sourceView = self.view
         setPassPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         setPassPopover.popoverPresentationController?.permittedArrowDirections = []
@@ -703,30 +703,28 @@ extension ComposeViewController{
     
     //4.1
     @objc func keyboardWillShow(notification: NSNotification) {
-        
         let info = notification.userInfo!
-        
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-        
+        var marginBottom: CGFloat = 0.0
+        if #available(iOS 11.0, *),
+            let window = UIApplication.shared.keyWindow {
+            marginBottom = window.safeAreaInsets.bottom > 0 ? -25.0 : 0.0
+        }
+        self.view.layoutIfNeeded()
         UIView.animate(withDuration: duration) { () -> Void in
-            
-            self.toolbarBottomConstraint.constant = keyboardFrame.size.height + 5
-            
+            print(marginBottom)
+            self.toolbarBottomConstraint.constant = keyboardFrame.size.height + marginBottom
             self.view.layoutIfNeeded()
-            
         }
         
     }
     
     //4.2
     @objc func keyboardWillHide(notification: NSNotification) {
-        
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-        
+        self.view.layoutIfNeeded()
         UIView.animate(withDuration: duration) { () -> Void in
-            
             self.toolbarBottomConstraint.constant = self.toolbarBottomConstraintInitialValue!
             self.view.layoutIfNeeded()
             

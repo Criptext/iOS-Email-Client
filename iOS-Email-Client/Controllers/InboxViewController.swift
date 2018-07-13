@@ -463,7 +463,7 @@ extension InboxViewController: UITableViewDataSource{
             mailboxData.fetchWorker = DispatchWorkItem(block: {
                 self.loadMails(since: self.mailboxData.threads.last?.date ?? Date())
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: mailboxData.fetchWorker!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: mailboxData.fetchWorker!)
         }
         return footerView
     }
