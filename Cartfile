@@ -5,7 +5,7 @@ github "SwiftyJSON/SwiftyJSON"
 github "realm/realm-cocoa"
 github "danieltigse/CLTokenInputView" ~> 2.7.0
 github "CosmicMind/Material"
-github "Hirobreak/CICropPicker" == 1.1.1
+github "Hirobreak/CICropPicker" == 1.1.2
 github "rs/SDWebImage"
 github "Marxon13/M13Checkbox"
 github "tidwall/SwiftWebSocket"
