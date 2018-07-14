@@ -247,6 +247,17 @@ class APIManager {
                 completion(nil, fileURL.path)
         }
     }
+    
+    class func commitFile(filetoken: String, token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.fileServiceUrl)/file/save"
+        let headers = ["Authorization": "Basic \(token)"]
+        let params = ["files" : [
+            ["token": filetoken]
+            ]]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            completion(response.error)
+        }
+    }
 }
 
 extension APIManager {
