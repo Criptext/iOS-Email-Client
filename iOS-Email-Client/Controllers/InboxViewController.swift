@@ -532,7 +532,7 @@ extension InboxViewController: UITableViewDataSource{
         let navSettingsVC = UINavigationController(rootViewController: tabsVC)
         navSettingsVC.navigationBar.barStyle = .blackTranslucent
         navSettingsVC.navigationBar.barTintColor = .lightText
-        let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.regular.size(17)!] as [NSAttributedStringKey : Any]
+        let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         self.navigationController?.childViewControllers.last!.present(navSettingsVC, animated: true, completion: nil)
     }
@@ -880,7 +880,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func sendMail(email: Email) {
-        showSendingSnackBar(message: "  Sending email...", permanent: true)
+        showSendingSnackBar(message: "Sending Email...", permanent: true)
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
         sendMailAsyncTask.start { (error, data) in
@@ -889,7 +889,7 @@ extension InboxViewController: ComposerSendMailDelegate {
                 self.hideSnackbar()
                 return
             }
-            self.showSendingSnackBar(message: "  Email sent!!!", permanent: false)
+            self.showSendingSnackBar(message: "Email Sent", permanent: false)
             self.reloadIfSentMailbox(email: email)
             self.notifyEmailDetailController(email: email)
         }
@@ -910,11 +910,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     
     func showSendingSnackBar(message: String, permanent: Bool) {
         let fullString = NSMutableAttributedString(string: "")
-        let image1Attachment = NSTextAttachment()
-        image1Attachment.image = #imageLiteral(resourceName: "lock")
-        let image1String = NSAttributedString(attachment: image1Attachment)
-        let attrs = [NSAttributedStringKey.font : Font.bold.size(16)!, NSAttributedStringKey.foregroundColor : UIColor.white]
-        fullString.append(image1String)
+        let attrs = [NSAttributedStringKey.font : Font.regular.size(15)!, NSAttributedStringKey.foregroundColor : UIColor.white]
         fullString.append(NSAttributedString(string: message, attributes: attrs))
         self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
     }

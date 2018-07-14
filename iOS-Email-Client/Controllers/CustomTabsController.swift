@@ -13,7 +13,7 @@ class CustomTabsController: TabsController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Settings"
+        self.navigationItem.title = "SETTINGS"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
     }
     

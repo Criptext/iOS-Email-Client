@@ -590,7 +590,7 @@
         <!--Web View View Controller-->
         <scene sceneID="ojB-CP-5Wn">
             <objects>
-                <viewController id="dno-Ix-0Gm" customClass="WebViewViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="webviewViewController" id="dno-Ix-0Gm" customClass="WebViewViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jfk-SW-kCX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -631,6 +631,7 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="myNavigationItem" destination="M8M-YR-2SD" id="hq0-G9-434"/>
                         <outlet property="webview" destination="Wu0-SG-zQv" id="hm4-dO-7Jq"/>
                     </connections>
                 </viewController>

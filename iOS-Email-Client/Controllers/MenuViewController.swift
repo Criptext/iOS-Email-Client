@@ -48,6 +48,7 @@ class MenuViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         menuData.reloadLabels()
+        hideCustomLabels()
         labelsTableView.reloadData()
     }
     
@@ -77,17 +78,29 @@ class MenuViewController: UIViewController{
         guard menuData.expandedLabels else {
             let labelsHeight = menuData.labels.count > MAX_LABELS_DISPLAY ? MAX_LABELS_HEIGHT : CGFloat(menuData.labels.count) * LABEL_CELL_HEIGHT
             menuData.expandedLabels = true
-            labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-down")
-            scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT + labelsHeight)
-            scrollInnerViewHeightConstraint.constant = MENU_CONTENT_HEIGHT + labelsHeight
-            labelsTableHeightContraint.constant = labelsHeight
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.25) {
+                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.MENU_CONTENT_HEIGHT + labelsHeight)
+                self.scrollInnerViewHeightConstraint.constant = self.MENU_CONTENT_HEIGHT + labelsHeight
+                self.labelsTableHeightContraint.constant = labelsHeight
+                self.labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-down")
+                self.view.layoutIfNeeded()
+            }
             return
         }
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.25) {
+            self.hideCustomLabels()
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func hideCustomLabels(){
         menuData.expandedLabels = false
-        labelsTableHeightContraint.constant = 0.0
-        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
-        scrollInnerViewHeightConstraint.constant = MENU_CONTENT_HEIGHT
-        labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-up")
+        self.labelsTableHeightContraint.constant = 0.0
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.MENU_CONTENT_HEIGHT)
+        self.scrollInnerViewHeightConstraint.constant = self.MENU_CONTENT_HEIGHT
+        self.labelsTapIconView.image = #imageLiteral(resourceName: "new-arrow-up")
     }
     
     func refreshBadges(){

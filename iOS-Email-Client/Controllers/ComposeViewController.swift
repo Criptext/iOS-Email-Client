@@ -289,11 +289,6 @@ class ComposeViewController: UIViewController {
         self.resignKeyboard()
         
         var subject = self.subjectField.text ?? ""
-        
-        if subject.isEmpty {
-            subject = "No Subject"
-        }
-        
         //create draft
         let draft = Email()
         draft.status = .none

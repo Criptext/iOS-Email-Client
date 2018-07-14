@@ -68,6 +68,9 @@ class InboxTableViewCell: UITableViewCell {
         let participants = thread.getContactsString(replaceWithMe: myEmail)
         let useTo = label == SystemLabel.sent.id || label == SystemLabel.draft.id
         senderLabel.text = participants.isEmpty ? "<Empty Contact List>" : "\(useTo ? "To: " : "")\(participants)"
+        if(label == SystemLabel.draft.id){
+            senderLabel.attributedText = NSAttributedString(string: "Draft", attributes: [NSAttributedStringKey.foregroundColor: UIColor.alert])
+        }
         subjectLabel.text = thread.subject == "" ? "(No Subject)" : thread.subject
         previewLabel.text = thread.preview
         dateLabel.text = thread.getFormattedDate()
