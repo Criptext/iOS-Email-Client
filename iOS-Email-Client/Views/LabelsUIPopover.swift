@@ -64,7 +64,7 @@ class LabelsUIPopover: BaseUIPopover {
     }
     
     func preparePopover(rootView: UIViewController, height: Int){
-        self.preferredContentSize = CGSize(width: 269, height: height)
+        self.preferredContentSize = CGSize(width: Constants.popoverWidth, height: height)
         self.popoverPresentationController?.sourceView = rootView.view
         self.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: rootView.view.frame.size.width, height: rootView.view.frame.size.height)
         self.popoverPresentationController?.permittedArrowDirections = []

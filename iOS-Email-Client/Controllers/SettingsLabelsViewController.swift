@@ -19,6 +19,9 @@ class SettingsLabelsViewController: UITableViewController {
         tabItem.setTabItemColor(.mainUI, for: .selected)
         
         self.tableView.register(UINib(nibName: "LabelsFooterTableViewCell", bundle: nil ), forHeaderFooterViewReuseIdentifier: "settingsAddLabel")
+        self.tableView.register(UINib(nibName: "LabelsHeaderTableViewCell", bundle: nil ), forHeaderFooterViewReuseIdentifier: "settingsHeaderLabel")
+        
+        definesPresentationContext = true
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,7 +60,7 @@ class SettingsLabelsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return tableView.dequeueReusableCell(withIdentifier: "settingsLabelHeader")
+        return tableView.dequeueReusableHeaderFooterView(withIdentifier: "settingsHeaderLabel")
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -76,7 +79,7 @@ class SettingsLabelsViewController: UITableViewController {
         changeNamePopover.onOk = { [weak self] text in
             self?.createLabel(text: text)
         }
-        changeNamePopover.preferredContentSize = CGSize(width: 270, height: 178)
+        changeNamePopover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: Constants.singleTextPopoverHeight)
         changeNamePopover.popoverPresentationController?.sourceView = parentView
         changeNamePopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: parentView.frame.size.width, height: parentView.frame.size.height)
         changeNamePopover.popoverPresentationController?.permittedArrowDirections = []
@@ -85,7 +88,12 @@ class SettingsLabelsViewController: UITableViewController {
     }
     
     func createLabel(text: String){
-        let label = Label(text)
+        let labelText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let existingLabel = DBManager.getLabel(text: labelText) {
+            self.showAlert("Repeated Label", message: "Label '\(existingLabel.text)' already exist!", style: .alert)
+            return
+        }
+        let label = Label(labelText)
         label.incrementID()
         DBManager.store(label)
         self.labels.append(label)

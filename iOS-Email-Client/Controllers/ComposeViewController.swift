@@ -33,6 +33,7 @@ class ComposeViewController: UIViewController {
     let ENTER_LINE_HEIGHT : CGFloat = 28.0
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
+    let PASSWORD_POPUP_HEIGHT = 340
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
@@ -559,7 +560,7 @@ class ComposeViewController: UIViewController {
     func presentPopover(){
         let setPassPopover = EmailSetPasswordViewController()
         setPassPopover.delegate = self
-        setPassPopover.preferredContentSize = CGSize(width: 270, height: 300)
+        setPassPopover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: PASSWORD_POPUP_HEIGHT)
         setPassPopover.popoverPresentationController?.sourceView = self.view
         setPassPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         setPassPopover.popoverPresentationController?.permittedArrowDirections = []
@@ -703,30 +704,27 @@ extension ComposeViewController{
     
     //4.1
     @objc func keyboardWillShow(notification: NSNotification) {
-        
         let info = notification.userInfo!
-        
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-        
+        var marginBottom: CGFloat = 0.0
+        if #available(iOS 11.0, *),
+            let window = UIApplication.shared.keyWindow {
+            marginBottom = window.safeAreaInsets.bottom
+        }
+        self.view.layoutIfNeeded()
         UIView.animate(withDuration: duration) { () -> Void in
-            
-            self.toolbarBottomConstraint.constant = keyboardFrame.size.height + 5
-            
+            self.toolbarBottomConstraint.constant = keyboardFrame.size.height - marginBottom
             self.view.layoutIfNeeded()
-            
         }
         
     }
     
     //4.2
     @objc func keyboardWillHide(notification: NSNotification) {
-        
         let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
-        
+        self.view.layoutIfNeeded()
         UIView.animate(withDuration: duration) { () -> Void in
-            
             self.toolbarBottomConstraint.constant = self.toolbarBottomConstraintInitialValue!
             self.view.layoutIfNeeded()
             

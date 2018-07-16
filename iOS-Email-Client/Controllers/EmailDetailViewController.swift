@@ -11,6 +11,9 @@ import Foundation
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
     let ESTIMATED_SECTION_HEADER_HEIGHT : CGFloat = 50
+    let CONTACTS_BASE_HEIGHT = 70
+    let CONTACTS_MAX_HEIGHT: CGFloat = 300.0
+    let CONTACTS_ROW_HEIGHT = 28
     
     var emailData : EmailDetailData!
     var mailboxData : MailboxData!
@@ -252,7 +255,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let email = emailData.emails[indexPath.row]
         let contactsPopover = ContactsDetailUIPopover()
         contactsPopover.email = email
-        presentPopover(contactsPopover, sender, height: CGFloat(50 + 2 * email.emailContacts.count * 20))
+        presentPopover(contactsPopover, sender, height: min(CGFloat(CONTACTS_BASE_HEIGHT + email.emailContacts.count * CONTACTS_ROW_HEIGHT), CONTACTS_MAX_HEIGHT))
     }
     
     func handleReplyTap(_ cell: EmailTableViewCell, _ sender: UIView){
