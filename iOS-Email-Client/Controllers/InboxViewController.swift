@@ -104,6 +104,10 @@ class InboxViewController: UIViewController {
         
         self.sendFailEmail()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+        
+        SenderLinkDeviceAsyncTask().start { (error, something) in
+            print("HEY")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

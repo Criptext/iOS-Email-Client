@@ -108,6 +108,39 @@ class Email: Object {
     func getFiles() -> [File] {
         return Array(files)
     }
+    
+    func toDictionary() -> [String: Any] {
+        let dateString = Formatter.iso8601.string(from: date)
+        return ["table": "email",
+                "object": [
+                    "id": id,
+                    "messageId": messageId,
+                    "threadId": threadId,
+                    "unread": unread,
+                    "secure": secure,
+                    "content": content,
+                    "preview": preview,
+                    "subject": subject,
+                    "delivered": delivered,
+                    "date": dateString,
+                    "metadataKey": key,
+                    "isMuted": isMuted
+            ]
+        ]
+    }
+}
+
+extension Email: CustomDictionary {
+    func toDictionaryLabels() -> [[String: Any]] {
+        return labels.map { (label) -> [String: Any] in
+            return ["table": "emailLabel",
+                    "object": [
+                        "emailId": self.id,
+                        "labelId": label.id,
+                ]
+            ]
+        }
+    }
 }
 
 func ==(lhs: Email, rhs: Email) -> Bool {

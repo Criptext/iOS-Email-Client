@@ -32,6 +32,23 @@ class DBManager {
             realm.deleteAll()
         }
     }
+    
+    class func retrieveWholeDB() -> [String: Any] {
+        let realm = try! Realm()
+        let contacts = realm.objects(Contact.self)
+        let labels = realm.objects(Label.self)
+        let emails = realm.objects(Email.self)
+        let files = realm.objects(File.self)
+        let emailContacts = realm.objects(EmailContact.self)
+        
+        return [
+            "contacts": contacts,
+            "labels": labels,
+            "emails": emails,
+            "files": files,
+            "emailContacts": emailContacts
+        ]
+    }
 }
 
 //MARK: - Account related
@@ -320,6 +337,10 @@ extension DBManager {
         let realm = try! Realm()
         
         try! realm.write {
+            emails.forEach({ (email) in
+                realm.delete(email.files)
+                realm.delete(email.emailContacts)
+            })
             realm.delete(emails)
         }
     }
@@ -356,7 +377,10 @@ extension DBManager {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(contacts, update: true)
+            contacts.forEach({ (contact) in
+                contact.id = (realm.objects(Contact.self).max(ofProperty: "id") as Int? ?? 0) + 1
+                realm.add(contacts, update: true)
+            })
         }
     }
     
@@ -376,6 +400,13 @@ extension DBManager {
         let results = realm.objects(Contact.self).filter(predicate)
         
         return results.first
+    }
+    
+    class func update(contact: Contact, name: String){
+        let realm = try! Realm()
+        try! realm.write {
+            contact.displayName = name
+        }
     }
     
 }
@@ -649,6 +680,7 @@ extension DBManager {
     class func store(_ file: File){
         let realm = try! Realm()
         try! realm.write {
+            file.id = (realm.objects(File.self).max(ofProperty: "id") as Int? ?? 0) + 1
             realm.add(file, update: true)
         }
     }
@@ -657,7 +689,10 @@ extension DBManager {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(files, update: true)
+            files.forEach({ (file) in
+                file.id = (realm.objects(File.self).max(ofProperty: "id") as Int? ?? 0) + 1
+                realm.add(files, update: true)
+            })
         }
     }
     
