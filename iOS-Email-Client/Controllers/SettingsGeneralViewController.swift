@@ -80,7 +80,7 @@ class SettingsGeneralViewController: UITableViewController{
         changeNamePopover.onOk = { text in
             DBManager.update(account: self.myAccount, name: text)
         }
-        changeNamePopover.preferredContentSize = CGSize(width: 270, height: 178)
+        changeNamePopover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: Constants.singleTextPopoverHeight)
         changeNamePopover.popoverPresentationController?.sourceView = self.view
         changeNamePopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         changeNamePopover.popoverPresentationController?.permittedArrowDirections = []
