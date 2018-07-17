@@ -16,6 +16,7 @@ protocol EmailTableViewCellDelegate {
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
     func tableViewCellDidTapAttachment(file: File)
+    func tableViewCellDidTapLink(url: String)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -239,6 +240,16 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
             self.loadedContent = true
             self.delegate?.tableViewCellDidChangeHeight(newHeight, email: self.email)
         }
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard navigationAction.navigationType == .linkActivated,
+            let link = navigationAction.request.url?.absoluteString else {
+                decisionHandler(.allow)
+                return
+        }
+        decisionHandler(.cancel)
+        delegate?.tableViewCellDidTapLink(url: link)
     }
 }
 

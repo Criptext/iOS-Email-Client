@@ -93,17 +93,11 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if(section == 0){
-            return feedsData.newFeeds.count > 0 ? "NEW" : nil
-        }
-        return feedsData.oldFeeds.count > 0 ? "OLDER" : nil
+        return section == 0 ? "NEW" : "OLDER"
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if(section == 0){
-            return feedsData.newFeeds.count > 0 ? HEADER_HEIGHT : 0.0
-        }
-        return feedsData.oldFeeds.count > 0 ? HEADER_HEIGHT : 0.0
+        return feedsData.newFeeds.count == 0 || feedsData.oldFeeds.count == 0 ? 0.0 : HEADER_HEIGHT
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

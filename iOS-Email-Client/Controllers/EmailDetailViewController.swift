@@ -7,6 +7,7 @@
 //
 import Material
 import Foundation
+import Photos
 
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
@@ -166,6 +167,13 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
     
+    func tableViewCellDidTapLink(url: String) {
+        let storyboard = UIStoryboard.init(name: "Login", bundle: nil)
+        let webviewController = storyboard.instantiateViewController(withIdentifier: "webviewViewController") as! WebViewViewController
+        webviewController.url = url
+        self.present(webviewController, animated: true, completion: nil)
+    }
+    
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
         email.cellHeight = height
         emailsTableView.beginUpdates()
@@ -196,7 +204,18 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewCellDidTapAttachment(file: File) {
-        fileManager.registerFile(file: file)
+        PHPhotoLibrary.requestAuthorization({ (status) in
+            DispatchQueue.main.async {
+                switch status {
+                case .authorized:
+                    self.fileManager.registerFile(file: file)
+                    break
+                default:
+                    self.showAlert("Access denied", message: "You need to enable access for this app in your settings", style: .alert)
+                    break
+                }
+            }
+        })
     }
     
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType) {

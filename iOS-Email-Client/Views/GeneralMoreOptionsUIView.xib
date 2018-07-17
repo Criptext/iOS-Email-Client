@@ -25,6 +25,7 @@
                 <outlet property="optionsContainerOffsetConstraint" destination="sMS-K2-DHF" id="eBQ-Lx-72W"/>
                 <outlet property="optionsContainerView" destination="VAv-gl-3zw" id="3oh-Uu-YIf"/>
                 <outlet property="optionsHeightConstraint" destination="vou-gD-IIJ" id="G6X-Bb-R6g"/>
+                <outlet property="restoreButton" destination="7qk-DY-Kui" id="mvh-t0-sfA"/>
                 <outlet property="restoreButtonHeightConstraint" destination="efe-tg-RB4" id="dVF-zb-h7R"/>
                 <outlet property="restoreTopMarginConstraint" destination="9Xb-MJ-vOi" id="dPT-Ww-VmD"/>
                 <outlet property="view" destination="iN0-l3-epB" id="cfM-oT-q34"/>

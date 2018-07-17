@@ -25,11 +25,10 @@ class GeneralMoreOptionsUIView : UIView {
     @IBOutlet weak var backgroundOverlayView: UIView!
     @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
+    @IBOutlet weak var restoreButton: UIButton!
     var tapGestureRecognizer:UITapGestureRecognizer!
     @IBOutlet var view: UIView!
     @IBOutlet weak var optionsHeightConstraint: NSLayoutConstraint!
-    
-    
     @IBOutlet weak var moveTopMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var moveButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var restoreTopMarginConstraint: NSLayoutConstraint!
@@ -80,11 +79,13 @@ class GeneralMoreOptionsUIView : UIView {
             archiveTopMarginConstraint.constant = COLLAPSED_MARGIN
             archiveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
             optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 2
+            restoreButton.setTitle("Not Spam", for: .normal)
             neededHeight = -(OPTION_VERTICAL_SPACE * 2)
         case SystemLabel.trash.id:
             archiveTopMarginConstraint.constant = COLLAPSED_MARGIN
             archiveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
             optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 3
+            restoreButton.setTitle("Recover from Trash", for: .normal)
             neededHeight = -(OPTION_VERTICAL_SPACE * 3)
         case SystemLabel.all.id:
             archiveTopMarginConstraint.constant = COLLAPSED_MARGIN

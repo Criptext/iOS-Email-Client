@@ -17,7 +17,7 @@ class FeedTableViewCell: UITableViewCell{
 
     func setLabels(_ header: String, _ subject: String, _ myDate: String){
         headerLabel.text = header
-        subjectLabel.text = subject
+        subjectLabel.text = subject.isEmpty ? "(No Subject)" : subject
         dateLabel.text = myDate
     }
     
