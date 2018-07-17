@@ -17,6 +17,7 @@ class CriptextFileManager {
     let COMPLETE = 100
     let PENDING = -1
     
+    var autoMerge = true
     var appId = "qynhtyzjrshazxqarkpy"
     var appSecret = "lofjksedbxuucdjjpnby"
     var token : String {
@@ -222,7 +223,7 @@ class CriptextFileManager {
         }
         if !file.chunksProgress.contains(where: {$0 != COMPLETE}){
             file.requestStatus = .finish
-            if(file.requestType == .download){
+            if(file.requestType == .download && self.autoMerge){
                 self.mergeFileChunks(filetoken: filetoken)
             }
             self.delegate?.finishRequest(file: file, success: true)
