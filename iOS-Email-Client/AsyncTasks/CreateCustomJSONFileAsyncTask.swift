@@ -12,30 +12,21 @@ import RealmSwift
 
 class CreateCustomJSONFileAsyncTask {
     
-    let fileURL = CriptextFileManager.getURLForFile(name: "link-device-\(Date().timeIntervalSince1970)")
+    let fileURL = CriptextFileManager.getURLForFile(name: "link-device-db")
     
     func start(completion: @escaping ((Error?, URL?) -> Void)){
         try? FileManager.default.removeItem(at: fileURL)
-        let queue = DispatchQueue(label: "com.email.senderlink", qos: .background, attributes: .concurrent)
-        queue.async {
+        DispatchQueue.global().async {
             self.createDBFile(completion: completion)
         }
     }
     
     private func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
         let results = DBManager.retrieveWholeDB()
-        let contacts = results["contacts"] as! Results<Contact>
-        contacts.forEach { (contact) in
-            handleRow(contact)
-        }
-        let labels = results["labels"] as! Results<Label>
-        labels.forEach { (label) in
-            handleRow(label)
-        }
+        (results["contacts"] as! Results<Contact>).forEach {handleRow($0)}
+        (results["labels"] as! Results<Label>).forEach {handleRow($0)}
         let emails = results["emails"] as! Results<Email>
-        emails.forEach { (email) in
-            handleRow(email)
-        }
+        emails.forEach {handleRow($0)}
         emails.forEach { (email) in
             email.toDictionaryLabels().forEach({ (emailLabelDictionary) in
                 guard let jsonString = Utils.convertToJSONString(dictionary: emailLabelDictionary) else {
@@ -44,10 +35,7 @@ class CreateCustomJSONFileAsyncTask {
                 writeRowToFile(jsonRow: jsonString)
             })
         }
-        let emailContacts = results["emailContacts"] as! Results<EmailContact>
-        emailContacts.forEach { (emailContact) in
-            handleRow(emailContact)
-        }
+        (results["emailContacts"] as! Results<EmailContact>).forEach {handleRow($0)}
         let files = results["files"] as! Results<File>
         files.forEach { (file) in
             guard file != files.last else {
