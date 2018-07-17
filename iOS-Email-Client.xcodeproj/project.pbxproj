@@ -180,13 +180,13 @@
 		7CB60A7D20F9490300C9090C /* FileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A7C20F9490300C9090C /* FileManagerTests.swift */; };
 		7CB60A7F20F94BA800C9090C /* FileManagerSpyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A7E20F94BA800C9090C /* FileManagerSpyDelegate.swift */; };
 		7CB60A8320FA526C00C9090C /* criptextlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CB60A8220FA526B00C9090C /* criptextlogo.png */; };
-		7CB60A8520FD306300C9090C /* SenderLinkDeviceAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A8420FD306200C9090C /* SenderLinkDeviceAsyncTask.swift */; };
+		7CB60A8520FD306300C9090C /* CreateCustomJSONFileAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A8420FD306200C9090C /* CreateCustomJSONFileAsyncTask.swift */; };
 		7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD20BD2024B09F00D70B87 /* Login.storyboard */; };
 		7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */; };
 		7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C42025141F00D70B87 /* GradientUIView.swift */; };
 		7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */; };
 		7CBF569F20FD41270044B406 /* CustomDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBF569E20FD41270044B406 /* CustomDictionary.swift */; };
-		7CC44BE220FD583A004BF759 /* SenderLinkDeviceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BE120FD583A004BF759 /* SenderLinkDeviceTests.swift */; };
+		7CC44BE220FD583A004BF759 /* CreateCustomJSONFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */; };
 		7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
 		7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
@@ -403,13 +403,13 @@
 		7CB60A7C20F9490300C9090C /* FileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerTests.swift; sourceTree = "<group>"; };
 		7CB60A7E20F94BA800C9090C /* FileManagerSpyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerSpyDelegate.swift; sourceTree = "<group>"; };
 		7CB60A8220FA526B00C9090C /* criptextlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = criptextlogo.png; sourceTree = "<group>"; };
-		7CB60A8420FD306200C9090C /* SenderLinkDeviceAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderLinkDeviceAsyncTask.swift; sourceTree = "<group>"; };
+		7CB60A8420FD306200C9090C /* CreateCustomJSONFileAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomJSONFileAsyncTask.swift; sourceTree = "<group>"; };
 		7CBD20BD2024B09F00D70B87 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginViewController.swift; sourceTree = "<group>"; };
 		7CBD20C42025141F00D70B87 /* GradientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientUIView.swift; sourceTree = "<group>"; };
 		7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		7CBF569E20FD41270044B406 /* CustomDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDictionary.swift; sourceTree = "<group>"; };
-		7CC44BE120FD583A004BF759 /* SenderLinkDeviceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderLinkDeviceTests.swift; sourceTree = "<group>"; };
+		7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomJSONFileTests.swift; sourceTree = "<group>"; };
 		7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSessionStore.swift; sourceTree = "<group>"; };
 		7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
@@ -769,7 +769,7 @@
 				7C247E0420C6E0270019321E /* EventHandlerTests.swift */,
 				7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */,
 				7CB60A7C20F9490300C9090C /* FileManagerTests.swift */,
-				7CC44BE120FD583A004BF759 /* SenderLinkDeviceTests.swift */,
+				7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -778,7 +778,7 @@
 			isa = PBXGroup;
 			children = (
 				7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */,
-				7CB60A8420FD306200C9090C /* SenderLinkDeviceAsyncTask.swift */,
+				7CB60A8420FD306200C9090C /* CreateCustomJSONFileAsyncTask.swift */,
 			);
 			path = AsyncTasks;
 			sourceTree = "<group>";
@@ -1133,7 +1133,7 @@
 				7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */,
 				41AAC52A201A9FC300809C4D /* GoogleButton.swift in Sources */,
 				7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */,
-				7CB60A8520FD306300C9090C /* SenderLinkDeviceAsyncTask.swift in Sources */,
+				7CB60A8520FD306300C9090C /* CreateCustomJSONFileAsyncTask.swift in Sources */,
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
 				95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */,
@@ -1168,7 +1168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CC44BE220FD583A004BF759 /* SenderLinkDeviceTests.swift in Sources */,
+				7CC44BE220FD583A004BF759 /* CreateCustomJSONFileTests.swift in Sources */,
 				7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */,
 				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
 				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,

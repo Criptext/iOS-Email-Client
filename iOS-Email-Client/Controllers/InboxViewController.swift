@@ -105,7 +105,7 @@ class InboxViewController: UIViewController {
         self.sendFailEmail()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
         
-        SenderLinkDeviceAsyncTask().start { (error, something) in
+        CreateCustomJSONFileAsyncTask().start { (error, something) in
             print("HEY")
         }
     }

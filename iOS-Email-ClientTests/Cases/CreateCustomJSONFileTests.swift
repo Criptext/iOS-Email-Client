@@ -1,5 +1,5 @@
 //
-//  SenderLinkDeviceTests.swift
+//  CreateCustomJSONFileTests.swift
 //  iOS-Email-ClientTests
 //
 //  Created by Pedro Aim on 7/16/18.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import iOS_Email_Client
 
-class SenderLinkDeviceTests: XCTestCase {
+class CreateCustomJSONFileTests: XCTestCase {
     
     let desiredDBText = """
     {"table":"contact","object":{"id":1,"name":"Test 1","email":"test1@criptext.com"}}
@@ -77,7 +77,7 @@ class SenderLinkDeviceTests: XCTestCase {
     func testSuccessfulCreationOfDBFile(){
         let expect = expectation(description: "Callback runs after generating db file")
 
-        SenderLinkDeviceAsyncTask().createDBFile { (error, url) in
+        CreateCustomJSONFileAsyncTask().start { (error, url) in
             guard error == nil else {
                 XCTFail("unable to process db with error: \(String(describing: error))")
                 return

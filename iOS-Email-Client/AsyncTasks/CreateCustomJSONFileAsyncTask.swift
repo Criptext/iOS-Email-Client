@@ -1,5 +1,5 @@
 //
-//  SenderLinkDeviceAsyncTask.swift
+//  CreateCustomJSONFileAsyncTask.swift
 //  iOS-Email-Client
 //
 //  Created by Pedro Aim on 7/16/18.
@@ -10,7 +10,7 @@ import Foundation
 import SignalProtocolFramework
 import RealmSwift
 
-class SenderLinkDeviceAsyncTask {
+class CreateCustomJSONFileAsyncTask {
     
     let fileURL = CriptextFileManager.getURLForFile(name: "link-device-\(Date().timeIntervalSince1970)")
     
@@ -22,7 +22,7 @@ class SenderLinkDeviceAsyncTask {
         }
     }
     
-    func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
+    private func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
         let results = DBManager.retrieveWholeDB()
         let contacts = results["contacts"] as! Results<Contact>
         contacts.forEach { (contact) in
