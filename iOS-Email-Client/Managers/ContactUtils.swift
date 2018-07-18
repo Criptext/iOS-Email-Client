@@ -11,7 +11,7 @@ import Contacts
 
 class ContactUtils {
     static let store = CNContactStore()
-    
+        
     private class func parseContact(_ contactString: String) -> Contact {
         let splittedContact = contactString.split(separator: "<")
         guard splittedContact.count > 1 else {
@@ -22,7 +22,13 @@ class ContactUtils {
         }
         let contactName = splittedContact[0].prefix((splittedContact[0].count - 1))
         let email = splittedContact[1].prefix((splittedContact[1].count - 1)).replacingOccurrences(of: ">", with: "")
-        return Contact(value: ["displayName": contactName, "email": email])
+        if let existingContact = DBManager.getContact(email) {
+            DBManager.update(contact: existingContact, name: String(contactName))
+            return existingContact
+        }
+        let newContact = Contact(value: ["displayName": contactName, "email": email])
+        DBManager.store([newContact])
+        return newContact
     }
     
     class func parseEmailContacts(_ contactsString: String, email: Email, type: ContactType){
@@ -33,7 +39,6 @@ class ContactUtils {
             emailContact.contact = contact
             emailContact.email = email
             emailContact.type = type.rawValue
-            DBManager.store([contact])
             DBManager.store([emailContact])
         }
     }

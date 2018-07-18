@@ -59,6 +59,20 @@ class Label : Object {
     }
 }
 
+extension Label: CustomDictionary {
+    func toDictionary() -> [String: Any] {
+        return ["table": "label",
+                "object": [
+                    "id": id,
+                    "color": color,
+                    "text": text,
+                    "type": type,
+                    "visible": visible
+            ]
+        ]
+    }
+}
+
 enum SystemLabel: Int {
     case inbox = 1
     case draft = 6

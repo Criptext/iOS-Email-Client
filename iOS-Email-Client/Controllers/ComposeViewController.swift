@@ -288,7 +288,6 @@ class ComposeViewController: UIViewController {
         
         self.resignKeyboard()
         
-        var subject = self.subjectField.text ?? ""
         //create draft
         let draft = Email()
         draft.status = .none
@@ -296,14 +295,13 @@ class ComposeViewController: UIViewController {
         let bodyWithoutHtml = self.editorView.text
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
-        draft.subject = subject
+        draft.subject = self.subjectField.text ?? ""
         draft.date = Date()
         draft.key = "\(activeAccount.deviceId)\(Int(draft.date.timeIntervalSince1970))"
         draft.threadId = composerData.threadId ?? draft.key
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.storeFiles())
         DBManager.store(draft)
-        
         
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -937,7 +935,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         
         if !(text?.isEmpty)! {
             composerData.contactArray = DBManager.getContacts(text ?? "")
-            
             self.contactTableView.isHidden = composerData.contactArray.isEmpty
             self.toolbarHeightConstraint.constant = composerData.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0
             self.toolbarView.isHidden = composerData.contactArray.isEmpty ? false : true

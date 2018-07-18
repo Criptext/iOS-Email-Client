@@ -11,6 +11,7 @@ import RealmSwift
 
 class File : Object {
     
+    @objc dynamic var id = 0
     @objc dynamic var token = ""
     @objc dynamic var name = ""
     @objc dynamic var size = 0
@@ -55,5 +56,23 @@ class File : Object {
         case processing
         case finish
         case failed
+    }
+}
+
+extension File: CustomDictionary{
+    func toDictionary() -> [String: Any] {
+        let dateString = Formatter.iso8601.string(from: date)
+        return ["table": "file",
+                "object": [
+                    "id": id,
+                    "token": token,
+                    "name": name,
+                    "size": size,
+                    "status": status,
+                    "date": dateString,
+                    "readOnly": readOnly,
+                    "emailId": emailId
+            ]
+        ]
     }
 }

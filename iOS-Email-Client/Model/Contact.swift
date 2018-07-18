@@ -9,11 +9,24 @@
 import RealmSwift
 
 class Contact: Object {
+    @objc dynamic var id = 0
     @objc dynamic var displayName = ""
     @objc dynamic var email = ""
     
     override static func primaryKey() -> String? {
         return "email"
+    }
+}
+
+extension Contact: CustomDictionary {
+    func toDictionary() -> [String: Any] {
+        return ["table": "contact",
+                "object": [
+                    "id": id,
+                    "email": email,
+                    "name": displayName
+            ]
+        ]
     }
 }
 

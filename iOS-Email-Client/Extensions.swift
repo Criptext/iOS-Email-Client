@@ -560,6 +560,14 @@ extension UIWindow {
     }
 }
 
+extension Formatter {
+    static let iso8601: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+}
+
 enum MessageType: Int {
     case none = 0
     case cipherText = 1

@@ -59,6 +59,15 @@ class Utils{
         }
         return nil
     }
+
+    class func convertToJSONString(dictionary: [String: Any]) -> String? {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+            return String(data: jsonData, encoding: .utf8)
+        } catch {
+            return nil
+        }
+    }
     
     class func getUsernameFromEmailFormat(_ emailFormat: String) -> String? {
         let email = NSString(string: emailFormat)
