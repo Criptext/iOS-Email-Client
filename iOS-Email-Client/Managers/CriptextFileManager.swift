@@ -17,7 +17,6 @@ class CriptextFileManager {
     let COMPLETE = 100
     let PENDING = -1
     
-    var autoMerge = true
     var appId = "qynhtyzjrshazxqarkpy"
     var appSecret = "lofjksedbxuucdjjpnby"
     var token : String {
@@ -26,6 +25,11 @@ class CriptextFileManager {
     var chunkSize = 512000
     var registeredFiles = [File]()
     var delegate : CriptextFileDelegate?
+    
+    internal(set) var keyPairs = [Int: (Data, Data)]()
+    var encryption : Bool {
+        return keyPairs.count > 0
+    }
     
     enum RequestType {
         case upload
@@ -149,7 +153,12 @@ class CriptextFileManager {
         fileHandle.seek(toFileOffset: UInt64(index * chunkSize))
         let data = fileHandle.readData(ofLength: chunkSize)
         fileHandle.closeFile()
-        return data
+        guard encryption else {
+            return data
+        }
+        let key = keyPairs[0]!.0
+        let iv = keyPairs[0]!.1
+        return RSACipher.encrypt(data: data, keyData: key, ivData: iv, operation: kCCEncrypt)!
     }
     
     private func uploadChunk(_ chunk: Data, file: File, part: Int){
@@ -186,6 +195,7 @@ class CriptextFileManager {
                 return
             }
             guard requestError == nil else {
+                print(requestError.debugDescription)
                 self.registeredFiles[fileIndex].requestStatus = .failed
                 self.chunkUpdateProgress(Double(self.PENDING)/100.0, for: file.token, part: part + 1)
                 self.delegate?.finishRequest(file: file, success: false)
@@ -204,17 +214,29 @@ class CriptextFileManager {
         }
         let fileURL = CriptextFileManager.getURLForFile(name: file.name)
         for part in 1...file.chunksProgress.count {
-            let chunkURL = CriptextFileManager.getURLForFile(name: "\(filetoken).part\(part)")
-            let chunkData = try! Data(contentsOf: chunkURL)
+            let chunk = getChunk(file: file, part: part)
             if FileManager.default.fileExists(atPath: fileURL.path) {
                 let fileHandle = try! FileHandle(forUpdating: fileURL)
                 fileHandle.seekToEndOfFile()
-                fileHandle.write(chunkData)
+                fileHandle.write(chunk)
                 fileHandle.closeFile()
             } else {
-                try! chunkData.write(to: fileURL, options: Data.WritingOptions.atomic)
+                try! chunk.write(to: fileURL, options: Data.WritingOptions.atomic)
             }
         }
+        file.filepath = fileURL.path
+    }
+    
+    private func getChunk(file: File, part: Int) -> Data{
+        let chunkURL = CriptextFileManager.getURLForFile(name: "\(file.token).part\(part)")
+        let chunkData = try! Data(contentsOf: chunkURL)
+        guard encryption,
+            let keys = keyPairs[file.emailId] else {
+            return chunkData
+        }
+        let key = keys.0
+        let iv = keys.1
+        return RSACipher.encrypt(data: chunkData, keyData: key, ivData: iv, operation: kCCDecrypt)!
     }
     
     private func checkCompleteUpload(filetoken: String){
@@ -223,7 +245,7 @@ class CriptextFileManager {
         }
         if !file.chunksProgress.contains(where: {$0 != COMPLETE}){
             file.requestStatus = .finish
-            if(file.requestType == .download && self.autoMerge){
+            if(file.requestType == .download){
                 self.mergeFileChunks(filetoken: filetoken)
             }
             self.delegate?.finishRequest(file: file, success: true)
@@ -253,6 +275,10 @@ class CriptextFileManager {
                     "size": file.size,
                     "mimeType": file.mimeType]
         })
+    }
+    
+    func setEncryption(id: Int, key: Data, iv: Data){
+        keyPairs[id] = (key, iv)
     }
     
     static func getURLForFile(name: String) -> URL {

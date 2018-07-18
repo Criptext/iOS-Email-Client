@@ -16,11 +16,11 @@ class CreateCustomJSONFileTests: XCTestCase {
     {"table":"contact","object":{"id":2,"name":"Test 2","email":"test2@criptext.com"}}
     {"table":"label","object":{"visible":true,"id":1,"text":"Test 1","type":"custom","color":"fff000"}}
     {"table":"label","object":{"visible":true,"id":2,"text":"Test 2","type":"custom","color":"ff00ff"}}
-    {"table":"email","object":{"content":"test 1","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","isMuted":false,"id":1,"threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"secure":true,"preview":"test 1","delivered":3,"date":"2018-07-17T15:09:36.000Z","metadataKey":"abc","subject":""}}
+    {"table":"email","object":{"content":"test 1","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","isMuted":false,"id":1,"threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"secure":true,"preview":"test 1","delivered":3,"date":"2018-07-17T15:09:36.000Z","metadataKey":123,"subject":""}}
     {"table":"emailLabel","object":{"labelId":1,"emailId":1}}
     {"table":"emailContact","object":{"emailId":1,"id":1,"contactId":2,"type":"from"}}
     {"table":"emailContact","object":{"emailId":1,"id":2,"contactId":1,"type":"to"}}
-    {"table":"file","object":{"name":"test.pdf","status":0,"emailId":"abc","id":1,"token":"","readOnly":0,"size":0,"date":"2018-07-17T15:09:36.000Z"}}
+    {"table":"file","object":{"name":"test.pdf","status":0,"emailId":123,"id":1,"token":"","readOnly":0,"size":0,"date":"2018-07-17T15:09:36.000Z"}}
     """
     
     override func setUp() {
@@ -51,7 +51,7 @@ class CreateCustomJSONFileTests: XCTestCase {
         email.preview = "test 1"
         email.messageId = "<dsfsfd.dsfsdfs@ddsfs.fsdfs>"
         email.threadId = "<dsfsfd.dsfsdfs@ddsfs.fsdfs>"
-        email.key = "abc"
+        email.key = 123
         email.date = Date(timeIntervalSince1970: 1531840176)
         DBManager.store(email)
         
@@ -69,7 +69,7 @@ class CreateCustomJSONFileTests: XCTestCase {
         
         let file = File()
         file.name = "test.pdf"
-        file.emailId = "abc"
+        file.emailId = 123
         file.date = Date(timeIntervalSince1970: 1531840176)
         DBManager.store(file)
     }

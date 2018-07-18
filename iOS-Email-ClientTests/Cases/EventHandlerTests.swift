@@ -23,8 +23,11 @@ class EventHandlerTests: XCTestCase {
     override func setUp() {
         DBManager.signout()
         createSystemLabels()
+    }
+    
+    func createExistingEmail(){
         let newEmail = Email()
-        newEmail.key = "243"
+        newEmail.key = 243
         DBManager.store(newEmail)
         let newContact = Contact()
         newContact.email = "velvet@jigl.com"
@@ -53,7 +56,7 @@ class EventHandlerTests: XCTestCase {
         eventHandler.eventDelegate = delegate
         eventHandler.handleEvents(events: eventsArray)
         
-        waitForExpectations(timeout: 1) { (testError) in
+        waitForExpectations(timeout: 10) { (testError) in
             if let error = testError {
                 XCTFail("Error trying to call delegate \(error.localizedDescription)")
                 return
@@ -64,12 +67,13 @@ class EventHandlerTests: XCTestCase {
                 return
             }
             XCTAssert(emails.count == 1)
-            XCTAssert(emails[0].key == "243")
+            XCTAssert(emails[0].key == 243)
             XCTAssert(emails[0].getFiles().count == 2)
         }
     }
     
     func testHandleOpenEventWithAttachments(){
+        createExistingEmail()
         let eventsJSON = Utils.convertToDictionary(text: opensString)
         let eventsArray = eventsJSON!["events"] as! [[String: Any]]
         let eventHandler = EventHandler(account: myAccount)

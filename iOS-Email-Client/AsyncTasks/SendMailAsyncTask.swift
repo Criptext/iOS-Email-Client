@@ -12,6 +12,7 @@ import RealmSwift
 
 class SendMailAsyncTask {
     
+    let fileKey: String?
     let threadId: String?
     let subject: String
     let body: String
@@ -33,6 +34,7 @@ class SendMailAsyncTask {
         self.criptextEmails = recipients.1
         self.files = SendMailAsyncTask.getFilesRequestData(email: email)
         self.emailRef = DBManager.getReference(email)
+        self.fileKey = DBManager.getFileKey(emailId: email.key)?.key
     }
     
     private class func getFilesRequestData(email: Email) -> [[String: Any]]{
@@ -104,11 +106,14 @@ class SendMailAsyncTask {
             recipients.append(recipientId)
             for deviceId in deviceIds {
                 let message = SignalHandler.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
-                let criptextEmail = ["recipientId": recipientId,
+                var criptextEmail = ["recipientId": recipientId,
                                      "deviceId": deviceId,
                                      "type": type,
                                      "body": message.0,
                                      "messageType": message.1.rawValue] as [String: Any]
+                if let fileKey = self.fileKey {
+                    criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
+                }
                 criptextEmailsData.append(criptextEmail)
             }
             knownAddresses[recipientId] = deviceIds
@@ -134,11 +139,14 @@ class SendMailAsyncTask {
                 
                 SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
                 let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
-                let criptextEmail = ["recipientId": recipientId,
+                var criptextEmail = ["recipientId": recipientId,
                                      "deviceId": deviceId,
                                      "type": type,
                                      "body": message.0,
                                      "messageType": message.1.rawValue] as [String: Any]
+                if let fileKey = self.fileKey {
+                    criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
+                }
                 criptextEmailsData.append(criptextEmail)
             }
             self.sendMail(myAccount: myAccount, criptextEmails: criptextEmailsData, queue: queue, completion: completion)
@@ -183,7 +191,7 @@ class SendMailAsyncTask {
             return
         }
         let keysArray = data as! [String: Any]
-        let key = (keysArray["metadataKey"] as! Int32).description
+        let key = keysArray["metadataKey"] as! Int
         let messageId = keysArray["messageId"] as! String
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
@@ -191,7 +199,7 @@ class SendMailAsyncTask {
         updateFiles(emailId: key)
     }
     
-    func updateFiles(emailId: String){
+    func updateFiles(emailId: Int){
         for file in files {
             guard let filetoken = file["token"] as? String else {
                 continue

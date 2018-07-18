@@ -22,7 +22,7 @@ class Email: Object {
     }
     
     @objc dynamic var id = 0
-    @objc dynamic var key = ""
+    @objc dynamic var key = 0
     @objc dynamic var threadId = ""
     @objc dynamic var messageId = ""
     @objc dynamic var unread = true

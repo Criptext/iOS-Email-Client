@@ -21,7 +21,7 @@ import SignalProtocolFramework
 protocol ComposerSendMailDelegate {
     func sendMail(email: Email)
     func newDraft(draft: Email)
-    func deleteDraft(draftId: String)
+    func deleteDraft(draftId: Int)
 }
 
 class ComposeViewController: UIViewController {
@@ -207,6 +207,14 @@ class ComposeViewController: UIViewController {
         editorView.html = composerData.initContent + (composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")
         
         fileManager.delegate = self
+        if let draft = self.composerData.emailDraft,
+            let fileKey = DBManager.getFileKey(emailId: draft.key)
+            {
+            let keys = fileKey.getKeyAndIv()
+                fileManager.setEncryption(id: 0, key: keys.0, iv: keys.1)
+        } else {
+            fileManager.setEncryption(id: 0, key: String.random().data(using: .utf8)!, iv: String.random().data(using: .utf8)!)
+        }
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -297,11 +305,19 @@ class ComposeViewController: UIViewController {
         draft.unread = false
         draft.subject = self.subjectField.text ?? ""
         draft.date = Date()
-        draft.key = "\(activeAccount.deviceId)\(Int(draft.date.timeIntervalSince1970))"
-        draft.threadId = composerData.threadId ?? draft.key
+        draft.key = Int("\(activeAccount.deviceId)\(Int(draft.date.timeIntervalSince1970))")!
+        draft.threadId = composerData.threadId ?? "\(draft.key)"
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.storeFiles())
         DBManager.store(draft)
+        
+        if fileManager.encryption,
+            let keys = fileManager.keyPairs[0] {
+            let fileKey = FileKey()
+            fileKey.key = "\(String(data: keys.0, encoding: .utf8)!):\(String(data: keys.1, encoding: .utf8)!)"
+            fileKey.emailId = draft.key
+            DBManager.store([fileKey])
+        }
         
         //create email contacts
         var emailContacts = [EmailContact]()
