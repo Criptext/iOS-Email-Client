@@ -158,7 +158,7 @@ class CriptextFileManager {
         }
         let key = keyPairs[0]!.0
         let iv = keyPairs[0]!.1
-        return RSACipher.encrypt(data: data, keyData: key, ivData: iv, operation: kCCEncrypt)!
+        return AESCipher.encrypt(data: data, keyData: key, ivData: iv, operation: kCCEncrypt)!
     }
     
     private func uploadChunk(_ chunk: Data, file: File, part: Int){
@@ -236,7 +236,7 @@ class CriptextFileManager {
         }
         let key = keys.0
         let iv = keys.1
-        return RSACipher.encrypt(data: chunkData, keyData: key, ivData: iv, operation: kCCDecrypt)!
+        return AESCipher.encrypt(data: chunkData, keyData: key, ivData: iv, operation: kCCDecrypt)!
     }
     
     private func checkCompleteUpload(filetoken: String){

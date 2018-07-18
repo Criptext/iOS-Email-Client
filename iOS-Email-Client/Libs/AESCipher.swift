@@ -1,14 +1,14 @@
 //
-//  RSACipher.swift
+//  AESCipher.swift
 //  iOS-Email-Client
 //
-//  Created by Pedro Aim on 5/14/18.
+//  Created by Pedro Aim on 7/18/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
 import Foundation
 
-class RSACipher {
+class AESCipher {
     class func encrypt(data: Data, keyData: Data, ivData: Data, operation: Int) -> Data? {
         let cryptLength = size_t(data.count + kCCBlockSizeAES128)
         var cryptData = Data(count: cryptLength)
@@ -33,5 +33,11 @@ class RSACipher {
         }
         cryptData.removeSubrange(numBytesEncrypted..<cryptData.count)
         return cryptData
+    }
+    
+    class func generateRandomBytes(length bytesCount: Int = 16) -> Data {
+        var randomBytes = Array<UInt8>(repeating: 0, count: bytesCount)
+        SecRandomCopyBytes(kSecRandomDefault, bytesCount, &randomBytes)
+        return Data(bytes: randomBytes)
     }
 }

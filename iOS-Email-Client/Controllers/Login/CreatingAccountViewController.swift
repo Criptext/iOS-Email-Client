@@ -106,7 +106,7 @@ class CreatingAccountViewController: UIViewController{
         let device = Device()
         device.uuid = UIDevice.current.identifierForVendor!.uuidString
         device.name = systemIdentifier()
-        device.mobile = true
+        device.type = Device.Kind.current.rawValue
         device.active = true
         DBManager.store(device)
     }

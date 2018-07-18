@@ -110,7 +110,6 @@
 		7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */; };
 		7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229820A4A53900F077FD /* UtilsTests.swift */; };
 		7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */; };
-		7C26229D20AA39B300F077FD /* RSACipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229C20AA39B300F077FD /* RSACipher.swift */; };
 		7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D8039209A02D500B213F1 /* ComposerData.swift */; };
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
 		7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */; };
@@ -162,6 +161,7 @@
 		7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */; };
 		7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F1B68203C7A3500D30DCC /* SignUpData.swift */; };
 		7C92104620FEF2B10081C048 /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104520FEF2B10081C048 /* FileKey.swift */; };
+		7C92104820FFD5690081C048 /* AESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104720FFD5690081C048 /* AESCipher.swift */; };
 		7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
 		7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
 		7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */; };
@@ -188,7 +188,7 @@
 		7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */; };
 		7CBF569F20FD41270044B406 /* CustomDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBF569E20FD41270044B406 /* CustomDictionary.swift */; };
 		7CC44BE220FD583A004BF759 /* CreateCustomJSONFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */; };
-		7CC44BF120FEE1ED004BF759 /* RSACipherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BF020FEE1ED004BF759 /* RSACipherTests.swift */; };
+		7CC44BF120FEE1ED004BF759 /* AESCipherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */; };
 		7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
 		7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
@@ -334,7 +334,6 @@
 		7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerSpyDelegate.swift; sourceTree = "<group>"; };
 		7C26229820A4A53900F077FD /* UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
 		7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextFileManager.swift; sourceTree = "<group>"; };
-		7C26229C20AA39B300F077FD /* RSACipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSACipher.swift; sourceTree = "<group>"; };
 		7C2D8039209A02D500B213F1 /* ComposerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerData.swift; sourceTree = "<group>"; };
 		7C34E5FA20470D2100E71906 /* EmailDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailData.swift; sourceTree = "<group>"; };
 		7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyDetailUIView.swift; sourceTree = "<group>"; };
@@ -387,6 +386,7 @@
 		7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressArrowUIView.swift; sourceTree = "<group>"; };
 		7C8F1B68203C7A3500D30DCC /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		7C92104520FEF2B10081C048 /* FileKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileKey.swift; sourceTree = "<group>"; };
+		7C92104720FFD5690081C048 /* AESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipher.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
 		7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSnackbar.swift; sourceTree = "<group>"; };
@@ -413,7 +413,7 @@
 		7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		7CBF569E20FD41270044B406 /* CustomDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDictionary.swift; sourceTree = "<group>"; };
 		7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomJSONFileTests.swift; sourceTree = "<group>"; };
-		7CC44BF020FEE1ED004BF759 /* RSACipherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSACipherTests.swift; sourceTree = "<group>"; };
+		7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipherTests.swift; sourceTree = "<group>"; };
 		7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSessionStore.swift; sourceTree = "<group>"; };
 		7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
@@ -577,8 +577,8 @@
 				7C13D8AC20810CFD008F1395 /* EventHandler.swift */,
 				7C13D8AE20810D75008F1395 /* SignalHandler.swift */,
 				7C55B88B20863D7900BA96E8 /* CriptextError.swift */,
-				7C26229C20AA39B300F077FD /* RSACipher.swift */,
 				7CE548E820CB400F0046D12F /* ExceptionCatcher.h */,
+				7C92104720FFD5690081C048 /* AESCipher.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -775,7 +775,7 @@
 				7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */,
 				7CB60A7C20F9490300C9090C /* FileManagerTests.swift */,
 				7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */,
-				7CC44BF020FEE1ED004BF759 /* RSACipherTests.swift */,
+				7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -1081,7 +1081,6 @@
 				7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */,
 				41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */,
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
-				7C26229D20AA39B300F077FD /* RSACipher.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
 				7C7F2FEF20B4BE6400A2CB32 /* LabelsLabelTableViewCell.swift in Sources */,
@@ -1119,6 +1118,7 @@
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
 				7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */,
+				7C92104820FFD5690081C048 /* AESCipher.swift in Sources */,
 				7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */,
 				7C8D6C74203735E000AB96EF /* Constants.swift in Sources */,
 				7C7F2FEB20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift in Sources */,
@@ -1182,7 +1182,7 @@
 				7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */,
 				7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */,
 				7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */,
-				7CC44BF120FEE1ED004BF759 /* RSACipherTests.swift in Sources */,
+				7CC44BF120FEE1ED004BF759 /* AESCipherTests.swift in Sources */,
 				7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */,
 				7CB60A7F20F94BA800C9090C /* FileManagerSpyDelegate.swift in Sources */,
 				7CB60A7D20F9490300C9090C /* FileManagerTests.swift in Sources */,

@@ -213,7 +213,7 @@ class ComposeViewController: UIViewController {
             let keys = fileKey.getKeyAndIv()
                 fileManager.setEncryption(id: 0, key: keys.0, iv: keys.1)
         } else {
-            fileManager.setEncryption(id: 0, key: String.random().data(using: .utf8)!, iv: String.random().data(using: .utf8)!)
+            fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         }
     }
     
@@ -314,7 +314,7 @@ class ComposeViewController: UIViewController {
         if fileManager.encryption,
             let keys = fileManager.keyPairs[0] {
             let fileKey = FileKey()
-            fileKey.key = "\(String(data: keys.0, encoding: .utf8)!):\(String(data: keys.1, encoding: .utf8)!)"
+            fileKey.key = FileKey.getKeyCodedString(key: keys.0, iv: keys.1)
             fileKey.emailId = draft.key
             DBManager.store([fileKey])
         }

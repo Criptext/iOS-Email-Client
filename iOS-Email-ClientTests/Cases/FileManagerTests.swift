@@ -116,8 +116,8 @@ class FileManagerTests: XCTestCase {
     }
     
     func testSuccessfullyDownloadEncryptedFile(){
-        let keyData     = "12345678901234567890123456789012".data(using:String.Encoding.utf8)!
-        let ivData      = "abcdefghijklmnop".data(using:String.Encoding.utf8)!
+        let keyData     = AESCipher.generateRandomBytes()
+        let ivData      = AESCipher.generateRandomBytes()
         
         let uploadDelegate = FileManagerSpyDelegate()
         uploadDelegate.expectation = expectation(description: "Delegate Called Back")

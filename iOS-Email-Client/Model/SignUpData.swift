@@ -61,7 +61,7 @@ class SignUpData{
         publicKeys = [
             "deviceName": UIDevice.current.identifierForVendor!.uuidString,
             "deviceFriendlyName": UIDevice.current.identifierForVendor!.uuidString,
-            "deviceType": 0,
+            "deviceType": Device.Kind.current.rawValue,
             "signedPreKeySignature": signedPreKeySignature,
             "signedPreKeyPublic": signedPreKeyPublic,
             "signedPreKeyId": signedPreKeyId,
