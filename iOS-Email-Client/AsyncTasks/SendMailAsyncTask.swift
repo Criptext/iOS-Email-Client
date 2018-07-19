@@ -79,12 +79,20 @@ class SendMailAsyncTask {
             }
         }
         
-        let guestEmails = [
-            "to": toArray,
-            "cc": ccArray,
-            "bcc": bccArray
-        ]
+        var guestEmails = [String : Any]()
         
+        if(!toArray.isEmpty){
+            guestEmails["to"] = toArray
+            guestEmails["body"] = (email.secure ? "secure email" : email.content)
+        }
+        if(!ccArray.isEmpty){
+            guestEmails["cc"] = ccArray
+            guestEmails["body"] = (email.secure ? "secure email" : email.content)
+        }
+        if(!bccArray.isEmpty){
+            guestEmails["bcc"] = bccArray
+            guestEmails["body"] = (email.secure ? "secure email" : email.content)
+        }
         return (guestEmails, criptextEmails)
     }
     
@@ -101,19 +109,15 @@ class SendMailAsyncTask {
         var knownAddresses = [String: [Int32]]()
         var criptextEmailsData = [[String: Any]]()
         for (recipientId, type) in criptextEmails {
+            let type = type as! String
             let recipientSessions = DBManager.getSessionRecords(recipientId: recipientId)
             let deviceIds = recipientSessions.map { $0.deviceId }
             recipients.append(recipientId)
             for deviceId in deviceIds {
-                let message = SignalHandler.encryptMessage(body: body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
-                var criptextEmail = ["recipientId": recipientId,
-                                     "deviceId": deviceId,
-                                     "type": type,
-                                     "body": message.0,
-                                     "messageType": message.1.rawValue] as [String: Any]
-                if let fileKey = self.fileKey {
-                    criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
+                guard !(type == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
+                    continue
                 }
+                let criptextEmail = buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: type, myAccount: myAccount)
                 criptextEmailsData.append(criptextEmail)
             }
             knownAddresses[recipientId] = deviceIds
@@ -136,28 +140,40 @@ class SendMailAsyncTask {
                 let recipientId = keys["recipientId"] as! String
                 let deviceId = keys["deviceId"] as! Int32
                 let type = self.criptextEmails[recipientId] as! String
-                
                 SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
-                let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
-                var criptextEmail = ["recipientId": recipientId,
-                                     "deviceId": deviceId,
-                                     "type": type,
-                                     "body": message.0,
-                                     "messageType": message.1.rawValue] as [String: Any]
-                if let fileKey = self.fileKey {
-                    criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
+                guard !(type == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
+                    continue
                 }
+                let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: type, myAccount: myAccount)
                 criptextEmailsData.append(criptextEmail)
             }
             self.sendMail(myAccount: myAccount, criptextEmails: criptextEmailsData, queue: queue, completion: completion)
         }
     }
     
+    private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, myAccount: Account) -> [String: Any]{
+        let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
+        var criptextEmail = ["recipientId": recipientId,
+                             "deviceId": deviceId,
+                             "type": type,
+                             "body": message.0,
+                             "messageType": message.1.rawValue] as [String: Any]
+        if !self.files.isEmpty,
+            let fileKey = self.fileKey {
+            criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
+        }
+        return criptextEmail
+    }
+    
     private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){
         let myAccount = DBManager.getAccountByUsername(self.username)!
-        var requestParams = [
-            "subject": subject,
-            "criptextEmails": criptextEmails] as [String : Any]
+        var requestParams = ["subject": subject] as [String : Any]
+        if(!criptextEmails.isEmpty){
+            requestParams["criptextEmails"] = criptextEmails
+        }
+        if(!guestEmails.isEmpty){
+            requestParams["guestEmail"] = guestEmails
+        }
         if (!files.isEmpty) {
             requestParams["files"] = files
         }
@@ -195,7 +211,7 @@ class SendMailAsyncTask {
         let messageId = keysArray["messageId"] as! String
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
-        DBManager.updateEmail(email, status: .delivered)
+        DBManager.updateEmail(email, status: .sent)
         updateFiles(emailId: key)
     }
     

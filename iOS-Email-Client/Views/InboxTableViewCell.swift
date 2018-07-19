@@ -94,7 +94,7 @@ class InboxTableViewCell: UITableViewCell {
         case .none:
             break
         case .sent:
-            readImageView.image = #imageLiteral(resourceName: "double-check")
+            readImageView.image = #imageLiteral(resourceName: "check")
             readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         case .delivered:
             readImageView.image = #imageLiteral(resourceName: "double-check")

@@ -9,14 +9,14 @@
 import Foundation
 import Material
 
-protocol emailSetPasswordDelegate {
-    func setPassword(password: String)
+protocol EmailSetPasswordDelegate {
+    func setPassword(active: Bool, password: String)
 }
 
 class EmailSetPasswordViewController: BaseUIPopover {
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var repeatPasswordTextField: TextField!
-    var delegate : emailSetPasswordDelegate?
+    var delegate : EmailSetPasswordDelegate?
     
     init(){
         super.init("EmailSetPasswordUIPopover")
@@ -58,7 +58,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
             return
         }
         self.dismiss(animated: true, completion: nil)
-        self.delegate?.setPassword(password: password)
+        self.delegate?.setPassword(active: passwordTextField.isEnabled, password: password)
     }
     
     @IBAction func onCancelPress(_ sender: Any) {

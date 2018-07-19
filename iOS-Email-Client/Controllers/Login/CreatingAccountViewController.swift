@@ -49,11 +49,12 @@ class CreatingAccountViewController: UIViewController{
     func sendKeysRequest(){
         feedbackLabel.text = "Generating keys..."
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
-        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (error) in
+        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (error, jwt) in
             guard error == nil else {
                 self.displayErrorMessage()
                 return
             }
+            self.signupData.token = jwt!
             self.animateProgress(50.0, 2.0) {
                 self.state = .accountCreate
                 self.handleState()

@@ -22,7 +22,7 @@ class EventHandler {
     init(account: Account){
         myAccount = account
     }
-    
+
     func handleEvents(events: Array<Dictionary<String, Any>>){
         var emails = [Email]()
         var opens = [FeedItem]()
@@ -99,6 +99,7 @@ class EventHandler {
             }
             break
         default:
+            finishCallback(nil, nil)
             break
         }
     }
@@ -201,25 +202,31 @@ class EventHandler {
         let from = params["from"] as! String
         let fileId = params["file"] as? String
         let date = params["date"] as! String
+        let type = params["type"] as! Int
         
         guard from != myAccount.username else {
             finishCallback(true, nil)
             return
         }
         
-        let open = FeedItem()
-        open.fileId = fileId
-        open.date = Utils.getLocalDate(from: date)
-        guard !DBManager.feedExists(emailId: emailId, type: open.type, contactId: "\(from)\(Constants.domain)"),
+        let actionType: FeedItem.Action = fileId == nil ? .open : .download
+        guard !DBManager.feedExists(emailId: emailId, type: actionType.rawValue, contactId: "\(from)\(Constants.domain)"),
             let contact = DBManager.getContact("\(from)\(Constants.domain)"),
             let email = DBManager.getMail(key: emailId) else {
             finishCallback(true, nil)
             return
         }
+        DBManager.updateEmail(email, status: Email.Status(rawValue: type) ?? .none)
+        guard type == Email.Status.opened.rawValue else {
+            finishCallback(true, nil)
+            return
+        }
+        let open = FeedItem()
+        open.fileId = fileId
+        open.date = Utils.getLocalDate(from: date)
         open.email = email
         open.contact = contact
         open.id = open.incrementID()
-        DBManager.updateEmail(email, status: .opened)
         DBManager.store(open)
         finishCallback(true, open)
     }
