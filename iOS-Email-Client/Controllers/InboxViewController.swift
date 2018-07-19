@@ -617,15 +617,20 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
         emailDetailData.emails = emails
         var labelsSet = Set<Label>()
+        var openKeys = [Int]()
         for email in emails {
-            email.isExpanded = email.unread
+            email.isExpanded = (email.unread && email.status != .unsent)
             labelsSet.formUnion(email.labels)
+            if(email.status != .unsent && email.isExpanded){
+                DBManager.updateEmail(email, unread: false)
+                openKeys.append(email.key)
+            }
         }
         emailDetailData.selectedLabel = selectedLabel
         emailDetailData.labels = Array(labelsSet)
         emailDetailData.subject = emails.first!.subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
-        emails[emails.count - 1].isExpanded = true
+        emails.last!.isExpanded = true
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
@@ -633,6 +638,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         vc.mailboxData = self.mailboxData
         vc.myAccount = self.myAccount
         self.navigationController?.pushViewController(vc, animated: true)
+        APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
     }
     
     func continueDraft(_ draft: Email){

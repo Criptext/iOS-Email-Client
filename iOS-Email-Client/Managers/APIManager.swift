@@ -136,6 +136,10 @@ class APIManager {
         let url = "\(self.baseUrl)/email/body/\(messageId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            if response.response?.statusCode == 404 {
+                completion(CriptextError(code: .bodyUnsent), nil)
+                return
+            }
             guard let value = response.result.value else {
                 completion(response.error, nil)
                 return
@@ -151,13 +155,29 @@ class APIManager {
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
     
-    class func notifyOpen(key: Int, token: String){
+    class func notifyOpen(keys: [Int], token: String){
         let url = "\(self.baseUrl)/event/open"
         let headers = ["Authorization": "Bearer \(token)"]
         let params = [
-            "metadataKeys": [key]
+            "metadataKeys": keys
         ] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+    }
+    
+    class func unsendEmail(key: Int, token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/email/unsend"
+        let headers = ["Authorization": "Bearer \(token)"]
+        let params = [
+            "metadataKey": key
+            ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).response { response in
+            guard response.response?.statusCode == 200 else {
+                    let error = CriptextError(code: .noValidResponse)
+                    completion(error)
+                    return
+            }
+            completion(nil)
+        }
     }
     
     class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){

@@ -32,6 +32,7 @@ class Email: Object {
     @objc dynamic var subject = ""
     @objc dynamic var delivered = Status.none.rawValue
     @objc dynamic var date = Date()
+    @objc dynamic var unsentDate: Date?
     @objc dynamic var isMuted = false
     
     let labels = List<Label>()
@@ -51,7 +52,9 @@ class Email: Object {
             return Status.init(rawValue: delivered)!
         }
         set(typeValue) {
-            self.delivered = typeValue.rawValue
+            if(self.delivered != Status.unsent.rawValue){
+                self.delivered = typeValue.rawValue
+            }
         }
     }
     
@@ -77,6 +80,10 @@ class Email: Object {
     
     var isSpam: Bool{
         return labels.contains(where: {$0.id == SystemLabel.spam.id})
+    }
+    
+    var isSent: Bool{
+        return labels.contains(where: {$0.id == SystemLabel.sent.id})
     }
     
     func incrementID() -> Int {

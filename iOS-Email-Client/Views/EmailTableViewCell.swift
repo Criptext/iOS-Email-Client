@@ -199,11 +199,7 @@ class EmailTableViewCell: UITableViewCell{
 
 extension EmailTableViewCell{
     enum IconType {
-        case attachment
-        case unsend
-        case read
         case options
-        case reply
         case contacts
         case edit
     }

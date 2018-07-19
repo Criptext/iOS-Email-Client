@@ -184,11 +184,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         guard email.unread else {
             return
         }
-        DBManager.updateEmail(email, unread: false)
-        displayMarkIcon(asRead: hasUnreadEmails)
-        if(email.fromContact.email != emailData.accountEmail){
-            APIManager.notifyOpen(key: email.key, token: myAccount.jwt)
-        }
+        displayMarkIcon(asRead: false)
     }
     
     func tableViewCellDidTap(_ cell: EmailTableViewCell) {
@@ -224,18 +220,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType) {
         switch(iconType){
-        case .attachment:
-            handleAttachmentTap(cell, sender)
-        case .read:
-            handleReadTap(cell, sender)
         case .contacts:
             handleContactsTap(cell, sender)
-        case .unsend:
-            handleUnsendTap(cell, sender)
         case .options:
             handleOptionsTap(cell, sender)
-        case .reply:
-            handleReplyTap(cell, sender)
         case .edit:
             handleEditTap(cell, sender)
         }
@@ -251,26 +239,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "")
     }
     
-    func handleAttachmentTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        let historyPopover = HistoryUIPopover()
-        historyPopover.historyCellName = "AttachmentHistoryTableCell"
-        historyPopover.historyTitleText = "Attachments History"
-        historyPopover.emptyMessage = "Your files have not been opened/downloaded yet"
-        historyPopover.historyImage = #imageLiteral(resourceName: "attachment")
-        historyPopover.cellHeight = 81.0
-        presentPopover(historyPopover, sender, height: 130)
-    }
-    
-    func handleReadTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        let historyPopover = HistoryUIPopover()
-        historyPopover.historyCellName = "ReadHistoryTableCell"
-        historyPopover.historyTitleText = "Read History"
-        historyPopover.emptyMessage = "Your email has not been opened yet"
-        historyPopover.historyImage = #imageLiteral(resourceName: "read")
-        historyPopover.cellHeight = 39.0
-        presentPopover(historyPopover, sender, height: 130)
-    }
-    
     func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
@@ -279,20 +247,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let contactsPopover = ContactsDetailUIPopover()
         contactsPopover.email = email
         presentPopover(contactsPopover, sender, height: min(CGFloat(CONTACTS_BASE_HEIGHT + email.emailContacts.count * CONTACTS_ROW_HEIGHT), CONTACTS_MAX_HEIGHT))
-    }
-    
-    func handleReplyTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        guard let indexPath = emailsTableView.indexPath(for: cell) else {
-            return
-        }
-        emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        onReplyPress()
-    }
-    
-    func handleUnsendTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        let unsentPopover = UnsentUIPopover()
-        unsentPopover.date = "Coming Soon!"
-        presentPopover(unsentPopover, sender, height: 68)
     }
     
     func presentPopover(_ popover: UIViewController, _ sender: UIView, height: CGFloat){
@@ -564,7 +518,24 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     }
     
     func onPrintPress() {
-        //TO DO
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        guard email.status != .unsent && email.isSent else {
+            return
+        }
+        
+        APIManager.unsendEmail(key: email.key, token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
+                return
+            }
+            email.isExpanded = false
+            DBManager.unsendEmail(email)
+            self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
+        }
     }
     
     func onOverlayPress() {

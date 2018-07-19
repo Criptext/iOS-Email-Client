@@ -98,6 +98,16 @@ class EventHandler {
                 finishCallback(eventId, open)
             }
             break
+        case Event.peerEmailStatus.rawValue:
+            self.handlePeerEmailStatusCommand(params: params){ (successfulEvent, open) in
+                guard successfulEvent,
+                    let eventId = rowId else {
+                        finishCallback(nil, nil)
+                        return
+                }
+                finishCallback(eventId, open)
+            }
+            break
         default:
             finishCallback(nil, nil)
             break
@@ -105,27 +115,9 @@ class EventHandler {
     }
     
     func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Email?) -> Void){
-        let threadId = params["threadId"] as! String
-        let subject = params["subject"] as! String
-        let from = params["from"] as! String
-        let to = params["to"] as! String
-        let cc = params["cc"] as! String
-        let bcc = params["bcc"] as! String
-        let messageId = params["messageId"] as! String
-        let date = params["date"] as! String
-        let metadataKey = params["metadataKey"] as! Int
-        let senderDeviceId = params["senderDeviceId"] as? Int32
-        let messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? MessageType.none.rawValue))!
-        let files = params["files"] as? [[String: Any]]
-        let fileKey = params["fileKey"] as? String
+        let event = EventData.NewEmail.init(params: params)
         
-        let dateFormatter = DateFormatter()
-        let timeZone = NSTimeZone(abbreviation: "UTC")
-        dateFormatter.timeZone = timeZone as TimeZone?
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let localDate = dateFormatter.date(from: date) ?? Date()
-        
-        if let email = DBManager.getMailByKey(key: metadataKey) {
+        if let email = DBManager.getMailByKey(key: event.metadataKey) {
             if(isMeARecipient(email: email)){
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
                 finishCallback(true, email)
@@ -136,14 +128,14 @@ class EventHandler {
         }
         
         let email = Email()
-        email.threadId = threadId
-        email.subject = subject
-        email.key = metadataKey
-        email.messageId = messageId
-        email.date = localDate
+        email.threadId = event.threadId
+        email.subject = event.subject
+        email.key = event.metadataKey
+        email.messageId = event.messageId
+        email.date = event.date
         email.unread = true
         
-        if let attachments = files {
+        if let attachments = event.files {
             for attachment in attachments {
                 let file = handleAttachment(attachment, email: email)
                 email.files.append(file)
@@ -151,28 +143,35 @@ class EventHandler {
         }
         
         apiManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
-            guard error == nil,
-                let username = Utils.getUsernameFromEmailFormat(from),
-                let content = self.handleBodyByMessageType(messageType, body: data as! String, recipientId: username, senderDeviceId: senderDeviceId) else {
+            let unsent = (error as? CriptextError)?.code == .bodyUnsent
+            
+            guard (unsent || error == nil),
+                let username = Utils.getUsernameFromEmailFormat(event.from),
+                let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: data as! String, recipientId: username, senderDeviceId: event.senderDeviceId) else {
                 finishCallback(false, nil)
                 return
             }
             email.content = content
             email.preview = String(email.content.removeHtmlTags().prefix(100))
+            if(unsent){
+                email.unsentDate = email.date
+                email.status = .unsent
+            }
             DBManager.store(email)
             
-            if let keyString = fileKey,
-                let fileKeyString = self.handleBodyByMessageType(messageType, body: keyString, recipientId: username, senderDeviceId: senderDeviceId) {
+            if !unsent,
+                let keyString = event.fileKey,
+                let fileKeyString = self.handleBodyByMessageType(event.messageType, body: keyString, recipientId: username, senderDeviceId: event.senderDeviceId) {
                 let fKey = FileKey()
                 fKey.emailId = email.key
                 fKey.key = fileKeyString
                 DBManager.store([fKey])
             }
             
-            ContactUtils.parseEmailContacts(from, email: email, type: .from)
-            ContactUtils.parseEmailContacts(to, email: email, type: .to)
-            ContactUtils.parseEmailContacts(cc, email: email, type: .cc)
-            ContactUtils.parseEmailContacts(bcc, email: email, type: .bcc)
+            ContactUtils.parseEmailContacts(event.from, email: email, type: .from)
+            ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
+            ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
+            ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
             
             if(self.isFromMe(email: email)){
                 DBManager.updateEmail(email, status: .sent)
@@ -197,38 +196,50 @@ class EventHandler {
         return trueBody
     }
     
-    func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ open: FeedItem?) -> Void){
-        let emailId = params["metadataKey"] as! Int
-        let from = params["from"] as! String
-        let fileId = params["file"] as? String
-        let date = params["date"] as! String
-        let type = params["type"] as! Int
+    func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
+        let event = EventData.EmailStatus.init(params: params)
         
-        guard from != myAccount.username else {
+        if event.type == Email.Status.unsent.rawValue,
+            let email = DBManager.getMail(key: event.emailId) {
+            DBManager.unsendEmail(email, date: event.date)
+            finishCallback(true, email)
+            return
+        }
+        
+        guard event.from != myAccount.username else {
             finishCallback(true, nil)
             return
         }
         
-        let actionType: FeedItem.Action = fileId == nil ? .open : .download
-        guard !DBManager.feedExists(emailId: emailId, type: actionType.rawValue, contactId: "\(from)\(Constants.domain)"),
-            let contact = DBManager.getContact("\(from)\(Constants.domain)"),
-            let email = DBManager.getMail(key: emailId) else {
+        let actionType: FeedItem.Action = event.fileId == nil ? .open : .download
+        guard !DBManager.feedExists(emailId: event.emailId, type: actionType.rawValue, contactId: "\(event.from)\(Constants.domain)"),
+            let contact = DBManager.getContact("\(event.from)\(Constants.domain)"),
+            let email = DBManager.getMail(key: event.emailId) else {
             finishCallback(true, nil)
             return
         }
-        DBManager.updateEmail(email, status: Email.Status(rawValue: type) ?? .none)
-        guard type == Email.Status.opened.rawValue else {
+        DBManager.updateEmail(email, status: Email.Status(rawValue: event.type) ?? .none)
+        guard event.type == Email.Status.opened.rawValue else {
             finishCallback(true, nil)
             return
         }
         let open = FeedItem()
-        open.fileId = fileId
-        open.date = Utils.getLocalDate(from: date)
+        open.fileId = event.fileId
+        open.date = event.date
         open.email = email
         open.contact = contact
         open.id = open.incrementID()
         DBManager.store(open)
         finishCallback(true, open)
+    }
+    
+    func handlePeerEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
+        let event = EventData.EmailStatus.init(params: params)
+        guard event.type != Email.Status.unsent.rawValue else {
+            handleOpenEmailCommand(params: params, finishCallback: finishCallback)
+            return
+        }
+        finishCallback(true, nil)
     }
     
     func handleAttachment(_ attachment: [String: Any], email: Email) -> File {
@@ -263,4 +274,5 @@ class EventHandler {
 enum Event: Int32 {
     case newEmail = 1
     case openEmail = 2
+    case peerEmailStatus = 3
 }
