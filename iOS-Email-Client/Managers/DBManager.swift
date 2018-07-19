@@ -126,10 +126,10 @@ extension DBManager {
         }
     }
     
-    class func getMail(key: String) -> Email? {
+    class func getMail(key: Int) -> Email? {
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "key == '\(key)'")
+        let predicate = NSPredicate(format: "key == \(key)")
         let results = realm.objects(Email.self).filter(predicate)
         
         return results.first
@@ -272,10 +272,10 @@ extension DBManager {
         return myEmails
     }
     
-    class func getMailByKey(key:String) -> Email?{
+    class func getMailByKey(key: Int) -> Email?{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "key == '\(key)'")
+        let predicate = NSPredicate(format: "key == \(key)")
         let results = realm.objects(Email.self).filter(predicate)
         
         return results.first
@@ -289,10 +289,13 @@ extension DBManager {
         }
     }
     
-    class func updateEmail(_ email: Email, key: String, messageId: String, threadId: String){
+    class func updateEmail(_ email: Email, key: Int, messageId: String, threadId: String){
         let realm = try! Realm()
         
         try! realm.write() {
+            if let fileKey = getFileKey(emailId: email.key) {
+                fileKey.emailId = key
+            }
             email.key = key
             email.messageId = messageId
             email.threadId = threadId
@@ -316,7 +319,7 @@ extension DBManager {
         }
     }
     
-    class func deleteEmail(id:String){
+    class func deleteEmail(id: Int){
         
         let realm = try! Realm()
         
@@ -340,6 +343,9 @@ extension DBManager {
             emails.forEach({ (email) in
                 realm.delete(email.files)
                 realm.delete(email.emailContacts)
+                if let fileKey = self.getFileKey(emailId: email.key){
+                    realm.delete(fileKey)
+                }
             })
             realm.delete(emails)
         }
@@ -702,7 +708,7 @@ extension DBManager {
         return realm.object(ofType: File.self, forPrimaryKey: filetoken)
     }
     
-    class func update(filetoken: String, emailId: String){
+    class func update(filetoken: String, emailId: Int){
         guard let file = getFile(filetoken) else {
             return
         }
@@ -726,9 +732,9 @@ extension DBManager {
         }
     }
     
-    class func feedExists(emailId: String, type: Int, contactId: String) -> Bool {
+    class func feedExists(emailId: Int, type: Int, contactId: String) -> Bool {
         let realm = try! Realm()
-        let predicate = NSPredicate(format: "contact.email == '\(contactId)' AND email.key == '\(emailId)' AND type == \(type)")
+        let predicate = NSPredicate(format: "contact.email == '\(contactId)' AND email.key == \(emailId) AND type == \(type)")
         let results = realm.objects(FeedItem.self).filter(predicate)
         return results.count > 0
     }
@@ -791,3 +797,23 @@ extension DBManager {
     }
 }
 
+//MARK: - FileKey
+extension DBManager {
+    
+    class func store(_ fileKeys: [FileKey]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            for fileKey in fileKeys {
+                fileKey.incrementID()
+                realm.add(fileKey, update: true)
+            }
+        }
+    }
+    
+    class func getFileKey(emailId: Int) -> FileKey? {
+        let realm = try! Realm()
+        
+        return realm.objects(FileKey.self).filter("emailId == %@", emailId).first
+    }
+}

@@ -187,7 +187,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         DBManager.updateEmail(email, unread: false)
         displayMarkIcon(asRead: hasUnreadEmails)
         if(email.fromContact.email != emailData.accountEmail){
-            APIManager.notifyOpen(key: Int(email.key)!, token: myAccount.jwt)
+            APIManager.notifyOpen(key: email.key, token: myAccount.jwt)
         }
     }
     
@@ -208,6 +208,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             DispatchQueue.main.async {
                 switch status {
                 case .authorized:
+                    if let fileKey = DBManager.getFileKey(emailId: file.emailId) {
+                        let keys = fileKey.getKeyAndIv()
+                        self.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
+                    }
                     self.fileManager.registerFile(file: file)
                     break
                 default:
@@ -688,7 +692,7 @@ extension EmailDetailViewController: ComposerSendMailDelegate {
         emailsTableView.reloadData()
     }
     
-    func deleteDraft(draftId: String) {
+    func deleteDraft(draftId: Int) {
         guard let draftIndex = emailData.emails.index(where: {$0.key == draftId}) else {
                 return
         }

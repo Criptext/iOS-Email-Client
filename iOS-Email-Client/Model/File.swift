@@ -18,7 +18,7 @@ class File : Object {
     @objc dynamic var status = 0
     @objc dynamic var date = Date()
     @objc dynamic var readOnly = 0
-    @objc dynamic var emailId = ""
+    @objc dynamic var emailId = 0
     @objc dynamic var isUploaded = false
     @objc dynamic var mimeType = ""
     @objc dynamic var filePath = ""

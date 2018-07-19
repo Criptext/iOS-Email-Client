@@ -915,7 +915,7 @@ extension InboxViewController: ComposerSendMailDelegate {
         self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
     }
     
-    func deleteDraft(draftId: String) {
+    func deleteDraft(draftId: Int) {
         guard let draftIndex = mailboxData.threads.index(where: {$0.lastEmail.key == draftId}) else {
                 return
         }

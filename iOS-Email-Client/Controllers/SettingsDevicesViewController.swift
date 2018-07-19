@@ -26,7 +26,7 @@ class SettingsDevicesViewController: UITableViewController {
         let device = devices[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsDeviceCell") as! SettingsDeviceTableViewCell
         
-        cell.deviceImageView.image = device.mobile ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
+        cell.deviceImageView.image = Device.Kind(rawValue: device.type)! != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
         cell.deviceNameLabel.text = device.name
         cell.deviceLocationLabel.text = device.location
         cell.currentDeviceLabel.isHidden = !device.active

@@ -112,10 +112,11 @@ class EventHandler {
         let bcc = params["bcc"] as! String
         let messageId = params["messageId"] as! String
         let date = params["date"] as! String
-        let metadataKey = params["metadataKey"] as! Int32
+        let metadataKey = params["metadataKey"] as! Int
         let senderDeviceId = params["senderDeviceId"] as? Int32
         let messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? MessageType.none.rawValue))!
         let files = params["files"] as? [[String: Any]]
+        let fileKey = params["fileKey"] as? String
         
         let dateFormatter = DateFormatter()
         let timeZone = NSTimeZone(abbreviation: "UTC")
@@ -123,7 +124,7 @@ class EventHandler {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let localDate = dateFormatter.date(from: date) ?? Date()
         
-        if let email = DBManager.getMailByKey(key: metadataKey.description) {
+        if let email = DBManager.getMailByKey(key: metadataKey) {
             if(isMeARecipient(email: email)){
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
                 finishCallback(true, email)
@@ -136,7 +137,7 @@ class EventHandler {
         let email = Email()
         email.threadId = threadId
         email.subject = subject
-        email.key = metadataKey.description
+        email.key = metadataKey
         email.messageId = messageId
         email.date = localDate
         email.unread = true
@@ -158,6 +159,14 @@ class EventHandler {
             email.content = content
             email.preview = String(email.content.removeHtmlTags().prefix(100))
             DBManager.store(email)
+            
+            if let keyString = fileKey,
+                let fileKeyString = self.handleBodyByMessageType(messageType, body: keyString, recipientId: username, senderDeviceId: senderDeviceId) {
+                let fKey = FileKey()
+                fKey.emailId = email.key
+                fKey.key = fileKeyString
+                DBManager.store([fKey])
+            }
             
             ContactUtils.parseEmailContacts(from, email: email, type: .from)
             ContactUtils.parseEmailContacts(to, email: email, type: .to)
@@ -188,7 +197,7 @@ class EventHandler {
     }
     
     func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ open: FeedItem?) -> Void){
-        let emailId = String(params["metadataKey"] as! Int)
+        let emailId = params["metadataKey"] as! Int
         let from = params["from"] as! String
         let fileId = params["file"] as? String
         let date = params["date"] as! String
