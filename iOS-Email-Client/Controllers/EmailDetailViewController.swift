@@ -8,6 +8,7 @@
 import Material
 import Foundation
 import Photos
+import SafariServices
 
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
@@ -25,11 +26,6 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     
     var myHeaderView : UIView?
-    var hasUnreadEmails : Bool {
-        get {
-            return emailData.emails.contains(where: {$0.unread})
-        }
-    }
     let fileManager = CriptextFileManager()
     
     override func viewDidLoad() {
@@ -44,7 +40,7 @@ class EmailDetailViewController: UIViewController {
         self.generalOptionsContainerView.delegate = self
         fileManager.delegate = self
         
-        displayMarkIcon(asRead: hasUnreadEmails)
+        displayMarkIcon(asRead: false)
         generalOptionsContainerView.handleCurrentLabel(currentLabel: emailData.selectedLabel)
     }
     
@@ -112,8 +108,7 @@ class EmailDetailViewController: UIViewController {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let email = emailData.emails[indexPath.row]
-        return email.isExpanded ? email.cellHeight : ESTIMATED_ROW_HEIGHT
+        return ESTIMATED_ROW_HEIGHT
     }
 }
 
@@ -168,10 +163,8 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewCellDidTapLink(url: String) {
-        let storyboard = UIStoryboard.init(name: "Login", bundle: nil)
-        let webviewController = storyboard.instantiateViewController(withIdentifier: "webviewViewController") as! WebViewViewController
-        webviewController.url = url
-        self.present(webviewController, animated: true, completion: nil)
+        let svc = SFSafariViewController(url: URL(string: url)!)
+        self.present(svc, animated: true, completion: nil)
     }
     
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
@@ -181,10 +174,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
-        guard email.unread else {
-            return
-        }
-        displayMarkIcon(asRead: false)
+        email.isLoaded = true
     }
     
     func tableViewCellDidTap(_ cell: EmailTableViewCell) {
@@ -193,6 +183,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
+        manuallyUpdateRow(cell: cell, email: email)
+    }
+    
+    func manuallyUpdateRow(cell: EmailTableViewCell, email: Email){
         cell.setContent(email)
         emailsTableView.beginUpdates()
         cell.layoutIfNeeded()
@@ -386,18 +380,10 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
     
     func onMarkThreads() {
-        let unread = !hasUnreadEmails
         for email in emailData.emails {
-            if(email.unread){
-                email.isExpanded = !unread
-            }
-            DBManager.updateEmail(email, unread: unread)
+            DBManager.updateEmail(email, unread: true)
         }
-        if(unread){
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            self.emailsTableView.reloadData()
-        }
+        self.navigationController?.popViewController(animated: true)
     }
     
     func onMoreOptions() {
@@ -494,12 +480,14 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.toggleMoreOptionsView()
             return
         }
-        self.toggleMoreOptionsView()
-        let email = emailData.emails[indexPath.row]
-        DBManager.updateEmail(email, unread: true)
-        email.isExpanded = false
-        emailsTableView.reloadData()
-        displayMarkIcon(asRead: true)
+        let selectedEmail = emailData.emails[indexPath.row]
+        for email in emailData.emails {
+            guard email.date >= selectedEmail.date else {
+                continue
+            }
+            DBManager.updateEmail(email, unread: true)
+        }
+        self.navigationController?.popViewController(animated: true)
     }
     
     func onSpamPress() {
@@ -517,23 +505,28 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         self.removeEmail(indexPath: indexPath)
     }
     
-    func onPrintPress() {
-        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+    func onUnsendPress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow,
+            let cell = emailsTableView.cellForRow(at: indexPath) as? EmailTableViewCell else {
             self.toggleMoreOptionsView()
             return
         }
         let email = emailData.emails[indexPath.row]
+        self.toggleMoreOptionsView()
         guard email.status != .unsent && email.isSent else {
             return
         }
-        
+        email.isUnsending = true
+        manuallyUpdateRow(cell: cell, email: email)
         APIManager.unsendEmail(key: email.key, token: myAccount.jwt) { (error) in
+            email.isUnsending = false
             guard error == nil else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
+                self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
                 return
             }
-            email.isExpanded = false
             DBManager.unsendEmail(email)
+            email.isLoaded = false
             self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }

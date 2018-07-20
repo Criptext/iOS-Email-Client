@@ -28,9 +28,9 @@ class EventData {
             threadId = params["threadId"] as! String
             subject = params["subject"] as! String
             from = params["from"] as! String
-            to = params["to"] as! String
-            cc = params["cc"] as! String
-            bcc = params["bcc"] as! String
+            to = params["to"] as? String ?? ""
+            cc = params["cc"] as? String ?? ""
+            bcc = params["bcc"] as? String ?? ""
             messageId = params["messageId"] as! String
             metadataKey = params["metadataKey"] as! Int
             senderDeviceId = params["senderDeviceId"] as? Int32

@@ -29,6 +29,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYk-NZ-Ec1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D0N-r1-Ghu" customClass="CircleLoaderUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="17" width="40" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9UB-5Z-Iw6" customClass="UIImageView">
                                         <rect key="frame" x="18" y="19" width="36" height="36"/>
                                         <color key="backgroundColor" red="0.48627450979999998" green="0.70980392160000005" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -143,10 +147,14 @@
                                     <constraint firstItem="7fU-IW-zLs" firstAttribute="centerY" secondItem="uDR-zl-Siw" secondAttribute="centerY" id="ArE-YO-3Qj"/>
                                     <constraint firstItem="uDR-zl-Siw" firstAttribute="leading" secondItem="yfG-EO-Lu4" secondAttribute="trailing" constant="5" id="CW4-gg-yXO"/>
                                     <constraint firstItem="9UB-5Z-Iw6" firstAttribute="leading" secondItem="oYk-NZ-Ec1" secondAttribute="leading" constant="18" id="EvF-xL-KVG"/>
+                                    <constraint firstItem="D0N-r1-Ghu" firstAttribute="leading" secondItem="9UB-5Z-Iw6" secondAttribute="leading" constant="-2" id="FEp-3W-0gO"/>
                                     <constraint firstAttribute="trailing" secondItem="LGD-VD-w1C" secondAttribute="trailing" constant="24" id="FpX-Nc-JeE"/>
+                                    <constraint firstItem="D0N-r1-Ghu" firstAttribute="trailing" secondItem="9UB-5Z-Iw6" secondAttribute="trailing" constant="2" id="Huz-U0-d0T"/>
+                                    <constraint firstItem="D0N-r1-Ghu" firstAttribute="bottom" secondItem="9UB-5Z-Iw6" secondAttribute="bottom" constant="2" id="IRe-0x-Uq5"/>
                                     <constraint firstItem="YbZ-Ti-AdL" firstAttribute="leading" secondItem="XDx-eF-08j" secondAttribute="trailing" constant="10" id="JKB-Kh-c4d"/>
                                     <constraint firstItem="J60-E3-nju" firstAttribute="top" secondItem="LGD-VD-w1C" secondAttribute="bottom" id="JLa-2s-626"/>
                                     <constraint firstAttribute="trailing" secondItem="J60-E3-nju" secondAttribute="trailing" constant="10" id="LZq-WP-ran"/>
+                                    <constraint firstItem="D0N-r1-Ghu" firstAttribute="top" secondItem="9UB-5Z-Iw6" secondAttribute="top" constant="-2" id="MJW-Ma-zxV"/>
                                     <constraint firstAttribute="trailing" secondItem="uDR-zl-Siw" secondAttribute="trailing" constant="24" id="MR0-De-mPm"/>
                                     <constraint firstAttribute="height" priority="750" constant="75" id="VL2-Xd-yMx"/>
                                     <constraint firstItem="7fU-IW-zLs" firstAttribute="leading" secondItem="yfG-EO-Lu4" secondAttribute="trailing" constant="5" id="WQR-Th-pVs"/>
@@ -248,6 +256,7 @@
                 <outlet property="attachmentsTopMarginView" destination="BUE-hX-7IB" id="d3o-Uz-d7t"/>
                 <outlet property="borderBGView" destination="x8R-Mr-qce" id="kmH-ZK-eqh"/>
                 <outlet property="bottomMarginView" destination="Spu-tg-Ust" id="JPL-vn-6x2"/>
+                <outlet property="circleLoaderUIView" destination="D0N-r1-Ghu" id="WaB-02-UVE"/>
                 <outlet property="contactsCollapseLabel" destination="XDx-eF-08j" id="OwT-NY-LPh"/>
                 <outlet property="contactsLabel" destination="7fU-IW-zLs" id="beI-2S-Tdc"/>
                 <outlet property="contactsWidthConstraint" destination="Dj3-m3-xRK" id="Lay-Lz-d5N"/>

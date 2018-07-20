@@ -23,36 +23,41 @@ class EventHandler {
         myAccount = account
     }
 
-    func handleEvents(events: Array<Dictionary<String, Any>>){
+    func handleEvents(events: [[String: Any]]){
         var emails = [Email]()
         var opens = [FeedItem]()
         var successfulEvents = [Int32]()
-        let asyncGroupCalls = DispatchGroup()
-        events.forEach({ (event) in
-            asyncGroupCalls.enter()
-            self.handleEvent(event){ (successfulEventId, data) in
-                guard let eventId = successfulEventId else {
-                    asyncGroupCalls.leave()
-                    return
-                }
-                successfulEvents.append(eventId)
-                switch(data){
-                case is Email:
-                    emails.append(data as! Email)
-                case is FeedItem:
-                    opens.append(data as! FeedItem)
-                default:
-                    break
-                }
-                asyncGroupCalls.leave()
+        handleEventsRecursive(events: events, index: 0, eventCallback: { (successfulEventId, data) in
+            guard let eventId = successfulEventId else {
+                return
             }
-        })
-        asyncGroupCalls.notify(queue: .main) {
+            successfulEvents.append(eventId)
+            switch(data){
+            case is Email:
+                emails.append(data as! Email)
+            case is FeedItem:
+                opens.append(data as! FeedItem)
+            default:
+                break
+            }
+        }) {
             if(!successfulEvents.isEmpty){
                 self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
             }
             self.notify(emails: emails)
             self.notify(opens: opens)
+        }
+    }
+    
+    func handleEventsRecursive(events: [[String: Any]], index: Int, eventCallback: @escaping (_ successfulEventId : Int32?, _ data: Any?) -> Void , finishCallback: @escaping () -> Void){
+        if(events.count == index){
+            finishCallback()
+            return
+        }
+        let event = events[index]
+        handleEvent(event) { (successfulEventId, data) in
+            eventCallback(successfulEventId, data)
+            self.handleEventsRecursive(events: events, index: index + 1, eventCallback: eventCallback, finishCallback: finishCallback)
         }
     }
     

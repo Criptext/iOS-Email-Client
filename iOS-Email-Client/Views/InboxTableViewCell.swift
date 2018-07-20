@@ -72,8 +72,15 @@ class InboxTableViewCell: UITableViewCell {
             senderLabel.attributedText = NSAttributedString(string: "Draft", attributes: [NSAttributedStringKey.foregroundColor: UIColor.alert])
         }
         subjectLabel.text = thread.subject == "" ? "(No Subject)" : thread.subject
-        previewLabel.text = thread.preview
         dateLabel.text = thread.getFormattedDate()
+        previewLabel.text = thread.preview
+        if(thread.lastEmail.isUnsent){
+            previewLabel.textColor = .alertText
+            previewLabel.font = Font.italic.size(15.0)!
+        }else{
+            previewLabel.textColor = .charcoal
+            previewLabel.font = Font.regular.size(15.0)!
+        }
         
         let size = dateLabel.sizeThatFits(CGSize(width: 130, height: 21))
         dateWidthConstraint.constant = size.width
@@ -94,7 +101,7 @@ class InboxTableViewCell: UITableViewCell {
         case .none:
             break
         case .sent:
-            readImageView.image = #imageLiteral(resourceName: "check")
+            readImageView.image = #imageLiteral(resourceName: "single-check-icon")
             readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         case .delivered:
             readImageView.image = #imageLiteral(resourceName: "double-check")
@@ -106,7 +113,7 @@ class InboxTableViewCell: UITableViewCell {
             readWidthConstraint.constant = 0.0
             readImageView.isHidden = true
         case .sending, .fail:
-            readImageView.image = #imageLiteral(resourceName: "expiration-email-icon")
+            readImageView.image = #imageLiteral(resourceName: "waiting-icon")
             readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         }
     }

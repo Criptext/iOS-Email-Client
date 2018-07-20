@@ -43,10 +43,8 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var dateWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var readStatusMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var readStatusContentMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var circleLoaderUIView: CircleLoaderUIView!
     
-    
-    var loadedContent = false
-    var myHeight : CGFloat = 0.0
     var email: Email!
     var attachments : List<File> {
         return email.files
@@ -72,14 +70,13 @@ class EmailTableViewCell: UITableViewCell{
         guard keyPath == "contentSize" else {
             return
         }
-        if( webView.scrollView.contentSize.height != self.myHeight) {
-            webView.scrollView.contentSize = CGSize(width: webView.scrollView.contentSize.width, height: self.myHeight)
+        if( webView.scrollView.contentSize.height != self.email.cellHeight) {
+            webView.scrollView.contentSize = CGSize(width: webView.scrollView.contentSize.width, height: self.email.cellHeight)
         }
     }
     
     func setupView(){
         backgroundColor = .clear
-        heightConstraint.constant = myHeight
         borderBGView.layer.borderWidth = 1
         borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
         
@@ -94,6 +91,7 @@ class EmailTableViewCell: UITableViewCell{
         self.email = email
         let isExpanded = email.isExpanded
         
+        heightConstraint.constant = email.cellHeight
         attachmentsTableView.reloadData()
         attachmentsTableHeightConstraint.constant = ATTATCHMENT_CELL_HEIGHT * CGFloat(attachments.count)
         
@@ -120,14 +118,23 @@ class EmailTableViewCell: UITableViewCell{
             setCollapsedContent(email)
         }
         
+        if(!email.isUnsending){
+            circleLoaderUIView.layer.removeAllAnimations()
+            circleLoaderUIView.isHidden = true
+        } else {
+            circleLoaderUIView.animate()
+            circleLoaderUIView.isHidden = false
+        }
+        
         if(email.isUnsent){
             previewLabel.textColor = .alertText
+            previewLabel.font = Font.italic.size(15.0)!
             borderBGView.layer.borderColor = UIColor.alertLight.cgColor
         }
     }
     
     func setCollapsedContent(_ email: Email){
-        previewLabel.text = email.isUnsent ? "Unsent" : email.preview
+        previewLabel.text = email.getPreview()
     }
     
     func setExpandedContent(_ email: Email){
@@ -140,9 +147,9 @@ class EmailTableViewCell: UITableViewCell{
         })
         let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
-        if(!loadedContent){
+        if(!email.isLoaded){
             let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-            webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.content)\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
+            webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
         }
     }
     
@@ -158,16 +165,18 @@ class EmailTableViewCell: UITableViewCell{
             miniReadIconView.image = #imageLiteral(resourceName: "double-check")
             miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         case .delivered:
-            miniReadIconView.image = #imageLiteral(resourceName: "double-check")
+            miniReadIconView.image = #imageLiteral(resourceName: "single-check-icon")
             miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         case .opened:
             miniReadIconView.image = #imageLiteral(resourceName: "double-check")
             miniReadIconView.tintColor = .mainUI
         case .unsent:
             readIconWidthConstraint.constant = 0.0
+            readStatusMarginConstraint.constant = 0.0
+            readStatusContentMarginConstraint.constant = 0.0
             miniReadIconView.isHidden = true
         case .sending, .fail:
-            miniReadIconView.image = #imageLiteral(resourceName: "expiration-email-icon")
+            miniReadIconView.image = #imageLiteral(resourceName: "waiting-icon")
             miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         }
     }
@@ -177,7 +186,7 @@ class EmailTableViewCell: UITableViewCell{
             return
         }
         let touchPt = gestureRecognizer.location(in: self.contentView)
-        guard touchPt.y < 103.0 + myHeight,
+        guard touchPt.y < 103.0 + self.email.cellHeight,
             let tappedView = self.hitTest(touchPt, with: nil) else {
             return
         }
@@ -228,19 +237,18 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
                 return
             }
             let newHeight = height + height * (self.webView.scrollView.zoomScale - 1)
-            guard newHeight != self.myHeight else {
+            guard newHeight != self.email.cellHeight else {
                 return
             }
-            self.myHeight = newHeight
             self.heightConstraint.constant = newHeight
-            self.loadedContent = true
             self.delegate?.tableViewCellDidChangeHeight(newHeight, email: self.email)
         }
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard navigationAction.navigationType == .linkActivated,
-            let link = navigationAction.request.url?.absoluteString else {
+            let link = navigationAction.request.url?.absoluteString,
+            Utils.verifyUrl(urlString: link) else {
                 decisionHandler(.allow)
                 return
         }
@@ -254,8 +262,13 @@ extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let attachment = attachments[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentTableCell") as! AttachmentTableCell
-        cell.setFields(attachment)
-        cell.delegate = self
+        if(attachment.status == 0) {
+            cell.setAsUnsend()
+            cell.delegate = nil
+        } else {
+            cell.setFields(attachment)
+            cell.delegate = self
+        }
         return cell
     }
     

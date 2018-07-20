@@ -39,7 +39,9 @@ class Email: Object {
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
     var isExpanded = false
-    var cellHeight : CGFloat = 70.0
+    var isUnsending = false
+    var isLoaded = false
+    var cellHeight : CGFloat = 0.0
     var fromContact : Contact {
         get {
             let predicate = NSPredicate(format: "type == '\(ContactType.from.rawValue)'")
@@ -63,7 +65,7 @@ class Email: Object {
     }
     
     override static func ignoredProperties() -> [String] {
-        return ["isExpanded"]
+        return ["isExpanded", "isUnsending", "isLoaded", "cellHeight"]
     }
     
     var isUnsent: Bool{
@@ -134,6 +136,20 @@ class Email: Object {
                     "isMuted": isMuted
             ]
         ]
+    }
+    
+    func getContent() -> String {
+        guard !isUnsent else {
+            return "<span style=\"color:#eea3a3; font-style: italic;\">Unsent: \(String(DateUtils.beatyDate(self.unsentDate)))</span>"
+        }
+        return content
+    }
+    
+    func getPreview() -> String {
+        guard !isUnsent else {
+            return "Unsent: \(String(DateUtils.beatyDate(self.unsentDate)))"
+        }
+        return content
     }
 }
 

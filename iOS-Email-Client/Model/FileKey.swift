@@ -25,7 +25,7 @@ class FileKey : Object {
     
     func getKeyAndIv() -> (Data, Data){
         let keys = key.split(separator: ":")
-        return (Data(base64Encoded: String(keys[0]))!, Data(base64Encoded: String(keys[1]))!)
+        return (Data(base64Encoded: String(keys[0]), options: .ignoreUnknownCharacters)!, Data(base64Encoded: String(keys[1]), options: .ignoreUnknownCharacters)!)
     }
     
     class func getKeyCodedString(key: Data, iv: Data) -> String{
