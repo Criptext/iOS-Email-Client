@@ -79,16 +79,17 @@ class APIManager {
         }
     }
     
-    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((Error?) -> Void)){
+    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((Error?, String?) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            guard response.response?.statusCode == 200 else {
+            guard response.response?.statusCode == 200,
+                let value = response.result.value else {
                 let error = CriptextError(code: .accountNotCreated)
-                completion(error)
+                completion(error, nil)
                 return
             }
-            completion(nil)
+            completion(nil, value)
         }
     }
     

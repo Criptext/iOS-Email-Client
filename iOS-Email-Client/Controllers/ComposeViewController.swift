@@ -540,12 +540,13 @@ class ComposeViewController: UIViewController {
         self.prepareMail()
     }
     
-    func sendMailInMainController(){
+    func sendMailInMainController(secure: Bool = true){
         guard let email = composerData.emailDraft else {
             return
         }
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: .sending)
+        DBManager.updateEmail(email, secure: secure)
         self.dismiss(animated: true){
             self.delegate?.sendMail(email: email)
         }
@@ -684,10 +685,10 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
     }
 }
 
-extension ComposeViewController: emailSetPasswordDelegate {
-    func setPassword(password: String) {
+extension ComposeViewController: EmailSetPasswordDelegate {
+    func setPassword(active: Bool, password: String) {
         self.toggleInteraction(false)
-        sendMailInMainController()
+        sendMailInMainController(secure: active)
     }
 }
 
