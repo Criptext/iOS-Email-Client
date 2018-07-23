@@ -382,6 +382,24 @@ extension DBManager {
         
         return results.first
     }
+    
+    class func unsendEmail(_ email: Email, date: Date = Date()){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.content = ""
+            email.preview = ""
+            email.unsentDate = date
+            email.status = .unsent
+            
+            email.files.forEach({ (file) in
+                file.name = ""
+                file.size = 0
+                file.mimeType = ""
+                file.status = 0
+            })
+        }
+    }
 }
 
 //MARK: - Contacts related

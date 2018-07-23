@@ -213,6 +213,7 @@ class CriptextFileManager {
             return
         }
         let fileURL = CriptextFileManager.getURLForFile(name: file.name)
+        try? FileManager.default.removeItem(at: fileURL)
         for part in 1...file.chunksProgress.count {
             let chunk = getChunk(file: file, part: part)
             if FileManager.default.fileExists(atPath: fileURL.path) {

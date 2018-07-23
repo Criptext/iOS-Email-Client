@@ -15,7 +15,7 @@ class File : Object {
     @objc dynamic var token = ""
     @objc dynamic var name = ""
     @objc dynamic var size = 0
-    @objc dynamic var status = 0
+    @objc dynamic var status = 1
     @objc dynamic var date = Date()
     @objc dynamic var readOnly = 0
     @objc dynamic var emailId = 0

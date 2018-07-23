@@ -19,7 +19,7 @@ class Thread {
     var date = Date()
     
     var preview : String {
-        return lastEmail.preview
+        return lastEmail.getPreview()
     }
     var threadId : String {
         return lastEmail.threadId

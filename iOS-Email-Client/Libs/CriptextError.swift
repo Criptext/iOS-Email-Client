@@ -30,6 +30,7 @@ enum ErrorCode: Int {
     case accountNotCreated = 1
     case invalidUsername = 2
     case noValidResponse = 100
+    case bodyUnsent = 3
     
     var description: String {
         switch self {
@@ -39,6 +40,8 @@ enum ErrorCode: Int {
             return "Username already exists"
         case .noValidResponse:
             return "Couldn't get a valid response"
+        case .bodyUnsent:
+            return "Email was unsent"
         }
     }
 }

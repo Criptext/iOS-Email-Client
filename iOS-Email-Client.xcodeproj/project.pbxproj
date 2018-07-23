@@ -162,6 +162,8 @@
 		7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8F1B68203C7A3500D30DCC /* SignUpData.swift */; };
 		7C92104620FEF2B10081C048 /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104520FEF2B10081C048 /* FileKey.swift */; };
 		7C92104820FFD5690081C048 /* AESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104720FFD5690081C048 /* AESCipher.swift */; };
+		7C92104A210141380081C048 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C921049210141380081C048 /* EventData.swift */; };
+		7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104B21022B290081C048 /* CircleLoaderUIView.swift */; };
 		7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
 		7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
 		7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */; };
@@ -387,6 +389,8 @@
 		7C8F1B68203C7A3500D30DCC /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		7C92104520FEF2B10081C048 /* FileKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileKey.swift; sourceTree = "<group>"; };
 		7C92104720FFD5690081C048 /* AESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipher.swift; sourceTree = "<group>"; };
+		7C921049210141380081C048 /* EventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventData.swift; sourceTree = "<group>"; };
+		7C92104B21022B290081C048 /* CircleLoaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleLoaderUIView.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
 		7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSnackbar.swift; sourceTree = "<group>"; };
@@ -675,6 +679,7 @@
 				7C69BADC20DC4A2E001ABD5B /* Thread.swift */,
 				7CBF569E20FD41270044B406 /* CustomDictionary.swift */,
 				7C92104520FEF2B10081C048 /* FileKey.swift */,
+				7C921049210141380081C048 /* EventData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -752,6 +757,7 @@
 				7CB60A7620F8068900C9090C /* LabelsHeaderTableViewCell.xib */,
 				7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */,
 				7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */,
+				7C92104B21022B290081C048 /* CircleLoaderUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1079,6 +1085,7 @@
 				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
 				41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */,
 				7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */,
+				7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */,
 				41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */,
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
@@ -1118,6 +1125,7 @@
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
 				7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */,
+				7C92104A210141380081C048 /* EventData.swift in Sources */,
 				7C92104820FFD5690081C048 /* AESCipher.swift in Sources */,
 				7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */,
 				7C8D6C74203735E000AB96EF /* Constants.swift in Sources */,

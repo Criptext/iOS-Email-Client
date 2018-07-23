@@ -18,6 +18,7 @@ class AttachmentTableCell: UITableViewCell{
     @IBOutlet weak var typeView: UIImageView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var markImageView: UIImageView!
+    @IBOutlet weak var iconDownloadImageView: UIImageView!
     var delegate: AttachmentTableCellDelegate?
     
     override func awakeFromNib() {
@@ -58,6 +59,16 @@ class AttachmentTableCell: UITableViewCell{
     
     func setAttachmentType(_ mimeType: String){
         typeView.image = Utils.getImageByFileType(mimeType)
+    }
+    
+    func setAsUnsend(){
+        let attrs = [NSAttributedStringKey.font : Font.bold.size(15.0)!, NSAttributedStringKey.foregroundColor : UIColor.black]
+        let myName = NSMutableAttributedString(string: "Attachment Unsent", attributes: attrs)
+        attachmentLabel.attributedText = myName
+        progressView.isHidden = true
+        markImageView.isHidden = true
+        iconDownloadImageView.isHidden = true
+        typeView.image = #imageLiteral(resourceName: "attachment_expired")
     }
     
     func setMarkIcon(success: Bool){

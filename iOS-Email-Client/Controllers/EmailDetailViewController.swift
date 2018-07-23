@@ -8,6 +8,7 @@
 import Material
 import Foundation
 import Photos
+import SafariServices
 
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
@@ -25,11 +26,6 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     
     var myHeaderView : UIView?
-    var hasUnreadEmails : Bool {
-        get {
-            return emailData.emails.contains(where: {$0.unread})
-        }
-    }
     let fileManager = CriptextFileManager()
     
     override func viewDidLoad() {
@@ -44,7 +40,7 @@ class EmailDetailViewController: UIViewController {
         self.generalOptionsContainerView.delegate = self
         fileManager.delegate = self
         
-        displayMarkIcon(asRead: hasUnreadEmails)
+        displayMarkIcon(asRead: false)
         generalOptionsContainerView.handleCurrentLabel(currentLabel: emailData.selectedLabel)
     }
     
@@ -112,8 +108,7 @@ class EmailDetailViewController: UIViewController {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let email = emailData.emails[indexPath.row]
-        return email.isExpanded ? email.cellHeight : ESTIMATED_ROW_HEIGHT
+        return ESTIMATED_ROW_HEIGHT
     }
 }
 
@@ -168,10 +163,8 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewCellDidTapLink(url: String) {
-        let storyboard = UIStoryboard.init(name: "Login", bundle: nil)
-        let webviewController = storyboard.instantiateViewController(withIdentifier: "webviewViewController") as! WebViewViewController
-        webviewController.url = url
-        self.present(webviewController, animated: true, completion: nil)
+        let svc = SFSafariViewController(url: URL(string: url)!)
+        self.present(svc, animated: true, completion: nil)
     }
     
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
@@ -181,14 +174,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
-        guard email.unread else {
-            return
-        }
-        DBManager.updateEmail(email, unread: false)
-        displayMarkIcon(asRead: hasUnreadEmails)
-        if(email.fromContact.email != emailData.accountEmail){
-            APIManager.notifyOpen(key: email.key, token: myAccount.jwt)
-        }
+        email.isLoaded = true
     }
     
     func tableViewCellDidTap(_ cell: EmailTableViewCell) {
@@ -197,6 +183,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
+        manuallyUpdateRow(cell: cell, email: email)
+    }
+    
+    func manuallyUpdateRow(cell: EmailTableViewCell, email: Email){
         cell.setContent(email)
         emailsTableView.beginUpdates()
         cell.layoutIfNeeded()
@@ -224,18 +214,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType) {
         switch(iconType){
-        case .attachment:
-            handleAttachmentTap(cell, sender)
-        case .read:
-            handleReadTap(cell, sender)
         case .contacts:
             handleContactsTap(cell, sender)
-        case .unsend:
-            handleUnsendTap(cell, sender)
         case .options:
             handleOptionsTap(cell, sender)
-        case .reply:
-            handleReplyTap(cell, sender)
         case .edit:
             handleEditTap(cell, sender)
         }
@@ -251,26 +233,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "")
     }
     
-    func handleAttachmentTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        let historyPopover = HistoryUIPopover()
-        historyPopover.historyCellName = "AttachmentHistoryTableCell"
-        historyPopover.historyTitleText = "Attachments History"
-        historyPopover.emptyMessage = "Your files have not been opened/downloaded yet"
-        historyPopover.historyImage = #imageLiteral(resourceName: "attachment")
-        historyPopover.cellHeight = 81.0
-        presentPopover(historyPopover, sender, height: 130)
-    }
-    
-    func handleReadTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        let historyPopover = HistoryUIPopover()
-        historyPopover.historyCellName = "ReadHistoryTableCell"
-        historyPopover.historyTitleText = "Read History"
-        historyPopover.emptyMessage = "Your email has not been opened yet"
-        historyPopover.historyImage = #imageLiteral(resourceName: "read")
-        historyPopover.cellHeight = 39.0
-        presentPopover(historyPopover, sender, height: 130)
-    }
-    
     func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
@@ -279,20 +241,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let contactsPopover = ContactsDetailUIPopover()
         contactsPopover.email = email
         presentPopover(contactsPopover, sender, height: min(CGFloat(CONTACTS_BASE_HEIGHT + email.emailContacts.count * CONTACTS_ROW_HEIGHT), CONTACTS_MAX_HEIGHT))
-    }
-    
-    func handleReplyTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        guard let indexPath = emailsTableView.indexPath(for: cell) else {
-            return
-        }
-        emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        onReplyPress()
-    }
-    
-    func handleUnsendTap(_ cell: EmailTableViewCell, _ sender: UIView){
-        let unsentPopover = UnsentUIPopover()
-        unsentPopover.date = "Coming Soon!"
-        presentPopover(unsentPopover, sender, height: 68)
     }
     
     func presentPopover(_ popover: UIViewController, _ sender: UIView, height: CGFloat){
@@ -432,18 +380,10 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
     
     func onMarkThreads() {
-        let unread = !hasUnreadEmails
         for email in emailData.emails {
-            if(email.unread){
-                email.isExpanded = !unread
-            }
-            DBManager.updateEmail(email, unread: unread)
+            DBManager.updateEmail(email, unread: true)
         }
-        if(unread){
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            self.emailsTableView.reloadData()
-        }
+        self.navigationController?.popViewController(animated: true)
     }
     
     func onMoreOptions() {
@@ -540,12 +480,14 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.toggleMoreOptionsView()
             return
         }
-        self.toggleMoreOptionsView()
-        let email = emailData.emails[indexPath.row]
-        DBManager.updateEmail(email, unread: true)
-        email.isExpanded = false
-        emailsTableView.reloadData()
-        displayMarkIcon(asRead: true)
+        let selectedEmail = emailData.emails[indexPath.row]
+        for email in emailData.emails {
+            guard email.date >= selectedEmail.date else {
+                continue
+            }
+            DBManager.updateEmail(email, unread: true)
+        }
+        self.navigationController?.popViewController(animated: true)
     }
     
     func onSpamPress() {
@@ -563,8 +505,30 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         self.removeEmail(indexPath: indexPath)
     }
     
-    func onPrintPress() {
-        //TO DO
+    func onUnsendPress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow,
+            let cell = emailsTableView.cellForRow(at: indexPath) as? EmailTableViewCell else {
+            self.toggleMoreOptionsView()
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        self.toggleMoreOptionsView()
+        guard email.status != .unsent && email.isSent else {
+            return
+        }
+        email.isUnsending = true
+        manuallyUpdateRow(cell: cell, email: email)
+        APIManager.unsendEmail(key: email.key, token: myAccount.jwt) { (error) in
+            email.isUnsending = false
+            guard error == nil else {
+                self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
+                self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
+                return
+            }
+            DBManager.unsendEmail(email)
+            email.isLoaded = false
+            self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
+        }
     }
     
     func onOverlayPress() {

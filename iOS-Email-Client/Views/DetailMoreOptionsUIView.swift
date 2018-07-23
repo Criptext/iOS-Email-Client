@@ -15,7 +15,7 @@ protocol DetailMoreOptionsViewDelegate{
     func onDeletePress()
     func onMarkPress()
     func onSpamPress()
-    func onPrintPress()
+    func onUnsendPress()
     func onOverlayPress()
 }
 
@@ -104,7 +104,7 @@ class DetailMoreOptionsUIView: UIView {
     }
     
     @IBAction func onPrintPress(_ sender: Any) {
-        delegate?.onPrintPress()
+        delegate?.onUnsendPress()
     }
     
 }
