@@ -147,7 +147,7 @@ class EventHandler {
             }
         }
         
-        apiManager.getEmailBody(messageId: email.messageId, token: myAccount.jwt) { (error, data) in
+        apiManager.getEmailBody(metadataKey: email.key, token: myAccount.jwt) { (error, data) in
             let unsent = (error as? CriptextError)?.code == .bodyUnsent
             
             guard (unsent || error == nil),

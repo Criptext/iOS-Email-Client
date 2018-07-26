@@ -132,8 +132,8 @@ class APIManager {
         }
     }
     
-    class func getEmailBody(messageId: String, token: String, completion: @escaping ((Any?, Any?) -> Void)){
-        let url = "\(self.baseUrl)/email/body/\(messageId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+    class func getEmailBody(metadataKey: Int, token: String, completion: @escaping ((Any?, Any?) -> Void)){
+        let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             if response.response?.statusCode == 404 {

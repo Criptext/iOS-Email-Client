@@ -28,6 +28,7 @@ class ResetDeviceViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        passwordTextField.becomeFirstResponder()
     }
     
     @objc func onDonePress(_ sender: Any){

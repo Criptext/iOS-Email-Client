@@ -16,6 +16,8 @@ protocol EmailSetPasswordDelegate {
 class EmailSetPasswordViewController: BaseUIPopover {
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var repeatPasswordTextField: TextField!
+    @IBOutlet weak var noPasswordMessageLabel: UILabel!
+    @IBOutlet weak var passwordContainerView: UIView!
     var delegate : EmailSetPasswordDelegate?
     
     init(){
@@ -27,14 +29,19 @@ class EmailSetPasswordViewController: BaseUIPopover {
     }
     
     override func viewDidLoad() {
-        passwordTextField.detailColor = .black
-        repeatPasswordTextField.detailColor = .black
+        passwordTextField.detailColor = .alert
+        repeatPasswordTextField.detailColor = .alert
         
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
         repeatPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ [weak self] in
             self?.passwordTextField.becomeFirstResponder()
         }
+        guard let scrollview = self.view as? UIScrollView else {
+            return
+        }
+        scrollview.bounces = false
+        scrollview.contentSize = CGSize(width: Constants.popoverWidth, height: 406)
     }
     
     @IBAction func onDidEndOnExit(_ sender: Any) {
@@ -54,7 +61,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
     @IBAction func onSetPress(_ sender: Any) {
         guard let password = passwordTextField.text,
             (!passwordTextField.isEnabled || passwordTextField.text == repeatPasswordTextField.text) else {
-            repeatPasswordTextField.detail = "Passwords must match"
+            repeatPasswordTextField.detail = "Passwords don’t match"
             return
         }
         self.dismiss(animated: true, completion: nil)
@@ -68,6 +75,8 @@ class EmailSetPasswordViewController: BaseUIPopover {
     @IBAction func onSwitchToggle(_ sender: UISwitch) {
         passwordTextField.isEnabled = sender.isOn
         repeatPasswordTextField.isEnabled = sender.isOn
+        passwordContainerView.isHidden = !sender.isOn
+        noPasswordMessageLabel.isHidden = sender.isOn
         guard sender.isOn else {
             repeatPasswordTextField.detail = ""
             resignKeyboard()
