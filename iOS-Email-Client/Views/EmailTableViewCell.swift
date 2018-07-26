@@ -87,7 +87,7 @@ class EmailTableViewCell: UITableViewCell{
         webView.configuration.userContentController.add(self, name: "iosListener")
     }
     
-    func setContent(_ email: Email){
+    func setContent(_ email: Email, myEmail: String){
         self.email = email
         let isExpanded = email.isExpanded
         
@@ -113,7 +113,7 @@ class EmailTableViewCell: UITableViewCell{
         bottomMarginView.isHidden = !isExpanded
         
         if(isExpanded){
-            setExpandedContent(email)
+            setExpandedContent(email, myEmail: myEmail)
         }else{
             setCollapsedContent(email)
         }
@@ -137,13 +137,14 @@ class EmailTableViewCell: UITableViewCell{
         previewLabel.text = email.getPreview()
     }
     
-    func setExpandedContent(_ email: Email){
+    func setExpandedContent(_ email: Email, myEmail: String){
         let allContacts = email.getContacts(type: .to) + email.getContacts(type: .cc) + email.getContacts(type: .bcc)
         contactsLabel.text = allContacts.reduce("", { (result, contact) -> String in
+            let displayName = parseContact(contact, myEmail: myEmail, contactsLength: allContacts.count)
             if(result.isEmpty){
-                return "To \(contact.displayName)"
+                return "To \(displayName)"
             }
-            return "\(result), \(contact.displayName)"
+            return "\(result), \(displayName)"
         })
         let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
@@ -151,6 +152,16 @@ class EmailTableViewCell: UITableViewCell{
             let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
             webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
         }
+    }
+    
+    func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
+        guard contact.email != myEmail else {
+            return "Me"
+        }
+        guard contactsLength > 1 else {
+            return contact.displayName
+        }
+        return String(contact.displayName.split(separator: " ")[0])
     }
     
     func setReadStatus(status: Email.Status){
@@ -162,10 +173,10 @@ class EmailTableViewCell: UITableViewCell{
         case .none:
             break
         case .sent:
-            miniReadIconView.image = #imageLiteral(resourceName: "double-check")
+            miniReadIconView.image = #imageLiteral(resourceName: "single-check-icon")
             miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         case .delivered:
-            miniReadIconView.image = #imageLiteral(resourceName: "single-check-icon")
+            miniReadIconView.image = #imageLiteral(resourceName: "double-check")
             miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
         case .opened:
             miniReadIconView.image = #imageLiteral(resourceName: "double-check")

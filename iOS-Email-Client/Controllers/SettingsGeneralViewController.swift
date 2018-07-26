@@ -8,13 +8,13 @@
 
 import Foundation
 import Material
+import SafariServices
 
 class SettingsGeneralViewController: UITableViewController{
-    let sections = ["", "ACCOUNT", "NOTIFICATIONS"] as [String]
+    let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "": ["Swipe Options"],
-        "ACCOUNT": ["Profile Name", "Profile Photo", "Reset Password", "Recovery Email", "Signature"],
-    "NOTIFICATIONS": ["Allow Notifications", "Sounds", "Badge App Icon"]] as [String: [String]]
+        "ACCOUNT": ["Profile Name", "Signature"],
+    "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries"]] as [String: [String]]
     var myAccount : Account!
     
     override func viewDidLoad() {
@@ -61,6 +61,12 @@ class SettingsGeneralViewController: UITableViewController{
             presentPopover()
         case "Signature":
             goToSignature()
+        case "Privacy Policy":
+            goToUrl(url: "https://criptext.com/privacy")
+        case "Terms of Service":
+            goToUrl(url: "https://criptext.com/terms")
+        case "Open Source Libraries":
+            goToUrl(url: "https://criptext.com/open-source-libraries")
         default:
             break
         }
@@ -86,6 +92,11 @@ class SettingsGeneralViewController: UITableViewController{
         changeNamePopover.popoverPresentationController?.permittedArrowDirections = []
         changeNamePopover.popoverPresentationController?.backgroundColor = UIColor.white
         self.present(changeNamePopover, animated: true)
+    }
+    
+    func goToUrl(url: String){
+        let svc = SFSafariViewController(url: URL(string: url)!)
+        self.present(svc, animated: true, completion: nil)
     }
     
 }

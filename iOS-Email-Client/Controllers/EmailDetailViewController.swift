@@ -117,7 +117,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
-        cell.setContent(email)
+        cell.setContent(email, myEmail: emailData.accountEmail)
         cell.delegate = self
         return cell
     }
@@ -187,7 +187,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func manuallyUpdateRow(cell: EmailTableViewCell, email: Email){
-        cell.setContent(email)
+        cell.setContent(email, myEmail: emailData.accountEmail)
         emailsTableView.beginUpdates()
         cell.layoutIfNeeded()
         emailsTableView.endUpdates()

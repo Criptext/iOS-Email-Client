@@ -14,6 +14,7 @@ import SwiftWebSocket
 import MIBadgeButton_Swift
 import SwiftyJSON
 import SignalProtocolFramework
+import AudioToolbox
 
 //delete
 import RealmSwift
@@ -130,6 +131,8 @@ class InboxViewController: UIViewController {
         mailboxData.threads[indexPath.row] = refreshedRowThread
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.tableView.reloadRows(at: [indexPath], with: .none)
+        updateBadges()
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
     
     func initBarButtonItems(){
@@ -237,6 +240,9 @@ extension InboxViewController: EventHandlerDelegate {
     }
     
     func didReceiveNewEmails(emails: [Email]) {
+        if(self.viewIfLoaded?.window != nil){
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        }
         guard !mailboxData.searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
             return
         }
@@ -699,6 +705,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             DBManager.setLabelsForEmail(thread.lastEmail, labels: [SystemLabel.trash.id])
             self.mailboxData.threads.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
+            self.updateBadges()
+            self.showNoThreadsView(self.mailboxData.reachedEnd && self.mailboxData.threads.isEmpty)
         }
         
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
@@ -775,6 +783,8 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             ? []
             : [labelId]
         setLabels(added: addLabels, removed: removeLabels, forceRemove: labelId == SystemLabel.trash.id || labelId == SystemLabel.spam.id)
+        updateBadges()
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
 }
 
@@ -795,9 +805,9 @@ extension InboxViewController {
         }
         if shouldRemoveItems {
             self.tableView.deleteRows(at: indexPaths, with: .left)
+            updateBadges()
+            showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
         }
-        updateBadges()
-        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
     
     func deleteThreads(){
