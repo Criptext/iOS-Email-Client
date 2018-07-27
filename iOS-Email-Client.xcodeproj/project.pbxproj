@@ -191,6 +191,7 @@
 		7CBF569F20FD41270044B406 /* CustomDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBF569E20FD41270044B406 /* CustomDictionary.swift */; };
 		7CC44BE220FD583A004BF759 /* CreateCustomJSONFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */; };
 		7CC44BF120FEE1ED004BF759 /* AESCipherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */; };
+		7CCA060D210B687200BC4CEF /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
 		7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
 		7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
 		7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
@@ -418,6 +419,7 @@
 		7CBF569E20FD41270044B406 /* CustomDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDictionary.swift; sourceTree = "<group>"; };
 		7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomJSONFileTests.swift; sourceTree = "<group>"; };
 		7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipherTests.swift; sourceTree = "<group>"; };
+		7CCA060C210B687200BC4CEF /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSessionStore.swift; sourceTree = "<group>"; };
 		7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextPreKeyStore.swift; sourceTree = "<group>"; };
 		7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSignedPreKeyStore.swift; sourceTree = "<group>"; };
@@ -680,6 +682,7 @@
 				7CBF569E20FD41270044B406 /* CustomDictionary.swift */,
 				7C92104520FEF2B10081C048 /* FileKey.swift */,
 				7C921049210141380081C048 /* EventData.swift */,
+				7CCA060C210B687200BC4CEF /* Dummy.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1067,6 +1070,7 @@
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
+				7CCA060D210B687200BC4CEF /* Dummy.swift in Sources */,
 				7CAC1CEE20F6AE7B004A50C6 /* PaddingUILabel.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,

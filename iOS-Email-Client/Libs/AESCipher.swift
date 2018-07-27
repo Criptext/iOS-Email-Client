@@ -22,7 +22,7 @@ class AESCipher {
             data.withUnsafeBytes({ dataBytes in
                 ivData.withUnsafeBytes({ ivBytes in
                     keyData.withUnsafeBytes({ keyBytes in
-                        CCCrypt(CCOperation(operation), CCAlgorithm(kCCAlgorithmAES), options, keyBytes, keyLength, ivBytes, dataBytes, data.count, cryptBytes, cryptLength, &numBytesEncrypted)
+                        CCCrypt(CCOperation(operation), CCAlgorithm(kCCAlgorithmAES128), options, keyBytes, keyLength, ivBytes, dataBytes, data.count, cryptBytes, cryptLength, &numBytesEncrypted)
                     })
                 })
             })
@@ -33,6 +33,24 @@ class AESCipher {
         }
         cryptData.removeSubrange(numBytesEncrypted..<cryptData.count)
         return cryptData
+    }
+    
+    class func generateKey(password: String, saltData: Data) -> Data? {
+        let keySize = 16
+        let passwordData = password.data(using: .utf8)!
+        var key = Data(count: keySize)
+        let status = passwordData.withUnsafeBytes({ (passwordBytes: UnsafePointer<Int8>) in
+            saltData.withUnsafeBytes({ (saltBytes: UnsafePointer<UInt8>) in
+                key.withUnsafeMutableBytes({ (keyBytes: UnsafeMutablePointer<UInt8>) in
+                    CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2), passwordBytes, passwordData.count, saltBytes, saltData.count, CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256), 10000, keyBytes, key.count)
+                })
+            })
+        })
+        
+        guard UInt32(status) == UInt32(kCCSuccess) else {
+            return nil
+        }
+        return key
     }
     
     class func generateRandomBytes(length bytesCount: Int = 16) -> Data {

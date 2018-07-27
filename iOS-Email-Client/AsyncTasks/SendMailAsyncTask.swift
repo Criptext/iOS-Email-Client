@@ -14,6 +14,7 @@ class SendMailAsyncTask {
     
     let fileKey: String?
     let threadId: String?
+    let password: String?
     let subject: String
     let body: String
     let guestEmails: [String: Any]!
@@ -26,6 +27,7 @@ class SendMailAsyncTask {
     init(account: Account, email: Email){
         let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email)
         
+        self.password = email.password
         self.username = account.username
         self.subject = email.subject
         self.body = email.content
@@ -211,7 +213,6 @@ class SendMailAsyncTask {
         let messageId = keysArray["messageId"] as! String
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
-        DBManager.updateEmail(email, status: .sent)
         updateFiles(emailId: key)
     }
     

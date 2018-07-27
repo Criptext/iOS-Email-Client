@@ -289,6 +289,14 @@ extension DBManager {
         }
     }
     
+    class func updateEmail(_ email: Email, password: String){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.password = password
+        }
+    }
+    
     class func updateEmail(_ email: Email, secure: Bool){
         let realm = try! Realm()
         
@@ -308,6 +316,7 @@ extension DBManager {
             email.messageId = messageId
             email.threadId = threadId
             email.status = .sent
+            email.password = nil
         }
     }
     
