@@ -359,6 +359,18 @@ extension DBManager {
         }
     }
     
+    class func deleteDraftInComposer(_ draft: Email){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(draft.emailContacts)
+            if let fileKey = self.getFileKey(emailId: draft.key){
+                realm.delete(fileKey)
+            }
+            realm.delete(draft)
+        }
+    }
+    
     class func deleteThreads(_ threadId: String, label: Int){
         let emails = getThreadEmails(threadId, label: label)
         let realm = try! Realm()
@@ -742,6 +754,14 @@ extension DBManager {
         let realm = try! Realm()
         try! realm.write() {
             file.emailId = emailId
+        }
+    }
+    
+    class func delete(_ files: [File]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(files)
         }
     }
 }

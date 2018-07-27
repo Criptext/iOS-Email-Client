@@ -181,7 +181,6 @@ class ComposeViewController: UIViewController {
         activityButton.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 5, 2)
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
         activityButton.tintColor = Icon.enabled.color
-        activityButton.tintColor = fileManager.registeredFiles.isEmpty ? Icon.enabled.color : Icon.system.color
         activityButton.isUserInteractionEnabled = false
         self.attachmentBarButton = activityButton
         self.attachmentButtonContainerView.layer.borderColor = UIColor.white.cgColor
@@ -194,13 +193,6 @@ class ComposeViewController: UIViewController {
         activityButton.setImage(Icon.attachment.vertical.image, for: .normal)
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
         
-        var badgeString = ""
-        
-        if fileManager.registeredFiles.count > 0 {
-            badgeString = "\(fileManager.registeredFiles.count)"
-        }
-        
-        self.attachmentBarButton.badgeString = badgeString
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
         subjectField.text = composerData.initSubject
@@ -291,7 +283,7 @@ class ComposeViewController: UIViewController {
     func saveDraft() -> Email {
         if let draft = composerData.emailDraft {
             delegate?.deleteDraft(draftId: draft.key)
-            DBManager.delete(draft)
+            DBManager.deleteDraftInComposer(draft)
         }
         
         self.resignKeyboard()
@@ -496,10 +488,8 @@ class ComposeViewController: UIViewController {
     }
     
     func handleExit(){
-        let discardTitle = "Discard"
-        
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: discardTitle, style: .destructive) { action in
+        sheet.addAction(UIAlertAction(title: "Discard", style: .destructive) { action in
             APIManager.cancelAllUploads()
             if let draft = self.composerData.emailDraft {
                 self.delegate?.deleteDraft(draftId: draft.key)
@@ -924,7 +914,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 let token = CLToken(displayText: name!, context: valueObject)
                 view.add(token)
             } else {
-//                view.textField.text = name
                 self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
             }
             
@@ -936,7 +925,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 let token = CLToken(displayText: name!, context: valueObject)
                 view.add(token)
             } else {
-//                view.textField.text = name
                 self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
             }
         }
@@ -987,7 +975,8 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         if APIManager.isValidEmail(text: text) {
-            let token = CLToken(displayText: text, context: nil)
+            let valueObject = NSString(string: text)
+            let token = CLToken(displayText: text, context: valueObject)
             view.add(token)
         } else {
             self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
