@@ -72,7 +72,7 @@ class SettingsGeneralViewController: UITableViewController{
         case "Terms of Service":
             goToUrl(url: "https://criptext.com/terms")
         case "Open Source Libraries":
-            goToUrl(url: "https://criptext.com/open-source-libraries")
+            goToUrl(url: "https://criptext.com/open-source-libraries-ios")
         default:
             break
         }
