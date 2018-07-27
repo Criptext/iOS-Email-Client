@@ -117,7 +117,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
-        cell.setContent(email)
+        cell.setContent(email, myEmail: emailData.accountEmail)
         cell.delegate = self
         return cell
     }
@@ -187,7 +187,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func manuallyUpdateRow(cell: EmailTableViewCell, email: Email){
-        cell.setContent(email)
+        cell.setContent(email, myEmail: emailData.accountEmail)
         emailsTableView.beginUpdates()
         cell.layoutIfNeeded()
         emailsTableView.endUpdates()
@@ -518,7 +518,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         email.isUnsending = true
         manuallyUpdateRow(cell: cell, email: email)
-        APIManager.unsendEmail(key: email.key, token: myAccount.jwt) { (error) in
+        let recipients = getEmailRecipients(contacts: email.getContacts())
+        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (error) in
             email.isUnsending = false
             guard error == nil else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
@@ -529,6 +530,15 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             email.isLoaded = false
             self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
         }
+    }
+    
+    func getEmailRecipients(contacts: [Contact]) -> [String]{
+        return contacts.reduce([String](), { (result, contact) -> [String] in
+            guard contact.email != emailData.accountEmail else {
+                return result
+            }
+            return result + [contact.email]
+        })
     }
     
     func onOverlayPress() {

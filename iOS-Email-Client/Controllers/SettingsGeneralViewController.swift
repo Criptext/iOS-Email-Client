@@ -8,13 +8,13 @@
 
 import Foundation
 import Material
+import SafariServices
 
 class SettingsGeneralViewController: UITableViewController{
-    let sections = ["", "ACCOUNT", "NOTIFICATIONS"] as [String]
+    let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "": ["Swipe Options"],
-        "ACCOUNT": ["Profile Name", "Profile Photo", "Reset Password", "Recovery Email", "Signature"],
-    "NOTIFICATIONS": ["Allow Notifications", "Sounds", "Badge App Icon"]] as [String: [String]]
+        "ACCOUNT": ["Profile Name", "Signature"],
+    "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Version"]] as [String: [String]]
     var myAccount : Account!
     
     override func viewDidLoad() {
@@ -41,6 +41,12 @@ class SettingsGeneralViewController: UITableViewController{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
+        guard text != "Version" else {
+            cell.optionLabel.text = "Criptext Beta V.0.1"
+            cell.goImageView.isHidden = true
+            return cell
+        }
+        cell.goImageView.isHidden = false
         cell.optionLabel.text = text
         return cell
     }
@@ -50,7 +56,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55.0
+        return 65.0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -61,6 +67,12 @@ class SettingsGeneralViewController: UITableViewController{
             presentPopover()
         case "Signature":
             goToSignature()
+        case "Privacy Policy":
+            goToUrl(url: "https://criptext.com/privacy")
+        case "Terms of Service":
+            goToUrl(url: "https://criptext.com/terms")
+        case "Open Source Libraries":
+            goToUrl(url: "https://criptext.com/open-source-libraries-ios")
         default:
             break
         }
@@ -86,6 +98,11 @@ class SettingsGeneralViewController: UITableViewController{
         changeNamePopover.popoverPresentationController?.permittedArrowDirections = []
         changeNamePopover.popoverPresentationController?.backgroundColor = UIColor.white
         self.present(changeNamePopover, animated: true)
+    }
+    
+    func goToUrl(url: String){
+        let svc = SFSafariViewController(url: URL(string: url)!)
+        self.present(svc, animated: true, completion: nil)
     }
     
 }

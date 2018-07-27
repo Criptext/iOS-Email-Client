@@ -29,7 +29,7 @@ class SendMailAsyncTask {
         self.username = account.username
         self.subject = email.subject
         self.body = email.content
-        self.threadId = email.threadId.isEmpty ? nil : email.threadId
+        self.threadId = email.threadId.isEmpty || email.threadId == email.key.description ? nil : email.threadId
         self.guestEmails = recipients.0
         self.criptextEmails = recipients.1
         self.files = SendMailAsyncTask.getFilesRequestData(email: email)

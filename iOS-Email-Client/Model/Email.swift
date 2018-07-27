@@ -118,6 +118,17 @@ class Email: Object {
         return Array(files)
     }
     
+    func getContacts() -> [Contact] {
+        var contacts = [Contact]()
+        self.emailContacts.forEach { (emailContact) in
+            guard let contact = emailContact.contact else {
+                return
+            }
+            contacts.append(contact)
+        }
+        return contacts
+    }
+    
     func toDictionary() -> [String: Any] {
         let dateString = Formatter.iso8601.string(from: date)
         return ["table": "email",
@@ -149,7 +160,7 @@ class Email: Object {
         guard !isUnsent else {
             return "Unsent: \(String(DateUtils.beatyDate(self.unsentDate)))"
         }
-        return content
+        return preview
     }
 }
 

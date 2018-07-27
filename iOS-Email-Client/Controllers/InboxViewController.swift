@@ -14,6 +14,7 @@ import SwiftWebSocket
 import MIBadgeButton_Swift
 import SwiftyJSON
 import SignalProtocolFramework
+import AudioToolbox
 
 //delete
 import RealmSwift
@@ -130,6 +131,8 @@ class InboxViewController: UIViewController {
         mailboxData.threads[indexPath.row] = refreshedRowThread
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.tableView.reloadRows(at: [indexPath], with: .none)
+        updateBadges()
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
     
     func initBarButtonItems(){
@@ -237,6 +240,9 @@ extension InboxViewController: EventHandlerDelegate {
     }
     
     func didReceiveNewEmails(emails: [Email]) {
+        if emails.contains(where: {$0.status != .unsent}) {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        }
         guard !mailboxData.searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
             return
         }
@@ -642,10 +648,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func continueDraft(_ draft: Email){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         let composerData = ComposerData()
         composerData.initToContacts = Array(draft.getContacts(type: .to))
         composerData.initCcContacts = Array(draft.getContacts(type: .cc))
@@ -655,13 +657,31 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         if(!draft.threadId.isEmpty){
             composerData.threadId = draft.threadId
         }
-        composerVC.delegate = self
+        openComposer(composerData: composerData, files: draft.files)
+    }
+    
+    func openComposer(composerData: ComposerData, files: List<File>){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         composerVC.composerData = composerData
-        for file in draft.files {
+        composerVC.delegate = self
+        for file in files {
             file.requestStatus = .finish
             composerVC.fileManager.registeredFiles.append(file)
         }
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+    }
+    
+    func openSupport(){
+        let supportContact = Contact()
+        supportContact.displayName = "Criptext Support"
+        supportContact.email = "support@criptext.com"
+        let composerData = ComposerData()
+        composerData.initToContacts = [supportContact]
+        composerData.initSubject = "Customer Support - iOS"
+        openComposer(composerData: composerData, files: List<File>())
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -699,6 +719,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             DBManager.setLabelsForEmail(thread.lastEmail, labels: [SystemLabel.trash.id])
             self.mailboxData.threads.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
+            self.updateBadges()
+            self.showNoThreadsView(self.mailboxData.reachedEnd && self.mailboxData.threads.isEmpty)
         }
         
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
@@ -775,6 +797,8 @@ extension InboxViewController : LabelsUIPopoverDelegate{
             ? []
             : [labelId]
         setLabels(added: addLabels, removed: removeLabels, forceRemove: labelId == SystemLabel.trash.id || labelId == SystemLabel.spam.id)
+        updateBadges()
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
 }
 
@@ -795,9 +819,9 @@ extension InboxViewController {
         }
         if shouldRemoveItems {
             self.tableView.deleteRows(at: indexPaths, with: .left)
+            updateBadges()
+            showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
         }
-        updateBadges()
-        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
     
     func deleteThreads(){

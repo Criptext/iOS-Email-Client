@@ -132,8 +132,8 @@ class APIManager {
         }
     }
     
-    class func getEmailBody(messageId: String, token: String, completion: @escaping ((Any?, Any?) -> Void)){
-        let url = "\(self.baseUrl)/email/body/\(messageId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+    class func getEmailBody(metadataKey: Int, token: String, completion: @escaping ((Any?, Any?) -> Void)){
+        let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             if response.response?.statusCode == 404 {
@@ -164,11 +164,12 @@ class APIManager {
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
     }
     
-    class func unsendEmail(key: Int, token: String, completion: @escaping ((Error?) -> Void)){
+    class func unsendEmail(key: Int, recipients: [String], token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.baseUrl)/email/unsend"
         let headers = ["Authorization": "Bearer \(token)"]
         let params = [
-            "metadataKey": key
+            "metadataKey": key,
+            "recipients": recipients
             ] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).response { response in
             guard response.response?.statusCode == 200 else {

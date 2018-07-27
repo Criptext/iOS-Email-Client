@@ -1920,6 +1920,9 @@
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-support"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Support"/>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onSupportMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="ejf-5J-Qg9"/>
+                                                </connections>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -130,8 +130,9 @@ class CreatingAccountViewController: UIViewController{
             return
         }
         let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
-        present(mailboxVC, animated: true) {
+        present(mailboxVC, animated: true) { [weak self] in
             delegate.replaceRootViewController(mailboxVC)
+            self?.removeFromParentViewController()
         }
     }
     

@@ -125,9 +125,10 @@ class NewLoginViewController: UIViewController{
     func jumpToLoginDeviceView(){
         let email = usernameTextField.text! + Constants.domain
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let loginDeviceVC = storyboard.instantiateViewController(withIdentifier: "loginwaitview") as! LoginDeviceViewController
-        loginDeviceVC.loginData = LoginData(email)
-        self.navigationController?.pushViewController(loginDeviceVC, animated: true)
+        let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
+        controller.loginData = LoginData(email)
+        navigationController?.pushViewController(controller, animated: true)
+        
         toggleLoadingView(false)
         clearErrors()
     }

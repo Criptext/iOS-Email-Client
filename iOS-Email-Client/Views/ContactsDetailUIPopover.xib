@@ -30,7 +30,6 @@
                 <outlet property="replyToView" destination="OjR-Gy-YFW" id="hau-lg-9Ic"/>
                 <outlet property="toEmailsTableView" destination="Dk3-Av-dMY" id="m01-De-Q2L"/>
                 <outlet property="toHeightConstraint" destination="7u3-eL-Ny6" id="ETT-4W-LI9"/>
-                <outlet property="toLabelHeightConstraint" destination="DMC-9s-YCA" id="3O1-Qx-fxe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="dWv-2L-x75"/>
             </connections>
         </placeholder>
@@ -116,11 +115,8 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dk3-Av-dMY">
-                                            <rect key="frame" x="84" y="0.0" width="289" height="65"/>
+                                            <rect key="frame" x="84" y="0.0" width="289" height="76"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="65" id="DMC-9s-YCA"/>
-                                            </constraints>
                                             <connections>
                                                 <outlet property="dataSource" destination="-1" id="Mgs-Vt-fbO"/>
                                                 <outlet property="delegate" destination="-1" id="aqF-Ry-zBA"/>
@@ -133,6 +129,7 @@
                                         <constraint firstAttribute="trailing" secondItem="Dk3-Av-dMY" secondAttribute="trailing" constant="2" id="VwW-Yu-Jtd"/>
                                         <constraint firstItem="Dk3-Av-dMY" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" id="fLW-Ja-eYe"/>
                                         <constraint firstItem="l3q-Py-Wbi" firstAttribute="top" secondItem="v1O-df-fPN" secondAttribute="top" id="vFA-tx-dGh"/>
+                                        <constraint firstAttribute="bottom" secondItem="Dk3-Av-dMY" secondAttribute="bottom" constant="4" id="zKT-k8-kB0"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgv-dp-zAu">
