@@ -93,8 +93,8 @@ class EventHandler {
                 finishCallback(eventId, email)
             }
             break
-        case Event.openEmail.rawValue:
-            self.handleOpenEmailCommand(params: params){ (successfulEvent, open) in
+        case Event.emailStatus.rawValue:
+            self.handleEmailStatusCommand(params: params){ (successfulEvent, open) in
                 guard successfulEvent,
                     let eventId = rowId else {
                         finishCallback(nil, nil)
@@ -103,8 +103,12 @@ class EventHandler {
                 finishCallback(eventId, open)
             }
             break
-        case Event.peerEmailStatus.rawValue:
-            self.handlePeerEmailStatusCommand(params: params){ (successfulEvent, open) in
+        case Event.peerUnsent.rawValue:
+            var fakeParams = params
+            fakeParams["from"] = myAccount.username
+            fakeParams["type"] = Email.Status.unsent.rawValue
+            fakeParams["date"] = Date().description
+            self.handlePeerUnsentCommand(params: fakeParams){ (successfulEvent, open) in
                 guard successfulEvent,
                     let eventId = rowId else {
                         finishCallback(nil, nil)
@@ -157,7 +161,7 @@ class EventHandler {
                 return
             }
             email.content = content
-            email.preview = String(email.content.removeHtmlTags().prefix(100))
+            email.preview = String(content.removeHtmlTags().replaceNewLineCharater(separator: " ").prefix(100))
             if(unsent){
                 email.unsentDate = email.date
                 email.status = .unsent
@@ -201,7 +205,7 @@ class EventHandler {
         return trueBody
     }
     
-    func handleOpenEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
+    func handleEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.EmailStatus.init(params: params)
         
         if event.type == Email.Status.unsent.rawValue,
@@ -238,10 +242,10 @@ class EventHandler {
         finishCallback(true, open)
     }
     
-    func handlePeerEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
+    func handlePeerUnsentCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.EmailStatus.init(params: params)
         guard event.type != Email.Status.unsent.rawValue else {
-            handleOpenEmailCommand(params: params, finishCallback: finishCallback)
+            handleEmailStatusCommand(params: params, finishCallback: finishCallback)
             return
         }
         finishCallback(true, nil)
@@ -277,7 +281,7 @@ class EventHandler {
 }
 
 enum Event: Int32 {
-    case newEmail = 1
-    case openEmail = 2
-    case peerEmailStatus = 3
+    case newEmail = 101
+    case emailStatus = 102
+    case peerUnsent = 307
 }

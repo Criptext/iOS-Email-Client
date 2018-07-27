@@ -274,7 +274,7 @@ extension String {
     }
     
     func removeHtmlTags() -> String{
-        return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+        return self.replacingOccurrences(of: "<[^>]+>", with: " ", options: .regularExpression, range: nil)
     }
     
     static func random(length: Int = 20) -> String {

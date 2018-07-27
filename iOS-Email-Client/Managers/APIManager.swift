@@ -164,11 +164,12 @@ class APIManager {
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
     }
     
-    class func unsendEmail(key: Int, token: String, completion: @escaping ((Error?) -> Void)){
+    class func unsendEmail(key: Int, recipients: [String], token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.baseUrl)/email/unsend"
         let headers = ["Authorization": "Bearer \(token)"]
         let params = [
-            "metadataKey": key
+            "metadataKey": key,
+            "recipients": recipients
             ] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).response { response in
             guard response.response?.statusCode == 200 else {

@@ -14,7 +14,7 @@ class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
         "ACCOUNT": ["Profile Name", "Signature"],
-    "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries"]] as [String: [String]]
+    "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Version"]] as [String: [String]]
     var myAccount : Account!
     
     override func viewDidLoad() {
@@ -41,6 +41,12 @@ class SettingsGeneralViewController: UITableViewController{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
+        guard text != "Version" else {
+            cell.optionLabel.text = "Criptext Beta V.0.1"
+            cell.goImageView.isHidden = true
+            return cell
+        }
+        cell.goImageView.isHidden = false
         cell.optionLabel.text = text
         return cell
     }
@@ -50,7 +56,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55.0
+        return 65.0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

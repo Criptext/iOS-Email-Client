@@ -240,7 +240,7 @@ extension InboxViewController: EventHandlerDelegate {
     }
     
     func didReceiveNewEmails(emails: [Email]) {
-        if(self.viewIfLoaded?.window != nil){
+        if emails.contains(where: {$0.status != .unsent}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
         guard !mailboxData.searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
@@ -648,10 +648,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func continueDraft(_ draft: Email){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         let composerData = ComposerData()
         composerData.initToContacts = Array(draft.getContacts(type: .to))
         composerData.initCcContacts = Array(draft.getContacts(type: .cc))
@@ -661,13 +657,31 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         if(!draft.threadId.isEmpty){
             composerData.threadId = draft.threadId
         }
-        composerVC.delegate = self
+        openComposer(composerData: composerData, files: draft.files)
+    }
+    
+    func openComposer(composerData: ComposerData, files: List<File>){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         composerVC.composerData = composerData
-        for file in draft.files {
+        composerVC.delegate = self
+        for file in files {
             file.requestStatus = .finish
             composerVC.fileManager.registeredFiles.append(file)
         }
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+    }
+    
+    func openSupport(){
+        let supportContact = Contact()
+        supportContact.displayName = "Criptext Support"
+        supportContact.email = "support@criptext.com"
+        let composerData = ComposerData()
+        composerData.initToContacts = [supportContact]
+        composerData.initSubject = "Customer Support - iOS"
+        openComposer(composerData: composerData, files: List<File>())
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

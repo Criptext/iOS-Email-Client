@@ -88,7 +88,6 @@ extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
         case ccEmailsTableView:
             return .cc
         case bccEmailsTableView:
-            print(email.getContacts(type: .bcc))
             return .bcc
         default:
             return .to

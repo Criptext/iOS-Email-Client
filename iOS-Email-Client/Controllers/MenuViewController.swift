@@ -116,6 +116,10 @@ class MenuViewController: UIViewController{
     @IBAction func onSettingsMenuItemPress(_ sender: Any) {
         mailboxVC.goToSettings()
     }
+    
+    @IBAction func onSupportMenuItemPress(_ sender: Any) {
+        mailboxVC.openSupport()
+    }
 }
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource{
