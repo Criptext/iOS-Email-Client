@@ -17,7 +17,7 @@ class SendMailAsyncTask {
     let password: String?
     let subject: String
     let body: String
-    let guestEmails: [String: Any]!
+    var guestEmails: [String: Any]!
     let criptextEmails: [String: Any]!
     let files: [[String: Any]]!
     
@@ -85,15 +85,15 @@ class SendMailAsyncTask {
         
         if(!toArray.isEmpty){
             guestEmails["to"] = toArray
-            guestEmails["body"] = (email.secure ? "secure email" : email.content)
+            guestEmails["body"] = email.content
         }
         if(!ccArray.isEmpty){
             guestEmails["cc"] = ccArray
-            guestEmails["body"] = (email.secure ? "secure email" : email.content)
+            guestEmails["body"] = email.content
         }
         if(!bccArray.isEmpty){
             guestEmails["bcc"] = bccArray
-            guestEmails["body"] = (email.secure ? "secure email" : email.content)
+            guestEmails["body"] = email.content
         }
         return (guestEmails, criptextEmails)
     }
@@ -149,6 +149,13 @@ class SendMailAsyncTask {
                 let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: type, myAccount: myAccount)
                 criptextEmailsData.append(criptextEmail)
             }
+            
+            if let password = self.password {
+                let dummySessionData = self.buildDummySession(password: password, myAccount: myAccount)
+                self.guestEmails["body"] = dummySessionData.body
+                self.guestEmails["session"] = dummySessionData.session
+            }
+            
             self.sendMail(myAccount: myAccount, criptextEmails: criptextEmailsData, queue: queue, completion: completion)
         }
     }
@@ -165,6 +172,27 @@ class SendMailAsyncTask {
             criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
         }
         return criptextEmail
+    }
+    
+    private func buildDummySession(password: String, myAccount: Account) -> SendEmailData.GuestContent{
+        let dummy = Dummy(recipientId: password)
+        let keyBundle = dummy.getKeyBundle()
+        let body = encryptDummyBody(keys: keyBundle, myAccount: myAccount)
+        let session = dummy.getSessionBundle()
+        let aesSalt = AESCipher.generateRandomBytes(length: 8)
+        let aesKey = AESCipher.generateKey(password: password, saltData: aesSalt)!
+        let aesIv = AESCipher.generateRandomBytes(length: 16)
+        let sessionString = Utils.convertToJSONString(dictionary: session)!
+        let encryptedSession = AESCipher.encrypt(data: sessionString.data(using: .utf8)!, keyData: aesKey, ivData: aesIv, operation: kCCEncrypt)!.base64EncodedString()
+        return SendEmailData.GuestContent.init(body: body, session: encryptedSession, salt: aesSalt.base64EncodedString(), iv: aesIv.base64EncodedString())
+    }
+    
+    private func encryptDummyBody(keys: [String: Any], myAccount: Account) -> String {
+        let recipientId = keys["recipientId"] as! String
+        let deviceId = keys["deviceId"] as! Int32
+        SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
+        let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
+        return message.0
     }
     
     private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){

@@ -24,7 +24,7 @@ class Dummy {
         self.recipientId = recipientId
         preKeyPair = Curve25519.generateKeyPair()
         signedPreKeyPair = Curve25519.generateKeyPair()
-        signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey(), with: store.identityKeyPair())
+        signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey().prependByte(), with: store.identityKeyPair())
         
         let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: store.localRegistrationId(), deviceId: deviceId, preKeyId: preKeyId, preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: store.identityKeyPair()?.publicKey())
         
@@ -37,10 +37,10 @@ class Dummy {
             "signedPreKeySignature": signedPreKeySignature.plainBase64String(),
             "signedPreKeyPublic": signedPreKeyPair.publicKey().customBase64String(),
             "signedPreKeyId": signedKeyId,
-            "preKeys": [[
+            "preKey": [
                 "publicKey": preKeyPair.publicKey().customBase64String(),
                 "id": preKeyId
-                ]],
+                ],
             "identityPublicKey": store.identityKeyPair()!.publicKey().customBase64String(),
             "registrationId": store.localRegistrationId(),
             "deviceId": deviceId,
@@ -54,17 +54,17 @@ class Dummy {
             "registrationId": store.localRegistrationId(),
             "identityKey": [
                 "publicKey": identityKeyPair.publicKey().customBase64String(),
-                "privateKey": ""
+                "privateKey": identityKeyPair.privateKey().customBase64String()
             ],
             "preKey": [
                 "keyId": preKeyId,
                 "publicKey": preKeyPair.publicKey().customBase64String(),
-                "privateKey": ""
+                "privateKey": preKeyPair.privateKey().customBase64String()
             ],
-            "identityKey": [
+            "signedPreKey": [
                 "keyId": signedKeyId,
                 "publicKey": signedPreKeyPair.publicKey().customBase64String(),
-                "privateKey": ""
+                "privateKey": signedPreKeyPair.privateKey().customBase64String()
             ]
             ] as [String : Any]
     }

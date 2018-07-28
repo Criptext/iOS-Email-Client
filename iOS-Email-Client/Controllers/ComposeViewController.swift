@@ -679,7 +679,7 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
 }
 
 extension ComposeViewController: EmailSetPasswordDelegate {
-    func setPassword(active: Bool, password: String) {
+    func setPassword(active: Bool, password: String?) {
         self.toggleInteraction(false)
         sendMailInMainController(secure: active, password: password)
     }

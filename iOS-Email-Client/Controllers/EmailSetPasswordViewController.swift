@@ -10,7 +10,7 @@ import Foundation
 import Material
 
 protocol EmailSetPasswordDelegate {
-    func setPassword(active: Bool, password: String)
+    func setPassword(active: Bool, password: String?)
 }
 
 class EmailSetPasswordViewController: BaseUIPopover {
@@ -59,13 +59,18 @@ class EmailSetPasswordViewController: BaseUIPopover {
     }
     
     @IBAction func onSetPress(_ sender: Any) {
-        guard let password = passwordTextField.text,
-            (!passwordTextField.isEnabled || passwordTextField.text == repeatPasswordTextField.text) else {
-            repeatPasswordTextField.detail = "Passwords don’t match"
+        let passwordEnabled = passwordTextField.isEnabled
+        let password = passwordTextField.text!
+        guard (!passwordEnabled || (password.count > 4 && password == repeatPasswordTextField.text)) else {
+            if(password.count > 4){
+                repeatPasswordTextField.detail = "Passwords don’t match"
+            } else {
+                passwordTextField.detail = "Use at least 5 characters"
+            }
             return
         }
         self.dismiss(animated: true, completion: nil)
-        self.delegate?.setPassword(active: passwordTextField.isEnabled, password: password)
+        self.delegate?.setPassword(active: passwordTextField.isEnabled, password: passwordEnabled ? password : nil)
     }
     
     @IBAction func onCancelPress(_ sender: Any) {
@@ -79,6 +84,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
         noPasswordMessageLabel.isHidden = sender.isOn
         guard sender.isOn else {
             repeatPasswordTextField.detail = ""
+            passwordTextField.detail = ""
             resignKeyboard()
             return
         }

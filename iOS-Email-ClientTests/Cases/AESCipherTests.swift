@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import SignalProtocolFramework
 @testable import iOS_Email_Client
 
 class AESCipherTests: XCTestCase {
@@ -46,6 +47,12 @@ class AESCipherTests: XCTestCase {
         
         print(encryptedData?.base64EncodedString() ?? "nanai we")
         XCTAssert(encryptedData?.base64EncodedString() == encryptedSession)
+    }
+    
+    func testGetPrivateKey(){
+        let keyPair : ECKeyPair = Curve25519.generateKeyPair()
+        let privateKey = keyPair.privateKey()!
+        XCTAssert(privateKey.count > 0)
     }
     
     let sessionString = """

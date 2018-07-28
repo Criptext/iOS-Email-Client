@@ -119,6 +119,8 @@ class InboxViewController: UIViewController {
             mailboxData.threads.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             mailboxData.removeSelectedRow = false
+            updateBadges()
+            showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
             return
         }
         let thread = mailboxData.threads[indexPath.row]
