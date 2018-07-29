@@ -27,6 +27,7 @@ class SignUpViewController: UIViewController{
     @IBOutlet weak var passwordMark: UIImageView!
     @IBOutlet weak var confirmPasswordMark: UIImageView!
     @IBOutlet weak var emailMark: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var loadingAccount = false
     var apiRequest : DataRequest?
@@ -50,6 +51,7 @@ class SignUpViewController: UIViewController{
         emailTextField.markView = emailMark
         emailTextField.font = Font.regular.size(17.0)
         checkToEnableDisableCreateButton()
+        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: 647.0)
         usernameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         fullnameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))

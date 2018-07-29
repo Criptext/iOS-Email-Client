@@ -437,7 +437,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwZ-3C-ekg">
-                                                <rect key="frame" x="37.5" y="550.5" width="300.5" height="44"/>
+                                                <rect key="frame" x="38" y="550.5" width="300" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Hgq-hg-kd6"/>
@@ -527,6 +527,7 @@
                                             <constraint firstItem="MbI-dj-nco" firstAttribute="centerY" secondItem="Z8F-vI-hLI" secondAttribute="centerY" id="gOM-ox-l7d"/>
                                             <constraint firstItem="ECp-md-B7C" firstAttribute="top" secondItem="XJO-nj-02i" secondAttribute="top" constant="20" id="kUx-ru-oUe"/>
                                             <constraint firstAttribute="trailing" secondItem="WAM-eM-sVg" secondAttribute="trailing" constant="54" id="mlp-XR-e9e"/>
+                                            <constraint firstAttribute="height" constant="647" id="mxR-4h-Aeo"/>
                                             <constraint firstItem="J4f-2M-Cl0" firstAttribute="centerY" secondItem="WAM-eM-sVg" secondAttribute="centerY" id="nb8-ZR-s8O"/>
                                             <constraint firstItem="MIl-CE-AOA" firstAttribute="top" secondItem="lKE-K8-r13" secondAttribute="bottom" constant="28" id="oWf-zz-CQI"/>
                                             <constraint firstAttribute="trailing" secondItem="S1o-cP-DdO" secondAttribute="trailing" constant="33" id="oyX-ed-bd6"/>
@@ -541,12 +542,11 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="leading" secondItem="Rdq-Q8-Fdr" secondAttribute="leading" id="EEe-Oz-nae"/>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="width" secondItem="Rdq-Q8-Fdr" secondAttribute="width" id="KfX-Ns-3BT"/>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="top" secondItem="Rdq-Q8-Fdr" secondAttribute="top" id="LrV-Rj-FmO"/>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="height" secondItem="Rdq-Q8-Fdr" secondAttribute="height" id="kUe-Nl-JwY"/>
-                                    <constraint firstAttribute="trailing" secondItem="XJO-nj-02i" secondAttribute="trailing" id="rEJ-KD-VbD"/>
-                                    <constraint firstAttribute="bottom" secondItem="XJO-nj-02i" secondAttribute="bottom" id="vCv-iv-5im"/>
+                                    <constraint firstItem="XJO-nj-02i" firstAttribute="top" secondItem="Rdq-Q8-Fdr" secondAttribute="top" id="2Nt-ig-v9w"/>
+                                    <constraint firstAttribute="bottom" secondItem="XJO-nj-02i" secondAttribute="bottom" id="UO3-R8-7lZ"/>
+                                    <constraint firstItem="XJO-nj-02i" firstAttribute="width" secondItem="Rdq-Q8-Fdr" secondAttribute="width" id="bWj-xz-gGa"/>
+                                    <constraint firstItem="XJO-nj-02i" firstAttribute="leading" secondItem="Rdq-Q8-Fdr" secondAttribute="leading" id="hRh-xM-JxB"/>
+                                    <constraint firstAttribute="trailing" secondItem="XJO-nj-02i" secondAttribute="trailing" id="qGr-yx-gez"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -578,6 +578,7 @@
                         <outlet property="fullnameTextField" destination="WAM-eM-sVg" id="XR7-df-Boz"/>
                         <outlet property="passwordMark" destination="MbI-dj-nco" id="K84-6U-xsX"/>
                         <outlet property="passwordTextField" destination="Z8F-vI-hLI" id="b6Y-pi-ank"/>
+                        <outlet property="scrollView" destination="Rdq-Q8-Fdr" id="bOF-hX-i2N"/>
                         <outlet property="termsConditionsLabel" destination="MIl-CE-AOA" id="oSH-rD-mWL"/>
                         <outlet property="usernameMark" destination="AIa-vJ-eF7" id="rA4-K7-pKF"/>
                         <outlet property="usernameTextField" destination="hMh-fe-2y4" id="TA5-mX-TmP"/>
