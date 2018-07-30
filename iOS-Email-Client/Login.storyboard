@@ -63,7 +63,6 @@
                                 <color key="backgroundColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="QSw-DY-9sv"/>
-                                    <constraint firstAttribute="width" constant="300" id="W15-zc-Ng2"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Log In">
@@ -129,6 +128,7 @@
                             <constraint firstItem="uqv-px-110" firstAttribute="top" secondItem="Kdd-Jg-Qc6" secondAttribute="bottom" constant="11" id="1nS-oQ-ZAH"/>
                             <constraint firstItem="hQN-zb-RQx" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="22" id="2er-D9-3er"/>
                             <constraint firstItem="cKq-C3-tQl" firstAttribute="centerY" secondItem="gtO-CH-xJW" secondAttribute="centerY" multiplier="1.18" id="5te-Cr-2Nm"/>
+                            <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="Z38-EZ-ooJ" secondAttribute="trailing" constant="37.5" id="CqU-en-wR3"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="3eC-DY-ikl" secondAttribute="trailing" constant="54" id="Dhg-Ey-WT5"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="hQN-zb-RQx" secondAttribute="trailing" constant="22" id="Iw9-Nm-Xh2"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="uqv-px-110" secondAttribute="trailing" constant="22" id="LkO-oq-n1a"/>
@@ -142,14 +142,15 @@
                             <constraint firstItem="uqv-px-110" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="22" id="Z3c-n8-YwC"/>
                             <constraint firstItem="Kdd-Jg-Qc6" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="eAP-bD-gmh"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="gbV-Fm-cgQ" secondAttribute="trailing" constant="54" id="fK1-NF-9Pc"/>
+                            <constraint firstItem="Z38-EZ-ooJ" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="37.5" id="h2a-g1-dqz"/>
                             <constraint firstItem="cKq-C3-tQl" firstAttribute="top" secondItem="3eC-DY-ikl" secondAttribute="bottom" constant="8.5" id="lvy-G1-FWR"/>
                             <constraint firstItem="Z38-EZ-ooJ" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="o9q-I8-MvP"/>
-                            <constraint firstItem="Z38-EZ-ooJ" firstAttribute="leading" secondItem="Ksj-Vf-DXI" secondAttribute="trailing" constant="-159.5" id="opH-zx-oUK"/>
                             <constraint firstItem="Z38-EZ-ooJ" firstAttribute="top" secondItem="cKq-C3-tQl" secondAttribute="bottom" constant="35" id="p9P-O6-4ya"/>
                             <constraint firstItem="3eC-DY-ikl" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="56" id="sKL-xc-lA9"/>
                             <constraint firstItem="uqv-px-110" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="tTx-2D-nym"/>
                             <constraint firstItem="cKq-C3-tQl" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="56" id="vGQ-cq-ynr"/>
                             <constraint firstItem="gbV-Fm-cgQ" firstAttribute="centerY" secondItem="cKq-C3-tQl" secondAttribute="centerY" id="wDM-o6-bw1"/>
+                            <constraint firstItem="Ksj-Vf-DXI" firstAttribute="centerX" secondItem="hQN-zb-RQx" secondAttribute="centerX" id="yyq-hn-Y6F"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gtO-CH-xJW"/>
                         <userDefinedRuntimeAttributes>
@@ -437,11 +438,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwZ-3C-ekg">
-                                                <rect key="frame" x="37.5" y="550.5" width="300.5" height="44"/>
+                                                <rect key="frame" x="38" y="550.5" width="300" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Hgq-hg-kd6"/>
-                                                    <constraint firstAttribute="width" constant="300" id="dCC-qq-ncA"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                 <state key="normal" title="Create Account">
@@ -511,6 +511,7 @@
                                             <constraint firstItem="ECp-md-B7C" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="20" id="LT7-CC-7xc"/>
                                             <constraint firstItem="S1o-cP-DdO" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="33" id="Lsq-Oy-Lwf"/>
                                             <constraint firstItem="MIl-CE-AOA" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="55" id="P5n-BQ-bM8"/>
+                                            <constraint firstAttribute="trailing" secondItem="SwZ-3C-ekg" secondAttribute="trailing" constant="37" id="Qe3-pF-yb2"/>
                                             <constraint firstItem="hMh-fe-2y4" firstAttribute="leading" secondItem="AIa-vJ-eF7" secondAttribute="trailing" constant="13" id="R0h-TM-OCF"/>
                                             <constraint firstItem="SwZ-3C-ekg" firstAttribute="top" secondItem="MIl-CE-AOA" secondAttribute="bottom" constant="28" id="SKk-XS-PnU"/>
                                             <constraint firstAttribute="trailing" secondItem="lKE-K8-r13" secondAttribute="trailing" constant="54" id="St6-T8-Gft"/>
@@ -518,6 +519,7 @@
                                             <constraint firstAttribute="trailing" secondItem="MIl-CE-AOA" secondAttribute="trailing" constant="55" id="Vn7-36-tCv"/>
                                             <constraint firstItem="lKE-K8-r13" firstAttribute="leading" secondItem="SgK-nP-bnV" secondAttribute="trailing" constant="13" id="Wz6-49-DGe"/>
                                             <constraint firstItem="hMh-fe-2y4" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="58" id="YBh-1f-RMk"/>
+                                            <constraint firstItem="SwZ-3C-ekg" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="38" id="aQp-fz-SOp"/>
                                             <constraint firstAttribute="trailing" secondItem="BJd-tc-Byi" secondAttribute="trailing" constant="54" id="cFp-TY-D5p"/>
                                             <constraint firstItem="HEX-Oc-wzA" firstAttribute="top" secondItem="S1o-cP-DdO" secondAttribute="bottom" constant="5" id="dty-y1-PEO"/>
                                             <constraint firstItem="Z8F-vI-hLI" firstAttribute="top" secondItem="WAM-eM-sVg" secondAttribute="bottom" constant="25" id="fCC-6r-oYj"/>
@@ -527,6 +529,7 @@
                                             <constraint firstItem="MbI-dj-nco" firstAttribute="centerY" secondItem="Z8F-vI-hLI" secondAttribute="centerY" id="gOM-ox-l7d"/>
                                             <constraint firstItem="ECp-md-B7C" firstAttribute="top" secondItem="XJO-nj-02i" secondAttribute="top" constant="20" id="kUx-ru-oUe"/>
                                             <constraint firstAttribute="trailing" secondItem="WAM-eM-sVg" secondAttribute="trailing" constant="54" id="mlp-XR-e9e"/>
+                                            <constraint firstAttribute="height" constant="647" id="mxR-4h-Aeo"/>
                                             <constraint firstItem="J4f-2M-Cl0" firstAttribute="centerY" secondItem="WAM-eM-sVg" secondAttribute="centerY" id="nb8-ZR-s8O"/>
                                             <constraint firstItem="MIl-CE-AOA" firstAttribute="top" secondItem="lKE-K8-r13" secondAttribute="bottom" constant="28" id="oWf-zz-CQI"/>
                                             <constraint firstAttribute="trailing" secondItem="S1o-cP-DdO" secondAttribute="trailing" constant="33" id="oyX-ed-bd6"/>
@@ -541,12 +544,11 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="leading" secondItem="Rdq-Q8-Fdr" secondAttribute="leading" id="EEe-Oz-nae"/>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="width" secondItem="Rdq-Q8-Fdr" secondAttribute="width" id="KfX-Ns-3BT"/>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="top" secondItem="Rdq-Q8-Fdr" secondAttribute="top" id="LrV-Rj-FmO"/>
-                                    <constraint firstItem="XJO-nj-02i" firstAttribute="height" secondItem="Rdq-Q8-Fdr" secondAttribute="height" id="kUe-Nl-JwY"/>
-                                    <constraint firstAttribute="trailing" secondItem="XJO-nj-02i" secondAttribute="trailing" id="rEJ-KD-VbD"/>
-                                    <constraint firstAttribute="bottom" secondItem="XJO-nj-02i" secondAttribute="bottom" id="vCv-iv-5im"/>
+                                    <constraint firstItem="XJO-nj-02i" firstAttribute="top" secondItem="Rdq-Q8-Fdr" secondAttribute="top" id="2Nt-ig-v9w"/>
+                                    <constraint firstAttribute="bottom" secondItem="XJO-nj-02i" secondAttribute="bottom" id="UO3-R8-7lZ"/>
+                                    <constraint firstItem="XJO-nj-02i" firstAttribute="width" secondItem="Rdq-Q8-Fdr" secondAttribute="width" id="bWj-xz-gGa"/>
+                                    <constraint firstItem="XJO-nj-02i" firstAttribute="leading" secondItem="Rdq-Q8-Fdr" secondAttribute="leading" id="hRh-xM-JxB"/>
+                                    <constraint firstAttribute="trailing" secondItem="XJO-nj-02i" secondAttribute="trailing" id="qGr-yx-gez"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -578,6 +580,7 @@
                         <outlet property="fullnameTextField" destination="WAM-eM-sVg" id="XR7-df-Boz"/>
                         <outlet property="passwordMark" destination="MbI-dj-nco" id="K84-6U-xsX"/>
                         <outlet property="passwordTextField" destination="Z8F-vI-hLI" id="b6Y-pi-ank"/>
+                        <outlet property="scrollView" destination="Rdq-Q8-Fdr" id="bOF-hX-i2N"/>
                         <outlet property="termsConditionsLabel" destination="MIl-CE-AOA" id="oSH-rD-mWL"/>
                         <outlet property="usernameMark" destination="AIa-vJ-eF7" id="rA4-K7-pKF"/>
                         <outlet property="usernameTextField" destination="hMh-fe-2y4" id="TA5-mX-TmP"/>
@@ -1192,7 +1195,6 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 <rect key="frame" x="37.5" y="428.5" width="300.5" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="300" id="AJV-8N-tNH"/>
                                                     <constraint firstAttribute="height" constant="44" id="IDE-wd-lIU"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
@@ -1278,6 +1280,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                         <constraints>
                                             <constraint firstItem="NT8-w1-8Xk" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="33" id="0kD-mx-EiH"/>
                                             <constraint firstAttribute="trailing" secondItem="xCo-DR-Qyr" secondAttribute="trailing" constant="26" id="3Qh-F5-p3c"/>
+                                            <constraint firstItem="8N5-Z7-gsp" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="37.5" id="4oK-EN-rV7"/>
                                             <constraint firstItem="mSJ-Yq-oKk" firstAttribute="width" secondItem="7VS-F9-Zdf" secondAttribute="width" multiplier="0.99" id="5Ua-cE-iMf"/>
                                             <constraint firstItem="O3S-ch-dG6" firstAttribute="centerX" secondItem="8N5-Z7-gsp" secondAttribute="centerX" id="A7U-UJ-Eyo"/>
                                             <constraint firstItem="8N5-Z7-gsp" firstAttribute="top" secondItem="dMV-2J-3gD" secondAttribute="bottom" constant="27" id="AK2-hK-Pya"/>
@@ -1292,6 +1295,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                             <constraint firstItem="xCo-DR-Qyr" firstAttribute="top" secondItem="mGe-H4-qBL" secondAttribute="top" constant="17" id="Wam-Tf-fO0"/>
                                             <constraint firstItem="dMV-2J-3gD" firstAttribute="top" secondItem="7VS-F9-Zdf" secondAttribute="bottom" constant="7" id="do5-7W-HQc"/>
                                             <constraint firstItem="bU8-ie-V7v" firstAttribute="top" secondItem="mGe-H4-qBL" secondAttribute="top" constant="20" id="g17-kI-ops"/>
+                                            <constraint firstAttribute="trailing" secondItem="8N5-Z7-gsp" secondAttribute="trailing" constant="37" id="hAj-fW-FQl"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="leading" secondItem="Kaa-RK-1Lv" secondAttribute="trailing" constant="13" id="j80-q0-4q3"/>
                                             <constraint firstAttribute="trailing" secondItem="7VS-F9-Zdf" secondAttribute="trailing" constant="54" id="jsI-7z-Mqq"/>
                                             <constraint firstAttribute="trailing" secondItem="hMf-wY-jdP" secondAttribute="trailing" constant="33" id="kZ3-YW-xaX"/>

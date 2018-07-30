@@ -117,11 +117,12 @@ extension DBManager {
     class func store(_ email:Email){
         let realm = try! Realm()
         
-        if let _ = realm.object(ofType: Email.self, forPrimaryKey: email.id) {
-            return
-        }
-        email.id = email.incrementID()
         try! realm.write() {
+            if realm.object(ofType: Email.self, forPrimaryKey: email.id) != nil
+                || realm.objects(Email.self).filter("key == \(email.key)").first != nil {
+                return
+            }
+            email.id = email.incrementID()
             realm.add(email, update: true)
         }
     }
@@ -289,6 +290,14 @@ extension DBManager {
         }
     }
     
+    class func updateEmail(_ email: Email, password: String){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.password = password
+        }
+    }
+    
     class func updateEmail(_ email: Email, secure: Bool){
         let realm = try! Realm()
         
@@ -308,6 +317,7 @@ extension DBManager {
             email.messageId = messageId
             email.threadId = threadId
             email.status = .sent
+            email.password = nil
         }
     }
     
