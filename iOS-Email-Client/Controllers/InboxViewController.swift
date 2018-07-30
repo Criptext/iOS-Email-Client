@@ -487,7 +487,7 @@ extension InboxViewController: UITableViewDataSource{
         }
         switch(mailboxData.selectedLabel){
         case SystemLabel.inbox.id:
-            setEnvelopeMessages(title: "There are no emails in your inbox", subtitle: "share your email address with a friend")
+            setEnvelopeMessages(title: "There are no emails", subtitle: "share your email address!")
         case SystemLabel.sent.id:
             setEnvelopeMessages(title: "You have no emails sent", subtitle: "let's send one!")
         case SystemLabel.draft.id:

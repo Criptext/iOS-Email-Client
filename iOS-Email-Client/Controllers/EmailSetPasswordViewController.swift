@@ -70,7 +70,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
             return
         }
         self.dismiss(animated: true, completion: nil)
-        self.delegate?.setPassword(active: passwordTextField.isEnabled, password: passwordEnabled ? password : nil)
+        self.delegate?.setPassword(active: passwordEnabled, password: passwordEnabled ? password : nil)
     }
     
     @IBAction func onCancelPress(_ sender: Any) {
