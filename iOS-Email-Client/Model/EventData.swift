@@ -69,3 +69,98 @@ class EventData {
         return dateFormatter.date(from: dateString) ?? Date()
     }
 }
+
+extension EventData {
+    class Peer {
+        
+        struct EmailUnread {
+            let metadataKeys: [Int]
+            let unread: Bool
+            
+            init(params: [String: Any]){
+                metadataKeys = params["metadataKeys"] as! [Int]
+                let unreadValue = params["unread"] as! Int
+                unread = unreadValue == 0 ? false : true
+            }
+        }
+        
+        struct ThreadUnread {
+            let threadIds: [Int]
+            let unread: Bool
+            
+            init(params: [String: Any]){
+                threadIds = params["threadIds"] as! [Int]
+                let unreadValue = params["unread"] as! Int
+                unread = unreadValue == 0 ? false : true
+            }
+        }
+        
+        struct EmailLabels {
+            let metadataKeys: [Int]
+            let labelsAdded: [String]
+            let labelsRemoved: [String]
+            
+            init(params: [String: Any]){
+                metadataKeys = params["metadataKeys"] as! [Int]
+                labelsAdded = params["labelsAdded"] as! [String]
+                labelsRemoved = params["labelsRemoved"] as! [String]
+            }
+        }
+        
+        struct ThreadLabels {
+            let threadIds: [Int]
+            let labelsAdded: [String]
+            let labelsRemoved: [String]
+            
+            init(params: [String: Any]){
+                threadIds = params["threadIds"] as! [Int]
+                labelsAdded = params["labelsAdded"] as! [String]
+                labelsRemoved = params["labelsRemoved"] as! [String]
+            }
+        }
+        
+        struct EmailDeleted {
+            let metadataKeys: [Int]
+            
+            init(params: [String: Any]){
+                metadataKeys = params["metadataKeys"] as! [Int]
+            }
+        }
+        
+        struct ThreadDeleted {
+            let threadIds: [Int]
+            
+            init(params: [String: Any]){
+                threadIds = params["threadIds"] as! [Int]
+            }
+        }
+        
+        struct EmailUnsent {
+            let metadataKeys: [Int]
+            
+            init(params: [String: Any]){
+                metadataKeys = params["metadataKeys"] as! [Int]
+            }
+        }
+        
+        struct NewLabel {
+            let text: String
+            let color: String
+            
+            init(params: [String: Any]){
+                text = params["text"] as! String
+                color = params["color"] as! String
+            }
+        }
+        
+        struct NameChanged {
+            let recipientId: String
+            let name: String
+            
+            init(params: [String: Any]){
+                recipientId = params["recipientId"] as! String
+                name = params["name"] as! String
+            }
+        }
+    }
+}
