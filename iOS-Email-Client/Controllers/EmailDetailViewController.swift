@@ -477,31 +477,36 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func deleteSingleEmail(_ email: Email, indexPath: IndexPath){
         let eventData = EventData.Peer.EmailDeleted(metadataKeys: [email.key])
+        let emailKey = email.key
         APIManager.postPeerEvent(["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
             guard error == nil else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }
             DBManager.delete(email)
-            self.removeEmail(indexPath: indexPath)
+            self.removeEmail(key: emailKey)
         }
     }
     
     func moveSingleEmailToTrash(_ email: Email, indexPath: IndexPath){
         let changedLabels = getLabelNames(added: [SystemLabel.trash.id], removed: [])
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        let emailKey = email.key
         APIManager.postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
             guard error == nil else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }
             DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
-            self.removeEmail(indexPath: indexPath)
+            self.removeEmail(key: emailKey)
         }
     }
     
-    func removeEmail(indexPath: IndexPath){
-        emailData.emails.remove(at: indexPath.row)
+    func removeEmail(key: Int){
+        guard let index = emailData.emails.index(where: {$0.key == key}) else {
+            return
+        }
+        emailData.emails.remove(at: index)
         if(emailData.emails.isEmpty){
             mailboxData.removeSelectedRow = true
             navigationController?.popViewController(animated: true)
@@ -528,13 +533,14 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                         "unread": 1,
                         "metadataKeys": emailKeys
             ]] as [String : Any]
+        let thresholdDate = selectedEmail.date
         APIManager.postPeerEvent(params, token: myAccount.jwt) { (error) in
             guard error == nil else {
                 self.showAlert("Something went wrong", message: "Unable to change read status. Please try again", style: .alert)
                 return
             }
             for email in self.emailData.emails {
-                guard email.date >= selectedEmail.date else {
+                guard email.date >= thresholdDate else {
                     continue
                 }
                 DBManager.updateEmail(email, unread: true)
@@ -554,6 +560,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let removeLabel = isSpam ? [SystemLabel.spam.id] : isTrash ? [SystemLabel.trash.id] : []
         let addLabel = isSpam ? [] : [SystemLabel.spam.id]
         let email = emailData.emails[indexPath.row]
+        let emailKey = email.key
         
         let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
@@ -563,7 +570,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                 return
             }
             DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
-            self.removeEmail(indexPath: indexPath)
+            self.removeEmail(key: emailKey)
         }
     }
     
@@ -744,6 +751,36 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
                 return nil
         }
         return attachmentCell
+    }
+    
+}
+
+extension EmailDetailViewController: EventHandlerDelegate {
+    
+    func didReceiveEvents(result: EventData.Result) {
+        guard !result.modifiedThreadIds.contains(emailData.threadId) else {
+            reloadContent()
+            return
+        }
+        guard !result.modifiedEmailKeys.contains(where: { (key) -> Bool in
+            return emailData.emails.contains(where: {$0.key == key})
+        }) else {
+            reloadContent()
+            return
+        }
+    }
+    
+    func reloadContent(){
+        let emails = DBManager.getThreadEmails(emailData.threadId, label: emailData.selectedLabel)
+        guard emails.count > 0 else {
+            self.mailboxData.removeSelectedRow = true
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        emailData.emails = emails
+        self.emailData.rebuildLabels()
+        self.myHeaderView = nil
+        self.emailsTableView.reloadData()
     }
 }
 

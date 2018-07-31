@@ -14,6 +14,13 @@ protocol Dictionarify {
 
 class EventData {
     
+    struct Result {
+        var emails = [Email]()
+        var opens = [FeedItem]()
+        var modifiedThreadIds = [String]()
+        var modifiedEmailKeys = [Int]()
+    }
+    
     struct NewEmail {
         let threadId: String
         let subject: String

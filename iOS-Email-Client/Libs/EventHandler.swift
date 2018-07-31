@@ -9,8 +9,7 @@
 import Foundation
 
 protocol EventHandlerDelegate {
-    func didReceiveNewEmails(emails: [Email])
-    func didReceiveOpens(opens: [FeedItem])
+    func didReceiveEvents(result: EventData.Result)
 }
 
 class EventHandler {
@@ -24,8 +23,7 @@ class EventHandler {
     }
 
     func handleEvents(events: [[String: Any]]){
-        var emails = [Email]()
-        var opens = [FeedItem]()
+        var result = EventData.Result()
         var successfulEvents = [Int32]()
         handleEventsRecursive(events: events, index: 0, eventCallback: { (successfulEventId, data) in
             guard let eventId = successfulEventId else {
@@ -34,9 +32,13 @@ class EventHandler {
             successfulEvents.append(eventId)
             switch(data){
             case is Email:
-                emails.append(data as! Email)
+                result.emails.append(data as! Email)
             case is FeedItem:
-                opens.append(data as! FeedItem)
+                result.opens.append(data as! FeedItem)
+            case is [String]:
+                result.modifiedThreadIds.append(contentsOf: data as! [String])
+            case is [Int]:
+                result.modifiedEmailKeys.append(contentsOf: data as! [Int])
             default:
                 break
             }
@@ -44,8 +46,7 @@ class EventHandler {
             if(!successfulEvents.isEmpty){
                 self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
             }
-            self.notify(emails: emails)
-            self.notify(opens: opens)
+            self.eventDelegate?.didReceiveEvents(result: result)
         }
     }
     
@@ -59,20 +60,6 @@ class EventHandler {
             eventCallback(successfulEventId, data)
             self.handleEventsRecursive(events: events, index: index + 1, eventCallback: eventCallback, finishCallback: finishCallback)
         }
-    }
-    
-    func notify(emails: [Email]){
-        guard !emails.isEmpty else {
-            return
-        }
-        self.eventDelegate?.didReceiveNewEmails(emails: emails)
-    }
-    
-    func notify(opens: [FeedItem]){
-        guard !opens.isEmpty else {
-            return
-        }
-        self.eventDelegate?.didReceiveOpens(opens: opens)
     }
     
     func handleEvent(_ event: Dictionary<String, Any>, finishCallback: @escaping (_ successfulEventId : Int32?, _ data: Any?) -> Void){
@@ -287,31 +274,31 @@ extension EventHandler {
     func handleThreadUnreadCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.Peer.ThreadUnread.init(params: params)
         DBManager.markAsUnread(threadIds: event.threadIds, unread: event.unread)
-        finishCallback(true, nil)
+        finishCallback(true, event.threadIds)
     }
     
     func handleEmailChangeLabelsCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.Peer.EmailLabels.init(params: params)
         DBManager.addRemoveLabels(emailKeys: event.metadataKeys, addedLabelNames: event.labelsAdded, removedLabelNames: event.labelsRemoved)
-        finishCallback(true, nil)
+        finishCallback(true, event.metadataKeys)
     }
     
     func handleThreadChangeLabelsCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.Peer.ThreadLabels.init(params: params)
         DBManager.addRemoveLabels(threadIds: event.threadIds, addedLabelNames: event.labelsAdded, removedLabelNames: event.labelsRemoved)
-        finishCallback(true, nil)
+        finishCallback(true, event.threadIds)
     }
     
     func handleEmailDeleteCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.Peer.EmailDeleted.init(params: params)
         DBManager.deleteEmails(emailKeys: event.metadataKeys)
-        finishCallback(true, nil)
+        finishCallback(true, event.metadataKeys)
     }
     
     func handleThreadDeleteCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.Peer.ThreadDeleted.init(params: params)
         DBManager.deleteThreads(threadIds: event.threadIds)
-        finishCallback(true, nil)
+        finishCallback(true, event.threadIds)
     }
     
     func handlePeerUnsentCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
@@ -320,7 +307,7 @@ extension EventHandler {
             handleEmailStatusCommand(params: params, finishCallback: finishCallback)
             return
         }
-        finishCallback(true, nil)
+        finishCallback(true, [event.emailId])
     }
     
     func handleCreateLabelCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
