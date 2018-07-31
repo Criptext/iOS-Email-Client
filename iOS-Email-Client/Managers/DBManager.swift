@@ -626,7 +626,7 @@ extension DBManager {
     class func store(_ label: Label, incrementId: Bool = false){
         let realm = try! Realm()
         try! realm.write {
-            guard realm.objects(Label.self).filter("text == \(label.text)").first == nil else {
+            guard realm.objects(Label.self).filter("text == '\(label.text)'").first == nil else {
                 return
             }
             if(incrementId){
@@ -897,12 +897,12 @@ extension DBManager {
         }
     }
     
-    class func markAsUnread(threadIds: [Int], unread: Bool){
+    class func markAsUnread(threadIds: [String], unread: Bool){
         let realm = try! Realm()
         
         try! realm.write {
             for threadId in threadIds {
-                let emails = realm.objects(Email.self).filter("threadId == \(threadId)")
+                let emails = realm.objects(Email.self).filter("threadId == '\(threadId)'")
                 emails.forEach({ (email) in
                     email.unread = unread
                 })
@@ -923,12 +923,12 @@ extension DBManager {
         }
     }
     
-    class func addRemoveLabels(threadIds: [Int], addedLabelNames: [String], removedLabelNames: [String]){
+    class func addRemoveLabels(threadIds: [String], addedLabelNames: [String], removedLabelNames: [String]){
         let realm = try! Realm()
         
         try! realm.write {
             for threadId in threadIds {
-                let emails = realm.objects(Email.self).filter("threadId == \(threadId)")
+                let emails = realm.objects(Email.self).filter("threadId == '\(threadId)'")
                 for email in emails {
                     self.addRemoveLabels(realm: realm, email: email, addedLabelNames: addedLabelNames, removedLabelNames: removedLabelNames)
                 }
@@ -939,7 +939,7 @@ extension DBManager {
     class func addRemoveLabels(realm: Realm, email: Email, addedLabelNames: [String], removedLabelNames: [String]){
         for labelName in addedLabelNames {
             guard !email.labels.contains(where: {$0.text == labelName}),
-                let label = realm.objects(Label.self).filter("text == \(labelName)").first else {
+                let label = realm.objects(Label.self).filter("text == '\(labelName)'").first else {
                     continue
             }
             email.labels.append(label)
@@ -965,12 +965,12 @@ extension DBManager {
         }
     }
     
-    class func deleteThreads(threadIds: [Int]){
+    class func deleteThreads(threadIds: [String]){
         let realm = try! Realm()
         
         try! realm.write {
             for threadId in threadIds {
-                let emails = realm.objects(Email.self).filter("threadId == \(threadId)")
+                let emails = realm.objects(Email.self).filter("threadId == '\(threadId)'")
                 realm.delete(emails)
             }
         }

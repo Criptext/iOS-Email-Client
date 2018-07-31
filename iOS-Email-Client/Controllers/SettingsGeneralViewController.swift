@@ -91,7 +91,7 @@ class SettingsGeneralViewController: UITableViewController{
         changeNamePopover.myTitle = "Change Name"
         changeNamePopover.initInputText = self.myAccount.name
         changeNamePopover.onOk = { text in
-            DBManager.update(account: self.myAccount, name: text)
+            self.changeProfileName(name: text)
         }
         changeNamePopover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: Constants.singleTextPopoverHeight)
         changeNamePopover.popoverPresentationController?.sourceView = self.view
@@ -104,6 +104,17 @@ class SettingsGeneralViewController: UITableViewController{
     func goToUrl(url: String){
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
+    }
+    
+    func changeProfileName(name: String){
+        let params = EventData.Peer.NameChanged(recipientId: myAccount.username, name: name)
+        APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
+                return
+            }
+            DBManager.update(account: self.myAccount, name: name)
+        }
     }
     
 }

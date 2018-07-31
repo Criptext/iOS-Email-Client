@@ -511,9 +511,10 @@ extension InboxViewController: UITableViewDataSource{
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
-        let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController")
+        let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController") as! SettingsLabelsViewController
         let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController")
         generalVC.myAccount = self.myAccount
+        labelsVC.myAccount = self.myAccount
         let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
         tabsVC.edgesForExtendedLayout = []
         tabsVC.tabBarAlignment = .top
@@ -811,19 +812,47 @@ extension InboxViewController {
         }
         self.didPressEdit(reload: true)
         let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
+        let threadIds = orderedIndexPaths.map({mailboxData.threads[$0.row].threadId})
         let shouldRemoveItems = removed.contains(where: {$0 == mailboxData.selectedLabel}) || forceRemove
-        for indexPath in orderedIndexPaths {
-            let thread = mailboxData.threads[indexPath.row]
-            DBManager.addRemoveLabelsForThreads(thread.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: mailboxData.selectedLabel)
+        
+        let changedLabels = getLabelNames(added: added, removed: removed)
+        let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        APIManager.postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                return
+            }
+            for indexPath in orderedIndexPaths {
+                let thread = self.mailboxData.threads[indexPath.row]
+                DBManager.addRemoveLabelsForThreads(thread.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
+                if shouldRemoveItems {
+                    self.mailboxData.threads.remove(at: indexPath.row)
+                }
+            }
             if shouldRemoveItems {
-                mailboxData.threads.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: indexPaths, with: .left)
+                self.updateBadges()
+                self.showNoThreadsView(self.mailboxData.reachedEnd && self.mailboxData.threads.isEmpty)
             }
         }
-        if shouldRemoveItems {
-            self.tableView.deleteRows(at: indexPaths, with: .left)
-            updateBadges()
-            showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+    }
+    
+    func getLabelNames(added: [Int], removed: [Int]) -> ([String], [String]){
+        var addedNames = [String]()
+        var removedNames = [String]()
+        for id in added {
+            guard let label = DBManager.getLabel(id) else {
+                continue
+            }
+            addedNames.append(label.text)
         }
+        for id in removed {
+            guard let label = DBManager.getLabel(id) else {
+                continue
+            }
+            removedNames.append(label.text)
+        }
+        return (addedNames, removedNames)
     }
     
     func deleteThreads(){
@@ -833,14 +862,23 @@ extension InboxViewController {
         }
         self.didPressEdit(reload: true)
         let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
-        for indexPath in orderedIndexPaths {
-            let thread = mailboxData.threads[indexPath.row]
-            DBManager.deleteThreads(thread.threadId, label: mailboxData.selectedLabel)
-            mailboxData.threads.remove(at: indexPath.row)
+        let threadIds = orderedIndexPaths.map({mailboxData.threads[$0.row].threadId})
+        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
+        APIManager.postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to delete threads. Please try again", style: .alert)
+                return
+            }
+            
+            for indexPath in orderedIndexPaths {
+                let thread = self.mailboxData.threads[indexPath.row]
+                DBManager.deleteThreads(thread.threadId, label: self.mailboxData.selectedLabel)
+                self.mailboxData.threads.remove(at: indexPath.row)
+            }
+            self.tableView.deleteRows(at: indexPaths, with: .left)
+            self.updateBadges()
+            self.showNoThreadsView(self.mailboxData.reachedEnd && self.mailboxData.threads.isEmpty)
         }
-        self.tableView.deleteRows(at: indexPaths, with: .left)
-        updateBadges()
-        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
 }
 
@@ -872,13 +910,26 @@ extension InboxViewController: NavigationToolbarDelegate {
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             return
         }
-        let unread = mailboxData.unreadMails <= 0
-        for indexPath in indexPaths {
-            let thread = mailboxData.threads[indexPath.row]
-            DBManager.updateThread(threadId: thread.threadId, currentLabel: mailboxData.selectedLabel, unread: unread)
-            thread.unread = unread
+        let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let unread = self.mailboxData.unreadMails <= 0
+        let params = ["cmd": Event.Peer.threadsUnread.rawValue,
+                      "params": [
+                        "unread": unread ? 1 : 0,
+                        "threadIds": threadIds
+                        ]
+            ] as [String : Any]
+        APIManager.postPeerEvent(params, token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to change read status. Please try again", style: .alert)
+                return
+            }
+            for indexPath in indexPaths {
+                let thread = self.mailboxData.threads[indexPath.row]
+                DBManager.updateThread(threadId: thread.threadId, currentLabel: self.mailboxData.selectedLabel, unread: unread)
+                thread.unread = unread
+            }
+            self.didPressEdit(reload: true)
         }
-        self.didPressEdit(reload: true)
     }
     
     func onMoreOptions() {

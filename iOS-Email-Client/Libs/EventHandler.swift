@@ -110,19 +110,19 @@ class EventHandler {
         case Event.Peer.emailsUnread.rawValue:
             handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.threadsUnread.rawValue:
-            handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
+            handleThreadUnreadCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.emailsLabels.rawValue:
-            handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
+            handleEmailChangeLabelsCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.threadsLabels.rawValue:
-            handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
+            handleThreadChangeLabelsCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.emailsDeleted.rawValue:
-            handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
+            handleEmailDeleteCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.threadsDeleted.rawValue:
-            handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
+            handleThreadDeleteCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.newLabel.rawValue:
-            handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
+            handleCreateLabelCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.changeName.rawValue:
-            handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
+            handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
         default:
             finishCallback(nil, nil)
             break
@@ -279,8 +279,8 @@ class EventHandler {
 
 extension EventHandler {
     func handleEmailUnreadCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
-        let event = EventData.Peer.EmailUnread.init(params: params)
-        DBManager.markAsUnread(emailKeys: event.metadataKeys, unread: event.unread)
+        //let event = EventData.Peer.EmailUnread.init(params: params)
+        //DBManager.markAsUnread(emailKeys: event.metadataKeys, unread: event.unread)
         finishCallback(true, nil)
     }
     
