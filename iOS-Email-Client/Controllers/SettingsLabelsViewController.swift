@@ -10,6 +10,7 @@ import Foundation
 
 class SettingsLabelsViewController: UITableViewController {
     var labels = [Label]()
+    var myAccount: Account!
     
     override func viewDidLoad() {
         labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
@@ -94,9 +95,15 @@ class SettingsLabelsViewController: UITableViewController {
             return
         }
         let label = Label(labelText)
-        label.incrementID()
-        DBManager.store(label)
-        self.labels.append(label)
-        self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
+        let params = EventData.Peer.NewLabel(text: label.text, color: label.color)
+        APIManager.postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to add label \(labelText). Please try again", style: .alert)
+                return
+            }
+            DBManager.store(label, incrementId: true)
+            self.labels.append(label)
+            self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
+        }
     }
 }

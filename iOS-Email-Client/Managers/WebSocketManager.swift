@@ -63,11 +63,7 @@ extension WebSocketManager: WebSocketDelegate{
 }
 
 extension WebSocketManager: EventHandlerDelegate {
-    func didReceiveOpens(opens: [FeedItem]) {
-        eventDelegate?.didReceiveOpens(opens: opens)
-    }
-    
-    func didReceiveNewEmails(emails: [Email]) {
-        eventDelegate?.didReceiveNewEmails(emails: emails)
+    func didReceiveEvents(result: EventData.Result) {
+        eventDelegate?.didReceiveEvents(result: result)
     }
 }

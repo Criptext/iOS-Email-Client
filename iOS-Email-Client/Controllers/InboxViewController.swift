@@ -225,30 +225,43 @@ class InboxViewController: UIViewController {
 }
 
 extension InboxViewController: EventHandlerDelegate {
-    func didReceiveOpens(opens: [FeedItem]) {
-        let pathsToUpdate = opens.reduce([IndexPath]()) { (result, open) -> [IndexPath] in
+    func didReceiveEvents(result: EventData.Result) {
+        if result.emails.contains(where: {$0.status != .unsent}) {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        }
+        
+        let pathsToUpdate = result.opens.reduce([IndexPath]()) { (result, open) -> [IndexPath] in
             guard let index = mailboxData.threads.index(where: {$0.threadId == open.email.threadId}) else {
                 return result
             }
             return result + [IndexPath(row: index, section: 0)]
         }
-        tableView.reloadRows(at: pathsToUpdate, with: .automatic)
-        guard let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
-                return
+        
+        if(shouldHardReload(result: result)){
+            refreshThreadRows()
+        } else {
+            tableView.reloadRows(at: pathsToUpdate, with: .automatic)
+        }
+        notifyEmailDetailController(result: result)
+        
+        
+        guard result.opens.count > 0,
+            let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
+            return
         }
         feedVC.loadFeeds(clear: true)
         let badgeCounter = feedVC.feedsData.newFeeds.count
         updateFeedsBadge(counter: badgeCounter)
     }
     
-    func didReceiveNewEmails(emails: [Email]) {
-        if emails.contains(where: {$0.status != .unsent}) {
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+    func shouldHardReload(result: EventData.Result) -> Bool{
+        if(result.modifiedEmailKeys.count > 0 || result.modifiedThreadIds.count > 0){
+            return true
         }
-        guard !mailboxData.searchMode && emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
-            return
+        guard !mailboxData.searchMode && result.emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
+            return false
         }
-        refreshThreadRows()
+        return true
     }
     
     func refreshThreadRows(){
@@ -511,9 +524,10 @@ extension InboxViewController: UITableViewDataSource{
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
-        let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController")
+        let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController") as! SettingsLabelsViewController
         let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController")
         generalVC.myAccount = self.myAccount
+        labelsVC.myAccount = self.myAccount
         let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
         tabsVC.edgesForExtendedLayout = []
         tabsVC.tabBarAlignment = .top
@@ -810,20 +824,68 @@ extension InboxViewController {
             return
         }
         self.didPressEdit(reload: true)
-        let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
+        let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
         let shouldRemoveItems = removed.contains(where: {$0 == mailboxData.selectedLabel}) || forceRemove
-        for indexPath in orderedIndexPaths {
-            let thread = mailboxData.threads[indexPath.row]
-            DBManager.addRemoveLabelsForThreads(thread.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: mailboxData.selectedLabel)
-            if shouldRemoveItems {
-                mailboxData.threads.remove(at: indexPath.row)
+        
+        let changedLabels = getLabelNames(added: added, removed: removed)
+        let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        APIManager.postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                return
+            }
+            for threadId in threadIds {
+                DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
+            }
+            if(shouldRemoveItems){
+                self.removeThreads(threadIds: threadIds)
             }
         }
-        if shouldRemoveItems {
-            self.tableView.deleteRows(at: indexPaths, with: .left)
-            updateBadges()
-            showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+    }
+    
+    func removeThreads(threadIds: [String]){
+        var indexesToRemove = [IndexPath]()
+        for threadId in threadIds {
+            guard let index = mailboxData.emailArray.index(where: {$0.threadId == threadId}) else {
+                continue
+            }
+            indexesToRemove.append(IndexPath(row: index, section: 0))
+            mailboxData.threads.remove(at: index)
         }
+        tableView.deleteRows(at: indexesToRemove, with: .left)
+        updateBadges()
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+    }
+    
+    func updateThreads(threadIds: [String]){
+        var indexesToUpdate = [IndexPath]()
+        for threadId in threadIds {
+            guard let index = mailboxData.emailArray.index(where: {$0.threadId == threadId}) else {
+                continue
+            }
+            indexesToUpdate.append(IndexPath(row: index, section: 0))
+        }
+        tableView.reloadRows(at: indexesToUpdate, with: .fade)
+        updateBadges()
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+    }
+    
+    func getLabelNames(added: [Int], removed: [Int]) -> ([String], [String]){
+        var addedNames = [String]()
+        var removedNames = [String]()
+        for id in added {
+            guard let label = DBManager.getLabel(id) else {
+                continue
+            }
+            addedNames.append(label.text)
+        }
+        for id in removed {
+            guard let label = DBManager.getLabel(id) else {
+                continue
+            }
+            removedNames.append(label.text)
+        }
+        return (addedNames, removedNames)
     }
     
     func deleteThreads(){
@@ -832,15 +894,18 @@ extension InboxViewController {
             return
         }
         self.didPressEdit(reload: true)
-        let orderedIndexPaths = indexPaths.sorted{$0.row > $1.row}
-        for indexPath in orderedIndexPaths {
-            let thread = mailboxData.threads[indexPath.row]
-            DBManager.deleteThreads(thread.threadId, label: mailboxData.selectedLabel)
-            mailboxData.threads.remove(at: indexPath.row)
+        let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
+        APIManager.postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to delete threads. Please try again", style: .alert)
+                return
+            }
+            self.removeThreads(threadIds: threadIds)
+            for threadId in threadIds {
+                DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
+            }
         }
-        self.tableView.deleteRows(at: indexPaths, with: .left)
-        updateBadges()
-        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
 }
 
@@ -872,13 +937,29 @@ extension InboxViewController: NavigationToolbarDelegate {
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             return
         }
-        let unread = mailboxData.unreadMails <= 0
-        for indexPath in indexPaths {
-            let thread = mailboxData.threads[indexPath.row]
-            DBManager.updateThread(threadId: thread.threadId, currentLabel: mailboxData.selectedLabel, unread: unread)
-            thread.unread = unread
+        let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let unread = self.mailboxData.unreadMails <= 0
+        let params = ["cmd": Event.Peer.threadsUnread.rawValue,
+                      "params": [
+                        "unread": unread ? 1 : 0,
+                        "threadIds": threadIds
+                        ]
+            ] as [String : Any]
+        APIManager.postPeerEvent(params, token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to change read status. Please try again", style: .alert)
+                return
+            }
+            for threadId in threadIds {
+                guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
+                    continue
+                }
+                DBManager.updateThread(threadId: threadId, currentLabel: self.mailboxData.selectedLabel, unread: unread)
+                thread.unread = unread
+            }
+            self.updateThreads(threadIds: threadIds)
+            self.didPressEdit(reload: true)
         }
-        self.didPressEdit(reload: true)
     }
     
     func onMoreOptions() {
@@ -932,6 +1013,13 @@ extension InboxViewController: ComposerSendMailDelegate {
             return
         }
         emailDetailVC.incomingEmail(email: email)
+    }
+    
+    func notifyEmailDetailController(result: EventData.Result){
+        guard let emailDetailVC = self.navigationController?.viewControllers.first(where: {$0 is EmailDetailViewController}) as? EmailDetailViewController else {
+            return
+        }
+        emailDetailVC.didReceiveEvents(result: result)
     }
     
     func reloadIfSentMailbox(email: Email){
