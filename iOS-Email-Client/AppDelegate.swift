@@ -14,6 +14,9 @@ import UserNotifications
 import RealmSwift
 import IQKeyboardManagerSwift
 import CLTokenInputView
+import Firebase
+import FirebaseMessaging
+import FirebaseInstanceID
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -65,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         self.replaceRootViewController(initialVC)
+        self.registerPushNotifications()
         IQKeyboardManager.shared.enable = true
         return true
     }
@@ -86,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         UIApplication.shared.registerForRemoteNotifications()
+        FirebaseApp.configure()
     }
     
     func replaceRootViewController(_ viewController:UIViewController){
@@ -189,3 +194,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         inboxVC.getPendingEvents(nil)
     }
 }
+
+extension AppDelegate: MessagingDelegate {
+    func applicationReceivedRemoteMessage(_ remoteMessage: MessagingRemoteMessage) {
+        print("message: \(remoteMessage)")
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        
+    }
+}
+
