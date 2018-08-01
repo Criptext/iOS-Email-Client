@@ -816,6 +816,15 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         updateBadges()
         showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
+    
+    func registerToken(fcmToken: String){
+        APIManager.registerToken(fcmToken: fcmToken, token: myAccount.jwt) { (error) in
+            guard error != nil else{
+                return
+            }
+            self.showAlert("No Push Notifications", message: "Unable to authenticate. You won't receive push notifications until next start up", style: .alert)
+        }
+    }
 }
 
 extension InboxViewController {
