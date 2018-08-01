@@ -112,3 +112,9 @@ Podfile.lock
 Carthage/Build
 Carthage/
 Carthage/*
+
+# Firebase
+Firebase*.framework/
+GoogleToolboxForMac.framework/
+nanopb.framework/
+Protobuf.framework/
