@@ -99,7 +99,7 @@ class InboxViewController: UIViewController {
         self.initFloatingButton()
         topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
-        refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
@@ -207,19 +207,22 @@ class InboxViewController: UIViewController {
         }
     }
     
-    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
+    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: (() -> Void)? = nil) {
         APIManager.getEvents(token: myAccount.jwt) { (error, data) in
             refreshControl?.endRefreshing()
             guard error == nil else {
                 print(error.debugDescription)
+                completion?()
                 return
             }
             guard let eventsArray = data as? Array<Dictionary<String, Any>> else {
+                completion?()
                 return
             }
             let eventHandler = EventHandler(account: self.myAccount)
             eventHandler.eventDelegate = self
             eventHandler.handleEvents(events: eventsArray)
+            completion?()
         }
     }
 }
@@ -661,6 +664,14 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         vc.myAccount = self.myAccount
         self.navigationController?.pushViewController(vc, animated: true)
         APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
+    }
+    
+    func goToEmailDetail(threadId: String){
+        let workingLabel = SystemLabel.inbox.id
+        guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel) else {
+            return
+        }
+        goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel)
     }
     
     func continueDraft(_ draft: Email){

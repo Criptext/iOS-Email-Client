@@ -74,6 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func registerPushNotifications() {
+        FirebaseApp.configure()
         Messaging.messaging().delegate = self
         
         if #available(iOS 10.0, *) {
@@ -92,7 +93,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         UIApplication.shared.registerForRemoteNotifications()
-        FirebaseApp.configure()
     }
     
     func replaceRootViewController(_ viewController:UIViewController){
@@ -140,7 +140,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        Messaging.messaging().shouldEstablishDirectChannel = false
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -149,21 +148,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func triggerRefresh(){
-        
-        
-        guard let snackVC = self.window?.rootViewController?.snackbarController,
-            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-            let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                return
+        guard let inboxVC = getInboxVC() else {
+            return
         }
-        
         inboxVC.getPendingEvents(nil)
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        Messaging.messaging().shouldEstablishDirectChannel = true
+        print("===== did become active")
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -182,44 +175,59 @@ extension AppDelegate: UISplitViewControllerDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
+    func getInboxVC() -> InboxViewController? {
+        guard let snackVC = self.window?.rootViewController?.snackbarController,
+            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
+            let navVC = rootVC.childViewControllers.first as? UINavigationController,
+            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
+                return nil
+        }
+        return inboxVC
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Delivers a notification to an app running in the foreground.
-        print("hello there how you doing")
+        
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("hello there one two three")
+        let userInfo = response.notification.request.content.userInfo
+        let threadId = userInfo["threadId"] as! String
+        
+        guard let inboxVC = getInboxVC() else {
+                return
+        }
+        inboxVC.goToEmailDetail(threadId: threadId)
     }
 }
 
 extension AppDelegate: MessagingDelegate {
     func applicationReceivedRemoteMessage(_ remoteMessage: MessagingRemoteMessage) {
-        print("hello message: \(remoteMessage)")
+        
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Messaging.messaging().appDidReceiveMessage(userInfo)
-    
-        print("hello did receive")
-        print(userInfo)
-    }
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        let dataDict:[String: String] = ["token": fcmToken]
-        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
-        
         guard let snackVC = self.window?.rootViewController?.snackbarController,
             let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
             let navVC = rootVC.childViewControllers.first as? UINavigationController,
             let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
+                completionHandler(.noData)
                 return
         }
-        print("hello token")
+        inboxVC.getPendingEvents(nil) {
+            completionHandler(.newData)
+        }
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        guard let inboxVC = getInboxVC() else {
+            return
+        }
         inboxVC.registerToken(fcmToken: fcmToken)
     }
     
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-        print("hello 123")
+        
     }
 }
 
