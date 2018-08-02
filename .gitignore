@@ -112,3 +112,11 @@ Podfile.lock
 Carthage/Build
 Carthage/
 Carthage/*
+
+# Firebase
+iOS-Email-Client/Firebase.h
+iOS-Email-Client/module.modulemap
+Firebase*.framework/
+GoogleToolboxForMac.framework/
+nanopb.framework/
+Protobuf.framework/

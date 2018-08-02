@@ -14,6 +14,9 @@ import UserNotifications
 import RealmSwift
 import IQKeyboardManagerSwift
 import CLTokenInputView
+import Firebase
+import FirebaseMessaging
+import FirebaseInstanceID
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -65,11 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         self.replaceRootViewController(initialVC)
+        self.registerPushNotifications()
         IQKeyboardManager.shared.enable = true
         return true
     }
     
     func registerPushNotifications() {
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
@@ -141,15 +148,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func triggerRefresh(){
-        
-        
-        guard let snackVC = self.window?.rootViewController?.snackbarController,
-            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-            let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                return
+        guard let inboxVC = getInboxVC() else {
+            return
         }
-        
         inboxVC.getPendingEvents(nil)
     }
     
@@ -163,7 +164,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
     }
 }
 
@@ -175,17 +175,59 @@ extension AppDelegate: UISplitViewControllerDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Delivers a notification to an app running in the foreground.
-        
+    func getInboxVC() -> InboxViewController? {
         guard let snackVC = self.window?.rootViewController?.snackbarController,
             let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
             let navVC = rootVC.childViewControllers.first as? UINavigationController,
             let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                completionHandler([])
+                return nil
+        }
+        return inboxVC
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        let threadId = userInfo["threadId"] as! String
+        
+        guard let inboxVC = getInboxVC() else {
                 return
         }
-        
-        inboxVC.getPendingEvents(nil)
+        inboxVC.goToEmailDetail(threadId: threadId)
     }
 }
+
+extension AppDelegate: MessagingDelegate {
+    func applicationReceivedRemoteMessage(_ remoteMessage: MessagingRemoteMessage) {
+        
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        Messaging.messaging().appDidReceiveMessage(userInfo)
+        guard let snackVC = self.window?.rootViewController?.snackbarController,
+            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
+            let navVC = rootVC.childViewControllers.first as? UINavigationController,
+            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
+                completionHandler(.noData)
+                return
+        }
+        inboxVC.getPendingEvents(nil) {
+            completionHandler(.newData)
+        }
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        guard let inboxVC = getInboxVC() else {
+            return
+        }
+        inboxVC.registerToken(fcmToken: fcmToken)
+    }
+    
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        
+    }
+}
+

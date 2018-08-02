@@ -99,7 +99,7 @@ class InboxViewController: UIViewController {
         self.initFloatingButton()
         topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
-        refreshControl.addTarget(self, action: #selector(getPendingEvents(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         
@@ -207,19 +207,22 @@ class InboxViewController: UIViewController {
         }
     }
     
-    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?) {
+    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: (() -> Void)? = nil) {
         APIManager.getEvents(token: myAccount.jwt) { (error, data) in
             refreshControl?.endRefreshing()
             guard error == nil else {
                 print(error.debugDescription)
+                completion?()
                 return
             }
             guard let eventsArray = data as? Array<Dictionary<String, Any>> else {
+                completion?()
                 return
             }
             let eventHandler = EventHandler(account: self.myAccount)
             eventHandler.eventDelegate = self
             eventHandler.handleEvents(events: eventsArray)
+            completion?()
         }
     }
 }
@@ -663,6 +666,14 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
     }
     
+    func goToEmailDetail(threadId: String){
+        let workingLabel = SystemLabel.inbox.id
+        guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel) else {
+            return
+        }
+        goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel)
+    }
+    
     func continueDraft(_ draft: Email){
         let composerData = ComposerData()
         composerData.initToContacts = Array(draft.getContacts(type: .to))
@@ -815,6 +826,15 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         setLabels(added: addLabels, removed: removeLabels, forceRemove: labelId == SystemLabel.trash.id || labelId == SystemLabel.spam.id)
         updateBadges()
         showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+    }
+    
+    func registerToken(fcmToken: String){
+        APIManager.registerToken(fcmToken: fcmToken, token: myAccount.jwt) { (error) in
+            guard error != nil else{
+                return
+            }
+            self.showAlert("No Push Notifications", message: "Unable to authenticate. You won't receive push notifications until next start up", style: .alert)
+        }
     }
 }
 
