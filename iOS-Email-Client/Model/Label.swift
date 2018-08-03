@@ -54,7 +54,6 @@ class Label : Object {
     class func getSettableLabels() -> [Label] {
         var settableLabels = DBManager.getActiveCustomLabels()
         settableLabels.append(DBManager.getLabel(SystemLabel.starred.id)!)
-        settableLabels.append(DBManager.getLabel(SystemLabel.important.id)!)
         return settableLabels
     }
 }
@@ -80,7 +79,6 @@ enum SystemLabel: Int {
     case spam = 2
     case trash = 7
     case starred = 5
-    case important = 4
     case all = -1
     
     var id: Int {
@@ -99,8 +97,6 @@ enum SystemLabel: Int {
             return "Spam"
         case .trash:
             return "Trash"
-        case .important:
-            return "Important"
         case .starred:
             return "Starred"
         case .all:
@@ -120,8 +116,6 @@ enum SystemLabel: Int {
             return "ff0000"
         case .trash:
             return "b00e0e"
-        case .important:
-            return "ff9d32"
         case .starred:
             return "ffdf32"
         case .all:
@@ -131,7 +125,7 @@ enum SystemLabel: Int {
     
     var moveableLabels: [SystemLabel] {
         switch self {
-        case .inbox, .sent, .important, .starred:
+        case .inbox, .sent, .starred:
             return [.trash, .spam]
         case .draft, .spam:
             return []
@@ -152,12 +146,12 @@ enum SystemLabel: Int {
     }
     
     static var array: [SystemLabel] {
-        let labels: [SystemLabel] = [.inbox, .draft, .sent, .spam, .trash, .starred, .important]
+        let labels: [SystemLabel] = [.inbox, .draft, .sent, .spam, .trash, .starred]
         return labels
     }
     
     static var idsArray: [Int] {
-        let labels: [Int] = [SystemLabel.inbox.id, SystemLabel.draft.id, SystemLabel.sent.id, SystemLabel.spam.id, SystemLabel.trash.id, SystemLabel.starred.id, SystemLabel.important.id]
+        let labels: [Int] = [SystemLabel.inbox.id, SystemLabel.draft.id, SystemLabel.sent.id, SystemLabel.spam.id, SystemLabel.trash.id, SystemLabel.starred.id]
         return labels
     }
 }

@@ -30,6 +30,17 @@ extension UIColor {
     }
 }
 
+extension UIViewController {
+    func presentPopover(popover: UIViewController, height: Int, arrowDirections: UIPopoverArrowDirection = []){
+        popover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: height)
+        popover.popoverPresentationController?.sourceView = self.view
+        popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        popover.popoverPresentationController?.permittedArrowDirections = arrowDirections
+        popover.popoverPresentationController?.backgroundColor = UIColor.white
+        self.present(popover, animated: true)
+    }
+}
+
 func MD5(string: String) -> Data {
     let messageData = string.data(using:.utf8)!
     var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))

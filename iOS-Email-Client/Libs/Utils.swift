@@ -96,8 +96,41 @@ class Utils{
         case _ where type.contains("application/vnd.ms-excel") ||
             type.contains("application/vnd.openxmlformats-officedocument.spreadsheetml"):
             return #imageLiteral(resourceName: "attachment_excel")
+        case _ where type.contains("audio"):
+            return #imageLiteral(resourceName: "attachment_audio")
+        case _ where type.contains("video"):
+            return #imageLiteral(resourceName: "attachment_video")
+        case _ where type.contains("zip"):
+            return #imageLiteral(resourceName: "attachment_zip")
         default:
             return #imageLiteral(resourceName: "attachment_generic")
+        }
+    }
+    
+    class func getExternalImage(_ type: String) -> String {
+        switch type {
+        case "application/pdf":
+            return "filepdf"
+        case _ where type.contains("application/msword") ||
+            type.contains("application/vnd.openxmlformats-officedocument.wordprocessingml") ||
+            type.contains("application/vnd.ms-word"):
+            return "fileword"
+        case "image/png", "image/jpeg":
+            return "fileimage"
+        case _ where type.contains("application/vnd.ms-powerpoint") ||
+            type.contains("application/vnd.openxmlformats-officedocument.presentationml"):
+            return "fileppt"
+        case _ where type.contains("application/vnd.ms-excel") ||
+            type.contains("application/vnd.openxmlformats-officedocument.spreadsheetml"):
+            return "fileexcel"
+        case _ where type.contains("audio"):
+            return "fileaudio"
+        case _ where type.contains("video"):
+            return "filevideo"
+        case _ where type.contains("zip"):
+            return "filezip"
+        default:
+            return "filedefault"
         }
     }
     

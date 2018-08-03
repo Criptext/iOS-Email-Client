@@ -309,6 +309,36 @@ class APIManager {
             completion(nil)
         }
     }
+    
+    class func updateName(name: String, token: String, completion: @escaping ((Error?, String?) -> Void)){
+        let url = "\(self.baseUrl)/user/name"
+        let params = [
+            "name": name
+        ]
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            guard response.response?.statusCode == 200,
+                let value = response.result.value else {
+                let criptextError = CriptextError(code: .noValidResponse)
+                completion(criptextError, nil)
+                return
+            }
+            completion(nil, value)
+        }
+    }
+    
+    class func removeDevice(deviceId: Int, token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/devices?deviceId=\(deviceId)"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            guard response.response?.statusCode == 200 else {
+                let criptextError = CriptextError(code: .noValidResponse)
+                completion(criptextError)
+                return
+            }
+            completion(nil)
+        }
+    }
 }
 
 extension APIManager {

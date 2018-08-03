@@ -17,9 +17,11 @@ class EventHandler {
     var eventDelegate : EventHandlerDelegate?
     var apiManager : APIManager.Type = APIManager.self
     var signalHandler: SignalHandler.Type = SignalHandler.self
+    var fromWS: Bool
     
-    init(account: Account){
+    init(account: Account, fromWS: Bool = false){
         myAccount = account
+        self.fromWS = fromWS
     }
 
     func handleEvents(events: [[String: Any]]){
@@ -43,7 +45,7 @@ class EventHandler {
                 break
             }
         }) {
-            if(!successfulEvents.isEmpty){
+            if(!successfulEvents.isEmpty && !self.fromWS){
                 self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
             }
             self.eventDelegate?.didReceiveEvents(result: result)
@@ -177,6 +179,7 @@ class EventHandler {
             
             if(self.isFromMe(email: email)){
                 DBManager.updateEmail(email, status: .sent)
+                DBManager.updateEmail(email, unread: false)
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
             }
             if(self.isMeARecipient(email: email)){
@@ -266,9 +269,9 @@ class EventHandler {
 
 extension EventHandler {
     func handleEmailUnreadCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
-        //let event = EventData.Peer.EmailUnread.init(params: params)
-        //DBManager.markAsUnread(emailKeys: event.metadataKeys, unread: event.unread)
-        finishCallback(true, nil)
+        let event = EventData.Peer.EmailUnread.init(params: params)
+        DBManager.markAsUnread(emailKeys: event.metadataKeys, unread: event.unread)
+        finishCallback(true, event.metadataKeys)
     }
     
     func handleThreadUnreadCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
@@ -321,7 +324,7 @@ extension EventHandler {
     
     func handleChangeNameCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Any?) -> Void){
         let event = EventData.Peer.NameChanged.init(params: params)
-        DBManager.updateAccount(recipientId: event.recipientId, name: event.name)
+        DBManager.update(account: myAccount, name: event.name)
         finishCallback(true, nil)
     }
     
