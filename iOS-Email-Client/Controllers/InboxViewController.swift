@@ -316,8 +316,8 @@ extension InboxViewController{
         loadMails(since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
         topToolbar.swapTrashIcon(labelId: labelId)
-        self.navigationDrawerController?.closeLeftView()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+        self.navigationDrawerController?.closeLeftView()
     }
     
     func swapMarkIcon(){
@@ -640,17 +640,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel)
         let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
-        emailDetailData.emails = emails
         var labelsSet = Set<Label>()
         var openKeys = [Int]()
         for email in emails {
-            email.isExpanded = (email.unread && email.status != .unsent)
+            email.isExpanded = email.unread
             labelsSet.formUnion(email.labels)
-            if(email.status != .unsent && email.isExpanded){
-                DBManager.updateEmail(email, unread: false)
+            if(email.unread){
                 openKeys.append(email.key)
             }
+            DBManager.updateEmail(email, unread: false)
         }
+        emailDetailData.emails = emails
         emailDetailData.selectedLabel = selectedLabel
         emailDetailData.labels = Array(labelsSet)
         emailDetailData.subject = emails.first!.subject
@@ -663,7 +663,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         vc.mailboxData = self.mailboxData
         vc.myAccount = self.myAccount
         self.navigationController?.pushViewController(vc, animated: true)
-        APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
+        if(openKeys.count > 0) {
+            APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
+        }
     }
     
     func goToEmailDetail(threadId: String){

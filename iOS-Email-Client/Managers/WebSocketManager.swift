@@ -52,7 +52,7 @@ extension WebSocketManager: WebSocketDelegate{
         guard let event = Utils.convertToDictionary(text: text) else {
             return
         }
-        let eventHandler = EventHandler(account: myAccount)
+        let eventHandler = EventHandler(account: myAccount, fromWS: true)
         eventHandler.eventDelegate = self
         eventHandler.handleEvents(events: [event])
     }

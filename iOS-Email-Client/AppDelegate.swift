@@ -81,14 +81,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
             
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            let authOptions: UNAuthorizationOptions = [.alert, .sound, .badge]
             UNUserNotificationCenter.current().requestAuthorization(
                 options: authOptions,
                 completionHandler: {_, _ in })
             
         } else {
             let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+                UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         
@@ -135,6 +135,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
+        UIApplication.shared.applicationIconBadgeNumber = emails.count
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -207,7 +209,9 @@ extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Messaging.messaging().appDidReceiveMessage(userInfo)
-        guard let snackVC = self.window?.rootViewController?.snackbarController,
+        let defaults = UserDefaults.standard
+        guard defaults.string(forKey: "activeAccount") != nil,
+            let snackVC = self.window?.rootViewController?.snackbarController,
             let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
             let navVC = rootVC.childViewControllers.first as? UINavigationController,
             let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
@@ -215,12 +219,16 @@ extension AppDelegate: MessagingDelegate {
                 return
         }
         inboxVC.getPendingEvents(nil) {
+            let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
+            UIApplication.shared.applicationIconBadgeNumber = emails.count + 1
             completionHandler(.newData)
         }
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        guard let inboxVC = getInboxVC() else {
+        let defaults = UserDefaults.standard
+        guard defaults.string(forKey: "activeAccount") != nil,
+            let inboxVC = getInboxVC() else {
             return
         }
         inboxVC.registerToken(fcmToken: fcmToken)

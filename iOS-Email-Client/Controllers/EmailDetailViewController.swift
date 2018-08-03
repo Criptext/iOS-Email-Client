@@ -27,6 +27,7 @@ class EmailDetailViewController: UIViewController {
     
     var myHeaderView : UIView?
     let fileManager = CriptextFileManager()
+    let emailCells = [Int: EmailTableViewCell]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,8 +77,6 @@ class EmailDetailViewController: UIViewController {
     }
     
     func setupMoreOptionsViews(){
-        emailsTableView.rowHeight = UITableViewAutomaticDimension
-        emailsTableView.estimatedRowHeight = ESTIMATED_ROW_HEIGHT
         emailsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
         emailsTableView.estimatedSectionHeaderHeight = ESTIMATED_SECTION_HEADER_HEIGHT;
         moreOptionsContainerView.delegate = self
@@ -90,7 +89,7 @@ class EmailDetailViewController: UIViewController {
         self.emailsTableView.register(footerNib, forHeaderFooterViewReuseIdentifier: "emailTableFooterView")
         for email in self.emailData.emails {
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
-            self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.key)")
+            self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.id)")
         }
     }
     
@@ -104,11 +103,12 @@ class EmailDetailViewController: UIViewController {
             let cell = emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell else {
             return
         }
-        cell.setReadStatus(status: email.status)
+        cell.setContent(email, myEmail: emailData.accountEmail)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return ESTIMATED_ROW_HEIGHT
+        let email = emailData.emails[indexPath.row]
+        return email.cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : email.cellHeight
     }
 }
 
@@ -116,7 +116,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
-        let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
+        let cell = reuseOrCreateCell(identifier: "emailDetail\(email.id)") as! EmailTableViewCell
         cell.setContent(email, myEmail: emailData.accountEmail)
         cell.delegate = self
         return cell
@@ -592,12 +592,12 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             email.isUnsending = false
             guard error == nil else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
-                self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
+                self.manuallyUpdateRow(cell: cell, email: email)
                 return
             }
             DBManager.unsendEmail(email)
             email.isLoaded = false
-            self.emailsTableView.reloadRows(at: [indexPath], with: .automatic)
+            self.manuallyUpdateRow(cell: cell, email: email)
         }
     }
     
@@ -758,13 +758,17 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
 extension EmailDetailViewController: EventHandlerDelegate {
     
     func didReceiveEvents(result: EventData.Result) {
-        guard !result.modifiedThreadIds.contains(emailData.threadId) else {
+        if result.modifiedThreadIds.contains(emailData.threadId) {
             reloadContent()
             return
         }
-        guard !result.modifiedEmailKeys.contains(where: { (key) -> Bool in
+        if result.modifiedEmailKeys.contains(where: { (key) -> Bool in
             return emailData.emails.contains(where: {$0.key == key})
-        }) else {
+        }){
+            reloadContent()
+            return
+        }
+        if result.emails.contains(where: {$0.threadId == emailData.threadId}){
             reloadContent()
             return
         }
@@ -776,6 +780,14 @@ extension EmailDetailViewController: EventHandlerDelegate {
             self.mailboxData.removeSelectedRow = true
             self.navigationController?.popViewController(animated: true)
             return
+        }
+        for email in emails {
+            guard let match = emailData.emails.first(where: {$0.key == email.key}) else {
+                continue
+            }
+            email.isExpanded = match.isExpanded
+            email.cellHeight = match.cellHeight
+            email.isLoaded = match.isLoaded
         }
         emailData.emails = emails
         self.emailData.rebuildLabels()

@@ -67,6 +67,14 @@ extension DBManager {
         return realm.object(ofType: Account.self, forPrimaryKey: username)
     }
     
+    class func update(account: Account, jwt: String){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.jwt = jwt
+        }
+    }
+    
     class func update(account: Account, name: String){
         let realm = try! Realm()
         

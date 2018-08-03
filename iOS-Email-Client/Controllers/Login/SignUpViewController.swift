@@ -146,7 +146,7 @@ class SignUpViewController: UIViewController{
         confirmPasswordTextField.setStatus(.none)
         guard let password = passwordTextField.text,
             password.count >= Constants.MinCharactersPassword else {
-            let inputError = "password must be at least 6 characters"
+            let inputError = "password must be at least 8 characters"
             passwordTextField.setStatus(.invalid, inputError)
             return
         }
