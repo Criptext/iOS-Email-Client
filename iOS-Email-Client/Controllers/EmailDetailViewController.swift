@@ -105,7 +105,7 @@ class EmailDetailViewController: UIViewController {
                 let cell = self.emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell else {
                     return
             }
-            cell.setContent(email, myEmail: self.emailData.accountEmail)
+            self.emailsTableView.reloadData()
         }
     }
     
@@ -172,8 +172,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
         email.cellHeight = height
-        emailsTableView.beginUpdates()
-        emailsTableView.endUpdates()
+        self.emailsTableView.reloadData()
     }
     
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
@@ -186,14 +185,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         let email = emailData.emails[indexPath.row]
         email.isExpanded = !email.isExpanded
-        manuallyUpdateRow(cell: cell, email: email)
-    }
-    
-    func manuallyUpdateRow(cell: EmailTableViewCell, email: Email){
-        emailsTableView.beginUpdates()
-        cell.setContent(email, myEmail: emailData.accountEmail)
-        cell.layoutIfNeeded()
-        emailsTableView.endUpdates()
+        emailsTableView.reloadData()
     }
     
     func tableViewCellDidTapAttachment(file: File) {
@@ -591,18 +583,19 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             return
         }
         email.isUnsending = true
-        manuallyUpdateRow(cell: cell, email: email)
+        emailsTableView.reloadData()
         let recipients = getEmailRecipients(contacts: email.getContacts())
         APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (error) in
             email.isUnsending = false
             guard error == nil else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
-                self.manuallyUpdateRow(cell: cell, email: email)
+                self.emailsTableView.reloadData()
                 return
             }
             DBManager.unsendEmail(email)
             email.isLoaded = false
-            self.manuallyUpdateRow(cell: cell, email: email)
+            cell.setContent(email, myEmail: self.emailData.accountEmail)
+            self.emailsTableView.reloadData()
         }
     }
     
