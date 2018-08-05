@@ -17,11 +17,10 @@ class File : Object {
     @objc dynamic var size = 0
     @objc dynamic var status = 1
     @objc dynamic var date = Date()
-    @objc dynamic var readOnly = 0
+    @objc dynamic var readOnly = 0 //bool
     @objc dynamic var emailId = 0
-    @objc dynamic var isUploaded = false
     @objc dynamic var mimeType = ""
-    @objc dynamic var filePath = ""
+    var filePath = ""
     var progress = -1
     var filepath = ""
     var chunksProgress = [Int]()

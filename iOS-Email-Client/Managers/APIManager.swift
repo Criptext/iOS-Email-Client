@@ -327,6 +327,21 @@ class APIManager {
         }
     }
     
+    class func getDevices(token: String, completion: @escaping ((Error?, [[String: Any]]?) -> Void)){
+        let url = "\(self.baseUrl)/devices"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
+            (response) in
+            guard response.response?.statusCode == 200,
+                let responseData = response.result.value as? [[String: Any]] else {
+                    let criptextError = CriptextError(code: .noValidResponse)
+                    completion(criptextError, nil)
+                    return
+            }
+            completion(nil, responseData)
+        }
+    }
+    
     class func removeDevice(deviceId: Int, token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.baseUrl)/devices?deviceId=\(deviceId)"
         let headers = ["Authorization": "Bearer \(token)"]
