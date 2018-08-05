@@ -73,7 +73,7 @@ class EventHandler {
             return
         }
         
-        func handleEventResponse(successfulEvent: Bool, item: Any){
+        func handleEventResponse(successfulEvent: Bool, item: Any?){
             guard successfulEvent,
                 let eventId = rowId else {
                     finishCallback(nil, nil)
@@ -112,6 +112,8 @@ class EventHandler {
             handleCreateLabelCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.changeName.rawValue:
             handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
+        case Event.serverError.rawValue:
+            handleEventResponse(successfulEvent: true, item: nil)
         default:
             finishCallback(nil, nil)
             break
@@ -333,6 +335,7 @@ extension EventHandler {
 enum Event: Int32 {
     case newEmail = 101
     case emailStatus = 102
+    case serverError = 104
     
     enum Peer: Int32 {
         case emailsUnread = 301

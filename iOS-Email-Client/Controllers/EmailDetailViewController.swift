@@ -98,12 +98,15 @@ class EmailDetailViewController: UIViewController {
     }
     
     func incomingEmail(email: Email){
-        guard email.threadId == emailData.threadId,
-            let index = emailData.emails.index(where: {$0.id == email.id}),
-            let cell = emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell else {
-            return
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            guard !email.isInvalidated,
+                email.threadId == self.emailData.threadId,
+                let index = self.emailData.emails.index(where: {$0.id == email.id}),
+                let cell = self.emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell else {
+                    return
+            }
+            cell.setContent(email, myEmail: self.emailData.accountEmail)
         }
-        cell.setContent(email, myEmail: emailData.accountEmail)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -187,8 +190,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func manuallyUpdateRow(cell: EmailTableViewCell, email: Email){
-        cell.setContent(email, myEmail: emailData.accountEmail)
         emailsTableView.beginUpdates()
+        cell.setContent(email, myEmail: emailData.accountEmail)
         cell.layoutIfNeeded()
         emailsTableView.endUpdates()
     }
@@ -258,6 +261,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? "Remove from Spam" : "Mark as Spam", for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        let email = emailData.emails[indexPath.row]
+        moreOptionsContainerView.showUnsend(email.status != .unsent && email.status != .none)
         toggleMoreOptionsView()
     }
     

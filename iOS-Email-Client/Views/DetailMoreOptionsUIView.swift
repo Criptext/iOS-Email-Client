@@ -27,6 +27,7 @@ class DetailMoreOptionsUIView: UIView {
     @IBOutlet var view: UIView!
     var delegate: DetailMoreOptionsViewDelegate?
     @IBOutlet weak var spamButton: UIButton!
+    @IBOutlet weak var unsendButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -43,6 +44,10 @@ class DetailMoreOptionsUIView: UIView {
         
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onDismiss))
         backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
+    }
+    
+    func showUnsend(_ show: Bool){
+        self.unsendButton.isHidden = !show
     }
     
     func showMoreOptions(){

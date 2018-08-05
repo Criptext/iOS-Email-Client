@@ -14,12 +14,13 @@ class FeedItem: Object {
     
     @objc dynamic var id = 0
     @objc dynamic var date = Date()
-    @objc dynamic var message = ""
+    @objc dynamic var message = "" //prob not
     @objc dynamic var location = ""
     @objc dynamic var type = Action.open.rawValue
     @objc dynamic var email : Email!
     @objc dynamic var contact : Contact!
     @objc dynamic var fileId: String?
+    //seen: Bool
     
     var isMuted: Bool {
         return email.isMuted

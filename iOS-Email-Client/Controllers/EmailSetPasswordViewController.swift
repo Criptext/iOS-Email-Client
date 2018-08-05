@@ -34,9 +34,6 @@ class EmailSetPasswordViewController: BaseUIPopover {
         
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
         repeatPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)){ [weak self] in
-            self?.passwordTextField.becomeFirstResponder()
-        }
         guard let scrollview = self.view as? UIScrollView else {
             return
         }

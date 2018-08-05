@@ -280,7 +280,7 @@ class SignUpViewController: UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "signuptowebview"){
             let webviewController = segue.destination as! WebViewViewController
-            webviewController.url = "https://criptext.com"
+            webviewController.url = "https://criptext.com/terms"
         }
     }
 }

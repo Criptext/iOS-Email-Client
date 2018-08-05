@@ -85,16 +85,10 @@ class SendMailAsyncTask {
         
         var guestEmails = [String : Any]()
         let body = email.content + SendMailAsyncTask.buildAttachmentsHtml(attachments: files, keys: fileKey)
-        if(!toArray.isEmpty){
-            guestEmails["to"] = toArray
-            guestEmails["body"] = body
-        }
-        if(!ccArray.isEmpty){
-            guestEmails["cc"] = ccArray
-            guestEmails["body"] = body
-        }
-        if(!bccArray.isEmpty){
-            guestEmails["bcc"] = bccArray
+        if(!toArray.isEmpty || !ccArray.isEmpty || !bccArray.isEmpty){
+            guestEmails["to"] = !toArray.isEmpty ? toArray : []
+            guestEmails["cc"] = !ccArray.isEmpty ? ccArray : []
+            guestEmails["bcc"] = !bccArray.isEmpty ? bccArray : []
             guestEmails["body"] = body
         }
         return (guestEmails, criptextEmails)
@@ -180,13 +174,20 @@ class SendMailAsyncTask {
         let dummy = Dummy(recipientId: password)
         let keyBundle = dummy.getKeyBundle()
         let body = encryptDummyBody(keys: keyBundle, myAccount: myAccount)
-        let session = dummy.getSessionBundle()
+        var session = dummy.getSessionBundle()
+        if let fileKey = self.fileKey {
+            session["fileKey"] = fileKey
+        }
         let aesSalt = AESCipher.generateRandomBytes(length: 8)
         let aesKey = AESCipher.generateKey(password: password, saltData: aesSalt)!
         let aesIv = AESCipher.generateRandomBytes(length: 16)
         let sessionString = Utils.convertToJSONString(dictionary: session)!
-        let encryptedSession = AESCipher.encrypt(data: sessionString.data(using: .utf8)!, keyData: aesKey, ivData: aesIv, operation: kCCEncrypt)!.base64EncodedString()
-        return SendEmailData.GuestContent.init(body: body, session: encryptedSession, salt: aesSalt.base64EncodedString(), iv: aesIv.base64EncodedString())
+        let encryptedSession = AESCipher.encrypt(data: sessionString.data(using: .utf8)!, keyData: aesKey, ivData: aesIv, operation: kCCEncrypt)!
+        var encryptedGuest = Data()
+        encryptedGuest.append(aesSalt)
+        encryptedGuest.append(aesIv)
+        encryptedGuest.append(encryptedSession)
+        return SendEmailData.GuestContent.init(body: body, session: encryptedGuest.base64EncodedString())
     }
     
     private func encryptDummyBody(keys: [String: Any], myAccount: Account) -> String {

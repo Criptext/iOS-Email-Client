@@ -107,7 +107,6 @@ class CreatingAccountViewController: UIViewController{
     
     func createActiveDevice(){
         let device = Device()
-        device.uuid = UIDevice.current.identifierForVendor!.uuidString
         device.name = systemIdentifier()
         device.type = Device.Kind.current.rawValue
         device.active = true
@@ -131,6 +130,7 @@ class CreatingAccountViewController: UIViewController{
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
+        delegate.createSystemLabels()
         let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
         present(mailboxVC, animated: true) { [weak self] in
             delegate.replaceRootViewController(mailboxVC)

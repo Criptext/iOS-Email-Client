@@ -102,9 +102,12 @@ class InboxViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
-        
-        self.sendFailEmail()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        sendFailEmail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -112,6 +115,7 @@ class InboxViewController: UIViewController {
         updateBadges()
         
         guard let indexPath = self.tableView.indexPathForSelectedRow, !mailboxData.isCustomEditing else {
+            mailboxData.removeSelectedRow = false
             return
         }
         
@@ -528,9 +532,10 @@ extension InboxViewController: UITableViewDataSource{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
         let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController") as! SettingsLabelsViewController
-        let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController")
+        let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController") as! SettingsDevicesViewController
         generalVC.myAccount = self.myAccount
         labelsVC.myAccount = self.myAccount
+        devicesVC.myAccount = self.myAccount
         let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
         tabsVC.edgesForExtendedLayout = []
         tabsVC.tabBarAlignment = .top
@@ -1011,6 +1016,7 @@ extension InboxViewController: ComposerSendMailDelegate {
         guard let email = DBManager.getEmailFailed() else {
             return
         }
+        DBManager.updateEmail(email, status: .sending)
         sendMail(email: email)
     }
     
@@ -1027,6 +1033,7 @@ extension InboxViewController: ComposerSendMailDelegate {
             self.showSendingSnackBar(message: "Email Sent", permanent: false)
             self.reloadIfSentMailbox(email: email)
             self.notifyEmailDetailController(email: email)
+            self.sendFailEmail()
         }
     }
     

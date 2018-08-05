@@ -259,7 +259,7 @@ extension DBManager {
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
         let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
-        let predicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
+        let predicate = (label == SystemLabel.trash.id || label == SystemLabel.spam.id || label == SystemLabel.draft.id) ? predicate2 : predicate1
         let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
         
         return Array(results)
@@ -965,7 +965,8 @@ extension DBManager {
         
         try! realm.write {
             for key in emailKeys {
-                guard let email = realm.objects(Email.self).filter("key == \(key)").first else {
+                guard let email = realm.objects(Email.self).filter("key == \(key)").first,
+                    email.labels.contains(where: {$0.id == SystemLabel.trash.id || $0.id == SystemLabel.draft.id || $0.id == SystemLabel.spam.id}) else {
                     continue
                 }
                 realm.delete(email)
@@ -978,7 +979,8 @@ extension DBManager {
         
         try! realm.write {
             for threadId in threadIds {
-                let emails = realm.objects(Email.self).filter("threadId == '\(threadId)'")
+                let deletableLabels = [SystemLabel.trash.id, SystemLabel.spam.id, SystemLabel.draft.id]
+                let emails = realm.objects(Email.self).filter("threadId == '\(threadId) AND ANY labels.id IN %@'", deletableLabels)
                 realm.delete(emails)
             }
         }

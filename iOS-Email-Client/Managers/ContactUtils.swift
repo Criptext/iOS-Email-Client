@@ -13,6 +13,13 @@ class ContactUtils {
     static let store = CNContactStore()
         
     private class func parseContact(_ contactString: String) -> Contact {
+        guard !contactString.starts(with: "<") else {
+            let cString = contactString.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "")
+            if let existingContact = DBManager.getContact(cString) {
+                return existingContact
+            }
+            return Contact(value: ["displayName": cString.split(separator: "@")[0], "email": cString])
+        }
         let splittedContact = contactString.split(separator: "<")
         guard splittedContact.count > 1 else {
             if let existingContact = DBManager.getContact(contactString) {

@@ -106,6 +106,8 @@ class SettingsGeneralViewController: UITableViewController{
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
+        APIManager.cancelAllRequests()
+        WebSocketManager.sharedInstance.close()
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "activeAccount")
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
