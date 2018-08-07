@@ -77,7 +77,7 @@ class SignUpData{
         }
         var data = [
             "recipientId": username,
-            "password": password,
+            "password": password.sha256()!,
             "name": fullname,
             "keybundle": publicKeys!
             ] as [String : Any]

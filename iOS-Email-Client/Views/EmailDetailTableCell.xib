@@ -114,12 +114,12 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J60-E3-nju">
-                                        <rect key="frame" x="325" y="34" width="40" height="30"/>
+                                        <rect key="frame" x="325" y="34" width="40" height="40"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dots-options" translatesAutoresizingMaskIntoConstraints="NO" id="FTB-M8-JfY">
-                                                <rect key="frame" x="9" y="17" width="17" height="4"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dots-options" translatesAutoresizingMaskIntoConstraints="NO" id="FTB-M8-JfY">
+                                                <rect key="frame" x="9" y="7" width="17" height="18"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="4" id="FFw-FN-gNK"/>
+                                                    <constraint firstAttribute="height" constant="18" id="FFw-FN-gNK"/>
                                                     <constraint firstAttribute="width" constant="17" id="hvO-Ec-bnN"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
@@ -131,10 +131,10 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="R7V-uF-kkB"/>
+                                            <constraint firstAttribute="height" constant="40" id="R7V-uF-kkB"/>
                                             <constraint firstAttribute="width" constant="40" id="Zqg-Tf-vPJ"/>
                                             <constraint firstAttribute="trailing" secondItem="FTB-M8-JfY" secondAttribute="trailing" constant="14" id="gIx-35-6Ew"/>
-                                            <constraint firstItem="FTB-M8-JfY" firstAttribute="centerY" secondItem="J60-E3-nju" secondAttribute="centerY" constant="4" id="hc0-u2-rLp"/>
+                                            <constraint firstItem="FTB-M8-JfY" firstAttribute="centerY" secondItem="J60-E3-nju" secondAttribute="centerY" constant="-4" id="hc0-u2-rLp"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -269,6 +269,7 @@
                 <outlet property="miniReadIconView" destination="yfG-EO-Lu4" id="Zkd-em-rvE"/>
                 <outlet property="moreInfoContainerView" destination="SNm-dQ-TeE" id="Zo8-W8-a47"/>
                 <outlet property="moreOptionsContainerView" destination="J60-E3-nju" id="Rwt-KE-CaS"/>
+                <outlet property="moreOptionsIcon" destination="FTB-M8-JfY" id="sNy-hV-cqO"/>
                 <outlet property="previewLabel" destination="uDR-zl-Siw" id="UCg-U2-Vcy"/>
                 <outlet property="readIconWidthConstraint" destination="Clv-S1-Nre" id="j5k-6a-Str"/>
                 <outlet property="readStatusContentMarginConstraint" destination="CW4-gg-yXO" id="HHf-n5-zt0"/>

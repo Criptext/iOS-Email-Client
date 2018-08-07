@@ -44,9 +44,11 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var readStatusMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var readStatusContentMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var circleLoaderUIView: CircleLoaderUIView!
+    @IBOutlet weak var moreOptionsIcon: UIImageView!
     
     var email: Email!
     var firstTimer = true
+    var isLoading = false
     var attachments : List<File> {
         return email.files
     }
@@ -94,7 +96,7 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         self.email = email
-        let isExpanded = email.isExpanded
+        let isExpanded = email.isExpanded && email.isLoaded
         
         heightConstraint.constant = email.cellHeight
         attachmentsTableView.reloadData()
@@ -123,12 +125,23 @@ class EmailTableViewCell: UITableViewCell{
             setCollapsedContent(email)
         }
         
-        if(!email.isUnsending){
-            circleLoaderUIView.layer.removeAllAnimations()
-            circleLoaderUIView.isHidden = true
-        } else {
+        if(email.isExpanded && !email.isLoaded){
+            loadWebview(email: email)
+        }
+        
+        if(email.isUnsending){
+            circleLoaderUIView.loaderColor = UIColor.red.cgColor
+            circleLoaderUIView.layoutSubviews()
             circleLoaderUIView.animate()
             circleLoaderUIView.isHidden = false
+        } else if (isLoading) {
+            circleLoaderUIView.loaderColor = UIColor.mainUI.cgColor
+            circleLoaderUIView.layoutSubviews()
+            circleLoaderUIView.animate()
+            circleLoaderUIView.isHidden = false
+        } else {
+            circleLoaderUIView.layer.removeAllAnimations()
+            circleLoaderUIView.isHidden = true
         }
         
         if(email.isUnsent){
@@ -143,6 +156,7 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setExpandedContent(_ email: Email, myEmail: String){
+        moreOptionsIcon.image = email.isDraft ? #imageLiteral(resourceName: "icon-edit") : #imageLiteral(resourceName: "dots-options")
         let allContacts = email.getContacts(type: .to) + email.getContacts(type: .cc) + email.getContacts(type: .bcc)
         contactsLabel.text = allContacts.reduce("", { (result, contact) -> String in
             let displayName = parseContact(contact, myEmail: myEmail, contactsLength: allContacts.count)
@@ -153,11 +167,13 @@ class EmailTableViewCell: UITableViewCell{
         })
         let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
-        if(!email.isLoaded){
-            firstTimer = false
-            let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-            webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
-        }
+    }
+    
+    func loadWebview(email: Email){
+        firstTimer = false
+        isLoading = true
+        let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
+        webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
     }
     
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
@@ -209,7 +225,11 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         if tappedView == self.moreOptionsContainerView {
-            delegate.tableViewCellDidTapIcon(self, self.moreOptionsContainerView, .options)
+            if(email.isDraft){
+                delegate.tableViewCellDidTapIcon(self, self.moreOptionsContainerView, .edit)
+            }else{
+                delegate.tableViewCellDidTapIcon(self, self.moreOptionsContainerView, .options)
+            }
         } else if tappedView == self.moreInfoContainerView || tappedView == self.contactsLabel {
             delegate.tableViewCellDidTapIcon(self, self.moreInfoContainerView, .contacts)
         } else {
@@ -244,6 +264,11 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.delegate?.tableViewCellDidLoadContent(self, email: self.email)
+        isLoading = false
+        if(!email.isUnsending){
+            circleLoaderUIView.layer.removeAllAnimations()
+            circleLoaderUIView.isHidden = true
+        }
         webViewEvaluateHeight(webView)
     }
     

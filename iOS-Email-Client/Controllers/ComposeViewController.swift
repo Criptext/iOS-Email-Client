@@ -17,6 +17,7 @@ import SwiftSoup
 import MIBadgeButton_Swift
 import IQKeyboardManagerSwift
 import SignalProtocolFramework
+import Instructions
 
 protocol ComposerSendMailDelegate {
     func sendMail(email: Email)
@@ -96,6 +97,7 @@ class ComposeViewController: UIViewController {
     
     var composerData = ComposerData()
     let fileManager = CriptextFileManager()
+    let coachMarksController = CoachMarksController()
     
     var delegate : ComposerSendMailDelegate?
     
@@ -207,6 +209,10 @@ class ComposeViewController: UIViewController {
         } else {
             fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         }
+        
+        self.coachMarksController.overlay.allowTap = true
+        self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
+        self.coachMarksController.dataSource = self
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -252,6 +258,11 @@ class ComposeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         IQKeyboardManager.shared.enable = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        coachMarksController.stop(immediately: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -374,7 +385,7 @@ class ComposeViewController: UIViewController {
         self.navigationController?.navigationBar.layer.zPosition = flag ? -1 : 0
         
         self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? -attachmentOptionsHeight : 50)
-        
+        coachMarksController.stop(immediately: true)
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
             self.blackBackground.alpha = flag ? 0.5 : 0
@@ -1136,5 +1147,35 @@ extension ComposeViewController: RichEditorDelegate {
     
     func richEditorTookFocus(_ editor: RichEditorView) {
         self.collapseCC(true)
+        let defaults = UserDefaults.standard
+        if !defaults.bool(forKey: "guideAttachments") {
+            self.coachMarksController.start(on: self)
+            defaults.set(true, forKey: "guideAttachments")
+        }
+    }
+}
+
+extension ComposeViewController: CoachMarksControllerDataSource, CoachMarksControllerDelegate {
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
+        let hintView = HintUIView()
+        hintView.messageLabel.text = "Add Secure\nattachments"
+        hintView.rightConstraint.constant = 80
+        hintView.topCenterConstraint.constant = 27
+        
+        return (bodyView: hintView, arrowView: nil)
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+        var coachMark = coachMarksController.helper.makeCoachMark(for: attachmentButtonContainerView){
+            (frame: CGRect) -> UIBezierPath in
+            return UIBezierPath(ovalIn: frame.insetBy(dx: -4, dy: -4))
+        }
+        coachMark.allowTouchInsideCutoutPath = true
+        return coachMark
+    }
+    
+    func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
+        return 1
     }
 }

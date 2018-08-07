@@ -15,3 +15,4 @@ github "Criptext/MIBadgeButton-Swift" ~> 0.8
 github "cjwirth/RichEditorView"
 github "hackiftekhar/IQKeyboardManager"
 github "Criptext/UIImageView-Letters" ~> 1.1.5
+github "ephread/Instructions" ~> 1.2.0

@@ -105,8 +105,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
             return nil
         }
         let delete = deleteAction(tableView, indexPath: indexPath)
-        let mute = muteAction(tableView, indexPath: indexPath)
-        return UISwipeActionsConfiguration(actions: [delete, mute])
+        return UISwipeActionsConfiguration(actions: [delete])
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

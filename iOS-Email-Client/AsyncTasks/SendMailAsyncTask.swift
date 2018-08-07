@@ -38,7 +38,7 @@ class SendMailAsyncTask {
         self.criptextEmails = recipients.1
         self.files = files
         self.emailRef = DBManager.getReference(email)
-        self.fileKey = fileKey
+        self.fileKey = files.count > 0 ? fileKey : nil
     }
     
     private class func getFilesRequestData(email: Email) -> [[String: Any]]{
@@ -187,6 +187,12 @@ class SendMailAsyncTask {
         encryptedGuest.append(aesSalt)
         encryptedGuest.append(aesIv)
         encryptedGuest.append(encryptedSession)
+        print("bundle: \(session)")
+        print("salt: \(aesSalt.base64EncodedString())")
+        print("iv: \(aesIv.base64EncodedString())")
+        print("store: \(encryptedSession.base64EncodedString())")
+        print("session: \(encryptedGuest.base64EncodedString())")
+        print("body: \(body)")
         return SendEmailData.GuestContent.init(body: body, session: encryptedGuest.base64EncodedString())
     }
     
@@ -279,7 +285,7 @@ class SendMailAsyncTask {
     private class func buildAttachmentHtml(name: String, mimeType: String, size: String, encodedParams: String) -> String{
         return """
         <div style="margin-top: 6px; float: left;">
-            <a style="cursor: pointer; text-decoration: none;" href="http://services.criptext.com/downloader/\(encodedParams)?e=1">
+            <a style="cursor: pointer; text-decoration: none;" href="https://services.criptext.com/downloader/\(encodedParams)?e=1">
                 <div style="align-items: center; border: 1px solid #e7e5e5; border-radius: 6px; display: flex; height: 20px; margin-right: 20px; padding: 10px; position: relative; width: 236px;">
                     <div style="position: relative;">
                         <div style="align-items: center; border-radius: 4px; display: flex; height: 22px; width: 22px;">

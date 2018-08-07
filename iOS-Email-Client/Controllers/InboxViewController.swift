@@ -15,9 +15,8 @@ import MIBadgeButton_Swift
 import SwiftyJSON
 import SignalProtocolFramework
 import AudioToolbox
-
-//delete
 import RealmSwift
+import Instructions
 
 class InboxViewController: UIViewController {
     let BOTTOM_PADDING : CGFloat = 18.0
@@ -57,6 +56,8 @@ class InboxViewController: UIViewController {
     var myAccount: Account!
     var originalNavigationRect:CGRect!
     var mailboxData = MailboxData()
+    let coachMarksController = CoachMarksController()
+    var currentGuide = "guideComposer"
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -103,11 +104,31 @@ class InboxViewController: UIViewController {
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+        
+        self.coachMarksController.overlay.allowTap = true
+        self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
+        self.coachMarksController.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         sendFailEmail()
+        showGuide()
+    }
+    
+    func showGuide(){
+        let defaults = UserDefaults.standard
+        if !defaults.bool(forKey: "guideComposer") {
+            currentGuide = "guideComposer"
+            self.coachMarksController.start(on: self)
+            defaults.set(true, forKey: "guideComposer")
+        } else if !defaults.bool(forKey: "guideFeed"),
+            let feedVC = navigationDrawerController?.rightViewController as? FeedViewController,
+            feedVC.feedsData.newFeeds.count > 0 {
+            currentGuide = "guideFeed"
+            self.coachMarksController.start(on: self)
+            defaults.set(true, forKey: "guideFeed")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -139,6 +160,12 @@ class InboxViewController: UIViewController {
         self.tableView.reloadRows(at: [indexPath], with: .none)
         updateBadges()
         showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.coachMarksController.stop(immediately: true)
     }
     
     func initBarButtonItems(){
@@ -352,6 +379,7 @@ extension InboxViewController{
 extension InboxViewController {
     @objc func didPressActivityMenu(){
         self.navigationDrawerController?.openRightView()
+        self.coachMarksController.stop(immediately: true)
     }
     
     @IBAction func didPressOpenMenu(_ sender: UIBarButtonItem) {
@@ -1111,4 +1139,44 @@ extension InboxViewController: SnackbarControllerDelegate {
             self.view.layoutIfNeeded()
         }
     }
+}
+
+extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControllerDelegate {
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
+        let hintView = HintUIView()
+        hintView.messageLabel.text = "Tap to compose\na secure email"
+        
+        if(currentGuide == "guideFeed"){
+            hintView.topCenterConstraint.constant = -10
+            hintView.rightConstraint.constant = 35
+            hintView.messageLabel.text = "See who's reading\nyour emails"
+        }
+        
+        return (bodyView: hintView, arrowView: nil)
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+        var coachMark = coachMarksController.helper.makeCoachMark(for: getTarget()){
+            (frame: CGRect) -> UIBezierPath in
+            return UIBezierPath(ovalIn: frame.insetBy(dx: -4, dy: -4))
+        }
+        coachMark.allowTouchInsideCutoutPath = true
+        return coachMark
+    }
+    
+    func getTarget() -> UIView {
+        switch(currentGuide){
+        case "guideFeed":
+            return self.activityBarButton.customView as! MIBadgeButton
+        default:
+            return buttonCompose
+        }
+    }
+    
+    func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
+        return 1
+    }
+    
+    
 }

@@ -9,6 +9,7 @@
 import Foundation
 
 class CircleLoaderUIView: UIView {
+    var loaderColor = UIColor.mainUI.cgColor
     override var layer: CAShapeLayer {
         get {
             return super.layer as! CAShapeLayer
@@ -22,7 +23,7 @@ class CircleLoaderUIView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.fillColor = nil
-        layer.strokeColor = UIColor.red.cgColor
+        layer.strokeColor = loaderColor
         layer.lineWidth = 3
         setPath()
     }

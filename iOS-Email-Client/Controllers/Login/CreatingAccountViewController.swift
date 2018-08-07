@@ -87,7 +87,6 @@ class CreatingAccountViewController: UIViewController{
         let myAccount = Account()
         myAccount.username = signupData.username
         myAccount.name = signupData.fullname
-        myAccount.password = signupData.password
         myAccount.jwt = signupData.token!
         myAccount.regId = signupData.getRegId()
         myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""

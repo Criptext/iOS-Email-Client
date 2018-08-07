@@ -9,6 +9,7 @@ import Material
 import Foundation
 import Photos
 import SafariServices
+import Instructions
 
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
@@ -28,6 +29,8 @@ class EmailDetailViewController: UIViewController {
     var myHeaderView : UIView?
     let fileManager = CriptextFileManager()
     let emailCells = [Int: EmailTableViewCell]()
+    let coachMarksController = CoachMarksController()
+    var target: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,18 +46,30 @@ class EmailDetailViewController: UIViewController {
         
         displayMarkIcon(asRead: false)
         generalOptionsContainerView.handleCurrentLabel(currentLabel: emailData.selectedLabel)
+        
+        self.coachMarksController.overlay.allowTap = true
+        self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
+        self.coachMarksController.dataSource = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         self.topToolbar.isHidden = true
+        self.coachMarksController.stop(immediately: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.topToolbar.swapTrashIcon(labelId: emailData.selectedLabel)
         self.topToolbar.isHidden = false
+        let defaults = UserDefaults.standard
+        if !defaults.bool(forKey: "guideUnsend"),
+            let email = emailData.emails.first,
+            email.isSent && email.isExpanded && emailData.emails.count == 1 {
+            self.coachMarksController.start(on: self)
+            defaults.set(true, forKey: "guideUnsend")
+        }
     }
     
     func setupToolbar(){
@@ -100,9 +115,7 @@ class EmailDetailViewController: UIViewController {
     func incomingEmail(email: Email){
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             guard !email.isInvalidated,
-                email.threadId == self.emailData.threadId,
-                let index = self.emailData.emails.index(where: {$0.id == email.id}),
-                let cell = self.emailsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? EmailTableViewCell else {
+                email.threadId == self.emailData.threadId else {
                     return
             }
             self.emailsTableView.reloadData()
@@ -122,6 +135,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.id)") as! EmailTableViewCell
         cell.setContent(email, myEmail: emailData.accountEmail)
         cell.delegate = self
+        target = cell.moreOptionsContainerView
         return cell
     }
     
@@ -177,6 +191,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
         email.isLoaded = true
+        self.emailsTableView.reloadData()
     }
     
     func tableViewCellDidTap(_ cell: EmailTableViewCell) {
@@ -266,6 +281,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     @objc func toggleMoreOptionsView(){
+        self.coachMarksController.stop(immediately: true)
         guard moreOptionsContainerView.isHidden else {
             moreOptionsContainerView.closeMoreOptions()
             deselectSelectedRow()
@@ -820,5 +836,30 @@ extension EmailDetailViewController {
         let addedLabels = threadIsStarred ? [] : [SystemLabel.starred.id]
         let removedLabels = threadIsStarred ? [SystemLabel.starred.id] : []
         setLabels(added: addedLabels, removed: removedLabels)
+    }
+}
+
+extension EmailDetailViewController: CoachMarksControllerDataSource, CoachMarksControllerDelegate {
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
+        let hintView = HintUIView()
+        hintView.messageLabel.text = "Open this menu to find\nthe UNSEND button"
+        hintView.rightConstraint.constant = 50
+        hintView.topCenterConstraint.constant = -25
+        
+        return (bodyView: hintView, arrowView: nil)
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+        var coachMark = coachMarksController.helper.makeCoachMark(for: target){
+            (frame: CGRect) -> UIBezierPath in
+            return UIBezierPath(ovalIn: frame.insetBy(dx: -4, dy: -4))
+        }
+        coachMark.allowTouchInsideCutoutPath = true
+        return coachMark
+    }
+    
+    func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
+        return 1
     }
 }
