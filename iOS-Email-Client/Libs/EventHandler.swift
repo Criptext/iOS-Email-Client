@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftSoup
 
 protocol EventHandlerDelegate {
     func didReceiveEvents(result: EventData.Result)
@@ -158,7 +159,7 @@ class EventHandler {
                 return
             }
             email.content = content
-            email.preview = String(content.removeHtmlTags().replaceNewLineCharater(separator: " ").prefix(100))
+            email.preview = self.getContentPreview(content: content)
             if(unsent){
                 email.unsentDate = email.date
                 email.status = .unsent
@@ -188,6 +189,15 @@ class EventHandler {
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
             }
             finishCallback(true, email)
+        }
+    }
+    
+    func getContentPreview(content: String) -> String{
+        do {
+            let doc: Document = try SwiftSoup.parse(content)
+            return try String(doc.text().prefix(100))
+        } catch {
+            return String(content.removeHtmlTags().replaceNewLineCharater(separator: " ").prefix(100))
         }
     }
     

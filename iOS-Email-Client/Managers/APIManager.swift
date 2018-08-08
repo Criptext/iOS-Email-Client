@@ -17,7 +17,7 @@ protocol ProgressDelegate {
 }
 
 class APIManager {
-    static let baseUrl = "https://stage.mail.criptext.com"
+    static let baseUrl = "https://api.criptext.com"
     static let fileServiceUrl = "https://services.criptext.com"
     
     static let CODE_SUCESS = 0
@@ -196,7 +196,7 @@ class APIManager {
     
     class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
-        let headers = ["Authorization": "Basic \(token)"]
+        let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             guard let value = response.result.value else {
                 completion(response.error, nil)
@@ -208,7 +208,7 @@ class APIManager {
     
     class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/chunk"
-        let headers = ["Authorization": "Basic \(token)"]
+        let headers = ["Authorization": "Bearer \(token)"]
         let filetoken = params["filetoken"] as! String
         let part = params["part"] as! Int
         let filename = params["filename"] as! String
@@ -246,7 +246,7 @@ class APIManager {
     
     class func getFileMetadata(filetoken: String, token: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/\(filetoken)"
-        let headers = ["Authorization": "Basic \(token)"]
+        let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON{
             (response) in
             guard response.response?.statusCode == 200,
@@ -261,7 +261,7 @@ class APIManager {
     
     class func downloadChunk(filetoken: String, part: Int, token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, String?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/\(filetoken)/chunk/\(part)"
-        let headers = ["Authorization": "Basic \(token)"]
+        let headers = ["Authorization": "Bearer \(token)"]
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileURL = documentsURL.appendingPathComponent("\(filetoken).part\(part)")
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
@@ -285,7 +285,7 @@ class APIManager {
     
     class func commitFile(filetoken: String, token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/save"
-        let headers = ["Authorization": "Basic \(token)"]
+        let headers = ["Authorization": "Bearer \(token)"]
         let params = ["files" : [
             ["token": filetoken]
             ]]

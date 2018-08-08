@@ -14,7 +14,7 @@ final class WebSocketManager: NSObject {
     var eventDelegate : EventHandlerDelegate?
     var socket : WebSocket!
     var myAccount : Account?
-    let SOCKET_URL = "ws://stage.socket.criptext.com"
+    let SOCKET_URL = "wss://socket.criptext.com"
     
     private override init(){
         super.init()

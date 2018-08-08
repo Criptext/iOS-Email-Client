@@ -11,6 +11,10 @@ import XCTest
 
 class FileManagerTests: XCTestCase {
     
+    var token: String {
+        return ("k17mevsfe3u0feskuhb6:xaov68v03il7r1pac61x").data(using: .utf8)!.base64EncodedString()
+    }
+    
     override func setUp() {
         DBManager.signout()
     }
@@ -19,6 +23,7 @@ class FileManagerTests: XCTestCase {
         let delegate = FileManagerSpyDelegate()
         delegate.expectation = expectation(description: "Upload Called Back")
         let fileManager = CriptextFileManager()
+        fileManager.token = token
         fileManager.delegate = delegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         fileManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
@@ -41,7 +46,8 @@ class FileManagerTests: XCTestCase {
         let uploadDelegate = FileManagerSpyDelegate()
         uploadDelegate.expectation = expectation(description: "Delegate Called Back")
         let uploadManager = CriptextFileManager()
-        uploadManager.delegate = uploadDelegate
+        uploaderManager.token = token
+        uploaderManager.delegate = uploadDelegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         uploadManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
@@ -62,6 +68,7 @@ class FileManagerTests: XCTestCase {
             downloadDelegate.expectation = self.expectation(description: "Download Delegate Called Back")
             let downloadManager = CriptextFileManager()
             downloadManager.delegate = downloadDelegate
+            downloadManager.token = token
             APIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in
                 guard error == nil else {
                     XCTFail("Unable to commit file")
@@ -96,6 +103,7 @@ class FileManagerTests: XCTestCase {
         let delegate = FileManagerSpyDelegate()
         delegate.expectation = expectation(description: "Upload Called Back")
         let fileManager = CriptextFileManager()
+        fileManager.token = token
         fileManager.setEncryption(id: 0, key: keyData, iv: ivData)
         fileManager.delegate = delegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
@@ -124,6 +132,7 @@ class FileManagerTests: XCTestCase {
         let uploadManager = CriptextFileManager()
         uploadManager.setEncryption(id: 0, key: keyData, iv: ivData)
         uploadManager.delegate = uploadDelegate
+        uploadManager.token = token
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         uploadManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
@@ -144,6 +153,7 @@ class FileManagerTests: XCTestCase {
             let downloadDelegate = FileManagerSpyDelegate()
             downloadDelegate.expectation = self.expectation(description: "Download Delegate Called Back")
             let downloadManager = CriptextFileManager()
+            downloadManager.token = token
             downloadManager.setEncryption(id: 1, key: keyData, iv: ivData)
             downloadManager.delegate = downloadDelegate
             APIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in

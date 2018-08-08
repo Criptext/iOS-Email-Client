@@ -42,7 +42,7 @@ class SettingsGeneralViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         guard text != "Version" else {
-            cell.optionLabel.text = "Criptext Beta V.0.1"
+            cell.optionLabel.text = "Criptext Beta V.1.0.1"
             cell.goImageView.isHidden = true
             return cell
         }

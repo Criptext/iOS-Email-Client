@@ -17,11 +17,7 @@ class CriptextFileManager {
     let COMPLETE = 100
     let PENDING = -1
     
-    var appId = "qynhtyzjrshazxqarkpy"
-    var appSecret = "lofjksedbxuucdjjpnby"
-    var token : String {
-        return "\(appId):\(appSecret)".data(using: .utf8)!.base64EncodedString()
-    }
+    var token : String!
     var chunkSize = 512000
     var registeredFiles = [File]()
     var delegate : CriptextFileDelegate?

@@ -203,8 +203,8 @@ class SignUpViewController: UIViewController{
     }
     
     func jumpToCreatingAccount(){
-        let username = usernameTextField.text!
-        let fullname = fullnameTextField.text!.lowercased()
+        let username = usernameTextField.text!.lowercased()
+        let fullname = fullnameTextField.text!
         let password = passwordTextField.text!
         let email = emailTextField.text
         let signupData = SignUpData(username: username, password: password, fullname: fullname, optionalEmail: email)

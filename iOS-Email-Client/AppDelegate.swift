@@ -190,9 +190,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        let threadId = userInfo["threadId"] as! String
         
-        guard let inboxVC = getInboxVC() else {
+        guard let threadId = userInfo["threadId"] as? String,
+            let inboxVC = getInboxVC() else {
                 return
         }
         inboxVC.goToEmailDetail(threadId: threadId)
