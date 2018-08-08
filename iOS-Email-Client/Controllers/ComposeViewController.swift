@@ -236,10 +236,10 @@ class ComposeViewController: UIViewController {
     
     func setupInitContacts(){
         for contact in composerData.initToContacts {
-            addToken(contact.displayName, value: contact.email, to: toField)
+            addToken(contact.displayName, value: contact.email.lowercased(), to: toField)
         }
         for contact in composerData.initCcContacts {
-            addToken(contact.displayName, value: contact.email, to: ccField)
+            addToken(contact.displayName, value: contact.email.lowercased(), to: ccField)
         }
     }
     
@@ -845,7 +845,7 @@ extension ComposeViewController: UITableViewDelegate {
                 focusInput = self.bccField
             }
             
-            self.addToken(contact.displayName, value: contact.email, to: focusInput)
+            self.addToken(contact.displayName, value: contact.email.lowercased(), to: focusInput)
             return
         }
     }
@@ -868,7 +868,7 @@ extension ComposeViewController: AttachmentTableViewCellDelegate{
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
-        fileManager.registerFile(file: fileManager.registeredFiles[indexPath.row])
+        fileManager.registerFile(file: fileManager.registeredFiles[indexPath.row], uploading: true)
     }
 }
 
@@ -1057,7 +1057,7 @@ extension ComposeViewController: CNContactPickerDelegate {
             return
         }
         
-        self.addToken(email, value: email, to: tokenInputView)
+        self.addToken(email, value: email.lowercased(), to: tokenInputView)
     }
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){

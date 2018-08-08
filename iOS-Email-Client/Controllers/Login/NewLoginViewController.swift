@@ -96,7 +96,7 @@ class NewLoginViewController: UIViewController{
     }
     
     @IBAction func onLoginPress(_ sender: Any) {
-        guard let username = usernameTextField.text else {
+        guard let username = usernameTextField.text?.lowercased() else {
             return
         }
         toggleLoadingView(true)
@@ -123,7 +123,7 @@ class NewLoginViewController: UIViewController{
     }
     
     func jumpToLoginDeviceView(){
-        let email = usernameTextField.text! + Constants.domain
+        let email = usernameTextField.text!.lowercased() + Constants.domain
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
         controller.loginData = LoginData(email)
