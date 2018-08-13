@@ -36,8 +36,8 @@ class File : Object {
     }
     
     func prettyPrintSize() -> String {
-        let mySize = Float(size)
-        return File.prettyPrintSize(size: mySize)
+        let formatter = ByteCountFormatter()
+        return formatter.string(fromByteCount: Int64(self.size))
     }
     
     class func prettyPrintSize(size: Float) -> String {

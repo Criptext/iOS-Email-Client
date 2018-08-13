@@ -18,12 +18,12 @@ class SettingsDevicesViewController: UITableViewController {
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
         APIManager.getDevices(token: myAccount.jwt) { (error, devices) in
-            guard error == nil else {
+            guard let myDevices = devices else {
                 return
             }
-            for device in devices! {
+            for device in myDevices {
                 let newDevice = Device.fromDictionary(data: device)
-                guard newDevice.id != 1 else {
+                guard !self.devices.contains(where: {$0.id == newDevice.id && $0.active}) else {
                     continue
                 }
                 DBManager.store(newDevice)

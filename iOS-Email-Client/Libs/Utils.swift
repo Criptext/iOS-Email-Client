@@ -84,17 +84,15 @@ class Utils{
         switch type {
         case "application/pdf":
             return #imageLiteral(resourceName: "attachment_pdf")
-        case _ where type.contains("application/msword") ||
-            type.contains("application/vnd.openxmlformats-officedocument.wordprocessingml") ||
-            type.contains("application/vnd.ms-word"):
+        case _ where type.contains("word"):
             return #imageLiteral(resourceName: "attachment_word")
         case "image/png", "image/jpeg":
             return #imageLiteral(resourceName: "attachment_image")
-        case _ where type.contains("application/vnd.ms-powerpoint") ||
-            type.contains("application/vnd.openxmlformats-officedocument.presentationml"):
+        case _ where type.contains("powerpoint") ||
+            type.contains("presentation"):
             return #imageLiteral(resourceName: "attachment_ppt")
-        case _ where type.contains("application/vnd.ms-excel") ||
-            type.contains("application/vnd.openxmlformats-officedocument.spreadsheetml"):
+        case _ where type.contains("excel") ||
+            type.contains("spreadsheet"):
             return #imageLiteral(resourceName: "attachment_excel")
         case _ where type.contains("audio"):
             return #imageLiteral(resourceName: "attachment_audio")
@@ -111,17 +109,15 @@ class Utils{
         switch type {
         case "application/pdf":
             return "filepdf"
-        case _ where type.contains("application/msword") ||
-            type.contains("application/vnd.openxmlformats-officedocument.wordprocessingml") ||
-            type.contains("application/vnd.ms-word"):
+        case _ where type.contains("word"):
             return "fileword"
         case "image/png", "image/jpeg":
             return "fileimage"
-        case _ where type.contains("application/vnd.ms-powerpoint") ||
-            type.contains("application/vnd.openxmlformats-officedocument.presentationml"):
+        case _ where type.contains("powerpoint") ||
+            type.contains("presentation"):
             return "fileppt"
-        case _ where type.contains("application/vnd.ms-excel") ||
-            type.contains("application/vnd.openxmlformats-officedocument.spreadsheetml"):
+        case _ where type.contains("excel") ||
+            type.contains("spreadsheet"):
             return "fileexcel"
         case _ where type.contains("audio"):
             return "fileaudio"

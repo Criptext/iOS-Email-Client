@@ -86,9 +86,9 @@ class SendMailAsyncTask {
         var guestEmails = [String : Any]()
         let body = email.content + SendMailAsyncTask.buildAttachmentsHtml(attachments: files, keys: fileKey)
         if(!toArray.isEmpty || !ccArray.isEmpty || !bccArray.isEmpty){
-            guestEmails["to"] = !toArray.isEmpty ? toArray : []
-            guestEmails["cc"] = !ccArray.isEmpty ? ccArray : []
-            guestEmails["bcc"] = !bccArray.isEmpty ? bccArray : []
+            guestEmails["to"] = toArray
+            guestEmails["cc"] = ccArray
+            guestEmails["bcc"] = bccArray
             guestEmails["body"] = body
         }
         return (guestEmails, criptextEmails)
@@ -262,12 +262,13 @@ class SendMailAsyncTask {
         }
     }
     
-    private class func buildAttachmentsHtml(attachments: [[String: Any]], keys: String?) -> String{
-        guard attachments.count > 0 && keys != nil else {
+    private class func buildAttachmentsHtml(attachments: [[String: Any]], keys: String?) -> String {
+        guard !attachments.isEmpty,
+            let fileKeys = keys else {
             return ""
         }
         return "<br/><div>" + attachments.reduce("") { (result, attachment) -> String in
-            let params = "\(attachment["token"] as! String):\(keys!)"
+            let params = "\(attachment["token"] as! String):\(fileKeys)"
             let encodedParams = params.data(using: .utf8)!.base64EncodedString()
             let size = attachment["size"] as! Int
             let sizeString = File.prettyPrintSize(size: Float(size))
