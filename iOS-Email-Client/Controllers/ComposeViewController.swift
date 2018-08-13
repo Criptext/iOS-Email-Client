@@ -68,8 +68,8 @@ class ComposeViewController: UIViewController {
     
     var activeAccount:Account!
     
-    var expandedBbcSpacing:CGFloat = 45
-    var expandedCcSpacing:CGFloat = 45
+    var expandedBbcSpacing: CGFloat = 45
+    var expandedCcSpacing: CGFloat = 45
     var attachmentOptionsHeight: CGFloat = 110
     
     var toolbarBottomConstraintInitialValue: CGFloat?
@@ -582,6 +582,10 @@ class ComposeViewController: UIViewController {
     
     @IBAction func didPressCC(_ sender: UIButton) {
         let needsCollapsing = self.bccHeightConstraint.constant != 0
+        if (needsCollapsing) {
+            expandedCcSpacing = self.ccHeightConstraint.constant
+            expandedBbcSpacing = self.bccHeightConstraint.constant
+        }
         self.collapseCC(needsCollapsing)
     }
     

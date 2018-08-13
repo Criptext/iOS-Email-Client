@@ -221,9 +221,14 @@ class SendMailAsyncTask {
                 }
                 return
             }
-            self.updateEmailData(data)
+            let key = self.updateEmailData(data)
             self.handleResponseInMainThread {
-                completion(nil, data)
+                DBManager.refresh()
+                guard let myKey = key else {
+                    completion(nil, nil)
+                    return
+                }
+                completion(nil, key)
             }
         }
     }
@@ -235,9 +240,9 @@ class SendMailAsyncTask {
         DBManager.updateEmail(email, status: .fail)
     }
     
-    func updateEmailData(_ data : Any?){
+    func updateEmailData(_ data : Any?) -> Int? {
         guard let email = DBManager.getObject(emailRef) as? Email else {
-            return
+            return nil
         }
         let keysArray = data as! [String: Any]
         let key = keysArray["metadataKey"] as! Int
@@ -245,6 +250,7 @@ class SendMailAsyncTask {
         let threadId = keysArray["threadId"] as! String
         DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
         updateFiles(emailId: key)
+        return key
     }
     
     func updateFiles(emailId: Int){

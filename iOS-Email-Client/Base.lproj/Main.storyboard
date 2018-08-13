@@ -44,7 +44,7 @@
                                             <constraint firstAttribute="height" constant="1" id="BIA-wq-UjD"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uhe-Qf-ZiZ" userLabel="To Container">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uhe-Qf-ZiZ" userLabel="To Container">
                                         <rect key="frame" x="0.0" y="1" width="375" height="45"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVv-ct-ktg" userLabel="To Field" customClass="CLTokenInputView">
@@ -76,7 +76,7 @@
                                             <constraint firstAttribute="bottom" secondItem="cYK-my-H1N" secondAttribute="bottom" id="fXh-N6-RPi"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4oD-QO-TpV" userLabel="Cc Container">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4oD-QO-TpV" userLabel="Cc Container">
                                         <rect key="frame" x="0.0" y="46" width="375" height="0.0"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYI-7o-3ig" userLabel="Cc Field" customClass="CLTokenInputView">
@@ -98,7 +98,7 @@
                                             <constraint firstItem="yYI-7o-3ig" firstAttribute="leading" secondItem="4oD-QO-TpV" secondAttribute="leading" constant="5" id="i26-Dw-qlh"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ryC-74-B1a" userLabel="Bcc Container">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ryC-74-B1a" userLabel="Bcc Container">
                                         <rect key="frame" x="0.0" y="46" width="375" height="0.0"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hzf-3X-35E" userLabel="Bcc Field" customClass="CLTokenInputView">
@@ -1288,7 +1288,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="11" width="117" height="23.5"/>
+                                            <rect key="frame" x="27" y="10" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>

@@ -294,7 +294,7 @@ class APIManager {
         }
     }
     
-    class func registerToken(fcmToken: String, token: String, completion: (((Error?) -> Void))? = nil){
+    class func registerToken(fcmToken: String, token: String, completion: ((Error?) -> Void)? = nil){
         let url = "\(self.baseUrl)/keybundle/pushtoken"
         let params = [
             "devicePushToken": fcmToken
@@ -310,20 +310,19 @@ class APIManager {
         }
     }
     
-    class func updateName(name: String, token: String, completion: @escaping ((Error?, String?) -> Void)){
+    class func updateName(name: String, token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.baseUrl)/user/name"
         let params = [
             "name": name
         ]
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            guard response.response?.statusCode == 200,
-                let value = response.result.value else {
+            guard response.response?.statusCode == 200 else {
                 let criptextError = CriptextError(code: .noValidResponse)
-                completion(criptextError, nil)
+                completion(criptextError)
                 return
             }
-            completion(nil, value)
+            completion(nil)
         }
     }
     

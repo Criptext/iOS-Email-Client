@@ -42,7 +42,7 @@ class SettingsGeneralViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         guard text != "Version" else {
-            cell.optionLabel.text = "Criptext Beta V.1.0.1"
+            cell.optionLabel.text = "Criptext Beta V.1.0.2"
             cell.goImageView.isHidden = true
             return cell
         }
@@ -72,7 +72,7 @@ class SettingsGeneralViewController: UITableViewController{
         case "Terms of Service":
             goToUrl(url: "https://criptext.com/terms")
         case "Open Source Libraries":
-            goToUrl(url: "https://criptext.com/open-source-libraries-ios")
+            goToUrl(url: "https://criptext.com/open-source-ios")
         case "Logout":
             logout()
         default:
@@ -143,13 +143,12 @@ class SettingsGeneralViewController: UITableViewController{
     
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
-        APIManager.updateName(name: name, token: myAccount.jwt) { (error, newToken) in
+        APIManager.updateName(name: name, token: myAccount.jwt) { (error) in
             guard error == nil else {
                 self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                 return
             }
-            DBManager.update(account: self.myAccount, jwt: newToken!)
-            APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (error) in
+              APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (error) in
                 guard error == nil else {
                     self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                     return

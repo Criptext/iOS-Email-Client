@@ -25,6 +25,12 @@ class DBManager {
         return realm.resolve(ref)
     }
     
+    class func refresh(){
+        let realm = try! Realm()
+        
+        realm.refresh()
+    }
+    
     class func signout(){
         let realm = try! Realm()
         
@@ -126,11 +132,9 @@ extension DBManager {
         let realm = try! Realm()
         
         try! realm.write() {
-            if realm.object(ofType: Email.self, forPrimaryKey: email.id) != nil
-                || realm.objects(Email.self).filter("key == \(email.key)").first != nil {
+            if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
                 return
             }
-            email.id = email.incrementID()
             realm.add(email, update: true)
         }
     }
@@ -177,6 +181,7 @@ extension DBManager {
         for email in emails {
             let thread = Thread()
             thread.date = email.date
+            thread.threadId = email.threadId
             thread.lastEmail = email
             guard threads.count < limit else {
                 break
@@ -199,6 +204,7 @@ extension DBManager {
             }
             let threadEmails = realm.objects(Email.self).filter(emailFilter(email)).sorted(byKeyPath: "date", ascending: true)
             thread.lastEmail = threadEmails.last ?? email
+            thread.threadId = thread.lastEmail.threadId
             for threadEmail in threadEmails {
                 if(label == SystemLabel.sent.id){
                     if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
@@ -248,6 +254,7 @@ extension DBManager {
             }
         }
         thread.lastEmail = threadEmails.last ?? email
+        thread.threadId = thread.lastEmail.threadId
         thread.unread = threadEmails.contains(where: {$0.unread})
         thread.subject = threadEmails.first!.subject
         thread.counter = threadEmails.count
@@ -314,18 +321,38 @@ extension DBManager {
         }
     }
     
-    class func updateEmail(_ email: Email, key: Int, messageId: String, threadId: String){
+    class func updateEmail(_ email: Email, key: Int, messageId: String, threadId: String) {
         let realm = try! Realm()
-        
         try! realm.write() {
             if let fileKey = getFileKey(emailId: email.key) {
                 fileKey.emailId = key
             }
-            email.key = key
-            email.messageId = messageId
-            email.threadId = threadId
-            email.status = .sent
-            email.password = nil
+            
+            let newEmail = Email()
+            newEmail.key = key
+            newEmail.messageId = messageId
+            newEmail.threadId = threadId
+            newEmail.status = .sent
+            newEmail.unread = false
+            newEmail.secure = email.secure
+            newEmail.subject = email.subject
+            newEmail.content = email.content
+            newEmail.preview = email.preview
+            newEmail.date = email.date
+            newEmail.unsentDate = email.unsentDate
+            newEmail.isMuted = email.isMuted
+            newEmail.password = nil
+            newEmail.labels.append(objectsIn: email.labels)
+            newEmail.files.append(objectsIn: email.files)
+            
+            realm.add(newEmail)
+            
+            let emailContacts = getEmailContacts(emailKey: email.key)
+            for emailContact in emailContacts {
+                emailContact.email = newEmail
+            }
+            
+            realm.delete(email)
         }
     }
     
@@ -865,6 +892,12 @@ extension DBManager {
         let realm = try! Realm()
         
         return Array(realm.objects(EmailContact.self))
+    }
+    
+    class func getEmailContacts(emailKey: Int) -> [EmailContact] {
+        let realm = try! Realm()
+        
+        return Array(realm.objects(EmailContact.self).filter("email.key == \(emailKey)"))
     }
 }
 

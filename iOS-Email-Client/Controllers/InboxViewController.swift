@@ -488,6 +488,7 @@ extension InboxViewController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let thread = mailboxData.threads[indexPath.row]
+        
         cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
         
         if mailboxData.isCustomEditing {
@@ -864,12 +865,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     }
     
     func registerToken(fcmToken: String){
-        APIManager.registerToken(fcmToken: fcmToken, token: myAccount.jwt) { (error) in
-            guard error != nil else{
-                return
-            }
-            self.showAlert("No Push Notifications", message: "Unable to authenticate. You won't receive push notifications until next start up", style: .alert)
-        }
+        APIManager.registerToken(fcmToken: fcmToken, token: myAccount.jwt)
     }
 }
 
@@ -1053,23 +1049,28 @@ extension InboxViewController: ComposerSendMailDelegate {
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
         sendMailAsyncTask.start { (error, data) in
-            if let error = error {
+            guard error == nil,
+                let key = data as? Int,
+                let newEmail = DBManager.getMail(key: key) else {
                 self.showAlert("Network Error", message: "Unable to send email. Don't worry, it will be automatically resend.", style: .alert)
                 self.hideSnackbar()
                 return
             }
+            if let index = self.mailboxData.threads.index(where: {!$0.lastEmail.isInvalidated && $0.threadId == newEmail.threadId}) {
+                self.mailboxData.threads[index].lastEmail = newEmail
+            }
+            self.refreshThreadRows()
+            self.notifyEmailDetailController(newEmail: newEmail)
             self.showSendingSnackBar(message: "Email Sent", permanent: false)
-            self.reloadIfSentMailbox(email: email)
-            self.notifyEmailDetailController(email: email)
             self.sendFailEmail()
         }
     }
     
-    func notifyEmailDetailController(email: Email){
+    func notifyEmailDetailController(newEmail: Email){
         guard let emailDetailVC = self.navigationController?.viewControllers.first(where: {$0 is EmailDetailViewController}) as? EmailDetailViewController else {
             return
         }
-        emailDetailVC.incomingEmail(email: email)
+        emailDetailVC.incomingEmail(newEmail: newEmail)
     }
     
     func notifyEmailDetailController(result: EventData.Result){

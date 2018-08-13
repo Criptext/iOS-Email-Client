@@ -105,7 +105,7 @@ class EmailDetailViewController: UIViewController {
         self.emailsTableView.register(footerNib, forHeaderFooterViewReuseIdentifier: "emailTableFooterView")
         for email in self.emailData.emails {
             let nib = UINib(nibName: "EmailDetailTableCell", bundle: nil)
-            self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.id)")
+            self.emailsTableView.register(nib, forCellReuseIdentifier: "emailDetail\(email.key)")
         }
     }
     
@@ -113,14 +113,15 @@ class EmailDetailViewController: UIViewController {
         topToolbar.swapMarkTo(unread: !asRead)
     }
     
-    func incomingEmail(email: Email){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            guard !email.isInvalidated,
-                email.threadId == self.emailData.threadId else {
-                    return
-            }
-            self.emailsTableView.reloadData()
+    func incomingEmail(newEmail: Email){
+        guard newEmail.threadId == emailData.threadId else {
+            return
         }
+        if let index = self.emailData.emails.index(where: {$0.isInvalidated}) {
+            newEmail.isExpanded = true
+            self.emailData.emails[index] = newEmail
+        }
+        self.emailsTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -133,7 +134,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
-        let cell = reuseOrCreateCell(identifier: "emailDetail\(email.id)") as! EmailTableViewCell
+        let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
         cell.setContent(email, myEmail: emailData.accountEmail)
         cell.delegate = self
         target = cell.moreOptionsContainerView
@@ -793,7 +794,7 @@ extension EmailDetailViewController: EventHandlerDelegate {
             return
         }
         for email in emails {
-            guard let match = emailData.emails.first(where: {$0.key == email.key}) else {
+            guard let match = emailData.emails.first(where: {!$0.isInvalidated && $0.key == email.key}) else {
                 continue
             }
             email.isExpanded = match.isExpanded

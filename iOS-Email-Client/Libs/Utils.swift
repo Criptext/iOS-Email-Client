@@ -75,7 +75,7 @@ class Utils{
         let regex = try! NSRegularExpression(pattern: pattern, options: [])
         let matches = regex.matches(in: emailFormat, options: [], range: NSRange(location: 0, length: email.length))
         guard let range = matches.first?.range else {
-            return nil
+            return String(emailFormat.split(separator: "@")[0])
         }
         return email.substring(with: range)
     }

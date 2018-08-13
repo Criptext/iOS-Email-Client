@@ -30,7 +30,7 @@ extension EmailContact: CustomDictionary{
         return ["table": "emailContact",
                 "object": [
                     "id": id,
-                    "emailId": email.id,
+                    "emailId": email.key,
                     "contactId": contact.id,
                     "type": type
             ]
