@@ -668,7 +668,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         vc.mailboxData = self.mailboxData
         vc.myAccount = self.myAccount
         self.navigationController?.pushViewController(vc, animated: true)
-        if(openKeys.count > 0) {
+        if(!openKeys.isEmpty) {
             APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
         }
     }

@@ -763,20 +763,12 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
 extension EmailDetailViewController: EventHandlerDelegate {
     
     func didReceiveEvents(result: EventData.Result) {
-        if result.modifiedThreadIds.contains(emailData.threadId) {
-            reloadContent()
-            return
-        }
-        if result.modifiedEmailKeys.contains(where: { (key) -> Bool in
+        guard result.modifiedThreadIds.contains(emailData.threadId) || result.modifiedEmailKeys.contains(where: { (key) -> Bool in
             return emailData.emails.contains(where: {$0.key == key})
-        }){
-            reloadContent()
+        }) || result.emails.contains(where: {$0.threadId == emailData.threadId}) else {
             return
         }
-        if result.emails.contains(where: {$0.threadId == emailData.threadId}){
-            reloadContent()
-            return
-        }
+        reloadContent()
     }
     
     func reloadContent(){

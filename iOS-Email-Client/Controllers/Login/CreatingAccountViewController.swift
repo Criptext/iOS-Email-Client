@@ -152,8 +152,6 @@ class CreatingAccountViewController: UIViewController{
         guard let fcmToken = Messaging.messaging().fcmToken else {
             return
         }
-        APIManager.registerToken(fcmToken: fcmToken, token: jwt) { (error) in
-            return
-        }
+        APIManager.registerToken(fcmToken: fcmToken, token: jwt)
     }
 }
