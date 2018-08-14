@@ -187,12 +187,6 @@ class SendMailAsyncTask {
         encryptedGuest.append(aesSalt)
         encryptedGuest.append(aesIv)
         encryptedGuest.append(encryptedSession)
-        print("bundle: \(session)")
-        print("salt: \(aesSalt.base64EncodedString())")
-        print("iv: \(aesIv.base64EncodedString())")
-        print("store: \(encryptedSession.base64EncodedString())")
-        print("session: \(encryptedGuest.base64EncodedString())")
-        print("body: \(body)")
         return SendEmailData.GuestContent.init(body: body, session: encryptedGuest.base64EncodedString())
     }
     
