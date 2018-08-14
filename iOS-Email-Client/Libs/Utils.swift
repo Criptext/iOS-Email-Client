@@ -139,7 +139,8 @@ class Utils{
     }
     
     class func verifyUrl(urlString: String) -> Bool {
-        let urlRegEx = "((?:http|https)://)?(?:www\\.)?[\\w\\d\\-_]+\\.\\w{2,3}(\\.\\w{2})?(/(?<=/)(?:[\\w\\d\\-./_]+)?)?"
-        return NSPredicate(format: "SELF MATCHES %@", urlRegEx).evaluate(with: urlString)
+        let regEx = "^(http://www.|https://www.|http://|https://)?[a-z0-9]+([-.]{1}[a-z0-9]+)*.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", argumentArray:[regEx])
+        return predicate.evaluate(with: urlString)
     }
 }

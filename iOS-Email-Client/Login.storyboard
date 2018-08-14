@@ -95,7 +95,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-Fm-cgQ">
-                                <rect key="frame" x="202" y="394" width="119" height="23.5"/>
+                                <rect key="frame" x="202" y="394.5" width="119" height="23.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="kke-wn-nCO"/>
                                 </constraints>
@@ -761,7 +761,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGe-4s-CNR">
-                                                <rect key="frame" x="33" y="95" width="309" height="37"/>
+                                                <rect key="frame" x="33" y="95.5" width="309" height="37"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1177,13 +1177,13 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NT8-w1-8Xk">
-                                                <rect key="frame" x="33" y="144" width="309" height="37"/>
+                                                <rect key="frame" x="33" y="143.5" width="309" height="37"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMf-wY-jdP">
-                                                <rect key="frame" x="33" y="191" width="309" height="48"/>
+                                                <rect key="frame" x="33" y="190.5" width="309" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="FXT-bk-n8F"/>
                                                 </constraints>
