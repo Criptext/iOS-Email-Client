@@ -38,7 +38,7 @@ class SendMailAsyncTask {
         self.criptextEmails = recipients.1
         self.files = files
         self.emailRef = DBManager.getReference(email)
-        self.fileKey = files.count > 0 ? fileKey : nil
+        self.fileKey = fileKey
     }
     
     private class func getFilesRequestData(email: Email) -> [[String: Any]]{

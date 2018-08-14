@@ -63,6 +63,9 @@ class NewLoginViewController: UIViewController{
     }
     
     @objc func onDonePress(_ sender: Any){
+        guard loginButton.isEnabled else {
+            return
+        }
         self.onLoginPress(sender)
     }
     
@@ -112,6 +115,9 @@ class NewLoginViewController: UIViewController{
     }
     
     @IBAction func textfieldDidEndOnExit(_ sender: Any) {
+        guard loginButton.isEnabled else {
+            return
+        }
         self.onLoginPress(sender)
     }
     

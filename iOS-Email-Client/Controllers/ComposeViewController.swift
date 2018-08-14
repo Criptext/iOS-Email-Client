@@ -314,7 +314,7 @@ class ComposeViewController: UIViewController {
         draft.files.append(objectsIn: fileManager.storeFiles())
         DBManager.store(draft)
         
-        if fileManager.encryption,
+        if fileManager.encryption && !fileManager.registeredFiles.isEmpty,
             let keys = fileManager.keyPairs[0] {
             let fileKey = FileKey()
             fileKey.key = FileKey.getKeyCodedString(key: keys.0, iv: keys.1)
