@@ -271,7 +271,7 @@ class SendMailAsyncTask {
             let params = "\(attachment["token"] as! String):\(fileKeys)"
             let encodedParams = params.data(using: .utf8)!.base64EncodedString()
             let size = attachment["size"] as! Int
-            let sizeString = File.prettyPrintSize(size: Float(size))
+            let sizeString = File.prettyPrintSize(size: size)
             return result + buildAttachmentHtml(name: attachment["name"] as! String, mimeType: attachment["mimeType"] as! String, size: sizeString, encodedParams: encodedParams)
         } + "</div>"
     }

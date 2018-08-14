@@ -36,21 +36,12 @@ class File : Object {
     }
     
     func prettyPrintSize() -> String {
-        let formatter = ByteCountFormatter()
-        return formatter.string(fromByteCount: Int64(self.size))
+        return File.prettyPrintSize(size: self.size)
     }
     
-    class func prettyPrintSize(size: Float) -> String {
-        guard size >= 1000 else {
-            return "\(String(format: "%.2f", size)) Bytes"
-        }
-        guard size >= 1000000 else {
-            return "\(String(format: "%.2f", size/1000)) KB"
-        }
-        guard size >= 1000000000 else {
-            return "\(String(format: "%.2f", size/1000000)) MB"
-        }
-        return "\(String(format: "%.2f", size/1000000000)) GB"
+    class func prettyPrintSize(size: Int) -> String {
+        let formatter = ByteCountFormatter()
+        return formatter.string(fromByteCount: Int64(size))
     }
     
     enum uploadStatus {
