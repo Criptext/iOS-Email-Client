@@ -10,12 +10,27 @@ import Foundation
 
 class SettingsDevicesViewController: UITableViewController {
     
-    let devices = DBManager.getDevices()
+    var devices = DBManager.getDevices()
+    var myAccount: Account!
     
     override func viewDidLoad() {
         tabItem.title = "Devices"
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
+        APIManager.getDevices(token: myAccount.jwt) { (error, devices) in
+            guard let myDevices = devices else {
+                return
+            }
+            for device in myDevices {
+                let newDevice = Device.fromDictionary(data: device)
+                guard !self.devices.contains(where: {$0.id == newDevice.id && $0.active}) else {
+                    continue
+                }
+                DBManager.store(newDevice)
+            }
+            self.devices = DBManager.getDevices()
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

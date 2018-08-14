@@ -196,16 +196,13 @@ extension EventData {
         }
         
         struct NameChanged: Dictionarify {
-            let recipientId: String
             let name: String
             
             init(params: [String: Any]){
-                recipientId = params["recipientId"] as! String
                 name = params["name"] as! String
             }
             
-            init(recipientId: String, name: String){
-                self.recipientId = recipientId
+            init(name: String){
                 self.name = name
             }
         }

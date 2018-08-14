@@ -122,6 +122,8 @@
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
 		7C5322122111394000C78981 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C5322112111394000C78981 /* GoogleService-Info.plist */; };
+		7C53AC382112198B00938A3D /* LogoutUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C53AC372112198B00938A3D /* LogoutUIPopover.xib */; };
+		7C53AC3A21121DE400938A3D /* LogoutPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C53AC3921121DE400938A3D /* LogoutPopoverViewController.swift */; };
 		7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
 		7C5E404020B706860027C61F /* CustomTabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5E403F20B706860027C61F /* CustomTabsController.swift */; };
 		7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */; };
@@ -361,6 +363,8 @@
 		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
 		7C5322112111394000C78981 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7C53AC372112198B00938A3D /* LogoutUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LogoutUIPopover.xib; sourceTree = "<group>"; };
+		7C53AC3921121DE400938A3D /* LogoutPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopoverViewController.swift; sourceTree = "<group>"; };
 		7C55B88B20863D7900BA96E8 /* CriptextError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextError.swift; sourceTree = "<group>"; };
 		7C5E403F20B706860027C61F /* CustomTabsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabsController.swift; sourceTree = "<group>"; };
 		7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureEditorViewController.swift; sourceTree = "<group>"; };
@@ -610,6 +614,7 @@
 				7C5E403F20B706860027C61F /* CustomTabsController.swift */,
 				7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */,
 				7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */,
+				7C53AC3921121DE400938A3D /* LogoutPopoverViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -818,6 +823,7 @@
 				7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */,
 				7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */,
 				7C92104B21022B290081C048 /* CircleLoaderUIView.swift */,
+				7C53AC372112198B00938A3D /* LogoutUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1008,6 +1014,7 @@
 				7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */,
 				7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */,
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
+				7C53AC382112198B00938A3D /* LogoutUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
 				41AAC52B201A9FC300809C4D /* GoogleButton.xib in Resources */,
@@ -1129,6 +1136,7 @@
 				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				41AAC51D201A9FC300809C4D /* DetailThreadTableViewCell.swift in Sources */,
 				7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */,
+				7C53AC3A21121DE400938A3D /* LogoutPopoverViewController.swift in Sources */,
 				41AAC51E201A9FC300809C4D /* TimerUIPopover.swift in Sources */,
 				7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,

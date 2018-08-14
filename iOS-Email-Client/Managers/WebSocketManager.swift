@@ -13,7 +13,7 @@ final class WebSocketManager: NSObject {
     static let sharedInstance = WebSocketManager()
     var eventDelegate : EventHandlerDelegate?
     var socket : WebSocket!
-    var myAccount : Account!
+    var myAccount : Account?
     let SOCKET_URL = "ws://stage.socket.criptext.com"
     
     private override init(){
@@ -27,6 +27,7 @@ final class WebSocketManager: NSObject {
     }
     
     func close(){
+        myAccount = nil
         socket.event.close = {_,_,_ in }
         socket.close()
     }
@@ -40,7 +41,9 @@ extension WebSocketManager: WebSocketDelegate{
     func webSocketClose(_ code: Int, reason: String, wasClean: Bool) {
         print("Websocket - Close : \(code) -> \(reason)")
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
-            self.connect(account: self.myAccount)
+            if let account = self.myAccount {
+                self.connect(account: account)
+            }
         }
     }
     
@@ -49,10 +52,11 @@ extension WebSocketManager: WebSocketDelegate{
     }
     
     func webSocketMessageText(_ text: String) {
-        guard let event = Utils.convertToDictionary(text: text) else {
+        guard let event = Utils.convertToDictionary(text: text),
+            let account = self.myAccount else {
             return
         }
-        let eventHandler = EventHandler(account: myAccount)
+        let eventHandler = EventHandler(account: account, fromWS: true)
         eventHandler.eventDelegate = self
         eventHandler.handleEvents(events: [event])
     }

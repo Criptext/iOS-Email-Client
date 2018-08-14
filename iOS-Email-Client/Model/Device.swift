@@ -10,28 +10,31 @@ import Foundation
 import RealmSwift
 
 class Device: Object {
-    @objc dynamic var uuid = ""
+    @objc dynamic var id = 1
     @objc dynamic var name = ""
     @objc dynamic var location = ""
     @objc dynamic var active = false
-    @objc dynamic var type = Kind.phone.rawValue
+    @objc dynamic var type = Kind.ios.rawValue
     
     override static func primaryKey() -> String? {
-        return "uuid"
+        return "id"
     }
     
     enum Kind : Int{
         case pc = 1
-        case phone = 2
-        case tablet = 3
+        case ios = 2
+        case android = 3
         
         static var current: Kind {
-            switch(UIDevice.current.userInterfaceIdiom){
-            case .pad:
-                return .tablet
-            default:
-                return .phone
-            }
+            return .ios
         }
+    }
+    
+    class func fromDictionary(data: [String: Any]) -> Device {
+        let newDevice = Device()
+        newDevice.type = data["deviceType"] as! Int
+        newDevice.id = data["deviceId"] as! Int
+        newDevice.name = data["deviceFriendlyName"] as! String
+        return newDevice
     }
 }

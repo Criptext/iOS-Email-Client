@@ -102,9 +102,12 @@ class InboxViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         WebSocketManager.sharedInstance.eventDelegate = self
-        
-        self.sendFailEmail()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        sendFailEmail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -112,6 +115,7 @@ class InboxViewController: UIViewController {
         updateBadges()
         
         guard let indexPath = self.tableView.indexPathForSelectedRow, !mailboxData.isCustomEditing else {
+            mailboxData.removeSelectedRow = false
             return
         }
         
@@ -316,8 +320,8 @@ extension InboxViewController{
         loadMails(since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
         topToolbar.swapTrashIcon(labelId: labelId)
-        self.navigationDrawerController?.closeLeftView()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+        self.navigationDrawerController?.closeLeftView()
     }
     
     func swapMarkIcon(){
@@ -528,9 +532,10 @@ extension InboxViewController: UITableViewDataSource{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
         let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController") as! SettingsLabelsViewController
-        let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController")
+        let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController") as! SettingsDevicesViewController
         generalVC.myAccount = self.myAccount
         labelsVC.myAccount = self.myAccount
+        devicesVC.myAccount = self.myAccount
         let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
         tabsVC.edgesForExtendedLayout = []
         tabsVC.tabBarAlignment = .top
@@ -640,17 +645,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel)
         let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
-        emailDetailData.emails = emails
         var labelsSet = Set<Label>()
         var openKeys = [Int]()
         for email in emails {
-            email.isExpanded = (email.unread && email.status != .unsent)
+            email.isExpanded = email.unread
             labelsSet.formUnion(email.labels)
-            if(email.status != .unsent && email.isExpanded){
-                DBManager.updateEmail(email, unread: false)
+            if(email.unread){
                 openKeys.append(email.key)
             }
+            DBManager.updateEmail(email, unread: false)
         }
+        emailDetailData.emails = emails
         emailDetailData.selectedLabel = selectedLabel
         emailDetailData.labels = Array(labelsSet)
         emailDetailData.subject = emails.first!.subject
@@ -663,7 +668,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         vc.mailboxData = self.mailboxData
         vc.myAccount = self.myAccount
         self.navigationController?.pushViewController(vc, animated: true)
-        APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
+        if(!openKeys.isEmpty) {
+            APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
+        }
     }
     
     func goToEmailDetail(threadId: String){
@@ -1009,6 +1016,7 @@ extension InboxViewController: ComposerSendMailDelegate {
         guard let email = DBManager.getEmailFailed() else {
             return
         }
+        DBManager.updateEmail(email, status: .sending)
         sendMail(email: email)
     }
     
@@ -1025,6 +1033,7 @@ extension InboxViewController: ComposerSendMailDelegate {
             self.showSendingSnackBar(message: "Email Sent", permanent: false)
             self.reloadIfSentMailbox(email: email)
             self.notifyEmailDetailController(email: email)
+            self.sendFailEmail()
         }
     }
     

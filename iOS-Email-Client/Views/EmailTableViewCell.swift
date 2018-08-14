@@ -46,6 +46,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var circleLoaderUIView: CircleLoaderUIView!
     
     var email: Email!
+    var firstTimer = true
     var attachments : List<File> {
         return email.files
     }
@@ -88,6 +89,10 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setContent(_ email: Email, myEmail: String){
+        if(firstTimer){
+            email.isLoaded = false
+        }
+        
         self.email = email
         let isExpanded = email.isExpanded
         
@@ -149,6 +154,7 @@ class EmailTableViewCell: UITableViewCell{
         let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
         if(!email.isLoaded){
+            firstTimer = false
             let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
             webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
         }

@@ -17,11 +17,10 @@ class File : Object {
     @objc dynamic var size = 0
     @objc dynamic var status = 1
     @objc dynamic var date = Date()
-    @objc dynamic var readOnly = 0
+    @objc dynamic var readOnly = 0 //bool
     @objc dynamic var emailId = 0
-    @objc dynamic var isUploaded = false
     @objc dynamic var mimeType = ""
-    @objc dynamic var filePath = ""
+    var filePath = ""
     var progress = -1
     var filepath = ""
     var chunksProgress = [Int]()
@@ -37,17 +36,12 @@ class File : Object {
     }
     
     func prettyPrintSize() -> String {
-        let mySize = Float(size)
-        guard mySize >= 1000 else {
-            return "\(String(format: "%.2f", mySize)) Bytes"
-        }
-        guard mySize >= 1000000 else {
-            return "\(String(format: "%.2f", mySize/1000)) KB"
-        }
-        guard mySize >= 1000000000 else {
-            return "\(String(format: "%.2f", mySize/1000000)) MB"
-        }
-        return "\(String(format: "%.2f", mySize/1000000000)) GB"
+        return File.prettyPrintSize(size: self.size)
+    }
+    
+    class func prettyPrintSize(size: Int) -> String {
+        let formatter = ByteCountFormatter()
+        return formatter.string(fromByteCount: Int64(size))
     }
     
     enum uploadStatus {
