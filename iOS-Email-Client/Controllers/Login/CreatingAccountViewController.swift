@@ -8,6 +8,7 @@
 
 import Foundation
 import SignalProtocolFramework
+import FirebaseMessaging
 
 class CreatingAccountViewController: UIViewController{
     
@@ -98,6 +99,7 @@ class CreatingAccountViewController: UIViewController{
         DBManager.store([myContact])
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")
+        registerFirebaseToken(jwt: myAccount.jwt)
         animateProgress(100.0, 2.0) {
             self.goToMailbox(myAccount.username)
         }
@@ -105,7 +107,6 @@ class CreatingAccountViewController: UIViewController{
     
     func createActiveDevice(){
         let device = Device()
-        device.uuid = UIDevice.current.identifierForVendor!.uuidString
         device.name = systemIdentifier()
         device.type = Device.Kind.current.rawValue
         device.active = true
@@ -129,6 +130,7 @@ class CreatingAccountViewController: UIViewController{
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
+        delegate.createSystemLabels()
         let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
         present(mailboxVC, animated: true) { [weak self] in
             delegate.replaceRootViewController(mailboxVC)
@@ -144,5 +146,12 @@ class CreatingAccountViewController: UIViewController{
         DispatchQueue.main.asyncAfter(deadline: .now() + duration){
             completion()
         }
+    }
+    
+    func registerFirebaseToken(jwt: String){
+        guard let fcmToken = Messaging.messaging().fcmToken else {
+            return
+        }
+        APIManager.registerToken(fcmToken: fcmToken, token: jwt)
     }
 }

@@ -12,14 +12,10 @@ class SendEmailData {
     struct GuestContent {
         let body: String
         let session: String
-        let salt: String
-        let iv: String
         
-        init(body: String, session: String, salt: String, iv: String){
+        init(body: String, session: String){
             self.body = body
             self.session = session
-            self.salt = salt
-            self.iv = iv
         }
     }
 }
