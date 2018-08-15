@@ -63,8 +63,8 @@ class CriptextFileManager {
         }
     }
     
-    func registerFile(file: File){
-        guard !alreadyDownloaded(file: file) else {
+    func registerFile(file: File, uploading: Bool = false){
+        guard uploading || !alreadyDownloaded(file: file) else {
             self.delegate?.finishRequest(file: file, success: true)
             return
         }
@@ -75,6 +75,9 @@ class CriptextFileManager {
             } else if (myFile.requestStatus == . finish) {
                 delegate?.finishRequest(file: myFile, success: true)
             }
+            return
+        }
+        guard !uploading else {
             return
         }
         file.requestStatus = .pending

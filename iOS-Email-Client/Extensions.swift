@@ -280,6 +280,14 @@ extension Notification.Name {
 }
 
 extension String {
+    
+    func sha256() -> String? {
+        guard let data = self.data(using: String.Encoding.utf8),
+            let shaData = AESCipher.sha256(data) else { return nil }
+        let rc = shaData.base64EncodedString(options: [])
+        return rc
+    }
+    
     init(htmlEncodedString: String) {
         self.init(htmlEncodedString)
     }

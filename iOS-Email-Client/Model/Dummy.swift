@@ -54,17 +54,17 @@ class Dummy {
             "registrationId": store.localRegistrationId(),
             "identityKey": [
                 "publicKey": identityKeyPair.publicKey().customBase64String(),
-                "privateKey": identityKeyPair.privateKey().customBase64String()
+                "privateKey": identityKeyPair.privateKey().plainBase64String()
             ],
             "preKey": [
                 "keyId": preKeyId,
                 "publicKey": preKeyPair.publicKey().customBase64String(),
-                "privateKey": preKeyPair.privateKey().customBase64String()
+                "privateKey": preKeyPair.privateKey().plainBase64String()
             ],
             "signedPreKey": [
                 "keyId": signedKeyId,
                 "publicKey": signedPreKeyPair.publicKey().customBase64String(),
-                "privateKey": signedPreKeyPair.privateKey().customBase64String()
+                "privateKey": signedPreKeyPair.privateKey().plainBase64String()
             ]
             ] as [String : Any]
     }

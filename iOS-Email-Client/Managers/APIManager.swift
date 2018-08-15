@@ -343,9 +343,9 @@ class APIManager {
     }
     
     class func removeDevice(deviceId: Int, token: String, completion: @escaping ((Error?) -> Void)){
-        let url = "\(self.baseUrl)/devices?deviceId=\(deviceId)"
+        let url = "\(self.baseUrl)/devices/\(deviceId)"
         let headers = ["Authorization": "Bearer \(token)"]
-        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             guard response.response?.statusCode == 200 else {
                 let criptextError = CriptextError(code: .noValidResponse)
                 completion(criptextError)
