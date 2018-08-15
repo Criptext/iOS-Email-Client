@@ -381,26 +381,23 @@ extension DBManager {
         }
         
         try! realm.write() {
-            realm.delete(email)
+            self.deleteEmail(realm: realm, emails: [email])
         }
     }
     
     class func delete(_ email:Email){
-        self.delete([email])
+        let realm = try! Realm()
+        
+        try! realm.write {
+            self.deleteEmail(realm: realm, emails: [email])
+        }
     }
     
     class func delete(_ emails:[Email]){
         let realm = try! Realm()
         
         try! realm.write {
-            emails.forEach({ (email) in
-                realm.delete(email.files)
-                realm.delete(email.emailContacts)
-                if let fileKey = self.getFileKey(emailId: email.key){
-                    realm.delete(fileKey)
-                }
-            })
-            realm.delete(emails)
+            self.deleteEmail(realm: realm, emails: emails)
         }
     }
     
@@ -421,7 +418,7 @@ extension DBManager {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.delete(emails)
+            self.deleteEmail(realm: realm, emails: emails)
         }
     }
     
@@ -517,6 +514,12 @@ extension DBManager {
         try! realm.write {
             realm.add(keyRecords, update: true)
         }
+    }
+    
+    class func getAllKeyRecords() -> [CRPreKeyRecord]{
+        let realm = try! Realm()
+        
+        return Array(realm.objects(CRPreKeyRecord.self))
     }
     
     class func getKeyRecordById(id: Int32) -> CRPreKeyRecord?{
@@ -837,23 +840,11 @@ extension DBManager {
         return results.count > 0
     }
     
-    class func getFeeds(since date: Date, limit: Int, lastSeen: Date) -> ([FeedItem], [FeedItem]){
+    class func getFeeds(since date: Date, limit: Int, lastSeen: Date) -> (Results<FeedItem>, Results<FeedItem>){
         let realm = try! Realm()
         
-        let feeds = realm.objects(FeedItem.self).filter("date < %@", date).sorted(byKeyPath: "date", ascending: false)
-        var newFeeds = [FeedItem]()
-        var oldFeeds = [FeedItem]()
-        
-        for (index, feed) in feeds.enumerated() {
-            guard index < limit else {
-                break
-            }
-            guard feed.date > lastSeen else {
-                oldFeeds.append(feed)
-                continue
-            }
-            newFeeds.append(feed)
-        }
+        let newFeeds = realm.objects(FeedItem.self).filter("date > %@", lastSeen).sorted(byKeyPath: "date", ascending: false)
+        let oldFeeds = realm.objects(FeedItem.self).filter("date <= %@", lastSeen).sorted(byKeyPath: "date", ascending: false)
         
         return (newFeeds, oldFeeds)
     }
@@ -1002,7 +993,7 @@ extension DBManager {
                     email.labels.contains(where: {$0.id == SystemLabel.trash.id || $0.id == SystemLabel.draft.id || $0.id == SystemLabel.spam.id}) else {
                     continue
                 }
-                realm.delete(email)
+                self.deleteEmail(realm: realm, emails: [email])
             }
         }
     }
@@ -1013,10 +1004,22 @@ extension DBManager {
         try! realm.write {
             for threadId in threadIds {
                 let deletableLabels = [SystemLabel.trash.id, SystemLabel.spam.id, SystemLabel.draft.id]
-                let emails = realm.objects(Email.self).filter("threadId == '\(threadId) AND ANY labels.id IN %@'", deletableLabels)
-                realm.delete(emails)
+                let emails = Array(realm.objects(Email.self).filter("threadId == '\(threadId) AND ANY labels.id IN %@'", deletableLabels))
+                self.deleteEmail(realm: realm, emails: emails)
             }
         }
+    }
+    
+    class func deleteEmail(realm: Realm, emails: [Email]){
+        emails.forEach({ (email) in
+            realm.delete(email.files)
+            realm.delete(email.emailContacts)
+            realm.delete(realm.objects(FeedItem.self).filter("email.key == \(email.key)"))
+            if let fileKey = self.getFileKey(emailId: email.key){
+                realm.delete(fileKey)
+            }
+        })
+        realm.delete(emails)
     }
     
     class func updateAccount(recipientId: String, name: String){

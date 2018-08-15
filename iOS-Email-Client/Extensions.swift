@@ -596,6 +596,16 @@ extension Formatter {
     }()
 }
 
+extension UITableView {
+    func applyChanges(section: Int = 0, deletions: [Int], insertions: [Int], updates: [Int]){
+        beginUpdates()
+        deleteRows(at: deletions.map({IndexPath(row: $0, section: section)}), with: .automatic)
+        insertRows(at: insertions.map({IndexPath(row: $0, section: section)}), with: .automatic)
+        reloadRows(at: updates.map({IndexPath(row: $0, section: section)}), with: .automatic)
+        endUpdates()
+    }
+}
+
 enum MessageType: Int {
     case none = 0
     case cipherText = 1
