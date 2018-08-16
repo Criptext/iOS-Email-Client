@@ -772,23 +772,33 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        guard mailboxData.selectedLabel != SystemLabel.trash.id else {
+        guard mailboxData.selectedLabel != SystemLabel.trash.id && mailboxData.selectedLabel != SystemLabel.spam.id && mailboxData.selectedLabel != SystemLabel.draft.id else {
             return []
         }
         
         let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
             let thread = self.mailboxData.threads[indexPath.row]
-            DBManager.setLabelsForEmail(thread.lastEmail, labels: [SystemLabel.trash.id])
-            self.mailboxData.threads.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
-            self.updateBadges()
-            self.showNoThreadsView(self.mailboxData.reachedEnd && self.mailboxData.threads.isEmpty)
+            self.moveSingleThreadTrash(threadId: thread.threadId)
         }
         
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
         
         return [trashAction];
     }
+
+    func moveSingleThreadTrash(threadId: String){
+        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        
+        APIManager.postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                return
+            }
+            DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
+            self.removeThreads(threadIds: [threadId])
+        }
+    }
+    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
@@ -900,7 +910,10 @@ extension InboxViewController {
                 continue
             }
             indexesToRemove.append(IndexPath(row: index, section: 0))
-            mailboxData.threads.remove(at: index)
+        }
+        let sortedIndexPaths = indexesToRemove.sorted(by: {$0.row > $1.row})
+        for path in sortedIndexPaths {
+            mailboxData.threads.remove(at: path.row)
         }
         tableView.deleteRows(at: indexesToRemove, with: .left)
         updateBadges()
@@ -1048,9 +1061,9 @@ extension InboxViewController: ComposerSendMailDelegate {
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
         sendMailAsyncTask.start { data in
-            guard let key = data as? Int,
+            guard let key = data,
                 let newEmail = DBManager.getMail(key: key) else {
-                self.showAlert("Network Error", message: "Unable to send email. Don't worry, it will be automatically resend.", style: .alert)
+                self.showAlert("Network Error", message: "Unable to send email. Don't worry, it will be automatically resent.", style: .alert)
                 self.hideSnackbar()
                 return
             }

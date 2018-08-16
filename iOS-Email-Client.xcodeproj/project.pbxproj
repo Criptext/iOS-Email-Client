@@ -211,6 +211,7 @@
 		7CCC82F12125E83F00D33F84 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43A21111DE400A40C74 /* Protobuf.framework */; };
 		7CCC82F22125E83F00D33F84 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A277207C6470004BDF90 /* Fabric.framework */; };
 		7CCC82F32125E83F00D33F84 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A275207C6466004BDF90 /* Crashlytics.framework */; };
+		7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */; };
 		7CD4A43221111DCF00A40C74 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */; };
 		7CD4A43321111DCF00A40C74 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */; };
 		7CD4A43421111DCF00A40C74 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */; };
@@ -457,6 +458,7 @@
 		7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomJSONFileTests.swift; sourceTree = "<group>"; };
 		7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipherTests.swift; sourceTree = "<group>"; };
 		7CCA060C210B687200BC4CEF /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIWindowTransitions.framework; path = Carthage/Build/iOS/UIWindowTransitions.framework; sourceTree = "<group>"; };
 		7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
 		7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
 		7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */,
 				7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */,
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
 				41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */,
@@ -560,6 +563,7 @@
 		2962C69A939AA368B015D288 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */,
 				7C1E82BF2116A12B007CA853 /* InstructionsAppExtensions.framework */,
 				7C1E82BD2116A122007CA853 /* Instructions.framework */,
 				7CD4A4442111268900A40C74 /* libc++.tbd */,
@@ -1122,6 +1126,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/UIImageView_Letters.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Motion.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Instructions.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/UIWindowTransitions.framework",
 			);
 			name = "Run Script Framework";
 			outputPaths = (
@@ -1145,6 +1150,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIImageView_Letters.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Motion.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Instructions.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIWindowTransitions.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -34,7 +34,7 @@ class ComposeViewController: UIViewController {
     let ENTER_LINE_HEIGHT : CGFloat = 28.0
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
-    let PASSWORD_POPUP_HEIGHT = 406
+    let PASSWORD_POPUP_HEIGHT = 335
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
