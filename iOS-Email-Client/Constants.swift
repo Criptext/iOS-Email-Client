@@ -10,7 +10,7 @@ import Foundation
 
 struct Constants {
     static let MinCharactersPassword = 8
-    static let domain = "@jigl.com"
+    static let domain = "@criptext.com"
     
     static let basePopoverHeight = 102
     static let labelPopoverHeight = 48

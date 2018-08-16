@@ -21,7 +21,6 @@ class Email: Object {
         case fail = 1
     }
     
-    @objc dynamic var id = 0
     @objc dynamic var key = 0 //metadataKey
     @objc dynamic var threadId = ""
     @objc dynamic var messageId = ""
@@ -62,7 +61,7 @@ class Email: Object {
     }
     
     override static func primaryKey() -> String? {
-        return "id"
+        return "key"
     }
     
     override static func ignoredProperties() -> [String] {
@@ -87,11 +86,6 @@ class Email: Object {
     
     var isSent: Bool{
         return labels.contains(where: {$0.id == SystemLabel.sent.id})
-    }
-    
-    func incrementID() -> Int {
-        let realm = try! Realm()
-        return (realm.objects(Email.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
     
     func getContacts(type: ContactType, notEqual email: String = "") -> List<Contact> {
@@ -134,7 +128,6 @@ class Email: Object {
         let dateString = Formatter.iso8601.string(from: date)
         return ["table": "email",
                 "object": [
-                    "id": id,
                     "messageId": messageId,
                     "threadId": threadId,
                     "unread": unread,
@@ -170,7 +163,7 @@ extension Email: CustomDictionary {
         return labels.map { (label) -> [String: Any] in
             return ["table": "emailLabel",
                     "object": [
-                        "emailId": self.id,
+                        "emailId": self.key,
                         "labelId": label.id,
                 ]
             ]
@@ -179,5 +172,5 @@ extension Email: CustomDictionary {
 }
 
 func ==(lhs: Email, rhs: Email) -> Bool {
-    return lhs.id == rhs.id
+    return lhs.key == rhs.key
 }

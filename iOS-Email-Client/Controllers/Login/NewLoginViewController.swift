@@ -36,6 +36,9 @@ class NewLoginViewController: UIViewController{
     }
     
     func usernameTextFieldInit(){
+        usernameTextField.delegate = self
+        usernameTextField.autocapitalizationType = .none
+        usernameTextField.autocorrectionType = .no
         usernameTextField.font = Font.regular.size(17.0)
         usernameTextField.placeholder = "Username"
         usernameTextField.placeholderNormalColor = UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6)
@@ -157,5 +160,11 @@ extension NewLoginViewController: UIGestureRecognizerDelegate {
             return true
         }
         return false
+    }
+}
+
+extension NewLoginViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return string.rangeOfCharacter(from: .whitespacesAndNewlines) == nil
     }
 }

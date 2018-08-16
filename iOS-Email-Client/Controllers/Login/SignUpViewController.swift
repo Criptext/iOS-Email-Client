@@ -40,6 +40,9 @@ class SignUpViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         
+        usernameTextField.delegate = self
+        usernameTextField.autocorrectionType = .no
+        usernameTextField.autocapitalizationType = .none
         usernameTextField.markView = usernameMark
         usernameTextField.font = Font.regular.size(17.0)
         fullnameTextField.markView = fullnameMark
@@ -58,8 +61,6 @@ class SignUpViewController: UIViewController{
         confirmPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         emailTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
     }
-    
-    
     
     @objc func onDonePress(_ sender: Any){
         switch(sender as? StatusTextField){
@@ -203,8 +204,8 @@ class SignUpViewController: UIViewController{
     }
     
     func jumpToCreatingAccount(){
-        let username = usernameTextField.text!
-        let fullname = fullnameTextField.text!.lowercased()
+        let username = usernameTextField.text!.lowercased()
+        let fullname = fullnameTextField.text!
         let password = passwordTextField.text!
         let email = emailTextField.text
         let signupData = SignUpData(username: username, password: password, fullname: fullname, optionalEmail: email)
@@ -282,5 +283,17 @@ class SignUpViewController: UIViewController{
             let webviewController = segue.destination as! WebViewViewController
             webviewController.url = "https://criptext.com/terms"
         }
+    }
+}
+
+extension SignUpViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard !string.isEmpty else {
+            return true
+        }
+        guard range.location > 0 else {
+            return string.range(of: "[a-z]", options: .regularExpression) != nil
+        }
+        return string.range(of: "^[.a-z0-9_-]*$", options: .regularExpression) != nil
     }
 }

@@ -94,14 +94,14 @@ class SendMailAsyncTask {
         return (guestEmails, criptextEmails)
     }
     
-    func start(completion: @escaping ((Error?, Any?) -> Void)){
+    func start(completion: @escaping ((Int?) -> Void)){
         let queue = DispatchQueue(label: "com.email.sendmail", qos: .background, attributes: .concurrent)
         queue.async {
             self.getSessionAndEncrypt(queue: queue, completion: completion)
         }
     }
     
-    private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){
+    private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((Int?) -> Void)){
         let myAccount = DBManager.getAccountByUsername(self.username)!
         var recipients = [String]()
         var knownAddresses = [String: [Int32]]()
@@ -129,8 +129,8 @@ class SendMailAsyncTask {
         APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { (err, response) in
             let myAccount = DBManager.getAccountByUsername(self.username)!
             guard let keysArray = response as? [[String: Any]] else {
-                self.handleResponseInMainThread {
-                    completion(err, nil)
+                DispatchQueue.main.async {
+                    completion(nil)
                 }
                 return
             }
@@ -198,7 +198,7 @@ class SendMailAsyncTask {
         return message.0
     }
     
-    private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((Error?, Any?) -> Void)){
+    private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((Int?) -> Void)){
         let myAccount = DBManager.getAccountByUsername(self.username)!
         var requestParams = ["subject": subject] as [String : Any]
         if(!criptextEmails.isEmpty){
@@ -214,16 +214,17 @@ class SendMailAsyncTask {
             requestParams["threadId"] = thread
         }
         APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { (error, data) in
-            if let error = error {
-                self.handleResponseInMainThread {
+            guard let updateData = data as? [String: Any] else {
+                DispatchQueue.main.async {
                     self.setEmailAsFailed()
-                    completion(error, nil)
+                    completion(nil)
                 }
                 return
             }
-            self.updateEmailData(data)
-            self.handleResponseInMainThread {
-                completion(nil, data)
+            let key = self.updateEmailData(updateData)
+            DispatchQueue.main.async {
+                DBManager.refresh()
+                completion(key)
             }
         }
     }
@@ -235,16 +236,16 @@ class SendMailAsyncTask {
         DBManager.updateEmail(email, status: .fail)
     }
     
-    func updateEmailData(_ data : Any?){
+    func updateEmailData(_ updateData : [String: Any]) -> Int? {
         guard let email = DBManager.getObject(emailRef) as? Email else {
-            return
+            return nil
         }
-        let keysArray = data as! [String: Any]
-        let key = keysArray["metadataKey"] as! Int
-        let messageId = keysArray["messageId"] as! String
-        let threadId = keysArray["threadId"] as! String
+        let key = updateData["metadataKey"] as! Int
+        let messageId = updateData["messageId"] as! String
+        let threadId = updateData["threadId"] as! String
         DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
         updateFiles(emailId: key)
+        return key
     }
     
     func updateFiles(emailId: Int){
@@ -253,12 +254,6 @@ class SendMailAsyncTask {
                 continue
             }
             DBManager.update(filetoken: filetoken, emailId: emailId)
-        }
-    }
-    
-    private func handleResponseInMainThread(completionHandler: @escaping () -> Void){
-        DispatchQueue.main.async {
-            completionHandler()
         }
     }
     

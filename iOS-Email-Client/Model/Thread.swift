@@ -16,13 +16,11 @@ class Thread {
     var hasAttachments = false
     var participantsString = ""
     var subject = ""
+    var threadId = ""
     var date = Date()
     
     var preview : String {
         return lastEmail.getPreview()
-    }
-    var threadId : String {
-        return lastEmail.threadId
     }
     var status : Email.Status {
         return Email.Status(rawValue: lastEmail.delivered) ?? .none

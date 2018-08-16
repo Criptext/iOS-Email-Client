@@ -68,8 +68,8 @@ class ComposeViewController: UIViewController {
     
     var activeAccount:Account!
     
-    var expandedBbcSpacing:CGFloat = 45
-    var expandedCcSpacing:CGFloat = 45
+    var expandedBbcSpacing: CGFloat = 45
+    var expandedCcSpacing: CGFloat = 45
     var attachmentOptionsHeight: CGFloat = 110
     
     var toolbarBottomConstraintInitialValue: CGFloat?
@@ -92,9 +92,6 @@ class ComposeViewController: UIViewController {
     var attachmentBarButton:MIBadgeButton!
     
     var dismissTapGestureRecognizer: UITapGestureRecognizer!
-    
-    let DOMAIN = "jigl.com"
-    
     var composerData = ComposerData()
     let fileManager = CriptextFileManager()
     let coachMarksController = CoachMarksController()
@@ -110,6 +107,7 @@ class ComposeViewController: UIViewController {
         
         let defaults = UserDefaults.standard
         activeAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)
+        fileManager.token = activeAccount.jwt
         
         self.sendBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
         self.sendSecureBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
@@ -303,7 +301,7 @@ class ComposeViewController: UIViewController {
         let draft = Email()
         draft.status = .none
         draft.content = self.editorView.html
-        let bodyWithoutHtml = self.editorView.text
+        let bodyWithoutHtml = self.editorView.text.replaceNewLineCharater(separator: " ")
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
         draft.subject = self.subjectField.text ?? ""
@@ -333,7 +331,7 @@ class ComposeViewController: UIViewController {
         self.bccField.allTokens.forEach { (token) in
             self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: draft, type: ContactType.bcc)
         }
-        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)@\(DOMAIN)", context: nil), emailDetail: draft, type: ContactType.from)
+        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)\(Constants.domain)", context: nil), emailDetail: draft, type: ContactType.from)
         
         DBManager.store(emailContacts)
         
@@ -414,19 +412,24 @@ class ComposeViewController: UIViewController {
         self.editorView.webView.endEditing(true)
     }
     
-    func collapseCC(_ flag:Bool){
+    func collapseCC(_ shouldCollapse: Bool){
         //do not collapse if already collapsed
-        if flag && self.bccHeightConstraint.constant == 0 {
+        if shouldCollapse && self.bccHeightConstraint.constant == 0 {
             return
         }
         //do not expand if already expanded
-        if !flag && self.bccHeightConstraint.constant > 0 {
+        if !shouldCollapse && self.bccHeightConstraint.constant > 0 {
             return
         }
         
-        self.buttonCollapse.setImage(flag ? Icon.new_arrow.down.image : Icon.new_arrow.up.image, for: .normal)
-        self.bccHeightConstraint.constant = flag ? 0 : self.expandedBbcSpacing
-        self.ccHeightConstraint.constant = flag ? 0 : self.expandedCcSpacing
+        if (shouldCollapse) {
+            expandedCcSpacing = self.ccHeightConstraint.constant
+            expandedBbcSpacing = self.bccHeightConstraint.constant
+        }
+        
+        self.buttonCollapse.setImage(shouldCollapse ? Icon.new_arrow.down.image : Icon.new_arrow.up.image, for: .normal)
+        self.bccHeightConstraint.constant = shouldCollapse ? 0 : self.expandedBbcSpacing
+        self.ccHeightConstraint.constant = shouldCollapse ? 0 : self.expandedCcSpacing
         
         UIView.animate(withDuration: 0.5, animations: {
             self.view.layoutIfNeeded()
