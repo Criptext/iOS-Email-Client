@@ -772,23 +772,33 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        guard mailboxData.selectedLabel != SystemLabel.trash.id else {
+        guard mailboxData.selectedLabel != SystemLabel.trash.id && mailboxData.selectedLabel != SystemLabel.spam.id && mailboxData.selectedLabel != SystemLabel.draft.id else {
             return []
         }
         
         let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
             let thread = self.mailboxData.threads[indexPath.row]
-            DBManager.setLabelsForEmail(thread.lastEmail, labels: [SystemLabel.trash.id])
-            self.mailboxData.threads.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
-            self.updateBadges()
-            self.showNoThreadsView(self.mailboxData.reachedEnd && self.mailboxData.threads.isEmpty)
+            self.moveSingleThreadTrash(threadId: thread.threadId)
         }
         
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
         
         return [trashAction];
     }
+
+    func moveSingleThreadTrash(threadId: String){
+        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        
+        APIManager.postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                return
+            }
+            DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
+            self.removeThreads(threadIds: [threadId])
+        }
+    }
+    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode

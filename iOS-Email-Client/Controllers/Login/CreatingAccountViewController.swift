@@ -9,6 +9,7 @@
 import Foundation
 import SignalProtocolFramework
 import FirebaseMessaging
+import UIWindowTransitions
 
 class CreatingAccountViewController: UIViewController{
     
@@ -131,10 +132,11 @@ class CreatingAccountViewController: UIViewController{
         }
         delegate.createSystemLabels()
         let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
-        present(mailboxVC, animated: true) { [weak self] in
-            delegate.replaceRootViewController(mailboxVC)
-            self?.removeFromParentViewController()
-        }
+        var options = UIWindow.TransitionOptions()
+        options.direction = .toTop
+        options.duration = 0.4
+        options.style = .easeOut
+        UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
     }
     
     func animateProgress(_ value: Double, _ duration: Double, completion: @escaping () -> Void){
