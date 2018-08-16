@@ -150,12 +150,9 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
             let feed: FeedItem
             if(indexPath.section == 0){
                 feed = self.feedsData.newFeeds[indexPath.row]
-                //self.feedsData.newFeeds.remove(at: indexPath.row)
             }else{
                 feed = self.feedsData.oldFeeds[indexPath.row]
-                //self.feedsData.oldFeeds.remove(at: indexPath.row)
             }
-            //tableView.deleteRows(at: [indexPath], with: .automatic)
             DBManager.delete(feed: feed)
             completion(true)
         }
