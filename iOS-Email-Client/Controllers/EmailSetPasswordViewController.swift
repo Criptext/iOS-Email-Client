@@ -14,6 +14,7 @@ protocol EmailSetPasswordDelegate {
 }
 
 class EmailSetPasswordViewController: BaseUIPopover {
+    let MIN_PASS_LENGTH = 3
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var repeatPasswordTextField: TextField!
     @IBOutlet weak var noPasswordMessageLabel: UILabel!
@@ -58,11 +59,13 @@ class EmailSetPasswordViewController: BaseUIPopover {
     @IBAction func onSetPress(_ sender: Any) {
         let passwordEnabled = passwordTextField.isEnabled
         let password = passwordTextField.text!
-        guard (!passwordEnabled || (password.count > 4 && password == repeatPasswordTextField.text)) else {
-            if(password.count > 4){
-                repeatPasswordTextField.detail = "Passwords don’t match"
+        guard (!passwordEnabled || (password.count >= MIN_PASS_LENGTH && password == repeatPasswordTextField.text)) else {
+            repeatPasswordTextField.detail = ""
+            passwordTextField.detail = ""
+            if (password.count >= MIN_PASS_LENGTH) {
+                repeatPasswordTextField.detail = "Passphrases do not  match"
             } else {
-                passwordTextField.detail = "Use at least 5 characters"
+                passwordTextField.detail = "Use at least 3 characters"
             }
             return
         }

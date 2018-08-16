@@ -910,7 +910,10 @@ extension InboxViewController {
                 continue
             }
             indexesToRemove.append(IndexPath(row: index, section: 0))
-            mailboxData.threads.remove(at: index)
+        }
+        let sortedIndexPaths = indexesToRemove.sorted(by: {$0.row > $1.row})
+        for path in sortedIndexPaths {
+            mailboxData.threads.remove(at: path.row)
         }
         tableView.deleteRows(at: indexesToRemove, with: .left)
         updateBadges()
@@ -1058,9 +1061,9 @@ extension InboxViewController: ComposerSendMailDelegate {
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
         sendMailAsyncTask.start { data in
-            guard let key = data as? Int,
+            guard let key = data,
                 let newEmail = DBManager.getMail(key: key) else {
-                self.showAlert("Network Error", message: "Unable to send email. Don't worry, it will be automatically resend.", style: .alert)
+                self.showAlert("Network Error", message: "Unable to send email. Don't worry, it will be automatically resent.", style: .alert)
                 self.hideSnackbar()
                 return
             }
