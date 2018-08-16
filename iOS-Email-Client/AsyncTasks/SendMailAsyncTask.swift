@@ -224,11 +224,7 @@ class SendMailAsyncTask {
             let key = self.updateEmailData(updateData)
             DispatchQueue.main.async {
                 DBManager.refresh()
-                guard let myKey = key else {
-                    completion(nil)
-                    return
-                }
-                completion(myKey)
+                completion(key)
             }
         }
     }
