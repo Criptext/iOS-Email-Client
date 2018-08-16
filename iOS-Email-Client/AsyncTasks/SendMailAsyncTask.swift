@@ -129,7 +129,7 @@ class SendMailAsyncTask {
         APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { (err, response) in
             let myAccount = DBManager.getAccountByUsername(self.username)!
             guard let keysArray = response as? [[String: Any]] else {
-                self.handleResponseInMainThread {
+                DispatchQueue.main.async {
                     completion(err, nil)
                 }
                 return
@@ -215,20 +215,20 @@ class SendMailAsyncTask {
         }
         APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { (error, data) in
             if let error = error {
-                self.handleResponseInMainThread {
+                DispatchQueue.main.async {
                     self.setEmailAsFailed()
                     completion(error, nil)
                 }
                 return
             }
             let key = self.updateEmailData(data)
-            self.handleResponseInMainThread {
+            DispatchQueue.main.async {
                 DBManager.refresh()
                 guard let myKey = key else {
                     completion(nil, nil)
                     return
                 }
-                completion(nil, key)
+                completion(nil, myKey)
             }
         }
     }
@@ -259,12 +259,6 @@ class SendMailAsyncTask {
                 continue
             }
             DBManager.update(filetoken: filetoken, emailId: emailId)
-        }
-    }
-    
-    private func handleResponseInMainThread(completionHandler: @escaping () -> Void){
-        DispatchQueue.main.async {
-            completionHandler()
         }
     }
     

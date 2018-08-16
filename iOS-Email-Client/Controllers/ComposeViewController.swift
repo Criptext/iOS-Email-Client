@@ -412,19 +412,24 @@ class ComposeViewController: UIViewController {
         self.editorView.webView.endEditing(true)
     }
     
-    func collapseCC(_ flag:Bool){
+    func collapseCC(_ shouldCollapse: Bool){
         //do not collapse if already collapsed
-        if flag && self.bccHeightConstraint.constant == 0 {
+        if shouldCollapse && self.bccHeightConstraint.constant == 0 {
             return
         }
         //do not expand if already expanded
-        if !flag && self.bccHeightConstraint.constant > 0 {
+        if !shouldCollapse && self.bccHeightConstraint.constant > 0 {
             return
         }
         
-        self.buttonCollapse.setImage(flag ? Icon.new_arrow.down.image : Icon.new_arrow.up.image, for: .normal)
-        self.bccHeightConstraint.constant = flag ? 0 : self.expandedBbcSpacing
-        self.ccHeightConstraint.constant = flag ? 0 : self.expandedCcSpacing
+        if (shouldCollapse) {
+            expandedCcSpacing = self.ccHeightConstraint.constant
+            expandedBbcSpacing = self.bccHeightConstraint.constant
+        }
+        
+        self.buttonCollapse.setImage(shouldCollapse ? Icon.new_arrow.down.image : Icon.new_arrow.up.image, for: .normal)
+        self.bccHeightConstraint.constant = shouldCollapse ? 0 : self.expandedBbcSpacing
+        self.ccHeightConstraint.constant = shouldCollapse ? 0 : self.expandedCcSpacing
         
         UIView.animate(withDuration: 0.5, animations: {
             self.view.layoutIfNeeded()
@@ -582,10 +587,6 @@ class ComposeViewController: UIViewController {
     
     @IBAction func didPressCC(_ sender: UIButton) {
         let needsCollapsing = self.bccHeightConstraint.constant != 0
-        if (needsCollapsing) {
-            expandedCcSpacing = self.ccHeightConstraint.constant
-            expandedBbcSpacing = self.bccHeightConstraint.constant
-        }
         self.collapseCC(needsCollapsing)
     }
     

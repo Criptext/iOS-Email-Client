@@ -1049,8 +1049,7 @@ extension InboxViewController: ComposerSendMailDelegate {
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
         sendMailAsyncTask.start { (error, data) in
-            guard error == nil,
-                let key = data as? Int,
+            guard let key = data as? Int,
                 let newEmail = DBManager.getMail(key: key) else {
                 self.showAlert("Network Error", message: "Unable to send email. Don't worry, it will be automatically resend.", style: .alert)
                 self.hideSnackbar()
