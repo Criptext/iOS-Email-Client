@@ -9,6 +9,7 @@
 import XCTest
 import SignalProtocolFramework
 @testable import iOS_Email_Client
+@testable import Firebase
 
 class AESCipherTests: XCTestCase {
     func testSuccessfullyEncryptDecryptWithAES() {

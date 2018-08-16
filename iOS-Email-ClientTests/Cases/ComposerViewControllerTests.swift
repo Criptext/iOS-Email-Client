@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import iOS_Email_Client
+@testable import Firebase
 
 class ComposerViewControllerTests: XCTestCase {
     
