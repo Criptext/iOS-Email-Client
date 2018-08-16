@@ -34,9 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let config = Realm.Configuration(
             schemaVersion: 3,
             migrationBlock: { migration, oldSchemaVersion in
-                if (oldSchemaVersion == 1) {
-                    
-                }
                 if (oldSchemaVersion < 3) {
                     migration.enumerateObjects(ofType: FeedItem.className()){ oldObject, newObject in
                         if oldObject?["email"] == nil,
