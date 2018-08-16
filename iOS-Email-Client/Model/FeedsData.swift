@@ -7,11 +7,10 @@
 //
 
 import Foundation
+import RealmSwift
 
 class FeedsData{
-    var oldFeeds: [FeedItem] = []
-    var newFeeds: [FeedItem] = []
+    var oldFeeds: Results<FeedItem>!
+    var newFeeds: Results<FeedItem>!
     var lastSeen = Date()
-    var loadingFeeds = false
-    var reachedEnd = false
 }

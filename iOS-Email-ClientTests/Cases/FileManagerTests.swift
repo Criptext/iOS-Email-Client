@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import iOS_Email_Client
+@testable import Firebase
 
 class FileManagerTests: XCTestCase {
     
@@ -46,8 +47,8 @@ class FileManagerTests: XCTestCase {
         let uploadDelegate = FileManagerSpyDelegate()
         uploadDelegate.expectation = expectation(description: "Delegate Called Back")
         let uploadManager = CriptextFileManager()
-        uploaderManager.token = token
-        uploaderManager.delegate = uploadDelegate
+        uploadManager.token = self.token
+        uploadManager.delegate = uploadDelegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         uploadManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
@@ -68,7 +69,7 @@ class FileManagerTests: XCTestCase {
             downloadDelegate.expectation = self.expectation(description: "Download Delegate Called Back")
             let downloadManager = CriptextFileManager()
             downloadManager.delegate = downloadDelegate
-            downloadManager.token = token
+            downloadManager.token = self.token
             APIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in
                 guard error == nil else {
                     XCTFail("Unable to commit file")
@@ -153,7 +154,7 @@ class FileManagerTests: XCTestCase {
             let downloadDelegate = FileManagerSpyDelegate()
             downloadDelegate.expectation = self.expectation(description: "Download Delegate Called Back")
             let downloadManager = CriptextFileManager()
-            downloadManager.token = token
+            downloadManager.token = self.token
             downloadManager.setEncryption(id: 1, key: keyData, iv: ivData)
             downloadManager.delegate = downloadDelegate
             APIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in

@@ -283,7 +283,6 @@ extension InboxViewController: EventHandlerDelegate {
             let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
             return
         }
-        feedVC.loadFeeds(clear: true)
         let badgeCounter = feedVC.feedsData.newFeeds.count
         updateFeedsBadge(counter: badgeCounter)
     }

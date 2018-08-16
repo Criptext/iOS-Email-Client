@@ -13,28 +13,17 @@ class ContactUtils {
     static let store = CNContactStore()
         
     private class func parseContact(_ contactString: String) -> Contact {
-        guard !contactString.starts(with: "<") else {
-            let cString = contactString.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "")
-            guard let existingContact = DBManager.getContact(cString) else {
-                return Contact(value: ["displayName": cString.split(separator: "@")[0], "email": cString])
-            }
-            return existingContact
-        }
-        let splittedContact = contactString.split(separator: "<")
-        guard splittedContact.count > 1 else {
-            guard let existingContact = DBManager.getContact(contactString) else {
-                return Contact(value: ["displayName": contactString.split(separator: "@")[0], "email": contactString])
-            }
-            return existingContact
-        }
-        let contactName = splittedContact[0].prefix((splittedContact[0].count - 1))
-        let email = splittedContact[1].prefix((splittedContact[1].count - 1)).replacingOccurrences(of: ">", with: "")
-        guard let existingContact = DBManager.getContact(email) else {
-            let newContact = Contact(value: ["displayName": contactName, "email": email])
+        let contactMetadata = self.getStringEmailName(contact: contactString);
+        guard let existingContact = DBManager.getContact(contactMetadata.0) else {
+            let newContact = Contact(value: ["displayName": contactMetadata.1, "email": contactMetadata.0])
             DBManager.store([newContact])
             return newContact
         }
-        DBManager.update(contact: existingContact, name: String(contactName))
+        let isNameFromEmail = existingContact.email.starts(with: existingContact.displayName)
+        let isNewNameFromEmail = contactMetadata.0.starts(with: contactMetadata.1)
+        if (!isNameFromEmail && !isNewNameFromEmail && contactMetadata.1 != existingContact.displayName) {
+            DBManager.update(contact: existingContact, name: contactMetadata.1)
+        }
         return existingContact
     }
     
@@ -48,5 +37,15 @@ class ContactUtils {
             emailContact.type = type.rawValue
             DBManager.store([emailContact])
         }
+    }
+    
+    class func getStringEmailName(contact: String) -> (String, String) {
+        let myContact = NSString(string: contact.replacingOccurrences(of: "\"", with: ""))
+        let pattern = "<(.*)>"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let matches = regex.matches(in: contact, options: [], range: NSRange(location: 0, length: myContact.length))
+        let email = (matches.first != nil ? myContact.substring(with: matches.first!.range(at: 1)) : String(myContact)).lowercased()
+        let name = matches.first != nil && contact.split(separator: "<").count > 1 ? contact.split(separator: "<")[0] : email.split(separator: "@")[0]
+        return (email, String(name.trimmingCharacters(in: .whitespacesAndNewlines)))
     }
 }

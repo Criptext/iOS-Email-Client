@@ -40,7 +40,6 @@ class SignUpViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         
-        usernameTextField.delegate = self
         usernameTextField.autocorrectionType = .no
         usernameTextField.autocapitalizationType = .none
         usernameTextField.markView = usernameMark
@@ -107,14 +106,10 @@ class SignUpViewController: UIViewController{
     }
     
     func checkUsername(){
-        guard !usernameTextField.isEmpty,
-            let username = usernameTextField.text else {
-            let inputError = "please enter your username"
-            usernameTextField.setStatus(.invalid, inputError)
-            return
-        }
-        guard username.count >= MIN_USERNAME_LENGTH else {
-            let inputError = "use more than 2 characters"
+        usernameTextField.text = usernameTextField.text?.lowercased()
+        guard let username = usernameTextField.text,
+            isValidUsername(username) else {
+            let inputError = "min 3 letters, start/end with a-z, valid 0-9, . _ -"
             usernameTextField.setStatus(.invalid, inputError)
             return
         }
@@ -269,6 +264,13 @@ class SignUpViewController: UIViewController{
         return emailTest.evaluate(with: testStr)
     }
     
+    func isValidUsername(_ testStr:String) -> Bool {
+        let emailRegEx = "^[a-z][.a-z0-9_-]+[a-z0-9]$"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
+    
     func checkToEnableDisableCreateButton(){
         createAccountButton.isEnabled = (usernameTextField.isValid && fullnameTextField.isValid && passwordTextField.isValid && confirmPasswordTextField.isValid && emailTextField.isNotInvalid)
         if(createAccountButton.isEnabled){
@@ -283,17 +285,5 @@ class SignUpViewController: UIViewController{
             let webviewController = segue.destination as! WebViewViewController
             webviewController.url = "https://criptext.com/terms"
         }
-    }
-}
-
-extension SignUpViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard !string.isEmpty else {
-            return true
-        }
-        guard range.location > 0 else {
-            return string.range(of: "[a-z]", options: .regularExpression) != nil
-        }
-        return string.range(of: "^[.a-z0-9_-]*$", options: .regularExpression) != nil
     }
 }
