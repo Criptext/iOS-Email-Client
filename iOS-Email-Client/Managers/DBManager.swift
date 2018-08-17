@@ -107,24 +107,6 @@ extension DBManager {
     }
 }
 
-//MARK: - Device related
-
-extension DBManager {
-    class func store(_ device: Device){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            realm.add(device, update: true)
-        }
-    }
-    
-    class func getDevices() -> [Device] {
-        let realm = try! Realm()
-        
-        return Array(realm.objects(Device.self))
-    }
-}
-
 //MARK: - Email related
 extension DBManager {
 

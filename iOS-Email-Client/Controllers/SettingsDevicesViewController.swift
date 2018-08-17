@@ -10,7 +10,7 @@ import Foundation
 
 class SettingsDevicesViewController: UITableViewController {
     
-    var devices = DBManager.getDevices()
+    var devices = [Device.createActiveDevice()]
     var myAccount: Account!
     
     override func viewDidLoad() {
@@ -26,9 +26,8 @@ class SettingsDevicesViewController: UITableViewController {
                 guard !self.devices.contains(where: {$0.id == newDevice.id && $0.active}) else {
                     continue
                 }
-                DBManager.store(newDevice)
+                self.devices.append(newDevice)
             }
-            self.devices = DBManager.getDevices()
             self.tableView.reloadData()
         }
     }
