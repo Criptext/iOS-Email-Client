@@ -53,10 +53,10 @@ class ContactsDetailUIPopover: BaseUIPopover{
     
     func buildContactAttributedString(_ name: String, _ email: String) -> NSMutableAttributedString{
         
-        let attrs = [NSAttributedStringKey.font : Font.regular.size(15.0), NSAttributedStringKey.foregroundColor : UIColor(red: 125/255, green: 125/255, blue: 125/255, alpha: 1)]
+        let attrs = [NSAttributedStringKey.font : Font.regular.size(13.0)!, NSAttributedStringKey.foregroundColor : UIColor(red: 125/255, green: 125/255, blue: 125/255, alpha: 1)]
         let stringPart1 = NSMutableAttributedString(string:name + " ", attributes:attrs)
         
-        let highlightAttrs = [NSAttributedStringKey.font : Font.regular.size(15.0), NSAttributedStringKey.foregroundColor : UIColor(red: 0/255, green: 145/255, blue: 255/255, alpha: 1)]
+        let highlightAttrs = [NSAttributedStringKey.font : Font.regular.size(13.0)!, NSAttributedStringKey.foregroundColor : UIColor(red: 0/255, green: 145/255, blue: 255/255, alpha: 1)]
         let stringPart2 = NSMutableAttributedString(string:email, attributes: highlightAttrs)
         
         stringPart1.append(stringPart2)
@@ -74,7 +74,7 @@ extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell") as! PlainContactTableViewCell
         let type = typeFromTableView(tableView)
         let contact = email.getContacts(type: type)[indexPath.row]
-        cell.contactLabel?.numberOfLines = 2
+        cell.contactLabel?.numberOfLines = 1
         cell.contactLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
         return cell
     }

@@ -9,6 +9,7 @@
 import Foundation
 
 class MailboxData {
+    var updating = false
     var selectedLabel = SystemLabel.inbox.id
     var emailArray = [Thread]()
     var filteredEmailArray = [Thread]()

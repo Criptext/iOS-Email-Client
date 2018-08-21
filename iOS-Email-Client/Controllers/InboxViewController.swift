@@ -239,6 +239,10 @@ class InboxViewController: UIViewController {
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: (() -> Void)? = nil) {
+        guard !mailboxData.updating else {
+            completion?()
+            return
+        }
         APIManager.getEvents(token: myAccount.jwt) { (error, data) in
             refreshControl?.endRefreshing()
             guard error == nil else {
@@ -260,6 +264,8 @@ class InboxViewController: UIViewController {
 
 extension InboxViewController: EventHandlerDelegate {
     func didReceiveEvents(result: EventData.Result) {
+        mailboxData.updating = result.fromWS ? mailboxData.updating : false
+        
         if result.emails.contains(where: {$0.status != .unsent}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -561,15 +567,20 @@ extension InboxViewController: UITableViewDataSource{
         let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
         let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController") as! SettingsLabelsViewController
         let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController") as! SettingsDevicesViewController
-        generalVC.myAccount = self.myAccount
-        labelsVC.myAccount = self.myAccount
-        devicesVC.myAccount = self.myAccount
+        
         let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
+        tabsVC.myAccount = self.myAccount
         tabsVC.edgesForExtendedLayout = []
         tabsVC.tabBarAlignment = .top
         let tabBar = tabsVC.tabBar
         tabBar.setLineColor(.mainUI, for: .selected)
         tabBar.layer.masksToBounds = false
+        
+        generalVC.myAccount = self.myAccount
+        labelsVC.myAccount = self.myAccount
+        devicesVC.myAccount = self.myAccount
+        generalVC.generalData = tabsVC.generalData
+        devicesVC.deviceData = tabsVC.devicesData
         
         let frame = CGRect(x: 0, y: tabBar.layer.height/2, width: self.view.frame.width, height: 6)
         let backgroundView = UIView(frame: frame)

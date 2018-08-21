@@ -28,6 +28,7 @@ class EventHandler {
     func handleEvents(events: [[String: Any]]){
         var result = EventData.Result()
         var successfulEvents = [Int32]()
+        result.fromWS = self.fromWS
         handleEventsRecursive(events: events, index: 0, eventCallback: { (successfulEventId, data) in
             guard let eventId = successfulEventId else {
                 return

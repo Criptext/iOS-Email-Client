@@ -13,8 +13,9 @@ import SafariServices
 class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature"],
+        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
+    var generalData: GeneralSettingsData!
     var myAccount : Account!
     
     override func viewDidLoad() {
@@ -33,21 +34,35 @@ class SettingsGeneralViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let text = menus[sections[indexPath.section]]![indexPath.row]
-        guard indexPath.section < 2 else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
-            cell.optionLabel.text = text
-            return cell
+        switch(indexPath.section){
+        case 0:
+            return renderAccountCells(text: text)
+        default:
+            return renderAboutCells(text: text)
         }
-        
+    }
+    
+    func renderAccountCells(text: String) -> GeneralTapTableCellView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
+        cell.goImageView.isHidden = false
+        cell.optionLabel.text = text
+        return cell
+    }
+    
+    func renderAboutCells(text: String) -> GeneralTapTableCellView {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        cell.messageLabel.text = ""
+        
         guard text != "Version" else {
-            cell.optionLabel.text = "Criptext Beta V.1.0.3"
+            cell.optionLabel.text = "Criptext Beta v.1.0.3"
             cell.goImageView.isHidden = true
             return cell
         }
+        
         cell.goImageView.isHidden = false
         cell.optionLabel.text = text
+        
         return cell
     }
     
@@ -75,6 +90,8 @@ class SettingsGeneralViewController: UITableViewController{
             goToUrl(url: "https://criptext.com/open-source-ios")
         case "Logout":
             logout()
+        case "Recovery Email":
+            goToRecoveryEmail()
         default:
             break
         }
@@ -117,6 +134,14 @@ class SettingsGeneralViewController: UITableViewController{
             delegate.replaceRootViewController(initialVC)
             self?.removeFromParentViewController()
         }
+    }
+    
+    func goToRecoveryEmail(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let recoveryVC = storyboard.instantiateViewController(withIdentifier: "recoveryEmailViewController") as! RecoveryEmailViewController
+        recoveryVC.generalData = self.generalData
+        recoveryVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(recoveryVC, animated: true)
     }
     
     func goToSignature(){

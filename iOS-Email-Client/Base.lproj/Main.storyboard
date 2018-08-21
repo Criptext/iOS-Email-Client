@@ -1288,7 +1288,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="10" width="117" height="23.5"/>
+                                            <rect key="frame" x="27" y="10.5" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1401,6 +1401,193 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jSK-ZP-kGq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2471.1999999999998" y="1145.577211394303"/>
+        </scene>
+        <!--Recovery Email View Controller-->
+        <scene sceneID="HSr-bl-FoD">
+            <objects>
+                <viewController storyboardIdentifier="recoveryEmailViewController" id="Z55-zn-7Xe" customClass="RecoveryEmailViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mrT-2p-Zdk"/>
+                        <viewControllerLayoutGuide type="bottom" id="M6D-Qe-KJ7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Bc4-Fn-Mhk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9Q-rO-GEN">
+                                <rect key="frame" x="27" y="45" width="321" height="20"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNz-jU-IJX">
+                                <rect key="frame" x="27" y="73" width="201" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.42352941176470588" green="0.44705882352941173" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Confirmed" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Upi-pd-9ph">
+                                <rect key="frame" x="228" y="74" width="120" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="Lo0-SR-aHk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="55l-TD-rds">
+                                <rect key="frame" x="27" y="125.5" width="321" height="1"/>
+                                <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="4h5-rw-i2M"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3y-BG-AGw">
+                                <rect key="frame" x="27" y="161.5" width="321" height="44"/>
+                                <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="RRn-4a-jgd"/>
+                                </constraints>
+                                <state key="normal" title="Resend Link">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onResendPress:" destination="Z55-zn-7Xe" eventType="touchUpInside" id="kAa-pM-DIN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iQ3-Fl-PMY">
+                                <rect key="frame" x="27" y="219.5" width="321" height="44"/>
+                                <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="sf6-Aw-h31"/>
+                                </constraints>
+                                <state key="normal" title="Change Email">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onChangeEmailPress:" destination="Z55-zn-7Xe" eventType="touchUpInside" id="3XP-vr-GXl"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="W6o-Yn-D7Z">
+                                <rect key="frame" x="177" y="173" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="n3y-BG-AGw" firstAttribute="leading" secondItem="S9Q-rO-GEN" secondAttribute="leading" id="3UW-Jq-nsh"/>
+                            <constraint firstItem="W6o-Yn-D7Z" firstAttribute="centerX" secondItem="n3y-BG-AGw" secondAttribute="centerX" id="89z-bC-lqJ"/>
+                            <constraint firstItem="n3y-BG-AGw" firstAttribute="trailing" secondItem="S9Q-rO-GEN" secondAttribute="trailing" id="Ef9-ye-AKl"/>
+                            <constraint firstItem="iQ3-Fl-PMY" firstAttribute="trailing" secondItem="S9Q-rO-GEN" secondAttribute="trailing" id="LRs-FP-Y3F"/>
+                            <constraint firstItem="iNz-jU-IJX" firstAttribute="top" secondItem="S9Q-rO-GEN" secondAttribute="bottom" constant="8" id="Ny3-1p-sFL"/>
+                            <constraint firstItem="S9Q-rO-GEN" firstAttribute="top" secondItem="mrT-2p-Zdk" secondAttribute="bottom" constant="25" id="Nyv-D0-dX2"/>
+                            <constraint firstAttribute="trailing" secondItem="S9Q-rO-GEN" secondAttribute="trailing" constant="27" id="UL0-7p-P0W"/>
+                            <constraint firstItem="Upi-pd-9ph" firstAttribute="leading" secondItem="iNz-jU-IJX" secondAttribute="trailing" id="W9j-nV-IB8"/>
+                            <constraint firstItem="Upi-pd-9ph" firstAttribute="centerY" secondItem="iNz-jU-IJX" secondAttribute="centerY" id="X62-Fn-F1H"/>
+                            <constraint firstItem="55l-TD-rds" firstAttribute="top" secondItem="iNz-jU-IJX" secondAttribute="bottom" constant="32" id="jBF-1H-IL2"/>
+                            <constraint firstItem="iQ3-Fl-PMY" firstAttribute="leading" secondItem="S9Q-rO-GEN" secondAttribute="leading" id="mkj-PB-bwB"/>
+                            <constraint firstItem="Upi-pd-9ph" firstAttribute="trailing" secondItem="S9Q-rO-GEN" secondAttribute="trailing" id="nca-MU-PVK"/>
+                            <constraint firstItem="n3y-BG-AGw" firstAttribute="top" secondItem="55l-TD-rds" secondAttribute="bottom" constant="35" id="oEN-f3-kZW"/>
+                            <constraint firstItem="55l-TD-rds" firstAttribute="leading" secondItem="S9Q-rO-GEN" secondAttribute="leading" id="rs4-YU-Gak"/>
+                            <constraint firstItem="W6o-Yn-D7Z" firstAttribute="centerY" secondItem="n3y-BG-AGw" secondAttribute="centerY" id="shV-9R-cgP"/>
+                            <constraint firstItem="iQ3-Fl-PMY" firstAttribute="top" secondItem="n3y-BG-AGw" secondAttribute="bottom" constant="14" id="wYc-eZ-gNK"/>
+                            <constraint firstItem="S9Q-rO-GEN" firstAttribute="leading" secondItem="Bc4-Fn-Mhk" secondAttribute="leading" constant="27" id="y1s-o5-hla"/>
+                            <constraint firstItem="iNz-jU-IJX" firstAttribute="leading" secondItem="S9Q-rO-GEN" secondAttribute="leading" id="yd9-F4-Bbo"/>
+                            <constraint firstItem="55l-TD-rds" firstAttribute="trailing" secondItem="S9Q-rO-GEN" secondAttribute="trailing" id="zUK-a5-JGP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="recoveryEmailLabel" destination="iNz-jU-IJX" id="pKK-sO-RlA"/>
+                        <outlet property="resendButton" destination="n3y-BG-AGw" id="pVm-uE-BTY"/>
+                        <outlet property="resendButtonHeightConstraint" destination="RRn-4a-jgd" id="ZFZ-xz-jEj"/>
+                        <outlet property="resendLoader" destination="W6o-Yn-D7Z" id="ZOL-1k-mmV"/>
+                        <outlet property="statusLabel" destination="Upi-pd-9ph" id="4fi-cT-BF9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NTa-dR-SJq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4380" y="1898"/>
+        </scene>
+        <!--Change Recovery Email View Controller-->
+        <scene sceneID="qxN-Dv-tri">
+            <objects>
+                <viewController storyboardIdentifier="changeRecoveryEmailViewController" id="4CV-Ct-Sob" customClass="ChangeRecoveryEmailViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Guo-o2-ZDr"/>
+                        <viewControllerLayoutGuide type="bottom" id="Byp-gv-a6D"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="doA-HU-EBU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter new email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klQ-4H-Mry">
+                                <rect key="frame" x="27" y="45" width="321" height="24"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gp2-jp-AI7" customClass="TextField" customModule="Material">
+                                <rect key="frame" x="27" y="76.5" width="321" height="30"/>
+                                <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMz-hs-feM">
+                                <rect key="frame" x="243" y="166.5" width="105" height="44"/>
+                                <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="BeH-JK-EQT"/>
+                                    <constraint firstAttribute="height" constant="44" id="hT2-VK-Yeh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onDonePress:" destination="4CV-Ct-Sob" eventType="touchUpInside" id="Tgp-eO-536"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mZl-Hz-ElR">
+                                <rect key="frame" x="285" y="178" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TMz-hs-feM" firstAttribute="trailing" secondItem="klQ-4H-Mry" secondAttribute="trailing" id="8Ux-IJ-h1p"/>
+                            <constraint firstItem="gp2-jp-AI7" firstAttribute="top" secondItem="klQ-4H-Mry" secondAttribute="bottom" constant="8" id="EaV-tn-96e"/>
+                            <constraint firstItem="klQ-4H-Mry" firstAttribute="leading" secondItem="doA-HU-EBU" secondAttribute="leading" constant="27" id="IJq-PX-vig"/>
+                            <constraint firstItem="mZl-Hz-ElR" firstAttribute="centerX" secondItem="TMz-hs-feM" secondAttribute="centerX" id="TQu-eN-rZF"/>
+                            <constraint firstItem="TMz-hs-feM" firstAttribute="top" secondItem="gp2-jp-AI7" secondAttribute="bottom" constant="60" id="XUk-Vf-Pxw"/>
+                            <constraint firstItem="gp2-jp-AI7" firstAttribute="leading" secondItem="klQ-4H-Mry" secondAttribute="leading" id="Xwp-Rh-Ia4"/>
+                            <constraint firstItem="mZl-Hz-ElR" firstAttribute="centerY" secondItem="TMz-hs-feM" secondAttribute="centerY" id="cSF-cu-HcJ"/>
+                            <constraint firstItem="klQ-4H-Mry" firstAttribute="top" secondItem="Guo-o2-ZDr" secondAttribute="bottom" constant="25" id="g0f-lC-3rD"/>
+                            <constraint firstAttribute="trailing" secondItem="klQ-4H-Mry" secondAttribute="trailing" constant="27" id="oL9-RY-mbD"/>
+                            <constraint firstItem="gp2-jp-AI7" firstAttribute="trailing" secondItem="klQ-4H-Mry" secondAttribute="trailing" id="pK7-PT-z08"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="buttonLoader" destination="mZl-Hz-ElR" id="IRi-B9-hxC"/>
+                        <outlet property="doneButton" destination="TMz-hs-feM" id="ohl-Uz-mou"/>
+                        <outlet property="emailTextField" destination="gp2-jp-AI7" id="FAn-J9-eBc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kWJ-Wl-gfL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3597.5999999999999" y="1897.6011994002999"/>
         </scene>
         <!--Signature Editor View Controller-->
         <scene sceneID="9DW-7S-z9E">
