@@ -353,6 +353,37 @@ class APIManager {
             completion(nil)
         }
     }
+    
+    class func changeRecoveryEmail(email: String, password: String, token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/user/recovery/change"
+        let headers = ["Authorization": "Bearer \(token)"]
+        let params = [
+            "email": email,
+            "password": password
+            ] as [String: Any]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            guard response.response?.statusCode == 200 else {
+                let error = CriptextError(code: .noValidResponse)
+                completion(error)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    class func resendConfirmationEmail(token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/user/recovery/resend"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString {
+            (response) in
+            guard response.response?.statusCode == 200 else {
+                    let criptextError = CriptextError(code: .noValidResponse)
+                    completion(criptextError)
+                    return
+            }
+            completion(nil)
+        }
+    }
 }
 
 extension APIManager {

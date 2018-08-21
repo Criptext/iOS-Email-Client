@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+        <array key="NunitoSans-SemiBold.ttf">
+            <string>NunitoSans-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GenericAlertUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="messageLabel" destination="t5a-FG-4VH" id="oKq-gf-ndq"/>
+                <outlet property="titleLabel" destination="OiD-GH-txU" id="Cbb-qZ-bwK"/>
+                <outlet property="view" destination="iN0-l3-epB" id="V7x-Of-ylU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="270" height="233"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirmation link sent" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OiD-GH-txU">
+                    <rect key="frame" x="39" y="30" width="192" height="23.5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23.5" id="Zu9-AY-jo1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iGt-Aa-2mj">
+                    <rect key="frame" x="0.0" y="187" width="270" height="46"/>
+                    <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="SEZ-VC-UgN"/>
+                    </constraints>
+                    <state key="normal" title="Ok">
+                        <color key="titleColor" red="0.18823529411764706" green="0.19607843137254902" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="okPress:" destination="-1" eventType="touchUpInside" id="M4l-Bf-3Qj"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please check your inbox for a confirmation email. Click the link in the email to confirm your email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t5a-FG-4VH">
+                    <rect key="frame" x="28" y="69.5" width="214" height="92.5"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="OiD-GH-txU" secondAttribute="trailing" constant="39" id="6fo-gM-sDq"/>
+                <constraint firstItem="t5a-FG-4VH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="28" id="9XM-Ah-rdu"/>
+                <constraint firstItem="OiD-GH-txU" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="30" id="CML-Yw-evC"/>
+                <constraint firstItem="iGt-Aa-2mj" firstAttribute="top" secondItem="t5a-FG-4VH" secondAttribute="bottom" constant="25" id="DBW-ne-VwM"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="t5a-FG-4VH" secondAttribute="trailing" constant="28" id="IBv-4A-Cr5"/>
+                <constraint firstItem="OiD-GH-txU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="39" id="J80-gD-BGI"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="iGt-Aa-2mj" secondAttribute="trailing" id="Lnt-xT-bXh"/>
+                <constraint firstItem="t5a-FG-4VH" firstAttribute="top" secondItem="OiD-GH-txU" secondAttribute="bottom" constant="16" id="Wyq-B3-oHN"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="iGt-Aa-2mj" secondAttribute="bottom" id="bGp-jc-atS"/>
+                <constraint firstItem="iGt-Aa-2mj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="kjz-GD-fzL"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="33" y="297.5"/>
+        </view>
+    </objects>
+</document>

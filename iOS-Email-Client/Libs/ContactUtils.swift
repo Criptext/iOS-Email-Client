@@ -19,9 +19,8 @@ class ContactUtils {
             DBManager.store([newContact])
             return newContact
         }
-        let isNameFromEmail = existingContact.email.starts(with: existingContact.displayName)
         let isNewNameFromEmail = contactMetadata.0.starts(with: contactMetadata.1)
-        if (!isNameFromEmail && !isNewNameFromEmail && contactMetadata.1 != existingContact.displayName) {
+        if (!isNewNameFromEmail && contactMetadata.1 != existingContact.displayName) {
             DBManager.update(contact: existingContact, name: contactMetadata.1)
         }
         return existingContact
