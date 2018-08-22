@@ -9,16 +9,12 @@
 import Foundation
 import RealmSwift
 
-class Device: Object {
-    @objc dynamic var id = 1
-    @objc dynamic var name = ""
-    @objc dynamic var location = ""
-    @objc dynamic var active = false
-    @objc dynamic var type = Kind.ios.rawValue
-    
-    override static func primaryKey() -> String? {
-        return "id"
-    }
+class Device {
+    var id = 1
+    var name = ""
+    var location = ""
+    var active = false
+    var type = Kind.ios.rawValue
     
     enum Kind : Int{
         case pc = 1
@@ -36,5 +32,13 @@ class Device: Object {
         newDevice.id = data["deviceId"] as! Int
         newDevice.name = data["deviceFriendlyName"] as! String
         return newDevice
+    }
+    
+    class func createActiveDevice() -> Device {
+        let device = Device()
+        device.name = systemIdentifier()
+        device.type = Device.Kind.current.rawValue
+        device.active = true
+        return device
     }
 }

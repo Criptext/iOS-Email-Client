@@ -598,7 +598,6 @@
 			children = (
 				7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */,
 				41AAC540201A9FF500809C4D /* APIManager.swift */,
-				41AAC542201AA00000809C4D /* ContactUtils.swift */,
 				41AAC544201AA01400809C4D /* DBManager.swift */,
 				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
 				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
@@ -658,6 +657,7 @@
 		41AAC4E9201A9EF500809C4D /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				41AAC542201AA00000809C4D /* ContactUtils.swift */,
 				41AAC554201AA08400809C4D /* iOS-Email-Client-Bridging-Header.h */,
 				41AAC556201AA08500809C4D /* DateUtils.h */,
 				41AAC555201AA08500809C4D /* DateUtils.m */,
