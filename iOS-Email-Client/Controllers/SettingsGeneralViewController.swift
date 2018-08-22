@@ -13,7 +13,7 @@ import SafariServices
 class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email"],
+        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email", "Change Password"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
@@ -80,6 +80,8 @@ class SettingsGeneralViewController: UITableViewController{
         switch(text){
         case "Profile Name":
             presentNamePopover()
+        case "Change Password":
+            presentChangePasswordPopover()
         case "Signature":
             goToSignature()
         case "Privacy Policy":
@@ -159,6 +161,16 @@ class SettingsGeneralViewController: UITableViewController{
             self.changeProfileName(name: text)
         }
         self.presentPopover(popover: changeNamePopover, height: Constants.singleTextPopoverHeight)
+    }
+    
+    func presentChangePasswordPopover(){
+        let popoverHeight = 300
+        let changePasswordPopover = ChangePasswordUIPopover()
+        guard let tabsController = self.tabsController else {
+            self.presentPopover(popover: changePasswordPopover, height: popoverHeight)
+            return
+        }
+        tabsController.presentPopover(popover: changePasswordPopover, height: popoverHeight)
     }
     
     func goToUrl(url: String){
