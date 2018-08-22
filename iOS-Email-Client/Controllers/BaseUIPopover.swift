@@ -10,6 +10,7 @@ import Foundation
 
 class BaseUIPopover: UIViewController{
     var overlay: UIView?
+    var shouldDismiss = true
     
     init(_ nibName: String){
         super.init(nibName: nibName, bundle: nil)
@@ -60,5 +61,9 @@ extension BaseUIPopover: UIPopoverPresentationControllerDelegate{
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle{
         return .none
+    }
+    
+    func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
+        return shouldDismiss
     }
 }
