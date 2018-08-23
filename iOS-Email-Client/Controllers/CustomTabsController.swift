@@ -23,11 +23,11 @@ class CustomTabsController: TabsController {
     }
     
     func loadData(){
-        APIManager.getDevices(token: myAccount.jwt) { (error, devices) in
-            guard let myDevices = devices else {
+        APIManager.getDevices(token: myAccount.jwt) { (responseData) in
+            guard case let .Devices(devices) = responseData  else {
                 return
             }
-            for device in myDevices {
+            for device in devices {
                 let newDevice = Device.fromDictionary(data: device)
                 guard !self.devicesData.devices.contains(where: {$0.id == newDevice.id && $0.active}) else {
                     continue
