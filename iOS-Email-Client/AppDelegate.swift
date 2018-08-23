@@ -92,6 +92,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.registerForRemoteNotifications()
     }
     
+    func logout(){
+        APIManager.cancelAllRequests()
+        WebSocketManager.sharedInstance.close()
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "activeAccount")
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let initialVC = storyboard.instantiateInitialViewController()!
+        
+        var options = UIWindow.TransitionOptions()
+        options.direction = .toTop
+        options.duration = 0.4
+        options.style = .easeOut
+        UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
+        
+        DBManager.signout()
+    }
+    
     func replaceRootViewController(_ viewController:UIViewController){
         self.window?.rootViewController = nil
         self.window?.rootViewController = viewController

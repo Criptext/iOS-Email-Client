@@ -8,11 +8,31 @@
 //
 
 import Foundation
+import Material
 
-class SettingsDeviceTableViewCell: UITableViewCell {
+protocol DeviceTableViewCellDelegate {
+    func tableViewCellDidLongPress(_ cell: SettingsDeviceTableViewCell)
+}
+
+class SettingsDeviceTableViewCell: TableViewCell {
     @IBOutlet weak var deviceImageView: UIImageView!
     @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var deviceLocationLabel: UILabel!
     @IBOutlet weak var currentDeviceLabel: UILabel!
+    var delegate: DeviceTableViewCellDelegate?
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        self.addGestureRecognizer(hold)
+        self.pulseAnimation = .pointWithBacking
+    }
+    
+    @objc func handleLongPress(_ gestureRecognizer:UILongPressGestureRecognizer){
+        guard let delegate = self.delegate else {
+            return
+        }
+        delegate.tableViewCellDidLongPress(self)
+    }
 }

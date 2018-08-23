@@ -266,6 +266,14 @@ extension InboxViewController: EventHandlerDelegate {
     func didReceiveEvents(result: EventData.Result) {
         mailboxData.updating = result.fromWS ? mailboxData.updating : false
         
+        guard !result.removed else {
+            guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            delegate.logout()
+            return
+        }
+        
         if result.emails.contains(where: {$0.status != .unsent}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }

@@ -28,7 +28,7 @@ class SettingsDevicesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let device = devices[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsDeviceCell") as! SettingsDeviceTableViewCell
-        
+        cell.delegate = self
         cell.deviceImageView.image = Device.Kind(rawValue: device.type)! != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
         cell.deviceNameLabel.text = device.name
         cell.deviceLocationLabel.text = device.location
@@ -40,5 +40,27 @@ class SettingsDevicesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 66.0
+    }
+}
+
+extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
+    func tableViewCellDidLongPress(_ cell: SettingsDeviceTableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
+            return
+        }
+        let device = devices[indexPath.row]
+        presentRemoveDevicePopover(device: device)
+    }
+    
+    func presentRemoveDevicePopover(device: Device){
+        let popoverHeight = 300
+        let removeDevicePopover = RemoveDeviceUIPopover()
+        removeDevicePopover.device = device
+        removeDevicePopover.myAccount = myAccount
+        guard let tabsController = self.tabsController else {
+            self.presentPopover(popover: removeDevicePopover, height: popoverHeight)
+            return
+        }
+        tabsController.presentPopover(popover: removeDevicePopover, height: popoverHeight)
     }
 }
