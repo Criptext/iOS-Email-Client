@@ -131,6 +131,11 @@ class EmailDetailViewController: UIViewController {
     
     func postPeerEvent(_ params: [String: Any], completion: @escaping ((ResponseData) -> Void)){
         APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
             completion(responseData)
         }
     }
@@ -613,9 +618,14 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         email.isUnsending = true
         emailsTableView.reloadData()
         let recipients = getEmailRecipients(contacts: email.getContacts())
-        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (error) in
+        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (responseData) in
             email.isUnsending = false
-            guard error == nil else {
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
                 self.emailsTableView.reloadData()
                 return

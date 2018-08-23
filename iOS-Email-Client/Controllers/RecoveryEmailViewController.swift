@@ -44,8 +44,13 @@ class RecoveryEmailViewController: UIViewController {
     
     @IBAction func onResendPress(_ sender: Any) {
         self.showLoader(true)
-        APIManager.resendConfirmationEmail(token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        APIManager.resendConfirmationEmail(token: myAccount.jwt) { (responseData) in
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showLoader(false)
                 self.showAlert("Network Error", message: "Unable to resend link, please try again.", style: .alert)
                 return

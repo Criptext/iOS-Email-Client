@@ -24,6 +24,11 @@ class CustomTabsController: TabsController {
     
     func loadData(){
         APIManager.getDevices(token: myAccount.jwt) { (responseData) in
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
             guard case let .Devices(devices) = responseData  else {
                 return
             }

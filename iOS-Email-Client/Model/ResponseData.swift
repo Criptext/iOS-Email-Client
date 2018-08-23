@@ -16,4 +16,5 @@ enum ResponseData {
     case Events([[String: Any]])
     case Body(String)
     case Devices([[String: Any]])
+    case LoggedOut
 }

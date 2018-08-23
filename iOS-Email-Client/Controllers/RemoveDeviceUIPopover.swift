@@ -48,8 +48,13 @@ class RemoveDeviceUIPopover: BaseUIPopover {
                 return
         }
         showLoader(true)
-        APIManager.removeDevice(deviceId: device.id, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        APIManager.removeDevice(deviceId: device.id, token: myAccount.jwt) { (responseData) in
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showLoader(false)
                 self.passwordTextField.detail = "Unable to remove device \(self.device.name)"
                 return
