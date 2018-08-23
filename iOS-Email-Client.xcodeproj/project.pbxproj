@@ -224,6 +224,7 @@
 		7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */; };
 		7CCD73E4212DEB30002C8C7F /* RemoveDeviceUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */; };
 		7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */; };
+		7CCD73E8212F2207002C8C7F /* ResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E7212F2207002C8C7F /* ResponseData.swift */; };
 		7CD4A43221111DCF00A40C74 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */; };
 		7CD4A43321111DCF00A40C74 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */; };
 		7CD4A43421111DCF00A40C74 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */; };
@@ -483,6 +484,7 @@
 		7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIWindowTransitions.framework; path = Carthage/Build/iOS/UIWindowTransitions.framework; sourceTree = "<group>"; };
 		7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RemoveDeviceUIPopover.xib; sourceTree = "<group>"; };
 		7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDeviceUIPopover.swift; sourceTree = "<group>"; };
+		7CCD73E7212F2207002C8C7F /* ResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseData.swift; sourceTree = "<group>"; };
 		7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
 		7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
 		7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
@@ -801,6 +803,7 @@
 				7C394E87210CC8E700AE3297 /* SendEmailData.swift */,
 				7C4D33CC212CA23100045B09 /* GeneralSettingsData.swift */,
 				7C4D33D0212CA2DB00045B09 /* DeviceSettingsData.swift */,
+				7CCD73E7212F2207002C8C7F /* ResponseData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1321,6 +1324,7 @@
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
 				41AAC52D201A9FC300809C4D /* MoveMailTableViewCell.swift in Sources */,
 				95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */,
+				7CCD73E8212F2207002C8C7F /* ResponseData.swift in Sources */,
 				7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,

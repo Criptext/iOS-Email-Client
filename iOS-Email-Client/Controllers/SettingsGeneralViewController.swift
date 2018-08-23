@@ -198,13 +198,13 @@ class SettingsGeneralViewController: UITableViewController{
     
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
-        APIManager.updateName(name: name, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                 return
             }
-              APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (error) in
-                guard error == nil else {
+              APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (responseData) in
+                guard case .Success = responseData else {
                     self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                     return
                 }

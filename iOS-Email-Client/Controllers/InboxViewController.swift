@@ -243,20 +243,15 @@ class InboxViewController: UIViewController {
             completion?()
             return
         }
-        APIManager.getEvents(token: myAccount.jwt) { (error, data) in
+        APIManager.getEvents(token: myAccount.jwt) { (responseData) in
             refreshControl?.endRefreshing()
-            guard error == nil else {
-                print(error.debugDescription)
-                completion?()
-                return
-            }
-            guard let eventsArray = data as? Array<Dictionary<String, Any>> else {
+            guard case let .Events(events) = responseData else {
                 completion?()
                 return
             }
             let eventHandler = EventHandler(account: self.myAccount)
             eventHandler.eventDelegate = self
-            eventHandler.handleEvents(events: eventsArray)
+            eventHandler.handleEvents(events: events)
             completion?()
         }
     }
@@ -809,8 +804,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     func moveSingleThreadTrash(threadId: String){
         let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
         
-        APIManager.postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }
@@ -822,6 +817,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
+    }
+    
+    func postPeerEvent(_ params: [String: Any], completion: @escaping ((ResponseData) -> Void)){
+        APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
+            completion(responseData)
+        }
     }
 }
 
@@ -909,8 +910,8 @@ extension InboxViewController {
         
         let changedLabels = getLabelNames(added: added, removed: removed)
         let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        APIManager.postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }
@@ -979,8 +980,8 @@ extension InboxViewController {
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        APIManager.postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()]) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to delete threads. Please try again", style: .alert)
                 return
             }
@@ -1028,8 +1029,8 @@ extension InboxViewController: NavigationToolbarDelegate {
                         "threadIds": threadIds
                         ]
             ] as [String : Any]
-        APIManager.postPeerEvent(params, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(params) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to change read status. Please try again", style: .alert)
                 return
             }
