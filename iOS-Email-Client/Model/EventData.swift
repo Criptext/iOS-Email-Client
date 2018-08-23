@@ -19,6 +19,7 @@ class EventData {
         var opens = [FeedItem]()
         var modifiedThreadIds = [String]()
         var modifiedEmailKeys = [Int]()
+        var removed = false
         var fromWS = false
     }
     

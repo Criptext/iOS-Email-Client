@@ -43,11 +43,13 @@ class EventHandler {
                 result.modifiedThreadIds.append(contentsOf: data as! [String])
             case is [Int]:
                 result.modifiedEmailKeys.append(contentsOf: data as! [Int])
+            case is Bool:
+                result.removed = true
             default:
                 break
             }
         }) {
-            if(!successfulEvents.isEmpty && !self.fromWS){
+            if(!successfulEvents.isEmpty && !self.fromWS && !result.removed){
                 self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
             }
             self.eventDelegate?.didReceiveEvents(result: result)
@@ -68,7 +70,7 @@ class EventHandler {
     
     func handleEvent(_ event: Dictionary<String, Any>, finishCallback: @escaping (_ successfulEventId : Int32?, _ data: Any?) -> Void){
         let cmd = event["cmd"] as! Int32
-        let rowId = event["rowid"] as? Int32
+        let rowId = event["rowid"] as? Int32 ?? -1
         
         guard let params = event["params"] as? [String : Any] ?? Utils.convertToDictionary(text: (event["params"] as! String)) else {
             finishCallback(nil, nil)
@@ -76,12 +78,11 @@ class EventHandler {
         }
         
         func handleEventResponse(successfulEvent: Bool, item: Any?){
-            guard successfulEvent,
-                let eventId = rowId else {
+            guard successfulEvent else {
                     finishCallback(nil, nil)
                     return
             }
-            finishCallback(eventId, item)
+            finishCallback(rowId, item)
         }
         
         switch(cmd){
@@ -116,6 +117,8 @@ class EventHandler {
             handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
         case Event.serverError.rawValue:
             handleEventResponse(successfulEvent: true, item: nil)
+        case Event.Link.removed.rawValue:
+            handleEventResponse(successfulEvent: true, item: true)
         default:
             finishCallback(nil, nil)
             break
@@ -347,6 +350,10 @@ enum Event: Int32 {
     case newEmail = 101
     case emailStatus = 102
     case serverError = 104
+    
+    enum Link: Int32 {
+        case removed = 205
+    }
     
     enum Peer: Int32 {
         case emailsUnread = 301
