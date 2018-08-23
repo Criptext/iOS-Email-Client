@@ -98,8 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "activeAccount")
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let initialVC = storyboard.instantiateInitialViewController()!
-        
+        let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
+        if let loginVC = initialVC.topViewController as? NewLoginViewController {
+            loginVC.loggedOutRemotely = true
+        }
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop
         options.duration = 0.4

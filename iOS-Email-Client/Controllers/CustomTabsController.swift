@@ -29,6 +29,11 @@ class CustomTabsController: TabsController {
     
     func loadData(){
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
             guard case let .Settings(settings) = responseData,
                 let devices = settings["devices"] as? [[String: Any]],
                 let recoveryData = settings["recoveryEmail"] as? [String: Any] else {

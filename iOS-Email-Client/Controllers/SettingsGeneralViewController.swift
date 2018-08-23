@@ -136,8 +136,13 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func confirmLogout(){
-        APIManager.removeDevice(deviceId: myAccount.deviceId, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        APIManager.removeDevice(deviceId: myAccount.deviceId, token: myAccount.jwt) { (responseData) in
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showAlert("Logout Error", message: "Unable to logout. Please try again", style: .alert)
                 return
             }
@@ -199,6 +204,11 @@ class SettingsGeneralViewController: UITableViewController{
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
         APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
+            if case .LoggedOut = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
             guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                 return
