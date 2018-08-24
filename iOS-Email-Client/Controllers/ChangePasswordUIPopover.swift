@@ -18,6 +18,8 @@ class ChangePasswordUIPopover: BaseUIPopover {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     @IBOutlet weak var errorLabel: UILabel!
+    var myAccount: Account!
+    var onSuccess: (() -> Void)?
     
     init(){
         super.init("ChangePasswordUIPopover")
@@ -31,6 +33,9 @@ class ChangePasswordUIPopover: BaseUIPopover {
         super.viewDidLoad()
         loader.isHidden = true
         errorLabel.isHidden = true
+        oldPasswordTextField.isVisibilityIconButtonEnabled = true
+        newPasswordTextField.isVisibilityIconButtonEnabled = true
+        confirmPasswordTextField.isVisibilityIconButtonEnabled = true
         oldPasswordTextField.detailColor = .alert
         newPasswordTextField.detailColor = .alert
         confirmPasswordTextField.detailColor = .alert
@@ -101,15 +106,22 @@ class ChangePasswordUIPopover: BaseUIPopover {
     }
     
     @IBAction func onSavePress(_ sender: Any) {
+        guard let oldPass = oldPasswordTextField.text,
+            let newPass = newPasswordTextField.text else {
+                return
+        }
         showLoader(true)
         errorLabel.isHidden = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            guard let myself = self else {
+        APIManager.changePassword(oldPassword: oldPass.sha256()!, newPassword: newPass.sha256()!, token: myAccount.jwt) { (error) in
+            guard error == nil else {
+                self.showLoader(false)
+                self.errorLabel.isHidden = false
+                self.errorLabel.text = "Unable to change password"
                 return
             }
-            myself.showLoader(false)
-            myself.errorLabel.isHidden = false
-            myself.errorLabel.text = "Unable to change password"
+            self.dismiss(animated: true, completion: {
+                self.onSuccess?()
+            })
         }
     }
     

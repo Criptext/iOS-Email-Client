@@ -193,6 +193,7 @@ class SettingsGeneralViewController: UITableViewController{
     func presentChangePasswordPopover(){
         let popoverHeight = 300
         let changePasswordPopover = ChangePasswordUIPopover()
+        changePasswordPopover.myAccount = myAccount
         guard let tabsController = self.tabsController else {
             self.presentPopover(popover: changePasswordPopover, height: popoverHeight)
             return
