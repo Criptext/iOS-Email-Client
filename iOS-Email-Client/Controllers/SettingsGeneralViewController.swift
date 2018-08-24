@@ -24,6 +24,11 @@ class SettingsGeneralViewController: UITableViewController{
         tabItem.setTabItemColor(.mainUI, for: .selected)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }

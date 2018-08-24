@@ -14,7 +14,7 @@ protocol CustomTabsChildController {
 }
 
 class CustomTabsController: TabsController {
-    
+    let STATUS_NOT_CONFIRMED = 0
     var myAccount: Account!
     var devicesData = DeviceSettingsData()
     var generalData = GeneralSettingsData()
@@ -28,19 +28,24 @@ class CustomTabsController: TabsController {
     }
     
     func loadData(){
-        APIManager.getDevices(token: myAccount.jwt) { (error, devices) in
-            guard let myDevices = devices else {
+        APIManager.getSettings(token: myAccount.jwt) { (error, settings) in
+            guard let mySettings = settings,
+                let devices = mySettings["devices"] as? [[String: Any]],
+                let recoveryData = mySettings["recoveryEmail"] as? [String: Any] else {
                 return
             }
-            for device in myDevices {
+            
+            for device in devices {
                 let newDevice = Device.fromDictionary(data: device)
                 guard !self.devicesData.devices.contains(where: {$0.id == newDevice.id && $0.active}) else {
                     continue
                 }
                 self.devicesData.devices.append(newDevice)
             }
-            self.generalData.recoveryEmail = "pedro.aim93@gmail.com"
-            self.generalData.recoveryEmailStatus = .pending
+            let email = recoveryData["address"] as! String
+            let status = recoveryData["status"] as! Int
+            self.generalData.recoveryEmail = email
+            self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
             self.reloadChildViews()
         }
     }
