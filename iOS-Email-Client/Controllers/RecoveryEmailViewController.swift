@@ -10,6 +10,10 @@ import Foundation
 
 class RecoveryEmailViewController: UIViewController {
     
+    let BUTTON_HEIGHT: CGFloat = 44.0
+    let POPOVER_HEIGHT = 220
+    let WAIT_TIME: Double = 300
+    
     var generalData: GeneralSettingsData!
     var myAccount: Account!
     var recoveryEmail: String {
@@ -30,11 +34,20 @@ class RecoveryEmailViewController: UIViewController {
         navigationItem.title = "Recovery Email"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        prepareView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        prepareView()
+    }
+    
+    func prepareView(){
         recoveryEmailLabel.text = recoveryEmail
         statusLabel.text = recoveryEmailStatus.description
         statusLabel.textColor = recoveryEmailStatus.color
         resendButton.isHidden = recoveryEmailStatus == .verified
-        resendButtonHeightConstraint.constant = recoveryEmailStatus != .pending ? 0.0 : 44.0
+        resendButtonHeightConstraint.constant = recoveryEmailStatus != .pending ? 0.0 : BUTTON_HEIGHT
         showLoader(false)
     }
 
@@ -61,7 +74,7 @@ class RecoveryEmailViewController: UIViewController {
         let alertVC = GenericAlertUIPopover()
         alertVC.myTitle = "Confirmation Link Sent"
         alertVC.myMessage = "Please check your inbox for a confirmation email. Click the link in the email to confirm your email address."
-        self.presentPopover(popover: alertVC, height: 220)
+        self.presentPopover(popover: alertVC, height: POPOVER_HEIGHT)
     }
     
     func showLoader(_ show: Bool){
@@ -71,7 +84,7 @@ class RecoveryEmailViewController: UIViewController {
             
             let defaults = UserDefaults.standard
             let lastTimeResent = defaults.double(forKey: "lastTimeResent")
-            guard lastTimeResent == 0 || Date().timeIntervalSince1970 - lastTimeResent > 300 else {
+            guard lastTimeResent == 0 || Date().timeIntervalSince1970 - lastTimeResent > WAIT_TIME else {
                 resendButton.backgroundColor = UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1)
                 resendButton.isEnabled = false
                 startTimer()

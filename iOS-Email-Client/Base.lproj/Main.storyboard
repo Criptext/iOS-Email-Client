@@ -1315,9 +1315,18 @@
                                             <color key="textColor" red="0.8666666666666667" green="0.25098039215686274" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="IwQ-mO-DzQ">
+                                            <rect key="frame" x="338" y="11" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="i4h-8R-jcA"/>
+                                                <constraint firstAttribute="width" constant="20" id="kFC-SH-NKc"/>
+                                            </constraints>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="YWl-rK-hcC" firstAttribute="centerY" secondItem="D4Q-yp-CYi" secondAttribute="centerY" id="2wP-pm-TVu"/>
+                                        <constraint firstItem="IwQ-mO-DzQ" firstAttribute="centerX" secondItem="YWl-rK-hcC" secondAttribute="centerX" id="5XI-9O-pdk"/>
+                                        <constraint firstItem="IwQ-mO-DzQ" firstAttribute="centerY" secondItem="YWl-rK-hcC" secondAttribute="centerY" id="8KE-xu-GSi"/>
                                         <constraint firstItem="YWl-rK-hcC" firstAttribute="leading" secondItem="ie7-GD-mqQ" secondAttribute="trailing" constant="10" id="Cak-OK-GQh"/>
                                         <constraint firstAttribute="trailing" secondItem="YWl-rK-hcC" secondAttribute="trailing" constant="21" id="dFB-75-kdv"/>
                                         <constraint firstItem="ddn-zH-dU7" firstAttribute="centerY" secondItem="D4Q-yp-CYi" secondAttribute="centerY" id="h7T-mO-Neb"/>
@@ -1327,6 +1336,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="goImageView" destination="YWl-rK-hcC" id="8lK-Y3-iWq"/>
+                                    <outlet property="loader" destination="IwQ-mO-DzQ" id="lea-0z-wub"/>
                                     <outlet property="messageLabel" destination="ie7-GD-mqQ" id="RN8-GC-Lfa"/>
                                     <outlet property="optionLabel" destination="ddn-zH-dU7" id="ofS-F5-ETF"/>
                                 </connections>

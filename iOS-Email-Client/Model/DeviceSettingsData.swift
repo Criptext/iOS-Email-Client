@@ -9,5 +9,5 @@
 import Foundation
 
 class DeviceSettingsData {
-    var devices = [Device.createActiveDevice()]
+    var devices = [Device]()
 }

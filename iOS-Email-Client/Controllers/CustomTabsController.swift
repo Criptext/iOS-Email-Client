@@ -9,6 +9,10 @@
 import Foundation
 import Material
 
+protocol CustomTabsChildController {
+    func reloadView()
+}
+
 class CustomTabsController: TabsController {
     
     var myAccount: Account!
@@ -17,6 +21,7 @@ class CustomTabsController: TabsController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.devicesData.devices.append(Device.createActiveDevice(deviceId: myAccount.deviceId))
         self.navigationItem.title = "SETTINGS"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
         self.loadData()
@@ -36,7 +41,16 @@ class CustomTabsController: TabsController {
             }
             self.generalData.recoveryEmail = "pedro.aim93@gmail.com"
             self.generalData.recoveryEmailStatus = .pending
-            self.layoutSubviews()
+            self.reloadChildViews()
+        }
+    }
+    
+    func reloadChildViews(){
+        childViewControllers.forEach { (vc) in
+            guard let childTabVC = vc as? CustomTabsChildController else {
+                return
+            }
+            childTabVC.reloadView()
         }
     }
     

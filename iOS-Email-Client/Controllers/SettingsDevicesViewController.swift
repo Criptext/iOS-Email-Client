@@ -42,3 +42,9 @@ class SettingsDevicesViewController: UITableViewController {
         return 66.0
     }
 }
+
+extension SettingsDevicesViewController: CustomTabsChildController {
+    func reloadView() {
+        tableView.reloadData()
+    }
+}

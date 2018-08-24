@@ -24,6 +24,7 @@ class ChangeRecoveryEmailViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         emailTextField.keyboardType = .emailAddress
+        emailTextField.detailColor = .alert
         emailTextField.becomeFirstResponder()
     }
     
@@ -35,9 +36,16 @@ class ChangeRecoveryEmailViewController: UIViewController {
         guard let email = emailTextField.text else {
             return
         }
+        guard email != "\(myAccount.username)\(Constants.domain)" else {
+            emailTextField.detail = "Don't use the same criptext account"
+            return
+        }
+        guard email != generalData.recoveryEmail else {
+            emailTextField.detail = "Please enter a different email"
+            return
+        }
         guard Utils.validateEmail(email) else {
             emailTextField.detail = "Please enter a valid email"
-            emailTextField.detailColor = .alertText
             return
         }
         presentPasswordPopover()
@@ -62,6 +70,8 @@ class ChangeRecoveryEmailViewController: UIViewController {
                 self.showAlert("Network Error", message: "Unable to change recovery email. Please try again", style: .alert)
                 return
             }
+            self.generalData.recoveryEmail = email
+            self.generalData.recoveryEmailStatus = .pending
             self.goBack()
         }
     }

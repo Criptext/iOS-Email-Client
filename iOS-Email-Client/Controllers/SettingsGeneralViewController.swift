@@ -44,26 +44,45 @@ class SettingsGeneralViewController: UITableViewController{
     
     func renderAccountCells(text: String) -> GeneralTapTableCellView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-        cell.messageLabel.text = ""
-        cell.goImageView.isHidden = false
-        cell.optionLabel.text = text
-        return cell
+        switch(text){
+        case "Recovery Email":
+            cell.optionLabel.text = text
+            cell.messageLabel.text = generalData.recoveryEmailStatus.description
+            cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
+            guard generalData.recoveryEmail != nil else {
+                cell.loader.startAnimating()
+                cell.loader.isHidden = false
+                cell.goImageView.isHidden = true
+                return cell
+            }
+            cell.loader.stopAnimating()
+            cell.loader.isHidden = true
+            cell.goImageView.isHidden = false
+            return cell
+        default:
+            cell.optionLabel.text = text
+            cell.goImageView.isHidden = false
+            cell.messageLabel.text = ""
+            cell.loader.stopAnimating()
+            cell.loader.isHidden = true
+            return cell
+        }
     }
     
     func renderAboutCells(text: String) -> GeneralTapTableCellView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
-        
-        guard text != "Version" else {
+        cell.loader.isHidden = true
+        switch(text){
+        case "Version":
             cell.optionLabel.text = "Criptext Beta v.1.0.3"
             cell.goImageView.isHidden = true
             return cell
+        default:
+            cell.goImageView.isHidden = false
+            cell.optionLabel.text = text
+            return cell
         }
-        
-        cell.goImageView.isHidden = false
-        cell.optionLabel.text = text
-        
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -137,6 +156,9 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func goToRecoveryEmail(){
+        guard generalData.recoveryEmail != nil else {
+            return
+        }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let recoveryVC = storyboard.instantiateViewController(withIdentifier: "recoveryEmailViewController") as! RecoveryEmailViewController
         recoveryVC.generalData = self.generalData
@@ -182,5 +204,10 @@ class SettingsGeneralViewController: UITableViewController{
             }
         }
     }
-    
+}
+
+extension SettingsGeneralViewController: CustomTabsChildController {
+    func reloadView() {
+        tableView.reloadData()
+    }
 }
