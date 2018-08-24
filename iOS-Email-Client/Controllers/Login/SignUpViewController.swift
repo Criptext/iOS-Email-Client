@@ -162,7 +162,7 @@ class SignUpViewController: UIViewController{
             emailTextField.setStatus(.none)
             return
         }
-        guard isValidEmail(emailTextField.text!) else {
+        guard Utils.validateEmail(emailTextField.text!) else {
             let inputError = "this is not a valid email"
             emailTextField.setStatus(.invalid, inputError)
             return
@@ -255,13 +255,6 @@ class SignUpViewController: UIViewController{
         passwordTextField.placeholderAnimation = .hidden
         confirmPasswordTextField.placeholderAnimation = .hidden
         emailTextField.placeholderAnimation = .hidden
-    }
-    
-    func isValidEmail(_ testStr:String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: testStr)
     }
     
     func isValidUsername(_ testStr:String) -> Bool {

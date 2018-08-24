@@ -107,3 +107,8 @@ class SettingsLabelsViewController: UITableViewController {
         }
     }
 }
+
+extension SettingsLabelsViewController: CustomTabsChildController {
+    func reloadView() {
+    }
+}

@@ -34,8 +34,9 @@ class Device {
         return newDevice
     }
     
-    class func createActiveDevice() -> Device {
+    class func createActiveDevice(deviceId: Int) -> Device {
         let device = Device()
+        device.id = deviceId
         device.name = systemIdentifier()
         device.type = Device.Kind.current.rawValue
         device.active = true

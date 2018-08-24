@@ -13,14 +13,20 @@ import SafariServices
 class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature"],
+        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
+    var generalData: GeneralSettingsData!
     var myAccount : Account!
     
     override func viewDidLoad() {
         tabItem.title = "General"
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -33,22 +39,55 @@ class SettingsGeneralViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let text = menus[sections[indexPath.section]]![indexPath.row]
-        guard indexPath.section < 2 else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+        switch(indexPath.section){
+        case 0:
+            return renderAccountCells(text: text)
+        default:
+            return renderAboutCells(text: text)
+        }
+    }
+    
+    func renderAccountCells(text: String) -> GeneralTapTableCellView {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        switch(text){
+        case "Recovery Email":
+            cell.optionLabel.text = text
+            cell.messageLabel.text = generalData.recoveryEmailStatus.description
+            cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
+            guard generalData.recoveryEmail != nil else {
+                cell.loader.startAnimating()
+                cell.loader.isHidden = false
+                cell.goImageView.isHidden = true
+                return cell
+            }
+            cell.loader.stopAnimating()
+            cell.loader.isHidden = true
+            cell.goImageView.isHidden = false
+            return cell
+        default:
+            cell.optionLabel.text = text
+            cell.goImageView.isHidden = false
+            cell.messageLabel.text = ""
+            cell.loader.stopAnimating()
+            cell.loader.isHidden = true
+            return cell
+        }
+    }
+    
+    func renderAboutCells(text: String) -> GeneralTapTableCellView {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        cell.messageLabel.text = ""
+        cell.loader.isHidden = true
+        switch(text){
+        case "Version":
+            cell.optionLabel.text = "Criptext Beta v.1.0.3"
+            cell.goImageView.isHidden = true
+            return cell
+        default:
+            cell.goImageView.isHidden = false
             cell.optionLabel.text = text
             return cell
         }
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-        cell.messageLabel.text = ""
-        guard text != "Version" else {
-            cell.optionLabel.text = "Criptext Beta V.1.0.3"
-            cell.goImageView.isHidden = true
-            return cell
-        }
-        cell.goImageView.isHidden = false
-        cell.optionLabel.text = text
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -75,6 +114,8 @@ class SettingsGeneralViewController: UITableViewController{
             goToUrl(url: "https://criptext.com/open-source-ios")
         case "Logout":
             logout()
+        case "Recovery Email":
+            goToRecoveryEmail()
         default:
             break
         }
@@ -119,6 +160,17 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
+    func goToRecoveryEmail(){
+        guard generalData.recoveryEmail != nil else {
+            return
+        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let recoveryVC = storyboard.instantiateViewController(withIdentifier: "recoveryEmailViewController") as! RecoveryEmailViewController
+        recoveryVC.generalData = self.generalData
+        recoveryVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(recoveryVC, animated: true)
+    }
+    
     func goToSignature(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let signatureVC = storyboard.instantiateViewController(withIdentifier: "signatureEditorViewController") as! SignatureEditorViewController
@@ -157,5 +209,10 @@ class SettingsGeneralViewController: UITableViewController{
             }
         }
     }
-    
+}
+
+extension SettingsGeneralViewController: CustomTabsChildController {
+    func reloadView() {
+        tableView.reloadData()
+    }
 }

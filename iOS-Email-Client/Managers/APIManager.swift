@@ -326,13 +326,13 @@ class APIManager {
         }
     }
     
-    class func getDevices(token: String, completion: @escaping ((Error?, [[String: Any]]?) -> Void)){
-        let url = "\(self.baseUrl)/devices"
+    class func getSettings(token: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
+        let url = "\(self.baseUrl)/user/settings"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
             (response) in
             guard response.response?.statusCode == 200,
-                let responseData = response.result.value as? [[String: Any]] else {
+                let responseData = response.result.value as? [String: Any] else {
                     let criptextError = CriptextError(code: .noValidResponse)
                     completion(criptextError, nil)
                     return
@@ -349,6 +349,37 @@ class APIManager {
                 let criptextError = CriptextError(code: .noValidResponse)
                 completion(criptextError)
                 return
+            }
+            completion(nil)
+        }
+    }
+    
+    class func changeRecoveryEmail(email: String, password: String, token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/user/recovery/change"
+        let headers = ["Authorization": "Bearer \(token)"]
+        let params = [
+            "email": email,
+            "password": password
+            ] as [String: Any]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            guard response.response?.statusCode == 200 else {
+                let error = CriptextError(code: .noValidResponse)
+                completion(error)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    class func resendConfirmationEmail(token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/user/recovery/resend"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString {
+            (response) in
+            guard response.response?.statusCode == 200 else {
+                    let criptextError = CriptextError(code: .noValidResponse)
+                    completion(criptextError)
+                    return
             }
             completion(nil)
         }
