@@ -342,7 +342,7 @@ class APIManager {
     }
     
     class func removeDevice(deviceId: Int, token: String, completion: @escaping ((Error?) -> Void)){
-        let url = "\(self.baseUrl)/devices/\(deviceId)"
+        let url = "\(self.baseUrl)/device/\(deviceId)"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             guard response.response?.statusCode == 200 else {
@@ -380,6 +380,23 @@ class APIManager {
                     let criptextError = CriptextError(code: .noValidResponse)
                     completion(criptextError)
                     return
+            }
+            completion(nil)
+        }
+    }
+    
+    class func changePassword(oldPassword: String, newPassword: String, token: String, completion: @escaping ((Error?) -> Void)){
+        let url = "\(self.baseUrl)/user/password/change"
+        let headers = ["Authorization": "Bearer \(token)"]
+        let params = [
+            "oldPassword": oldPassword,
+            "newPassword": newPassword
+            ] as [String: Any]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            guard response.response?.statusCode == 200 else {
+                let error = CriptextError(code: .noValidResponse)
+                completion(error)
+                return
             }
             completion(nil)
         }

@@ -603,6 +603,7 @@ extension InboxViewController: UITableViewDataSource{
         navSettingsVC.navigationBar.barTintColor = .lightText
         let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
+        
         self.navigationController?.childViewControllers.last!.present(navSettingsVC, animated: true, completion: nil)
     }
     
