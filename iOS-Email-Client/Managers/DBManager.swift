@@ -413,7 +413,7 @@ extension DBManager {
     
     class func getEmailFailed() -> Email? {
         let realm = try! Realm()
-        let hasFailed = NSPredicate(format: "delivered == \(Email.Status.fail.rawValue)")
+        let hasFailed = NSPredicate(format: "delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@)", [SystemLabel.trash.id])
         let results = realm.objects(Email.self).filter(hasFailed)
         
         return results.first
@@ -986,7 +986,7 @@ extension DBManager {
         try! realm.write {
             for threadId in threadIds {
                 let deletableLabels = [SystemLabel.trash.id, SystemLabel.spam.id, SystemLabel.draft.id]
-                let emails = Array(realm.objects(Email.self).filter("threadId == '\(threadId) AND ANY labels.id IN %@'", deletableLabels))
+                let emails = Array(realm.objects(Email.self).filter("threadId == '\(threadId)' AND ANY labels.id IN %@", deletableLabels))
                 self.deleteEmail(realm: realm, emails: emails)
             }
         }

@@ -108,6 +108,7 @@ class InboxViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
+        getPendingEvents(nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1095,7 +1096,7 @@ extension InboxViewController: ComposerSendMailDelegate {
         sendMailAsyncTask.start { data in
             guard let key = data,
                 let newEmail = DBManager.getMail(key: key) else {
-                self.showAlert("Network Error", message: "Unable to send email. Don't worry, it will be automatically resent.", style: .alert)
+                self.showSnackbar("Email Failed. It will be resent in the future", attributedText: nil, buttons: "", permanent: false)
                 self.hideSnackbar()
                 return
             }
