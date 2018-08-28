@@ -30,6 +30,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     override func viewDidLoad() {
         super.viewDidLoad()
         passwordTextField.detailColor = .alert
+        passwordTextField.isVisibilityIconButtonEnabled = true
         showLoader(false)
     }
     

@@ -36,7 +36,7 @@ class NewLoginViewController: UIViewController{
         super.viewDidAppear(animated)
         if loggedOutRemotely {
             loggedOutRemotely = false
-            showAlert("Logged Out!", message: "You were logged out remotely by another of your devices", style: .alert)
+            showAlert("Logged Out!", message: "This device has been removed remotely.", style: .alert)
         }
     }
     
