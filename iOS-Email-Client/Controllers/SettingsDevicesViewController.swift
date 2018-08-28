@@ -55,6 +55,7 @@ extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
             return
         }
         let device = devices[indexPath.row]
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         presentRemoveDevicePopover(device: device)
     }
     
@@ -63,10 +64,21 @@ extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
         let removeDevicePopover = RemoveDeviceUIPopover()
         removeDevicePopover.device = device
         removeDevicePopover.myAccount = myAccount
+         removeDevicePopover.onSuccess = { [weak self] deviceId in
+            self?.removeDevice(deviceId)
+        }
         guard let tabsController = self.tabsController else {
             self.presentPopover(popover: removeDevicePopover, height: popoverHeight)
             return
         }
         tabsController.presentPopover(popover: removeDevicePopover, height: popoverHeight)
+    }
+    
+    func removeDevice(_ deviceId: Int){
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+            return
+        }
+        deviceData.devices.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 }

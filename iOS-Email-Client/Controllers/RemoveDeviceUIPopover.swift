@@ -17,6 +17,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
+    var onSuccess: ((Int) -> Void)?
     
     init(){
         super.init("RemoveDeviceUIPopover")
@@ -47,13 +48,15 @@ class RemoveDeviceUIPopover: BaseUIPopover {
             password.count > 0 else {
                 return
         }
+        let deviceId = device.id
         showLoader(true)
-        APIManager.removeDevice(deviceId: device.id, token: myAccount.jwt) { (error) in
+        APIManager.removeDevice(deviceId: deviceId, token: myAccount.jwt) { (error) in
             guard error == nil else {
                 self.showLoader(false)
                 self.passwordTextField.detail = "Unable to remove device \(self.device.name)"
                 return
             }
+            self.onSuccess?(deviceId)
             self.dismiss(animated: true)
         }
     }
