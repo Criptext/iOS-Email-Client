@@ -222,6 +222,8 @@
 		7CCC82F22125E83F00D33F84 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A277207C6470004BDF90 /* Fabric.framework */; };
 		7CCC82F32125E83F00D33F84 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A275207C6466004BDF90 /* Crashlytics.framework */; };
 		7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */; };
+		7CCD73E4212DEB30002C8C7F /* RemoveDeviceUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */; };
+		7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */; };
 		7CD4A43221111DCF00A40C74 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */; };
 		7CD4A43321111DCF00A40C74 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */; };
 		7CD4A43421111DCF00A40C74 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */; };
@@ -479,6 +481,8 @@
 		7CCA8CF7212CCE48003FD46C /* ChangePasswordUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordUIPopover.swift; sourceTree = "<group>"; };
 		7CCA8CF9212CCEBF003FD46C /* ChangePasswordUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangePasswordUIPopover.xib; sourceTree = "<group>"; };
 		7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIWindowTransitions.framework; path = Carthage/Build/iOS/UIWindowTransitions.framework; sourceTree = "<group>"; };
+		7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RemoveDeviceUIPopover.xib; sourceTree = "<group>"; };
+		7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDeviceUIPopover.swift; sourceTree = "<group>"; };
 		7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
 		7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
 		7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
@@ -675,6 +679,7 @@
 				7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */,
 				7C4D33C6212C7B8400045B09 /* PasswordUIPopover.swift */,
 				7CCA8CF7212CCE48003FD46C /* ChangePasswordUIPopover.swift */,
+				7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -880,6 +885,7 @@
 				7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */,
 				7C4D33C4212C7A2900045B09 /* PasswordUIPopover.xib */,
 				7CCA8CF9212CCEBF003FD46C /* ChangePasswordUIPopover.xib */,
+				7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1096,6 +1102,7 @@
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */,
+				7CCD73E4212DEB30002C8C7F /* RemoveDeviceUIPopover.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
 				7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */,
@@ -1294,6 +1301,7 @@
 				954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */,
 				41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */,
 				7CBF569F20FD41270044B406 /* CustomDictionary.swift in Sources */,
+				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C7F2FF120B4D2C400A2CB32 /* SettingsDevicesViewController.swift in Sources */,

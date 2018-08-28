@@ -102,7 +102,9 @@ class SendMailAsyncTask {
     }
     
     private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((Int?) -> Void)){
-        let myAccount = DBManager.getAccountByUsername(self.username)!
+        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            return
+        }
         var recipients = [String]()
         var knownAddresses = [String: [Int32]]()
         var criptextEmailsData = [[String: Any]]()
@@ -127,7 +129,9 @@ class SendMailAsyncTask {
             ] as [String : Any]
         
         APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { (err, response) in
-            let myAccount = DBManager.getAccountByUsername(self.username)!
+            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+                return
+            }
             guard let keysArray = response as? [[String: Any]] else {
                 DispatchQueue.main.async {
                     completion(nil)
@@ -199,7 +203,9 @@ class SendMailAsyncTask {
     }
     
     private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((Int?) -> Void)){
-        let myAccount = DBManager.getAccountByUsername(self.username)!
+        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            return
+        }
         var requestParams = ["subject": subject] as [String : Any]
         if(!criptextEmails.isEmpty){
             requestParams["criptextEmails"] = criptextEmails

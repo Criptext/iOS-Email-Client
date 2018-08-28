@@ -39,11 +39,15 @@ class ChangePasswordUIPopover: BaseUIPopover {
         oldPasswordTextField.detailColor = .alert
         newPasswordTextField.detailColor = .alert
         confirmPasswordTextField.detailColor = .alert
-        oldPasswordTextField.becomeFirstResponder()
         
         oldPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         newPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         confirmPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        oldPasswordTextField.becomeFirstResponder()
     }
     
     @objc func onDonePress(_ sender: Any){
