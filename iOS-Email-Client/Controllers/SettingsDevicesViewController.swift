@@ -60,7 +60,7 @@ extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
     }
     
     func presentRemoveDevicePopover(device: Device){
-        let popoverHeight = 300
+        let popoverHeight = 195
         let removeDevicePopover = RemoveDeviceUIPopover()
         removeDevicePopover.device = device
         removeDevicePopover.myAccount = myAccount

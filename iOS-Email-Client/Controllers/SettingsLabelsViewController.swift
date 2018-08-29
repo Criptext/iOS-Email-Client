@@ -96,8 +96,13 @@ class SettingsLabelsViewController: UITableViewController {
         }
         let label = Label(labelText)
         let params = EventData.Peer.NewLabel(text: label.text, color: label.color)
-        APIManager.postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        APIManager.postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to add label \(labelText). Please try again", style: .alert)
                 return
             }

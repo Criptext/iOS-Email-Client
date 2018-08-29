@@ -128,6 +128,17 @@ class EmailDetailViewController: UIViewController {
         let email = emailData.emails[indexPath.row]
         return email.cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : email.cellHeight
     }
+    
+    func postPeerEvent(_ params: [String: Any], completion: @escaping ((ResponseData) -> Void)){
+        APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            completion(responseData)
+        }
+    }
 }
 
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
@@ -402,8 +413,8 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
                         "unread": unread ? 1 : 0,
                         "threadIds": [emailData.threadId]
             ]] as [String : Any]
-        APIManager.postPeerEvent(params, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(params) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to change read status. Please try again", style: .alert)
                 return
             }
@@ -497,8 +508,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     func deleteSingleEmail(_ email: Email, indexPath: IndexPath){
         let eventData = EventData.Peer.EmailDeleted(metadataKeys: [email.key])
         let emailKey = email.key
-        APIManager.postPeerEvent(["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()]) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }
@@ -511,8 +522,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let changedLabels = getLabelNames(added: [SystemLabel.trash.id], removed: [])
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
         let emailKey = email.key
-        APIManager.postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()]) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }
@@ -553,8 +564,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                         "metadataKeys": emailKeys
             ]] as [String : Any]
         let thresholdDate = selectedEmail.date
-        APIManager.postPeerEvent(params, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(params) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to change read status. Please try again", style: .alert)
                 return
             }
@@ -583,8 +594,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         
         let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        APIManager.postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()]) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }
@@ -607,9 +618,14 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         email.isUnsending = true
         emailsTableView.reloadData()
         let recipients = getEmailRecipients(contacts: email.getContacts())
-        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (error) in
+        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (responseData) in
             email.isUnsending = false
-            guard error == nil else {
+            if case .Unauthorized = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
                 self.emailsTableView.reloadData()
                 return
@@ -698,8 +714,8 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool){
         let changedLabels = getLabelNames(added: added, removed: removed)
         let eventData = EventData.Peer.ThreadLabels(threadIds: [emailData.threadId], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        APIManager.postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) { (responseData) in
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
                 return
             }

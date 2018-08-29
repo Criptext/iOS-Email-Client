@@ -128,11 +128,11 @@ class SendMailAsyncTask {
             "knownAddresses": knownAddresses
             ] as [String : Any]
         
-        APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { (err, response) in
+        APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { responseData in
             guard let myAccount = DBManager.getAccountByUsername(self.username) else {
                 return
             }
-            guard let keysArray = response as? [[String: Any]] else {
+            guard case let .SuccessArray(keysArray) = responseData else {
                 DispatchQueue.main.async {
                     completion(nil)
                 }
@@ -219,8 +219,8 @@ class SendMailAsyncTask {
         if let thread = self.threadId {
             requestParams["threadId"] = thread
         }
-        APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { (error, data) in
-            guard let updateData = data as? [String: Any] else {
+        APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { responseData in
+            guard case let .SuccessDictionary(updateData) = responseData else {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()
                     completion(nil)

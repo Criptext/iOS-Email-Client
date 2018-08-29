@@ -16,6 +16,7 @@ class NewLoginViewController: UIViewController{
     @IBOutlet weak var errorImage: UIImageView!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var loginErrorLabel: UILabel!
+    var loggedOutRemotely = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,14 @@ class NewLoginViewController: UIViewController{
         toggleLoadingView(false)
         clearErrors()
         checkToEnableDisableLoginButton()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if loggedOutRemotely {
+            loggedOutRemotely = false
+            showAlert("Logged Out!", message: "This device has been removed remotely.", style: .alert)
+        }
     }
     
     @objc func hideKeyboard(){

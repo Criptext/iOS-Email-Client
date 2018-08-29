@@ -64,9 +64,14 @@ class ChangeRecoveryEmailViewController: UIViewController {
             return
         }
         showLoader(true)
-        APIManager.changeRecoveryEmail(email: email, password: password, token: myAccount.jwt) { error in
+        APIManager.changeRecoveryEmail(email: email, password: password, token: myAccount.jwt) { responseData in
+            if case .Unauthorized = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
             self.showLoader(false)
-            guard error == nil else {
+            guard case .Success = responseData else {
                 self.showAlert("Network Error", message: "Unable to change recovery email. Please try again", style: .alert)
                 return
             }

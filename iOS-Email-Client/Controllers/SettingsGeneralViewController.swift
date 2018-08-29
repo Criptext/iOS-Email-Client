@@ -13,7 +13,7 @@ import SafariServices
 class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email", "Change Password"],
+        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
@@ -80,7 +80,7 @@ class SettingsGeneralViewController: UITableViewController{
         cell.loader.isHidden = true
         switch(text){
         case "Version":
-            cell.optionLabel.text = "Criptext Beta v.1.0.3"
+            cell.optionLabel.text = "Criptext Beta v.1.0.5"
             cell.goImageView.isHidden = true
             return cell
         default:
@@ -136,8 +136,13 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func confirmLogout(){
-        APIManager.removeDevice(deviceId: myAccount.deviceId, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        APIManager.removeDevice(deviceId: myAccount.deviceId, token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showAlert("Logout Error", message: "Unable to logout. Please try again", style: .alert)
                 return
             }
@@ -198,13 +203,18 @@ class SettingsGeneralViewController: UITableViewController{
     
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
-        APIManager.updateName(name: name, token: myAccount.jwt) { (error) in
-            guard error == nil else {
+        APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
+                return
+            }
+            guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                 return
             }
-              APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (error) in
-                guard error == nil else {
+              APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (responseData) in
+                guard case .Success = responseData else {
                     self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                     return
                 }

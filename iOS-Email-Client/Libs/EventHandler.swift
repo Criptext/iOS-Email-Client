@@ -153,12 +153,17 @@ class EventHandler {
             }
         }
         
-        apiManager.getEmailBody(metadataKey: email.key, token: myAccount.jwt) { (error, data) in
-            let unsent = (error as? CriptextError)?.code == .bodyUnsent
+        apiManager.getEmailBody(metadataKey: email.key, token: myAccount.jwt) { (responseData) in
+            var error: CriptextError?
+            if case let .Error(err) = responseData {
+                error = err as? CriptextError
+            }
+            let unsent = error?.code == .bodyUnsent
             
             guard (unsent || error == nil),
                 let username = Utils.getUsernameFromEmailFormat(event.from),
-                let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: data as! String, recipientId: username, senderDeviceId: event.senderDeviceId) else {
+                case let .SuccessString(body) = responseData,
+                let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, recipientId: username, senderDeviceId: event.senderDeviceId) else {
                 finishCallback(false, nil)
                 return
             }

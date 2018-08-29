@@ -28,13 +28,17 @@ class CustomTabsController: TabsController {
     }
     
     func loadData(){
-        APIManager.getSettings(token: myAccount.jwt) { (error, settings) in
-            guard let mySettings = settings,
-                let devices = mySettings["devices"] as? [[String: Any]],
-                let recoveryData = mySettings["recoveryEmail"] as? [String: Any] else {
+        APIManager.getSettings(token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate {
+                delegate.logout()
                 return
             }
-            
+            guard case let .SuccessDictionary(settings) = responseData,
+                let devices = settings["devices"] as? [[String: Any]],
+                let recoveryData = settings["recoveryEmail"] as? [String: Any] else {
+                return
+            }
             for device in devices {
                 let newDevice = Device.fromDictionary(data: device)
                 guard !self.devicesData.devices.contains(where: {$0.id == newDevice.id && $0.active}) else {
