@@ -132,7 +132,7 @@ class SendMailAsyncTask {
             guard let myAccount = DBManager.getAccountByUsername(self.username) else {
                 return
             }
-            guard case let .Keys(keysArray) = responseData else {
+            guard case let .SuccessArray(keysArray) = responseData else {
                 DispatchQueue.main.async {
                     completion(nil)
                 }
@@ -220,7 +220,7 @@ class SendMailAsyncTask {
             requestParams["threadId"] = thread
         }
         APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { responseData in
-            guard case let .PostEmail(updateData) = responseData else {
+            guard case let .SuccessDictionary(updateData) = responseData else {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()
                     completion(nil)

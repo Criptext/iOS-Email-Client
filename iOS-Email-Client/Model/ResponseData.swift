@@ -10,11 +10,9 @@ import Foundation
 
 enum ResponseData {
     case Error(Error)
-    case Keys([[String: Any]])
-    case PostEmail(metadata: [String: Any])
     case Success
-    case Events([[String: Any]])
-    case Body(String)
-    case Settings([String: Any])
-    case LoggedOut
+    case SuccessArray([[String: Any]])
+    case SuccessDictionary([String: Any])
+    case SuccessString(String)
+    case Unauthorized
 }

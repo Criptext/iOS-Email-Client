@@ -65,7 +65,7 @@ class ChangeRecoveryEmailViewController: UIViewController {
         }
         showLoader(true)
         APIManager.changeRecoveryEmail(email: email, password: password, token: myAccount.jwt) { responseData in
-            if case .LoggedOut = responseData,
+            if case .Unauthorized = responseData,
                 let delegate = UIApplication.shared.delegate as? AppDelegate {
                 delegate.logout()
                 return

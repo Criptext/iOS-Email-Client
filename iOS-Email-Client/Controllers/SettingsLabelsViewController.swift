@@ -97,7 +97,7 @@ class SettingsLabelsViewController: UITableViewController {
         let label = Label(labelText)
         let params = EventData.Peer.NewLabel(text: label.text, color: label.color)
         APIManager.postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], token: myAccount.jwt) { (responseData) in
-            if case .LoggedOut = responseData,
+            if case .Unauthorized = responseData,
                 let delegate = UIApplication.shared.delegate as? AppDelegate {
                 delegate.logout()
                 return

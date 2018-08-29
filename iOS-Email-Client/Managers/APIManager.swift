@@ -33,7 +33,7 @@ class APIManager {
     private class func checkRequestAuth(response: HTTPURLResponse?) -> ResponseData? {
         if let status = response?.statusCode,
             status == CODE_LOGGED_OUT {
-            return .LoggedOut
+            return .Unauthorized
         }
         return nil
     }
@@ -112,7 +112,7 @@ class APIManager {
                 completion(ResponseData.Error(error))
                 return
             }
-            completion(ResponseData.Keys(value))
+            completion(ResponseData.SuccessArray(value))
         }
     }
     
@@ -128,7 +128,7 @@ class APIManager {
                 completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                 return
             }
-            completion(ResponseData.PostEmail(metadata: value))
+            completion(ResponseData.SuccessDictionary(value))
         }
     }
     
@@ -160,7 +160,7 @@ class APIManager {
                 completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                 return
             }
-            completion(ResponseData.Events(value))
+            completion(ResponseData.SuccessArray(value))
         }
     }
     
@@ -180,7 +180,7 @@ class APIManager {
                 completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                 return
             }
-            completion(ResponseData.Body(value))
+            completion(ResponseData.SuccessString(value))
         }
     }
     
@@ -272,7 +272,7 @@ class APIManager {
                     completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                     return
             }
-            completion(ResponseData.Settings(responseData))
+            completion(ResponseData.SuccessDictionary(responseData))
         }
     }
     

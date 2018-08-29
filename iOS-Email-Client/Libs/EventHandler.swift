@@ -162,7 +162,7 @@ class EventHandler {
             
             guard (unsent || error == nil),
                 let username = Utils.getUsernameFromEmailFormat(event.from),
-                case let .Body(body) = responseData,
+                case let .SuccessString(body) = responseData,
                 let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, recipientId: username, senderDeviceId: event.senderDeviceId) else {
                 finishCallback(false, nil)
                 return
