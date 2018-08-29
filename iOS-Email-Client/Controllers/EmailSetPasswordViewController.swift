@@ -39,7 +39,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
             return
         }
         scrollview.bounces = false
-        scrollview.contentSize = CGSize(width: Constants.popoverWidth, height: 406)
+        scrollview.contentSize = CGSize(width: Constants.popoverWidth, height: 335)
     }
     
     @IBAction func onDidEndOnExit(_ sender: Any) {

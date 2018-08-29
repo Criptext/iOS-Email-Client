@@ -855,7 +855,6 @@ extension DBManager {
         
         try! realm.write {
             for emailContact in emailContacts {
-                emailContact.incrementID()
                 realm.add(emailContact, update: true)
             }
         }
