@@ -136,7 +136,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func confirmLogout(){
-        APIManager.removeDevice(deviceId: myAccount.deviceId, token: myAccount.jwt) { (responseData) in
+        APIManager.logout(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return

@@ -280,10 +280,11 @@ class APIManager {
         }
     }
     
-    class func removeDevice(deviceId: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func removeDevice(deviceId: Int, password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/device/\(deviceId)"
         let headers = ["Authorization": "Bearer \(token)"]
-        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+        let params = ["password": password]
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
                 return

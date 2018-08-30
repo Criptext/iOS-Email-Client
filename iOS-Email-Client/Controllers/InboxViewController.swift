@@ -1102,8 +1102,18 @@ extension InboxViewController: ComposerSendMailDelegate {
         showSendingSnackBar(message: "Sending Email...", permanent: true)
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
-        sendMailAsyncTask.start { data in
-            guard let key = data,
+        sendMailAsyncTask.start { responseData in
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            
+            if case .Forbidden = responseData {
+                self.showSnackbar("Email Failed. It will be resent in the future", attributedText: nil, buttons: "", permanent: false)
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            guard case let .SuccessInt(key) = responseData,
                 let newEmail = DBManager.getMail(key: key) else {
                 self.showSnackbar("Email Failed. It will be resent in the future", attributedText: nil, buttons: "", permanent: false)
                 self.hideSnackbar()

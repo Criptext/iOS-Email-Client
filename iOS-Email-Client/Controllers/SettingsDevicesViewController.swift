@@ -32,9 +32,7 @@ class SettingsDevicesViewController: UITableViewController {
         cell.deviceImageView.image = Device.Kind(rawValue: device.type)! != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
         cell.deviceNameLabel.text = device.name
         cell.deviceLocationLabel.text = device.location
-        cell.currentDeviceLabel.isHidden = !device.active
-        cell.deviceLocationLabel.isHidden = !device.active
-        
+        cell.displayAsActive(device.active)
         return cell
     }
     
@@ -60,7 +58,7 @@ extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
     }
     
     func presentRemoveDevicePopover(device: Device){
-        let popoverHeight = 195
+        let popoverHeight = 290
         let removeDevicePopover = RemoveDeviceUIPopover()
         removeDevicePopover.device = device
         removeDevicePopover.myAccount = myAccount

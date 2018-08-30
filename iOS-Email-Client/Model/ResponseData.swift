@@ -11,6 +11,7 @@ import Foundation
 enum ResponseData {
     case Error(Error)
     case Success
+    case SuccessInt(Int)
     case SuccessArray([[String: Any]])
     case SuccessDictionary([String: Any])
     case SuccessString(String)
