@@ -245,9 +245,13 @@ class InboxViewController: UIViewController {
             return
         }
         APIManager.getEvents(token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
             
@@ -828,11 +832,16 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     
     func postPeerEvent(_ params: [String: Any], completion: @escaping ((ResponseData) -> Void)){
         APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+            if case .Unauthorized = responseData {
+                self.logout()
                 return
             }
+            
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            
             completion(responseData)
         }
     }

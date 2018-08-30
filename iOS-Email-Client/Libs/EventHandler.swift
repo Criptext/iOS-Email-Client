@@ -173,7 +173,7 @@ class EventHandler {
                 email.unsentDate = email.date
                 email.status = .unsent
             }
-            DBManager.store(email)
+            DBManager.store(email, update: !unsent)
             
             if !unsent,
                 let keyString = event.fileKey,

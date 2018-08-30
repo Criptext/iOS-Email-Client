@@ -15,4 +15,5 @@ enum ResponseData {
     case SuccessDictionary([String: Any])
     case SuccessString(String)
     case Unauthorized
+    case Forbidden
 }

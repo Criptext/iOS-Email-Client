@@ -39,6 +39,22 @@ extension UIViewController {
         popover.popoverPresentationController?.backgroundColor = UIColor.white
         self.present(popover, animated: true)
     }
+    
+    func logout(){
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.logout()
+        }
+    }
+    
+    func presentPasswordPopover(myAccount: Account){
+        let passwordVC = PasswordUIPopover()
+        passwordVC.myAccount = myAccount
+        passwordVC.remotelyCheckPassword = true
+        passwordVC.onLogoutPress = {
+            self.logout()
+        }
+        self.presentPopover(popover: passwordVC, height: 213)
+    }
 }
 
 func MD5(string: String) -> Data {

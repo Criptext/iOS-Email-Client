@@ -110,14 +110,14 @@ extension DBManager {
 //MARK: - Email related
 extension DBManager {
 
-    class func store(_ email:Email){
+    class func store(_ email:Email, update: Bool = true){
         let realm = try! Realm()
         
-        try! realm.write() {
+        try? realm.write() {
             if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
                 return
             }
-            realm.add(email, update: true)
+            realm.add(email, update: update)
         }
     }
     

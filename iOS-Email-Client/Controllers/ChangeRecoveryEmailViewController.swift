@@ -48,10 +48,10 @@ class ChangeRecoveryEmailViewController: UIViewController {
             emailTextField.detail = "Please enter a valid email"
             return
         }
-        presentPasswordPopover()
+        presentChangePasswordPopover()
     }
     
-    func presentPasswordPopover(){
+    func presentChangePasswordPopover(){
         let passwordVC = PasswordUIPopover()
         passwordVC.onOkPress = { [weak self] password in
             self?.sendRequest(password: password.sha256()!)
@@ -65,9 +65,12 @@ class ChangeRecoveryEmailViewController: UIViewController {
         }
         showLoader(true)
         APIManager.changeRecoveryEmail(email: email, password: password, token: myAccount.jwt) { responseData in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
             self.showLoader(false)

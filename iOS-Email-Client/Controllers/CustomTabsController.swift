@@ -29,9 +29,12 @@ class CustomTabsController: TabsController {
     
     func loadData(){
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
             guard case let .SuccessDictionary(settings) = responseData,

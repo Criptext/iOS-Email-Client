@@ -47,9 +47,8 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         let deviceId = device.id
         showLoader(true)
         APIManager.removeDevice(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+            if case .Unauthorized = responseData {
+                self.logout()
                 return
             }
             guard case .Success = responseData else {

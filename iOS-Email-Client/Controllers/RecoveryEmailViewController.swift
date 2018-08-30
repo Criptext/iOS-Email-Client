@@ -58,9 +58,12 @@ class RecoveryEmailViewController: UIViewController {
     @IBAction func onResendPress(_ sender: Any) {
         self.showLoader(true)
         APIManager.resendConfirmationEmail(token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
             guard case .Success = responseData else {
