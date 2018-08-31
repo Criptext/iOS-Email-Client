@@ -11,6 +11,7 @@ import Material
 
 class ResetDeviceViewController: UIViewController{
 
+    @IBOutlet weak var forgotLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var errorMark: UIImageView!
     @IBOutlet weak var errorLabel: UILabel!
@@ -25,10 +26,13 @@ class ResetDeviceViewController: UIViewController{
         resetLoaderView.isHidden = true
         showFeedback(false)
         checkToEnableDisableResetButton()
-        let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
+        let forgotTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sendResetLink))
+        view.addGestureRecognizer(forgotTap)
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         passwordTextField.becomeFirstResponder()
+        forgotLabel.addGestureRecognizer(forgotTap)
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -86,7 +90,7 @@ class ResetDeviceViewController: UIViewController{
     func checkToEnableDisableResetButton(){
         let textCount = passwordTextField.text?.count ?? 0
         resetButton.isEnabled = !(passwordTextField.isEmpty || textCount < Constants.MinCharactersPassword) && resetLoaderView.isHidden
-        resetButton.setTitle(resetLoaderView.isHidden ? "Reset" : "", for: .normal)
+        resetButton.setTitle(resetLoaderView.isHidden ? "Sign In" : "", for: .normal)
         if(resetButton.isEnabled){
             resetButton.alpha = 1.0
         }else{
@@ -117,4 +121,15 @@ class ResetDeviceViewController: UIViewController{
         resetLoaderView.startAnimating()
     }
     
+    @objc func sendResetLink(){
+        let recipientId = loginData.email.split(separator: "@")[0]
+        showSnackbar("Sending reset password email", attributedText: nil, buttons: "", permanent: false)
+        APIManager.resetPassword(username: String(recipientId)) { (responseData) in
+            guard case .Success = responseData else {
+                self.showSnackbar("Unable to send email. Please try again", attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            self.showSnackbar("Email successfully sent", attributedText: nil, buttons: "", permanent: false)
+        }
+    }
 }

@@ -46,13 +46,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     migration.deleteData(forType: "Device")
                 }
                 if (oldSchemaVersion < 5) {
+                    migration.enumerateObjects(ofType: Contact.className()){ oldObject, newObject in
+                        if let contact = newObject,
+                            let email = contact["email"] as? String,
+                            !email.contains("@") {
+                            migration.delete(contact)
+                        }
+                    }
                     var keysMap: Set<String> = []
                     migration.enumerateObjects(ofType: EmailContact.className()){ oldObject, newObject in
                         guard let emailContact = newObject else {
                             return
                         }
                         guard let emailObject = emailContact["email"] as? MigrationObject,
-                            let contact = emailContact["contact"] as? MigrationObject else {
+                            let contact = emailContact["contact"] as? MigrationObject,
+                            (contact["email"] as? String)?.contains("@") ?? false else {
                             migration.delete(emailContact)
                             return
                         }
@@ -68,13 +76,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         emailContact["compoundKey"] = compoundKey
                         keysMap.insert(compoundKey)
-                    }
-                    migration.enumerateObjects(ofType: Contact.className()){ oldObject, newObject in
-                        if let contact = newObject,
-                            let email = contact["email"] as? String,
-                            !email.contains("@") {
-                            migration.delete(contact)
-                        }
                     }
                 }
             })
@@ -93,7 +94,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }else{
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            initialVC = storyboard.instantiateInitialViewController()
+            let loginVC = storyboard.instantiateInitialViewController()!
+            let paddingBottom = window?.safeAreaInsets.bottom ?? 0.0
+            let snackbarController = CriptextSnackbarController(rootViewController: loginVC)
+            snackbarController.setBottomPadding(padding: paddingBottom)
+            initialVC = snackbarController
         }
         
         self.replaceRootViewController(initialVC)

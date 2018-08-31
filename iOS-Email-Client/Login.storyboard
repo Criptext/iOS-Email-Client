@@ -1177,13 +1177,13 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NT8-w1-8Xk">
-                                                <rect key="frame" x="33" y="144" width="309" height="37"/>
+                                                <rect key="frame" x="33" y="147" width="309" height="31.5"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMf-wY-jdP">
-                                                <rect key="frame" x="33" y="191" width="309" height="48"/>
+                                                <rect key="frame" x="33" y="188.5" width="309" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="FXT-bk-n8F"/>
                                                 </constraints>
@@ -1192,7 +1192,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8N5-Z7-gsp">
-                                                <rect key="frame" x="37.5" y="428.5" width="300.5" height="44"/>
+                                                <rect key="frame" x="37.5" y="425" width="300.5" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="IDE-wd-lIU"/>
@@ -1210,8 +1210,8 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                     <action selector="onResetPress:" destination="SKd-jY-l7u" eventType="touchUpInside" id="pXF-yB-WSA"/>
                                                 </connections>
                                             </button>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot?" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMV-2J-3gD">
-                                                <rect key="frame" x="57" y="378" width="261" height="23.5"/>
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot password?" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMV-2J-3gD">
+                                                <rect key="frame" x="57" y="378" width="261" height="20"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1269,7 +1269,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="O3S-ch-dG6">
-                                                <rect key="frame" x="178" y="440.5" width="20" height="20"/>
+                                                <rect key="frame" x="178" y="437" width="20" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="2Un-Y3-w53"/>
                                                     <constraint firstAttribute="width" constant="20" id="Duk-rf-yvJ"/>
@@ -1339,6 +1339,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                         <outlet property="emailLabel" destination="hMf-wY-jdP" id="lCn-2b-KB4"/>
                         <outlet property="errorLabel" destination="mSJ-Yq-oKk" id="VQR-PW-5za"/>
                         <outlet property="errorMark" destination="Kaa-RK-1Lv" id="4HI-Th-wmR"/>
+                        <outlet property="forgotLabel" destination="dMV-2J-3gD" id="S92-6r-vqK"/>
                         <outlet property="passwordTextField" destination="7VS-F9-Zdf" id="Fu0-1D-AMN"/>
                         <outlet property="resetButton" destination="8N5-Z7-gsp" id="VLB-hi-7tM"/>
                         <outlet property="resetLoaderView" destination="O3S-ch-dG6" id="Fhc-0a-hcW"/>
