@@ -13,7 +13,7 @@ import SafariServices
 class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email", "Change Password"],
+        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
@@ -80,7 +80,7 @@ class SettingsGeneralViewController: UITableViewController{
         cell.loader.isHidden = true
         switch(text){
         case "Version":
-            cell.optionLabel.text = "Criptext Beta v.1.0.5"
+            cell.optionLabel.text = "Criptext Beta v.1.0.6"
             cell.goImageView.isHidden = true
             return cell
         default:
