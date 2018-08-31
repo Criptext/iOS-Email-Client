@@ -82,6 +82,11 @@ class CriptextFileManager {
         APIManager.getFileMetadata(filetoken: file.token, token: self.token) { (requestError, responseData) in
             guard let metadata = responseData?["file"] as? [String: Any] else {
                 file.requestStatus = .failed
+                self.delegate?.uploadProgressUpdate(file: file, progress: 0)
+                self.delegate?.finishRequest(file: file, success: false)
+                if let index = self.registeredFiles.index(where: {$0.token == file.token}) {
+                    self.registeredFiles.remove(at: index)
+                }
                 return
             }
             let totalChunks = metadata["chunks"] as! Int
