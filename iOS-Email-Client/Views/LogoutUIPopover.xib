@@ -24,6 +24,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LogoutPopoverViewController" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
+                <outlet property="logoutButton" destination="6Fs-oh-bwh" id="XcK-YC-ka9"/>
                 <outlet property="view" destination="iN0-l3-epB" id="B2V-ym-4gI"/>
             </connections>
         </placeholder>
@@ -33,15 +34,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCY-jW-B0n">
-                    <rect key="frame" x="108" y="40" width="55.5" height="23.5"/>
+                    <rect key="frame" x="108" y="27" width="55.5" height="23.5"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ic-29-Nue">
-                    <rect key="frame" x="33" y="86.5" width="204" height="102.5"/>
-                    <string key="text">Logging out will erase all emails from this device. All emails will remain intact in your other devices, if any.
-</string>
+                    <rect key="frame" x="33" y="73.5" width="204" height="102.5"/>
+                    <string key="text">Logging out will erase all emails from this device. All emails will remain intact in your other devices, if any. Do you want to Logout?</string>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -55,6 +55,9 @@
                     <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="15"/>
                     <state key="normal" title="Logout">
                         <color key="titleColor" red="0.18823529411764706" green="0.19607843137254902" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <state key="disabled">
+                        <color key="titleColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="onLogoutPress:" destination="-1" eventType="touchUpInside" id="bA8-0f-XNp"/>
@@ -78,7 +81,7 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="6Fs-oh-bwh" secondAttribute="bottom" id="084-Lg-VjB"/>
-                <constraint firstItem="cCY-jW-B0n" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="40" id="4OS-z0-h3G"/>
+                <constraint firstItem="cCY-jW-B0n" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="27" id="4OS-z0-h3G"/>
                 <constraint firstItem="5ic-29-Nue" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="33" id="Alb-kD-W8r"/>
                 <constraint firstItem="cCY-jW-B0n" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="DkU-qi-RMx"/>
                 <constraint firstItem="Yoa-Xs-DQG" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="PLY-0p-1km"/>

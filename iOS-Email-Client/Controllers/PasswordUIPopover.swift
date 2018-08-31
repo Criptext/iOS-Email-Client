@@ -12,9 +12,13 @@ import Material
 class PasswordUIPopover: BaseUIPopover {
     
     var onOkPress: ((String) -> (Void))?
+    var onLogoutPress: (() -> (Void))?
+    var myAccount: Account?
     var remotelyCheckPassword = false
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var passwordTextField: TextField!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var loader: UIActivityIndicatorView!
     
     init(){
         super.init("PasswordUIPopover")
@@ -28,14 +32,17 @@ class PasswordUIPopover: BaseUIPopover {
         super.viewDidLoad()
         passwordTextField.isVisibilityIconButtonEnabled = true
         passwordTextField.becomeFirstResponder()
+        passwordTextField.detailColor = .alert
+        cancelButton.setTitle(remotelyCheckPassword ? "Logout" : "Cancel", for: .normal)
+        shouldDismiss = !remotelyCheckPassword
+        showLoader(false)
     }
     
     @IBAction func okPress(_ sender: Any) {
         guard let password = passwordTextField.text else {
             return
         }
-        okButton.isEnabled = false
-        passwordTextField.isEnabled = false
+        self.showLoader(true)
         passwordTextField.resignFirstResponder()
         guard !remotelyCheckPassword else {
             validatePassword(password)
@@ -47,14 +54,51 @@ class PasswordUIPopover: BaseUIPopover {
     }
     
     func validatePassword(_ password: String){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            self?.dismiss(animated: true, completion: { [weak self] in
+        passwordTextField.detail = ""
+        guard let jwt = myAccount?.jwt else {
+            return
+        }
+        APIManager.unlockDevice(password: password.sha256()!, token: jwt) { (responseData) in
+            self.showLoader(false)
+            guard case .Success = responseData else {
+                self.passwordTextField.detail = "Wrong Password!"
+                return
+            }
+            self.dismiss(animated: true, completion: { [weak self] in
                 self?.onOkPress?(password)
             })
         }
     }
     
+    func showLoader(_ show: Bool){
+        self.okButton.isEnabled = !show
+        self.cancelButton.isEnabled = !show
+        self.passwordTextField.isEnabled = !show
+        self.loader.isHidden = !show
+        guard show else {
+            loader.stopAnimating()
+            return
+        }
+        loader.startAnimating()
+    }
+    
     @IBAction func cancelPress(_ sender: Any) {
-        dismiss(animated: true)
+        passwordTextField.detail = ""
+        guard self.remotelyCheckPassword,
+            let jwt = myAccount?.jwt else {
+            dismiss(animated: true)
+            return
+        }
+        self.showLoader(true)
+        APIManager.logout(token: jwt) { (responseData) in
+            self.showLoader(false)
+            guard case .Success = responseData else {
+                self.passwordTextField.detail = "Unable to logout. Try again."
+                return
+            }
+            self.dismiss(animated: true, completion: { [weak self] in
+                self?.onLogoutPress?()
+            })
+        }
     }
 }

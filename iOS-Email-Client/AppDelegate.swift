@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.statusBarStyle = .lightContent
         
         let config = Realm.Configuration(
-            schemaVersion: 4,
+            schemaVersion: 5,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 3) {
                     migration.enumerateObjects(ofType: FeedItem.className()){ oldObject, newObject in
@@ -45,7 +45,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if (oldSchemaVersion < 4) {
                     migration.deleteData(forType: "Device")
                 }
-        })
+                if (oldSchemaVersion < 5) {
+                    var keysMap: Set<String> = []
+                    migration.enumerateObjects(ofType: EmailContact.className()){ oldObject, newObject in
+                        guard let emailContact = newObject else {
+                            return
+                        }
+                        guard let emailObject = emailContact["email"] as? MigrationObject,
+                            let contact = emailContact["contact"] as? MigrationObject else {
+                            migration.delete(emailContact)
+                            return
+                        }
+                        let key = emailObject["key"] as! Int
+                        let email = contact["email"] as! String
+                        let type = (emailContact["type"] as! String)
+                        let compoundKey = "\(key):\(email):\(type)"
+                        
+                        guard !keysMap.contains(compoundKey) else {
+                            migration.delete(emailContact)
+                            return
+                        }
+                        
+                        emailContact["compoundKey"] = compoundKey
+                        keysMap.insert(compoundKey)
+                    }
+                    migration.enumerateObjects(ofType: Contact.className()){ oldObject, newObject in
+                        if let contact = newObject,
+                            let email = contact["email"] as? String,
+                            !email.contains("@") {
+                            migration.delete(contact)
+                        }
+                    }
+                }
+            })
         
         // Tell Realm to use this new configuration object for the default Realm
         Realm.Configuration.defaultConfiguration = config

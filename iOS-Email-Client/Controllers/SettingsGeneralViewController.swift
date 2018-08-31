@@ -13,7 +13,7 @@ import SafariServices
 class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email"],
+        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email", "Change Password"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
@@ -115,7 +115,7 @@ class SettingsGeneralViewController: UITableViewController{
         case "Open Source Libraries":
             goToUrl(url: "https://criptext.com/open-source-ios")
         case "Logout":
-            logout()
+            showLogout()
         case "Recovery Email":
             goToRecoveryEmail()
         default:
@@ -124,7 +124,7 @@ class SettingsGeneralViewController: UITableViewController{
         
     }
     
-    func logout(){
+    func showLogout(){
         let logoutPopover = LogoutPopoverViewController()
         logoutPopover.onTrigger = { accept in
             guard accept else {
@@ -136,25 +136,21 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func confirmLogout(){
-        APIManager.removeDevice(deviceId: myAccount.deviceId, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+        APIManager.logout(token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
             guard case .Success = responseData else {
                 self.showAlert("Logout Error", message: "Unable to logout. Please try again", style: .alert)
                 return
             }
-            self.jumpToLogin()
+            self.logout()
         }
-    }
-    
-    func jumpToLogin(){
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        delegate.logout()
     }
     
     func goToRecoveryEmail(){
@@ -204,9 +200,12 @@ class SettingsGeneralViewController: UITableViewController{
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
         APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
             guard case .Success = responseData else {
@@ -214,6 +213,14 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
               APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (responseData) in
+                if case .Unauthorized = responseData {
+                    self.logout()
+                    return
+                }
+                if case .Forbidden = responseData {
+                    self.presentPasswordPopover(myAccount: self.myAccount)
+                    return
+                }
                 guard case .Success = responseData else {
                     self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
                     return

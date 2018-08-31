@@ -94,14 +94,14 @@ class SendMailAsyncTask {
         return (guestEmails, criptextEmails)
     }
     
-    func start(completion: @escaping ((Int?) -> Void)){
+    func start(completion: @escaping ((ResponseData) -> Void)){
         let queue = DispatchQueue(label: "com.email.sendmail", qos: .background, attributes: .concurrent)
         queue.async {
             self.getSessionAndEncrypt(queue: queue, completion: completion)
         }
     }
     
-    private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((Int?) -> Void)){
+    private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         guard let myAccount = DBManager.getAccountByUsername(self.username) else {
             return
         }
@@ -132,9 +132,22 @@ class SendMailAsyncTask {
             guard let myAccount = DBManager.getAccountByUsername(self.username) else {
                 return
             }
+            if case .Unauthorized = responseData {
+                DispatchQueue.main.async {
+                    completion(ResponseData.Unauthorized)
+                }
+                return
+            }
+            if case .Forbidden = responseData {
+                DispatchQueue.main.async {
+                    self.setEmailAsFailed()
+                    completion(ResponseData.Forbidden)
+                }
+                return
+            }
             guard case let .SuccessArray(keysArray) = responseData else {
                 DispatchQueue.main.async {
-                    completion(nil)
+                    completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                 }
                 return
             }
@@ -202,7 +215,7 @@ class SendMailAsyncTask {
         return message.0
     }
     
-    private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((Int?) -> Void)){
+    private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         guard let myAccount = DBManager.getAccountByUsername(self.username) else {
             return
         }
@@ -220,17 +233,35 @@ class SendMailAsyncTask {
             requestParams["threadId"] = thread
         }
         APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { responseData in
-            guard case let .SuccessDictionary(updateData) = responseData else {
+            if case .Unauthorized = responseData {
                 DispatchQueue.main.async {
-                    self.setEmailAsFailed()
-                    completion(nil)
+                    completion(ResponseData.Unauthorized)
                 }
                 return
             }
-            let key = self.updateEmailData(updateData)
+            if case .Forbidden = responseData {
+                DispatchQueue.main.async {
+                    self.setEmailAsFailed()
+                    completion(ResponseData.Forbidden)
+                }
+                return
+            }
+            guard case let .SuccessDictionary(updateData) = responseData else {
+                DispatchQueue.main.async {
+                    self.setEmailAsFailed()
+                    completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
+                }
+                return
+            }
+            guard let key = self.updateEmailData(updateData) else {
+                DispatchQueue.main.async {
+                    completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
+                }
+                return
+            }
             DispatchQueue.main.async {
                 DBManager.refresh()
-                completion(key)
+                completion(ResponseData.SuccessInt(key))
             }
         }
     }

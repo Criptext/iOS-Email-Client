@@ -31,9 +31,13 @@ class APIManager {
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
     private class func checkRequestAuth(response: HTTPURLResponse?) -> ResponseData? {
-        if let status = response?.statusCode,
-            status == CODE_LOGGED_OUT {
-            return .Unauthorized
+        if let status = response?.statusCode {
+            if (status == CODE_LOGGED_OUT) {
+                return .Unauthorized
+            }
+            if (status == CODE_PASSWORD_CHANGED) {
+                return .Forbidden
+            }
         }
         return nil
     }
@@ -276,10 +280,11 @@ class APIManager {
         }
     }
     
-    class func removeDevice(deviceId: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func removeDevice(deviceId: Int, password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/device/\(deviceId)"
         let headers = ["Authorization": "Bearer \(token)"]
-        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+        let params = ["password": password]
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
                 return
@@ -343,6 +348,33 @@ class APIManager {
                 return
             }
             completion(nil)
+        }
+    }
+    
+    class func unlockDevice(password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/device/unlock"
+        let headers = ["Authorization": "Bearer \(token)"]
+        let params = [
+            "password": password
+            ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            guard response.response?.statusCode == 200 else {
+                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
+                return
+            }
+            completion(ResponseData.Success)
+        }
+    }
+    
+    class func logout(token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/logout"
+        let headers = ["Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            guard response.response?.statusCode == 200 else {
+                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
+                return
+            }
+            completion(ResponseData.Success)
         }
     }
 }

@@ -1681,7 +1681,7 @@
         <scene sceneID="KZp-Rf-w7f">
             <objects>
                 <tableViewController storyboardIdentifier="settingsDevicesViewController" id="eJ2-QO-0Em" customClass="SettingsDevicesViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="FWb-Zn-XWW">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="FWb-Zn-XWW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1732,10 +1732,23 @@
                                                 </label>
                                             </subviews>
                                         </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGu-bu-kQR">
+                                            <rect key="frame" x="302" y="7.5" width="50" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="50" id="9ST-tv-l5W"/>
+                                                <constraint firstAttribute="height" constant="50" id="A79-LF-cLA"/>
+                                            </constraints>
+                                            <state key="normal" image="delete-icon"/>
+                                            <connections>
+                                                <action selector="onTrashPress:" destination="F3C-Yg-DLw" eventType="touchUpInside" id="7GC-sJ-qGH"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="owA-aL-tUp" firstAttribute="leading" secondItem="amW-Di-fUH" secondAttribute="trailing" constant="12" id="8hW-Je-NRb"/>
                                         <constraint firstItem="amW-Di-fUH" firstAttribute="centerY" secondItem="9C0-OI-bsM" secondAttribute="centerY" id="F5c-bO-nVr"/>
+                                        <constraint firstItem="AGu-bu-kQR" firstAttribute="trailing" secondItem="owA-aL-tUp" secondAttribute="trailing" id="Lza-yA-9XS"/>
+                                        <constraint firstItem="AGu-bu-kQR" firstAttribute="centerY" secondItem="owA-aL-tUp" secondAttribute="centerY" id="UZu-zA-hrs"/>
                                         <constraint firstItem="amW-Di-fUH" firstAttribute="leading" secondItem="cGB-8f-jYq" secondAttribute="trailing" constant="12" id="ieu-1R-dSd"/>
                                         <constraint firstItem="owA-aL-tUp" firstAttribute="centerY" secondItem="9C0-OI-bsM" secondAttribute="centerY" id="lS5-My-9rF"/>
                                         <constraint firstItem="cGB-8f-jYq" firstAttribute="leading" secondItem="9C0-OI-bsM" secondAttribute="leading" constant="26" id="p3v-A1-iBN"/>
@@ -1748,6 +1761,7 @@
                                     <outlet property="deviceImageView" destination="cGB-8f-jYq" id="5eD-7j-OWB"/>
                                     <outlet property="deviceLocationLabel" destination="0bv-pm-gsw" id="WXa-Iu-M3u"/>
                                     <outlet property="deviceNameLabel" destination="K3s-zY-auf" id="tjm-fw-F14"/>
+                                    <outlet property="trashButton" destination="AGu-bu-kQR" id="Zfq-kB-qHP"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="settingsDeviceVersion" rowHeight="66" id="FpD-TM-oeq" customClass="SettingsDeviceTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">

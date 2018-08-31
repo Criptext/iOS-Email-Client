@@ -110,14 +110,14 @@ extension DBManager {
 //MARK: - Email related
 extension DBManager {
 
-    class func store(_ email:Email){
+    class func store(_ email:Email, update: Bool = true){
         let realm = try! Realm()
         
-        try! realm.write() {
+        try? realm.write() {
             if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
                 return
             }
-            realm.add(email, update: true)
+            realm.add(email, update: update)
         }
     }
     
@@ -413,7 +413,7 @@ extension DBManager {
     
     class func getEmailFailed() -> Email? {
         let realm = try! Realm()
-        let hasFailed = NSPredicate(format: "delivered == \(Email.Status.fail.rawValue)")
+        let hasFailed = NSPredicate(format: "delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@)", [SystemLabel.trash.id])
         let results = realm.objects(Email.self).filter(hasFailed)
         
         return results.first
@@ -855,7 +855,6 @@ extension DBManager {
         
         try! realm.write {
             for emailContact in emailContacts {
-                emailContact.incrementID()
                 realm.add(emailContact, update: true)
             }
         }
@@ -986,7 +985,7 @@ extension DBManager {
         try! realm.write {
             for threadId in threadIds {
                 let deletableLabels = [SystemLabel.trash.id, SystemLabel.spam.id, SystemLabel.draft.id]
-                let emails = Array(realm.objects(Email.self).filter("threadId == '\(threadId) AND ANY labels.id IN %@'", deletableLabels))
+                let emails = Array(realm.objects(Email.self).filter("threadId == '\(threadId)' AND ANY labels.id IN %@", deletableLabels))
                 self.deleteEmail(realm: realm, emails: emails)
             }
         }

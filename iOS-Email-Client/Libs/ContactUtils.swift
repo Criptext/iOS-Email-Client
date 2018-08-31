@@ -34,8 +34,25 @@ class ContactUtils {
             emailContact.contact = contact
             emailContact.email = email
             emailContact.type = type.rawValue
+            emailContact.compoundKey = "\(email.key):\(contact.email):\(type.rawValue)"
             DBManager.store([emailContact])
         }
+    }
+    
+    class func prepareContactsStringArray(contactsString: String) -> [String]{
+        let stringArray = contactsString.split(separator: ",")
+        return concatEmailAddresses(stringArray: stringArray, index: 0, result: [String](), remnant: "")
+    }
+    
+    private class func concatEmailAddresses(stringArray: [Substring], index: Int, result: [String], remnant: String) -> [String] {
+        guard index < stringArray.count else {
+            return result
+        }
+        let contactString = remnant + stringArray[index]
+        if (contactString.contains("@")) {
+            return concatEmailAddresses(stringArray: stringArray, index: index+1, result: result + [contactString], remnant: "")
+        }
+        return concatEmailAddresses(stringArray: stringArray, index: index+1, result: result, remnant: "\(contactString),")
     }
     
     class func getStringEmailName(contact: String) -> (String, String) {

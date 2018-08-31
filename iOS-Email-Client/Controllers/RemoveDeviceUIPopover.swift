@@ -31,12 +31,12 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         super.viewDidLoad()
         passwordTextField.detailColor = .alert
         passwordTextField.isVisibilityIconButtonEnabled = true
-        passwordTextField.isHidden = true
         showLoader(false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        passwordTextField.becomeFirstResponder()
     }
     
     @IBAction func onCancelPress(_ sender: Any) {
@@ -44,12 +44,17 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     }
     
     @IBAction func onConfirmPress(_ sender: Any) {
+        passwordTextField.detail = ""
+        guard let password = passwordTextField.text,
+            password.count > 7 else {
+            passwordTextField.detail = "Please enter 8 characters"
+            return
+        }
         let deviceId = device.id
         showLoader(true)
-        APIManager.removeDevice(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate {
-                delegate.logout()
+        APIManager.removeDevice(deviceId: deviceId, password: password.sha256()!, token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout()
                 return
             }
             guard case .Success = responseData else {

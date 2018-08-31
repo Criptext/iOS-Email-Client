@@ -353,6 +353,7 @@ class ComposeViewController: UIViewController {
         let emailContact = EmailContact()
         emailContact.email = emailDetail
         emailContact.type = type.rawValue
+        emailContact.compoundKey = "\(emailDetail.key):\(email):\(type.rawValue)"
         if let contact = DBManager.getContact(email) {
             emailContact.contact = contact
         } else {
@@ -1064,6 +1065,10 @@ extension ComposeViewController: CNContactPickerDelegate {
     }
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
+        guard Utils.validateEmail(value) else {
+            self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
+            return
+        }
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
         view.add(token)

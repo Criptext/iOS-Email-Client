@@ -40,4 +40,12 @@ class UtilsTests: XCTestCase {
         XCTAssert(contactMetadata4.0 == "smash@jigl.com", "email was not retrieved")
     }
     
+    func testSuccessfullyConvertArrayOfRecipientsFromString(){
+        let contactsString = "Smash Bros <smash@jigl.com>,\"Bond,James\" <Bond.James@WillisTowersWatson.com>"
+        let contacts = ContactUtils.prepareContactsStringArray(contactsString: contactsString)
+        
+        XCTAssert(contacts[0] == "Smash Bros <smash@jigl.com>", "name was not retrieved")
+        XCTAssert(contacts[1] == "\"Bond,James\" <Bond.James@WillisTowersWatson.com>", "email was not retrieved: \(contacts[1])")
+    }
+    
 }
