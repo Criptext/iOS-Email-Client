@@ -18,15 +18,18 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
     var signupData: SignUpData!
-    var state : CreationState = .signupRequest
+    var state : CreationState = .checkDB
     
     enum CreationState{
+        case checkDB
         case signupRequest
         case accountCreate
     }
     
     func handleState(){
         switch(state){
+        case .checkDB:
+            checkDatabase()
         case .signupRequest:
             guard signupData.deviceId == 1 else {
                 sendKeysRequest()
@@ -45,6 +48,15 @@ class CreatingAccountViewController: UIViewController{
         progressBar.layer.sublayers![1].cornerRadius = 5
         progressBar.subviews[1].clipsToBounds = true
         handleState()
+    }
+    
+    func checkDatabase(){
+        self.state = .signupRequest
+        if let account = DBManager.getFirstAccount(),
+            account.username != self.signupData.username {
+            DBManager.destroy()
+        }
+        self.handleState()
     }
     
     func sendKeysRequest(){

@@ -10,4 +10,5 @@ import Foundation
 
 class PlainContactTableViewCell: UITableViewCell{
     @IBOutlet weak var contactLabel: UILabel!
+    @IBOutlet weak var contactTextView: UITextView!
 }

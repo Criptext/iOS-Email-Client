@@ -40,9 +40,9 @@ extension UIViewController {
         self.present(popover, animated: true)
     }
     
-    func logout(){
+    func logout(manually: Bool = false){
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            delegate.logout()
+            delegate.logout(manually: manually)
         }
     }
     
@@ -51,7 +51,7 @@ extension UIViewController {
         passwordVC.myAccount = myAccount
         passwordVC.remotelyCheckPassword = true
         passwordVC.onLogoutPress = {
-            self.logout()
+            self.logout(manually: false)
         }
         self.presentPopover(popover: passwordVC, height: 213)
     }

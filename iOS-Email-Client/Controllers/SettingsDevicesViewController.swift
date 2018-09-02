@@ -73,10 +73,10 @@ extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
     }
     
     func removeDevice(_ deviceId: Int){
-        guard let indexPath = tableView.indexPathForSelectedRow else {
+        guard let index = deviceData.devices.index(where: {$0.id == deviceId}) else {
             return
         }
-        deviceData.devices.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+        deviceData.devices.remove(at: index)
+        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 }

@@ -13,7 +13,7 @@ import SafariServices
 class SettingsGeneralViewController: UITableViewController{
     let sections = ["ACCOUNT", "ABOUT"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email"],
+        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email", "Change Password"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
@@ -80,7 +80,8 @@ class SettingsGeneralViewController: UITableViewController{
         cell.loader.isHidden = true
         switch(text){
         case "Version":
-            cell.optionLabel.text = "Criptext Beta v.1.0.6"
+            let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+            cell.optionLabel.text = "Criptext Beta v.\(appVersionString)"
             cell.goImageView.isHidden = true
             return cell
         default:
@@ -149,7 +150,7 @@ class SettingsGeneralViewController: UITableViewController{
                 self.showAlert("Logout Error", message: "Unable to logout. Please try again", style: .alert)
                 return
             }
-            self.logout()
+            self.logout(manually: true)
         }
     }
     

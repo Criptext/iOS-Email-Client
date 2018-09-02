@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.registerForRemoteNotifications()
     }
     
-    func logout(){
+    func logout(manually: Bool = false){
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         let defaults = UserDefaults.standard
@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if let loginVC = initialVC.topViewController as? NewLoginViewController {
-            loginVC.loggedOutRemotely = true
+            loginVC.loggedOutRemotely = !manually
         }
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop
@@ -145,7 +145,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         options.style = .easeOut
         UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
         
-        DBManager.signout()
+        if (!manually) {
+            DBManager.destroy()
+        } else {
+            DBManager.signout()
+        }
     }
     
     func replaceRootViewController(_ viewController:UIViewController){
