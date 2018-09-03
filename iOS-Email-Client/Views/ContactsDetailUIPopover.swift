@@ -74,6 +74,7 @@ extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell") as! PlainContactTableViewCell
         let type = typeFromTableView(tableView)
         let contact = email.getContacts(type: type)[indexPath.row]
+        cell.contactTextView.attributedText = buildContactAttributedString(contact.displayName, contact.email)
         cell.contactLabel?.numberOfLines = 1
         cell.contactLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
         return cell

@@ -80,7 +80,8 @@ class SettingsGeneralViewController: UITableViewController{
         cell.loader.isHidden = true
         switch(text){
         case "Version":
-            cell.optionLabel.text = "Criptext Beta v.1.0.5"
+            let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+            cell.optionLabel.text = "Criptext Beta v.\(appVersionString)"
             cell.goImageView.isHidden = true
             return cell
         default:
@@ -149,7 +150,7 @@ class SettingsGeneralViewController: UITableViewController{
                 self.showAlert("Logout Error", message: "Unable to logout. Please try again", style: .alert)
                 return
             }
-            self.logout()
+            self.logout(manually: true)
         }
     }
     

@@ -35,6 +35,17 @@ class DBManager {
         let realm = try! Realm()
         
         try! realm.write {
+            realm.delete(realm.objects(CRSignedPreKeyRecord.self))
+            realm.delete(realm.objects(CRPreKeyRecord.self))
+            realm.delete(realm.objects(CRSessionRecord.self))
+            realm.delete(realm.objects(CRTrustedDevice.self))
+        }
+    }
+    
+    class func destroy(){
+        let realm = try! Realm()
+        
+        try! realm.write {
             realm.deleteAll()
         }
     }
@@ -71,6 +82,12 @@ extension DBManager {
         let realm = try! Realm()
         
         return realm.object(ofType: Account.self, forPrimaryKey: username)
+    }
+    
+    class func getFirstAccount() -> Account? {
+        let realm = try! Realm()
+        
+        return realm.objects(Account.self).first
     }
     
     class func update(account: Account, jwt: String){

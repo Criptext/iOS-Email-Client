@@ -19,6 +19,7 @@ class PasswordUIPopover: BaseUIPopover {
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
+    @IBOutlet weak var passwordTitleLabel: UILabel!
     
     init(){
         super.init("PasswordUIPopover")
@@ -33,8 +34,8 @@ class PasswordUIPopover: BaseUIPopover {
         passwordTextField.isVisibilityIconButtonEnabled = true
         passwordTextField.becomeFirstResponder()
         passwordTextField.detailColor = .alert
-        cancelButton.setTitle(remotelyCheckPassword ? "Logout" : "Cancel", for: .normal)
         shouldDismiss = !remotelyCheckPassword
+        passwordTitleLabel.text = remotelyCheckPassword ? "Your password has changed. Confirm your new password, if you Cancel, all local data will be erased." : "Enter your password to continue"
         showLoader(false)
     }
     

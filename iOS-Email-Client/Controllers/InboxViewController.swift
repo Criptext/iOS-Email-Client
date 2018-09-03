@@ -242,6 +242,7 @@ class InboxViewController: UIViewController {
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: (() -> Void)? = nil) {
         guard !mailboxData.updating else {
             completion?()
+            refreshControl?.endRefreshing()
             return
         }
         APIManager.getEvents(token: myAccount.jwt) { (responseData) in
@@ -249,13 +250,11 @@ class InboxViewController: UIViewController {
                 self.logout()
                 return
             }
-            
+            refreshControl?.endRefreshing()
             if case .Forbidden = responseData {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
-            
-            refreshControl?.endRefreshing()
             guard case let .SuccessArray(events) = responseData else {
                 completion?()
                 return

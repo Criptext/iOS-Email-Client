@@ -377,6 +377,20 @@ class APIManager {
             completion(ResponseData.Success)
         }
     }
+    
+    class func resetPassword(username: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/password/reset"
+        let params = [
+            "recipientId": username
+            ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString { response in
+            guard response.response?.statusCode == 200 else {
+                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
+                return
+            }
+            completion(ResponseData.Success)
+        }
+    }
 }
 
 extension APIManager {

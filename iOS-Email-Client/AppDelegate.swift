@@ -46,13 +46,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     migration.deleteData(forType: "Device")
                 }
                 if (oldSchemaVersion < 5) {
+                    migration.enumerateObjects(ofType: Contact.className()){ oldObject, newObject in
+                        if let contact = newObject,
+                            let email = contact["email"] as? String,
+                            !email.contains("@") {
+                            migration.delete(contact)
+                        }
+                    }
                     var keysMap: Set<String> = []
                     migration.enumerateObjects(ofType: EmailContact.className()){ oldObject, newObject in
                         guard let emailContact = newObject else {
                             return
                         }
                         guard let emailObject = emailContact["email"] as? MigrationObject,
-                            let contact = emailContact["contact"] as? MigrationObject else {
+                            let contact = emailContact["contact"] as? MigrationObject,
+                            (contact["email"] as? String)?.contains("@") ?? false else {
                             migration.delete(emailContact)
                             return
                         }
@@ -68,13 +76,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         emailContact["compoundKey"] = compoundKey
                         keysMap.insert(compoundKey)
-                    }
-                    migration.enumerateObjects(ofType: Contact.className()){ oldObject, newObject in
-                        if let contact = newObject,
-                            let email = contact["email"] as? String,
-                            !email.contains("@") {
-                            migration.delete(contact)
-                        }
                     }
                 }
             })
@@ -93,7 +94,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }else{
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            initialVC = storyboard.instantiateInitialViewController()
+            let loginVC = storyboard.instantiateInitialViewController()!
+            let paddingBottom = window?.safeAreaInsets.bottom ?? 0.0
+            let snackbarController = CriptextSnackbarController(rootViewController: loginVC)
+            snackbarController.setBottomPadding(padding: paddingBottom)
+            initialVC = snackbarController
         }
         
         self.replaceRootViewController(initialVC)
@@ -124,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.registerForRemoteNotifications()
     }
     
-    func logout(){
+    func logout(manually: Bool = false){
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         let defaults = UserDefaults.standard
@@ -132,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if let loginVC = initialVC.topViewController as? NewLoginViewController {
-            loginVC.loggedOutRemotely = true
+            loginVC.loggedOutRemotely = !manually
         }
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop
@@ -140,7 +145,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         options.style = .easeOut
         UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
         
-        DBManager.signout()
+        if (!manually) {
+            DBManager.destroy()
+        } else {
+            DBManager.signout()
+        }
     }
     
     func replaceRootViewController(_ viewController:UIViewController){

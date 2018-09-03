@@ -29,15 +29,26 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Contact" translatesAutoresizingMaskIntoConstraints="NO" id="WHl-vy-tGO">
+                        <rect key="frame" x="0.0" y="0.0" width="365" height="43.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="12"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="wGZ-SN-Sqs" secondAttribute="trailing" constant="10" id="1jr-44-X0h"/>
+                    <constraint firstItem="WHl-vy-tGO" firstAttribute="leading" secondItem="aBx-pp-vKM" secondAttribute="leading" id="CfL-Ia-kDa"/>
+                    <constraint firstAttribute="trailing" secondItem="WHl-vy-tGO" secondAttribute="trailing" constant="10" id="HMU-Y2-u9Q"/>
+                    <constraint firstItem="WHl-vy-tGO" firstAttribute="top" secondItem="aBx-pp-vKM" secondAttribute="top" id="IcR-ye-Jin"/>
                     <constraint firstItem="wGZ-SN-Sqs" firstAttribute="leading" secondItem="aBx-pp-vKM" secondAttribute="leading" id="KP2-XH-4AN"/>
                     <constraint firstItem="wGZ-SN-Sqs" firstAttribute="top" secondItem="aBx-pp-vKM" secondAttribute="top" id="pQ2-vS-5al"/>
+                    <constraint firstAttribute="bottom" secondItem="WHl-vy-tGO" secondAttribute="bottom" id="xvz-Ki-9v7"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="contactLabel" destination="wGZ-SN-Sqs" id="C4G-bw-c9h"/>
+                <outlet property="contactTextView" destination="WHl-vy-tGO" id="yaE-YV-Hgv"/>
             </connections>
             <point key="canvasLocation" x="50.5" y="63"/>
         </tableViewCell>
