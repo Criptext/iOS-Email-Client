@@ -184,7 +184,7 @@ class EventHandler {
                 DBManager.store([fKey])
             }
             
-            ContactUtils.parseEmailContacts(event.from, email: email, type: .from)
+            ContactUtils.parseEmailContacts([event.from], email: email, type: .from)
             ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
             ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
             ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
@@ -196,6 +196,12 @@ class EventHandler {
             }
             if(self.isMeARecipient(email: email)){
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
+            }
+            if(!event.labels.isEmpty){
+                let labels = event.labels.map({ (labelName) -> Int in
+                    return SystemLabel.fromText(text: labelName)
+                })
+                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: [])
             }
             finishCallback(true, email)
         }

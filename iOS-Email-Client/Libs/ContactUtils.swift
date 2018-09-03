@@ -26,10 +26,9 @@ class ContactUtils {
         return existingContact
     }
     
-    class func parseEmailContacts(_ contactsString: String, email: Email, type: ContactType){
-        let contacts = prepareContactsStringArray(contactsString: contactsString)
+    class func parseEmailContacts(_ contacts: [String], email: Email, type: ContactType){
         contacts.forEach { (contactString) in
-            let contact = parseContact(String(contactString.replacingOccurrences(of: "\"", with: "")))
+            let contact = parseContact(contactString)
             let emailContact = EmailContact()
             emailContact.contact = contact
             emailContact.email = email
@@ -39,7 +38,10 @@ class ContactUtils {
         }
     }
     
-    class func prepareContactsStringArray(contactsString: String) -> [String]{
+    class func prepareContactsStringArray(contactsString: String?) -> [String]{
+        guard let contactsString = contactsString else {
+            return [String]()
+        }
         let stringArray = contactsString.split(separator: ",")
         return concatEmailAddresses(stringArray: stringArray, index: 0, result: [String](), remnant: "")
     }
@@ -56,12 +58,13 @@ class ContactUtils {
     }
     
     class func getStringEmailName(contact: String) -> (String, String) {
-        let myContact = NSString(string: contact.replacingOccurrences(of: "\"", with: ""))
-        let pattern = "<(.*)>"
+        let cleanContact = contact.replacingOccurrences(of: "\"", with: "")
+        let myContact = NSString(string: cleanContact)
+        let pattern = "<(.*?)>"
         let regex = try! NSRegularExpression(pattern: pattern, options: [])
-        let matches = regex.matches(in: contact, options: [], range: NSRange(location: 0, length: myContact.length))
-        let email = (matches.first != nil ? myContact.substring(with: matches.first!.range(at: 1)) : String(myContact)).lowercased()
-        let name = matches.first != nil && contact.split(separator: "<").count > 1 ? contact.split(separator: "<")[0] : email.split(separator: "@")[0]
+        let matches = regex.matches(in: cleanContact, options: [], range: NSRange(location: 0, length: myContact.length))
+        let email = (matches.last != nil ? myContact.substring(with: matches.last!.range(at: 1)) : String(myContact)).lowercased()
+        let name = matches.last != nil && cleanContact.split(separator: "<").count > 1 ? cleanContact.prefix(matches.last!.range.location) : email.split(separator: "@")[0]
         return (email, String(name.trimmingCharacters(in: .whitespacesAndNewlines)))
     }
 }

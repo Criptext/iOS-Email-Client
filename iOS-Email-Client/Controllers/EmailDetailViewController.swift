@@ -285,7 +285,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? "Remove from Spam" : "Mark as Spam", for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = emailData.emails[indexPath.row]
-        moreOptionsContainerView.showUnsend(email.status != .unsent && email.status != .none)
+        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none)
         toggleMoreOptionsView()
     }
     
