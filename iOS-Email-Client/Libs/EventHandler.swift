@@ -184,7 +184,7 @@ class EventHandler {
                 DBManager.store([fKey])
             }
             
-            ContactUtils.parseEmailContacts(event.from, email: email, type: .from)
+            ContactUtils.parseEmailContacts([event.from], email: email, type: .from)
             ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
             ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
             ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)

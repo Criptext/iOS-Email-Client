@@ -19,6 +19,7 @@ protocol ProgressDelegate {
 class APIManager {
     static let baseUrl = "https://api.criptext.com"
     static let fileServiceUrl = "https://services.criptext.com"
+    static let apiVersion = "1.0"
     
     static let CODE_SUCESS = 0
     static let CODE_JWT_INVALID = 101
@@ -42,56 +43,10 @@ class APIManager {
         return nil
     }
     
-    class func checkAvailableUsername(_ username: String, completion: @escaping ((Error?) -> Void)) -> DataRequest{
-        let url = "\(self.baseUrl)/user/available?username=\(username)"
-
-        return Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default).responseString{
-            (response) in
-            guard response.response?.statusCode == 200 else {
-                let criptextError = CriptextError(code: .invalidUsername)
-                completion(criptextError)
-                return
-            }
-            completion(nil)
-        }
-    }
-    
-    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
-        let url = "\(self.baseUrl)/user"
-        
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString{
-            (response) in
-            guard response.response?.statusCode == 200 else {
-                let error = CriptextError(code: .accountNotCreated)
-                completion(error, nil)
-                return
-            }
-            guard let value = response.result.value else {
-                completion(response.result.error, nil)
-                return
-            }
-            completion(nil, value)
-        }
-    }
-    
-    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
-        let parameters = ["username": username,
-                          "password": password] as [String : Any]
-        let url = "\(self.baseUrl)/user/auth"
-        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{
-            (response) in
-            guard let value = response.result.value else {
-                completion(response.result.error, nil)
-                return
-            }
-            let data = Utils.convertToDictionary(text: value)
-            completion(nil, data)
-        }
-    }
-    
     class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((Error?, String?) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
             guard response.response?.statusCode == 200,
                 let value = response.result.value else {
@@ -105,7 +60,8 @@ class APIManager {
     
     class func getKeysRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle/find"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
@@ -122,7 +78,8 @@ class APIManager {
     
     class func postMailRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
@@ -138,7 +95,8 @@ class APIManager {
     
     class func postPeerEvent(_ params: [String : Any], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event/peers"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).response{ response in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
@@ -154,7 +112,8 @@ class APIManager {
     
     class func getEvents(token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
@@ -170,7 +129,8 @@ class APIManager {
     
     class func getEmailBody(metadataKey: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
@@ -191,13 +151,15 @@ class APIManager {
     class func acknowledgeEvents(eventIds: [Int32], token: String){
         let parameters = ["ids": eventIds] as [String : Any]
         let url = "\(self.baseUrl)/event/ack"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
     
     class func notifyOpen(keys: [Int], token: String){
         let url = "\(self.baseUrl)/event/open"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         let params = [
             "metadataKeys": keys
         ] as [String: Any]
@@ -206,7 +168,8 @@ class APIManager {
     
     class func unsendEmail(key: Int, recipients: [String], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/unsend"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         let params = [
             "metadataKey": key,
             "recipients": recipients
@@ -229,7 +192,8 @@ class APIManager {
         let params = [
             "devicePushToken": fcmToken
         ]
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion?(responseError)
@@ -248,7 +212,8 @@ class APIManager {
         let params = [
             "name": name
         ]
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             if let responseError = checkRequestAuth(response: response.response) {
                 completion(responseError)
@@ -264,7 +229,8 @@ class APIManager {
 
     class func getSettings(token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/settings"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
             (response) in
             if let responseError = checkRequestAuth(response: response.response) {
@@ -282,7 +248,8 @@ class APIManager {
     
     class func removeDevice(deviceId: Int, password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/device/\(deviceId)"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         let params = ["password": password]
         Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             if let responseError = checkRequestAuth(response: response.response) {
@@ -299,7 +266,8 @@ class APIManager {
     
     class func changeRecoveryEmail(email: String, password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/recovery/change"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         let params = [
             "email": email,
             "password": password
@@ -319,7 +287,8 @@ class APIManager {
     
     class func resendConfirmationEmail(token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/recovery/resend"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString {
             (response) in
             if let responseError = checkRequestAuth(response: response.response) {
@@ -336,7 +305,8 @@ class APIManager {
 
     class func changePassword(oldPassword: String, newPassword: String, token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.baseUrl)/user/password/change"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         let params = [
             "oldPassword": oldPassword,
             "newPassword": newPassword
@@ -353,7 +323,8 @@ class APIManager {
     
     class func unlockDevice(password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/device/unlock"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         let params = [
             "password": password
             ] as [String: Any]
@@ -368,7 +339,8 @@ class APIManager {
     
     class func logout(token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/logout"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             guard response.response?.statusCode == 200 else {
                 completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
@@ -377,13 +349,63 @@ class APIManager {
             completion(ResponseData.Success)
         }
     }
+}
+
+extension APIManager {
+    class func checkAvailableUsername(_ username: String, completion: @escaping ((Error?) -> Void)) -> DataRequest{
+        let url = "\(self.baseUrl)/user/available?username=\(username)"
+        let headers = ["API-Version": apiVersion]
+        return Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            guard response.response?.statusCode == 200 else {
+                let criptextError = CriptextError(code: .invalidUsername)
+                completion(criptextError)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
+        let url = "\(self.baseUrl)/user"
+        let headers = ["API-Version": apiVersion]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString{
+            (response) in
+            guard response.response?.statusCode == 200 else {
+                let error = CriptextError(code: .accountNotCreated)
+                completion(error, nil)
+                return
+            }
+            guard let value = response.result.value else {
+                completion(response.result.error, nil)
+                return
+            }
+            completion(nil, value)
+        }
+    }
+    
+    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
+        let parameters = ["username": username,
+                          "password": password] as [String : Any]
+        let url = "\(self.baseUrl)/user/auth"
+        let headers = ["API-Version": apiVersion]
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseString{
+            (response) in
+            guard let value = response.result.value else {
+                completion(response.result.error, nil)
+                return
+            }
+            let data = Utils.convertToDictionary(text: value)
+            completion(nil, data)
+        }
+    }
     
     class func resetPassword(username: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/password/reset"
         let params = [
             "recipientId": username
             ] as [String: Any]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default).responseString { response in
+        let headers = ["API-Version": apiVersion]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
             guard response.response?.statusCode == 200 else {
                 completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                 return

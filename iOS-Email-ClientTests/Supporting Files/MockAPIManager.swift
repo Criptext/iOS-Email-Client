@@ -11,7 +11,7 @@ import Foundation
 
 class MockAPIManager: APIManager {
     override class func getEmailBody(metadataKey: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
-        completion(ResponseData.Body("ytw8v0ntriuhtkirglsdfnakncbdjshndls"))
+        completion(ResponseData.SuccessString("ytw8v0ntriuhtkirglsdfnakncbdjshndls"))
     }
     
     override class func acknowledgeEvents(eventIds: [Int32], token: String){

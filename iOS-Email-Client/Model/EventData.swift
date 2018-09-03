@@ -27,9 +27,9 @@ class EventData {
         let threadId: String
         let subject: String
         let from: String
-        let to: String
-        let cc: String
-        let bcc: String
+        let to: [String]
+        let cc: [String]
+        let bcc: [String]
         let messageId: String
         let date: Date
         let metadataKey: Int
@@ -41,10 +41,6 @@ class EventData {
         init(params: [String: Any]){
             threadId = params["threadId"] as! String
             subject = params["subject"] as! String
-            from = params["from"] as! String
-            to = params["to"] as? String ?? ""
-            cc = params["cc"] as? String ?? ""
-            bcc = params["bcc"] as? String ?? ""
             messageId = params["messageId"] as! String
             metadataKey = params["metadataKey"] as! Int
             senderDeviceId = params["senderDeviceId"] as? Int32
@@ -54,6 +50,11 @@ class EventData {
             
             let dateString = params["date"] as! String
             date = EventData.convertToDate(dateString: dateString)
+            
+            from = params["from"] as! String
+            to = (params["toArray"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
+            cc = (params["ccArray"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
+            bcc = (params["bccArray"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
         }
     }
     

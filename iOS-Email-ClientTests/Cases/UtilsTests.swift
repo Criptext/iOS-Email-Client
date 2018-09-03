@@ -38,6 +38,21 @@ class UtilsTests: XCTestCase {
         let contactMetadata4 = ContactUtils.getStringEmailName(contact: contactString4)
         XCTAssert(contactMetadata4.1 == "smash", "name was not retrieved")
         XCTAssert(contactMetadata4.0 == "smash@jigl.com", "email was not retrieved")
+        
+        let contactString5 = "<smash@jigl.com>,<pedro@criptext.com>"
+        let contactMetadata5 = ContactUtils.getStringEmailName(contact: contactString5)
+        XCTAssert(contactMetadata5.1 == "<smash@jigl.com>,", "name was not retrieved")
+        XCTAssert(contactMetadata5.0 == "pedro@criptext.com", "email was not retrieved")
+        
+        let contactString6 = "Bros, Smash \"<smash@jigl.com>\""
+        let contactMetadata6 = ContactUtils.getStringEmailName(contact: contactString6)
+        XCTAssert(contactMetadata6.1 == "Bros, Smash", "name was not retrieved")
+        XCTAssert(contactMetadata6.0 == "smash@jigl.com", "email was not retrieved")
+        
+        let contactString7 = "A,salame <salame@criptext.com>"
+        let contactMetadata7 = ContactUtils.getStringEmailName(contact: contactString7)
+        XCTAssert(contactMetadata7.1 == "A,salame", "name was not retrieved")
+        XCTAssert(contactMetadata7.0 == "salame@criptext.com", "email was not retrieved")
     }
     
     func testSuccessfullyConvertArrayOfRecipientsFromString(){
