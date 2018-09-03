@@ -27,7 +27,7 @@ class ContactUtils {
     }
     
     class func parseEmailContacts(_ contactsString: String, email: Email, type: ContactType){
-        let contacts = contactsString.split(separator: ",")
+        let contacts = prepareContactsStringArray(contactsString: contactsString)
         contacts.forEach { (contactString) in
             let contact = parseContact(String(contactString.replacingOccurrences(of: "\"", with: "")))
             let emailContact = EmailContact()
