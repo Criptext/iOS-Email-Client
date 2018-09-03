@@ -145,6 +145,25 @@ enum SystemLabel: Int {
         }
     }
     
+    static func fromText(text: String) -> Int {
+        switch text {
+        case SystemLabel.inbox.description:
+            return SystemLabel.inbox.id
+        case SystemLabel.draft.description:
+            return SystemLabel.draft.id
+        case SystemLabel.sent.description:
+            return SystemLabel.sent.id
+        case SystemLabel.spam.description:
+            return SystemLabel.spam.id
+        case SystemLabel.trash.description:
+            return SystemLabel.trash.id
+        case SystemLabel.starred.description:
+            return SystemLabel.starred.id
+        default:
+            return SystemLabel.all.id
+        }
+    }
+    
     static var array: [SystemLabel] {
         let labels: [SystemLabel] = [.inbox, .draft, .sent, .spam, .trash, .starred]
         return labels

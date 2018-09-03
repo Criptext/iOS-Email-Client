@@ -197,6 +197,12 @@ class EventHandler {
             if(self.isMeARecipient(email: email)){
                 DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
             }
+            if(!event.labels.isEmpty){
+                let labels = event.labels.map({ (labelName) -> Int in
+                    return SystemLabel.fromText(text: labelName)
+                })
+                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: [])
+            }
             finishCallback(true, email)
         }
     }
