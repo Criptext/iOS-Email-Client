@@ -31,7 +31,10 @@ class APIManager {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    private class func checkRequestAuth(response: HTTPURLResponse?) -> ResponseData? {
+    private class func checkRequestAuth(response: HTTPURLResponse?, error: Error? = nil) -> ResponseData? {
+        if error?._code == NSURLErrorTimedOut {
+            return ResponseData.Error(CriptextError(code: .timeout))
+        }
         if let status = response?.statusCode {
             if (status == CODE_LOGGED_OUT) {
                 return .Unauthorized

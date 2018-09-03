@@ -32,6 +32,7 @@ enum ErrorCode: Int {
     case noValidResponse = 100
     case bodyUnsent = 3
     case loggedOut = 4
+    case timeout = 5
     
     var description: String {
         switch self {
@@ -45,6 +46,8 @@ enum ErrorCode: Int {
             return "Email was unsent"
         case .loggedOut:
             return "This device was remotely logged out"
+        case .timeout:
+            return "Connection Timeout!"
         }
     }
 }

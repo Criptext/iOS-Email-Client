@@ -252,10 +252,13 @@ class InboxViewController: UIViewController {
             }
             refreshControl?.endRefreshing()
             if case .Forbidden = responseData {
+                self.mailboxData.updating = false
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            
             guard case let .SuccessArray(events) = responseData else {
+                self.mailboxData.updating = false
                 completion?()
                 return
             }
