@@ -251,6 +251,11 @@ class InboxViewController: UIViewController {
                 return
             }
             refreshControl?.endRefreshing()
+            if case let .Error(error) = responseData {
+                self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            
             if case .Forbidden = responseData {
                 self.mailboxData.updating = false
                 self.presentPasswordPopover(myAccount: self.myAccount)
@@ -817,11 +822,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     func moveSingleThreadTrash(threadId: String){
         let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
         
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
-                return
-            }
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) {
             DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
             self.removeThreads(threadIds: [threadId])
         }
@@ -832,19 +833,26 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
     }
     
-    func postPeerEvent(_ params: [String: Any], completion: @escaping ((ResponseData) -> Void)){
+    func postPeerEvent(_ params: [String: Any], completion: @escaping (() -> Void)){
         APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return
             }
-            
             if case .Forbidden = responseData {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case let .Error(error) = responseData {
+                self.showAlert("Request Error", message: "\(error.description). Please try again", style: .alert)
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                return
+            }
             
-            completion(responseData)
+            completion()
         }
     }
 }
@@ -933,11 +941,7 @@ extension InboxViewController {
         
         let changedLabels = getLabelNames(added: added, removed: removed)
         let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
-                return
-            }
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) {
             for threadId in threadIds {
                 DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
             }
@@ -1003,11 +1007,7 @@ extension InboxViewController {
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()]) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to delete threads. Please try again", style: .alert)
-                return
-            }
+        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()]) {
             self.removeThreads(threadIds: threadIds)
             for threadId in threadIds {
                 DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
@@ -1052,11 +1052,7 @@ extension InboxViewController: NavigationToolbarDelegate {
                         "threadIds": threadIds
                         ]
             ] as [String : Any]
-        postPeerEvent(params) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to change read status. Please try again", style: .alert)
-                return
-            }
+        postPeerEvent(params) {
             for threadId in threadIds {
                 guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
                     continue
@@ -1109,16 +1105,18 @@ extension InboxViewController: ComposerSendMailDelegate {
                 self.logout()
                 return
             }
-            
             if case .Forbidden = responseData {
                 self.showSnackbar("Email Failed. It will be resent in the future", attributedText: nil, buttons: "", permanent: false)
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case let .Error(error) = responseData {
+                self.showSnackbar("\(error.description). It will be resent in the future", attributedText: nil, buttons: "", permanent: false)
+                return
+            }
             guard case let .SuccessInt(key) = responseData,
                 let newEmail = DBManager.getMail(key: key) else {
                 self.showSnackbar("Email Failed. It will be resent in the future", attributedText: nil, buttons: "", permanent: false)
-                self.hideSnackbar()
                 return
             }
             if let index = self.mailboxData.threads.index(where: {!$0.lastEmail.isInvalidated && $0.threadId == newEmail.threadId}) {

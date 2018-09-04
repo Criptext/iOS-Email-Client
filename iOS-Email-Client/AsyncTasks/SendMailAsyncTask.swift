@@ -132,22 +132,9 @@ class SendMailAsyncTask {
             guard let myAccount = DBManager.getAccountByUsername(self.username) else {
                 return
             }
-            if case .Unauthorized = responseData {
-                DispatchQueue.main.async {
-                    completion(ResponseData.Unauthorized)
-                }
-                return
-            }
-            if case .Forbidden = responseData {
-                DispatchQueue.main.async {
-                    self.setEmailAsFailed()
-                    completion(ResponseData.Forbidden)
-                }
-                return
-            }
             guard case let .SuccessArray(keysArray) = responseData else {
                 DispatchQueue.main.async {
-                    completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
+                    completion(responseData)
                 }
                 return
             }
@@ -233,23 +220,10 @@ class SendMailAsyncTask {
             requestParams["threadId"] = thread
         }
         APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { responseData in
-            if case .Unauthorized = responseData {
-                DispatchQueue.main.async {
-                    completion(ResponseData.Unauthorized)
-                }
-                return
-            }
-            if case .Forbidden = responseData {
-                DispatchQueue.main.async {
-                    self.setEmailAsFailed()
-                    completion(ResponseData.Forbidden)
-                }
-                return
-            }
             guard case let .SuccessDictionary(updateData) = responseData else {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()
-                    completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
+                    completion(responseData)
                 }
                 return
             }

@@ -62,12 +62,16 @@ class CreatingAccountViewController: UIViewController{
     func sendKeysRequest(){
         feedbackLabel.text = "Generating keys..."
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
-        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (error, jwt) in
-            guard error == nil else {
+        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
+            if case let .Error(error) = responseData {
+                self.displayErrorMessage(message: error.description)
+                return
+            }
+            guard case let .SuccessString(jwt) = responseData else {
                 self.displayErrorMessage()
                 return
             }
-            self.signupData.token = jwt!
+            self.signupData.token = jwt
             self.animateProgress(50.0, 2.0) {
                 self.state = .accountCreate
                 self.handleState()
@@ -77,8 +81,12 @@ class CreatingAccountViewController: UIViewController{
     
     func sendSignUpRequest(){
         feedbackLabel.text = "Generating keys..."
-        APIManager.singUpRequest(signupData.buildDataForRequest()) { (error, token) in
-            guard error == nil && token != nil else {
+        APIManager.signUpRequest(signupData.buildDataForRequest()) { (responseData) in
+            if case let .Error(error) = responseData {
+                self.displayErrorMessage(message: error.description)
+                return
+            }
+            guard case let .SuccessString(token) = responseData else {
                 self.displayErrorMessage()
                 return
             }
@@ -116,8 +124,8 @@ class CreatingAccountViewController: UIViewController{
         }
     }
     
-    func displayErrorMessage(){
-        let alert = UIAlertController(title: "Warning", message: "Unable to complete your sign-up, would you like to try again?", preferredStyle: .alert)
+    func displayErrorMessage(message: String = "Unable to complete your sign-up"){
+        let alert = UIAlertController(title: "Warning", message: "\(message). would you like to try again?", preferredStyle: .alert)
         let proceedAction = UIAlertAction(title: "Retry", style: .default){ (alert : UIAlertAction!) -> Void in
             self.handleState()
         }

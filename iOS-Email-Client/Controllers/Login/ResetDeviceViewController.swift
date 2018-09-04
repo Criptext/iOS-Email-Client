@@ -57,14 +57,16 @@ class ResetDeviceViewController: UIViewController{
         showLoader(true)
         let email = loginData.email
         let username = String(email.split(separator: "@")[0])
-        APIManager.loginRequest(username, password.sha256()!) { (responseError, responseData) in
+        APIManager.loginRequest(username, password.sha256()!) { (responseData) in
             self.showLoader(false)
-            if let error = responseError {
-                self.showFeedback(true, error.localizedDescription)
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.showFeedback(true, error.description)
                 return
             }
-            guard let data = responseData else {
-                self.showFeedback(true, "Unable to sign-in. Please try again.")
+            guard case let .SuccessString(dataString) = responseData,
+                let data = Utils.convertToDictionary(text: dataString) else {
+                self.showFeedback(true, "Wrong password or username.")
                 return
             }
             let name = data["name"] as! String

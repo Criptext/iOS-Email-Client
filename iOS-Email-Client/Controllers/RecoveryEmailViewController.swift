@@ -62,19 +62,22 @@ class RecoveryEmailViewController: UIViewController {
                 self.logout()
                 return
             }
+            self.showLoader(false)
             if case .Forbidden = responseData {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case let .Error(error) = responseData {
+                self.showAlert("Request Error", message: "\(error.description). please try again.", style: .alert)
+                return
+            }
             guard case .Success = responseData else {
-                self.showLoader(false)
                 self.showAlert("Network Error", message: "Unable to resend link, please try again.", style: .alert)
                 return
             }
             self.presentResendAlert()
             let defaults = UserDefaults.standard
             defaults.set(Date().timeIntervalSince1970, forKey: "lastTimeResent")
-            self.showLoader(false)
         }
     }
     

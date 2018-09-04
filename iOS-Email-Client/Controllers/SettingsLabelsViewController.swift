@@ -105,6 +105,10 @@ class SettingsLabelsViewController: UITableViewController {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case let .Error(error) = responseData {
+                self.showAlert("Request Error", message: "Unable to add label \(labelText). \(error.description). Please try again", style: .alert)
+                return
+            }
             guard case .Success = responseData else {
                 self.showAlert("Something went wrong", message: "Unable to add label \(labelText). Please try again", style: .alert)
                 return
