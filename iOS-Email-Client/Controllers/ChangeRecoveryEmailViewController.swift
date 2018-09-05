@@ -69,11 +69,15 @@ class ChangeRecoveryEmailViewController: UIViewController {
                 self.logout()
                 return
             }
+            self.showLoader(false)
             if case .Forbidden = responseData {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
-            self.showLoader(false)
+            if case let .Error(error) = responseData  {
+                self.showAlert("Network Error", message: "\(error.description). Please try again", style: .alert)
+                return
+            }
             guard case .Success = responseData else {
                 self.showAlert("Network Error", message: "Unable to change recovery email. Please try again", style: .alert)
                 return

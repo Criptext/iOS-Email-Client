@@ -10,13 +10,24 @@ import Foundation
 
 class CriptextError : Error {
     let code: ErrorCode
+    let message: String?
     
     init(code: ErrorCode){
         self.code = code
+        self.message = nil
     }
+    
+    init(message: String){
+        self.code = .custom
+        self.message = message
+    }
+    
     var description : String {
         get {
-            return "Error Code \(code) : \(code.description)"
+            guard let errorMessage = message else {
+                return code.description
+            }
+            return errorMessage
         }
     }
     var localizedDescription: String {
@@ -26,25 +37,34 @@ class CriptextError : Error {
     }
 }
 
-enum ErrorCode: Int {
-    case accountNotCreated = 1
-    case invalidUsername = 2
-    case noValidResponse = 100
-    case bodyUnsent = 3
-    case loggedOut = 4
+enum ErrorCode {
+    case singUpFailure
+    case invalidUsername
+    case noValidResponse
+    case missingData
+    case loggedOut
+    case timeout
+    case offline
+    case custom
     
     var description: String {
         switch self {
-        case .accountNotCreated:
-            return "Unable to create your Account"
+        case .singUpFailure:
+            return "Unable to complete your sign-up"
         case .invalidUsername:
             return "Username already exists"
         case .noValidResponse:
             return "Couldn't get a valid response"
-        case .bodyUnsent:
-            return "Email was unsent"
+        case .missingData:
+            return "Content not found"
         case .loggedOut:
             return "This device was remotely logged out"
+        case .timeout:
+            return "Connection Timeout!"
+        case .offline:
+            return "No internet connection"
+        case .custom:
+            return ""
         }
     }
 }

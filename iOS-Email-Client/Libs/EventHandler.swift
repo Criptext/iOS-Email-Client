@@ -155,10 +155,13 @@ class EventHandler {
         
         apiManager.getEmailBody(metadataKey: email.key, token: myAccount.jwt) { (responseData) in
             var error: CriptextError?
+            var unsent = false
             if case let .Error(err) = responseData {
-                error = err as? CriptextError
+                error = err
             }
-            let unsent = error?.code == .bodyUnsent
+            if case .Missing = responseData {
+                unsent = true
+            }
             
             guard (unsent || error == nil),
                 let username = Utils.getUsernameFromEmailFormat(event.from),

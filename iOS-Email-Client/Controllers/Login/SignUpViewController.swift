@@ -116,10 +116,14 @@ class SignUpViewController: UIViewController{
         
         usernameTextField.setStatus(.none)
         apiRequest?.cancel()
-        apiRequest = APIManager.checkAvailableUsername(username) { (error) in
-            guard error == nil else {
-                let criptextError = error as! CriptextError
-                self.usernameTextField.setStatus(.invalid, criptextError.code.description)
+        apiRequest = APIManager.checkAvailableUsername(username) { (responseData) in
+            if case let .Error(error) = responseData {
+                self.usernameTextField.setStatus(.invalid, error.description)
+                self.checkToEnableDisableCreateButton()
+                return
+            }
+            guard case .Success = responseData else {
+                self.usernameTextField.setStatus(.invalid, "Unable to check username")
                 self.checkToEnableDisableCreateButton()
                 return
             }

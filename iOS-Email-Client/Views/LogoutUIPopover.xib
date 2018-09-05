@@ -34,14 +34,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logout" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCY-jW-B0n">
-                    <rect key="frame" x="107.5" y="27" width="55.5" height="23.5"/>
+                    <rect key="frame" x="107.5" y="20" width="55.5" height="23.5"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ic-29-Nue">
-                    <rect key="frame" x="33" y="73.5" width="204" height="102.5"/>
-                    <string key="text">Logging out will erase all emails from this device. All emails will remain intact in your other devices, if any. Do you want to Logout?</string>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ic-29-Nue">
+                    <rect key="frame" x="33" y="58.5" width="204" height="123"/>
+                    <string key="text">Logging out will keep your data in this device until you log in with another account. All emails will remain intact in your other devices, if any. Do you want to Logout?</string>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -81,14 +81,14 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="6Fs-oh-bwh" secondAttribute="bottom" id="084-Lg-VjB"/>
-                <constraint firstItem="cCY-jW-B0n" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="27" id="4OS-z0-h3G"/>
+                <constraint firstItem="cCY-jW-B0n" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="4OS-z0-h3G"/>
                 <constraint firstItem="5ic-29-Nue" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="33" id="Alb-kD-W8r"/>
                 <constraint firstItem="cCY-jW-B0n" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="DkU-qi-RMx"/>
                 <constraint firstItem="Yoa-Xs-DQG" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="PLY-0p-1km"/>
                 <constraint firstItem="6Fs-oh-bwh" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="Vek-x7-lmF"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="5ic-29-Nue" secondAttribute="trailing" constant="33" id="WFZ-mU-jUA"/>
                 <constraint firstItem="Yoa-Xs-DQG" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="h4o-36-alI"/>
-                <constraint firstItem="5ic-29-Nue" firstAttribute="top" secondItem="cCY-jW-B0n" secondAttribute="bottom" constant="23" id="hhF-Qa-PsZ"/>
+                <constraint firstItem="5ic-29-Nue" firstAttribute="top" secondItem="cCY-jW-B0n" secondAttribute="bottom" constant="15" id="hhF-Qa-PsZ"/>
                 <constraint firstItem="Yoa-Xs-DQG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="hiK-A8-Zpb"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6Fs-oh-bwh" secondAttribute="trailing" id="scM-gq-txA"/>
             </constraints>

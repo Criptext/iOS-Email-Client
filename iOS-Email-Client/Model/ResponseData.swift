@@ -9,7 +9,7 @@
 import Foundation
 
 enum ResponseData {
-    case Error(Error)
+    case Error(CriptextError)
     case Success
     case SuccessInt(Int)
     case SuccessArray([[String: Any]])
@@ -17,4 +17,5 @@ enum ResponseData {
     case SuccessString(String)
     case Unauthorized
     case Forbidden
+    case Missing
 }

@@ -21,40 +21,68 @@ class APIManager {
     static let fileServiceUrl = "https://services.criptext.com"
     static let apiVersion = "1.0"
     
-    static let CODE_SUCESS = 0
-    static let CODE_JWT_INVALID = 101
-    static let CODE_SESSION_INVALID = 102
-    static let CODE_FILE_SIZE_EXCEEDED = 413
-    static let CODE_REQUEST_CANCELLED = -999
-    static let CODE_LOGGED_OUT = 401
-    static let CODE_PASSWORD_CHANGED = 403
+    enum code: Int {
+        case none = 0
+        case success = 200
+        case successNoContent = 204
+        case successAccepted = 202
+        case notModified = 304
+        case unauthorized = 401
+        case forbidden = 403
+        case missing = 404
+    }
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    private class func checkRequestAuth(response: HTTPURLResponse?) -> ResponseData? {
-        if let status = response?.statusCode {
-            if (status == CODE_LOGGED_OUT) {
-                return .Unauthorized
-            }
-            if (status == CODE_PASSWORD_CHANGED) {
-                return .Forbidden
-            }
+    private class func handleResponse<T>(_ responseRequest: DataResponse<T>, satisfy: code? = nil) -> ResponseData {
+        let response = responseRequest.response
+        let error = responseRequest.error
+        
+        if error?._code == NSURLErrorTimedOut {
+            return ResponseData.Error(CriptextError(code: .timeout))
+        } else if error?._code == NSURLErrorNotConnectedToInternet || error?._code == NSURLErrorNetworkConnectionLost  {
+            return ResponseData.Error(CriptextError(code: .offline))
         }
-        return nil
+        guard let status = response?.statusCode else {
+            return .Error(CriptextError(code: .noValidResponse))
+        }
+        
+        switch(code.init(rawValue: status) ?? .none){
+        case satisfy:
+            return .Success
+        case .unauthorized:
+            return .Unauthorized
+        case .forbidden:
+            return .Forbidden
+        case .missing:
+            return .Missing
+        case .success, .successAccepted, .successNoContent, .notModified:
+            break
+        default:
+            return .Error(CriptextError(message: responseRequest.result.description))
+        }
+        
+        switch (responseRequest.result.value){
+        case let result as Int:
+            return .SuccessInt(result)
+        case let result as [[String: Any]]:
+            return .SuccessArray(result)
+        case let result as [String: Any]:
+            return .SuccessDictionary(result)
+        case let result as String:
+            return .SuccessString(result)
+        default:
+            return .Success
+        }
     }
     
-    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((Error?, String?) -> Void)){
+    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            guard response.response?.statusCode == 200,
-                let value = response.result.value else {
-                let error = CriptextError(code: .accountNotCreated)
-                completion(error, nil)
-                return
-            }
-            completion(nil, value)
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -63,16 +91,8 @@ class APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard let value = response.result.value as? [[String: Any]] else {
-                let error = CriptextError(code: .noValidResponse)
-                completion(ResponseData.Error(error))
-                return
-            }
-            completion(ResponseData.SuccessArray(value))
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -81,15 +101,8 @@ class APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard let value = response.result.value as? [String: Any] else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.SuccessDictionary(value))
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -97,16 +110,9 @@ class APIManager {
         let url = "\(self.baseUrl)/event/peers"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).response{ response in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
     
@@ -115,15 +121,8 @@ class APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard let value = response.result.value as? [[String: Any]] else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.SuccessArray(value))
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -132,19 +131,8 @@ class APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            if response.response?.statusCode == 404 {
-                completion(ResponseData.Error(CriptextError(code: .bodyUnsent)))
-                return
-            }
-            guard let value = response.result.value else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.SuccessString(value))
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -174,16 +162,9 @@ class APIManager {
             "metadataKey": key,
             "recipients": recipients
             ] as [String: Any]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).response { response in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
     
@@ -194,16 +175,9 @@ class APIManager {
         ]
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
-        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion?(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200 else {
-                completion?(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion?(ResponseData.Success)
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion?(responseData)
         }
     }
     
@@ -215,15 +189,8 @@ class APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
 
@@ -233,16 +200,8 @@ class APIManager {
             "API-Version": apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
             (response) in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200,
-                let responseData = response.result.value as? [String: Any] else {
-                    completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                    return
-            }
-            completion(ResponseData.SuccessDictionary(responseData))
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -252,15 +211,8 @@ class APIManager {
             "API-Version": apiVersion]
         let params = ["password": password]
         Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
     
@@ -273,15 +225,8 @@ class APIManager {
             "password": password
             ] as [String: Any]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
     
@@ -291,19 +236,12 @@ class APIManager {
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString {
             (response) in
-            if let responseError = checkRequestAuth(response: response.response) {
-                completion(responseError)
-                return
-            }
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
 
-    class func changePassword(oldPassword: String, newPassword: String, token: String, completion: @escaping ((Error?) -> Void)){
+    class func changePassword(oldPassword: String, newPassword: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/password/change"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
@@ -312,12 +250,8 @@ class APIManager {
             "newPassword": newPassword
             ] as [String: Any]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            guard response.response?.statusCode == 200 else {
-                let error = CriptextError(code: .noValidResponse)
-                completion(error)
-                return
-            }
-            completion(nil)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
     
@@ -329,11 +263,8 @@ class APIManager {
             "password": password
             ] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
     
@@ -342,60 +273,42 @@ class APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
 }
 
 extension APIManager {
-    class func checkAvailableUsername(_ username: String, completion: @escaping ((Error?) -> Void)) -> DataRequest{
+    
+    @discardableResult class func checkAvailableUsername(_ username: String, completion: @escaping ((ResponseData) -> Void)) -> DataRequest{
         let url = "\(self.baseUrl)/user/available?username=\(username)"
         let headers = ["API-Version": apiVersion]
         return Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            guard response.response?.statusCode == 200 else {
-                let criptextError = CriptextError(code: .invalidUsername)
-                completion(criptextError)
-                return
-            }
-            completion(nil)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
     
-    class func singUpRequest(_ params: [String : Any], completion: @escaping ((Error?, String?) -> Void)){
+    class func signUpRequest(_ params: [String : Any], completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user"
         let headers = ["API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString{
             (response) in
-            guard response.response?.statusCode == 200 else {
-                let error = CriptextError(code: .accountNotCreated)
-                completion(error, nil)
-                return
-            }
-            guard let value = response.result.value else {
-                completion(response.result.error, nil)
-                return
-            }
-            completion(nil, value)
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
-    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
+    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((ResponseData) -> Void)){
         let parameters = ["username": username,
                           "password": password] as [String : Any]
         let url = "\(self.baseUrl)/user/auth"
         let headers = ["API-Version": apiVersion]
-        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseString{
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseString {
             (response) in
-            guard let value = response.result.value else {
-                completion(response.result.error, nil)
-                return
-            }
-            let data = Utils.convertToDictionary(text: value)
-            completion(nil, data)
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -406,11 +319,8 @@ extension APIManager {
             ] as [String: Any]
         let headers = ["API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            guard response.response?.statusCode == 200 else {
-                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
-                return
-            }
-            completion(ResponseData.Success)
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
         }
     }
 }

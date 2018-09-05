@@ -87,7 +87,7 @@ class NewLoginViewController: UIViewController{
             loadingView.isHidden = false
             loadingView.startAnimating()
         }else{
-            loginButton.setTitle("Log In", for: .normal)
+            loginButton.setTitle("Sign In", for: .normal)
             loadingView.isHidden = true
             loadingView.stopAnimating()
         }
@@ -115,10 +115,13 @@ class NewLoginViewController: UIViewController{
             return
         }
         toggleLoadingView(true)
-        _ = APIManager.checkAvailableUsername(username) { (responseError) in
-            guard let error = responseError as? CriptextError,
-                error.code == .invalidUsername else {
+        APIManager.checkAvailableUsername(username) { (responseData) in
+            guard case let .Error(error) = responseData else {
                 self.showLoginError(error: "Username does not exist")
+                return
+            }
+            guard error.code == .custom else {
+                self.showLoginError(error: error.description)
                 return
             }
             self.jumpToLoginDeviceView()
@@ -136,8 +139,6 @@ class NewLoginViewController: UIViewController{
     func showLoginError(error: String){
         self.setLoginError(error)
         self.toggleLoadingView(false)
-        self.loginButton.isEnabled = false
-        self.loginButton.alpha = 0.5
     }
     
     func jumpToLoginDeviceView(){
