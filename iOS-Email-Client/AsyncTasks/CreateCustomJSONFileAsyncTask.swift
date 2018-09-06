@@ -36,13 +36,14 @@ class CreateCustomJSONFileAsyncTask {
             })
         }
         (results["emailContacts"] as! Results<EmailContact>).forEach {handleRow($0)}
-        let files = results["files"] as! Results<File>
-        files.forEach { (file) in
-            guard file != files.last else {
-                handleRow(file, appendNewLine: false)
+        (results["files"] as! Results<File>).forEach {handleRow($0)}
+        let fileKeys = results["fileKeys"] as! Results<FileKey>
+        fileKeys.forEach { (fileKey) in
+            guard fileKey != fileKeys.last else {
+                handleRow(fileKey, appendNewLine: false)
                 return
             }
-            handleRow(file)
+            handleRow(fileKey)
         }
         
         DispatchQueue.main.async {

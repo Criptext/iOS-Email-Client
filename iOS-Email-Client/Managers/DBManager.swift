@@ -57,13 +57,15 @@ class DBManager {
         let emails = realm.objects(Email.self)
         let files = realm.objects(File.self)
         let emailContacts = realm.objects(EmailContact.self)
+        let fileKeys = realm.objects(FileKey.self)
         
         return [
             "contacts": contacts,
             "labels": labels,
             "emails": emails,
             "files": files,
-            "emailContacts": emailContacts
+            "emailContacts": emailContacts,
+            "fileKeys": fileKeys
         ]
     }
 }
