@@ -32,3 +32,15 @@ class FileKey : Object {
         return "\(key.base64EncodedString()):\(iv.base64EncodedString())"
     }
 }
+
+extension FileKey: CustomDictionary  {
+    func toDictionary() -> [String: Any] {
+        return ["table": "fileKey",
+                "object": [
+                    "id": id,
+                    "key": key,
+                    "emailId": emailId
+            ]
+        ]
+    }
+}
