@@ -170,8 +170,9 @@ class EventHandler {
                 finishCallback(false, nil)
                 return
             }
-            email.content = content
-            email.preview = self.getContentPreview(content: content)
+            let contentPreview = self.getContentPreview(content: content)
+            email.content = contentPreview.1
+            email.preview = contentPreview.0
             if(unsent){
                 email.unsentDate = email.date
                 email.status = .unsent
@@ -210,12 +211,15 @@ class EventHandler {
         }
     }
     
-    func getContentPreview(content: String) -> String{
+    func getContentPreview(content: String) -> (String, String) {
         do {
             let doc: Document = try SwiftSoup.parse(content)
-            return try String(doc.text().prefix(100))
+            let preview = try String(doc.text().prefix(100))
+            let content = try SwiftSoup.clean(content, Whitelist.basic())!
+            return (content, preview)
         } catch {
-            return String(content.removeHtmlTags().replaceNewLineCharater(separator: " ").prefix(100))
+            let preview = String(content.removeHtmlTags().replaceNewLineCharater(separator: " ").prefix(100))
+            return (preview, content)
         }
     }
     
