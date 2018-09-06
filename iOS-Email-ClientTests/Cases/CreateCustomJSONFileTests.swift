@@ -87,7 +87,7 @@ class CreateCustomJSONFileTests: XCTestCase {
         DBManager.store([fileKey])
     }
     
-    func testSuccessfulCreationOfDBFile(){
+    func testSuccessfullyCreateEncryptDecryptDBFile(){
         let expect = expectation(description: "Callback runs after generating db file")
 
         CreateCustomJSONFileAsyncTask().start { (error, url) in
