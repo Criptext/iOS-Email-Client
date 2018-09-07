@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.statusBarStyle = .lightContent
         
         let config = Realm.Configuration(
-            schemaVersion: 5,
+            schemaVersion: 6,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 3) {
                     migration.enumerateObjects(ofType: FeedItem.className()){ oldObject, newObject in
@@ -76,6 +76,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         emailContact["compoundKey"] = compoundKey
                         keysMap.insert(compoundKey)
+                    }
+                }
+                if (oldSchemaVersion < 6) {
+                    migration.enumerateObjects(ofType: Email.className()){ oldObject, newObject in
+                        guard let oldEmail = oldObject,
+                            let oldLabels = oldEmail["labels"] as? List<DynamicObject> else {
+                            return
+                        }
+                        let isTrash = oldLabels.contains(where: { (oldLabel) -> Bool in
+                            guard let labelId = oldLabel["id"] as? Int else {
+                                return false
+                            }
+                            return labelId == SystemLabel.trash.id
+                        })
+                        newObject?["trashDate"] = isTrash ? Date() : nil
                     }
                 }
             })

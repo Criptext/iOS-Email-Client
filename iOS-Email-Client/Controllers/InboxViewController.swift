@@ -108,6 +108,7 @@ class InboxViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
+        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60), failSilently: true)
         getPendingEvents(nil)
     }
     
@@ -551,6 +552,51 @@ extension InboxViewController: UITableViewDataSource{
         return footerView
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
+            return nil
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
+        cell.onEmptyPress = {
+            self.showEmptyTrashWarning()
+        }
+        return cell
+    }
+    
+    func showEmptyTrashWarning() {
+        let emptyAction = UIAlertAction(title: "Yes", style: .destructive){ (alert : UIAlertAction!) -> Void in
+            self.emptyTrash()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        showAlert("Empty Trash", message: "All your emails in Trash are going to be deleted PERMANENTLY. Do you want to continue?", style: .alert, actions: [emptyAction, cancelAction])
+    }
+    
+    func emptyTrash(from date: Date = Date(), failSilently: Bool = false){
+        guard let threadIds = DBManager.getTrashThreads(from: date) else {
+            return
+        }
+        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
+        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], failSilently: failSilently) {
+            DBManager.deleteTrash(threadIds: threadIds)
+            self.refreshThreadRows()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
+            return 0.0
+        }
+        return 95.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+    
     func showNoThreadsView(_ show: Bool){
         envelopeView.isHidden = !show
         guard show else {
@@ -833,7 +879,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
     }
     
-    func postPeerEvent(_ params: [String: Any], completion: @escaping (() -> Void)){
+    func postPeerEvent(_ params: [String: Any], failSilently: Bool = false, completion: @escaping (() -> Void)){
         APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
@@ -844,11 +890,15 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 return
             }
             if case let .Error(error) = responseData {
-                self.showAlert("Request Error", message: "\(error.description). Please try again", style: .alert)
+                if (!failSilently) {
+                    self.showAlert("Request Error", message: "\(error.description). Please try again", style: .alert)
+                }
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                if (!failSilently) {
+                    self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                }
                 return
             }
             

@@ -152,6 +152,7 @@
 		7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5F205816470053219F /* UnsentUIPopover.swift */; };
 		7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69BADC20DC4A2E001ABD5B /* Thread.swift */; };
 		7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
+		7C72F16F2141997E00A7DDEA /* InboxHeaderUITableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */; };
 		7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */; };
 		7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */; };
 		7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */; };
@@ -423,6 +424,7 @@
 		7C63AB5F205816470053219F /* UnsentUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsentUIPopover.swift; sourceTree = "<group>"; };
 		7C69BADC20DC4A2E001ABD5B /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIPopover.swift; sourceTree = "<group>"; };
+		7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxHeaderUITableCell.swift; sourceTree = "<group>"; };
 		7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailAsyncTask.swift; sourceTree = "<group>"; };
 		7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
 		7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTapTableCellView.swift; sourceTree = "<group>"; };
@@ -889,6 +891,7 @@
 				7C4D33C4212C7A2900045B09 /* PasswordUIPopover.xib */,
 				7CCA8CF9212CCEBF003FD46C /* ChangePasswordUIPopover.xib */,
 				7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */,
+				7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1269,6 +1272,7 @@
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
+				7C72F16F2141997E00A7DDEA /* InboxHeaderUITableCell.swift in Sources */,
 				7C7F2FEF20B4BE6400A2CB32 /* LabelsLabelTableViewCell.swift in Sources */,
 				7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */,
 				7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */,

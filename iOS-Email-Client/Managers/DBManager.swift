@@ -423,6 +423,26 @@ extension DBManager {
         }
     }
     
+    class func getTrashThreads(from date: Date) -> [String]? {
+        let realm = try! Realm()
+        var threadIds: [String]?
+        try! realm.write {
+            let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ && trashDate < %@", [SystemLabel.trash.id], date))
+            threadIds = Array(Set(emails.map({ (email) -> String in
+                return email.threadId
+            })))
+        }
+        return threadIds
+    }
+    
+    class func deleteTrash(threadIds: [String]){
+        let realm = try! Realm()
+        try! realm.write {
+            let emails = Array(realm.objects(Email.self).filter("threadId IN %@", threadIds))
+            self.deleteEmail(realm: realm, emails: emails)
+        }
+    }
+    
     class func updateThread(threadId: String, currentLabel: Int, unread: Bool){
         let emails = getThreadEmails(threadId, label: currentLabel)
         for email in emails {
@@ -720,6 +740,7 @@ extension DBManager {
     
     class func setLabelsForEmail(_ email: Email, labels: [Int]){
         let realm = try! Realm()
+        let wasInTrash = email.isTrash
         try! realm.write {
             let keepLabels = email.labels.reduce(List<Label>(), { (labels, label) -> List<Label> in
                 guard label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id else {
@@ -728,13 +749,19 @@ extension DBManager {
                 return labels + [label]
             })
             email.labels.removeAll()
+            email.trashDate = nil
             email.labels.append(objectsIn: keepLabels)
             for label in labels {
                 guard label != SystemLabel.draft.id && label != SystemLabel.sent.id,
-                let labelToAdd = getLabel(label)  else {
+                    let labelToAdd = getLabel(label)  else {
                     continue
                 }
                 email.labels.append(labelToAdd)
+            }
+            if (!wasInTrash && email.isTrash) {
+                email.trashDate = Date()
+            } else if (wasInTrash && !email.isTrash) {
+                email.trashDate = nil
             }
         }
     }
@@ -755,6 +782,7 @@ extension DBManager {
     
     class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
         let realm = try! Realm()
+        let wasInTrash = email.isTrash
         try! realm.write {
             for labelId in addedLabelIds {
                 guard !email.labels.contains(where: {$0.id == labelId}),
@@ -768,6 +796,11 @@ extension DBManager {
                     continue
                 }
                 email.labels.remove(at: index)
+            }
+            if (!wasInTrash && email.isTrash) {
+                email.trashDate = Date()
+            } else if (wasInTrash && !email.isTrash) {
+                email.trashDate = nil
             }
         }
     }
@@ -969,6 +1002,7 @@ extension DBManager {
     }
     
     class func addRemoveLabels(realm: Realm, email: Email, addedLabelNames: [String], removedLabelNames: [String]){
+        let wasInTrash = email.isTrash
         for labelName in addedLabelNames {
             guard !email.labels.contains(where: {$0.text == labelName}),
                 let label = realm.objects(Label.self).filter("text == '\(labelName)'").first else {
@@ -981,6 +1015,11 @@ extension DBManager {
                 continue
             }
             email.labels.remove(at: index)
+        }
+        if (!wasInTrash && email.isTrash) {
+            email.trashDate = Date()
+        } else if (wasInTrash && !email.isTrash) {
+            email.trashDate = nil
         }
     }
     
