@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Material
 
 class RecoveryEmailViewController: UIViewController {
     
@@ -28,6 +29,9 @@ class RecoveryEmailViewController: UIViewController {
     @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var resendButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var resendLoader: UIActivityIndicatorView!
+    @IBOutlet weak var emailTextField: TextField!
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var buttonLoader: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +43,6 @@ class RecoveryEmailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        prepareView()
     }
     
     func prepareView(){
@@ -48,7 +51,15 @@ class RecoveryEmailViewController: UIViewController {
         statusLabel.textColor = recoveryEmailStatus.color
         resendButton.isHidden = recoveryEmailStatus == .verified
         resendButtonHeightConstraint.constant = recoveryEmailStatus != .pending ? 0.0 : BUTTON_HEIGHT
-        showLoader(false)
+        showLoaderTimer(false)
+        
+        buttonLoader.isHidden = true
+        emailTextField.keyboardType = .emailAddress
+        emailTextField.detailColor = .alert
+        
+        emailTextField.text = ""
+        doneButton.isEnabled = false
+        doneButton.alpha = 0.6
     }
 
     @IBAction func onChangeEmailPress(_ sender: Any) {
@@ -56,18 +67,19 @@ class RecoveryEmailViewController: UIViewController {
     }
     
     @IBAction func onResendPress(_ sender: Any) {
-        self.showLoader(true)
+        self.showLoaderTimer(true)
         APIManager.resendConfirmationEmail(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return
             }
-            self.showLoader(false)
+            self.showLoaderTimer(false)
             if case .Forbidden = responseData {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
-            if case let .Error(error) = responseData {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
                 self.showAlert("Request Error", message: "\(error.description). please try again.", style: .alert)
                 return
             }
@@ -78,6 +90,7 @@ class RecoveryEmailViewController: UIViewController {
             self.presentResendAlert()
             let defaults = UserDefaults.standard
             defaults.set(Date().timeIntervalSince1970, forKey: "lastTimeResent")
+            self.showLoaderTimer(false)
         }
     }
     
@@ -88,7 +101,74 @@ class RecoveryEmailViewController: UIViewController {
         self.presentPopover(popover: alertVC, height: POPOVER_HEIGHT)
     }
     
-    func showLoader(_ show: Bool){
+    @IBAction func onEditingChanged(_ sender: Any) {
+        guard let email = emailTextField.text,
+            Utils.validateEmail(email) else {
+                doneButton.isEnabled = false
+                doneButton.alpha = 0.6
+            return
+        }
+        
+        doneButton.isEnabled = true
+        doneButton.alpha = 1.0
+    }
+    
+    @IBAction func onDonePress(_ sender: Any) {
+        guard let email = emailTextField.text else {
+            return
+        }
+        guard email != "\(myAccount.username)\(Constants.domain)" else {
+            emailTextField.detail = "Don't use the same criptext account"
+            return
+        }
+        guard email != generalData.recoveryEmail else {
+            emailTextField.detail = "Please enter a different email"
+            return
+        }
+        presentChangePasswordPopover()
+    }
+    
+    func presentChangePasswordPopover(){
+        let passwordVC = PasswordUIPopover()
+        passwordVC.onOkPress = { [weak self] password in
+            self?.sendRequest(password: password.sha256()!)
+        }
+        self.presentPopover(popover: passwordVC, height: 213)
+    }
+    
+    func sendRequest(password: String){
+        guard let email = emailTextField.text else {
+            return
+        }
+        showLoader(true)
+        APIManager.changeRecoveryEmail(email: email, password: password, token: myAccount.jwt) { responseData in
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            self.showLoader(false)
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.showAlert("Network Error", message: "\(error.description). Please try again", style: .alert)
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert("Network Error", message: "Unable to change recovery email. Please try again", style: .alert)
+                return
+            }
+            self.generalData.recoveryEmail = email
+            self.generalData.recoveryEmailStatus = .pending
+            self.emailTextField.detail = ""
+            self.prepareView()
+            self.presentResendAlert()
+        }
+    }
+    
+    func showLoaderTimer(_ show: Bool){
         guard show else {
             resendLoader.stopAnimating()
             resendLoader.isHidden = true
@@ -111,6 +191,21 @@ class RecoveryEmailViewController: UIViewController {
         resendButton.setTitle("", for: .normal)
         resendLoader.isHidden = false
         resendLoader.startAnimating()
+    }
+    
+    func showLoader(_ show: Bool){
+        guard show else {
+            buttonLoader.isHidden = true
+            buttonLoader.stopAnimating()
+            doneButton.isEnabled = true
+            doneButton.setTitle("Change", for: .normal)
+            return
+        }
+        
+        buttonLoader.isHidden = false
+        buttonLoader.startAnimating()
+        doneButton.isEnabled = false
+        doneButton.setTitle("", for: .normal)
     }
     
     func startTimer() {

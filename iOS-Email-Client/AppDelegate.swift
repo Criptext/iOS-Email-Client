@@ -110,10 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let loginVC = storyboard.instantiateInitialViewController()!
-            let paddingBottom = window?.safeAreaInsets.bottom ?? 0.0
-            let snackbarController = CriptextSnackbarController(rootViewController: loginVC)
-            snackbarController.setBottomPadding(padding: paddingBottom)
-            initialVC = snackbarController
+            initialVC = loginVC
         }
         
         self.replaceRootViewController(initialVC)

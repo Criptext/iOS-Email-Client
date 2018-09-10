@@ -63,7 +63,8 @@ class CreatingAccountViewController: UIViewController{
         feedbackLabel.text = "Generating keys..."
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
-            if case let .Error(error) = responseData {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
                 self.displayErrorMessage(message: error.description)
                 return
             }
@@ -82,7 +83,8 @@ class CreatingAccountViewController: UIViewController{
     func sendSignUpRequest(){
         feedbackLabel.text = "Generating keys..."
         APIManager.signUpRequest(signupData.buildDataForRequest()) { (responseData) in
-            if case let .Error(error) = responseData {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
                 self.displayErrorMessage(message: error.description)
                 return
             }

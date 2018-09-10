@@ -106,7 +106,7 @@ class SettingsGeneralViewController: UITableViewController{
         case "Profile Name":
             presentNamePopover()
         case "Change Password":
-            presentChangePasswordPopover()
+            goToChangePassword()
         case "Signature":
             goToSignature()
         case "Privacy Policy":
@@ -165,6 +165,13 @@ class SettingsGeneralViewController: UITableViewController{
         self.navigationController?.pushViewController(recoveryVC, animated: true)
     }
     
+    func goToChangePassword(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let changePassVC = storyboard.instantiateViewController(withIdentifier: "changePassViewController") as! ChangePassViewController
+        changePassVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(changePassVC, animated: true)
+    }
+    
     func goToSignature(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let signatureVC = storyboard.instantiateViewController(withIdentifier: "signatureEditorViewController") as! SignatureEditorViewController
@@ -180,17 +187,6 @@ class SettingsGeneralViewController: UITableViewController{
             self.changeProfileName(name: text)
         }
         self.presentPopover(popover: changeNamePopover, height: Constants.singleTextPopoverHeight)
-    }
-    
-    func presentChangePasswordPopover(){
-        let popoverHeight = 300
-        let changePasswordPopover = ChangePasswordUIPopover()
-        changePasswordPopover.myAccount = myAccount
-        guard let tabsController = self.tabsController else {
-            self.presentPopover(popover: changePasswordPopover, height: popoverHeight)
-            return
-        }
-        tabsController.presentPopover(popover: changePasswordPopover, height: popoverHeight)
     }
     
     func goToUrl(url: String){

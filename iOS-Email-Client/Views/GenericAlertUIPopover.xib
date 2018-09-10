@@ -52,8 +52,8 @@
                         <action selector="okPress:" destination="-1" eventType="touchUpInside" id="M4l-Bf-3Qj"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please check your inbox for a confirmation email. Click the link in the email to confirm your email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t5a-FG-4VH">
-                    <rect key="frame" x="28" y="69.5" width="214" height="92.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please check your inbox for a confirmation email. Click the link in the email to confirm your email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t5a-FG-4VH">
+                    <rect key="frame" x="28" y="59.5" width="214" height="112.5"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -64,11 +64,11 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="OiD-GH-txU" secondAttribute="trailing" constant="39" id="6fo-gM-sDq"/>
                 <constraint firstItem="t5a-FG-4VH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="28" id="9XM-Ah-rdu"/>
                 <constraint firstItem="OiD-GH-txU" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="30" id="CML-Yw-evC"/>
-                <constraint firstItem="iGt-Aa-2mj" firstAttribute="top" secondItem="t5a-FG-4VH" secondAttribute="bottom" constant="25" id="DBW-ne-VwM"/>
+                <constraint firstItem="iGt-Aa-2mj" firstAttribute="top" secondItem="t5a-FG-4VH" secondAttribute="bottom" constant="15" id="DBW-ne-VwM"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="t5a-FG-4VH" secondAttribute="trailing" constant="28" id="IBv-4A-Cr5"/>
                 <constraint firstItem="OiD-GH-txU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="39" id="J80-gD-BGI"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="iGt-Aa-2mj" secondAttribute="trailing" id="Lnt-xT-bXh"/>
-                <constraint firstItem="t5a-FG-4VH" firstAttribute="top" secondItem="OiD-GH-txU" secondAttribute="bottom" constant="16" id="Wyq-B3-oHN"/>
+                <constraint firstItem="t5a-FG-4VH" firstAttribute="top" secondItem="OiD-GH-txU" secondAttribute="bottom" constant="6" id="Wyq-B3-oHN"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="iGt-Aa-2mj" secondAttribute="bottom" id="bGp-jc-atS"/>
                 <constraint firstItem="iGt-Aa-2mj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="kjz-GD-fzL"/>
             </constraints>

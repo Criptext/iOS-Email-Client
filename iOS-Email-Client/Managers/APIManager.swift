@@ -318,8 +318,8 @@ extension APIManager {
             "recipientId": username
             ] as [String: Any]
         let headers = ["API-Version": apiVersion]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            let responseData = handleResponse(response, satisfy: .success)
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            let responseData = handleResponse(response)
             completion(responseData)
         }
     }

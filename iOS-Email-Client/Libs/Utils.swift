@@ -150,4 +150,29 @@ class Utils{
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
     }
+    
+    class func maskEmailAddress(email: String) -> String {
+        let emailSplit = email.split(separator: "@")
+        let maskUsername = String(emailSplit[0]).hideMidChars()
+        let domain = String(emailSplit[1])
+        
+        let domainSplit = domain.split(separator: ".")
+        let stringArray = domainSplit.enumerated().map { (index, text) -> String in
+            guard text != domainSplit.last else {
+                return ".\(text)"
+            }
+            let beforeLast = domainSplit[domainSplit.count - 2]
+            if text == domainSplit.first && text == beforeLast {
+                return String(text).hideMidChars()
+            }
+            if text == domainSplit.first {
+                return text.prefix(1) + String(repeating: "*", count: text.count - 1)
+            }
+            if text == beforeLast  {
+                return "*\(String(repeating: "*", count: text.count - 1))\(text.suffix(1))"
+            }
+            return String(repeating: "*", count: text.count)
+        }
+        return "\(maskUsername)@\(stringArray.joined(separator: ""))"
+    }
 }
