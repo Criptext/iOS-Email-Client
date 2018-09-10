@@ -209,8 +209,6 @@
 		7CC44BE220FD583A004BF759 /* CreateCustomJSONFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */; };
 		7CC44BF120FEE1ED004BF759 /* AESCipherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */; };
 		7CCA060D210B687200BC4CEF /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
-		7CCA8CF8212CCE48003FD46C /* ChangePasswordUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA8CF7212CCE48003FD46C /* ChangePasswordUIPopover.swift */; };
-		7CCA8CFA212CCEBF003FD46C /* ChangePasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCA8CF9212CCEBF003FD46C /* ChangePasswordUIPopover.xib */; };
 		7CCC82E92125E83E00D33F84 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */; };
 		7CCC82EA2125E83F00D33F84 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */; };
 		7CCC82EB2125E83F00D33F84 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43021111DCF00A40C74 /* FirebaseCoreDiagnostics.framework */; };
@@ -482,8 +480,6 @@
 		7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomJSONFileTests.swift; sourceTree = "<group>"; };
 		7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipherTests.swift; sourceTree = "<group>"; };
 		7CCA060C210B687200BC4CEF /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
-		7CCA8CF7212CCE48003FD46C /* ChangePasswordUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordUIPopover.swift; sourceTree = "<group>"; };
-		7CCA8CF9212CCEBF003FD46C /* ChangePasswordUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangePasswordUIPopover.xib; sourceTree = "<group>"; };
 		7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIWindowTransitions.framework; path = Carthage/Build/iOS/UIWindowTransitions.framework; sourceTree = "<group>"; };
 		7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RemoveDeviceUIPopover.xib; sourceTree = "<group>"; };
 		7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDeviceUIPopover.swift; sourceTree = "<group>"; };
@@ -684,7 +680,6 @@
 				7C4D33BE212B4FCC00045B09 /* ChangeRecoveryEmailViewController.swift */,
 				7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */,
 				7C4D33C6212C7B8400045B09 /* PasswordUIPopover.swift */,
-				7CCA8CF7212CCE48003FD46C /* ChangePasswordUIPopover.swift */,
 				7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */,
 				7CF93F4C214329C600361837 /* ChangePassViewController.swift */,
 			);
@@ -892,7 +887,6 @@
 				7C1E82C32116BDF2007CA853 /* HintUIView.swift */,
 				7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */,
 				7C4D33C4212C7A2900045B09 /* PasswordUIPopover.xib */,
-				7CCA8CF9212CCEBF003FD46C /* ChangePasswordUIPopover.xib */,
 				7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */,
 				7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */,
 			);
@@ -1093,7 +1087,6 @@
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				7CB60A7720F8068900C9090C /* LabelsHeaderTableViewCell.xib in Resources */,
 				41AAC526201A9FC300809C4D /* GenericUIPopover.xib in Resources */,
-				7CCA8CFA212CCEBF003FD46C /* ChangePasswordUIPopover.xib in Resources */,
 				7C7F2FF520B5DB6F00A2CB32 /* SingleTextInputUIPopover.xib in Resources */,
 				412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */,
 				7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */,
@@ -1234,7 +1227,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CCA8CF8212CCE48003FD46C /* ChangePasswordUIPopover.swift in Sources */,
 				7C7F2FED20B4B65700A2CB32 /* SettingsLabelsViewController.swift in Sources */,
 				41AAC53F201A9FCD00809C4D /* PreviewItem.swift in Sources */,
 				7C7F2FF920B6059800A2CB32 /* Device.swift in Sources */,
