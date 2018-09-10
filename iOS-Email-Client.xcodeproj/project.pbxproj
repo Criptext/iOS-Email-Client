@@ -250,6 +250,7 @@
 		7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */; };
 		7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */; };
 		7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */; };
+		7CF93F4D214329C700361837 /* ChangePassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF93F4C214329C600361837 /* ChangePassViewController.swift */; };
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
 		7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */; };
@@ -517,6 +518,7 @@
 		7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemUIView.swift; sourceTree = "<group>"; };
 		7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewController.swift; sourceTree = "<group>"; };
 		7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTableViewCell.swift; sourceTree = "<group>"; };
+		7CF93F4C214329C600361837 /* ChangePassViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePassViewController.swift; sourceTree = "<group>"; };
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
 		7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 				7C4D33C6212C7B8400045B09 /* PasswordUIPopover.swift */,
 				7CCA8CF7212CCE48003FD46C /* ChangePasswordUIPopover.swift */,
 				7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */,
+				7CF93F4C214329C600361837 /* ChangePassViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1282,6 +1285,7 @@
 				41AAC543201AA00000809C4D /* ContactUtils.swift in Sources */,
 				7C8C2F7020EAB87D00FC145E /* LabelsFooterViewCell.swift in Sources */,
 				7C4D33C7212C7B8400045B09 /* PasswordUIPopover.swift in Sources */,
+				7CF93F4D214329C700361837 /* ChangePassViewController.swift in Sources */,
 				7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */,
 				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,

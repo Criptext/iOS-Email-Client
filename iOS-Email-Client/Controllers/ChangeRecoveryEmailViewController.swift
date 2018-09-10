@@ -74,7 +74,8 @@ class ChangeRecoveryEmailViewController: UIViewController {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
-            if case let .Error(error) = responseData  {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
                 self.showAlert("Network Error", message: "\(error.description). Please try again", style: .alert)
                 return
             }

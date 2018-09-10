@@ -117,7 +117,8 @@ class SignUpViewController: UIViewController{
         usernameTextField.setStatus(.none)
         apiRequest?.cancel()
         apiRequest = APIManager.checkAvailableUsername(username) { (responseData) in
-            if case let .Error(error) = responseData {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
                 self.usernameTextField.setStatus(.invalid, error.description)
                 self.checkToEnableDisableCreateButton()
                 return

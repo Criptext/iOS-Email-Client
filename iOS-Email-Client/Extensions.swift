@@ -322,6 +322,13 @@ extension String {
         }
         return randomString
     }
+    
+    func hideMidChars() -> String {
+        return String(self.enumerated().map { index, char in
+            return [0, self.count - 1].contains(index) ? char : "*"
+        })
+    }
+    
 }
 
 enum Font {

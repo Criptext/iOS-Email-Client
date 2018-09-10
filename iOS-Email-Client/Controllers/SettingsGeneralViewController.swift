@@ -106,7 +106,7 @@ class SettingsGeneralViewController: UITableViewController{
         case "Profile Name":
             presentNamePopover()
         case "Change Password":
-            presentChangePasswordPopover()
+            goToChangePassword()
         case "Signature":
             goToSignature()
         case "Privacy Policy":
@@ -163,6 +163,13 @@ class SettingsGeneralViewController: UITableViewController{
         recoveryVC.generalData = self.generalData
         recoveryVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(recoveryVC, animated: true)
+    }
+    
+    func goToChangePassword(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let changePassVC = storyboard.instantiateViewController(withIdentifier: "changePassViewController") as! ChangePassViewController
+        changePassVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(changePassVC, animated: true)
     }
     
     func goToSignature(){

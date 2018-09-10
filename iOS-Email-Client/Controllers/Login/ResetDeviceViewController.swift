@@ -11,7 +11,9 @@ import Material
 
 class ResetDeviceViewController: UIViewController{
 
-    @IBOutlet weak var forgotLabel: UILabel!
+    let POPOVER_HEIGHT = 220
+    
+    @IBOutlet weak var forgotButton: UIButton!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var errorMark: UIImageView!
     @IBOutlet weak var errorLabel: UILabel!
@@ -28,11 +30,8 @@ class ResetDeviceViewController: UIViewController{
         checkToEnableDisableResetButton()
         let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
-        let forgotTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sendResetLink))
-        view.addGestureRecognizer(forgotTap)
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         passwordTextField.becomeFirstResponder()
-        forgotLabel.addGestureRecognizer(forgotTap)
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -66,7 +65,7 @@ class ResetDeviceViewController: UIViewController{
             }
             guard case let .SuccessString(dataString) = responseData,
                 let data = Utils.convertToDictionary(text: dataString) else {
-                self.showFeedback(true, "Wrong password or username.")
+                self.showFeedback(true, "Wrong password. Please try again.")
                 return
             }
             let name = data["name"] as! String
@@ -123,15 +122,33 @@ class ResetDeviceViewController: UIViewController{
         resetLoaderView.startAnimating()
     }
     
-    @objc func sendResetLink(){
+    @IBAction func onForgotPasswordPress(_ sender: Any) {
+        sendResetLink()
+    }
+    
+    func sendResetLink(){
+        forgotButton.isEnabled = false
         let recipientId = loginData.email.split(separator: "@")[0]
-        showSnackbar("Sending reset password email", attributedText: nil, buttons: "", permanent: false)
         APIManager.resetPassword(username: String(recipientId)) { (responseData) in
-            guard case .Success = responseData else {
-                self.showSnackbar("Unable to send email. Please try again", attributedText: nil, buttons: "", permanent: false)
+            self.forgotButton.isEnabled = true
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.presentResetAlert(title: "Request Error", message: error.description)
                 return
             }
-            self.showSnackbar("Email successfully sent", attributedText: nil, buttons: "", permanent: false)
+            guard case let .SuccessDictionary(data) = responseData,
+                let email = data["address"] as? String else {
+                    self.presentResetAlert(title: "Request Error", message: "A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password")
+                    return
+            }
+            self.presentResetAlert(title: "Reset Password", message: "An email was sent to \(Utils.maskEmailAddress(email: email)) with the instructions to reset your password.")
         }
+    }
+    
+    func presentResetAlert(title: String, message: String){
+        let alertVC = GenericAlertUIPopover()
+        alertVC.myTitle = title
+        alertVC.myMessage = message
+        self.presentPopover(popover: alertVC, height: POPOVER_HEIGHT)
     }
 }

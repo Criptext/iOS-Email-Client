@@ -252,7 +252,8 @@ class InboxViewController: UIViewController {
                 return
             }
             refreshControl?.endRefreshing()
-            if case let .Error(error) = responseData {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
                 self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
                 return
             }
@@ -889,7 +890,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
-            if case let .Error(error) = responseData {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
                 if (!failSilently) {
                     self.showAlert("Request Error", message: "\(error.description). Please try again", style: .alert)
                 }
