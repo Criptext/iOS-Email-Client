@@ -14,13 +14,18 @@ protocol Dictionarify {
 
 class EventData {
     
+    enum Socket {
+        case NewEvent
+        case PasswordChange
+        case Logout
+    }
+    
     struct Result {
         var emails = [Email]()
         var opens = [FeedItem]()
         var modifiedThreadIds = [String]()
         var modifiedEmailKeys = [Int]()
         var removed = false
-        var fromWS = false
     }
     
     struct NewEmail {

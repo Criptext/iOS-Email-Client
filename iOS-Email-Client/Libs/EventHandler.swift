@@ -18,17 +18,14 @@ class EventHandler {
     var eventDelegate : EventHandlerDelegate?
     var apiManager : APIManager.Type = APIManager.self
     var signalHandler: SignalHandler.Type = SignalHandler.self
-    var fromWS: Bool
     
-    init(account: Account, fromWS: Bool = false){
+    init(account: Account){
         myAccount = account
-        self.fromWS = fromWS
     }
 
     func handleEvents(events: [[String: Any]]){
         var result = EventData.Result()
         var successfulEvents = [Int32]()
-        result.fromWS = self.fromWS
         handleEventsRecursive(events: events, index: 0, eventCallback: { (successfulEventId, data) in
             guard let eventId = successfulEventId else {
                 return
@@ -43,13 +40,11 @@ class EventHandler {
                 result.modifiedThreadIds.append(contentsOf: data as! [String])
             case is [Int]:
                 result.modifiedEmailKeys.append(contentsOf: data as! [Int])
-            case is Bool:
-                result.removed = true
             default:
                 break
             }
         }) {
-            if(!successfulEvents.isEmpty && !self.fromWS && !result.removed){
+            if(!successfulEvents.isEmpty && !result.removed){
                 self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
             }
             self.eventDelegate?.didReceiveEvents(result: result)
@@ -300,6 +295,19 @@ class EventHandler {
         let accountEmail = "\(myAccount.username)\(Constants.domain)"
         return accountEmail == email.fromContact.email
     }
+    
+    func handleSocketEvent(event: [String: Any]) -> EventData.Socket {
+        let cmd = event["cmd"] as! Int32
+        
+        switch(cmd){
+        case Event.Peer.passwordChange.rawValue:
+            return .PasswordChange
+        case Event.Link.removed.rawValue:
+            return .Logout
+        default:
+            return .NewEvent
+        }
+    }
 }
 
 extension EventHandler {
@@ -384,5 +392,6 @@ enum Event: Int32 {
         case unsent = 307
         case newLabel = 308
         case changeName = 309
+        case passwordChange = 310
     }
 }

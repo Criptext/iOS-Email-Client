@@ -9,9 +9,13 @@
 import Foundation
 import SwiftWebSocket
 
+protocol WebSocketManagerDelegate {
+    func newMessage(result: EventData.Socket)
+}
+
 final class WebSocketManager: NSObject {
     static let sharedInstance = WebSocketManager()
-    var eventDelegate : EventHandlerDelegate?
+    var delegate : WebSocketManagerDelegate?
     var socket : WebSocket!
     var myAccount : Account?
     let SOCKET_URL = "wss://socket.criptext.com"
@@ -56,18 +60,12 @@ extension WebSocketManager: WebSocketDelegate{
             let account = self.myAccount else {
             return
         }
-        let eventHandler = EventHandler(account: account, fromWS: true)
-        eventHandler.eventDelegate = self
-        eventHandler.handleEvents(events: [event])
+        let eventHandler = EventHandler(account: account)
+        let result = eventHandler.handleSocketEvent(event: event)
+        delegate?.newMessage(result: result)
     }
     
     func webSocketPong() {
         print("Pong")
-    }
-}
-
-extension WebSocketManager: EventHandlerDelegate {
-    func didReceiveEvents(result: EventData.Result) {
-        eventDelegate?.didReceiveEvents(result: result)
     }
 }
