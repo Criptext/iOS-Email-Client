@@ -115,7 +115,7 @@ class InboxViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         sendFailEmail()
-        showGuide()
+        presentWelcomeTour()
     }
     
     func showGuide(){
@@ -274,6 +274,23 @@ class InboxViewController: UIViewController {
             eventHandler.handleEvents(events: events)
             completion?()
         }
+    }
+    
+    func presentWelcomeTour(){
+        let defaults = UserDefaults.standard
+        guard !defaults.bool(forKey: "welcomeTour") else {
+            self.showGuide()
+            return
+        }
+        
+        let welcomeTourVC = WelcomeTourViewController(nibName: "WelcomeTourView", bundle: nil)
+        welcomeTourVC.modalPresentationStyle = .overCurrentContext
+        welcomeTourVC.modalTransitionStyle = .crossDissolve
+        welcomeTourVC.onDismiss = {
+            self.showGuide()
+            defaults.set(true, forKey: "welcomeTour")
+        }
+        self.present(welcomeTourVC, animated: false, completion: nil)
     }
 }
 

@@ -249,6 +249,12 @@
 		7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */; };
 		7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */; };
 		7CF93F4D214329C700361837 /* ChangePassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF93F4C214329C600361837 /* ChangePassViewController.swift */; };
+		7CF93F4F2146D05200361837 /* WelcomeTourView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CF93F4E2146D05200361837 /* WelcomeTourView.xib */; };
+		7CF93F512146DB0600361837 /* WelcomeTourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */; };
+		7CF93F562146E41700361837 /* Lock.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CF93F532146E41500361837 /* Lock.json */; };
+		7CF93F572146E41700361837 /* Arm.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CF93F542146E41600361837 /* Arm.json */; };
+		7CF93F582146E41700361837 /* Email.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CF93F552146E41600361837 /* Email.json */; };
+		7CF93F5A2146EDC300361837 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CF93F592146EDC300361837 /* Lottie.framework */; };
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
 		7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */; };
@@ -515,6 +521,12 @@
 		7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailViewController.swift; sourceTree = "<group>"; };
 		7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTableViewCell.swift; sourceTree = "<group>"; };
 		7CF93F4C214329C600361837 /* ChangePassViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePassViewController.swift; sourceTree = "<group>"; };
+		7CF93F4E2146D05200361837 /* WelcomeTourView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeTourView.xib; sourceTree = "<group>"; };
+		7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTourViewController.swift; sourceTree = "<group>"; };
+		7CF93F532146E41500361837 /* Lock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Lock.json; sourceTree = "<group>"; };
+		7CF93F542146E41600361837 /* Arm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Arm.json; sourceTree = "<group>"; };
+		7CF93F552146E41600361837 /* Email.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Email.json; sourceTree = "<group>"; };
+		7CF93F592146EDC300361837 /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lottie.framework; path = Carthage/Build/iOS/Lottie.framework; sourceTree = "<group>"; };
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
 		7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
@@ -529,6 +541,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CF93F5A2146EDC300361837 /* Lottie.framework in Frameworks */,
 				7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */,
 				7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */,
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
@@ -589,6 +602,7 @@
 		2962C69A939AA368B015D288 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7CF93F592146EDC300361837 /* Lottie.framework */,
 				7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */,
 				7C1E82BF2116A12B007CA853 /* InstructionsAppExtensions.framework */,
 				7C1E82BD2116A122007CA853 /* Instructions.framework */,
@@ -682,6 +696,7 @@
 				7C4D33C6212C7B8400045B09 /* PasswordUIPopover.swift */,
 				7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */,
 				7CF93F4C214329C600361837 /* ChangePassViewController.swift */,
+				7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -739,6 +754,7 @@
 		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
 			isa = PBXGroup;
 			children = (
+				7CF93F522146E3D700361837 /* Lottie */,
 				7CB60A7520F7E75F00C9090C /* Snackbar */,
 				7C756F2B20DF5AFB007C0641 /* AsyncTasks */,
 				7CDAD2662040A7BD0080A32C /* AxolotlStore */,
@@ -889,6 +905,7 @@
 				7C4D33C4212C7A2900045B09 /* PasswordUIPopover.xib */,
 				7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */,
 				7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */,
+				7CF93F4E2146D05200361837 /* WelcomeTourView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -979,6 +996,16 @@
 				7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */,
 			);
 			path = AxolotlStore;
+			sourceTree = "<group>";
+		};
+		7CF93F522146E3D700361837 /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				7CF93F552146E41600361837 /* Email.json */,
+				7CF93F542146E41600361837 /* Arm.json */,
+				7CF93F532146E41500361837 /* Lock.json */,
+			);
+			path = Lottie;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1092,6 +1119,8 @@
 				7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */,
 				7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */,
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
+				7CF93F4F2146D05200361837 /* WelcomeTourView.xib in Resources */,
+				7CF93F572146E41700361837 /* Arm.json in Resources */,
 				7C53AC382112198B00938A3D /* LogoutUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				41AAC521201A9FC300809C4D /* TimerUIPopover.xib in Resources */,
@@ -1102,8 +1131,10 @@
 				7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */,
+				7CF93F562146E41700361837 /* Lock.json in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
+				7CF93F582146E41700361837 /* Email.json in Resources */,
 				7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */,
 				7CCD73E4212DEB30002C8C7F /* RemoveDeviceUIPopover.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
@@ -1178,6 +1209,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Motion.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Instructions.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/UIWindowTransitions.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Lottie.framework",
 			);
 			name = "Run Script Framework";
 			outputPaths = (
@@ -1202,6 +1234,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Motion.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Instructions.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIWindowTransitions.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Lottie.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1352,6 +1385,7 @@
 				7C1566A020A23AEB000CA8D2 /* TopbarUIView.swift in Sources */,
 				7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */,
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
+				7CF93F512146DB0600361837 /* WelcomeTourViewController.swift in Sources */,
 				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,
 				7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */,
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
