@@ -25,6 +25,7 @@ class SignatureEditorViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         signatureEnableSwitch.isOn = myAccount.signatureEnabled
         richEditor.isEditingEnabled = signatureEnableSwitch.isOn
+        richEditor.isHidden = !signatureEnableSwitch.isOn
         OnOffLabel.text = myAccount.signatureEnabled ? "On" : "Off"
         richEditor.delegate = self
         richEditor.html = myAccount.signature
@@ -48,6 +49,7 @@ class SignatureEditorViewController: UIViewController {
     @IBAction func onSwitchToggle(_ sender: Any) {
         isEdited = true
         richEditor.isEditingEnabled = signatureEnableSwitch.isOn
+        richEditor.isHidden = !signatureEnableSwitch.isOn
         OnOffLabel.text = signatureEnableSwitch.isOn ? "On" : "Off"
         if(signatureEnableSwitch.isOn){
             richEditor.focus()

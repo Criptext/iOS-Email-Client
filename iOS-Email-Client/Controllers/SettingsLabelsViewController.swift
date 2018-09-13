@@ -15,7 +15,8 @@ class SettingsLabelsViewController: UITableViewController {
     override func viewDidLoad() {
         labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
         labels.append(contentsOf: DBManager.getLabels(type: "custom"))
-        tabItem.title = "Labels"
+        let attributedTitle = NSAttributedString(string: "LABELS", attributes: [.font: Font.semibold.size(16.0)!])
+        tabItem.setAttributedTitle(attributedTitle, for: .normal)
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
         

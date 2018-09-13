@@ -16,7 +16,8 @@ class SettingsDevicesViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
-        tabItem.title = "Devices"
+        let attributedTitle = NSAttributedString(string: "DEVICES", attributes: [.font: Font.semibold.size(16.0)!])
+        tabItem.setAttributedTitle(attributedTitle, for: .normal)
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
     }

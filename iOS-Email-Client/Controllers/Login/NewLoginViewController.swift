@@ -45,12 +45,13 @@ class NewLoginViewController: UIViewController{
     }
     
     func usernameTextFieldInit(){
+        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
+        usernameTextField.placeholderAnimation = .hidden
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: placeholderAttrs)
         usernameTextField.delegate = self
         usernameTextField.autocapitalizationType = .none
         usernameTextField.autocorrectionType = .no
         usernameTextField.font = Font.regular.size(17.0)
-        usernameTextField.placeholder = "Username"
-        usernameTextField.placeholderNormalColor = UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6)
         usernameTextField.textColor = UIColor.white
         usernameTextField.dividerNormalColor = UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
         usernameTextField.dividerActiveColor = UIColor.white

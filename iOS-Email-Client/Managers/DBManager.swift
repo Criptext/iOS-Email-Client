@@ -427,20 +427,12 @@ extension DBManager {
         let realm = try! Realm()
         var threadIds: [String]?
         try! realm.write {
-            let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ && trashDate < %@", [SystemLabel.trash.id], date))
+            let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ AND trashDate < %@", [SystemLabel.trash.id], date))
             threadIds = Array(Set(emails.map({ (email) -> String in
                 return email.threadId
             })))
         }
         return threadIds
-    }
-    
-    class func deleteTrash(threadIds: [String]){
-        let realm = try! Realm()
-        try! realm.write {
-            let emails = Array(realm.objects(Email.self).filter("threadId IN %@", threadIds))
-            self.deleteEmail(realm: realm, emails: emails)
-        }
     }
     
     class func updateThread(threadId: String, currentLabel: Int, unread: Bool){

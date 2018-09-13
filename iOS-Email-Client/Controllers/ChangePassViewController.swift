@@ -24,9 +24,16 @@ class ChangePassViewController: UIViewController {
         saveButton.isEnabled = false
         saveButton.alpha = 0.6
         saveLoader.isHidden = true
+        oldPassTextField.rightViewMode = .always
+        newPassTextField.rightViewMode = .always
+        confirmPassTextField.rightViewMode = .always
+        oldPassTextField.dividerActiveColor = .mainUI
+        newPassTextField.dividerActiveColor = .mainUI
+        confirmPassTextField.dividerActiveColor = .mainUI
         oldPassTextField.detailColor = .alert
         newPassTextField.detailColor = .alert
         confirmPassTextField.detailColor = .alert
+        oldPassTextField.rightView?.contentScaleFactor = 0.8
         oldPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         newPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         confirmPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
@@ -80,13 +87,13 @@ class ChangePassViewController: UIViewController {
         switch(sender){
         case oldPassTextField:
             guard oldPassTextField.text!.count > 7 else {
-                setValidField(oldPassTextField, valid: false, error: "Password must be 8 characters long")
+                setValidField(oldPassTextField, valid: false, error: "must be 8 characters long")
                 break
             }
             setValidField(oldPassTextField, valid: true)
         case newPassTextField, confirmPassTextField:
             guard newPassTextField.text!.count > 7 else {
-                setValidField(newPassTextField, valid: false, error: "Password must be 8 characters long")
+                setValidField(newPassTextField, valid: false, error: "must be 8 characters long")
                 break
             }
             setValidField(newPassTextField, valid: true)

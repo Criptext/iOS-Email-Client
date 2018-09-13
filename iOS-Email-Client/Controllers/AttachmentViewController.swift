@@ -57,9 +57,7 @@ extension AttachmentViewController: UIWebViewDelegate {
             self.present(self.previewController, animated: true, completion: nil)
             return false
         }
-        
-        CriptextSpinner.show(in: self.view, title: "Downloading")
-        
+                
         return false
     }
 }
