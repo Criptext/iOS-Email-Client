@@ -304,6 +304,14 @@ class EventHandler {
             return .PasswordChange
         case Event.Link.removed.rawValue:
             return .Logout
+        case Event.Peer.recoveryChange.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let address = params["address"] as? String else {
+                return .Error
+            }
+            return .RecoveryChanged(address)
+        case Event.Peer.recoveryVerify.rawValue:
+            return .RecoveryVerified
         default:
             return .NewEvent
         }
@@ -370,7 +378,6 @@ extension EventHandler {
         DBManager.update(account: myAccount, name: event.name)
         finishCallback(true, nil)
     }
-    
 }
 
 enum Event: Int32 {
@@ -393,5 +400,7 @@ enum Event: Int32 {
         case newLabel = 308
         case changeName = 309
         case passwordChange = 310
+        case recoveryChange = 311
+        case recoveryVerify = 312
     }
 }

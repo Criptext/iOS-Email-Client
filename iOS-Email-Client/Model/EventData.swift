@@ -15,9 +15,12 @@ protocol Dictionarify {
 class EventData {
     
     enum Socket {
+        case Error
         case NewEvent
         case PasswordChange
         case Logout
+        case RecoveryChanged(String)
+        case RecoveryVerified
     }
     
     struct Result {

@@ -307,6 +307,23 @@ extension InboxViewController: WebSocketManagerDelegate {
                 return
             }
             delegate.logout()
+        case .Error:
+            break
+        case .RecoveryChanged(let address):
+            guard let nav = self.presentedViewController as? UINavigationController,
+                let settings = nav.childViewControllers.first as? CustomTabsController else {
+                return
+            }
+            settings.generalData.recoveryEmail = address
+            settings.generalData.recoveryEmailStatus = .pending
+            settings.reloadChildViews()
+        case .RecoveryVerified:
+            guard let nav = self.presentedViewController as? UINavigationController,
+                let settings = nav.childViewControllers.first as? CustomTabsController else {
+                    return
+            }
+            settings.generalData.recoveryEmailStatus = .verified
+            settings.reloadChildViews()
         }
     }
 }
