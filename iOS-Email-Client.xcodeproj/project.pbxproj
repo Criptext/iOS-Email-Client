@@ -121,7 +121,6 @@
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */; };
-		7C4D33BF212B4FCC00045B09 /* ChangeRecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33BE212B4FCC00045B09 /* ChangeRecoveryEmailViewController.swift */; };
 		7C4D33C1212C733700045B09 /* GenericAlertUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */; };
 		7C4D33C3212C745A00045B09 /* GenericAlertUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */; };
 		7C4D33C5212C7A2900045B09 /* PasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4D33C4212C7A2900045B09 /* PasswordUIPopover.xib */; };
@@ -397,7 +396,6 @@
 		7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+KeyPairOpenPrivate.m"; sourceTree = "<group>"; };
 		7C394E87210CC8E700AE3297 /* SendEmailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailData.swift; sourceTree = "<group>"; };
 		7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryEmailViewController.swift; sourceTree = "<group>"; };
-		7C4D33BE212B4FCC00045B09 /* ChangeRecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeRecoveryEmailViewController.swift; sourceTree = "<group>"; };
 		7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericAlertUIPopover.xib; sourceTree = "<group>"; };
 		7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericAlertUIPopover.swift; sourceTree = "<group>"; };
 		7C4D33C4212C7A2900045B09 /* PasswordUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordUIPopover.xib; sourceTree = "<group>"; };
@@ -691,7 +689,6 @@
 				7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */,
 				7C53AC3921121DE400938A3D /* LogoutPopoverViewController.swift */,
 				7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */,
-				7C4D33BE212B4FCC00045B09 /* ChangeRecoveryEmailViewController.swift */,
 				7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */,
 				7C4D33C6212C7B8400045B09 /* PasswordUIPopover.swift */,
 				7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */,
@@ -1360,7 +1357,6 @@
 				41AAC522201A9FC300809C4D /* AttachmentTableViewCell.swift in Sources */,
 				7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
-				7C4D33BF212B4FCC00045B09 /* ChangeRecoveryEmailViewController.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
 				7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */,
 				7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */,

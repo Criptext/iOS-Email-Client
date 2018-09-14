@@ -58,6 +58,12 @@ class CustomTabsController: TabsController {
     }
     
     func reloadChildViews(){
+        self.navigationController?.childViewControllers.forEach({ (vc) in
+            guard let childTabVC = vc as? CustomTabsChildController else {
+                return
+            }
+            childTabVC.reloadView()
+        })
         childViewControllers.forEach { (vc) in
             guard let childTabVC = vc as? CustomTabsChildController else {
                 return

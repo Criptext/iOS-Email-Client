@@ -55,15 +55,13 @@ class RecoveryEmailViewController: UIViewController {
         
         buttonLoader.isHidden = true
         emailTextField.keyboardType = .emailAddress
+        emailTextField.autocorrectionType = .no
+        emailTextField.autocapitalizationType = .none
         emailTextField.detailColor = .alert
         
         emailTextField.text = ""
         doneButton.isEnabled = false
         doneButton.alpha = 0.6
-    }
-
-    @IBAction func onChangeEmailPress(_ sender: Any) {
-        self.goToChangeEmail()
     }
     
     @IBAction func onResendPress(_ sender: Any) {
@@ -244,15 +242,19 @@ class RecoveryEmailViewController: UIViewController {
         return secondsLeft
     }
     
-    func goToChangeEmail(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let changeRecoveryVC = storyboard.instantiateViewController(withIdentifier: "changeRecoveryEmailViewController") as! ChangeRecoveryEmailViewController
-        changeRecoveryVC.generalData = self.generalData
-        changeRecoveryVC.myAccount = self.myAccount
-        self.navigationController?.pushViewController(changeRecoveryVC, animated: true)
-    }
-    
     @objc func goBack(){
         navigationController?.popViewController(animated: true)
+    }
+}
+
+
+
+extension RecoveryEmailViewController: CustomTabsChildController {
+    func reloadView() {
+        recoveryEmailLabel.text = recoveryEmail
+        statusLabel.text = recoveryEmailStatus.description
+        statusLabel.textColor = recoveryEmailStatus.color
+        resendButton.isHidden = recoveryEmailStatus == .verified
+        resendButtonHeightConstraint.constant = recoveryEmailStatus != .pending ? 0.0 : BUTTON_HEIGHT
     }
 }

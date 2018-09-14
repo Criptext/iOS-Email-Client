@@ -102,7 +102,7 @@ class InboxViewController: UIViewController {
         self.generalOptionsContainerView.delegate = self
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
-        WebSocketManager.sharedInstance.eventDelegate = self
+        WebSocketManager.sharedInstance.delegate = self
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
         
         self.coachMarksController.overlay.allowTap = true
@@ -246,6 +246,7 @@ class InboxViewController: UIViewController {
             refreshControl?.endRefreshing()
             return
         }
+        self.mailboxData.updating = true
         APIManager.getEvents(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
@@ -294,9 +295,42 @@ class InboxViewController: UIViewController {
     }
 }
 
+extension InboxViewController: WebSocketManagerDelegate {
+    func newMessage(result: EventData.Socket){
+        switch(result){
+        case .NewEvent:
+            self.getPendingEvents(nil)
+        case .PasswordChange:
+            self.presentPasswordPopover(myAccount: myAccount)
+        case .Logout:
+            guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            delegate.logout()
+        case .Error:
+            break
+        case .RecoveryChanged(let address):
+            guard let nav = self.presentedViewController as? UINavigationController,
+                let settings = nav.childViewControllers.first as? CustomTabsController else {
+                return
+            }
+            settings.generalData.recoveryEmail = address
+            settings.generalData.recoveryEmailStatus = .pending
+            settings.reloadChildViews()
+        case .RecoveryVerified:
+            guard let nav = self.presentedViewController as? UINavigationController,
+                let settings = nav.childViewControllers.first as? CustomTabsController else {
+                    return
+            }
+            settings.generalData.recoveryEmailStatus = .verified
+            settings.reloadChildViews()
+        }
+    }
+}
+
 extension InboxViewController: EventHandlerDelegate {
     func didReceiveEvents(result: EventData.Result) {
-        mailboxData.updating = result.fromWS ? mailboxData.updating : false
+        mailboxData.updating = false
         
         guard !result.removed else {
             guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
