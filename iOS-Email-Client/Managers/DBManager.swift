@@ -129,14 +129,19 @@ extension DBManager {
 //MARK: - Email related
 extension DBManager {
 
-    class func store(_ email:Email, update: Bool = true){
+    @discardableResult class func store(_ email:Email, update: Bool = true) -> Bool {
         let realm = try! Realm()
         
-        try? realm.write() {
-            if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
-                return
+        do {
+            try realm.write() {
+                if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
+                    return
+                }
+                realm.add(email, update: update)
             }
-            realm.add(email, update: update)
+            return true
+        } catch {
+            return false
         }
     }
     
