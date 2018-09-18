@@ -279,7 +279,9 @@ extension AppDelegate: MessagingDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Messaging.messaging().appDidReceiveMessage(userInfo)
         let defaults = UserDefaults.standard
+        let state = UIApplication.shared.applicationState
         guard defaults.string(forKey: "activeAccount") != nil,
+            state == .background,
             let snackVC = self.window?.rootViewController?.snackbarController,
             let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
             let navVC = rootVC.childViewControllers.first as? UINavigationController,

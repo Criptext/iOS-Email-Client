@@ -308,8 +308,6 @@ extension InboxViewController: WebSocketManagerDelegate {
                 return
             }
             delegate.logout()
-        case .Error:
-            break
         case .RecoveryChanged(let address):
             guard let nav = self.presentedViewController as? UINavigationController,
                 let settings = nav.childViewControllers.first as? CustomTabsController else {
@@ -325,6 +323,8 @@ extension InboxViewController: WebSocketManagerDelegate {
             }
             settings.generalData.recoveryEmailStatus = .verified
             settings.reloadChildViews()
+        default:
+            break
         }
     }
 }
