@@ -8,6 +8,24 @@
 
 import Foundation
 
+
+struct PopoverComponent {
+    var activePopover: BaseUIPopover?
+}
+
+protocol HasPopoverComponent {
+    var popoverComponent: PopoverComponent { get set }
+}
+
+protocol PopoverInterface: HasPopoverComponent { }
+
+extension PopoverInterface {
+    var activePopover: BaseUIPopover? {
+        get { return popoverComponent.activePopover }
+        set { popoverComponent.activePopover = newValue }
+    }
+}
+
 class BaseUIPopover: UIViewController{
     var overlay: UIView?
     var shouldDismiss = true

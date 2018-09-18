@@ -421,7 +421,7 @@ extension InboxViewController{
         let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         composerVC.delegate = self
         
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+        self.present(snackVC, animated: true, completion: nil)
     }
     
     func swapMailbox(labelId: Int, sender: Any?){
@@ -527,7 +527,7 @@ extension InboxViewController{
         
         let vc = storyboard.instantiateInitialViewController()!
         
-        self.navigationController?.childViewControllers.last!.present(vc, animated: true){
+        self.present(vc, animated: true){
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.replaceRootViewController(vc)
         }
@@ -732,7 +732,7 @@ extension InboxViewController: UITableViewDataSource{
         let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         
-        self.navigationController?.childViewControllers.last!.present(navSettingsVC, animated: true, completion: nil)
+        self.present(navSettingsVC, animated: true, completion: nil)
     }
     
 }
@@ -903,7 +903,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             file.requestStatus = .finish
             composerVC.fileManager.registeredFiles.append(file)
         }
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: {
+        self.present(snackVC, animated: true, completion: {
             self.navigationDrawerController?.closeLeftView()
         })
     }

@@ -99,7 +99,6 @@ class AESCipher {
     
     private class func doFinal(cryptor: CCCryptorRef, fileSize: Int, outputURL: URL) -> Bool {
         let bufferSize = 512
-        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
         var dataOutMoved:Int = 0
         
         guard let outputStream2 = OutputStream.init(url: outputURL, append: true) else {
