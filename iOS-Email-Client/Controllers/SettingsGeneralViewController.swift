@@ -11,6 +11,8 @@ import Material
 import SafariServices
 
 class SettingsGeneralViewController: UITableViewController{
+    let SECTION_VERSION = 2
+    let ROW_HEIGHT: CGFloat = 40.0
     let sections = ["ACCOUNT", "ABOUT", "VERSION"] as [String]
     let menus = [
         "ACCOUNT": ["Profile", "Signature", "Change Password", "Recovery Email"],
@@ -95,7 +97,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section != 2 else {
+        guard section != SECTION_VERSION else {
             return nil
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
@@ -104,7 +106,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section != 2 ? 40.0 : 0.0
+        return section != SECTION_VERSION ? ROW_HEIGHT : 0.0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -161,9 +161,6 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func loadWebview(email: Email){
-        let doc: Document = try! SwiftSoup.parse(email.getContent())
-        print(try! doc.body()?.classNames())
-        
         firstTimer = false
         isLoading = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
