@@ -15,6 +15,7 @@ protocol Dictionarify {
 class EventData {
     
     enum Socket {
+        case Unhandled
         case Error
         case NewEvent
         case PasswordChange

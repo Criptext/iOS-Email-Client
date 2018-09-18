@@ -11,15 +11,19 @@ import Material
 import SafariServices
 
 class SettingsGeneralViewController: UITableViewController{
-    let sections = ["ACCOUNT", "ABOUT"] as [String]
+    let SECTION_VERSION = 2
+    let ROW_HEIGHT: CGFloat = 40.0
+    let sections = ["ACCOUNT", "ABOUT", "VERSION"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile Name", "Signature", "Recovery Email", "Change Password"],
-    "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout", "Version"]] as [String: [String]]
+        "ACCOUNT": ["Profile", "Signature", "Change Password", "Recovery Email"],
+    "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout"],
+    "VERSION": ["Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
     
     override func viewDidLoad() {
-        tabItem.title = "General"
+        let attributedTitle = NSAttributedString(string: "GENERAL", attributes: [.font: Font.semibold.size(16.0)!])
+        tabItem.setAttributedTitle(attributedTitle, for: .normal)
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
     }
@@ -42,8 +46,10 @@ class SettingsGeneralViewController: UITableViewController{
         switch(indexPath.section){
         case 0:
             return renderAccountCells(text: text)
-        default:
+        case 1:
             return renderAboutCells(text: text)
+        default:
+            return renderVersionCells(text: text)
         }
     }
     
@@ -78,21 +84,29 @@ class SettingsGeneralViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
-        switch(text){
-        case "Version":
-            let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-            cell.optionLabel.text = "Criptext Beta v.\(appVersionString)"
-            cell.goImageView.isHidden = true
-            return cell
-        default:
-            cell.goImageView.isHidden = false
-            cell.optionLabel.text = text
-            return cell
-        }
+        cell.goImageView.isHidden = false
+        cell.optionLabel.text = text
+        return cell
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+    func renderVersionCells(text: String) -> GeneralVersionTableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralVersion") as! GeneralVersionTableViewCell
+        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        cell.versionLabel.text = "v.\(appVersionString)"
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section != SECTION_VERSION else {
+            return nil
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
+        cell.titleLabel.text = sections[section]
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section != SECTION_VERSION ? ROW_HEIGHT : 0.0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -103,7 +117,7 @@ class SettingsGeneralViewController: UITableViewController{
         let text = menus[sections[indexPath.section]]![indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         switch(text){
-        case "Profile Name":
+        case "Profile":
             presentNamePopover()
         case "Change Password":
             goToChangePassword()

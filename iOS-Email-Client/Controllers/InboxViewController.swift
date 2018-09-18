@@ -255,6 +255,7 @@ class InboxViewController: UIViewController {
             refreshControl?.endRefreshing()
             if case let .Error(error) = responseData,
                 error.code != .custom {
+                self.mailboxData.updating = false
                 self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
                 return
             }
@@ -307,8 +308,6 @@ extension InboxViewController: WebSocketManagerDelegate {
                 return
             }
             delegate.logout()
-        case .Error:
-            break
         case .RecoveryChanged(let address):
             guard let nav = self.presentedViewController as? UINavigationController,
                 let settings = nav.childViewControllers.first as? CustomTabsController else {
@@ -324,6 +323,8 @@ extension InboxViewController: WebSocketManagerDelegate {
             }
             settings.generalData.recoveryEmailStatus = .verified
             settings.reloadChildViews()
+        default:
+            break
         }
     }
 }
@@ -624,12 +625,13 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func emptyTrash(from date: Date = Date(), failSilently: Bool = false){
-        guard let threadIds = DBManager.getTrashThreads(from: date) else {
+        guard let threadIds = DBManager.getTrashThreads(from: date),
+            !threadIds.isEmpty else {
             return
         }
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
         postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], failSilently: failSilently) {
-            DBManager.deleteTrash(threadIds: threadIds)
+            DBManager.deleteThreads(threadIds: threadIds)
             self.refreshThreadRows()
         }
     }
@@ -809,7 +811,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         for email in emails {
             email.isExpanded = email.unread
             labelsSet.formUnion(email.labels)
-            if(email.unread){
+            if(email.unread && email.status == .none){
                 openKeys.append(email.key)
             }
             DBManager.updateEmail(email, unread: false)
@@ -864,17 +866,23 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             file.requestStatus = .finish
             composerVC.fileManager.registeredFiles.append(file)
         }
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: {
+            self.navigationDrawerController?.closeLeftView()
+        })
     }
     
     func openSupport(){
+        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let device = Device.createActiveDevice(deviceId: myAccount.deviceId)
         let supportContact = Contact()
         supportContact.displayName = "Criptext Support"
         supportContact.email = "support@criptext.com"
         let composerData = ComposerData()
+        composerData.initContent = "<br/><br/><span>Do not write below this line.</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(device.name)</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
         composerData.initToContacts = [supportContact]
         composerData.initSubject = "Customer Support - iOS"
         openComposer(composerData: composerData, files: List<File>())
+        
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

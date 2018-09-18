@@ -34,7 +34,7 @@ class ComposeViewController: UIViewController {
     let ENTER_LINE_HEIGHT : CGFloat = 28.0
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
-    let PASSWORD_POPUP_HEIGHT = 335
+    let PASSWORD_POPUP_HEIGHT = 295
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
@@ -196,7 +196,7 @@ class ComposeViewController: UIViewController {
         self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
         
         subjectField.text = composerData.initSubject
-        editorView.html = composerData.initContent + (composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")
+        editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
         
         fileManager.delegate = self
         if let draft = self.composerData.emailDraft,
@@ -525,23 +525,10 @@ class ComposeViewController: UIViewController {
     
     @IBAction func didPressSend(_ sender: UIBarButtonItem) {
         self.resignKeyboard()
-        
-        //validate if there are no more attachments pending
         guard !fileManager.pendingAttachments() else {
             self.showAlert(nil, message: "Please wait for your attachments to finish processing", style: .alert)
             return
         }
-        
-        //validate
-        guard let subject = self.subjectField.text, !subject.isEmpty else {
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let sendAction = UIAlertAction(title: "Send", style: .default, handler: { (_) in
-                self.prepareMail()
-            })
-            self.showAlert("Empty Subject", message: "This email has no subject. Do you want to send it anyway?", style: .alert, actions: [cancelAction, sendAction])
-            return
-        }
-        
         self.prepareMail()
     }
     

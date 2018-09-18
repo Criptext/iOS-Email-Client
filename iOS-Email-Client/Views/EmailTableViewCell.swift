@@ -9,6 +9,7 @@
 import Foundation
 import WebKit
 import RealmSwift
+import SwiftSoup
 
 protocol EmailTableViewCellDelegate {
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email)
@@ -49,6 +50,7 @@ class EmailTableViewCell: UITableViewCell{
     var email: Email!
     var firstTimer = true
     var isLoading = false
+    var initialZoomScale: CGFloat = 0
     var attachments : List<File> {
         return email.files
     }
@@ -66,16 +68,6 @@ class EmailTableViewCell: UITableViewCell{
         attachmentsTableView.dataSource = self
         let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
         attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentTableCell")
-        webView.scrollView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == "contentSize" else {
-            return
-        }
-        if( webView.scrollView.contentSize.height != self.email.cellHeight) {
-            webView.scrollView.contentSize = CGSize(width: webView.scrollView.contentSize.width, height: self.email.cellHeight)
-        }
     }
     
     func setupView(){
@@ -83,7 +75,6 @@ class EmailTableViewCell: UITableViewCell{
         borderBGView.layer.borderWidth = 1
         borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
         
-        webView.scrollView.bouncesZoom = false
         webView.scrollView.bounces = false
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
@@ -174,11 +165,13 @@ class EmailTableViewCell: UITableViewCell{
         isLoading = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
         webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
+        webView.scrollView.minimumZoomScale = 0.5
+        webView.scrollView.maximumZoomScale = 2.0
     }
     
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
         guard contact.email != myEmail else {
-            return "Me"
+            return "me"
         }
         guard contactsLength > 1 else {
             return contact.displayName
@@ -253,7 +246,13 @@ extension EmailTableViewCell{
 
 extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate{
     
+    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if(webView.scrollView.zoomScale < initialZoomScale){
+            webView.scrollView.setZoomScale(initialZoomScale, animated: false)
+        } else if (webView.scrollView.zoomScale > 2.0) {
+            webView.scrollView.setZoomScale(2.0, animated: false)
+        }
         scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: 0), animated: false)
         webViewEvaluateHeight(self.webView)
     }
@@ -269,16 +268,17 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
             circleLoaderUIView.layer.removeAllAnimations()
             circleLoaderUIView.isHidden = true
         }
+        initialZoomScale = webView.scrollView.zoomScale
         webViewEvaluateHeight(webView)
     }
     
-    func webViewEvaluateHeight(_ webview: WKWebView, didZoom: Bool = false){
+    func webViewEvaluateHeight(_ webview: WKWebView){
         let jsString = "document.body.clientHeight + (document.body.childNodes[0].offsetTop || 0)"
         webView.evaluateJavaScript(jsString) { (result, error) in
             guard let height = result as? CGFloat else {
                 return
             }
-            let newHeight = height + height * (self.webView.scrollView.zoomScale - 1)
+            let newHeight = height * self.webView.scrollView.zoomScale
             guard newHeight != self.email.cellHeight else {
                 return
             }

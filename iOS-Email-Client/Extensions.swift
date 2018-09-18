@@ -143,19 +143,6 @@ extension UIViewController {
         self.showAlert(title, message: message, style: .alert, actions: actions)
     }
     
-    func presentGenericPopover(_ title: String, image: UIImage, sourceView: UIView){
-        
-        let genericPopover = GenericUIPopover()
-        genericPopover.titleCard = title
-        genericPopover.imageCard = image
-        genericPopover.preferredContentSize = CGSize(width: self.view.frame.size.width - 20, height: 161)
-        genericPopover.popoverPresentationController?.sourceView = sourceView
-        genericPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sourceView.frame.size.width, height: sourceView.frame.size.height)
-        genericPopover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        genericPopover.popoverPresentationController?.backgroundColor = UIColor.white
-        self.present(genericPopover, animated: true, completion: nil)
-    }
-    
     func showSnackbar(_ title:String, attributedText:NSAttributedString?, buttons:String, permanent:Bool){
         guard let snackbarVC = self.snackbarController as? CriptextSnackbarController else {
             return
@@ -334,12 +321,15 @@ extension String {
 enum Font {
     case regular
     case bold
+    case semibold
     case italic
     
     func size(_ size:CGFloat) -> UIFont?{
         switch self {
         case .bold:
             return UIFont(name: "NunitoSans-Bold", size: size)
+        case .semibold:
+            return UIFont(name: "NunitoSans-SemiBold", size: size)
         case .italic:
             return UIFont(name: "NunitoSans-Italic", size: size)
         default:
@@ -351,6 +341,10 @@ enum Font {
         switch self {
         case .bold:
             let font = UIFont(name: "NunitoSans-Bold", size: size)!
+            let attrs = [NSAttributedStringKey.font : font]
+            return NSMutableAttributedString(string:text, attributes:attrs)
+        case .semibold:
+            let font = UIFont(name: "NunitoSans-SemiBold", size: size)!
             let attrs = [NSAttributedStringKey.font : font]
             return NSMutableAttributedString(string:text, attributes:attrs)
         case .italic:

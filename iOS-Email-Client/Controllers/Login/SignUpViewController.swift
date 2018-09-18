@@ -39,19 +39,36 @@ class SignUpViewController: UIViewController{
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
+        setupFields()
+    }
+    
+    func setupFields(){
+        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
         
         usernameTextField.autocorrectionType = .no
         usernameTextField.autocapitalizationType = .none
         usernameTextField.markView = usernameMark
         usernameTextField.font = Font.regular.size(17.0)
+        usernameTextField.placeholderAnimation = .hidden
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: placeholderAttrs)
         fullnameTextField.markView = fullnameMark
         fullnameTextField.font = Font.regular.size(17.0)
+        fullnameTextField.placeholderAnimation = .hidden
+        fullnameTextField.attributedPlaceholder = NSAttributedString(string: "Full Name", attributes: placeholderAttrs)
         passwordTextField.markView = passwordMark
         passwordTextField.font = Font.regular.size(17.0)
+        passwordTextField.rightViewMode = .always
+        passwordTextField.placeholderAnimation = .hidden
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: placeholderAttrs)
         confirmPasswordTextField.markView = confirmPasswordMark
         confirmPasswordTextField.font = Font.regular.size(17.0)
+        confirmPasswordTextField.rightViewMode = .always
+        confirmPasswordTextField.placeholderAnimation = .hidden
+        confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Confirm Password", attributes: placeholderAttrs)
         emailTextField.markView = emailMark
         emailTextField.font = Font.regular.size(17.0)
+        emailTextField.placeholderAnimation = .hidden
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Recovery Email (Optional)", attributes: placeholderAttrs)
         checkToEnableDisableCreateButton()
         scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: 647.0)
         usernameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
@@ -216,7 +233,7 @@ class SignUpViewController: UIViewController{
     }
     
     func labelInit(){
-        let boldText  = "Terms and Conditions"
+        let boldText  = "Terms & Conditions"
         let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.white]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
         

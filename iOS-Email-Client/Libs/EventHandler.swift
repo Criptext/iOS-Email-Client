@@ -312,8 +312,10 @@ class EventHandler {
             return .RecoveryChanged(address)
         case Event.Peer.recoveryVerify.rawValue:
             return .RecoveryVerified
-        default:
+        case Event.newEvent.rawValue:
             return .NewEvent
+        default:
+            return .Unhandled
         }
     }
 }
@@ -384,6 +386,7 @@ enum Event: Int32 {
     case newEmail = 101
     case emailStatus = 102
     case serverError = 104
+    case newEvent = 400
     
     enum Link: Int32 {
         case removed = 205

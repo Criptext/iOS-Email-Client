@@ -16,7 +16,6 @@ protocol EmailSetPasswordDelegate {
 class EmailSetPasswordViewController: BaseUIPopover {
     let MIN_PASS_LENGTH = 3
     @IBOutlet weak var passwordTextField: TextField!
-    @IBOutlet weak var repeatPasswordTextField: TextField!
     @IBOutlet weak var noPasswordMessageLabel: UILabel!
     @IBOutlet weak var passwordContainerView: UIView!
     var delegate : EmailSetPasswordDelegate?
@@ -31,10 +30,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
     
     override func viewDidLoad() {
         passwordTextField.detailColor = .alert
-        repeatPasswordTextField.detailColor = .alert
-        
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
-        repeatPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
         guard let scrollview = self.view as? UIScrollView else {
             return
         }
@@ -48,9 +44,6 @@ class EmailSetPasswordViewController: BaseUIPopover {
     
     @objc func onDonePress(sender: Any){
         switch(sender as? TextField){
-        case passwordTextField:
-            repeatPasswordTextField.becomeFirstResponder()
-            break
         default:
             onSetPress(sender)
         }
@@ -59,14 +52,8 @@ class EmailSetPasswordViewController: BaseUIPopover {
     @IBAction func onSetPress(_ sender: Any) {
         let passwordEnabled = passwordTextField.isEnabled
         let password = passwordTextField.text!
-        guard (!passwordEnabled || (password.count >= MIN_PASS_LENGTH && password == repeatPasswordTextField.text)) else {
-            repeatPasswordTextField.detail = ""
-            passwordTextField.detail = ""
-            if (password.count >= MIN_PASS_LENGTH) {
-                repeatPasswordTextField.detail = "Passphrases do not  match"
-            } else {
-                passwordTextField.detail = "Use at least 3 characters"
-            }
+        guard (!passwordEnabled || password.count >= MIN_PASS_LENGTH) else {
+            passwordTextField.detail = "Use at least 3 characters"
             return
         }
         self.dismiss(animated: true, completion: nil)
@@ -79,11 +66,9 @@ class EmailSetPasswordViewController: BaseUIPopover {
     
     @IBAction func onSwitchToggle(_ sender: UISwitch) {
         passwordTextField.isEnabled = sender.isOn
-        repeatPasswordTextField.isEnabled = sender.isOn
         passwordContainerView.isHidden = !sender.isOn
         noPasswordMessageLabel.isHidden = sender.isOn
         guard sender.isOn else {
-            repeatPasswordTextField.detail = ""
             passwordTextField.detail = ""
             resignKeyboard()
             return
@@ -93,6 +78,5 @@ class EmailSetPasswordViewController: BaseUIPopover {
     
     func resignKeyboard(){
         passwordTextField.resignFirstResponder()
-        repeatPasswordTextField.resignFirstResponder()
     }
 }

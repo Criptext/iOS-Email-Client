@@ -171,7 +171,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
                                 <rect key="frame" x="0.0" y="75" width="375" height="97.5"/>
                                 <subviews>
-                                    <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
+                                    <wkWebView autoresizesSubviews="NO" contentMode="scaleAspectFit" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
                                         <rect key="frame" x="18" y="0.0" width="333" height="97.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <wkWebViewConfiguration key="configuration">

@@ -32,6 +32,10 @@ class ResetDeviceViewController: UIViewController{
         view.addGestureRecognizer(tap)
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         passwordTextField.becomeFirstResponder()
+        
+        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
+        passwordTextField.placeholderAnimation = .hidden
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: placeholderAttrs)
     }
     
     @objc func onDonePress(_ sender: Any){
