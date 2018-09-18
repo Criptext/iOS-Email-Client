@@ -77,3 +77,17 @@ class CustomTabsController: TabsController {
     }
     
 }
+
+extension CustomTabsController: LinkDeviceDelegate {
+    func onAcceptLinkDevice() {
+        self.goToLinkDevice()
+    }
+    
+    func goToLinkDevice(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectdeviceview") as! ConnectDeviceViewController
+        let loginData = LoginData("\(self.myAccount.username)\(Constants.domain)")
+        linkDeviceVC.loginData = loginData
+        self.present(linkDeviceVC, animated: true, completion: nil)
+    }
+}

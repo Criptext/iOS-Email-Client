@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+        <array key="NunitoSans-SemiBold.ttf">
+            <string>NunitoSans-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GenericDualAnswerUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="messageLabel" destination="LPV-Vu-Nw4" id="awb-sG-R3f"/>
+                <outlet property="okButton" destination="fvv-Cn-cZX" id="bVS-Ul-vZJ"/>
+                <outlet property="titleLabel" destination="3S2-tH-1Ug" id="sEC-dP-hsC"/>
+                <outlet property="view" destination="iN0-l3-epB" id="N8t-GM-W8Z"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="270" height="300"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security Alert" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3S2-tH-1Ug">
+                    <rect key="frame" x="82" y="25" width="106" height="23.5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23.5" id="KcF-pV-Qra"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvv-Cn-cZX">
+                    <rect key="frame" x="135" y="254" width="135" height="46"/>
+                    <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="aAY-rx-ux9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
+                    <state key="normal" title="Ok">
+                        <color key="titleColor" red="0.18823529410000001" green="0.1960784314" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onOkPress:" destination="-1" eventType="touchUpInside" id="lXV-jN-fjr"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you want to approve DavidMac?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPV-Vu-Nw4">
+                    <rect key="frame" x="31" y="63.5" width="208" height="175.5"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vel-x6-KLE">
+                    <rect key="frame" x="0.0" y="254" width="135" height="46"/>
+                    <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="Igl-aA-Xf3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" red="0.18823529410000001" green="0.1960784314" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fvv-Cn-cZX" firstAttribute="top" secondItem="LPV-Vu-Nw4" secondAttribute="bottom" constant="15" id="2W1-AN-mXI"/>
+                <constraint firstItem="3S2-tH-1Ug" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="25" id="3nE-sF-0GQ"/>
+                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="31" id="8b7-6Y-OTm"/>
+                <constraint firstItem="vel-x6-KLE" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="GOV-d2-R6b"/>
+                <constraint firstItem="vel-x6-KLE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NCQ-2J-sry"/>
+                <constraint firstItem="3S2-tH-1Ug" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Nd1-9f-gKR"/>
+                <constraint firstItem="fvv-Cn-cZX" firstAttribute="leading" secondItem="vel-x6-KLE" secondAttribute="trailing" id="UNb-cy-W5w"/>
+                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="centerX" secondItem="3S2-tH-1Ug" secondAttribute="centerX" id="bRx-Hh-AgD"/>
+                <constraint firstItem="fvv-Cn-cZX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="j4b-r3-U6W"/>
+                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="top" secondItem="3S2-tH-1Ug" secondAttribute="bottom" constant="15" id="pHC-5u-V4c"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fvv-Cn-cZX" secondAttribute="trailing" id="xgO-tQ-7fK"/>
+                <constraint firstAttribute="trailing" secondItem="LPV-Vu-Nw4" secondAttribute="trailing" constant="31" id="xrb-58-nuL"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="fvv-Cn-cZX" secondAttribute="bottom" id="z2X-x0-1w5"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+</document>

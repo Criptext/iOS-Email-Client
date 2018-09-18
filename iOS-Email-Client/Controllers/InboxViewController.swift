@@ -113,6 +113,10 @@ class InboxViewController: UIViewController {
         self.coachMarksController.dataSource = self
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60), failSilently: true)
         getPendingEvents(nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.presentLinkDevicePopover()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -734,7 +738,6 @@ extension InboxViewController: UITableViewDataSource{
         
         self.present(navSettingsVC, animated: true, completion: nil)
     }
-    
 }
 
 //MARK: - TableView Delegate
@@ -1389,6 +1392,18 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 1
     }
+}
+
+extension InboxViewController: LinkDeviceDelegate {
+    func onAcceptLinkDevice() {
+        self.goToLinkDevice()
+    }
     
-    
+    func goToLinkDevice(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectdeviceview") as! ConnectDeviceViewController
+        let loginData = LoginData("\(self.myAccount.username)\(Constants.domain)")
+        linkDeviceVC.loginData = loginData
+        self.present(linkDeviceVC, animated: true, completion: nil)
+    }
 }

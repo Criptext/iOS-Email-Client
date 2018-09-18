@@ -56,7 +56,33 @@ extension UIViewController {
             topViewController.presentPopover(popover: popover, height: height)
             return
         }
+        if let navController = self as? UINavigationController,
+            let topViewController = navController.topViewController {
+            topViewController.presentPopover(popover: popover, height: height)
+            return
+        }
         self.present(popover, animated: true)
+    }
+    
+    func getTopView() -> UIViewController {
+        if let _ = self.presentedViewController as? BaseUIPopover {
+            return self
+        }
+        if let overViewController = self.presentedViewController {
+            return overViewController.getTopView()
+        }
+        if let overViewController = self.navigationController?.presentedViewController {
+            return overViewController.getTopView()
+        }
+        if let topViewController = self.navigationController?.topViewController,
+            topViewController != self {
+            return topViewController.getTopView()
+        }
+        if let navController = self as? UINavigationController,
+            let topViewController = navController.topViewController {
+            return topViewController.getTopView()
+        }
+        return self
     }
     
     func logout(manually: Bool = false){
@@ -73,6 +99,19 @@ extension UIViewController {
             self.logout(manually: false)
         }
         self.presentPopover(popover: passwordVC, height: 213)
+    }
+    
+    func presentLinkDevicePopover(){
+        let linkDeviceVC = GenericDualAnswerUIPopover()
+        linkDeviceVC.initialTitle = "Security Alert"
+        linkDeviceVC.initialMessage = "Do you want to approve DavidMac?"
+        linkDeviceVC.onOk = { [weak self] in
+            guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
+                return
+            }
+            delegate.onAcceptLinkDevice()
+        }
+        self.presentPopover(popover: linkDeviceVC, height: 175)
     }
 }
 

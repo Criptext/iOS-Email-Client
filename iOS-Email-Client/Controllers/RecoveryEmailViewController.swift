@@ -247,8 +247,6 @@ class RecoveryEmailViewController: UIViewController {
     }
 }
 
-
-
 extension RecoveryEmailViewController: CustomTabsChildController {
     func reloadView() {
         recoveryEmailLabel.text = recoveryEmail
@@ -256,5 +254,19 @@ extension RecoveryEmailViewController: CustomTabsChildController {
         statusLabel.textColor = recoveryEmailStatus.color
         resendButton.isHidden = recoveryEmailStatus == .verified
         resendButtonHeightConstraint.constant = recoveryEmailStatus != .pending ? 0.0 : BUTTON_HEIGHT
+    }
+}
+
+extension RecoveryEmailViewController: LinkDeviceDelegate {
+    func onAcceptLinkDevice() {
+        self.goToLinkDevice()
+    }
+    
+    func goToLinkDevice(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectdeviceview") as! ConnectDeviceViewController
+        let loginData = LoginData("\(self.myAccount.username)\(Constants.domain)")
+        linkDeviceVC.loginData = loginData
+        self.present(linkDeviceVC, animated: true, completion: nil)
     }
 }
