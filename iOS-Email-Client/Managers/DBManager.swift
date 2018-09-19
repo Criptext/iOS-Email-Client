@@ -351,6 +351,10 @@ extension DBManager {
             let emailContacts = getEmailContacts(emailKey: email.key)
             for emailContact in emailContacts {
                 emailContact.email = newEmail
+                if(emailContact.type != ContactType.from.rawValue && email.fromContact == emailContact.contact) {
+                    newEmail.status = .delivered
+                    newEmail.unread = true
+                }
             }
             
             realm.delete(email)
@@ -362,6 +366,17 @@ extension DBManager {
         
         try! realm.write() {
             email.unread = unread
+        }
+    }
+    
+    class func updateEmails(_ emailKeys: [Int], unread: Bool) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            for key in emailKeys {
+                let email = realm.object(ofType: Email.self, forPrimaryKey: key)
+                email?.unread = unread
+            }
         }
     }
     

@@ -133,6 +133,7 @@ class SendMailAsyncTask {
                 return
             }
             guard case let .SuccessArray(keysArray) = responseData else {
+                self.setEmailAsFailed()
                 DispatchQueue.main.async {
                     completion(responseData)
                 }

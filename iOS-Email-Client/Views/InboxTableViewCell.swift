@@ -52,12 +52,10 @@ class InboxTableViewCell: UITableViewCell {
     }
     
     func setFields(thread: Thread, label: Int, myEmail: String){
-        let isSentFolder = label == SystemLabel.sent.id
-        
         secureAttachmentImageView.isHidden = true
         secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
-        if !thread.unread || isSentFolder {
+        if !thread.unread {
             backgroundColor = UIColor(red:244/255, green:244/255, blue:244/255, alpha:1.0)
             senderLabel.font = Font.regular.size(15)
         }else{
