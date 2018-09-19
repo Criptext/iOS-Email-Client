@@ -67,6 +67,9 @@ class InboxViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
+        self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
+        
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
         self.topToolbar.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: -8.0).isActive = true
@@ -609,7 +612,8 @@ extension InboxViewController: UITableViewDataSource{
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return nil
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
+        cell.contentView.backgroundColor = UIColor(red: 242/255, green: 248/255, blue: 1, alpha: 1)
         cell.onEmptyPress = {
             self.showEmptyTrashWarning()
         }

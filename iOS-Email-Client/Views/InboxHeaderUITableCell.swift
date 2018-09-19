@@ -8,7 +8,7 @@
 
 import Foundation
 
-class InboxHeaderUITableCell: UITableViewCell {
+class InboxHeaderUITableCell: UITableViewHeaderFooterView {
     var onEmptyPress: (() -> Void)?
     
     @IBAction func onEmptyTrashPress(_ sender: Any) {

@@ -808,8 +808,8 @@ extension EmailDetailViewController: EventHandlerDelegate {
     
     func didReceiveEvents(result: EventData.Result) {
         guard result.modifiedThreadIds.contains(emailData.threadId) || result.modifiedEmailKeys.contains(where: { (key) -> Bool in
-            return emailData.emails.contains(where: {$0.key == key})
-        }) || result.emails.contains(where: {$0.threadId == emailData.threadId}) else {
+            return emailData.emails.contains(where: {$0.isInvalidated || $0.key == key})
+        }) || result.emails.contains(where: {$0.isInvalidated || $0.threadId == emailData.threadId}) else {
             return
         }
         reloadContent()
