@@ -140,6 +140,7 @@
 		7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
 		7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */; };
 		7C6DB468215173D0001B3749 /* GenericDualAnswerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */; };
+		7C6DB46B2152B910001B3749 /* LinkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB46A2152B910001B3749 /* LinkData.swift */; };
 		7C72F16F2141997E00A7DDEA /* InboxHeaderUITableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */; };
 		7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */; };
 		7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */; };
@@ -407,6 +408,7 @@
 		7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIPopover.swift; sourceTree = "<group>"; };
 		7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericDualAnswerUIPopover.swift; sourceTree = "<group>"; };
 		7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericDualAnswerUIPopover.xib; sourceTree = "<group>"; };
+		7C6DB46A2152B910001B3749 /* LinkData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkData.swift; sourceTree = "<group>"; };
 		7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxHeaderUITableCell.swift; sourceTree = "<group>"; };
 		7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailAsyncTask.swift; sourceTree = "<group>"; };
 		7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
@@ -797,6 +799,7 @@
 				7C4D33CC212CA23100045B09 /* GeneralSettingsData.swift */,
 				7C4D33D0212CA2DB00045B09 /* DeviceSettingsData.swift */,
 				7CCD73E7212F2207002C8C7F /* ResponseData.swift */,
+				7C6DB46A2152B910001B3749 /* LinkData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1312,6 +1315,7 @@
 				7C7F2FF320B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift in Sources */,
 				7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */,
 				954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */,
+				7C6DB46B2152B910001B3749 /* LinkData.swift in Sources */,
 				41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */,
 				7CF93F5C214963A500361837 /* GeneralVersionTableViewCell.swift in Sources */,
 				7CBF569F20FD41270044B406 /* CustomDictionary.swift in Sources */,

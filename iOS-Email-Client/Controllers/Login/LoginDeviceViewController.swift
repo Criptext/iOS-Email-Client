@@ -20,6 +20,7 @@ class LoginDeviceViewController: UIViewController{
         self.failureDeviceView.isHidden = true
         self.waitingDeviceView.isHidden = false
         self.hourglassImage.transform = CGAffineTransform(rotationAngle: (20.0 * .pi) / 180.0)
+        self.sendLinkAuthRequest()
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
@@ -58,5 +59,19 @@ class LoginDeviceViewController: UIViewController{
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
         controller.loginData = self.loginData
         present(controller, animated: true, completion: nil)
+    }
+    
+    func sendLinkAuthRequest(){
+        guard let jwt = loginData.jwt else {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        let deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        APIManager.linkAuth(deviceInfo: deviceInfo, token: jwt) { (responseData) in
+            guard case .Success = responseData else {
+                self.onFailure()
+                return
+            }
+        }
     }
 }

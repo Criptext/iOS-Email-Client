@@ -295,6 +295,12 @@ class EventHandler {
         let cmd = event["cmd"] as! Int32
         
         switch(cmd){
+        case Event.Link.start.rawValue:
+            print(event)
+            guard let params = event["params"] as? [String: Any] else {
+                    return .Error
+            }
+            return .LinkStart(params)
         case Event.Peer.passwordChange.rawValue:
             return .PasswordChange
         case Event.Link.removed.rawValue:
@@ -384,6 +390,7 @@ enum Event: Int32 {
     case newEvent = 400
     
     enum Link: Int32 {
+        case start = 201
         case removed = 205
     }
     

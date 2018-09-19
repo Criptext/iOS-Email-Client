@@ -101,10 +101,10 @@ extension UIViewController {
         self.presentPopover(popover: passwordVC, height: 213)
     }
     
-    func presentLinkDevicePopover(){
+    func presentLinkDevicePopover(linkData: LinkData){
         let linkDeviceVC = GenericDualAnswerUIPopover()
         linkDeviceVC.initialTitle = "Security Alert"
-        linkDeviceVC.initialMessage = "Do you want to approve DavidMac?"
+        linkDeviceVC.initialMessage = "Do you want to approve \(linkData.deviceName)?"
         linkDeviceVC.onOk = { [weak self] in
             guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
                 return

@@ -9,7 +9,8 @@
 import Foundation
 
 class ConnectDeviceViewController: UIViewController{
-    var loginData: LoginData!
+    var loginData: LoginData?
+    var linkData: LinkData?
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var dotsProgressView: DotsProgressUIView!
     @IBOutlet weak var loadingWidthConstraint: NSLayoutConstraint!
@@ -17,11 +18,17 @@ class ConnectDeviceViewController: UIViewController{
     @IBOutlet weak var backgroundCircle: UIView!
     
     override func viewDidLoad() {
-        emailLabel.text = loginData.email
+        setEmailLabel()
         successImage.isHidden = true
         backgroundCircle.isHidden = true
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)){
             self.handleSuccess()
+        }
+    }
+    
+    func setEmailLabel(){
+        if let loginData = self.loginData {
+            emailLabel.text = loginData.email
         }
     }
     
@@ -34,6 +41,9 @@ class ConnectDeviceViewController: UIViewController{
         }, completion: { (completed) in
             self.successImage.isHidden = false
         })
-        
+    }
+    
+    func linkAccept(){
+        APIManager.linkAccept(randomId: <#T##String#>, token: <#T##String#>, completion: <#T##((ResponseData) -> Void)##((ResponseData) -> Void)##(ResponseData) -> Void#>)
     }
 }

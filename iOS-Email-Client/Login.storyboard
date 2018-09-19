@@ -733,7 +733,7 @@
         <!--Login Device View Controller-->
         <scene sceneID="df8-6h-ccB">
             <objects>
-                <viewController storyboardIdentifier="loginwaitview" id="Msb-QW-zAf" customClass="LoginDeviceViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginDeviceViewController" id="Msb-QW-zAf" customClass="LoginDeviceViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="I0f-U5-zUk" customClass="GradientUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

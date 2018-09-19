@@ -113,10 +113,6 @@ class InboxViewController: UIViewController {
         self.coachMarksController.dataSource = self
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60), failSilently: true)
         getPendingEvents(nil)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.presentLinkDevicePopover()
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -268,6 +264,8 @@ class InboxViewController: UIViewController {
 extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
+        case .LinkStart(let data):
+            self.handleLinkStart(data: data)
         case .NewEvent:
             self.getPendingEvents(nil)
         case .PasswordChange:
@@ -295,6 +293,16 @@ extension InboxViewController: WebSocketManagerDelegate {
         default:
             break
         }
+    }
+    
+    func handleLinkStart(data: [String: Any]){
+        print("OVER HERE")
+        guard let linkData = LinkData.fromDictionary(data) else {
+            print("GG")
+            return
+        }
+        print("YEAH")
+        self.presentLinkDevicePopover(linkData: linkData)
     }
 }
 

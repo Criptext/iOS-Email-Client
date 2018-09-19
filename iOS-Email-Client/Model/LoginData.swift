@@ -10,6 +10,12 @@ import Foundation
 
 class LoginData{
     var email: String
+    var jwt: String?
+    var randomId: String?
+    
+    var username: String {
+        return String(email.split(separator: "@")[0])
+    }
     
     init(_ email: String){
         self.email = email
