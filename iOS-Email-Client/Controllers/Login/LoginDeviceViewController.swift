@@ -24,7 +24,6 @@ class LoginDeviceViewController: UIViewController{
         
         guard let jwt = loginData.jwt else {
             self.navigationController?.popViewController(animated: true)
-            print("NANAI")
             return
         }
         
@@ -34,12 +33,24 @@ class LoginDeviceViewController: UIViewController{
         self.sendLinkAuthRequest()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        socket?.close()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let jwt = loginData.jwt else {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        socket?.connect(jwt: jwt)
+    }
+    
     @IBAction func backButtonPress(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func onResendPress(_ sender: Any) {
-        onFailure()
+        sendLinkAuthRequest()
     }
     
     @IBAction func onCantLoginPress(_ sender: Any) {
@@ -63,6 +74,16 @@ class LoginDeviceViewController: UIViewController{
     func onFailure(){
         failureDeviceView.isHidden = false
         waitingDeviceView.isHidden = true
+    }
+    
+    func jumpToCreatingAccount(deviceId: Int){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
+        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: "Linked Device", optionalEmail: nil)
+        signupData.deviceId = deviceId
+        signupData.token = loginData.jwt
+        controller.signupData = signupData
+        self.present(controller, animated: true, completion: nil)
     }
     
     func jumpToConnectDevice(deviceId: Int){
@@ -97,7 +118,7 @@ extension LoginDeviceViewController: SingleSocketDelegate {
             guard let deviceId = params?["deviceId"] as? Int else {
                 break
             }
-            self.jumpToConnectDevice(deviceId: deviceId)
+            self.jumpToCreatingAccount(deviceId: deviceId)
         default:
             break
         }

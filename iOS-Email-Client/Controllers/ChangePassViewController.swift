@@ -177,10 +177,6 @@ class ChangePassViewController: UIViewController {
 
 extension ChangePassViewController: LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
-        linkDeviceVC.linkData = linkData
-        linkDeviceVC.myAccount = myAccount
-        self.present(linkDeviceVC, animated: true, completion: nil)
+        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
     }
 }
