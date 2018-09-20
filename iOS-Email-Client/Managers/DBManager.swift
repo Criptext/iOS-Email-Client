@@ -404,7 +404,7 @@ extension DBManager {
     class func delete(_ email:Email){
         let realm = try! Realm()
         
-        try! realm.write {
+        try? realm.write {
             self.deleteEmail(realm: realm, emails: [email])
         }
     }
@@ -412,7 +412,7 @@ extension DBManager {
     class func delete(_ emails:[Email]){
         let realm = try! Realm()
         
-        try! realm.write {
+        try? realm.write {
             self.deleteEmail(realm: realm, emails: emails)
         }
     }
