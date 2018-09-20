@@ -62,7 +62,6 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var contactTableView: UITableView!
     @IBOutlet weak var contactTableViewTopConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var closeBarButton: UIBarButtonItem!
     @IBOutlet weak var attachmentButtonContainerView: UIView!
     @IBOutlet weak var buttonCollapse: UIButton!
     
@@ -86,9 +85,6 @@ class ComposeViewController: UIViewController {
     var selectedTokenInputView:CLTokenInputView?
     
     var isEdited = false
-    
-    var sendBarButton:UIBarButtonItem!
-    var sendSecureBarButton:UIBarButtonItem!
     var attachmentBarButton:MIBadgeButton!
     
     var dismissTapGestureRecognizer: UITapGestureRecognizer!
@@ -97,6 +93,9 @@ class ComposeViewController: UIViewController {
     let coachMarksController = CoachMarksController()
     
     var delegate : ComposerSendMailDelegate?
+    
+    var enableSendButton: UIBarButtonItem!
+    var disableSendButton: UIBarButtonItem!
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -109,9 +108,10 @@ class ComposeViewController: UIViewController {
         activeAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)
         fileManager.token = activeAccount.jwt
         
-        self.sendBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
-        self.sendSecureBarButton = UIBarButtonItem(image: Icon.send.image, style: .plain, target: self, action: #selector(didPressSend(_:)))
-        self.sendSecureBarButton.tintColor = .white
+        let sendImage = Icon.send.image?.tint(with: .white)
+        self.enableSendButton = UIBarButtonItem(image: sendImage, style: .plain, target: self, action: #selector(didPressSend(_:)))
+        let disableImage = Icon.send.image?.tint(with: UIColor.white.withAlphaComponent(0.6))
+        self.disableSendButton = UIBarButtonItem(image: disableImage, style: .plain, target: self, action: nil)
         
         self.editorView.placeholder = "Message"
         self.editorView.delegate = self
@@ -189,11 +189,12 @@ class ComposeViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressAttachment(_:)))
         self.attachmentButtonContainerView.addGestureRecognizer(tapGesture)
         self.title = "New Secure Email"
-        self.navigationItem.rightBarButtonItem = self.sendSecureBarButton
+        self.navigationItem.rightBarButtonItem = self.enableSendButton
         activityButton.setImage(Icon.attachment.vertical.image, for: .normal)
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
         
-        self.closeBarButton.tintColor = UIColor.white.withAlphaComponent(0.4)
+        let closeImage = UIImage(named: "close-rounded")!.tint(with: UIColor.white.withAlphaComponent(0.6))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(didPressCancel(_:)))
         
         subjectField.text = composerData.initSubject
         editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
@@ -213,6 +214,10 @@ class ComposeViewController: UIViewController {
         self.coachMarksController.dataSource = self
     }
     
+    func toggleSendButton(){
+        
+    }
+    
     @objc func onDonePress(_ sender: Any){
         switch(sender as? UIView){
         case toField:
@@ -222,8 +227,8 @@ class ComposeViewController: UIViewController {
             editorView.becomeFirstResponder()
             break
         default:
-            if(self.sendBarButton.isEnabled){
-                self.didPressSend(sendBarButton)
+            if(self.navigationItem.rightBarButtonItem == self.enableSendButton){
+                self.didPressSend(self.enableSendButton)
             }
         }
     }
@@ -249,8 +254,7 @@ class ComposeViewController: UIViewController {
         }
         
         if self.toField.allTokens.isEmpty {
-            self.sendSecureBarButton.isEnabled = false
-            self.sendBarButton.isEnabled = false
+            self.navigationItem.rightBarButtonItem = self.disableSendButton
         }
     }
     
@@ -470,9 +474,8 @@ class ComposeViewController: UIViewController {
     }
     
     func toggleInteraction(_ flag:Bool){
-        self.sendBarButton.isEnabled = flag
-        self.sendSecureBarButton.isEnabled = flag
-        self.closeBarButton.isEnabled = flag
+        self.navigationItem.rightBarButtonItem = flag ? self.enableSendButton : self.disableSendButton
+        
         self.view.isUserInteractionEnabled = flag
         self.navigationController?.navigationBar.layer.zPosition = flag ? 0 : -1
         self.blackBackground.isUserInteractionEnabled = flag
@@ -480,7 +483,7 @@ class ComposeViewController: UIViewController {
     }
     
     //MARK: - IBActions
-    @IBAction func didPressCancel(_ sender: UIBarButtonItem) {
+    @objc func didPressCancel(_ sender: UIBarButtonItem) {
         
         if !self.isEdited {
             self.dismiss(animated: true, completion: nil)
@@ -906,8 +909,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             self.isEdited = true
         }
         
-        self.sendSecureBarButton.isEnabled = true
-        self.sendBarButton.isEnabled = true
+        self.navigationItem.rightBarButtonItem = self.enableSendButton
         
         if text!.contains(",") {
             let name = text?.replacingOccurrences(of: ",", with: "")
@@ -933,8 +935,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         if self.toField.allTokens.isEmpty && (self.toField.text?.isEmpty)! {
-            self.sendSecureBarButton.isEnabled = false
-            self.sendBarButton.isEnabled = false
+            self.navigationItem.rightBarButtonItem = self.disableSendButton
         }
         
         self.contactTableView.isHidden = (view.text?.isEmpty)!
@@ -988,8 +989,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
     
     func tokenInputView(_ view: CLTokenInputView, didRemove token: CLToken) {
         if self.toField.allTokens.isEmpty && (self.toField.text?.isEmpty)! {
-            self.sendSecureBarButton.isEnabled = false
-            self.sendBarButton.isEnabled = false
+            self.navigationItem.rightBarButtonItem = self.disableSendButton
         }
     }
     

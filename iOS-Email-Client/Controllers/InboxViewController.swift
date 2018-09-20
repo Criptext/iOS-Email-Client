@@ -184,10 +184,10 @@ class InboxViewController: UIViewController {
         self.countBarButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Bold", size: 16.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
         self.countBarButton.isEnabled = false
         
-        self.menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu_white"), style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
-        self.menuButton.tintColor = UIColor.white
-        self.searchBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: self, action: #selector(didPressSearch(_:)))
-        self.searchBarButton.tintColor = UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)
+        let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
+        let searchImage = #imageLiteral(resourceName: "search").tint(with: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0))
+        self.menuButton = UIBarButtonItem(image: menuImage, style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
+        self.searchBarButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didPressSearch(_:)))
         
         // Set batButtonItems
         let activityButton = MIBadgeButton(type: .custom)
@@ -243,44 +243,6 @@ class InboxViewController: UIViewController {
         }
     }
     
-    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: (() -> Void)? = nil) {
-        guard !mailboxData.updating else {
-            completion?()
-            refreshControl?.endRefreshing()
-            return
-        }
-        self.mailboxData.updating = true
-        APIManager.getEvents(token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout()
-                return
-            }
-            refreshControl?.endRefreshing()
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.mailboxData.updating = false
-                self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
-                return
-            }
-            
-            if case .Forbidden = responseData {
-                self.mailboxData.updating = false
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            
-            guard case let .SuccessArray(events) = responseData else {
-                self.mailboxData.updating = false
-                completion?()
-                return
-            }
-            let eventHandler = EventHandler(account: self.myAccount)
-            eventHandler.eventDelegate = self
-            eventHandler.handleEvents(events: events)
-            completion?()
-        }
-    }
-    
     func presentWelcomeTour(){
         let defaults = UserDefaults.standard
         guard !defaults.bool(forKey: "welcomeTour") else {
@@ -332,10 +294,51 @@ extension InboxViewController: WebSocketManagerDelegate {
     }
 }
 
-extension InboxViewController: EventHandlerDelegate {
+extension InboxViewController {
+    
+    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: (() -> Void)? = nil) {
+        guard !mailboxData.updating else {
+            completion?()
+            refreshControl?.endRefreshing()
+            return
+        }
+        self.mailboxData.updating = true
+        APIManager.getEvents(token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            refreshControl?.endRefreshing()
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                completion?()
+                self.mailboxData.updating = false
+                self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            
+            if case .Forbidden = responseData {
+                completion?()
+                self.mailboxData.updating = false
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            
+            guard case let .SuccessArray(events) = responseData else {
+                self.mailboxData.updating = false
+                completion?()
+                return
+            }
+            let eventHandler = EventHandler(account: self.myAccount)
+            eventHandler.handleEvents(events: events){ result in
+                self.mailboxData.updating = false
+                self.didReceiveEvents(result: result)
+                completion?()
+            }
+        }
+    }
+    
     func didReceiveEvents(result: EventData.Result) {
-        mailboxData.updating = false
-        
         guard !result.removed else {
             guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
                 return
@@ -344,7 +347,7 @@ extension InboxViewController: EventHandlerDelegate {
             return
         }
         
-        if result.emails.contains(where: {$0.status != .unsent}) {
+        if result.emails.contains(where: {!$0.isInvalidated && $0.status != .unsent}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
         
