@@ -68,8 +68,9 @@ class LoginDeviceViewController: UIViewController{
     func jumpToConnectDevice(deviceId: Int){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
-        let signupData = SignUpData(username: loginData.username, password: "", fullname: "Linked Device", optionalEmail: nil)
+        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: "Linked Device", optionalEmail: nil)
         signupData.deviceId = deviceId
+        signupData.token = loginData.jwt
         controller.signupData = signupData
         present(controller, animated: true, completion: nil)
     }

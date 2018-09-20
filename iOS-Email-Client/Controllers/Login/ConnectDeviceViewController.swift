@@ -19,6 +19,8 @@ class ConnectDeviceViewController: UIViewController{
         socket = SingleWebSocket()
         socket?.delegate = self
         connectUIView.initialLoad(email: "\(signupData.username)\(Constants.domain)")
+        DBManager.destroy()
+        sendKeysRequest()
     }
     
     func sendKeysRequest(){

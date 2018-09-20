@@ -56,7 +56,6 @@ extension ConnectUploadViewController: SingleSocketDelegate {
     func newMessage(cmd: Int, params: [String : Any]?) {
         switch(cmd){
         case 203:
-            print("AAAH BUENOS SUBIRE LA WEA")
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                 self.dismiss(animated: true, completion: nil)
             })
