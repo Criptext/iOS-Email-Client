@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LinkDeviceDelegate {
-    func onAcceptLinkDevice()
+    func onAcceptLinkDevice(linkData: LinkData)
 }
 
 class GenericDualAnswerUIPopover: BaseUIPopover {

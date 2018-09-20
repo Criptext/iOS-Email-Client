@@ -19,6 +19,39 @@
         </array>
     </customFonts>
     <scenes>
+        <!--Connect Upload View Controller-->
+        <scene sceneID="Tni-QA-xy8">
+            <objects>
+                <viewController storyboardIdentifier="connectUploadViewController" id="5Xb-lW-DLO" customClass="ConnectUploadViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6wi-az-iJN"/>
+                        <viewControllerLayoutGuide type="bottom" id="HWc-2s-Eoj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SoE-o9-5q9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7B-yK-Gan" customClass="ConnectUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="N7B-yK-Gan" firstAttribute="centerY" secondItem="SoE-o9-5q9" secondAttribute="centerY" id="9Qd-ig-4Cm"/>
+                            <constraint firstItem="N7B-yK-Gan" firstAttribute="width" secondItem="SoE-o9-5q9" secondAttribute="width" id="9UI-be-zzS"/>
+                            <constraint firstItem="N7B-yK-Gan" firstAttribute="centerX" secondItem="SoE-o9-5q9" secondAttribute="centerX" id="TFJ-Lj-6oC"/>
+                            <constraint firstItem="N7B-yK-Gan" firstAttribute="height" secondItem="SoE-o9-5q9" secondAttribute="height" id="z2u-1K-deU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="connectUIView" destination="N7B-yK-Gan" id="2f8-lj-bC4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t7q-Ai-cAS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1715" y="1985"/>
+        </scene>
         <!--Compose View Controller-->
         <scene sceneID="YB0-E0-3PV">
             <objects>
@@ -1280,7 +1313,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="11" width="117" height="23.5"/>
+                                            <rect key="frame" x="27" y="10" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1472,7 +1505,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Confirmed" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Upi-pd-9ph">
-                                <rect key="frame" x="228" y="47.5" width="120" height="20.5"/>
+                                <rect key="frame" x="228" y="46.5" width="120" height="20.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="Lo0-SR-aHk"/>
                                 </constraints>
@@ -1913,7 +1946,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cryptext System Version 1.3.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snm-6a-b2Z">
-                                            <rect key="frame" x="27" y="22" width="321" height="23.5"/>
+                                            <rect key="frame" x="27" y="21" width="321" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.72549019607843135" green="0.72549019607843135" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>

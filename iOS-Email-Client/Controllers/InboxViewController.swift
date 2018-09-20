@@ -296,12 +296,9 @@ extension InboxViewController: WebSocketManagerDelegate {
     }
     
     func handleLinkStart(data: [String: Any]){
-        print("OVER HERE")
         guard let linkData = LinkData.fromDictionary(data) else {
-            print("GG")
             return
         }
-        print("YEAH")
         self.presentLinkDevicePopover(linkData: linkData)
     }
 }
@@ -1403,15 +1400,11 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
 }
 
 extension InboxViewController: LinkDeviceDelegate {
-    func onAcceptLinkDevice() {
-        self.goToLinkDevice()
-    }
-    
-    func goToLinkDevice(){
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectdeviceview") as! ConnectDeviceViewController
-        let loginData = LoginData("\(self.myAccount.username)\(Constants.domain)")
-        linkDeviceVC.loginData = loginData
+    func onAcceptLinkDevice(linkData: LinkData) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
+        linkDeviceVC.linkData = linkData
+        linkDeviceVC.myAccount = myAccount
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
 }

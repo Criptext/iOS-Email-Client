@@ -109,7 +109,7 @@ extension UIViewController {
             guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
                 return
             }
-            delegate.onAcceptLinkDevice()
+            delegate.onAcceptLinkDevice(linkData: linkData)
         }
         self.presentPopover(popover: linkDeviceVC, height: 175)
     }

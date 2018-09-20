@@ -11,6 +11,7 @@ import Foundation
 class LoginDeviceViewController: UIViewController{
     
     var loginData: LoginData!
+    var socket : SingleWebSocket?
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
@@ -20,6 +21,16 @@ class LoginDeviceViewController: UIViewController{
         self.failureDeviceView.isHidden = true
         self.waitingDeviceView.isHidden = false
         self.hourglassImage.transform = CGAffineTransform(rotationAngle: (20.0 * .pi) / 180.0)
+        
+        guard let jwt = loginData.jwt else {
+            self.navigationController?.popViewController(animated: true)
+            print("NANAI")
+            return
+        }
+        
+        socket = SingleWebSocket()
+        socket?.delegate = self
+        socket?.connect(jwt: jwt)
         self.sendLinkAuthRequest()
     }
     
@@ -54,10 +65,12 @@ class LoginDeviceViewController: UIViewController{
         waitingDeviceView.isHidden = true
     }
     
-    func jumpToConnectDevice(){
+    func jumpToConnectDevice(deviceId: Int){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
-        controller.loginData = self.loginData
+        let signupData = SignUpData(username: loginData.username, password: "", fullname: "Linked Device", optionalEmail: nil)
+        signupData.deviceId = deviceId
+        controller.signupData = signupData
         present(controller, animated: true, completion: nil)
     }
     
@@ -72,6 +85,20 @@ class LoginDeviceViewController: UIViewController{
                 self.onFailure()
                 return
             }
+        }
+    }
+}
+
+extension LoginDeviceViewController: SingleSocketDelegate {
+    func newMessage(cmd: Int, params: [String : Any]?) {
+        switch(cmd){
+        case 202:
+            guard let deviceId = params?["deviceId"] as? Int else {
+                break
+            }
+            self.jumpToConnectDevice(deviceId: deviceId)
+        default:
+            break
         }
     }
 }
