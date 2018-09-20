@@ -67,6 +67,9 @@ class InboxViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
+        self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
+        
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
         self.topToolbar.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: -8.0).isActive = true
@@ -609,7 +612,8 @@ extension InboxViewController: UITableViewDataSource{
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return nil
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
+        cell.contentView.backgroundColor = UIColor(red: 242/255, green: 248/255, blue: 1, alpha: 1)
         cell.onEmptyPress = {
             self.showEmptyTrashWarning()
         }
@@ -808,13 +812,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
         var labelsSet = Set<Label>()
         var openKeys = [Int]()
+        var peerKeys = [Int]()
         for email in emails {
             email.isExpanded = email.unread
             labelsSet.formUnion(email.labels)
-            if(email.unread && email.status == .none){
-                openKeys.append(email.key)
+            if(email.unread){
+                if(email.status == .none) {
+                    openKeys.append(email.key)
+                } else {
+                    peerKeys.append(email.key)
+                }
             }
-            DBManager.updateEmail(email, unread: false)
         }
         emailDetailData.emails = emails
         emailDetailData.selectedLabel = selectedLabel
@@ -829,8 +837,34 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         vc.mailboxData = self.mailboxData
         vc.myAccount = self.myAccount
         self.navigationController?.pushViewController(vc, animated: true)
-        if(!openKeys.isEmpty) {
-            APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt)
+        openEmails(openKeys: openKeys, peerKeys: peerKeys)
+    }
+    
+    func openOwnEmails(_ peerKeys: [Int]){
+        guard !peerKeys.isEmpty else {
+            return
+        }
+        let params = ["cmd": Event.Peer.emailsUnread.rawValue,
+                      "params": [
+                        "unread": 0,
+                        "metadataKeys": peerKeys
+            ]] as [String : Any]
+        self.postPeerEvent(params, failSilently: true) {
+            DBManager.updateEmails(peerKeys, unread: false)
+        }
+    }
+    
+    func openEmails(openKeys: [Int], peerKeys: [Int]) {
+        guard !openKeys.isEmpty else {
+            openOwnEmails(peerKeys)
+            return
+        }
+        APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt) { responseData in
+            guard case .Success = responseData else {
+                return
+            }
+            DBManager.updateEmails(openKeys, unread: false)
+            self.openOwnEmails(peerKeys)
         }
     }
     

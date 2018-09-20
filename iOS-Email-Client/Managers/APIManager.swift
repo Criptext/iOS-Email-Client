@@ -144,14 +144,17 @@ class APIManager {
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
     
-    class func notifyOpen(keys: [Int], token: String){
+    class func notifyOpen(keys: [Int], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event/open"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         let params = [
             "metadataKeys": keys
         ] as [String: Any]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers)
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
     }
     
     class func unsendEmail(key: Int, recipients: [String], token: String, completion: @escaping ((ResponseData) -> Void)){

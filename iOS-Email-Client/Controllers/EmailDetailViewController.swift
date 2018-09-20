@@ -407,13 +407,20 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
-        let archiveAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            DBManager.delete(self.emailData.emails)
-            self.mailboxData.removeSelectedRow = true
-            self.navigationController?.popViewController(animated: true)
+        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
+            let eventData = EventData.Peer.ThreadDeleted(threadIds: [self.emailData.threadId])
+            self.postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()]) { (responseData) in
+                guard case .Success = responseData else {
+                    self.showAlert("Something went wrong", message: "Unable to delete thread. Please try again", style: .alert)
+                    return
+                }
+                DBManager.delete(self.emailData.emails)
+                self.mailboxData.removeSelectedRow = true
+                self.navigationController?.popViewController(animated: true)
+            }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        showAlert("Delete Threads", message: "The selected threads will be PERMANENTLY deleted", style: .alert, actions: [archiveAction, cancelAction])
+        showAlert("Delete Threads", message: "The selected threads will be PERMANENTLY deleted", style: .alert, actions: [deleteAction, cancelAction])
     }
     
     func onMarkThreads() {
@@ -520,7 +527,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let emailKey = email.key
         postPeerEvent(["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()]) { (responseData) in
             guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to set labels. Please try again", style: .alert)
+                self.showAlert("Something went wrong", message: "Unable to delete email. Please try again", style: .alert)
                 return
             }
             DBManager.delete(email)
@@ -543,7 +550,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     }
     
     func removeEmail(key: Int){
-        guard let index = emailData.emails.index(where: {$0.key == key}) else {
+        guard let index = emailData.emails.index(where: {$0.isInvalidated || $0.key == key}) else {
             return
         }
         emailData.emails.remove(at: index)
@@ -808,8 +815,8 @@ extension EmailDetailViewController: EventHandlerDelegate {
     
     func didReceiveEvents(result: EventData.Result) {
         guard result.modifiedThreadIds.contains(emailData.threadId) || result.modifiedEmailKeys.contains(where: { (key) -> Bool in
-            return emailData.emails.contains(where: {$0.key == key})
-        }) || result.emails.contains(where: {$0.threadId == emailData.threadId}) else {
+            return emailData.emails.contains(where: {$0.isInvalidated || $0.key == key})
+        }) || result.emails.contains(where: {$0.isInvalidated || $0.threadId == emailData.threadId}) else {
             return
         }
         reloadContent()

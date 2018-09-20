@@ -66,7 +66,6 @@ class EventHandler {
     func handleEvent(_ event: Dictionary<String, Any>, finishCallback: @escaping (_ successfulEventId : Int32?, _ data: Any?) -> Void){
         let cmd = event["cmd"] as! Int32
         let rowId = event["rowid"] as? Int32 ?? -1
-        
         guard let params = event["params"] as? [String : Any] ?? Utils.convertToDictionary(text: (event["params"] as! String)) else {
             finishCallback(nil, nil)
             return

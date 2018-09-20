@@ -80,6 +80,7 @@
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */; };
 		7C1566A020A23AEB000CA8D2 /* TopbarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */; };
+		7C1DA3892152F17000C4C38E /* MailboxHeaderUITableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1DA3882152F17000C4C38E /* MailboxHeaderUITableCell.xib */; };
 		7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1E82BD2116A122007CA853 /* Instructions.framework */; };
 		7C1E82C22116BD43007CA853 /* HintUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E82C12116BD43007CA853 /* HintUIView.xib */; };
 		7C1E82C42116BDF2007CA853 /* HintUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E82C32116BDF2007CA853 /* HintUIView.swift */; };
@@ -342,6 +343,7 @@
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopbarUIView.xib; sourceTree = "<group>"; };
 		7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopbarUIView.swift; sourceTree = "<group>"; };
+		7C1DA3882152F17000C4C38E /* MailboxHeaderUITableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailboxHeaderUITableCell.xib; sourceTree = "<group>"; };
 		7C1E82BD2116A122007CA853 /* Instructions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Instructions.framework; path = Carthage/Build/iOS/Instructions.framework; sourceTree = "<group>"; };
 		7C1E82BF2116A12B007CA853 /* InstructionsAppExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InstructionsAppExtensions.framework; path = Carthage/Build/iOS/InstructionsAppExtensions.framework; sourceTree = "<group>"; };
 		7C1E82C12116BD43007CA853 /* HintUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HintUIView.xib; sourceTree = "<group>"; };
@@ -867,6 +869,7 @@
 				7CF93F4E2146D05200361837 /* WelcomeTourView.xib */,
 				7CF93F5B214963A500361837 /* GeneralVersionTableViewCell.swift */,
 				7C2B7D1F214ACA6400604059 /* GeneralHeaderTableViewCell.swift */,
+				7C1DA3882152F17000C4C38E /* MailboxHeaderUITableCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1101,6 +1104,7 @@
 				412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */,
 				7C1E82C22116BD43007CA853 /* HintUIView.xib in Resources */,
 				41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */,
+				7C1DA3892152F17000C4C38E /* MailboxHeaderUITableCell.xib in Resources */,
 				7C5322122111394000C78981 /* GoogleService-Info.plist in Resources */,
 				7C5FD822205C2FBB000E5F14 /* AttachmentTableViewCell.xib in Resources */,
 				7CB3B942208A5ADB00EDD427 /* DetailMoreOptionsUIView.xib in Resources */,
