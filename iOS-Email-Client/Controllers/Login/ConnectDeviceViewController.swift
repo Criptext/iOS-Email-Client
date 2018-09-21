@@ -46,7 +46,6 @@ extension ConnectDeviceViewController: SingleSocketDelegate {
             guard let address = params?["dataAddress"] as? String else {
                 break
             }
-            print("MY ADDRESS WEEEEH \(address)")
         default:
             break
         }

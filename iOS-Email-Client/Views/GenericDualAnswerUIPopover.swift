@@ -23,6 +23,7 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
     
     init(){
         super.init("GenericDualAnswerUIPopover")
+        self.shouldDismiss = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,4 +41,8 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
             self.onOk?()
         }
     }
+    @IBAction func onCancelPress(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 }

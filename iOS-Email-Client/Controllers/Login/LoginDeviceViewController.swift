@@ -50,7 +50,14 @@ class LoginDeviceViewController: UIViewController{
     }
     
     @IBAction func onResendPress(_ sender: Any) {
+        let resendButton = sender as? UIButton
+        resendButton?.isEnabled = false
+        resendButton?.alpha = 0.6
         sendLinkAuthRequest()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            resendButton?.alpha = 1
+            resendButton?.isEnabled = true
+        }
     }
     
     @IBAction func onCantLoginPress(_ sender: Any) {
