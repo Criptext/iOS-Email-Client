@@ -86,3 +86,9 @@ extension SignatureEditorViewController: RichEditorDelegate {
         }
     }
 }
+
+extension SignatureEditorViewController: LinkDeviceDelegate {
+    func onAcceptLinkDevice(linkData: LinkData) {
+        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+    }
+}

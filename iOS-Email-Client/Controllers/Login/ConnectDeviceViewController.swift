@@ -9,31 +9,45 @@
 import Foundation
 
 class ConnectDeviceViewController: UIViewController{
-    var loginData: LoginData!
-    @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var dotsProgressView: DotsProgressUIView!
-    @IBOutlet weak var loadingWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var successImage: UIImageView!
-    @IBOutlet weak var backgroundCircle: UIView!
+    
+    @IBOutlet var connectUIView: ConnectUIView!
+    var signupData: SignUpData!
+    var socket : SingleWebSocket?
     
     override func viewDidLoad() {
-        emailLabel.text = loginData.email
-        successImage.isHidden = true
-        backgroundCircle.isHidden = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)){
-            self.handleSuccess()
-        }
+        super.viewDidLoad()
+        socket = SingleWebSocket()
+        socket?.delegate = self
+        connectUIView.initialLoad(email: "\(signupData.username)\(Constants.domain)")
+        DBManager.destroy()
+        sendKeysRequest()
     }
     
-    func handleSuccess(){
-        dotsProgressView.isHidden = true
-        backgroundCircle.isHidden = false
-        UIView.animate(withDuration: 0.5, animations: {
-            self.loadingWidthConstraint.constant = CGFloat(30)
-            self.view.layoutIfNeeded()
-        }, completion: { (completed) in
-            self.successImage.isHidden = false
-        })
-        
+    func sendKeysRequest(){
+        let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
+        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                return
+            }
+            guard case let .SuccessString(jwt) = responseData else {
+                return
+            }
+            self.signupData.token = jwt
+            self.socket?.connect(jwt: jwt)
+        }
+    }
+}
+
+extension ConnectDeviceViewController: SingleSocketDelegate {
+    func newMessage(cmd: Int, params: [String : Any]?) {
+        switch(cmd){
+        case 204:
+            guard let address = params?["dataAddress"] as? String else {
+                break
+            }
+        default:
+            break
+        }
     }
 }

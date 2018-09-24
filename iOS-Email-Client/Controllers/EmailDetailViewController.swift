@@ -905,3 +905,9 @@ extension EmailDetailViewController: CoachMarksControllerDataSource, CoachMarksC
         return 1
     }
 }
+
+extension EmailDetailViewController: LinkDeviceDelegate {
+    func onAcceptLinkDevice(linkData: LinkData) {
+        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+    }
+}

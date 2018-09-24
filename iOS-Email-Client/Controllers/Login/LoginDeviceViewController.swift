@@ -11,6 +11,7 @@ import Foundation
 class LoginDeviceViewController: UIViewController{
     
     var loginData: LoginData!
+    var socket : SingleWebSocket?
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
@@ -20,6 +21,28 @@ class LoginDeviceViewController: UIViewController{
         self.failureDeviceView.isHidden = true
         self.waitingDeviceView.isHidden = false
         self.hourglassImage.transform = CGAffineTransform(rotationAngle: (20.0 * .pi) / 180.0)
+        
+        guard let jwt = loginData.jwt else {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        
+        socket = SingleWebSocket()
+        socket?.delegate = self
+        socket?.connect(jwt: jwt)
+        self.sendLinkAuthRequest()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        socket?.close()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let jwt = loginData.jwt else {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        socket?.connect(jwt: jwt)
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
@@ -27,7 +50,14 @@ class LoginDeviceViewController: UIViewController{
     }
     
     @IBAction func onResendPress(_ sender: Any) {
-        onFailure()
+        let resendButton = sender as? UIButton
+        resendButton?.isEnabled = false
+        resendButton?.alpha = 0.6
+        sendLinkAuthRequest()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            resendButton?.alpha = 1
+            resendButton?.isEnabled = true
+        }
     }
     
     @IBAction func onCantLoginPress(_ sender: Any) {
@@ -53,10 +83,51 @@ class LoginDeviceViewController: UIViewController{
         waitingDeviceView.isHidden = true
     }
     
-    func jumpToConnectDevice(){
+    func jumpToCreatingAccount(deviceId: Int){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
+        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: "Linked Device", optionalEmail: nil)
+        signupData.deviceId = deviceId
+        signupData.token = loginData.jwt
+        controller.signupData = signupData
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func jumpToConnectDevice(deviceId: Int){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
-        controller.loginData = self.loginData
+        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: "Linked Device", optionalEmail: nil)
+        signupData.deviceId = deviceId
+        signupData.token = loginData.jwt
+        controller.signupData = signupData
         present(controller, animated: true, completion: nil)
+    }
+    
+    func sendLinkAuthRequest(){
+        guard let jwt = loginData.jwt else {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        let deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        APIManager.linkAuth(deviceInfo: deviceInfo, token: jwt) { (responseData) in
+            guard case .Success = responseData else {
+                self.onFailure()
+                return
+            }
+        }
+    }
+}
+
+extension LoginDeviceViewController: SingleSocketDelegate {
+    func newMessage(cmd: Int, params: [String : Any]?) {
+        switch(cmd){
+        case 202:
+            guard let deviceId = params?["deviceId"] as? Int else {
+                break
+            }
+            self.jumpToCreatingAccount(deviceId: deviceId)
+        default:
+            break
+        }
     }
 }

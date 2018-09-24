@@ -264,6 +264,8 @@ class InboxViewController: UIViewController {
 extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
+        case .LinkStart(let data):
+            self.handleLinkStart(data: data)
         case .NewEvent:
             self.getPendingEvents(nil)
         case .PasswordChange:
@@ -291,6 +293,13 @@ extension InboxViewController: WebSocketManagerDelegate {
         default:
             break
         }
+    }
+    
+    func handleLinkStart(data: [String: Any]){
+        guard let linkData = LinkData.fromDictionary(data) else {
+            return
+        }
+        self.presentLinkDevicePopover(linkData: linkData)
     }
 }
 
@@ -421,7 +430,7 @@ extension InboxViewController{
         let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         composerVC.delegate = self
         
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+        self.present(snackVC, animated: true, completion: nil)
     }
     
     func swapMailbox(labelId: Int, sender: Any?){
@@ -527,7 +536,7 @@ extension InboxViewController{
         
         let vc = storyboard.instantiateInitialViewController()!
         
-        self.navigationController?.childViewControllers.last!.present(vc, animated: true){
+        self.present(vc, animated: true){
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.replaceRootViewController(vc)
         }
@@ -732,9 +741,8 @@ extension InboxViewController: UITableViewDataSource{
         let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         
-        self.navigationController?.childViewControllers.last!.present(navSettingsVC, animated: true, completion: nil)
+        self.present(navSettingsVC, animated: true, completion: nil)
     }
-    
 }
 
 //MARK: - TableView Delegate
@@ -903,7 +911,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             file.requestStatus = .finish
             composerVC.fileManager.registeredFiles.append(file)
         }
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: {
+        self.present(snackVC, animated: true, completion: {
             self.navigationDrawerController?.closeLeftView()
         })
     }
@@ -1389,6 +1397,10 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 1
     }
-    
-    
+}
+
+extension InboxViewController: LinkDeviceDelegate {
+    func onAcceptLinkDevice(linkData: LinkData) {
+        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+    }
 }

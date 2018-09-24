@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConnectUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundCircle" destination="Ei6-qi-JLl" id="P10-us-4o7"/>
+                <outlet property="dotsProgressView" destination="p8P-Xu-AGe" id="lsa-Uv-AEg"/>
+                <outlet property="emailLabel" destination="I2c-6Y-BuD" id="myo-Me-OU8"/>
+                <outlet property="loadingWidthConstraint" destination="5c4-sZ-01b" id="jNM-za-SJ4"/>
+                <outlet property="successImage" destination="4rh-2l-H05" id="Gc2-WX-CEK"/>
+                <outlet property="view" destination="BjD-Bq-glM" id="g5Q-h8-GG4"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="BjD-Bq-glM">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="white-logo" translatesAutoresizingMaskIntoConstraints="NO" id="X7P-re-4hO">
+                    <rect key="frame" x="152" y="171" width="70" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.34509803919999998" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="9zd-FT-wJK"/>
+                        <constraint firstAttribute="height" constant="70" id="K4D-Qc-K6T"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                            <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Establishing secure connection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XjA-v0-OUS">
+                    <rect key="frame" x="23" y="397" width="329" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="rTj-ym-BVg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                    <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2c-6Y-BuD">
+                    <rect key="frame" x="23" y="420" width="329" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Sjg-fn-ZBB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                    <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8P-Xu-AGe" customClass="DotsProgressUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                    <rect key="frame" x="100" y="310" width="175" height="10"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="175" id="5c4-sZ-01b"/>
+                        <constraint firstAttribute="height" constant="10" id="amP-pY-UyQ"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="numberOfDots">
+                            <integer key="value" value="12"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="radiusOfDots">
+                            <integer key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
+                            <color key="value" red="0.1450980392" green="0.69411764710000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-mobile" translatesAutoresizingMaskIntoConstraints="NO" id="JNI-pY-rPy">
+                    <rect key="frame" x="37" y="290" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Wu0-pu-APo"/>
+                        <constraint firstAttribute="width" constant="50" id="fWu-gO-oKD"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                            <color key="value" red="0.87203125000000004" green="0.86890624999999999" blue="0.86682692309999998" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-mobile" translatesAutoresizingMaskIntoConstraints="NO" id="DRm-qL-uYQ">
+                    <rect key="frame" x="288" y="290" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="3ul-dk-Fh9"/>
+                        <constraint firstAttribute="height" constant="50" id="AT7-Ww-3zM"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                            <color key="value" red="0.87203125000000004" green="0.86890624999999999" blue="0.86682692309999998" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ei6-qi-JLl">
+                    <rect key="frame" x="163" y="291" width="48" height="48"/>
+                    <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="0.040000000000000001" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="1Ly-zc-TGh"/>
+                        <constraint firstAttribute="width" constant="48" id="7tk-nn-6Co"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="4rh-2l-H05">
+                    <rect key="frame" x="173.5" y="301" width="28" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="GJu-wK-gHU"/>
+                        <constraint firstAttribute="width" constant="28" id="cEF-Sv-1Ys"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                            <color key="value" red="0.0" green="0.57212740380000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="X7P-re-4hO" firstAttribute="centerY" secondItem="sjD-Xh-tse" secondAttribute="centerY" multiplier="0.6" id="4Yc-04-Wza"/>
+                <constraint firstItem="4rh-2l-H05" firstAttribute="centerX" secondItem="p8P-Xu-AGe" secondAttribute="centerX" id="5lE-Ke-7FX"/>
+                <constraint firstItem="XjA-v0-OUS" firstAttribute="top" secondItem="p8P-Xu-AGe" secondAttribute="bottom" constant="77" id="7So-hf-iLd"/>
+                <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="XjA-v0-OUS" secondAttribute="trailing" constant="23" id="ENL-K0-OPO"/>
+                <constraint firstItem="DRm-qL-uYQ" firstAttribute="leading" secondItem="p8P-Xu-AGe" secondAttribute="trailing" constant="13" id="Ly9-Ys-q03"/>
+                <constraint firstItem="p8P-Xu-AGe" firstAttribute="top" secondItem="X7P-re-4hO" secondAttribute="bottom" constant="69" id="QHU-YQ-R3r"/>
+                <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="I2c-6Y-BuD" secondAttribute="trailing" constant="23" id="UJU-1z-OmX"/>
+                <constraint firstItem="p8P-Xu-AGe" firstAttribute="centerX" secondItem="BjD-Bq-glM" secondAttribute="centerX" id="X8W-Pn-qVd"/>
+                <constraint firstItem="p8P-Xu-AGe" firstAttribute="leading" secondItem="JNI-pY-rPy" secondAttribute="trailing" constant="13" id="agc-Bz-ZpV"/>
+                <constraint firstItem="Ei6-qi-JLl" firstAttribute="centerY" secondItem="4rh-2l-H05" secondAttribute="centerY" id="alA-9s-NWr"/>
+                <constraint firstItem="I2c-6Y-BuD" firstAttribute="leading" secondItem="sjD-Xh-tse" secondAttribute="leading" constant="23" id="esQ-GO-eXd"/>
+                <constraint firstItem="DRm-qL-uYQ" firstAttribute="centerY" secondItem="p8P-Xu-AGe" secondAttribute="centerY" id="ij4-0u-um6"/>
+                <constraint firstItem="JNI-pY-rPy" firstAttribute="centerY" secondItem="p8P-Xu-AGe" secondAttribute="centerY" id="ioz-Fa-dND"/>
+                <constraint firstItem="X7P-re-4hO" firstAttribute="centerX" secondItem="BjD-Bq-glM" secondAttribute="centerX" id="ldW-a1-ICr"/>
+                <constraint firstItem="Ei6-qi-JLl" firstAttribute="centerX" secondItem="4rh-2l-H05" secondAttribute="centerX" id="nMl-fy-Rxw"/>
+                <constraint firstItem="XjA-v0-OUS" firstAttribute="leading" secondItem="sjD-Xh-tse" secondAttribute="leading" constant="23" id="nQr-7d-WIm"/>
+                <constraint firstItem="4rh-2l-H05" firstAttribute="centerY" secondItem="p8P-Xu-AGe" secondAttribute="centerY" id="nnR-uw-g1C"/>
+                <constraint firstItem="I2c-6Y-BuD" firstAttribute="top" secondItem="XjA-v0-OUS" secondAttribute="bottom" constant="2" id="xbG-cR-KSI"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="sjD-Xh-tse"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="device-mobile" width="25" height="44"/>
+        <image name="mark-success" width="28" height="28"/>
+        <image name="white-logo" width="77" height="69"/>
+    </resources>
+</document>

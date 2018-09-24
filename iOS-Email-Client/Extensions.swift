@@ -37,7 +37,52 @@ extension UIViewController {
         popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         popover.popoverPresentationController?.permittedArrowDirections = arrowDirections
         popover.popoverPresentationController?.backgroundColor = UIColor.white
+        
+        if let activePopover = self.presentedViewController as? BaseUIPopover {
+            activePopover.dismiss(animated: false, completion: nil)
+            self.present(popover, animated: false)
+            return
+        }
+        if let overViewController = self.presentedViewController {
+            overViewController.presentPopover(popover: popover, height: height)
+            return
+        }
+        if let overViewController = self.navigationController?.presentedViewController {
+            overViewController.presentPopover(popover: popover, height: height)
+            return
+        }
+        if let topViewController = self.navigationController?.topViewController,
+            topViewController != self {
+            topViewController.presentPopover(popover: popover, height: height)
+            return
+        }
+        if let navController = self as? UINavigationController,
+            let topViewController = navController.topViewController {
+            topViewController.presentPopover(popover: popover, height: height)
+            return
+        }
         self.present(popover, animated: true)
+    }
+    
+    func getTopView() -> UIViewController {
+        if let _ = self.presentedViewController as? BaseUIPopover {
+            return self
+        }
+        if let overViewController = self.presentedViewController {
+            return overViewController.getTopView()
+        }
+        if let overViewController = self.navigationController?.presentedViewController {
+            return overViewController.getTopView()
+        }
+        if let topViewController = self.navigationController?.topViewController,
+            topViewController != self {
+            return topViewController.getTopView()
+        }
+        if let navController = self as? UINavigationController,
+            let topViewController = navController.topViewController {
+            return topViewController.getTopView()
+        }
+        return self
     }
     
     func logout(manually: Bool = false){
@@ -54,6 +99,19 @@ extension UIViewController {
             self.logout(manually: false)
         }
         self.presentPopover(popover: passwordVC, height: 213)
+    }
+    
+    func presentLinkDevicePopover(linkData: LinkData){
+        let linkDeviceVC = GenericDualAnswerUIPopover()
+        linkDeviceVC.initialTitle = "Security Alert"
+        linkDeviceVC.initialMessage = "Do you want to approve \(linkData.deviceName)?"
+        linkDeviceVC.onOk = { [weak self] in
+            guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
+                return
+            }
+            delegate.onAcceptLinkDevice(linkData: linkData)
+        }
+        self.presentPopover(popover: linkDeviceVC, height: 175)
     }
 }
 

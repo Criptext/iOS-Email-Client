@@ -733,7 +733,7 @@
         <!--Login Device View Controller-->
         <scene sceneID="df8-6h-ccB">
             <objects>
-                <viewController storyboardIdentifier="loginwaitview" id="Msb-QW-zAf" customClass="LoginDeviceViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginDeviceViewController" id="Msb-QW-zAf" customClass="LoginDeviceViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="I0f-U5-zUk" customClass="GradientUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -822,7 +822,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2e-M6-6pu">
-                                                        <rect key="frame" x="37" y="418" width="300.5" height="44"/>
+                                                        <rect key="frame" x="37" y="433" width="300.5" height="44"/>
                                                         <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="300" id="FnF-6B-rS7"/>
@@ -883,7 +883,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                     <constraint firstItem="y1B-8C-PKn" firstAttribute="centerY" secondItem="CQ6-X5-Uq5" secondAttribute="centerY" id="A9X-wc-nSv"/>
                                                     <constraint firstItem="y1B-8C-PKn" firstAttribute="centerX" secondItem="CQ6-X5-Uq5" secondAttribute="centerX" id="Lcl-7n-uD9"/>
                                                     <constraint firstItem="t2e-M6-6pu" firstAttribute="centerX" secondItem="oqf-Tb-I2x" secondAttribute="centerX" id="XVB-nW-OYI"/>
-                                                    <constraint firstItem="t2e-M6-6pu" firstAttribute="top" secondItem="UEg-nZ-3Qg" secondAttribute="bottom" constant="11" id="Z8y-t5-SXT"/>
+                                                    <constraint firstItem="t2e-M6-6pu" firstAttribute="top" secondItem="UEg-nZ-3Qg" secondAttribute="bottom" constant="26" id="Z8y-t5-SXT"/>
                                                     <constraint firstItem="Ewk-Fo-ARJ" firstAttribute="centerY" secondItem="oqf-Tb-I2x" secondAttribute="centerY" multiplier="0.75" id="jon-8w-DKd"/>
                                                     <constraint firstItem="Ewk-Fo-ARJ" firstAttribute="leading" secondItem="oqf-Tb-I2x" secondAttribute="leading" constant="47" id="mTe-x8-EWa"/>
                                                     <constraint firstAttribute="trailing" secondItem="UEg-nZ-3Qg" secondAttribute="trailing" constant="57" id="tKI-4t-PKj"/>
@@ -993,141 +993,27 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="white-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Zjh-J1-eyy">
-                                <rect key="frame" x="152" y="171" width="70" height="70"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <color key="tintColor" red="0.34509803919999998" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="6GC-0M-xAN"/>
-                                    <constraint firstAttribute="width" constant="70" id="9LM-v0-tno"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                        <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Establishing secure connection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Lw-oW-00M">
-                                <rect key="frame" x="23" y="397" width="329" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="ukA-Up-4DZ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
-                                <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ClX-gg-1sU">
-                                <rect key="frame" x="23" y="420" width="329" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="Z62-Pi-Df0"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
-                                <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qbV-z3-DSp" customClass="DotsProgressUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="100" y="310" width="175" height="10"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="175" id="RbJ-DG-CD3"/>
-                                    <constraint firstAttribute="height" constant="10" id="ks5-zJ-Gjr"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="numberOfDots">
-                                        <integer key="value" value="12"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="radiusOfDots">
-                                        <integer key="value" value="3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
-                                        <color key="value" red="0.1450980392" green="0.69411764710000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SPl-NZ-Gze" customClass="ConnectUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="-0.5" y="10" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-mobile" translatesAutoresizingMaskIntoConstraints="NO" id="7eg-WO-UQH">
-                                <rect key="frame" x="37" y="290" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="Bcw-hB-Taq"/>
-                                    <constraint firstAttribute="height" constant="50" id="qFO-Kp-JkM"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                        <color key="value" red="0.87203125000000004" green="0.86890624999999999" blue="0.86682692307692311" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-mobile" translatesAutoresizingMaskIntoConstraints="NO" id="rTH-ZM-96H">
-                                <rect key="frame" x="288" y="290" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="XWH-bW-Zwv"/>
-                                    <constraint firstAttribute="height" constant="50" id="ZnX-fw-l0d"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                        <color key="value" red="0.87203125000000004" green="0.86890624999999999" blue="0.86682692309999998" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qWh-Sk-MOO">
-                                <rect key="frame" x="163" y="291" width="48" height="48"/>
-                                <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="0.040000000000000001" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="Jrf-Nc-UXx"/>
-                                    <constraint firstAttribute="height" constant="48" id="ywr-80-0ah"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="24"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="zUE-8j-kSA">
-                                <rect key="frame" x="173.5" y="301" width="28" height="28"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="eSR-MN-KkM"/>
-                                    <constraint firstAttribute="width" constant="28" id="mWr-rM-3tY"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                        <color key="value" red="0.0" green="0.57212740384615379" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="zUE-8j-kSA" firstAttribute="centerX" secondItem="qbV-z3-DSp" secondAttribute="centerX" id="0qK-tb-l6u"/>
-                            <constraint firstItem="rTH-ZM-96H" firstAttribute="leading" secondItem="qbV-z3-DSp" secondAttribute="trailing" constant="13" id="64b-b1-CYi"/>
-                            <constraint firstItem="Zjh-J1-eyy" firstAttribute="centerY" secondItem="wTE-lO-vwA" secondAttribute="centerY" multiplier="0.6" id="BPZ-MC-gTd"/>
-                            <constraint firstItem="qWh-Sk-MOO" firstAttribute="centerX" secondItem="zUE-8j-kSA" secondAttribute="centerX" id="BpB-nq-deT"/>
-                            <constraint firstItem="rTH-ZM-96H" firstAttribute="centerY" secondItem="qbV-z3-DSp" secondAttribute="centerY" id="IyR-Y4-4eg"/>
-                            <constraint firstItem="wTE-lO-vwA" firstAttribute="trailing" secondItem="ClX-gg-1sU" secondAttribute="trailing" constant="23" id="Jem-CM-o8D"/>
-                            <constraint firstItem="ClX-gg-1sU" firstAttribute="leading" secondItem="wTE-lO-vwA" secondAttribute="leading" constant="23" id="KWR-ou-lBP"/>
-                            <constraint firstItem="5Lw-oW-00M" firstAttribute="top" secondItem="qbV-z3-DSp" secondAttribute="bottom" constant="77" id="PVy-3F-0rc"/>
-                            <constraint firstItem="qbV-z3-DSp" firstAttribute="leading" secondItem="7eg-WO-UQH" secondAttribute="trailing" constant="13" id="TW2-vi-JHM"/>
-                            <constraint firstItem="qWh-Sk-MOO" firstAttribute="centerY" secondItem="zUE-8j-kSA" secondAttribute="centerY" id="V0D-08-7EI"/>
-                            <constraint firstItem="qbV-z3-DSp" firstAttribute="top" secondItem="Zjh-J1-eyy" secondAttribute="bottom" constant="69" id="Va1-nd-Jse"/>
-                            <constraint firstItem="ClX-gg-1sU" firstAttribute="top" secondItem="5Lw-oW-00M" secondAttribute="bottom" constant="2" id="Wiy-2H-Ztk"/>
-                            <constraint firstItem="qbV-z3-DSp" firstAttribute="centerX" secondItem="kMI-Pj-Jjq" secondAttribute="centerX" id="aVx-MM-UGc"/>
-                            <constraint firstItem="5Lw-oW-00M" firstAttribute="leading" secondItem="wTE-lO-vwA" secondAttribute="leading" constant="23" id="fiV-v4-7iT"/>
-                            <constraint firstItem="wTE-lO-vwA" firstAttribute="trailing" secondItem="5Lw-oW-00M" secondAttribute="trailing" constant="23" id="i1V-tU-OZZ"/>
-                            <constraint firstItem="Zjh-J1-eyy" firstAttribute="centerX" secondItem="kMI-Pj-Jjq" secondAttribute="centerX" id="ofd-59-n9K"/>
-                            <constraint firstItem="zUE-8j-kSA" firstAttribute="centerY" secondItem="qbV-z3-DSp" secondAttribute="centerY" id="xc9-9M-hkO"/>
-                            <constraint firstItem="7eg-WO-UQH" firstAttribute="centerY" secondItem="qbV-z3-DSp" secondAttribute="centerY" id="yF1-DF-GAq"/>
+                            <constraint firstItem="SPl-NZ-Gze" firstAttribute="centerX" secondItem="wTE-lO-vwA" secondAttribute="centerX" id="CXO-8z-XE9"/>
+                            <constraint firstItem="SPl-NZ-Gze" firstAttribute="width" secondItem="kMI-Pj-Jjq" secondAttribute="width" id="MWW-Th-LTK"/>
+                            <constraint firstItem="SPl-NZ-Gze" firstAttribute="height" secondItem="kMI-Pj-Jjq" secondAttribute="height" id="sPB-XV-PLP"/>
+                            <constraint firstItem="SPl-NZ-Gze" firstAttribute="centerY" secondItem="wTE-lO-vwA" secondAttribute="centerY" id="tM3-ly-Pkp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wTE-lO-vwA"/>
                     </view>
                     <connections>
-                        <outlet property="backgroundCircle" destination="qWh-Sk-MOO" id="B3q-rg-wOs"/>
-                        <outlet property="dotsProgressView" destination="qbV-z3-DSp" id="1eT-BW-G6N"/>
-                        <outlet property="emailLabel" destination="ClX-gg-1sU" id="X1T-0W-g6j"/>
-                        <outlet property="loadingWidthConstraint" destination="RbJ-DG-CD3" id="Zfj-u7-Tq6"/>
-                        <outlet property="successImage" destination="zUE-8j-kSA" id="Hck-Ql-6p1"/>
+                        <outlet property="connectUIView" destination="SPl-NZ-Gze" id="bek-4J-Igp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uEY-Xx-i9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-39.200000000000003" y="1440.6296851574214"/>
+            <point key="canvasLocation" x="-343" y="1339"/>
         </scene>
         <!--Reset Device View Controller-->
         <scene sceneID="Owk-gS-cA2">
@@ -1168,13 +1054,13 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NT8-w1-8Xk">
-                                                <rect key="frame" x="33" y="144" width="309" height="37"/>
+                                                <rect key="frame" x="33" y="143.5" width="309" height="37"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMf-wY-jdP">
-                                                <rect key="frame" x="33" y="191" width="309" height="48"/>
+                                                <rect key="frame" x="33" y="190.5" width="309" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="FXT-bk-n8F"/>
                                                 </constraints>
@@ -1353,7 +1239,6 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <resources>
         <image name="arrow-back" width="17" height="14"/>
         <image name="beta" width="118" height="40"/>
-        <image name="device-mobile" width="25" height="44"/>
         <image name="loading-hourglass" width="38" height="53"/>
         <image name="mark-error" width="28" height="28"/>
         <image name="mark-success" width="28" height="28"/>

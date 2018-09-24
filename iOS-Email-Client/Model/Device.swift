@@ -26,6 +26,15 @@ class Device {
         }
     }
     
+    func toDictionary(recipientId: String) -> [String: Any] {
+        return [
+            "recipientId": recipientId,
+            "deviceName": self.name,
+            "deviceFriendlyName": self.name,
+            "deviceType": self.type
+        ]
+    }
+    
     class func fromDictionary(data: [String: Any]) -> Device {
         let newDevice = Device()
         newDevice.type = data["deviceType"] as! Int

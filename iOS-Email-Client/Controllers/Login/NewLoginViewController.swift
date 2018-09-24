@@ -116,6 +116,11 @@ class NewLoginViewController: UIViewController{
             return
         }
         toggleLoadingView(true)
+        checkUsername(username)
+        
+    }
+    
+    func checkUsername(_ username: String){
         APIManager.checkAvailableUsername(username) { (responseData) in
             guard case let .Error(error) = responseData else {
                 self.showLoginError(error: "Username does not exist")
@@ -125,9 +130,21 @@ class NewLoginViewController: UIViewController{
                 self.showLoginError(error: error.description)
                 return
             }
-            self.jumpToLoginDeviceView()
+            self.beginLinkDevice(username)
         }
-        
+    }
+    
+    func beginLinkDevice(_ username: String){
+        let email = "\(usernameTextField.text!.lowercased())\(Constants.domain)"
+        let loginData = LoginData(email)
+        APIManager.linkBegin(username: username) { (responseData) in
+            guard case let .SuccessString(jwtTemp) = responseData else {
+                self.jumpToLoginPasswordView(loginData: loginData)
+                return
+            }
+            loginData.jwt = jwtTemp
+            self.jumpToLoginDeviceView(loginData: loginData)
+        }
     }
     
     @IBAction func textfieldDidEndOnExit(_ sender: Any) {
@@ -142,13 +159,20 @@ class NewLoginViewController: UIViewController{
         self.toggleLoadingView(false)
     }
     
-    func jumpToLoginDeviceView(){
-        let email = usernameTextField.text!.lowercased() + Constants.domain
+    func jumpToLoginPasswordView(loginData: LoginData){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
-        controller.loginData = LoginData(email)
+        controller.loginData = loginData
         navigationController?.pushViewController(controller, animated: true)
-        
+        toggleLoadingView(false)
+        clearErrors()
+    }
+    
+    func jumpToLoginDeviceView(loginData: LoginData){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
+        controller.loginData = loginData
+        navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
         clearErrors()
     }

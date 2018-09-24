@@ -283,6 +283,39 @@ class APIManager {
 }
 
 extension APIManager {
+    class func linkBegin(username: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/link/begin"
+        let headers = ["API-Version": apiVersion]
+        let params = ["targetUsername": username] as [String : Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
+    class func linkAuth(deviceInfo: [String: Any], token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/link/auth"
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
+        Alamofire.request(url, method: .post, parameters: deviceInfo, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
+    
+    class func linkAccept(randomId: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/link/accept"
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
+        let params = ["randomId": randomId] as [String : Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
+}
+
+extension APIManager {
     
     @discardableResult class func checkAvailableUsername(_ username: String, completion: @escaping ((ResponseData) -> Void)) -> DataRequest{
         let url = "\(self.baseUrl)/user/available?username=\(username)"

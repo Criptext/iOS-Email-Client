@@ -22,6 +22,7 @@ class EventData {
         case Logout
         case RecoveryChanged(String)
         case RecoveryVerified
+        case LinkStart([String: Any])
     }
     
     struct Result {
