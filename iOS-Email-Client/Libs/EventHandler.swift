@@ -296,7 +296,6 @@ class EventHandler {
         
         switch(cmd){
         case Event.Link.start.rawValue:
-            print(event)
             guard let params = event["params"] as? [String: Any] else {
                     return .Error
             }
