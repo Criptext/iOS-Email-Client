@@ -53,9 +53,9 @@ class ConnectUploadViewController: UIViewController{
 }
 
 extension ConnectUploadViewController: SingleSocketDelegate {
-    func newMessage(cmd: Int, params: [String : Any]?) {
+    func newMessage(cmd: Int32, params: [String : Any]?) {
         switch(cmd){
-        case 203:
+        case Event.Link.bundle.rawValue:
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                 self.dismiss(animated: true, completion: nil)
             })

@@ -83,10 +83,10 @@ class LoginDeviceViewController: UIViewController{
         waitingDeviceView.isHidden = true
     }
     
-    func jumpToCreatingAccount(deviceId: Int){
+    func jumpToCreatingAccount(name: String, deviceId: Int){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
-        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: "Linked Device", optionalEmail: nil)
+        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: name, optionalEmail: nil)
         signupData.deviceId = deviceId
         signupData.token = loginData.jwt
         controller.signupData = signupData
@@ -119,13 +119,17 @@ class LoginDeviceViewController: UIViewController{
 }
 
 extension LoginDeviceViewController: SingleSocketDelegate {
-    func newMessage(cmd: Int, params: [String : Any]?) {
+    func newMessage(cmd: Int32, params: [String : Any]?) {
         switch(cmd){
-        case 202:
-            guard let deviceId = params?["deviceId"] as? Int else {
+        case Event.Link.accept.rawValue:
+            guard let deviceId = params?["deviceId"] as? Int,
+                let name = params?["name"] as? String else {
                 break
             }
-            self.jumpToCreatingAccount(deviceId: deviceId)
+            self.jumpToCreatingAccount(name: name, deviceId: deviceId)
+        case Event.Link.deny.rawValue:
+            self.socket?.close()
+            self.onFailure()
         default:
             break
         }

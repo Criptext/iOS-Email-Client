@@ -40,9 +40,9 @@ class ConnectDeviceViewController: UIViewController{
 }
 
 extension ConnectDeviceViewController: SingleSocketDelegate {
-    func newMessage(cmd: Int, params: [String : Any]?) {
+    func newMessage(cmd: Int32, params: [String : Any]?) {
         switch(cmd){
-        case 204:
+        case Event.Link.success.rawValue:
             guard let address = params?["dataAddress"] as? String else {
                 break
             }

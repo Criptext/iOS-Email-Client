@@ -105,8 +105,12 @@ extension UIViewController {
         let linkDeviceVC = GenericDualAnswerUIPopover()
         linkDeviceVC.initialTitle = "Security Alert"
         linkDeviceVC.initialMessage = "Do you want to approve \(linkData.deviceName)?"
-        linkDeviceVC.onOk = { [weak self] in
+        linkDeviceVC.onResponse = { [weak self] accept in
             guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
+                return
+            }
+            guard accept else {
+                delegate.onCancelLinkDevice(linkData: linkData)
                 return
             }
             delegate.onAcceptLinkDevice(linkData: linkData)

@@ -146,14 +146,14 @@ class Email: Object {
     
     func getContent() -> String {
         guard !isUnsent else {
-            return "<span style=\"color:#eea3a3; font-style: italic;\">Unsent: \(String(DateUtils.beatyDate(self.unsentDate)))</span>"
+            return "<span style=\"color:#eea3a3; font-style: italic;\">Unsent \(String(DateUtils.beautyDate(self.unsentDate)))</span>"
         }
         return content
     }
     
     func getPreview() -> String {
         guard !isUnsent else {
-            return "Unsent: \(String(DateUtils.beatyDate(self.unsentDate)))"
+            return "Unsent \(String(DateUtils.beautyDate(self.unsentDate)))"
         }
         return preview
     }

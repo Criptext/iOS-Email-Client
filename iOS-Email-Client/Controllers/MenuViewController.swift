@@ -47,15 +47,20 @@ class MenuViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        menuData.reloadLabels()
-        hideCustomLabels()
-        labelsTableView.reloadData()
+        reloadView()
     }
     
     func setupAccountInfo(_ myAccount: Account){
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.username + Constants.domain
         avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
+    }
+    
+    func reloadView() {
+        setupAccountInfo(mailboxVC.myAccount)
+        menuData.reloadLabels()
+        hideCustomLabels()
+        labelsTableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
