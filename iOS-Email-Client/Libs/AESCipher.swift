@@ -122,9 +122,10 @@ class AESCipher {
         let keySize = 16
         let passwordData = password.data(using: .utf8)!
         var key = Data(count: keySize)
+        var localKey = key
         let status = passwordData.withUnsafeBytes({ (passwordBytes: UnsafePointer<Int8>) in
             saltData.withUnsafeBytes({ (saltBytes: UnsafePointer<UInt8>) in
-                key.withUnsafeMutableBytes({ (keyBytes: UnsafeMutablePointer<UInt8>) in
+                localKey.withUnsafeMutableBytes({ (keyBytes: UnsafeMutablePointer<UInt8>) in
                     CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2), passwordBytes, passwordData.count, saltBytes, saltData.count, CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256), 10000, keyBytes, key.count)
                 })
             })

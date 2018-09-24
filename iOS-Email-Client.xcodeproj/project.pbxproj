@@ -45,7 +45,6 @@
 		41AAC557201AA08500809C4D /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
 		41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAAF2017987500D428B7 /* AppDelegate.swift */; };
 		41B6AAB52017987500D428B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB32017987500D428B7 /* Main.storyboard */; };
-		41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */; };
 		41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */; };
 		41C36848207C69F3008B50A8 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
@@ -206,8 +205,6 @@
 		7CCC82EA2125E83F00D33F84 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */; };
 		7CCC82EB2125E83F00D33F84 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43021111DCF00A40C74 /* FirebaseCoreDiagnostics.framework */; };
 		7CCC82EC2125E83F00D33F84 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43121111DCF00A40C74 /* FirebaseInstanceID.framework */; };
-		7CCC82ED2125E83F00D33F84 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42E21111DCE00A40C74 /* FirebaseNanoPB.framework */; };
-		7CCC82EE2125E83F00D33F84 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */; };
 		7CCC82EF2125E83F00D33F84 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42F21111DCF00A40C74 /* nanopb.framework */; };
 		7CCC82F02125E83F00D33F84 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43921111DE400A40C74 /* FirebaseMessaging.framework */; };
 		7CCC82F12125E83F00D33F84 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43A21111DE400A40C74 /* Protobuf.framework */; };
@@ -217,10 +214,8 @@
 		7CCD73E4212DEB30002C8C7F /* RemoveDeviceUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */; };
 		7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */; };
 		7CCD73E8212F2207002C8C7F /* ResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E7212F2207002C8C7F /* ResponseData.swift */; };
-		7CD4A43221111DCF00A40C74 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */; };
 		7CD4A43321111DCF00A40C74 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */; };
 		7CD4A43421111DCF00A40C74 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */; };
-		7CD4A43521111DCF00A40C74 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42E21111DCE00A40C74 /* FirebaseNanoPB.framework */; };
 		7CD4A43621111DCF00A40C74 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A42F21111DCF00A40C74 /* nanopb.framework */; };
 		7CD4A43721111DCF00A40C74 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43021111DCF00A40C74 /* FirebaseCoreDiagnostics.framework */; };
 		7CD4A43821111DCF00A40C74 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A43121111DCF00A40C74 /* FirebaseInstanceID.framework */; };
@@ -257,6 +252,9 @@
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
 		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
 		9568329020753FBE007F8489 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
+		A713109C21596F2E00534F13 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */; };
+		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
+		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -478,10 +476,8 @@
 		7CCD73E3212DEB30002C8C7F /* RemoveDeviceUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RemoveDeviceUIPopover.xib; sourceTree = "<group>"; };
 		7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDeviceUIPopover.swift; sourceTree = "<group>"; };
 		7CCD73E7212F2207002C8C7F /* ResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseData.swift; sourceTree = "<group>"; };
-		7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
 		7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
 		7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
-		7CD4A42E21111DCE00A40C74 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseNanoPB.framework; sourceTree = "<group>"; };
 		7CD4A42F21111DCF00A40C74 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
 		7CD4A43021111DCF00A40C74 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
 		7CD4A43121111DCF00A40C74 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
@@ -524,6 +520,8 @@
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
 		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = ../../../Downloads/Firebase/Analytics/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
+		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -541,7 +539,6 @@
 				7CD4A43621111DCF00A40C74 /* nanopb.framework in Frameworks */,
 				41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */,
 				7CD4A43721111DCF00A40C74 /* FirebaseCoreDiagnostics.framework in Frameworks */,
-				7CD4A43221111DCF00A40C74 /* GoogleToolboxForMac.framework in Frameworks */,
 				41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */,
 				41C9CC8B20781C5600B8994F /* SwiftWebSocket.framework in Frameworks */,
 				7CD4A43421111DCF00A40C74 /* FirebaseAnalytics.framework in Frameworks */,
@@ -549,11 +546,11 @@
 				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
 				41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */,
 				41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */,
-				7CD4A43521111DCF00A40C74 /* FirebaseNanoPB.framework in Frameworks */,
 				41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */,
 				7CD4A43C21111DE500A40C74 /* Protobuf.framework in Frameworks */,
 				41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */,
 				41C3684A207C6C0B008B50A8 /* Motion.framework in Frameworks */,
+				A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */,
 				41C9CC832078195900B8994F /* Material.framework in Frameworks */,
 				41E229BF207696DE00C32998 /* Realm.framework in Frameworks */,
 				41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */,
@@ -563,6 +560,7 @@
 				7CD4A43321111DCF00A40C74 /* FirebaseCore.framework in Frameworks */,
 				7CD4A43B21111DE500A40C74 /* FirebaseMessaging.framework in Frameworks */,
 				41C9CBBC20769AA500B8994F /* SwiftyJSON.framework in Frameworks */,
+				A713109C21596F2E00534F13 /* GoogleAppMeasurement.framework in Frameworks */,
 				41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -571,12 +569,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CCC82EE2125E83F00D33F84 /* GoogleToolboxForMac.framework in Frameworks */,
 				7CCC82E92125E83E00D33F84 /* FirebaseAnalytics.framework in Frameworks */,
 				7CCC82EF2125E83F00D33F84 /* nanopb.framework in Frameworks */,
 				7CCC82EB2125E83F00D33F84 /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				7CCC82EC2125E83F00D33F84 /* FirebaseInstanceID.framework in Frameworks */,
-				7CCC82ED2125E83F00D33F84 /* FirebaseNanoPB.framework in Frameworks */,
 				7CCC82F02125E83F00D33F84 /* FirebaseMessaging.framework in Frameworks */,
 				7CCC82F12125E83F00D33F84 /* Protobuf.framework in Frameworks */,
 				7C394E7E210BD5DB00AE3297 /* SignalProtocolFramework.framework in Frameworks */,
@@ -713,12 +709,12 @@
 		41B6AAA32017987500D428B7 = {
 			isa = PBXGroup;
 			children = (
+				A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */,
+				A713109B21596F2E00534F13 /* GoogleUtilities.framework */,
 				7CD4A42D21111DCE00A40C74 /* FirebaseAnalytics.framework */,
 				7CD4A42C21111DCD00A40C74 /* FirebaseCore.framework */,
 				7CD4A43021111DCF00A40C74 /* FirebaseCoreDiagnostics.framework */,
 				7CD4A43121111DCF00A40C74 /* FirebaseInstanceID.framework */,
-				7CD4A42E21111DCE00A40C74 /* FirebaseNanoPB.framework */,
-				7CD4A42B21111DCD00A40C74 /* GoogleToolboxForMac.framework */,
 				7CD4A42F21111DCF00A40C74 /* nanopb.framework */,
 				7CD4A43921111DE400A40C74 /* FirebaseMessaging.framework */,
 				7CD4A43A21111DE400A40C74 /* Protobuf.framework */,
@@ -1119,9 +1115,9 @@
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				7CF93F582146E41700361837 /* Email.json in Resources */,
 				7C1E884E208D11CA003FA304 /* GeneralMoreOptionsUIView.xib in Resources */,
+				A713109E2159762100534F13 /* Assets.xcassets in Resources */,
 				7CCD73E4212DEB30002C8C7F /* RemoveDeviceUIPopover.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
-				41B6AAB72017987500D428B7 /* Assets.xcassets in Resources */,
 				7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */,
 				412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */,
 				7C1E82C22116BD43007CA853 /* HintUIView.xib in Resources */,

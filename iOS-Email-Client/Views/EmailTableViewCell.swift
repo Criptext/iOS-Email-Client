@@ -294,10 +294,6 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
         }
     }
     
-    func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-        print("web redirect there \()")
-    }
-    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard navigationAction.navigationType == .linkActivated,
             let link = navigationAction.request.url?.absoluteString,
