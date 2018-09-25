@@ -167,7 +167,6 @@ class EmailTableViewCell: UITableViewCell{
         let content = "\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)"
         webView.scrollView.minimumZoomScale = 0.5
         webView.scrollView.maximumZoomScale = 2.0
-        print("web load : \(Date().timeIntervalSince1970)")
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }
     
@@ -248,7 +247,6 @@ extension EmailTableViewCell{
 
 extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate{
     
-    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         guard !isLoading else {
             return
@@ -268,7 +266,6 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         isLoading = false
-        print("web finish : \(Date().timeIntervalSince1970)")
         self.delegate?.tableViewCellDidLoadContent(self, email: self.email)
         if(!email.isUnsending){
             circleLoaderUIView.layer.removeAllAnimations()
@@ -284,7 +281,6 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
             guard let height = result as? CGFloat else {
                 return
             }
-            print("web height \(height) : \(Date().timeIntervalSince1970)")
             let newHeight = height * self.webView.scrollView.zoomScale
             guard newHeight != self.email.cellHeight else {
                 return
@@ -295,6 +291,10 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard navigationAction.navigationType == .other else {
+            decisionHandler(.cancel)
+            return
+        }
         guard navigationAction.navigationType == .linkActivated,
             let link = navigationAction.request.url?.absoluteString,
             Utils.verifyUrl(urlString: link) else {
