@@ -56,16 +56,17 @@ class File : Object {
 extension File: CustomDictionary{
     func toDictionary() -> [String: Any] {
         let dateString = Formatter.iso8601.string(from: date)
-        return ["table": "file",
-                "object": [
-                    "id": id,
-                    "token": token,
-                    "name": name,
-                    "size": size,
-                    "status": status,
-                    "date": dateString,
-                    "readOnly": readOnly,
-                    "emailId": emailId
+        return [
+            "table": "file",
+            "object": [
+                "id": id,
+                "token": token,
+                "name": name,
+                "size": size,
+                "status": status,
+                "date": dateString,
+                "readOnly": readOnly,
+                "emailId": emailId
             ]
         ]
     }

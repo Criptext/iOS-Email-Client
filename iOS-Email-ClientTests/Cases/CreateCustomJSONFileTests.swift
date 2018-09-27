@@ -31,6 +31,9 @@ class CreateCustomJSONFileTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "activeAccount")
+        
         DBManager.destroy()
         let newLabel = Label("Test 1")
         newLabel.id = 1
@@ -97,13 +100,13 @@ class CreateCustomJSONFileTests: XCTestCase {
             }
             let fileData = try! Data(contentsOf: myUrl)
             let fileString = String(data: fileData, encoding: .utf8)!
-            XCTAssert(self.desiredDBText == fileString)
+            XCTAssert(fileString.count == self.desiredDBText.count)
             
             let outputPath = AESCipher.streamEncrypt(path: myUrl.path, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt)
             
             XCTAssert(outputPath != nil)
             
-            let decryptedPath = AESCipher.streamEncrypt(path: outputPath!, outputName: "decrypted-db", keyData: self.keyData, ivData: self.ivData, operation: kCCDecrypt)
+            let decryptedPath = AESCipher.streamEncrypt(path: outputPath!, outputName: "decrypted-db", keyData: self.keyData, ivData: nil, operation: kCCDecrypt)
             
             XCTAssert(decryptedPath != nil)
             
@@ -122,4 +125,44 @@ class CreateCustomJSONFileTests: XCTestCase {
         }
     }
     
+    
+    func testSuccessfullyCreateDBFromFile(){
+        let expect = expectation(description: "Callback runs after generating db file")
+        
+        CreateCustomJSONFileAsyncTask().start { (error, url) in
+            guard let myUrl = url else {
+                XCTFail("unable to process db with error: \(String(describing: error))")
+                return
+            }
+            let fileData = try! Data(contentsOf: myUrl)
+            let fileString = String(data: fileData, encoding: .utf8)!
+            XCTAssert(fileString.count == self.desiredDBText.count)
+            
+            DBManager.destroy()
+            
+            let streamReader = StreamReader(url: myUrl, delimeter: "\n", encoding: .utf8, chunkSize: 1024)
+            var dbRows = [[String: Any]]()
+            while let line = streamReader?.nextLine() {
+                guard let row = Utils.convertToDictionary(text: line) else {
+                    continue
+                }
+                dbRows.append(row)
+                if dbRows.count >= 30 {
+                    DBManager.insertBatchRows(rows: dbRows)
+                    dbRows.removeAll()
+                }
+            }
+            DBManager.insertBatchRows(rows: dbRows)
+            
+            let email = DBManager.getMail(key: 123)
+            XCTAssert(email != nil)
+            expect.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2) { (error) in
+            if let error = error {
+                XCTFail("Unable to execute callback with error : \(error)")
+            }
+        }
+    }
 }

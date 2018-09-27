@@ -52,24 +52,19 @@ class EventHandlerTests: XCTestCase {
         let eventHandler = EventHandler(account: myAccount)
         eventHandler.apiManager = MockAPIManager.self
         eventHandler.signalHandler = MockSignalHandler.self
-        let delegate = EventHandlerSpyDelegate()
-        delegate.expectation = expectation(description: "Delegate Called Back")
-        eventHandler.eventDelegate = delegate
-        eventHandler.handleEvents(events: eventsArray)
-        
-        waitForExpectations(timeout: 10) { (testError) in
-            if let error = testError {
-                XCTFail("Error trying to call delegate \(error.localizedDescription)")
-                return
-            }
-            
-            guard let emails = delegate.delegateEmails else {
-                XCTFail("Unable to handle mails")
-                return
-            }
+        let expect = expectation(description: "Callback runs after handling events")
+        eventHandler.handleEvents(events: eventsArray) { result in
+            let emails = result.emails
             XCTAssert(emails.count == 1)
             XCTAssert(emails[0].key == 243)
             XCTAssert(emails[0].getFiles().count == 2)
+            
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            if let error = error {
+                XCTFail("Unable to execute callback with error : \(error)")
+            }
         }
     }
     
@@ -80,23 +75,18 @@ class EventHandlerTests: XCTestCase {
         let eventHandler = EventHandler(account: myAccount)
         eventHandler.apiManager = MockAPIManager.self
         eventHandler.signalHandler = MockSignalHandler.self
-        let delegate = EventHandlerSpyDelegate()
-        delegate.expectation = expectation(description: "Delegate Called Back")
-        eventHandler.eventDelegate = delegate
-        eventHandler.handleEvents(events: eventsArray)
-        
-        waitForExpectations(timeout: 1) { (testError) in
-            if let error = testError {
-                XCTFail("Error trying to call delegate \(error.localizedDescription)")
-                return
-            }
-            
-            guard let opens = delegate.delegateOpens else {
-                XCTFail("Unable to handle mails")
-                return
-            }
+        let expect = expectation(description: "Callback runs after handling events")
+        eventHandler.handleEvents(events: eventsArray) { result in
+            let opens = result.opens
             XCTAssert(opens.count == 1)
             XCTAssert(opens[0].contact.email == "velvet@jigl.com")
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            if let error = error {
+                XCTFail("Unable to execute callback with error : \(error)")
+            }
+            
+            expect.fulfill()
         }
     }
     

@@ -20,11 +20,12 @@ class Contact: Object {
 
 extension Contact: CustomDictionary {
     func toDictionary() -> [String: Any] {
-        return ["table": "contact",
-                "object": [
-                    "id": id,
-                    "email": email,
-                    "name": displayName
+        return [
+            "table": "contact",
+            "object": [
+                "id": id,
+                "email": email,
+                "name": displayName
             ]
         ]
     }

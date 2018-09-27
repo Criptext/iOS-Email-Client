@@ -49,7 +49,22 @@ class SignalHandler {
         let messageText = outgoingMessage.serialized().base64EncodedString()
         let messageType = getMessageType(outgoingMessage)
         return (messageText, messageType)
-        
+    }
+    
+    class func decryptData(_ data: Data, messageType: MessageType, account: Account, recipientId: String, deviceId: Int32) -> Data? {
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: recipientId, deviceId: deviceId)
+        let incomingMessage : CipherMessage = messageType == .cipherText
+            ? WhisperMessage.init(data: data)
+            : PreKeyWhisperMessage.init(data: data)
+        return sessionCipher?.decrypt(incomingMessage)
+    }
+    
+    class func encryptData(data: Data, deviceId: Int32, recipientId: String, account: Account) -> Data {
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let sessionCipher: SessionCipher = SessionCipher.init(axolotlStore: axolotlStore, recipientId: String(recipientId), deviceId: deviceId)
+        let outgoingMessage: CipherMessage = sessionCipher.encryptMessage(data)
+        return outgoingMessage.serialized()
     }
     
     private class func getMessageType(_ message: CipherMessage) -> MessageType {

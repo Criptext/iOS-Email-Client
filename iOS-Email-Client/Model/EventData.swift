@@ -21,6 +21,7 @@ class EventData {
         case PasswordChange
         case Logout
         case RecoveryChanged(String)
+        case KeyBundle(Int32)
         case RecoveryVerified
         case LinkStart([String: Any])
     }

@@ -310,6 +310,12 @@ class EventHandler {
             return .PasswordChange
         case Event.Link.removed.rawValue:
             return .Logout
+        case Event.Link.bundle.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let deviceId = params["deviceId"] as? Int32 else {
+                    return .Error
+            }
+            return .KeyBundle(deviceId)
         case Event.Peer.recoveryChange.rawValue:
             guard let params = event["params"] as? [String: Any],
                 let address = params["address"] as? String else {
