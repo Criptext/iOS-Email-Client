@@ -56,6 +56,7 @@ extension SingleWebSocket: WebSocketDelegate{
                 return
         }
         let params = event["params"] as? [String: Any]
+        print(params)
         delegate?.newMessage(cmd: cmd, params: params)
     }
     

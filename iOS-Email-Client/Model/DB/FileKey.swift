@@ -35,11 +35,12 @@ class FileKey : Object {
 
 extension FileKey: CustomDictionary  {
     func toDictionary() -> [String: Any] {
-        return ["table": "fileKey",
-                "object": [
-                    "id": id,
-                    "key": key,
-                    "emailId": emailId
+        return [
+            "table": "fileKey",
+            "object": [
+                "id": id,
+                "key": key,
+                "emailId": emailId
             ]
         ]
     }

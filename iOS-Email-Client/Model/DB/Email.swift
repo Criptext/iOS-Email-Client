@@ -127,33 +127,41 @@ class Email: Object {
     
     func toDictionary() -> [String: Any] {
         let dateString = Formatter.iso8601.string(from: date)
-        return ["table": "email",
-                "object": [
-                    "messageId": messageId,
-                    "threadId": threadId,
-                    "unread": unread,
-                    "secure": secure,
-                    "content": content,
-                    "preview": preview,
-                    "subject": subject,
-                    "delivered": delivered,
-                    "date": dateString,
-                    "metadataKey": key,
-                    "isMuted": isMuted
+        var object = [
+            "table": "email",
+            "object": [
+                "messageId": messageId,
+                "threadId": threadId,
+                "unread": unread,
+                "secure": secure,
+                "content": content,
+                "preview": preview,
+                "subject": subject,
+                "delivered": delivered,
+                "date": dateString,
+                "metadataKey": key,
+                "isMuted": isMuted
             ]
-        ]
+        ] as [String: Any]
+        if let trashDate = self.trashDate {
+            object["trashDate"] = Formatter.iso8601.string(from: trashDate)
+        }
+        if let unsentDate = self.unsentDate {
+            object["unsentDate"] = Formatter.iso8601.string(from: unsentDate)
+        }
+        return object
     }
     
     func getContent() -> String {
         guard !isUnsent else {
-            return "<span style=\"color:#eea3a3; font-style: italic;\">Unsent \(String(DateUtils.beautyDate(self.unsentDate)))</span>"
+            return "<span style=\"color:#eea3a3; font-style: italic;\">Unsent \(String(DateUtils.beautyDate(self.unsentDate ?? Date())))</span>"
         }
         return content
     }
     
     func getPreview() -> String {
         guard !isUnsent else {
-            return "Unsent \(String(DateUtils.beautyDate(self.unsentDate)))"
+            return "Unsent \(String(DateUtils.beautyDate(self.unsentDate ?? Date())))"
         }
         return preview
     }
@@ -162,10 +170,11 @@ class Email: Object {
 extension Email: CustomDictionary {
     func toDictionaryLabels() -> [[String: Any]] {
         return labels.map { (label) -> [String: Any] in
-            return ["table": "emailLabel",
-                    "object": [
-                        "emailId": self.key,
-                        "labelId": label.id,
+            return [
+                "table": "emailLabel",
+                "object": [
+                    "emailId": self.key,
+                    "labelId": label.id,
                 ]
             ]
         }

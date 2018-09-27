@@ -96,7 +96,6 @@
 		7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0420C6E0270019321E /* EventHandlerTests.swift */; };
 		7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0720C6E08E0019321E /* MockAPIManager.swift */; };
 		7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0920C6E5270019321E /* MockSignalHandler.swift */; };
-		7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */; };
 		7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229820A4A53900F077FD /* UtilsTests.swift */; };
 		7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */; };
 		7C2B7D20214ACA6400604059 /* GeneralHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2B7D1F214ACA6400604059 /* GeneralHeaderTableViewCell.swift */; };
@@ -256,6 +255,7 @@
 		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
+		A7879D0D215BED600057ACFD /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7879D0B215BE84E0057ACFD /* StreamReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -367,7 +367,6 @@
 		7C247E0420C6E0270019321E /* EventHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerTests.swift; sourceTree = "<group>"; };
 		7C247E0720C6E08E0019321E /* MockAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIManager.swift; sourceTree = "<group>"; };
 		7C247E0920C6E5270019321E /* MockSignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSignalHandler.swift; sourceTree = "<group>"; };
-		7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerSpyDelegate.swift; sourceTree = "<group>"; };
 		7C26229820A4A53900F077FD /* UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
 		7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextFileManager.swift; sourceTree = "<group>"; };
 		7C2B7D1F214ACA6400604059 /* GeneralHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralHeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -524,6 +523,7 @@
 		A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = ../../../Downloads/Firebase/Analytics/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
+		A7879D0B215BE84E0057ACFD /* StreamReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -705,6 +705,7 @@
 				7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */,
 				7C46BED62153F71E00282182 /* SingleWebSocket.swift */,
 				A7621DEB2163D58900ADCD2C /* Env.swift */,
+				A7879D0B215BE84E0057ACFD /* StreamReader.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -899,7 +900,6 @@
 			children = (
 				7C247E0720C6E08E0019321E /* MockAPIManager.swift */,
 				7C247E0920C6E5270019321E /* MockSignalHandler.swift */,
-				7C247E0B20C701DB0019321E /* EventHandlerSpyDelegate.swift */,
 				7CB60A7E20F94BA800C9090C /* FileManagerSpyDelegate.swift */,
 			);
 			path = "Supporting Files";
@@ -1319,6 +1319,7 @@
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
 				7C4D33C3212C745A00045B09 /* GenericAlertUIPopover.swift in Sources */,
+				A7879D0C215BE84E0057ACFD /* StreamReader.swift in Sources */,
 				7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */,
 				7C2B7D20214ACA6400604059 /* GeneralHeaderTableViewCell.swift in Sources */,
 				7C92104A210141380081C048 /* EventData.swift in Sources */,
@@ -1389,11 +1390,11 @@
 				7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */,
 				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
 				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,
+				A7879D0D215BED600057ACFD /* StreamReader.swift in Sources */,
 				7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */,
 				7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */,
 				7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */,
 				7CC44BF120FEE1ED004BF759 /* AESCipherTests.swift in Sources */,
-				7C247E0C20C701DB0019321E /* EventHandlerSpyDelegate.swift in Sources */,
 				7CB60A7F20F94BA800C9090C /* FileManagerSpyDelegate.swift in Sources */,
 				7CB60A7D20F9490300C9090C /* FileManagerTests.swift in Sources */,
 			);

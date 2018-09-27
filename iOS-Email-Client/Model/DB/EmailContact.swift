@@ -15,6 +15,10 @@ class EmailContact: Object{
     @objc dynamic var contact : Contact!
     @objc dynamic var type : String = ContactType.to.rawValue
     
+    func buildCompoundKey() -> String {
+        return "\(self.email.key):\(self.contact.email):\(self.type)"
+    }
+    
     override static func primaryKey() -> String? {
         return "compoundKey"
     }
@@ -22,11 +26,12 @@ class EmailContact: Object{
 
 extension EmailContact: CustomDictionary{
     func toDictionary() -> [String: Any] {
-        return ["table": "emailContact",
-                "object": [
-                    "emailId": email.key,
-                    "contactId": contact.id,
-                    "type": type
+        return [
+            "table": "emailContact",
+            "object": [
+                "emailId": email.key,
+                "contactId": contact.id,
+                "type": type
             ]
         ]
     }
