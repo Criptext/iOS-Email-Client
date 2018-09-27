@@ -22,6 +22,8 @@ static DateUtils *dateUtilsInstance = nil;
 static NSString *dateTimeFormat = @"MM/dd/yyyy hh:mm:ssaa";
 static NSString *dateTimeConv1Format = @"MM/dd/yyyy";
 static NSString *dateTimeConv2Format = @"EEEE";
+static NSString *dateTimedayOfWeekFormat = @"EEEE 'at' h:mm aa";
+static NSString *dateTimeMonthFormat = @"d MMM 'at' hh:mm:ssaa";
 static NSString *dateTimeConv3Format = @"h:mm aa";//MMMM dd
 static NSString *dateTimeConv4Format = @"dd-MM-yyyy";
 static NSString *dateTimeConv5Format = @"MMM d, yyyy hh:mm aa";
@@ -120,7 +122,21 @@ static NSString *serverDateFormat = @"yyyy-MM-dd";
     return result;
 }
 
-+ (NSString*)beatyDate:(NSDate*)date{
+- (NSString*)stringFromTimestampWeekDay:(NSDate *)date {
+    NSString *result;
+    [curentTimezoneFormatter setDateFormat:dateTimedayOfWeekFormat];
+    result = [curentTimezoneFormatter stringFromDate:date];
+    return result;
+}
+
+- (NSString*)stringFromTimestampMonth:(NSDate *)date {
+    NSString *result;
+    [curentTimezoneFormatter setDateFormat:dateTimeMonthFormat];
+    result = [curentTimezoneFormatter stringFromDate:date];
+    return result;
+}
+
++ (NSString*)beautyDate:(NSDate*)date{
     
     NSString *fechaFinal;
     NSDate *now = [NSDate date];
@@ -152,18 +168,18 @@ static NSString *serverDateFormat = @"yyyy-MM-dd";
     
     if((month-month0)==0){
         if([difference day]==0){
-            fechaFinal=[NSString stringWithFormat:@"Today %@",[[DateUtils instance] stringFromTimestampConv3:date]];
+            fechaFinal=[NSString stringWithFormat:@"at %@",[[DateUtils instance] stringFromTimestampConv3:date]];
         }
         else if ([difference day]==1 || [difference day]==-1){
-            fechaFinal=[NSString stringWithFormat:@"Yesterday %@",[[DateUtils instance] stringFromTimestampConv3:date]];
+            fechaFinal=[NSString stringWithFormat:@"Yesterday at %@",[[DateUtils instance] stringFromTimestampConv3:date]];
         }
         else if ([difference day]<7 && [difference day]>0)
-            fechaFinal=[[DateUtils instance] stringFromTimestampConv2:date];
+            fechaFinal=[[DateUtils instance] stringFromTimestampWeekDay:date];
         else
-            fechaFinal=[[DateUtils instance] stringFromTimestampConv1:date];
+            fechaFinal=[[DateUtils instance] stringFromTimestampMonth:date];
     }
     else
-        fechaFinal=[[DateUtils instance] stringFromTimestampConv1:date];
+        fechaFinal=[[DateUtils instance] stringFromTimestampMonth:date];
     
     fechaFinal=[fechaFinal stringByReplacingOccurrencesOfString:@"a.m." withString:@"AM"];
     fechaFinal=[fechaFinal stringByReplacingOccurrencesOfString:@"a. m." withString:@"AM"];

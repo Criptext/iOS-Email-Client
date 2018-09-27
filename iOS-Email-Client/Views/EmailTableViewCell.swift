@@ -164,9 +164,10 @@ class EmailTableViewCell: UITableViewCell{
         firstTimer = false
         isLoading = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-        webView.loadHTMLString("\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)", baseURL: bundleUrl)
+        let content = "\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)"
         webView.scrollView.minimumZoomScale = 0.5
         webView.scrollView.maximumZoomScale = 2.0
+        webView.loadHTMLString(content, baseURL: bundleUrl)
     }
     
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
@@ -246,8 +247,10 @@ extension EmailTableViewCell{
 
 extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate{
     
-    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        guard !isLoading else {
+            return
+        }
         if(webView.scrollView.zoomScale < initialZoomScale){
             webView.scrollView.setZoomScale(initialZoomScale, animated: false)
         } else if (webView.scrollView.zoomScale > 2.0) {
@@ -262,8 +265,8 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.delegate?.tableViewCellDidLoadContent(self, email: self.email)
         isLoading = false
+        self.delegate?.tableViewCellDidLoadContent(self, email: self.email)
         if(!email.isUnsending){
             circleLoaderUIView.layer.removeAllAnimations()
             circleLoaderUIView.isHidden = true
@@ -288,6 +291,10 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard navigationAction.navigationType == .other else {
+            decisionHandler(.cancel)
+            return
+        }
         guard navigationAction.navigationType == .linkActivated,
             let link = navigationAction.request.url?.absoluteString,
             Utils.verifyUrl(urlString: link) else {

@@ -29,7 +29,7 @@
 - (NSDate*)stringToServerDate:(NSString*)dateString;
 - (void)reInit;
 
-+ (NSString*)beatyDate:(NSDate*)date;
++ (NSString*)beautyDate:(NSDate*)date;
 + (NSString*)prettyDate:(NSDate*)date;
 + (NSString*)conversationTime:(NSDate *)date;
 

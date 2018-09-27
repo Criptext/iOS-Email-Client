@@ -356,6 +356,13 @@ extension InboxViewController {
             return
         }
         
+        if result.updateSideMenu {
+            guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
+                return
+            }
+            menuViewController.reloadView()
+        }
+        
         if result.emails.contains(where: {!$0.isInvalidated && $0.status != .unsent}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -918,12 +925,11 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     
     func openSupport(){
         let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let device = Device.createActiveDevice(deviceId: myAccount.deviceId)
         let supportContact = Contact()
         supportContact.displayName = "Criptext Support"
         supportContact.email = "support@criptext.com"
         let composerData = ComposerData()
-        composerData.initContent = "<br/><br/><span>Do not write below this line.</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(device.name)</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
+        composerData.initContent = "<br/><br/><span>Do not write below this line.</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(systemIdentifier())</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
         composerData.initToContacts = [supportContact]
         composerData.initSubject = "Customer Support - iOS"
         openComposer(composerData: composerData, files: List<File>())
@@ -1402,5 +1408,8 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
 extension InboxViewController: LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData) {
         APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+    }
+    func onCancelLinkDevice(linkData: LinkData) {
+        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
     }
 }

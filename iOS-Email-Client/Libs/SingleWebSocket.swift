@@ -10,7 +10,7 @@ import Foundation
 import SwiftWebSocket
 
 protocol SingleSocketDelegate {
-    func newMessage(cmd: Int, params: [String: Any]?)
+    func newMessage(cmd: Int32, params: [String: Any]?)
 }
 
 class SingleWebSocket {
@@ -52,7 +52,7 @@ extension SingleWebSocket: WebSocketDelegate{
     
     func webSocketMessageText(_ text: String) {
         guard let event = Utils.convertToDictionary(text: text),
-            let cmd = event["cmd"] as? Int else {
+            let cmd = event["cmd"] as? Int32 else {
                 return
         }
         let params = event["params"] as? [String: Any]

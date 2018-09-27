@@ -1130,13 +1130,16 @@ extension ComposeViewController: RichEditorDelegate {
     
     func richEditorDidLoad(_ editor: RichEditorView) {
         self.editorView.replace(font: "NunitoSans-Regular", css: "editor-style")
-        if(composerData.initToContacts.count > 0 || composerData.initCcContacts.count > 0){
+        let hasInitialContacts = composerData.initToContacts.count > 0 || composerData.initCcContacts.count > 0
+        if(hasInitialContacts){
             self.setupInitContacts()
         }
-        if(!composerData.initSubject.isEmpty){
-            editorView.focus(at: CGPoint(x: 0.0, y: 0.0))
-        }else{
+        if(!hasInitialContacts){
             toField.beginEditing()
+        } else if(!composerData.initSubject.isEmpty){
+            editorView.focus(at: CGPoint(x: 0.0, y: 0.0))
+        } else {
+            subjectField.becomeFirstResponder()
         }
     }
     

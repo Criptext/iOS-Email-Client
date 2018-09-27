@@ -10,6 +10,7 @@ import Foundation
 
 protocol LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData)
+    func onCancelLinkDevice(linkData: LinkData)
 }
 
 class GenericDualAnswerUIPopover: BaseUIPopover {
@@ -19,7 +20,7 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
     @IBOutlet weak var okButton: UIButton!
     var initialTitle = ""
     var initialMessage = ""
-    var onOk: (() -> Void)?
+    var onResponse: ((Bool) -> Void)?
     
     init(){
         super.init("GenericDualAnswerUIPopover")
@@ -38,11 +39,13 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
     
     @IBAction func onOkPress(_ sender: Any) {
         self.dismiss(animated: true) {
-            self.onOk?()
+            self.onResponse?(true)
         }
     }
     @IBAction func onCancelPress(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            self.onResponse?(false)
+        }
     }
     
 }

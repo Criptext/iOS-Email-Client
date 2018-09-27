@@ -910,4 +910,7 @@ extension EmailDetailViewController: LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData) {
         APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
     }
+    func onCancelLinkDevice(linkData: LinkData) {
+        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+    }
 }

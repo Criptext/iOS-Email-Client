@@ -31,6 +31,7 @@ class EventData {
         var modifiedThreadIds = [String]()
         var modifiedEmailKeys = [Int]()
         var removed = false
+        var updateSideMenu = false
     }
     
     struct NewEmail {

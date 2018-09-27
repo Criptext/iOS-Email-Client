@@ -313,6 +313,17 @@ extension APIManager {
             completion(responseData)
         }
     }
+    
+    class func linkDeny(randomId: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/link/deny"
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
+        let params = ["randomId": randomId] as [String : Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
 }
 
 extension APIManager {

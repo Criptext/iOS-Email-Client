@@ -35,6 +35,8 @@ class EventHandler {
                 result.modifiedThreadIds.append(contentsOf: threads)
             case .ModifiedEmails(let emails):
                 result.modifiedEmailKeys.append(contentsOf: emails)
+            case .NameChanged, .LabelCreated:
+                result.updateSideMenu = true
             default:
                 break
             }
@@ -372,13 +374,13 @@ extension EventHandler {
         label.text = event.text
         label.color = event.color
         DBManager.store(label, incrementId: true)
-        finishCallback(true, .Empty)
+        finishCallback(true, .LabelCreated)
     }
     
     func handleChangeNameCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         let event = EventData.Peer.NameChanged.init(params: params)
         DBManager.update(account: myAccount, name: event.name)
-        finishCallback(true, .Empty)
+        finishCallback(true, .NameChanged)
     }
 }
 
@@ -390,7 +392,11 @@ enum Event: Int32 {
     
     enum Link: Int32 {
         case start = 201
+        case accept = 202
+        case bundle = 203
+        case success = 204
         case removed = 205
+        case deny = 206
     }
     
     enum Peer: Int32 {
@@ -413,6 +419,8 @@ enum Event: Int32 {
         case Feed(FeedItem)
         case ModifiedThreads([String])
         case ModifiedEmails([Int])
+        case NameChanged
+        case LabelCreated
         case Empty
     }
 }
