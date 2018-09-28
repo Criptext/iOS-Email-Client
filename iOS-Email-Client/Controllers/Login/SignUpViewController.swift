@@ -141,7 +141,7 @@ class SignUpViewController: UIViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.usernameTextField.setStatus(.invalid, "Unable to check username")
+                self.usernameTextField.setStatus(.invalid, "Username already exists")
                 self.checkToEnableDisableCreateButton()
                 return
             }

@@ -27,6 +27,7 @@ class APIManager {
         case successNoContent = 204
         case successAccepted = 202
         case notModified = 304
+        case badRequest = 400
         case unauthorized = 401
         case forbidden = 403
         case missing = 404
@@ -56,6 +57,8 @@ class APIManager {
             return .Forbidden
         case .missing:
             return .Missing
+        case .badRequest:
+            return .BadRequest
         case .success, .successAccepted, .successNoContent, .notModified:
             break
         default:
