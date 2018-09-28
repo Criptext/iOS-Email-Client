@@ -28,7 +28,7 @@ static NSString *dateTimeConv3Format = @"h:mm aa";//MMMM dd
 static NSString *dateTimeConv4Format = @"dd-MM-yyyy";
 static NSString *dateTimeConv5Format = @"MMM d, yyyy hh:mm aa";
 static NSString *dateTimeConv6Format = @"HH:mm";
-static NSString *serverDateFormat = @"yyyy-MM-dd";
+static NSString *serverDateFormat = @"yyyy-MM-dd HH:mm:ss";
 
 - (void)reInit {
     curentTimezoneFormatter = [[NSDateFormatter alloc] init];
@@ -54,6 +54,7 @@ static NSString *serverDateFormat = @"yyyy-MM-dd";
 - (NSString*)dateToServerString:(NSDate*)date {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:serverDateFormat];
+    [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     NSString *theDate = [dateFormat stringFromDate:date];
     return theDate;
 }

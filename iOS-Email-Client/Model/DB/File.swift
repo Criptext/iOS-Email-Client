@@ -53,8 +53,8 @@ class File : Object {
     }
 }
 
-extension File: CustomDictionary{
-    func toDictionary() -> [String: Any] {
+extension File{
+    func toDictionary(emailId: Int) -> [String: Any] {
         let dateString = Formatter.iso8601.string(from: date)
         return [
             "table": "file",

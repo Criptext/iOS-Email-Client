@@ -58,7 +58,7 @@ class Label : Object {
     }
 }
 
-extension Label: CustomDictionary {
+extension Label {
     func toDictionary() -> [String: Any] {
         return [
             "table": "label",
