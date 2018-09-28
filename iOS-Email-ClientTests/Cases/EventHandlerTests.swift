@@ -23,7 +23,7 @@ class EventHandlerTests: XCTestCase {
     
     override func setUp() {
         DBManager.signout()
-        createSystemLabels()
+        DBManager.createSystemLabels()
     }
     
     func createExistingEmail(){
@@ -34,16 +34,6 @@ class EventHandlerTests: XCTestCase {
         newContact.email = "velvet@jigl.com"
         newContact.displayName = "The Velvet"
         DBManager.store([newContact])
-    }
-    
-    func createSystemLabels(){
-        for systemLabel in SystemLabel.array {
-            let newLabel = Label(systemLabel.description)
-            newLabel.id = systemLabel.id
-            newLabel.color = systemLabel.hexColor
-            newLabel.type = "system"
-            DBManager.store(newLabel)
-        }
     }
     
     func testHandleNewEmailEventWithAttachments(){

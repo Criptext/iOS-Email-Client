@@ -24,13 +24,14 @@ class EmailContact: Object{
     }
 }
 
-extension EmailContact: CustomDictionary{
-    func toDictionary() -> [String: Any] {
+extension EmailContact{
+    func toDictionary(id: Int, emailId: Int, contactId: Int) -> [String: Any] {
         return [
-            "table": "emailContact",
+            "table": "email_contact",
             "object": [
-                "emailId": email.key,
-                "contactId": contact.id,
+                "id": id,
+                "emailId": emailId,
+                "contactId": contactId,
                 "type": type
             ]
         ]

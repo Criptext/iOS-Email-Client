@@ -47,7 +47,6 @@ class ConnectDeviceViewController: UIViewController{
             guard case let .SuccessString(filepath) =  responseData else {
                 return
             }
-            print(filepath)
             self.restoreDB(path: filepath, data: data)
         }
     }
@@ -59,23 +58,30 @@ class ConnectDeviceViewController: UIViewController{
             let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt) else {
             return
         }
-        let streamReader = StreamReader(url: URL(fileURLWithPath: decryptedPath), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
-        print(try! String(contentsOf: URL(fileURLWithPath: decryptedPath)))
-        var dbRows = [[String: Any]]()
-        while let line = streamReader?.nextLine() {
-            guard let row = Utils.convertToDictionary(text: line) else {
-                continue
+        let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
+        queue.async {
+            DBManager.createSystemLabels()
+            print(decryptedPath)
+            let streamReader = StreamReader(url: URL(fileURLWithPath: decryptedPath), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
+            var dbRows = [[String: Any]]()
+            var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
+            while let line = streamReader?.nextLine() {
+                guard let row = Utils.convertToDictionary(text: line) else {
+                    continue
+                }
+                dbRows.append(row)
+                if dbRows.count >= 30 {
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps)
+                    dbRows.removeAll()
+                }
             }
-            dbRows.append(row)
-            if dbRows.count >= 30 {
-                DBManager.insertBatchRows(rows: dbRows)
-                dbRows.removeAll()
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps)
+            DispatchQueue.main.async {
+                self.connectUIView.handleSuccess()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.goToMailbox(myAccount.username)
+                }
             }
-        }
-        DBManager.insertBatchRows(rows: dbRows)
-        connectUIView.handleSuccess()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.goToMailbox(myAccount.username)
         }
     }
     
@@ -102,7 +108,6 @@ class ConnectDeviceViewController: UIViewController{
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        delegate.createSystemLabels()
         let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop
@@ -133,7 +138,7 @@ extension ConnectDeviceViewController: SingleSocketDelegate {
                 let key = params?["key"] as? String else {
                 break
             }
-            let data = LinkSuccessData(deviceId: 2, key: key, address: address)
+            let data = LinkSuccessData(deviceId: 370, key: key, address: address)
             self.handleAddress(data: data)
         default:
             break

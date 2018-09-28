@@ -125,33 +125,6 @@ class Email: Object {
         return contacts
     }
     
-    func toDictionary() -> [String: Any] {
-        let dateString = Formatter.iso8601.string(from: date)
-        var object = [
-            "table": "email",
-            "object": [
-                "messageId": messageId,
-                "threadId": threadId,
-                "unread": unread,
-                "secure": secure,
-                "content": content,
-                "preview": preview,
-                "subject": subject,
-                "delivered": delivered,
-                "date": dateString,
-                "metadataKey": key,
-                "isMuted": isMuted
-            ]
-        ] as [String: Any]
-        if let trashDate = self.trashDate {
-            object["trashDate"] = Formatter.iso8601.string(from: trashDate)
-        }
-        if let unsentDate = self.unsentDate {
-            object["unsentDate"] = Formatter.iso8601.string(from: unsentDate)
-        }
-        return object
-    }
-    
     func getContent() -> String {
         guard !isUnsent else {
             return "<span style=\"color:#eea3a3; font-style: italic;\">Unsent \(String(DateUtils.beautyDate(self.unsentDate ?? Date())))</span>"
@@ -167,13 +140,41 @@ class Email: Object {
     }
 }
 
-extension Email: CustomDictionary {
-    func toDictionaryLabels() -> [[String: Any]] {
+extension Email {
+    func toDictionary(id: Int) -> [String: Any] {
+        let dateString = DateUtils().date(toServerString: date)!
+        var object = [
+            "id": id,
+            "messageId": messageId,
+            "threadId": threadId,
+            "unread": unread,
+            "secure": secure,
+            "content": content,
+            "preview": preview,
+            "subject": subject,
+            "delivered": delivered,
+            "date": dateString,
+            "metadataKey": key,
+            "isMuted": isMuted
+        ] as [String: Any]
+        if let trashDate = self.trashDate {
+            object["trashDate"] = DateUtils().date(toServerString: trashDate)!
+        }
+        if let unsentDate = self.unsentDate {
+            object["unsentDate"] = DateUtils().date(toServerString: unsentDate)!
+        }
+        return [
+            "table": "email",
+            "object": object
+        ]
+    }
+    
+    func toDictionaryLabels(emailsMap: [Int: Int]) -> [[String: Any]] {
         return labels.map { (label) -> [String: Any] in
             return [
-                "table": "emailLabel",
+                "table": "email_label",
                 "object": [
-                    "emailId": self.key,
+                    "emailId": emailsMap[self.key],
                     "labelId": label.id,
                 ]
             ]

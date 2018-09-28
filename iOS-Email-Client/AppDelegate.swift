@@ -197,15 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return snackbarController
     }
     
-    func createSystemLabels(){
-        for systemLabel in SystemLabel.array {
-            let newLabel = Label(systemLabel.description)
-            newLabel.id = systemLabel.id
-            newLabel.color = systemLabel.hexColor
-            newLabel.type = "system"
-            DBManager.store(newLabel)
-        }
-    }
+    
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
