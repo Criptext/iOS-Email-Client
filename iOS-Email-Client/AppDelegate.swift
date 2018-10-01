@@ -138,6 +138,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         
+        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Accept", options: .authenticationRequired)
+        let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Deny", options: .destructive)
+        let linkCategory = UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
         UIApplication.shared.registerForRemoteNotifications()
     }
     
@@ -264,11 +267,30 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
-        guard let threadId = userInfo["threadId"] as? String,
-            let inboxVC = getInboxVC() else {
+        guard let inboxVC = getInboxVC() else {
                 return
         }
-        inboxVC.goToEmailDetail(threadId: threadId)
+        
+        if let threadId = userInfo["threadId"] as? String {
+            inboxVC.goToEmailDetail(threadId: threadId)
+            return
+        }
+        
+        switch response.actionIdentifier {
+        case "LINK_ACCEPT":
+            guard let randomId = userInfo["randomId"] as? String else {
+                break
+            }
+            inboxVC.onAcceptLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId))
+        case "LINK_DENY":
+            guard let randomId = userInfo["randomId"] as? String else {
+                break
+            }
+            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId))
+        default:
+            break
+        }
+        
     }
 }
 
