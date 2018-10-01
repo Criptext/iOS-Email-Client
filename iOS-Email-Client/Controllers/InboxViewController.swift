@@ -356,6 +356,10 @@ extension InboxViewController {
             return
         }
         
+        if !result.linkStartData.isEmpty {
+            handleLinkStart(data: result.linkStartData)
+        }
+        
         if result.updateSideMenu {
             guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
                 return
