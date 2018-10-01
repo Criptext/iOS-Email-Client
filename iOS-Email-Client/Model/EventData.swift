@@ -32,6 +32,7 @@ class EventData {
         var modifiedEmailKeys = [Int]()
         var removed = false
         var updateSideMenu = false
+        var linkStartData = [String: Any]()
     }
     
     struct NewEmail {

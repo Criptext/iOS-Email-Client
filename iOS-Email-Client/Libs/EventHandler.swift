@@ -37,6 +37,8 @@ class EventHandler {
                 result.modifiedEmailKeys.append(contentsOf: emails)
             case .NameChanged, .LabelCreated:
                 result.updateSideMenu = true
+            case .LinkStart(let params):
+                result.linkStartData = params
             default:
                 break
             }
@@ -108,6 +110,8 @@ class EventHandler {
             handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
         case Event.serverError.rawValue:
             handleEventResponse(successfulEvent: true, result: .Empty)
+        case Event.Link.start.rawValue:
+            handleEventResponse(successfulEvent: true, result: .LinkStart(params))
         default:
             finishCallback(nil, .Empty)
             break
@@ -415,6 +419,7 @@ enum Event: Int32 {
     }
     
     enum EventResult {
+        case LinkStart([String: Any])
         case Email(Email)
         case Feed(FeedItem)
         case ModifiedThreads([String])

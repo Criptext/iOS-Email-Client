@@ -121,25 +121,24 @@ class NewLoginViewController: UIViewController{
     }
     
     func checkUsername(_ username: String){
-        APIManager.checkAvailableUsername(username) { (responseData) in
-            guard case let .Error(error) = responseData else {
-                self.showLoginError(error: "Username does not exist")
-                return
-            }
-            guard error.code == .custom else {
-                self.showLoginError(error: error.description)
-                return
-            }
-            self.beginLinkDevice(username)
-        }
-    }
-    
-    func beginLinkDevice(_ username: String){
         let email = "\(usernameTextField.text!.lowercased())\(Constants.domain)"
         let loginData = LoginData(email)
         APIManager.linkBegin(username: username) { (responseData) in
-            guard case let .SuccessString(jwtTemp) = responseData else {
+            if case .Missing = responseData {
+                self.showLoginError(error: "Username does not exist")
+                return
+            }
+            if case .BadRequest = responseData {
                 self.jumpToLoginPasswordView(loginData: loginData)
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.showLoginError(error: error.description)
+                return
+            }
+            guard case let .SuccessString(jwtTemp) = responseData else {
+                self.showLoginError(error: "Unable to validate user. Please try again")
                 return
             }
             loginData.jwt = jwtTemp

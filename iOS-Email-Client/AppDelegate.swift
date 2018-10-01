@@ -146,6 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WebSocketManager.sharedInstance.close()
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "activeAccount")
+        defaults.removeObject(forKey: "welcomeTour")
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if let loginVC = initialVC.topViewController as? NewLoginViewController {

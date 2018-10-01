@@ -18,4 +18,5 @@ enum ResponseData {
     case Unauthorized
     case Forbidden
     case Missing
+    case BadRequest
 }
