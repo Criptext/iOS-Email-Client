@@ -169,7 +169,7 @@ class DBManager {
             file.emailId = emailKey
             file.id = object["id"] as! Int
             file.token = object["token"] as! String
-            file.readOnly = object["readOnly"] as! Int
+            file.readOnly = (object["readOnly"] as! Bool) ? 1 : 0
             file.size = object["size"] as! Int
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
             realm.add(file, update: true)

@@ -55,7 +55,7 @@ class File : Object {
 
 extension File{
     func toDictionary(emailId: Int) -> [String: Any] {
-        let dateString = Formatter.iso8601.string(from: date)
+        let dateString = DateUtils().date(toServerString: date)!
         return [
             "table": "file",
             "object": [
@@ -65,7 +65,7 @@ extension File{
                 "size": size,
                 "status": status,
                 "date": dateString,
-                "readOnly": readOnly,
+                "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId
             ]
         ]
