@@ -1416,4 +1416,15 @@ extension InboxViewController: LinkDeviceDelegate {
     func onCancelLinkDevice(linkData: LinkData) {
         APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
     }
+    
+    func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in
+            completion()
+        })
+    }
+    func onCancelLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in
+            completion()
+        })
+    }
 }
