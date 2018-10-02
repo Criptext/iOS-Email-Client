@@ -30,7 +30,7 @@ struct Env {
     }
     
     static var socketURL: String {
-        return self.production ? "wss://socket.criptext.com:3002" : "wss://stage.socket.criptext.com:3002"
+        return self.production ? "wss://socket.criptext.com:3002" : "wss://stagesocket.criptext.com:3002"
     }
     
     static var domain: String {
