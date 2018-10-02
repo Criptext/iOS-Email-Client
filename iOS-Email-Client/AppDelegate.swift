@@ -138,9 +138,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         
-        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Accept", options: .authenticationRequired)
+        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .authenticationRequired)
         let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Deny", options: .destructive)
         let linkCategory = UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.setNotificationCategories([linkCategory])
         UIApplication.shared.registerForRemoteNotifications()
     }
     
@@ -271,24 +273,25 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
         }
         
-        if let threadId = userInfo["threadId"] as? String {
-            inboxVC.goToEmailDetail(threadId: threadId)
-            return
-        }
-        
         switch response.actionIdentifier {
         case "LINK_ACCEPT":
             guard let randomId = userInfo["randomId"] as? String else {
                 break
             }
-            inboxVC.onAcceptLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId))
+            inboxVC.onAcceptLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId)) {
+                completionHandler()
+            }
         case "LINK_DENY":
             guard let randomId = userInfo["randomId"] as? String else {
                 break
             }
-            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId))
+            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId)) {
+                completionHandler()
+            }
         default:
-            break
+            if let threadId = userInfo["threadId"] as? String {
+                inboxVC.goToEmailDetail(threadId: threadId)
+            }
         }
         
     }
@@ -303,19 +306,27 @@ extension AppDelegate: MessagingDelegate {
         Messaging.messaging().appDidReceiveMessage(userInfo)
         let defaults = UserDefaults.standard
         let state = UIApplication.shared.applicationState
-        guard defaults.string(forKey: "activeAccount") != nil,
-            state == .background,
-            let snackVC = self.window?.rootViewController?.snackbarController,
-            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-            let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                completionHandler(.noData)
-                return
+        guard let action = userInfo["action"] as? String else {
+            return
         }
-        inboxVC.getPendingEvents(nil) {
-            let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
-            UIApplication.shared.applicationIconBadgeNumber = emails.count + 1
-            completionHandler(.newData)
+        switch(action){
+        case "link_device":
+            completionHandler(.noData)
+        default:
+            guard defaults.string(forKey: "activeAccount") != nil,
+                state == .background,
+                let snackVC = self.window?.rootViewController?.snackbarController,
+                let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
+                let navVC = rootVC.childViewControllers.first as? UINavigationController,
+                let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
+                    completionHandler(.noData)
+                    return
+            }
+            inboxVC.getPendingEvents(nil) {
+                let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
+                UIApplication.shared.applicationIconBadgeNumber = emails.count + 1
+                completionHandler(.newData)
+            }
         }
     }
     

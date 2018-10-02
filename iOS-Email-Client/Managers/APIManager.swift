@@ -18,7 +18,7 @@ protocol ProgressDelegate {
 
 class APIManager {
     static let production = false
-    static let baseUrl = APIManager.production ? "https://api.criptext.com" : "https://stage.mail.criptext.com"
+    static let baseUrl = Env.apiURL
     static let fileServiceUrl = "https://services.criptext.com"
     static let apiVersion = "1.0"
     

@@ -17,7 +17,7 @@ class SingleWebSocket {
     var delegate : SingleSocketDelegate?
     var socket : WebSocket!
     var jwt: String?
-    let SOCKET_URL = "wss://socket.criptext.com:3002"
+    let SOCKET_URL = Env.socketURL
     
     func connect(jwt: String){
         self.jwt = jwt
