@@ -15,6 +15,7 @@ class LoginDeviceViewController: UIViewController{
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
+    var checkingStatus = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,16 +84,6 @@ class LoginDeviceViewController: UIViewController{
         waitingDeviceView.isHidden = true
     }
     
-    func jumpToCreatingAccount(name: String, deviceId: Int){
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
-        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: name, optionalEmail: nil)
-        signupData.deviceId = deviceId
-        signupData.token = loginData.jwt
-        controller.signupData = signupData
-        self.present(controller, animated: true, completion: nil)
-    }
-    
     func jumpToConnectDevice(name: String, deviceId: Int){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
@@ -114,6 +105,42 @@ class LoginDeviceViewController: UIViewController{
                 self.onFailure()
                 return
             }
+        }
+    }
+    
+    func scheduleFallback(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            guard self.checkingStatus else {
+                self.scheduleFallback()
+                return
+            }
+            self.checkingStatus = true
+            self.checkAuthStatus { success in
+                guard !success else {
+                    return
+                }
+                self.checkingStatus = false
+                self.scheduleFallback()
+            }
+        }
+    }
+    
+    func checkAuthStatus(completion: @escaping ((Bool) -> Void)){
+        guard let jwt = loginData.jwt else {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        APIManager.linkStatus(token: jwt) { (responseData) in
+            if case .AuthDenied = responseData {
+                completion(true)
+                self.newMessage(cmd: Event.Link.deny.rawValue, params: nil)
+            }
+            guard case let .SuccessDictionary(params) = responseData else {
+                completion(false)
+                return
+            }
+            completion(true)
+            self.newMessage(cmd: Event.Link.accept.rawValue, params: params)
         }
     }
 }

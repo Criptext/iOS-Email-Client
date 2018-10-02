@@ -14,10 +14,19 @@ class ConnectUploadViewController: UIViewController{
     let keyData     = AESCipher.generateRandomBytes()
     let ivData      = AESCipher.generateRandomBytes()
     
+    enum Status {
+        case none
+        case processing
+        case processed
+    }
+    
     @IBOutlet var connectUIView: ConnectUIView!
     var linkData: LinkData!
     var myAccount: Account!
     var mailboxDelegate: WebSocketManagerDelegate?
+    var databasePath : String?
+    var processingDeviceId : Status = .none
+    var checkWorker: DispatchWorkItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,16 +34,50 @@ class ConnectUploadViewController: UIViewController{
         WebSocketManager.sharedInstance.delegate = self
         connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
         APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt) { (responseData) in
-            guard case .Success = responseData else {
+            guard case let .SuccessDictionary(data) = responseData,
+                let deviceId = data["deviceId"] as? Int32 else {
                 self.showErrorAlert(message: "Unable to accept device")
                 return
             }
+            self.createDBFile(deviceId: deviceId)
+            self.scheduleInterval(deviceId: deviceId)
         }
+    }
+    
+    func scheduleInterval(deviceId: Int32){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.handleKeyBundleCheck(deviceId: deviceId)
+        }
+    }
+    
+    func handleKeyBundleCheck(deviceId: Int32){
+        guard self.processingDeviceId == .none else {
+            self.scheduleInterval(deviceId: deviceId)
+            return
+        }
+        self.processingDeviceId = .processing
+        self.getKeyBundle(deviceId: deviceId, completion: { (success) in
+            guard success else {
+                self.processingDeviceId = .none
+                self.scheduleInterval(deviceId: deviceId)
+                return
+            }
+            self.processingDeviceId = .processed
+            self.continueUpload(deviceId: deviceId)
+        })
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         super.dismiss(animated: flag, completion: completion)
         WebSocketManager.sharedInstance.delegate = mailboxDelegate
+    }
+    
+    func continueUpload(deviceId: Int32){
+        guard let path = self.databasePath,
+            processingDeviceId == .processed else {
+                return
+        }
+        uploadDBFile(path: path, deviceId: deviceId)
     }
     
     func showErrorAlert(message: String){
@@ -50,12 +93,12 @@ class ConnectUploadViewController: UIViewController{
                 self.showErrorAlert(message: "Unable to retrieve db file path")
                 return
             }
-            
             guard let outputPath = AESCipher.streamEncrypt(path: myUrl.path, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt) else {
                 self.showErrorAlert(message: "Unable to encrypt db file")
                 return
             }
-            self.uploadDBFile(path: outputPath, deviceId: deviceId)
+            self.databasePath = outputPath
+            self.continueUpload(deviceId: deviceId)
         }
     }
     
@@ -75,31 +118,35 @@ class ConnectUploadViewController: UIViewController{
         }
     }
     
-    func encryptAndSendKeys(address: String, deviceId: Int32){
-        let queue = DispatchQueue.main
-        let params = [
-            "recipients": [myAccount.username],
-            "knownAddresses": [
-                myAccount.username: [myAccount.deviceId]
-            ]
-        ] as [String: Any]
-        APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { (responseData) in
-            guard case let .SuccessArray(keysArray) = responseData,
-                let desiredKeys = keysArray.first(where: {($0["deviceId"] as! Int) == deviceId}) else {
-                    self.showErrorAlert(message: "Unable to retrieve keys")
+    func getKeyBundle(deviceId: Int32, completion: @escaping ((Bool) -> Void)){
+        APIManager.getKeybundle(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
+            guard case let .SuccessDictionary(keys) = responseData else {
+                self.showErrorAlert(message: "Unable to retrieve keys")
+                completion(false)
                 return
             }
-            var data: Data?
-            tryBlock {
-                SignalHandler.buildSession(recipientId: self.myAccount.username, deviceId: deviceId, keys: desiredKeys, account: self.myAccount)
-                data = SignalHandler.encryptData(data: self.keyData, deviceId: deviceId, recipientId: self.myAccount.username, account: self.myAccount)
+            let ex = tryBlock {
+                SignalHandler.buildSession(recipientId: self.myAccount.username, deviceId: deviceId, keys: keys, account: self.myAccount)
             }
-            guard let encryptedData = data else {
-                self.showErrorAlert(message: "Unable to encrypt key")
+            guard ex == nil else {
+                self.showErrorAlert(message: "Unable to create session")
+                completion(false)
                 return
             }
-            self.sendSuccessData(address: address, deviceId: deviceId, encryptedKey: encryptedData.base64EncodedString())
+            completion(true)
         }
+    }
+    
+    func encryptAndSendKeys(address: String, deviceId: Int32){
+        var data: Data?
+        tryBlock {
+            data = SignalHandler.encryptData(data: self.keyData, deviceId: deviceId, recipientId: self.myAccount.username, account: self.myAccount)
+        }
+        guard let encryptedData = data else {
+            self.showErrorAlert(message: "Unable to encrypt key")
+            return
+        }
+        self.sendSuccessData(address: address, deviceId: deviceId, encryptedKey: encryptedData.base64EncodedString())
     }
     
     func sendSuccessData(address: String, deviceId: Int32, encryptedKey: String){
@@ -126,6 +173,6 @@ extension ConnectUploadViewController: WebSocketManagerDelegate {
         guard case let .KeyBundle(deviceId) = result else {
             return
         }
-        createDBFile(deviceId: deviceId)
+        self.handleKeyBundleCheck(deviceId: deviceId)
     }
 }

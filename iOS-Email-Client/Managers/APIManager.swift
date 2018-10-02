@@ -33,6 +33,8 @@ class APIManager {
         case unauthorized = 401
         case forbidden = 403
         case missing = 404
+        case authPending = 491
+        case authDenied = 493
     }
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
@@ -62,6 +64,10 @@ class APIManager {
             return .Missing
         case .badRequest:
             return .BadRequest
+        case .authDenied:
+            return .AuthDenied
+        case .authPending:
+            return .AuthPending
         case .success, .successAccepted, .successNoContent, .notModified:
             break
         default:
@@ -87,6 +93,16 @@ class APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
+    class func getKeybundle(deviceId: Int32, token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/keybundle/\(deviceId)"
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             let responseData = handleResponse(response)
             completion(responseData)
         }
@@ -309,13 +325,23 @@ extension APIManager {
         }
     }
     
+    class func linkStatus(token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/link/status"
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
+        Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
     class func linkAccept(randomId: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
         let url = "\(self.baseUrl)/link/accept"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         let params = ["randomId": randomId] as [String : Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            let responseData = handleResponse(response, satisfy: .success)
+            let responseData = handleResponse(response)
             completion(responseData)
         }
     }
@@ -336,6 +362,16 @@ extension APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
+    
+    class func getLinkData(token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/link/dataaddress"
+        let headers = ["Authorization": "Bearer \(token)",
+            "API-Version": apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }

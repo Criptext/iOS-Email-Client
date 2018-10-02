@@ -14,6 +14,7 @@ class ConnectDeviceViewController: UIViewController{
     @IBOutlet var connectUIView: ConnectUIView!
     var signupData: SignUpData!
     var socket : SingleWebSocket?
+    var checkingStatus = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,6 +122,37 @@ class ConnectDeviceViewController: UIViewController{
             return
         }
         APIManager.registerToken(fcmToken: fcmToken, token: jwt)
+    }
+    
+    func scheduleFallback(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            guard self.checkingStatus else {
+                self.scheduleFallback()
+                return
+            }
+            self.checkingStatus = true
+            self.checkAuthStatus { success in
+                guard !success else {
+                    return
+                }
+                self.checkingStatus = false
+                self.scheduleFallback()
+            }
+        }
+    }
+    
+    func checkAuthStatus(completion: @escaping ((Bool) -> Void)){
+        guard let jwt = signupData.token else {
+            return
+        }
+        APIManager.getLinkData(token: jwt) { (responseData) in
+            guard case let .SuccessDictionary(params) = responseData else {
+                completion(false)
+                return
+            }
+            completion(true)
+            self.newMessage(cmd: Event.Link.success.rawValue, params: params)
+        }
     }
     
     internal struct LinkSuccessData {

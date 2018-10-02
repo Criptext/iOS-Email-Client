@@ -2,7 +2,7 @@
 //  StreamReader.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 9/26/18.
+//  Created by Allisson on 10/2/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
