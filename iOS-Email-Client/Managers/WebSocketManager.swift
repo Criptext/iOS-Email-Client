@@ -18,7 +18,7 @@ final class WebSocketManager: NSObject {
     var delegate : WebSocketManagerDelegate?
     var socket : WebSocket!
     var myAccount : Account?
-    let SOCKET_URL = "wss://socket.criptext.com:3002"
+    let SOCKET_URL = APIManager.production ? "wss://socket.criptext.com:3002" : "wss://stage.socket.criptext.com:3002"
     
     private override init(){
         super.init()
