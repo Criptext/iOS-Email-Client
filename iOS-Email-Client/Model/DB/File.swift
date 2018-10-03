@@ -66,7 +66,8 @@ extension File{
                 "status": status,
                 "date": dateString,
                 "readOnly": readOnly == 0 ? false : true,
-                "emailId": emailId
+                "emailId": emailId,
+                "mimeType": mimeType
             ]
         ]
     }

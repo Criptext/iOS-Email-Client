@@ -39,7 +39,8 @@ extension FileKey  {
             "table": "file_key",
             "object": [
                 "id": id,
-                "key": key,
+                "key": String(key.split(separator: ":").first!),
+                "iv": String(key.split(separator: ":").last!),
                 "emailId": emailId
             ]
         ]
