@@ -134,7 +134,7 @@ class AESCipher {
         guard UInt32(status) == UInt32(kCCSuccess) else {
             return nil
         }
-        return key
+        return localKey
     }
     
     class func generateRandomBytes(length bytesCount: Int = 16) -> Data {
