@@ -13,6 +13,7 @@ class SettingsLabelsViewController: UITableViewController {
     var myAccount: Account!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
         labels.append(contentsOf: DBManager.getLabels(type: "custom"))
         let attributedTitle = NSAttributedString(string: "LABELS", attributes: [.font: Font.semibold.size(16.0)!])

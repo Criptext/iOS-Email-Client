@@ -17,6 +17,7 @@ import SignalProtocolFramework
 import AudioToolbox
 import RealmSwift
 import Instructions
+import FirebaseAnalytics
 
 class InboxViewController: UIViewController {
     let BOTTOM_PADDING : CGFloat = 18.0
@@ -925,6 +926,20 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.present(snackVC, animated: true, completion: {
             self.navigationDrawerController?.closeLeftView()
         })
+    }
+    
+    func inviteFriend(){
+        let textToShare = "Check out Criptext, I use it to email privately and securely with anyone! Get it free at https://www.criptext.com/dl"
+        let shareObject = [textToShare] as [Any]
+        let activityVC = UIActivityViewController(activityItems: shareObject, applicationActivities: nil)
+        activityVC.completionWithItemsHandler = { (activity, success, items, error) in
+            guard success else {
+                return
+            }
+            Analytics.logEvent("invite_friend", parameters: ["app_source" : (activity?.rawValue ?? "Unknown") as NSObject])
+        }
+        activityVC.popoverPresentationController?.sourceView = self.view
+        self.present(activityVC, animated: true)
     }
     
     func openSupport(){

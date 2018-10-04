@@ -89,7 +89,7 @@ class SendMailAsyncTask {
             guestEmails["to"] = toArray
             guestEmails["cc"] = ccArray
             guestEmails["bcc"] = bccArray
-            guestEmails["body"] = body
+            guestEmails["body"] = "\(body)\(email.secure ? "" : Constants.footer)"
         }
         return (guestEmails, criptextEmails)
     }
