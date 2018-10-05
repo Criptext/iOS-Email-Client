@@ -25,59 +25,45 @@ class ConnectUploadViewController: UIViewController{
     var myAccount: Account!
     var mailboxDelegate: WebSocketManagerDelegate?
     var databasePath : String?
-    var processingDeviceId : Status = .none
-    var checkWorker: DispatchWorkItem?
+    var keyBundleReady = false
+    var scheduleWorker = ScheduleWorker(interval: 5.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mailboxDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = self
         connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
+        scheduleWorker.delegate = self
+        self.connectUIView.goBackButton.isHidden = true
         APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt) { (responseData) in
             guard case let .SuccessDictionary(data) = responseData,
                 let deviceId = data["deviceId"] as? Int32 else {
                 self.showErrorAlert(message: "Unable to accept device")
                 return
             }
+            self.connectUIView.goBackButton.isHidden = false
+            self.connectUIView.messageLabel.text = "Waiting for \(self.linkData.deviceName)..."
+            self.linkData.deviceId = deviceId
             self.createDBFile(deviceId: deviceId)
-            self.scheduleInterval(deviceId: deviceId)
+            self.scheduleWorker.start()
         }
-    }
-    
-    func scheduleInterval(deviceId: Int32){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.handleKeyBundleCheck(deviceId: deviceId)
+        connectUIView.goBack = {
+            self.dismiss(animated: true, completion: nil)
         }
-    }
-    
-    func handleKeyBundleCheck(deviceId: Int32){
-        guard self.processingDeviceId == .none else {
-            self.scheduleInterval(deviceId: deviceId)
-            return
-        }
-        self.processingDeviceId = .processing
-        self.getKeyBundle(deviceId: deviceId, completion: { (success) in
-            guard success else {
-                self.processingDeviceId = .none
-                self.scheduleInterval(deviceId: deviceId)
-                return
-            }
-            self.processingDeviceId = .processed
-            self.continueUpload(deviceId: deviceId)
-        })
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         super.dismiss(animated: flag, completion: completion)
+        scheduleWorker.cancel()
         WebSocketManager.sharedInstance.delegate = mailboxDelegate
     }
     
-    func continueUpload(deviceId: Int32){
+    func continueUpload(){
         guard let path = self.databasePath,
-            processingDeviceId == .processed else {
+            keyBundleReady else {
                 return
         }
-        uploadDBFile(path: path, deviceId: deviceId)
+        uploadDBFile(path: path)
     }
     
     func showErrorAlert(message: String){
@@ -98,46 +84,33 @@ class ConnectUploadViewController: UIViewController{
                 return
             }
             self.databasePath = outputPath
-            self.continueUpload(deviceId: deviceId)
+            self.continueUpload()
         }
     }
     
-    func uploadDBFile(path: String, deviceId: Int32){
+    func uploadDBFile(path: String){
+        connectUIView.goBackButton.isHidden = true
+        connectUIView.messageLabel.text = "Uploading emails..."
         guard let inputStream = InputStream.init(fileAtPath: path),
             let fileAttributes = try? FileManager.default.attributesOfItem(atPath: path) else {
                 self.showErrorAlert(message: "Unable to open file stream")
                 return
         }
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
-        APIManager.uploadLinkDBFile(dbFile: inputStream, size: fileSize, token: myAccount.jwt) { (responseData) in
-            guard case let .SuccessString(address) = responseData else {
+        APIManager.uploadLinkDBFile(dbFile: inputStream, randomId: linkData.randomId, size: fileSize, token: myAccount.jwt) { (responseData) in
+            guard case .Success = responseData else {
                 self.showErrorAlert(message: "Unable to upload file")
                 return
             }
-            self.encryptAndSendKeys(address: address, deviceId: deviceId)
+            self.encryptAndSendKeys()
         }
     }
     
-    func getKeyBundle(deviceId: Int32, completion: @escaping ((Bool) -> Void)){
-        APIManager.getKeybundle(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
-            guard case let .SuccessDictionary(keys) = responseData else {
-                self.showErrorAlert(message: "Unable to retrieve keys")
-                completion(false)
-                return
-            }
-            let ex = tryBlock {
-                SignalHandler.buildSession(recipientId: self.myAccount.username, deviceId: deviceId, keys: keys, account: self.myAccount)
-            }
-            guard ex == nil else {
-                self.showErrorAlert(message: "Unable to create session")
-                completion(false)
-                return
-            }
-            completion(true)
+    func encryptAndSendKeys(){
+        guard let deviceId = linkData.deviceId else {
+            self.showErrorAlert(message: "Unable to encrypt key")
+            return
         }
-    }
-    
-    func encryptAndSendKeys(address: String, deviceId: Int32){
         var data: Data?
         tryBlock {
             data = SignalHandler.encryptData(data: self.keyData, deviceId: deviceId, recipientId: self.myAccount.username, account: self.myAccount)
@@ -146,13 +119,12 @@ class ConnectUploadViewController: UIViewController{
             self.showErrorAlert(message: "Unable to encrypt key")
             return
         }
-        self.sendSuccessData(address: address, deviceId: deviceId, encryptedKey: encryptedData.base64EncodedString())
+        self.sendSuccessData(deviceId: deviceId, encryptedKey: encryptedData.base64EncodedString())
     }
     
-    func sendSuccessData(address: String, deviceId: Int32, encryptedKey: String){
+    func sendSuccessData(deviceId: Int32, encryptedKey: String){
         let params = [
             "deviceId": deviceId,
-            "dataAddress": address,
             "key": encryptedKey
         ] as [String: Any]
         APIManager.linkDataAddress(params: params, token: myAccount.jwt) { (responseData) in
@@ -168,11 +140,46 @@ class ConnectUploadViewController: UIViewController{
     }
 }
 
-extension ConnectUploadViewController: WebSocketManagerDelegate {
-    func newMessage(result: EventData.Socket) {
-        guard case let .KeyBundle(deviceId) = result else {
+extension ConnectUploadViewController: ScheduleWorkerDelegate {
+    func work(completion: @escaping (Bool) -> Void) {
+        guard let deviceId = linkData.deviceId else {
+            completion(true)
+            self.showErrorAlert(message: "Unable to get Keys")
             return
         }
-        self.handleKeyBundleCheck(deviceId: deviceId)
+        APIManager.getKeybundle(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
+            guard case let .SuccessDictionary(keys) = responseData else {
+                completion(false)
+                return
+            }
+            completion(true)
+            let ex = tryBlock {
+                SignalHandler.buildSession(recipientId: self.myAccount.username, deviceId: deviceId, keys: keys, account: self.myAccount)
+            }
+            guard ex == nil else {
+                self.showErrorAlert(message: "Unable to create session")
+                return
+            }
+            self.keyBundleReady = true
+            self.continueUpload()
+        }
+    }
+}
+
+extension ConnectUploadViewController: WebSocketManagerDelegate {
+    func newMessage(result: EventData.Socket) {
+        guard case let .KeyBundle(deviceId) = result,
+            !self.scheduleWorker.isRunning else {
+            return
+        }
+        linkData.deviceId = deviceId
+        scheduleWorker.cancel()
+        work { (success) in
+            guard success else {
+                self.scheduleWorker.start()
+                return
+            }
+            self.continueUpload()
+        }
     }
 }

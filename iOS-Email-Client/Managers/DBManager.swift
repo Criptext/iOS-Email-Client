@@ -103,8 +103,8 @@ class DBManager {
         switch(table){
         case "contact":
             let contact = Contact()
-            contact.displayName = object["name"] as! String
             contact.email = object["email"] as! String
+            contact.displayName = object["name"] as? String ?? String(contact.email.split(separator: "@").first!)
             contact.id = object["id"] as! Int
             realm.add(contact, update: true)
             maps.contacts[contact.id] = contact.email
@@ -125,9 +125,9 @@ class DBManager {
             email.unread = object["unread"] as! Bool
             email.secure = object["secure"] as! Bool
             email.preview = object["preview"] as! String
-            email.delivered = object["delivered"] as! Int
-            email.key = object["metadataKey"] as! Int
-            email.subject = object["subject"] as! String
+            email.delivered = object["status"] as! Int
+            email.key = object["key"] as! Int
+            email.subject = object["subject"] as? String ?? ""
             email.date = EventData.convertToDate(dateString: object["date"] as! String)
             if let unsentDate = object["unsentDate"] as? String {
                 email.unsentDate = EventData.convertToDate(dateString: unsentDate)
@@ -174,30 +174,19 @@ class DBManager {
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
             realm.add(file, update: true)
         case "file_key":
+            let key = object["key"] as? String
+            let iv = object["iv"] as? String
             let emailId = object["emailId"] as! Int
             let emailKey = maps.emails[emailId]!
             let fileKey = FileKey()
             fileKey.id = object["id"] as! Int
-            fileKey.key = object["key"] as? String ?? ""
+            fileKey.key = key != nil && iv != nil ? "\(key!):\(iv!)" : ""
             fileKey.emailId = emailKey
             realm.add(fileKey, update: true)
         default:
             return
         }
     }
-    
-    let desiredDBText = """
-{"table":"contact","object":{"id":1,"name":"Test 1","email":"test1@criptext.com"}}
-{"table":"contact","object":{"id":2,"name":"Test 2","email":"test2@criptext.com"}}
-{"table":"label","object":{"visible":true,"id":1,"text":"Test 1","type":"custom","color":"fff000"}}
-{"table":"label","object":{"visible":true,"id":2,"text":"Test 2","type":"custom","color":"ff00ff"}}
-{"table":"email","object":{"content":"test 1","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","isMuted":false,"threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"secure":true,"preview":"test 1","delivered":3,"date":"2018-07-17T15:09:36.000Z","metadataKey":123,"subject":""}}
-{"table":"emailLabel","object":{"labelId":1,"emailId":123}}
-{"table":"emailContact","object":{"type":"from","contactId":2,"emailId":123}}
-{"table":"emailContact","object":{"type":"to","contactId":1,"emailId":123}}
-{"table":"file","object":{"name":"test.pdf","status":1,"emailId":123,"id":1,"token":"","readOnly":0,"size":0,"date":"2018-07-17T15:09:36.000Z"}}
-{"table":"fileKey","object":{"id":1,"key":"fgsfgfgsfdafa:afdsfsagdfgsdf","emailId":123}}
-"""
 }
 
 //MARK: - Account related

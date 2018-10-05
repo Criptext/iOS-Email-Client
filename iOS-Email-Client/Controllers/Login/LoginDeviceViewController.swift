@@ -12,10 +12,10 @@ class LoginDeviceViewController: UIViewController{
     
     var loginData: LoginData!
     var socket : SingleWebSocket?
+    var scheduleWorker = ScheduleWorker(interval: 5.0)
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
-    var checkingStatus = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +31,7 @@ class LoginDeviceViewController: UIViewController{
         socket = SingleWebSocket()
         socket?.delegate = self
         socket?.connect(jwt: jwt)
+        scheduleWorker.delegate = self
         self.sendLinkAuthRequest()
     }
     
@@ -91,7 +92,9 @@ class LoginDeviceViewController: UIViewController{
         signupData.deviceId = deviceId
         signupData.token = loginData.jwt
         controller.signupData = signupData
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true, completion: {
+            self.navigationController?.popViewController(animated: false)
+        })
     }
     
     func sendLinkAuthRequest(){
@@ -105,27 +108,13 @@ class LoginDeviceViewController: UIViewController{
                 self.onFailure()
                 return
             }
+            self.scheduleWorker.start()
         }
     }
-    
-    func scheduleFallback(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            guard self.checkingStatus else {
-                self.scheduleFallback()
-                return
-            }
-            self.checkingStatus = true
-            self.checkAuthStatus { success in
-                guard !success else {
-                    return
-                }
-                self.checkingStatus = false
-                self.scheduleFallback()
-            }
-        }
-    }
-    
-    func checkAuthStatus(completion: @escaping ((Bool) -> Void)){
+}
+
+extension LoginDeviceViewController: ScheduleWorkerDelegate {
+    func work(completion: @escaping (Bool) -> Void) {
         guard let jwt = loginData.jwt else {
             self.navigationController?.popViewController(animated: true)
             return
@@ -153,8 +142,11 @@ extension LoginDeviceViewController: SingleSocketDelegate {
                 let name = params?["name"] as? String else {
                 break
             }
+            self.scheduleWorker.cancel()
+            self.socket?.close()
             self.jumpToConnectDevice(name: name, deviceId: deviceId)
         case Event.Link.deny.rawValue:
+            self.scheduleWorker.cancel()
             self.socket?.close()
             self.onFailure()
         default:

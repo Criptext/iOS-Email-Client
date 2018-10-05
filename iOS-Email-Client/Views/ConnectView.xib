@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +20,9 @@
                 <outlet property="backgroundCircle" destination="Ei6-qi-JLl" id="P10-us-4o7"/>
                 <outlet property="dotsProgressView" destination="p8P-Xu-AGe" id="lsa-Uv-AEg"/>
                 <outlet property="emailLabel" destination="I2c-6Y-BuD" id="myo-Me-OU8"/>
+                <outlet property="goBackButton" destination="Arr-wh-3Qv" id="jx3-IJ-6dC"/>
                 <outlet property="loadingWidthConstraint" destination="5c4-sZ-01b" id="jNM-za-SJ4"/>
+                <outlet property="messageLabel" destination="XjA-v0-OUS" id="iFu-3n-xrl"/>
                 <outlet property="successImage" destination="4rh-2l-H05" id="Gc2-WX-CEK"/>
                 <outlet property="view" destination="BjD-Bq-glM" id="g5Q-h8-GG4"/>
             </connections>
@@ -32,7 +33,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="white-logo" translatesAutoresizingMaskIntoConstraints="NO" id="X7P-re-4hO">
-                    <rect key="frame" x="152" y="171" width="70" height="70"/>
+                    <rect key="frame" x="152.5" y="171" width="70" height="70"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="tintColor" red="0.34509803919999998" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -107,7 +108,7 @@
                     </userDefinedRuntimeAttributes>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ei6-qi-JLl">
-                    <rect key="frame" x="163" y="291" width="48" height="48"/>
+                    <rect key="frame" x="163.5" y="291" width="48" height="48"/>
                     <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="0.040000000000000001" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="1Ly-zc-TGh"/>
@@ -131,6 +132,16 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Arr-wh-3Qv">
+                    <rect key="frame" x="123.5" y="604" width="128" height="33"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <state key="normal" title="cancel and go back">
+                        <color key="titleColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="goBack:" destination="-1" eventType="touchUpInside" id="Dru-Ad-IcR"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -142,6 +153,8 @@
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="top" secondItem="X7P-re-4hO" secondAttribute="bottom" constant="69" id="QHU-YQ-R3r"/>
                 <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="I2c-6Y-BuD" secondAttribute="trailing" constant="23" id="UJU-1z-OmX"/>
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="centerX" secondItem="BjD-Bq-glM" secondAttribute="centerX" id="X8W-Pn-qVd"/>
+                <constraint firstItem="Arr-wh-3Qv" firstAttribute="centerX" secondItem="sjD-Xh-tse" secondAttribute="centerX" id="XcS-2r-9Dg"/>
+                <constraint firstItem="sjD-Xh-tse" firstAttribute="bottom" secondItem="Arr-wh-3Qv" secondAttribute="bottom" constant="30" id="ZkU-wB-L5e"/>
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="leading" secondItem="JNI-pY-rPy" secondAttribute="trailing" constant="13" id="agc-Bz-ZpV"/>
                 <constraint firstItem="Ei6-qi-JLl" firstAttribute="centerY" secondItem="4rh-2l-H05" secondAttribute="centerY" id="alA-9s-NWr"/>
                 <constraint firstItem="I2c-6Y-BuD" firstAttribute="leading" secondItem="sjD-Xh-tse" secondAttribute="leading" constant="23" id="esQ-GO-eXd"/>
@@ -154,6 +167,7 @@
                 <constraint firstItem="I2c-6Y-BuD" firstAttribute="top" secondItem="XjA-v0-OUS" secondAttribute="bottom" constant="2" id="xbG-cR-KSI"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="sjD-Xh-tse"/>
+            <point key="canvasLocation" x="138.40000000000001" y="153.37331334332833"/>
         </view>
     </objects>
     <resources>

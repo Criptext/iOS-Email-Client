@@ -152,9 +152,9 @@ extension Email {
             "content": content,
             "preview": preview,
             "subject": subject,
-            "delivered": delivered,
+            "status": delivered,
             "date": dateString,
-            "metadataKey": key,
+            "key": key,
             "isMuted": isMuted
         ] as [String: Any]
         if let trashDate = self.trashDate {

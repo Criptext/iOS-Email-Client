@@ -17,6 +17,9 @@ class ConnectUIView: UIView {
     @IBOutlet weak var loadingWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var successImage: UIImageView!
     @IBOutlet weak var backgroundCircle: UIView!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var goBackButton: UIButton!
+    var goBack: (() -> Void)?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -42,4 +45,7 @@ class ConnectUIView: UIView {
         })
     }
 
+    @IBAction func goBack(_ sender: Any) {
+        goBack?()
+    }
 }

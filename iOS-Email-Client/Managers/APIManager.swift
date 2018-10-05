@@ -231,10 +231,13 @@ class APIManager {
     }
     
     class func removeDevice(deviceId: Int, password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
-        let url = "\(self.baseUrl)/device/\(deviceId)"
+        let url = "\(self.baseUrl)/device"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
-        let params = ["password": password]
+        let params = [
+            "deviceId": deviceId,
+            "password": password
+        ] as [String: Any]
         Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
@@ -329,7 +332,7 @@ extension APIManager {
         let url = "\(self.baseUrl)/link/status"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
-        Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response)
             completion(responseData)
         }
@@ -340,7 +343,7 @@ extension APIManager {
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         let params = ["randomId": randomId] as [String : Any]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response)
             completion(responseData)
         }
@@ -358,7 +361,7 @@ extension APIManager {
     }
     
     class func linkDataAddress(params: [String: Any], token: String, completion: @escaping ((ResponseData) -> Void)) {
-        let url = "\(self.baseUrl)/link/dataaddress"
+        let url = "\(self.baseUrl)/link/data/ready"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
@@ -368,11 +371,11 @@ extension APIManager {
     }
     
     class func getLinkData(token: String, completion: @escaping ((ResponseData) -> Void)){
-        let url = "\(self.baseUrl)/link/dataaddress"
+        let url = "\(self.baseUrl)/link/data/ready"
         let headers = ["Authorization": "Bearer \(token)",
             "API-Version": apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
-            let responseData = handleResponse(response, satisfy: .success)
+            let responseData = handleResponse(response)
             completion(responseData)
         }
     }
@@ -526,14 +529,15 @@ extension APIManager {
 }
 
 extension APIManager {
-    class func uploadLinkDBFile(dbFile: InputStream, size: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func uploadLinkDBFile(dbFile: InputStream, randomId: String, size: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.linkUrl)/userdata"
         let headers = [
             "Authorization": "Bearer \(token)",
-            "Content-Length": size.description
-            ]
+            "Content-Length": size.description,
+            "Random-ID": randomId
+        ]
         Alamofire.upload(dbFile, to: url, method: .post, headers: headers).responseString { (responseString) in
-            let responseData = handleResponse(responseString)
+            let responseData = handleResponse(responseString, satisfy: .success)
             completion(responseData)
         }
     }

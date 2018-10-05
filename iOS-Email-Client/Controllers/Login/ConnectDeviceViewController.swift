@@ -14,7 +14,7 @@ class ConnectDeviceViewController: UIViewController{
     @IBOutlet var connectUIView: ConnectUIView!
     var signupData: SignUpData!
     var socket : SingleWebSocket?
-    var checkingStatus = false
+    var scheduleWorker = ScheduleWorker(interval: 5.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +23,18 @@ class ConnectDeviceViewController: UIViewController{
         connectUIView.initialLoad(email: "\(signupData.username)\(Constants.domain)")
         DBManager.destroy()
         sendKeysRequest()
+        scheduleWorker.delegate = self
+        connectUIView.goBack = {
+            self.socket?.close()
+            self.scheduleWorker.cancel()
+            self.presentingViewController?.navigationController?.popToRootViewController(animated: false)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func sendKeysRequest(){
+        connectUIView.goBackButton.isHidden = true
+        connectUIView.messageLabel.text = "Generating Keys..."
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
             if case let .Error(error) = responseData,
@@ -35,8 +44,11 @@ class ConnectDeviceViewController: UIViewController{
             guard case let .SuccessString(jwt) = responseData else {
                 return
             }
+            self.connectUIView.goBackButton.isHidden = false
+            self.connectUIView.messageLabel.text = "Waiting for emails..."
             self.signupData.token = jwt
             self.socket?.connect(jwt: jwt)
+            self.scheduleWorker.start()
         }
     }
     
@@ -106,6 +118,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func goToMailbox(_ activeAccount: String){
+        self.socket?.close()
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -124,37 +137,6 @@ class ConnectDeviceViewController: UIViewController{
         APIManager.registerToken(fcmToken: fcmToken, token: jwt)
     }
     
-    func scheduleFallback(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            guard self.checkingStatus else {
-                self.scheduleFallback()
-                return
-            }
-            self.checkingStatus = true
-            self.checkAuthStatus { success in
-                guard !success else {
-                    return
-                }
-                self.checkingStatus = false
-                self.scheduleFallback()
-            }
-        }
-    }
-    
-    func checkAuthStatus(completion: @escaping ((Bool) -> Void)){
-        guard let jwt = signupData.token else {
-            return
-        }
-        APIManager.getLinkData(token: jwt) { (responseData) in
-            guard case let .SuccessDictionary(params) = responseData else {
-                completion(false)
-                return
-            }
-            completion(true)
-            self.newMessage(cmd: Event.Link.success.rawValue, params: params)
-        }
-    }
-    
     internal struct LinkSuccessData {
         var deviceId: Int32
         var key: String
@@ -162,15 +144,37 @@ class ConnectDeviceViewController: UIViewController{
     }
 }
 
+extension ConnectDeviceViewController: ScheduleWorkerDelegate {
+    func work(completion: @escaping (Bool) -> Void) {
+        guard let jwt = signupData.token else {
+            return
+        }
+        APIManager.getLinkData(token: jwt) { (responseData) in
+            guard case let .SuccessDictionary(event) = responseData else {
+                completion(false)
+                return
+            }
+            completion(true)
+            self.newMessage(cmd: Event.Link.success.rawValue, params: event)
+        }
+    }
+}
+
 extension ConnectDeviceViewController: SingleSocketDelegate {
     func newMessage(cmd: Int32, params: [String : Any]?) {
         switch(cmd){
         case Event.Link.success.rawValue:
-            guard let address = params?["dataAddress"] as? String,
-                let key = params?["key"] as? String else {
+            guard let eventString = params?["params"] as? String,
+                let eventParams = Utils.convertToDictionary(text: eventString),
+                let address = eventParams["dataAddress"] as? String,
+                let key = eventParams["key"] as? String,
+                let deviceId = eventParams["authorizerId"] as? Int32 else {
                 break
             }
-            let data = LinkSuccessData(deviceId: 370, key: key, address: address)
+            self.connectUIView.goBackButton.isHidden = true
+            self.connectUIView.messageLabel.text = "Restoring emails..."
+            scheduleWorker.cancel()
+            let data = LinkSuccessData(deviceId: deviceId, key: key, address: address)
             self.handleAddress(data: data)
         default:
             break
