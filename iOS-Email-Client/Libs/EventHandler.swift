@@ -83,6 +83,7 @@ class EventHandler {
             self.handleNewEmailCommand(params: params, finishCallback: handleEventResponse)
             break
         case Event.emailStatus.rawValue:
+            print("NUEVO \(params)")
             self.handleEmailStatusCommand(params: params, finishCallback: handleEventResponse)
             break
         case Event.Peer.unsent.rawValue:
@@ -325,6 +326,7 @@ class EventHandler {
         case Event.Peer.recoveryVerify.rawValue:
             return .RecoveryVerified
         case Event.newEvent.rawValue:
+            print("NUEVO EVENTO WEH")
             return .NewEvent
         default:
             return .Unhandled

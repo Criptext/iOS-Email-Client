@@ -116,6 +116,7 @@ class DBManager {
             label.text = object["text"] as! String
             realm.add(label, update: true)
         case "email":
+            print(object["key"] ?? "Nel Pastel \(object["id"] ?? "NI ESO")")
             let id = object["id"] as! Int
             let email = Email()
             email.content = object["content"] as! String
@@ -137,6 +138,7 @@ class DBManager {
             }
             realm.add(email, update: true)
             maps.emails[id] = email.key
+            print("Ready")
         case "email_label":
             let labelId = object["labelId"] as! Int
             let emailId = object["emailId"] as! Int
@@ -163,6 +165,9 @@ class DBManager {
         case "file":
             let emailId = object["emailId"] as! Int
             let emailKey = maps.emails[emailId]!
+            guard let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
+                return
+            }
             let file = File()
             file.name = object["name"] as! String
             file.status = object["status"] as! Int
@@ -173,6 +178,7 @@ class DBManager {
             file.size = object["size"] as! Int
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
             realm.add(file, update: true)
+            email.files.append(file)
         case "file_key":
             let key = object["key"] as? String
             let iv = object["iv"] as? String

@@ -132,6 +132,7 @@ class ConnectUploadViewController: UIViewController{
                 self.showErrorAlert(message: "Unable to post address")
                 return
             }
+            self.connectUIView.messageLabel.text = "Mailbox exported successfully!"
             self.connectUIView.handleSuccess()
             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 self.dismiss(animated: true)

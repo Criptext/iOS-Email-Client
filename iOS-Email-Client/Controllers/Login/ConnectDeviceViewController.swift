@@ -90,6 +90,7 @@ class ConnectDeviceViewController: UIViewController{
             }
             DBManager.insertBatchRows(rows: dbRows, maps: &maps)
             DispatchQueue.main.async {
+                self.connectUIView.messageLabel.text = "Mailbox restored successfully!"
                 self.connectUIView.handleSuccess()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.goToMailbox(myAccount.username)
