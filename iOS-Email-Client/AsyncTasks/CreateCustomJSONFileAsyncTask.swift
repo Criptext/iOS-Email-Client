@@ -13,6 +13,8 @@ import RealmSwift
 class CreateCustomJSONFileAsyncTask {
     
     let fileURL = CriptextFileManager.getURLForFile(name: "link-device-db")
+    var contacts = [String: Int]()
+    var emails = [Int: Int]()
     
     func start(completion: @escaping ((Error?, URL?) -> Void)){
         try? FileManager.default.removeItem(at: fileURL)
@@ -23,27 +25,42 @@ class CreateCustomJSONFileAsyncTask {
     
     private func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
         let results = DBManager.retrieveWholeDB()
-        (results["contacts"] as! Results<Contact>).forEach {handleRow($0)}
-        (results["labels"] as! Results<Label>).forEach {handleRow($0)}
-        let emails = results["emails"] as! Results<Email>
-        emails.forEach {handleRow($0)}
-        emails.forEach { (email) in
-            email.toDictionaryLabels().forEach({ (emailLabelDictionary) in
+        results.contacts.enumerated().forEach {
+            contacts[$1.email] = $0 + 1
+            let dictionary = $1.toDictionary(id: $0 + 1)
+            handleRow(dictionary)
+        }
+        results.labels.forEach {handleRow($0.toDictionary())}
+        results.emails.enumerated().forEach {
+            emails[$1.key] = $0 + 1
+            let dictionary = $1.toDictionary(id: $0 + 1)
+            handleRow(dictionary)
+        }
+        results.emails.forEach { (email) in
+            email.toDictionaryLabels(emailsMap: emails).forEach({ (emailLabelDictionary) in
                 guard let jsonString = Utils.convertToJSONString(dictionary: emailLabelDictionary) else {
                     return
                 }
                 writeRowToFile(jsonRow: jsonString)
             })
         }
-        (results["emailContacts"] as! Results<EmailContact>).forEach {handleRow($0)}
-        (results["files"] as! Results<File>).forEach {handleRow($0)}
-        let fileKeys = results["fileKeys"] as! Results<FileKey>
-        fileKeys.forEach { (fileKey) in
-            guard fileKey != fileKeys.last else {
-                handleRow(fileKey, appendNewLine: false)
+        results.emailContacts.enumerated().forEach {
+            guard let emailId = emails[$1.email.key] else {
                 return
             }
-            handleRow(fileKey)
+            handleRow($1.toDictionary(id: $0 + 1, emailId: emailId, contactId: contacts[$1.contact.email]!))
+        }
+        results.files.forEach {
+            guard let emailId = emails[$0.emailId] else {
+                return
+            }
+            handleRow($0.toDictionary(emailId: emailId))
+        }
+        results.fileKeys.forEach {
+            guard let emailId = emails[$0.emailId] else {
+                return
+            }
+            handleRow($0.toDictionary(emailId: emailId))
         }
         
         DispatchQueue.main.async {
@@ -51,11 +68,8 @@ class CreateCustomJSONFileAsyncTask {
         }
     }
     
-    private func handleRow(_ row: Any, appendNewLine: Bool = true){
-        guard let item = row as? CustomDictionary else {
-            return
-        }
-        guard let jsonString = Utils.convertToJSONString(dictionary: item.toDictionary()) else {
+    private func handleRow(_ row: [String: Any], appendNewLine: Bool = true){
+        guard let jsonString = Utils.convertToJSONString(dictionary: row) else {
             return
         }
         writeRowToFile(jsonRow: jsonString, appendNewLine: appendNewLine)

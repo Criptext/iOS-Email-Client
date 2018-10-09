@@ -50,24 +50,154 @@ class DBManager {
         }
     }
     
-    class func retrieveWholeDB() -> [String: Any] {
+    class func createSystemLabels(){
+        for systemLabel in SystemLabel.array {
+            let newLabel = Label(systemLabel.description)
+            newLabel.id = systemLabel.id
+            newLabel.color = systemLabel.hexColor
+            newLabel.type = "system"
+            DBManager.store(newLabel)
+        }
+    }
+    
+    class func retrieveWholeDB() -> LinkDBSource {
         let realm = try! Realm()
         let contacts = realm.objects(Contact.self)
-        let labels = realm.objects(Label.self)
-        let emails = realm.objects(Email.self)
+        let labels = realm.objects(Label.self).filter("type == 'custom'")
+        let emails = realm.objects(Email.self).filter("messageId != ''")
         let files = realm.objects(File.self)
-        let emailContacts = realm.objects(EmailContact.self)
+        let emailContacts = realm.objects(EmailContact.self).filter("email.delivered != \(Email.Status.sending.rawValue) AND email.delivered != \(Email.Status.fail.rawValue) AND NOT (ANY email.labels.id == \(SystemLabel.draft.id))")
         let fileKeys = realm.objects(FileKey.self)
         
-        return [
-            "contacts": contacts,
-            "labels": labels,
-            "emails": emails,
-            "files": files,
-            "emailContacts": emailContacts,
-            "fileKeys": fileKeys
-        ]
+        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, files: files, fileKeys: fileKeys)
     }
+    
+    struct LinkDBSource {
+        let contacts: Results<Contact>
+        let labels: Results<Label>
+        let emails: Results<Email>
+        let emailContacts: Results<EmailContact>
+        let files: Results<File>
+        let fileKeys: Results<FileKey>
+    }
+    
+    struct LinkDBMaps {
+        var emails: [Int: Int]
+        var contacts: [Int: String]
+    }
+    
+    class func insertBatchRows(rows: [[String: Any]], maps: inout LinkDBMaps){
+        let realm = try! Realm()
+        try! realm.write {
+            for row in rows {
+                self.insertRow(realm: realm, row: row, maps: &maps)
+            }
+        }
+    }
+    
+    class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps){
+        guard let table = row["table"] as? String,
+            let object = row["object"] as? [String: Any] else {
+                return
+        }
+        switch(table){
+        case "contact":
+            let contact = Contact()
+            contact.displayName = object["name"] as! String
+            contact.email = object["email"] as! String
+            contact.id = object["id"] as! Int
+            realm.add(contact, update: true)
+            maps.contacts[contact.id] = contact.email
+        case "label":
+            let label = Label()
+            label.id = object["id"] as! Int
+            label.visible = object["visible"] as! Bool
+            label.color = object["color"] as! String
+            label.text = object["text"] as! String
+            realm.add(label, update: true)
+        case "email":
+            let id = object["id"] as! Int
+            let email = Email()
+            email.content = object["content"] as! String
+            email.messageId = object["messageId"] as! String
+            email.isMuted = object["isMuted"] as! Bool
+            email.threadId = object["threadId"] as! String
+            email.unread = object["unread"] as! Bool
+            email.secure = object["secure"] as! Bool
+            email.preview = object["preview"] as! String
+            email.delivered = object["delivered"] as! Int
+            email.key = object["metadataKey"] as! Int
+            email.subject = object["subject"] as! String
+            email.date = EventData.convertToDate(dateString: object["date"] as! String)
+            if let unsentDate = object["unsentDate"] as? String {
+                email.unsentDate = EventData.convertToDate(dateString: unsentDate)
+            }
+            if let trashDate = object["trashDate"] as? String {
+                email.trashDate = EventData.convertToDate(dateString: trashDate)
+            }
+            realm.add(email, update: true)
+            maps.emails[id] = email.key
+        case "email_label":
+            let labelId = object["labelId"] as! Int
+            let emailId = object["emailId"] as! Int
+            let emailKey = maps.emails[emailId]
+            guard let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey),
+                let label = realm.object(ofType: Label.self, forPrimaryKey: labelId) else {
+                    return
+            }
+            email.labels.append(label)
+        case "email_contact":
+            let contactId = object["contactId"] as! Int
+            let emailId = object["emailId"] as! Int
+            let emailKey = maps.emails[emailId]
+            guard let contact = realm.objects(Contact.self).filter("id == \(contactId)").first,
+                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
+                    return
+            }
+            let emailContact = EmailContact()
+            emailContact.contact = contact
+            emailContact.email = email
+            emailContact.type = (object["type"] as! String).lowercased()
+            emailContact.compoundKey = emailContact.buildCompoundKey()
+            realm.add(emailContact, update: true)
+        case "file":
+            let emailId = object["emailId"] as! Int
+            let emailKey = maps.emails[emailId]!
+            let file = File()
+            file.name = object["name"] as! String
+            file.status = object["status"] as! Int
+            file.emailId = emailKey
+            file.id = object["id"] as! Int
+            file.token = object["token"] as! String
+            file.readOnly = (object["readOnly"] as! Bool) ? 1 : 0
+            file.size = object["size"] as! Int
+            file.date = EventData.convertToDate(dateString: object["date"] as! String)
+            realm.add(file, update: true)
+        case "file_key":
+            let emailId = object["emailId"] as! Int
+            let emailKey = maps.emails[emailId]!
+            let fileKey = FileKey()
+            fileKey.id = object["id"] as! Int
+            fileKey.key = object["key"] as? String ?? ""
+            fileKey.emailId = emailKey
+            realm.add(fileKey, update: true)
+        default:
+            return
+        }
+    }
+    
+    let desiredDBText = """
+{"table":"contact","object":{"id":1,"name":"Test 1","email":"test1@criptext.com"}}
+{"table":"contact","object":{"id":2,"name":"Test 2","email":"test2@criptext.com"}}
+{"table":"label","object":{"visible":true,"id":1,"text":"Test 1","type":"custom","color":"fff000"}}
+{"table":"label","object":{"visible":true,"id":2,"text":"Test 2","type":"custom","color":"ff00ff"}}
+{"table":"email","object":{"content":"test 1","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","isMuted":false,"threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"secure":true,"preview":"test 1","delivered":3,"date":"2018-07-17T15:09:36.000Z","metadataKey":123,"subject":""}}
+{"table":"emailLabel","object":{"labelId":1,"emailId":123}}
+{"table":"emailContact","object":{"type":"from","contactId":2,"emailId":123}}
+{"table":"emailContact","object":{"type":"to","contactId":1,"emailId":123}}
+{"table":"file","object":{"name":"test.pdf","status":1,"emailId":123,"id":1,"token":"","readOnly":0,"size":0,"date":"2018-07-17T15:09:36.000Z"}}
+{"table":"fileKey","object":{"id":1,"key":"fgsfgfgsfdafa:afdsfsagdfgsdf","emailId":123}}
+"""
 }
 
 //MARK: - Account related

@@ -155,7 +155,7 @@ class CreatingAccountViewController: UIViewController{
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        delegate.createSystemLabels()
+        DBManager.createSystemLabels()
         let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop

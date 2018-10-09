@@ -18,13 +18,14 @@ class Contact: Object {
     }
 }
 
-extension Contact: CustomDictionary {
-    func toDictionary() -> [String: Any] {
-        return ["table": "contact",
-                "object": [
-                    "id": id,
-                    "email": email,
-                    "name": displayName
+extension Contact {
+    func toDictionary(id: Int) -> [String: Any] {
+        return [
+            "table": "contact",
+            "object": [
+                "id": id,
+                "email": email,
+                "name": displayName
             ]
         ]
     }
