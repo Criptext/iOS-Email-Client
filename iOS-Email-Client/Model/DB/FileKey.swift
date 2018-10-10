@@ -36,7 +36,7 @@ class FileKey : Object {
 extension FileKey  {
     func toDictionary(emailId: Int) -> [String: Any] {
         return [
-            "table": "file_key",
+            "table": "filekey",
             "object": [
                 "id": id,
                 "key": String(key.split(separator: ":").first!),

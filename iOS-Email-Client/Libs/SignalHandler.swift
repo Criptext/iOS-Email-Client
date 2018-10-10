@@ -27,7 +27,7 @@ class SignalHandler {
         
         let contactRegistrationId = keys["registrationId"] as! Int32
         var contactPrekeyPublic: Data? = nil
-        var preKeyId: Int32 = 0
+        var preKeyId: Int32 = -1
         if let prekey = keys["preKey"] as? [String: Any]{
             contactPrekeyPublic = Data(base64Encoded:(prekey["publicKey"] as! String))!
             preKeyId = prekey["id"] as! Int32

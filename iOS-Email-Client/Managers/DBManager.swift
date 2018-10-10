@@ -116,7 +116,6 @@ class DBManager {
             label.text = object["text"] as! String
             realm.add(label, update: true)
         case "email":
-            print(object["key"] ?? "Nel Pastel \(object["id"] ?? "NI ESO")")
             let id = object["id"] as! Int
             let email = Email()
             email.content = object["content"] as! String
@@ -138,12 +137,11 @@ class DBManager {
             }
             realm.add(email, update: true)
             maps.emails[id] = email.key
-            print("Ready")
         case "email_label":
             let labelId = object["labelId"] as! Int
             let emailId = object["emailId"] as! Int
-            let emailKey = maps.emails[emailId]
-            guard let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey),
+            guard let emailKey = maps.emails[emailId],
+                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey),
                 let label = realm.object(ofType: Label.self, forPrimaryKey: labelId) else {
                     return
             }
@@ -151,8 +149,8 @@ class DBManager {
         case "email_contact":
             let contactId = object["contactId"] as! Int
             let emailId = object["emailId"] as! Int
-            let emailKey = maps.emails[emailId]
-            guard let contact = realm.objects(Contact.self).filter("id == \(contactId)").first,
+            guard let emailKey = maps.emails[emailId],
+                let contact = realm.objects(Contact.self).filter("id == \(contactId)").first,
                 let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
                     return
             }
@@ -164,8 +162,8 @@ class DBManager {
             realm.add(emailContact, update: true)
         case "file":
             let emailId = object["emailId"] as! Int
-            let emailKey = maps.emails[emailId]!
-            guard let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
+            guard let emailKey = maps.emails[emailId],
+                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
                 return
             }
             let file = File()
@@ -179,11 +177,13 @@ class DBManager {
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
             realm.add(file, update: true)
             email.files.append(file)
-        case "file_key":
+        case "filekey":
             let key = object["key"] as? String
             let iv = object["iv"] as? String
             let emailId = object["emailId"] as! Int
-            let emailKey = maps.emails[emailId]!
+            guard let emailKey = maps.emails[emailId] else {
+                return
+            }
             let fileKey = FileKey()
             fileKey.id = object["id"] as! Int
             fileKey.key = key != nil && iv != nil ? "\(key!):\(iv!)" : ""

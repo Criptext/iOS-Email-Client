@@ -71,6 +71,8 @@ class ConnectDeviceViewController: UIViewController{
             let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt) else {
             return
         }
+        self.connectUIView.goBackButton.isHidden = true
+        self.connectUIView.messageLabel.text = "Restoring emails..."
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
         queue.async {
             DBManager.createSystemLabels()
@@ -114,6 +116,7 @@ class ConnectDeviceViewController: UIViewController{
         DBManager.store([myContact])
         let defaults = UserDefaults.standard
         defaults.set(myAccount.username, forKey: "activeAccount")
+        defaults.set(true, forKey: "welcomeTour")
         registerFirebaseToken(jwt: myAccount.jwt)
         return myAccount
     }
@@ -173,7 +176,7 @@ extension ConnectDeviceViewController: SingleSocketDelegate {
                 break
             }
             self.connectUIView.goBackButton.isHidden = true
-            self.connectUIView.messageLabel.text = "Restoring emails..."
+            self.connectUIView.messageLabel.text = "Retrieving emails..."
             scheduleWorker.cancel()
             let data = LinkSuccessData(deviceId: deviceId, key: key, address: address)
             self.handleAddress(data: data)
