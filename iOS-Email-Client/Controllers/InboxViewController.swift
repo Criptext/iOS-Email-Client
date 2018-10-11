@@ -114,6 +114,9 @@ class InboxViewController: UIViewController {
         self.coachMarksController.dataSource = self
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60), failSilently: true)
         getPendingEvents(nil)
+        
+        let count = DBManager.countMails()
+        print("TOTAL EMAILS: \(count)")
     }
     
     override func viewDidAppear(_ animated: Bool) {

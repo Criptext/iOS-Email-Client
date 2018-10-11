@@ -79,7 +79,8 @@ class ConnectUploadViewController: UIViewController{
                 self.showErrorAlert(message: "Unable to retrieve db file path")
                 return
             }
-            guard let outputPath = AESCipher.streamEncrypt(path: myUrl.path, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt) else {
+            guard let compressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: "compressed.db", compress: true),
+                let outputPath = AESCipher.streamEncrypt(path: compressedPath, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt) else {
                 self.showErrorAlert(message: "Unable to encrypt db file")
                 return
             }

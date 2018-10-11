@@ -279,6 +279,12 @@ extension DBManager {
         return results.first
     }
     
+    class func countMails() -> Int {
+        let realm = try! Realm()
+        
+        return realm.objects(Email.self).count
+    }
+    
     class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> [Thread] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()

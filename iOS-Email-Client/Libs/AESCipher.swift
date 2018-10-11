@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Compression
+import Gzip
 
 class AESCipher {
     class func encrypt(data: Data, keyData: Data, ivData: Data, operation: Int) -> Data? {
@@ -161,4 +163,89 @@ class AESCipher {
         CC_SHA256((data as NSData).bytes, CC_LONG(data.count), res.mutableBytes.assumingMemoryBound(to: UInt8.self))
         return res as Data
     }
+    
+    class func compressFile(path: String, outputName: String, compress: Bool) -> String {
+        let outputURL = CriptextFileManager.getURLForFile(name: outputName)
+        try? FileManager.default.removeItem(at: outputURL)
+        FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
+        
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        
+        if(compress) {
+            let newData = try! data.gzipped()
+            try! newData.write(to: outputURL)
+        } else {
+            let newData = try! data.gunzipped()
+            try! newData.write(to: outputURL)
+        }
+        
+        return outputURL.path
+    }
+    
+    /*class func compressFile(path: String, outputName: String, compress: Bool) throws -> String {
+        let outputURL = CriptextFileManager.getURLForFile(name: outputName)
+        try? FileManager.default.removeItem(at: outputURL)
+        FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
+        
+        guard let inputStream = InputStream.init(fileAtPath: path),
+            let outputStream = OutputStream.init(url: outputURL, append: false) else {
+            throw CriptextError.init(message: "open stream error")
+        }
+        
+        let operation = compress ? COMPRESSION_STREAM_ENCODE : COMPRESSION_STREAM_DECODE
+        let algorithm = COMPRESSION_ZLIB
+        let flag = compress ? Int32(COMPRESSION_STREAM_FINALIZE.rawValue) : 0
+        inputStream.open()
+        outputStream.open()
+        
+        while inputStream.hasBytesAvailable {
+            let bufferSize = 512
+            let inBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+            let outBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+            let size = inputStream.read(inBuffer, maxLength: bufferSize)
+            
+            guard size > 0 else {
+                break
+            }
+            
+            let streamPointer = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1)
+            var stream = streamPointer.pointee
+            var streamStatus = compression_stream_init(&stream, operation, algorithm)
+            guard streamStatus != COMPRESSION_STATUS_ERROR else {
+                throw CriptextError.init(message: "Decompression stream error")
+            }
+            
+            stream.src_ptr = UnsafePointer<UInt8>.init(inBuffer)
+            stream.src_size = size
+            stream.dst_ptr = outBuffer
+            stream.dst_size = bufferSize
+            
+            repeat {
+                streamStatus = compression_stream_process(&stream, flag)
+                switch(streamStatus){
+                case COMPRESSION_STATUS_OK:
+                    print("GZIP OK")
+                    if stream.dst_size == 0 {
+                        outputStream.write(outBuffer, maxLength: bufferSize)
+                        stream.dst_ptr = outBuffer
+                        stream.dst_size = bufferSize
+                    }
+                case COMPRESSION_STATUS_END:
+                    print("GZIP END")
+                    if(stream.dst_ptr > outBuffer) {
+                        outputStream.write(outBuffer, maxLength: stream.dst_ptr - outBuffer)
+                    }
+                case COMPRESSION_STATUS_ERROR:
+                    print("GZIP ERROR")
+                    throw CriptextError.init(message: "Decompression of block failed")
+                default:
+                    print("GZIP GG WP")
+                    break
+                }
+            } while streamStatus == COMPRESSION_STATUS_OK
+        }
+        inputStream.close()
+        outputStream.close()
+        return outputURL.path
+    }*/
 }

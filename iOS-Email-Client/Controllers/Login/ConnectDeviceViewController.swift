@@ -68,16 +68,18 @@ class ConnectDeviceViewController: UIViewController{
         let myAccount = createAccount()
         guard let keyData = Data(base64Encoded: data.key),
             let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: data.deviceId),
-            let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt) else {
-            return
+            let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt),
+            let decompressedPath = try? AESCipher.compressFile(path: decryptedPath, outputName: "decompressed.db", compress: false)else {
+                print("YA VALIO MADRES")
+                return
         }
         self.connectUIView.goBackButton.isHidden = true
         self.connectUIView.messageLabel.text = "Restoring emails..."
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
         queue.async {
             DBManager.createSystemLabels()
-            print(decryptedPath)
-            let streamReader = StreamReader(url: URL(fileURLWithPath: decryptedPath), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
+            print(decompressedPath)
+            let streamReader = StreamReader(url: URL(fileURLWithPath: decompressedPath), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
             var dbRows = [[String: Any]]()
             var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
             while let line = streamReader?.nextLine() {
