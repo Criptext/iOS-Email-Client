@@ -164,19 +164,19 @@ class AESCipher {
         return res as Data
     }
     
-    class func compressFile(path: String, outputName: String, compress: Bool) -> String {
+    class func compressFile(path: String, outputName: String, compress: Bool) throws -> String {
         let outputURL = CriptextFileManager.getURLForFile(name: outputName)
         try? FileManager.default.removeItem(at: outputURL)
         FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
         
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        let data = try Data(contentsOf: URL(fileURLWithPath: path))
         
         if(compress) {
-            let newData = try! data.gzipped()
-            try! newData.write(to: outputURL)
+            let newData = try data.gzipped()
+            try newData.write(to: outputURL)
         } else {
-            let newData = try! data.gunzipped()
-            try! newData.write(to: outputURL)
+            let newData = try data.gunzipped()
+            try newData.write(to: outputURL)
         }
         
         return outputURL.path

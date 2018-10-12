@@ -260,6 +260,8 @@
 		A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F30274216EA60B00676DD2 /* gunzipped.txt */; };
 		A7F3027A216EB78200676DD2 /* compressed.gz in Resources */ = {isa = PBXBuildFile; fileRef = A7F30279216EB78200676DD2 /* compressed.gz */; };
 		A7F3027C216EBABD00676DD2 /* Gzip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F3027B216EBABC00676DD2 /* Gzip.framework */; };
+		A7F3027E216F9B8700676DD2 /* SignInVerificationUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7F3027D216F9B8700676DD2 /* SignInVerificationUIPopover.xib */; };
+		A7F30280216F9DCF00676DD2 /* SignInVerificationUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -532,6 +534,8 @@
 		A7F30274216EA60B00676DD2 /* gunzipped.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gunzipped.txt; sourceTree = "<group>"; };
 		A7F30279216EB78200676DD2 /* compressed.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = compressed.gz; sourceTree = "<group>"; };
 		A7F3027B216EBABC00676DD2 /* Gzip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gzip.framework; path = Carthage/Build/iOS/Gzip.framework; sourceTree = "<group>"; };
+		A7F3027D216F9B8700676DD2 /* SignInVerificationUIPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInVerificationUIPopover.xib; sourceTree = "<group>"; };
+		A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVerificationUIPopover.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -693,6 +697,7 @@
 				7CF93F4C214329C600361837 /* ChangePassViewController.swift */,
 				7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */,
 				7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */,
+				A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -901,6 +906,7 @@
 				7C2B7D1F214ACA6400604059 /* GeneralHeaderTableViewCell.swift */,
 				7C1DA3882152F17000C4C38E /* MailboxHeaderUITableCell.xib */,
 				7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */,
+				A7F3027D216F9B8700676DD2 /* SignInVerificationUIPopover.xib */,
 				7C1DA38A2153065100C4C38E /* ConnectView.xib */,
 				7C1DA38C2153083700C4C38E /* ConnectUIView.swift */,
 			);
@@ -1123,6 +1129,7 @@
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
 				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
+				A7F3027E216F9B8700676DD2 /* SignInVerificationUIPopover.xib in Resources */,
 				7CBD20BE2024B09F00D70B87 /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */,
@@ -1327,6 +1334,7 @@
 				7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */,
 				41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */,
 				7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */,
+				A7F30280216F9DCF00676DD2 /* SignInVerificationUIPopover.swift in Sources */,
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,

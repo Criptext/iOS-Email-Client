@@ -57,6 +57,11 @@ class RemoveDeviceUIPopover: BaseUIPopover {
                 self.logout()
                 return
             }
+            if case .Missing = responseData {
+                self.showLoader(false)
+                self.passwordTextField.detail = "Wrong password. Please try again."
+                return
+            }
             guard case .Success = responseData else {
                 self.showLoader(false)
                 self.passwordTextField.detail = "Unable to remove device \(self.device.name)"

@@ -102,9 +102,9 @@ extension UIViewController {
     }
     
     func presentLinkDevicePopover(linkData: LinkData){
-        let linkDeviceVC = GenericDualAnswerUIPopover()
-        linkDeviceVC.initialTitle = "Device Authentication"
-        linkDeviceVC.initialMessage = "Do you want to approve \(linkData.deviceName)?"
+        let linkDeviceVC = SignInVerificationUIPopover()
+        linkDeviceVC.deviceName = linkData.deviceName
+        linkDeviceVC.deviceType = Device.Kind(rawValue: linkData.deviceType)!
         linkDeviceVC.onResponse = { [weak self] accept in
             guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
                 return
@@ -115,7 +115,7 @@ extension UIViewController {
             }
             delegate.onAcceptLinkDevice(linkData: linkData)
         }
-        self.presentPopover(popover: linkDeviceVC, height: 175)
+        self.presentPopover(popover: linkDeviceVC, height: 215)
     }
 }
 

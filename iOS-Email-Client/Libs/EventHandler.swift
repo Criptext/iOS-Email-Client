@@ -83,7 +83,6 @@ class EventHandler {
             self.handleNewEmailCommand(params: params, finishCallback: handleEventResponse)
             break
         case Event.emailStatus.rawValue:
-            print("NUEVO \(params)")
             self.handleEmailStatusCommand(params: params, finishCallback: handleEventResponse)
             break
         case Event.Peer.unsent.rawValue:
@@ -235,19 +234,12 @@ class EventHandler {
     
     func handleEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         let event = EventData.EmailStatus.init(params: params)
-        
         if event.type == Email.Status.unsent.rawValue,
             let email = DBManager.getMail(key: event.emailId) {
             DBManager.unsendEmail(email, date: event.date)
             finishCallback(true, .Email(email))
             return
         }
-        
-        guard event.from != myAccount.username else {
-            finishCallback(true, .Empty)
-            return
-        }
-        
         let actionType: FeedItem.Action = event.fileId == nil ? .open : .download
         guard !DBManager.feedExists(emailId: event.emailId, type: actionType.rawValue, contactId: "\(event.from)\(Constants.domain)"),
             let contact = DBManager.getContact("\(event.from)\(Constants.domain)"),
@@ -326,7 +318,6 @@ class EventHandler {
         case Event.Peer.recoveryVerify.rawValue:
             return .RecoveryVerified
         case Event.newEvent.rawValue:
-            print("NUEVO EVENTO WEH")
             return .NewEvent
         default:
             return .Unhandled

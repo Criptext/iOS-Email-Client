@@ -35,6 +35,8 @@ class APIManager {
         case missing = 404
         case authPending = 491
         case authDenied = 493
+        case tooManyDevices = 439
+        case tooManyRequests = 429
     }
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
@@ -68,6 +70,10 @@ class APIManager {
             return .AuthDenied
         case .authPending:
             return .AuthPending
+        case .tooManyRequests:
+            return .TooManyRequests
+        case .tooManyDevices:
+            return .TooManyDevices
         case .success, .successAccepted, .successNoContent, .notModified:
             break
         default:

@@ -12,10 +12,11 @@ class LoginDeviceViewController: UIViewController{
     
     var loginData: LoginData!
     var socket : SingleWebSocket?
-    var scheduleWorker = ScheduleWorker(interval: 5.0)
+    var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,14 +38,7 @@ class LoginDeviceViewController: UIViewController{
     
     override func viewWillDisappear(_ animated: Bool) {
         socket?.close()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        guard let jwt = loginData.jwt else {
-            self.navigationController?.popViewController(animated: true)
-            return
-        }
-        socket?.connect(jwt: jwt)
+        scheduleWorker.cancel()
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
@@ -83,6 +77,7 @@ class LoginDeviceViewController: UIViewController{
     func onFailure(){
         failureDeviceView.isHidden = false
         waitingDeviceView.isHidden = true
+        titleLabel.text = "Sign In Rejected"
     }
     
     func jumpToConnectDevice(name: String, deviceId: Int){
@@ -117,6 +112,7 @@ extension LoginDeviceViewController: ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void) {
         guard let jwt = loginData.jwt else {
             self.navigationController?.popViewController(animated: true)
+            completion(true)
             return
         }
         APIManager.linkStatus(token: jwt) { (responseData) in
@@ -132,6 +128,20 @@ extension LoginDeviceViewController: ScheduleWorkerDelegate {
             self.newMessage(cmd: Event.Link.accept.rawValue, params: params)
         }
     }
+    
+    func dangled(){
+        let retryPopup = GenericDualAnswerUIPopover()
+        retryPopup.initialMessage = "Something has happened that is delaying this process. Do want to continue waiting?"
+        retryPopup.initialTitle = "Well, that’s odd…"
+        retryPopup.onResponse = { accept in
+            guard accept else {
+                self.navigationController?.popViewController(animated: true)
+                return
+            }
+            self.scheduleWorker.start()
+        }
+        self.presentPopover(popover: retryPopup, height: 205)
+    }
 }
 
 extension LoginDeviceViewController: SingleSocketDelegate {
@@ -142,10 +152,12 @@ extension LoginDeviceViewController: SingleSocketDelegate {
                 let name = params?["name"] as? String else {
                 break
             }
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
             self.scheduleWorker.cancel()
             self.socket?.close()
             self.jumpToConnectDevice(name: name, deviceId: deviceId)
         case Event.Link.deny.rawValue:
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
             self.scheduleWorker.cancel()
             self.socket?.close()
             self.onFailure()

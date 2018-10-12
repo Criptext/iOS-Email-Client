@@ -12,22 +12,35 @@ typealias WorkCompletion = ((Bool) -> Void)
 
 protocol ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void)
+    func dangled()
 }
 
 class ScheduleWorker {
     
-    var interval: Double
+    let interval: Double
+    let maxRetries: Int
     var worker: DispatchWorkItem?
     var delegate: ScheduleWorkerDelegate?
     var isRunning = false
+    var retries: Int = 0
     
-    init(interval: Double){
+    init(interval: Double, maxRetries: Int = 0){
         self.interval = interval
+        self.maxRetries = maxRetries
     }
     
     func start() {
+        retries = 0
         worker?.cancel()
         let newWorker = DispatchWorkItem(block: {
+            if self.maxRetries > 0 {
+                self.retries += 1
+                if (self.retries > self.maxRetries) {
+                    self.delegate?.dangled()
+                    self.isRunning = false
+                    return
+                }
+            }
             self.isRunning = self.delegate != nil
             self.delegate?.work { (success) in
                 self.isRunning = false

@@ -116,7 +116,6 @@ class InboxViewController: UIViewController {
         getPendingEvents(nil)
         
         let count = DBManager.countMails()
-        print("TOTAL EMAILS: \(count)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1131,6 +1130,8 @@ extension InboxViewController {
             }
             if(shouldRemoveItems){
                 self.removeThreads(threadIds: threadIds)
+            } else {
+                self.updateThreads(threadIds: threadIds)
             }
         }
     }

@@ -132,6 +132,14 @@ class NewLoginViewController: UIViewController{
                 self.jumpToLoginPasswordView(loginData: loginData)
                 return
             }
+            if case .TooManyDevices = responseData {
+                self.showLoginError(error: "Too many devices already logged in.")
+                return
+            }
+            if case .TooManyRequests = responseData {
+                self.showLoginError(error: "Too many login attempts, try again later.")
+                return
+            }
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.showLoginError(error: error.description)

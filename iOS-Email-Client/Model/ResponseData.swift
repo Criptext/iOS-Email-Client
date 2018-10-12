@@ -21,4 +21,6 @@ enum ResponseData {
     case BadRequest
     case AuthPending
     case AuthDenied
+    case TooManyDevices
+    case TooManyRequests
 }
