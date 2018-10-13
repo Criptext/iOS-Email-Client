@@ -64,7 +64,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
             }
             guard case .Success = responseData else {
                 self.showLoader(false)
-                self.passwordTextField.detail = "Unable to remove device \(self.device.name)"
+                self.passwordTextField.detail = "Unable to remove device \(self.device.friendlyName)"
                 return
             }
             self.onSuccess?(deviceId)

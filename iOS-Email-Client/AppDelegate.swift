@@ -138,8 +138,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         
-        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .authenticationRequired)
-        let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Deny", options: .destructive)
+        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .foreground)
+        let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Reject", options: .destructive)
         let linkCategory = UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.setNotificationCategories([linkCategory])

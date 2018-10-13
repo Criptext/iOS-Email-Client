@@ -29,6 +29,10 @@ class ConnectUploadViewController: UIViewController{
     var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
     var state: ConnectionState = .link
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     internal enum ConnectionState{
         case link
         case creatingDB(Int32)
@@ -167,9 +171,10 @@ class ConnectUploadViewController: UIViewController{
                 self.presentProcessInterrupted()
                 return
             }
-            self.connectUIView.handleSuccess()
             self.connectUIView.progressChange(value: 100.0, message: "Mailbox Uploaded Successfully", completion: {
-                self.dismiss(animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.dismiss(animated: true)
+                }
             })
         }
     }

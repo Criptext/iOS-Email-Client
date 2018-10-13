@@ -60,6 +60,9 @@ class ConnectUIView: UIView {
             self.progressView.setProgress(Float(value/100), animated: true)
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + duration){
+            if value == 100 {
+                self.handleSuccess()
+            }
             completion()
         }
     }

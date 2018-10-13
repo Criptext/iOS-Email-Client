@@ -113,9 +113,7 @@ class InboxViewController: UIViewController {
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60), failSilently: true)
-        getPendingEvents(nil)
-        
-        let count = DBManager.countMails()
+        getPendingEvents(nil)        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1441,9 +1439,14 @@ extension InboxViewController: LinkDeviceDelegate {
     }
     
     func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
-        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
+        linkDeviceVC.linkData = linkData
+        linkDeviceVC.myAccount = myAccount
+        self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
+        self.getTopView().present(linkDeviceVC, animated: true) {
             completion()
-        })
+        }
     }
     func onCancelLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
         APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in

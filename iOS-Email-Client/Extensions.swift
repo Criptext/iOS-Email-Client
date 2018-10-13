@@ -115,6 +115,9 @@ extension UIViewController {
             }
             delegate.onAcceptLinkDevice(linkData: linkData)
         }
+        guard self.getTopView() is LinkDeviceDelegate else {
+            return
+        }
         self.presentPopover(popover: linkDeviceVC, height: 215)
     }
 }

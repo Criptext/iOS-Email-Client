@@ -17,6 +17,10 @@ class ConnectDeviceViewController: UIViewController{
     var scheduleWorker = ScheduleWorker(interval: 10.0, maxRetries: 18)
     var state: ConnectionState = .sendKeys
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
+    }
+    
     internal struct LinkSuccessData {
         var deviceId: Int32
         var key: String
@@ -114,6 +118,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func unpackDB(myAccount: Account, path: String, data: LinkSuccessData) {
+        self.connectUIView.progressChange(value: 80.0, message: "Decrypting Mailbox", completion: {})
         guard let keyData = Data(base64Encoded: data.key),
             let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: data.deviceId),
             let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt),
@@ -126,11 +131,11 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
-        self.connectUIView.progressChange(value: 99.0, message: "Decrypting Mailbox", completion: {})
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
         queue.async {
             let streamReader = StreamReader(url: URL(fileURLWithPath: path), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
             var dbRows = [[String: Any]]()
+            var progress = 80
             var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
             while let line = streamReader?.nextLine() {
                 guard let row = Utils.convertToDictionary(text: line) else {
@@ -140,15 +145,22 @@ class ConnectDeviceViewController: UIViewController{
                 if dbRows.count >= 30 {
                     DBManager.insertBatchRows(rows: dbRows, maps: &maps)
                     dbRows.removeAll()
+                    if progress < 99 {
+                        progress += 1
+                    }
+                    DispatchQueue.main.async {
+                        self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
+                    }
                 }
             }
             DBManager.insertBatchRows(rows: dbRows, maps: &maps)
             DispatchQueue.main.async {
-                self.connectUIView.messageLabel.text = "Mailbox restored successfully!"
-                self.connectUIView.handleSuccess()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self.goToMailbox(myAccount.username)
-                    self.registerFirebaseToken(jwt: myAccount.jwt)
+                self.connectUIView.progressChange(value: 100, message: "Decrypting Mailbox") {
+                    self.connectUIView.messageLabel.text = "Mailbox restored successfully!"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.goToMailbox(myAccount.username)
+                        self.registerFirebaseToken(jwt: myAccount.jwt)
+                    }
                 }
             }
         }
