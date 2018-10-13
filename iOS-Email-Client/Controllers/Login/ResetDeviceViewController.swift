@@ -67,7 +67,7 @@ class ResetDeviceViewController: UIViewController{
                 return
             }
             if case .TooManyRequests = responseData {
-                self.showFeedback(true, "Too many login attempts, try again later.")
+                self.showFeedback(true, "Too many sign in attempts, try again later.")
                 return
             }
             if case let .Error(error) = responseData,

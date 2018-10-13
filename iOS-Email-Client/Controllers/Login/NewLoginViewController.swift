@@ -137,7 +137,7 @@ class NewLoginViewController: UIViewController{
                 return
             }
             if case .TooManyRequests = responseData {
-                self.showLoginError(error: "Too many login attempts, try again later.")
+                self.showLoginError(error: "Too many sign in attempts, try again later.")
                 return
             }
             if case let .Error(error) = responseData,

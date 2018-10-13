@@ -556,7 +556,7 @@ class ComposeViewController: UIViewController {
     @IBAction func didPressAttachment(_ sender: UIButton) {
         //derpo
         guard fileManager.registeredFiles.count < 5 else {
-            self.showAlert("Attachments cap reached", message: "/nYou can upload up to 5 attachments per email. Please consider removing one before adding another", style: .alert)
+            self.showAlert("Attachments cap reached", message: "\nYou can upload up to 5 attachments per email. Please consider removing one before adding another", style: .alert)
             return
         }
         self.showAttachmentDrawer(true)
@@ -1025,7 +1025,7 @@ extension ComposeViewController: CNContactPickerDelegate {
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
         guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
-            self.showAlert("Recipients cap reached", message: "You can add up to 300 recipients for each email. Consider removing one before adding another", style: .alert)
+            self.showAlert("Recipients cap reached", message: "\nYou can add up to 300 recipients for each email. Consider removing one before adding another", style: .alert)
             return
         }
         guard Utils.validateEmail(value) else {
