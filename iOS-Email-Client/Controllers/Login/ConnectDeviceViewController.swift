@@ -11,6 +11,11 @@ import FirebaseMessaging
 
 class ConnectDeviceViewController: UIViewController{
     
+    let PROGRESS_SEND_KEYS = 10.0
+    let PROGRESS_SENT_KEYS = 40.0
+    let PROGRESS_DOWNLOADING_MAILBOX = 70.0
+    let PROGRESS_PROCESSING_FILE = 80.0
+    let PROGRESS_COMPLETE = 100.0
     @IBOutlet var connectUIView: ConnectUIView!
     var signupData: SignUpData!
     var socket : SingleWebSocket?
@@ -86,7 +91,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func sendKeysRequest(){
-        self.connectUIView.progressChange(value: 10.0, message: "Sending Keys", completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: "Sending Keys", completion: {})
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
             guard case let .SuccessString(jwt) = responseData else {
@@ -94,7 +99,7 @@ class ConnectDeviceViewController: UIViewController{
                 return
             }
             self.state = .waiting
-            self.connectUIView.progressChange(value: 40.0, message: "Waiting for Mailbox", cancel: true, completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS, message: "Waiting for Mailbox", cancel: true, completion: {})
             self.signupData.token = jwt
             self.socket?.connect(jwt: jwt)
             self.scheduleWorker.start()
@@ -118,7 +123,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func unpackDB(myAccount: Account, path: String, data: LinkSuccessData) {
-        self.connectUIView.progressChange(value: 80.0, message: "Decrypting Mailbox", completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_PROCESSING_FILE, message: "Decrypting Mailbox", completion: {})
         guard let keyData = Data(base64Encoded: data.key),
             let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: data.deviceId),
             let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt),
@@ -155,7 +160,7 @@ class ConnectDeviceViewController: UIViewController{
             }
             DBManager.insertBatchRows(rows: dbRows, maps: &maps)
             DispatchQueue.main.async {
-                self.connectUIView.progressChange(value: 100, message: "Decrypting Mailbox") {
+                self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: "Decrypting Mailbox") {
                     self.connectUIView.messageLabel.text = "Mailbox restored successfully!"
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self.goToMailbox(myAccount.username)
@@ -259,7 +264,7 @@ extension ConnectDeviceViewController: SingleSocketDelegate {
                 let deviceId = params?["authorizerId"] as? Int32 else {
                 break
             }
-            self.connectUIView.progressChange(value: 70.0, message: "Downloading mailbox", completion: {})
+            self.connectUIView.progressChange(value: PROGRESS_DOWNLOADING_MAILBOX, message: "Downloading mailbox", completion: {})
             scheduleWorker.cancel()
             let data = LinkSuccessData(deviceId: deviceId, key: key, address: address)
             state = .downloadDB(data)

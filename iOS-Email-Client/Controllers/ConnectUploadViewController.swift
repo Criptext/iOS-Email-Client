@@ -13,6 +13,11 @@ class ConnectUploadViewController: UIViewController{
     
     let keyData = AESCipher.generateRandomBytes()
     let ivData = AESCipher.generateRandomBytes()
+    let PROGRESS_PREPARING_MAILBOX = 40.0
+    let PROGRESS_GET_KEYS = 50.0
+    let PROGRESS_UPLOADING_FILE = 90.0
+    let PROGRESS_SEND_DATA = 99.0
+    let PROGRESS_COMPLETE = 100.0
     
     enum Status {
         case none
@@ -87,7 +92,7 @@ class ConnectUploadViewController: UIViewController{
                     self.presentProcessInterrupted()
                     return
             }
-            self.connectUIView.progressChange(value: 40.0, message: "Preparing Mailbox", completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_PREPARING_MAILBOX, message: "Preparing Mailbox", completion: {})
             self.linkData.deviceId = deviceId
             self.state = .creatingDB(deviceId)
             self.handleState()
@@ -125,15 +130,13 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func uploadDBFile(path: String){
-        connectUIView.goBackButton.isHidden = true
-        connectUIView.messageLabel.text = "Uploading emails..."
         guard let inputStream = InputStream.init(fileAtPath: path),
             let fileAttributes = try? FileManager.default.attributesOfItem(atPath: path) else {
                 self.presentProcessInterrupted()
                 return
         }
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
-        self.connectUIView.progressChange(value: 90.0, message: "Downloading Mailbox", completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_UPLOADING_FILE, message: "Uploading Mailbox", completion: {})
         APIManager.uploadLinkDBFile(dbFile: inputStream, randomId: linkData.randomId, size: fileSize, token: myAccount.jwt) { (responseData) in
             guard case .Success = responseData else {
                 self.presentProcessInterrupted()
@@ -165,13 +168,13 @@ class ConnectUploadViewController: UIViewController{
             "deviceId": deviceId,
             "key": encryptedKey
         ] as [String: Any]
-        self.connectUIView.progressChange(value: 99.0, message: "Uploading Mailbox", completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_SEND_DATA, message: "Uploading Mailbox", completion: {})
         APIManager.linkDataAddress(params: params, token: myAccount.jwt) { (responseData) in
             guard case .Success = responseData else {
                 self.presentProcessInterrupted()
                 return
             }
-            self.connectUIView.progressChange(value: 100.0, message: "Mailbox Uploaded Successfully", completion: {
+            self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: "Mailbox Uploaded Successfully", completion: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.dismiss(animated: true)
                 }
@@ -210,7 +213,7 @@ extension ConnectUploadViewController: ScheduleWorkerDelegate {
             return
         }
         if databasePath != nil {
-            self.connectUIView.progressChange(value: 50.0, message: "Getting Keys", cancel: true, completion: {})
+            self.connectUIView.progressChange(value: PROGRESS_GET_KEYS, message: "Getting Keys", cancel: true, completion: {})
         }
         APIManager.getKeybundle(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
             guard case let .SuccessDictionary(keys) = responseData else {
