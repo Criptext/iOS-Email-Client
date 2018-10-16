@@ -66,9 +66,9 @@ class EventData {
             date = EventData.convertToDate(dateString: dateString)
             
             from = params["from"] as! String
-            to = (params["toArray"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
-            cc = (params["ccArray"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
-            bcc = (params["bccArray"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
+            to = (params["to"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
+            cc = (params["cc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
+            bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
             labels = (params["labels"] as? [String]) ?? [String]()
         }
     }

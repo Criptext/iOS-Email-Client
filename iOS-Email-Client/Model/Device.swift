@@ -14,9 +14,10 @@ class Device {
     var id = 1
     var name = ""
     var friendlyName = ""
-    var location = ""
+    var location: String?
     var active = false
     var type = Kind.ios.rawValue
+    var lastActivity: Date?
     
     enum Kind : Int{
         case pc = 1
@@ -38,11 +39,14 @@ class Device {
     }
     
     class func fromDictionary(data: [String: Any]) -> Device {
+        let dateString = data["date"] as? String
         let newDevice = Device()
         newDevice.type = data["deviceType"] as! Int
         newDevice.id = data["deviceId"] as! Int
         newDevice.name = data["deviceName"] as! String
         newDevice.friendlyName = data["deviceFriendlyName"] as! String
+        newDevice.lastActivity = dateString != nil ? EventData.convertToDate(dateString: dateString!) : nil
+        newDevice.location = data["ip"] as? String
         return newDevice
     }
     

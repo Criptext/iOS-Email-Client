@@ -30,6 +30,7 @@
                 <outlet property="goBackButton" destination="Arr-wh-3Qv" id="jx3-IJ-6dC"/>
                 <outlet property="messageLabel" destination="XjA-v0-OUS" id="iFu-3n-xrl"/>
                 <outlet property="percentageView" destination="6n3-A1-hlj" id="PRr-uk-ATf"/>
+                <outlet property="progressBar" destination="alh-ZW-Jay" id="kwA-14-ebd"/>
                 <outlet property="progressView" destination="tCp-Nf-OfN" id="eDR-OI-gaw"/>
                 <outlet property="successImage" destination="4rh-2l-H05" id="Gc2-WX-CEK"/>
                 <outlet property="view" destination="BjD-Bq-glM" id="g5Q-h8-GG4"/>
@@ -135,7 +136,7 @@
                     </userDefinedRuntimeAttributes>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Arr-wh-3Qv">
-                    <rect key="frame" x="146" y="607" width="83" height="30"/>
+                    <rect key="frame" x="147.5" y="604" width="80" height="33"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <state key="normal" title="Cancel sync">
                         <color key="titleColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -145,7 +146,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mailbox Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zn2-S4-zxr">
-                    <rect key="frame" x="87.5" y="162.5" width="200" height="31.5"/>
+                    <rect key="frame" x="87.5" y="157" width="200" height="37"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="vEs-NX-GYh"/>
                     </constraints>
@@ -182,15 +183,21 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alh-ZW-Jay" customClass="ITProgressBar" customModule="ITProgressBar">
+                    <rect key="frame" x="67" y="525" width="240" height="41"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Zn2-S4-zxr" firstAttribute="centerX" secondItem="sjD-Xh-tse" secondAttribute="centerX" id="1xN-MI-myb"/>
                 <constraint firstItem="4rh-2l-H05" firstAttribute="centerX" secondItem="p8P-Xu-AGe" secondAttribute="centerX" id="5lE-Ke-7FX"/>
+                <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="alh-ZW-Jay" secondAttribute="trailing" constant="68" id="EJE-Is-Vuu"/>
                 <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="XjA-v0-OUS" secondAttribute="trailing" constant="23" id="ENL-K0-OPO"/>
                 <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="tCp-Nf-OfN" secondAttribute="trailing" constant="79" id="GZD-LG-JyP"/>
                 <constraint firstItem="4rh-2l-H05" firstAttribute="top" secondItem="p8P-Xu-AGe" secondAttribute="bottom" constant="65" id="IKP-fy-9Wg"/>
                 <constraint firstItem="6n3-A1-hlj" firstAttribute="centerX" secondItem="sjD-Xh-tse" secondAttribute="centerX" id="JK9-p9-waY"/>
+                <constraint firstItem="alh-ZW-Jay" firstAttribute="leading" secondItem="sjD-Xh-tse" secondAttribute="leading" constant="67" id="Jkq-Yz-luN"/>
                 <constraint firstItem="DRm-qL-uYQ" firstAttribute="leading" secondItem="p8P-Xu-AGe" secondAttribute="trailing" constant="13" id="Ly9-Ys-q03"/>
                 <constraint firstItem="tCp-Nf-OfN" firstAttribute="top" secondItem="p8P-Xu-AGe" secondAttribute="bottom" constant="66" id="Nvp-iX-YTz"/>
                 <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="I2c-6Y-BuD" secondAttribute="trailing" constant="23" id="UJU-1z-OmX"/>
@@ -201,6 +208,7 @@
                 <constraint firstItem="Ei6-qi-JLl" firstAttribute="centerY" secondItem="4rh-2l-H05" secondAttribute="centerY" id="alA-9s-NWr"/>
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="centerY" secondItem="sjD-Xh-tse" secondAttribute="centerY" multiplier="0.87" id="bhr-TN-aUD"/>
                 <constraint firstItem="I2c-6Y-BuD" firstAttribute="leading" secondItem="sjD-Xh-tse" secondAttribute="leading" constant="23" id="esQ-GO-eXd"/>
+                <constraint firstItem="Arr-wh-3Qv" firstAttribute="top" secondItem="alh-ZW-Jay" secondAttribute="bottom" constant="38" id="gSO-Dj-g5i"/>
                 <constraint firstItem="DRm-qL-uYQ" firstAttribute="centerY" secondItem="p8P-Xu-AGe" secondAttribute="centerY" id="ij4-0u-um6"/>
                 <constraint firstItem="6n3-A1-hlj" firstAttribute="top" secondItem="tCp-Nf-OfN" secondAttribute="bottom" constant="12" id="ijt-0H-cIq"/>
                 <constraint firstItem="JNI-pY-rPy" firstAttribute="centerY" secondItem="p8P-Xu-AGe" secondAttribute="centerY" id="ioz-Fa-dND"/>
@@ -210,6 +218,7 @@
                 <constraint firstItem="XjA-v0-OUS" firstAttribute="top" secondItem="6n3-A1-hlj" secondAttribute="bottom" constant="33" id="nSo-Ey-evK"/>
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="top" secondItem="Zn2-S4-zxr" secondAttribute="bottom" constant="100" id="nXz-d9-SAQ"/>
                 <constraint firstItem="I2c-6Y-BuD" firstAttribute="top" secondItem="XjA-v0-OUS" secondAttribute="bottom" constant="4" id="pP0-qb-dAF"/>
+                <constraint firstItem="alh-ZW-Jay" firstAttribute="top" secondItem="I2c-6Y-BuD" secondAttribute="bottom" constant="34" id="xRz-sV-CY5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="sjD-Xh-tse"/>
             <point key="canvasLocation" x="138.40000000000001" y="152.47376311844079"/>

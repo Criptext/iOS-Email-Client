@@ -253,6 +253,7 @@
 		A713109C21596F2E00534F13 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */; };
 		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
+		A748872921767366004D0BD8 /* ITProgressBar_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77AD67221642AFC00C26F07 /* StreamReader.swift */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
@@ -527,6 +528,8 @@
 		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = ../../../Downloads/Firebase/Analytics/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
+		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
+		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		A77AD67221642AFC00C26F07 /* StreamReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
@@ -543,6 +546,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A748872921767366004D0BD8 /* ITProgressBar_Framework.framework in Frameworks */,
 				A7F3027C216EBABD00676DD2 /* Gzip.framework in Frameworks */,
 				7CF93F5A2146EDC300361837 /* Lottie.framework in Frameworks */,
 				7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */,
@@ -603,6 +607,8 @@
 		2962C69A939AA368B015D288 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */,
+				A748871421765CF8004D0BD8 /* ITProgressBar.framework */,
 				A7F3027B216EBABC00676DD2 /* Gzip.framework */,
 				7CF93F592146EDC300361837 /* Lottie.framework */,
 				7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */,
@@ -1215,6 +1221,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/UIWindowTransitions.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Lottie.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Gzip.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ITProgressBar_Framework.framework",
 			);
 			name = "Run Script Framework";
 			outputPaths = (
@@ -1241,6 +1248,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIWindowTransitions.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Lottie.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Gzip.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ITProgressBar_Framework.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

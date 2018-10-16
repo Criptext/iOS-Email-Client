@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ITProgressBar_Framework
 
 class ConnectUIView: UIView {
     
@@ -21,6 +22,7 @@ class ConnectUIView: UIView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var percentageView: UIView!
     @IBOutlet weak var counterLabel: CounterLabelUIView!
+    @IBOutlet weak var progressBar: ITProgressBar!
     var goBack: (() -> Void)?
     
     required init?(coder aDecoder: NSCoder) {
@@ -28,6 +30,7 @@ class ConnectUIView: UIView {
         UINib(nibName: "ConnectView", bundle: nil).instantiate(withOwner: self, options: nil)
         addSubview(view)
         view.frame = self.bounds
+        ITProgressBar
     }
     
     func initialLoad(email: String) {
@@ -58,6 +61,7 @@ class ConnectUIView: UIView {
         self.counterLabel.setValue(value, interval: duration)
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
             self.progressView.setProgress(Float(value/100), animated: true)
+            self.progressBar.progress = value/100
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + duration){
             if value == 100 {

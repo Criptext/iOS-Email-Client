@@ -19,3 +19,4 @@ github "ephread/Instructions" ~> 1.2.0
 github "malcommac/UIWindowTransitions"
 github "airbnb/lottie-ios" "master"
 github "1024jp/GzipSwift"
+git "/Users/allisson/Documents/GitCriptext/ITProgressBar-iOS"
