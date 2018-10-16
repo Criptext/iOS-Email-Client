@@ -17,9 +17,12 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
     
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var okButton: UIButton!
+    @IBOutlet weak var rightButton: UIButton!
+    @IBOutlet weak var leftButton: UIButton!
     var initialTitle = ""
     var initialMessage = ""
+    var rightOption = "Yes"
+    var leftOption = "No"
     var onResponse: ((Bool) -> Void)?
     
     init(){
@@ -35,6 +38,8 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
         super.viewDidLoad()
         messageLabel.text = initialMessage
         titleLabel.text = initialTitle
+        rightButton.setTitle(rightOption, for: .normal)
+        leftButton.setTitle(leftOption, for: .normal)
     }
     
     @IBAction func onOkPress(_ sender: Any) {

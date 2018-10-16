@@ -221,6 +221,13 @@ class SendMailAsyncTask {
             requestParams["threadId"] = thread
         }
         APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { responseData in
+            if case .TooManyRequests = responseData {
+                DispatchQueue.main.async {
+                    self.setEmailAsFailed()
+                    completion(ResponseData.Error(CriptextError(message: "Failed to send e-mail. Email cap reached. It will be sent later.")))
+                }
+                return
+            }
             guard case let .SuccessDictionary(updateData) = responseData else {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()

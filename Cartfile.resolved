@@ -1,3 +1,4 @@
+github "1024jp/GzipSwift" "4.0.4"
 github "Alamofire/Alamofire" "4.7.3"
 github "CosmicMind/Material" "2.16.4"
 github "CosmicMind/Motion" "1.4.3"

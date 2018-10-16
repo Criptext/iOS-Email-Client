@@ -13,6 +13,7 @@ class LinkData {
     let deviceName: String
     let deviceType: Int
     let randomId: String
+    var deviceId: Int32? = nil
     
     init(deviceName: String, deviceType: Int, randomId: String) {
         self.deviceName = deviceName

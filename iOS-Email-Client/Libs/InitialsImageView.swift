@@ -133,13 +133,21 @@ private func randomColorComponent() -> Int {
 }
 
 private func randomColor(for string: String) -> UIColor {
-    srand48(string.hashValue)
+    var total: Int = 0
+    for u in string.unicodeScalars {
+        total += Int(UInt32(u))
+    }
     
-    let red = CGFloat(randomColorComponent()) / 255.0
-    let green = CGFloat(randomColorComponent()) / 255.0
-    let blue = CGFloat(randomColorComponent()) / 255.0
+    srand48(total * 200)
+    let r = CGFloat(drand48())
     
-    return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    srand48(total)
+    let g = CGFloat(drand48())
+    
+    srand48(total / 200)
+    let b = CGFloat(drand48())
+    
+    return UIColor(red: r, green: g, blue: b, alpha: 1)
 }
 
 private func clampColorComponent(_ value: CGFloat) -> CGFloat {

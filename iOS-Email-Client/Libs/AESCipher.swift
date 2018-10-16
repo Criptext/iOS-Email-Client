@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Compression
+import Gzip
 
 class AESCipher {
     class func encrypt(data: Data, keyData: Data, ivData: Data, operation: Int) -> Data? {
@@ -35,10 +37,11 @@ class AESCipher {
         return cryptData
     }
     
-    class func streamEncrypt(path: String, outputName: String, keyData: Data, ivData: Data, operation: Int) -> String? {
+    class func streamEncrypt(path: String, outputName: String, keyData: Data, ivData: Data?, operation: Int) -> String? {
         let outputURL = CriptextFileManager.getURLForFile(name: outputName)
         try? FileManager.default.removeItem(at: outputURL)
         FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
+        
         
         let fileAttributes = try! FileManager.default.attributesOfItem(atPath: path)
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
@@ -49,19 +52,37 @@ class AESCipher {
         var cryptor: CCCryptorRef? = nil
         let cryptorPointer = UnsafeMutablePointer<CCCryptorRef?>(&cryptor)
         
+        guard let inputStream = InputStream.init(fileAtPath: path),
+            let outputStream = OutputStream.init(url: outputURL, append: false) else {
+                return nil
+        }
+        outputStream.open()
+        inputStream.open()
+        guard let localIvData = handleIv(inputStream: inputStream, outputStream: outputStream, ivData: ivData) else {
+                return nil
+        }
         let cryptorStatus = keyData.withUnsafeBytes({ keyBytes in
-            ivData.withUnsafeBytes({ ivBytes in
+            localIvData.withUnsafeBytes({ ivBytes in
                 CCCryptorCreate(CCOperation(operation), CCAlgorithm(kCCAlgorithmAES128), options, keyBytes, keyLength, ivBytes, cryptorPointer)
             })
         })
         
         guard UInt32(cryptorStatus) == UInt32(kCCSuccess),
             let cryptorRef = cryptor else {
+            outputStream.close()
+            inputStream.close()
             return nil
         }
         
-        let updateSuccess = doUpdate(cryptor: cryptorRef, inputPath: path, outputURL: outputURL)
-        let finalSuccess = doFinal(cryptor: cryptorRef, fileSize: fileSize, outputURL: outputURL)
+        let updateSuccess = doUpdate(cryptor: cryptorRef, inputStream: inputStream, outputStream: outputStream)
+        outputStream.close()
+        inputStream.close()
+        guard let outputStream2 = OutputStream.init(url: outputURL, append: true) else {
+                return nil
+        }
+        outputStream2.open()
+        let finalSuccess = doFinal(cryptor: cryptorRef, fileSize: fileSize, outputStream: outputStream2)
+        outputStream2.close()
         
         guard updateSuccess && finalSuccess else {
             return nil
@@ -70,18 +91,23 @@ class AESCipher {
         return outputURL.path
     }
     
-    private class func doUpdate(cryptor: CCCryptorRef, inputPath: String, outputURL: URL) -> Bool {
-        guard let inputStream = InputStream.init(fileAtPath: inputPath),
-            let outputStream = OutputStream.init(url: outputURL, append: false) else {
-                return false
+    private class func handleIv(inputStream: InputStream, outputStream: OutputStream, ivData: Data?) -> Data? {
+        if let localIvData = ivData {
+            localIvData.withUnsafeBytes { ivBytes in
+                outputStream.write(ivBytes, maxLength: localIvData.count)
+            }
+            return localIvData
         }
-        
+        let bufferSize = 16
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+        inputStream.read(buffer, maxLength: bufferSize)
+        return Data.init(bytes: buffer, count: bufferSize)
+    }
+    
+    private class func doUpdate(cryptor: CCCryptorRef, inputStream: InputStream, outputStream: OutputStream) -> Bool {
         let bufferSize = 512
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
         var dataOutMoved:Int = 0
-        
-        inputStream.open()
-        outputStream.open()
         
         while inputStream.hasBytesAvailable {
             let input = inputStream.read(buffer, maxLength: bufferSize)
@@ -91,29 +117,18 @@ class AESCipher {
             outputStream.write(outBuffer, maxLength: dataOutMoved)
         }
         
-        outputStream.close()
-        inputStream.close()
-        
         return true
     }
     
-    private class func doFinal(cryptor: CCCryptorRef, fileSize: Int, outputURL: URL) -> Bool {
+    private class func doFinal(cryptor: CCCryptorRef, fileSize: Int, outputStream: OutputStream) -> Bool {
         let bufferSize = 512
         var dataOutMoved:Int = 0
         
-        guard let outputStream2 = OutputStream.init(url: outputURL, append: true) else {
-            return false
-        }
-        
-        outputStream2.open()
-        
-        let outBufferSize = CCCryptorGetOutputLength(cryptor, fileSize, true)
+        let outBufferSize = CCCryptorGetOutputLength(cryptor, fileSize - 16, true)
         let outBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: outBufferSize)
         CCCryptorFinal(cryptor, outBuffer, bufferSize, &dataOutMoved)
-        outputStream2.write(outBuffer, maxLength: dataOutMoved)
+        outputStream.write(outBuffer, maxLength: dataOutMoved)
         print(Data.init(bytes: outBuffer, count: dataOutMoved).base64EncodedString())
-        
-        outputStream2.close()
         
         return true
     }
@@ -147,5 +162,23 @@ class AESCipher {
         guard let res = NSMutableData(length: Int(CC_SHA256_DIGEST_LENGTH)) else { return nil }
         CC_SHA256((data as NSData).bytes, CC_LONG(data.count), res.mutableBytes.assumingMemoryBound(to: UInt8.self))
         return res as Data
+    }
+    
+    class func compressFile(path: String, outputName: String, compress: Bool) throws -> String {
+        let outputURL = CriptextFileManager.getURLForFile(name: outputName)
+        try? FileManager.default.removeItem(at: outputURL)
+        FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
+        
+        let data = try Data(contentsOf: URL(fileURLWithPath: path))
+        
+        if(compress) {
+            let newData = try data.gzipped()
+            try newData.write(to: outputURL)
+        } else {
+            let newData = try data.gunzipped()
+            try newData.write(to: outputURL)
+        }
+        
+        return outputURL.path
     }
 }

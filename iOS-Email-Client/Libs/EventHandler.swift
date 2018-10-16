@@ -234,19 +234,12 @@ class EventHandler {
     
     func handleEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         let event = EventData.EmailStatus.init(params: params)
-        
         if event.type == Email.Status.unsent.rawValue,
             let email = DBManager.getMail(key: event.emailId) {
             DBManager.unsendEmail(email, date: event.date)
             finishCallback(true, .Email(email))
             return
         }
-        
-        guard event.from != myAccount.username else {
-            finishCallback(true, .Empty)
-            return
-        }
-        
         let actionType: FeedItem.Action = event.fileId == nil ? .open : .download
         guard !DBManager.feedExists(emailId: event.emailId, type: actionType.rawValue, contactId: "\(event.from)\(Constants.domain)"),
             let contact = DBManager.getContact("\(event.from)\(Constants.domain)"),
@@ -310,6 +303,12 @@ class EventHandler {
             return .PasswordChange
         case Event.Link.removed.rawValue:
             return .Logout
+        case Event.Link.bundle.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let deviceId = params["deviceId"] as? Int32 else {
+                    return .Error
+            }
+            return .KeyBundle(deviceId)
         case Event.Peer.recoveryChange.rawValue:
             guard let params = event["params"] as? [String: Any],
                 let address = params["address"] as? String else {

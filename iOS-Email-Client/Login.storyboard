@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -100,7 +98,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-Fm-cgQ">
-                                <rect key="frame" x="202" y="394.5" width="119" height="23.5"/>
+                                <rect key="frame" x="202" y="393.5" width="119" height="23.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="kke-wn-nCO"/>
                                 </constraints>
@@ -116,7 +114,7 @@
                                 </constraints>
                             </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Ksj-Vf-DXI">
-                                <rect key="frame" x="177" y="467" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="467.5" width="20" height="20"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username does not exists" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eC-DY-ikl">
                                 <rect key="frame" x="56" y="361" width="265" height="21"/>
@@ -220,13 +218,16 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S1o-cP-DdO">
-                                                <rect key="frame" x="33" y="95.5" width="309" height="37"/>
+                                                <rect key="frame" x="33" y="104" width="309" height="37.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="37.5" id="kU7-68-ma9"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOO-af-B6t">
-                                                <rect key="frame" x="208" y="217" width="113" height="30"/>
+                                                <rect key="frame" x="208" y="226.5" width="113" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="SDT-zq-QLa"/>
                                                     <constraint firstAttribute="width" constant="113" id="qfg-fo-wMo"/>
@@ -236,7 +237,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your Criptext account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEX-Oc-wzA">
-                                                <rect key="frame" x="33" y="137.5" width="309" height="24"/>
+                                                <rect key="frame" x="33" y="146.5" width="309" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="dvA-qZ-2D8"/>
                                                 </constraints>
@@ -245,7 +246,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hMh-fe-2y4" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="58" y="217" width="150" height="30"/>
+                                                <rect key="frame" x="58" y="226.5" width="150" height="30"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="aJ2-0v-6UT"/>
@@ -276,7 +277,7 @@
                                                 </connections>
                                             </view>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Full Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WAM-eM-sVg" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="56" y="272" width="265" height="30"/>
+                                                <rect key="frame" x="56" y="281.5" width="265" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="ePx-9h-4Tj"/>
                                                 </constraints>
@@ -309,7 +310,7 @@
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z8F-vI-hLI" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="56" y="327.5" width="265" height="30"/>
+                                                <rect key="frame" x="56" y="336.5" width="265" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="f6A-2N-6dY"/>
                                                 </constraints>
@@ -346,7 +347,7 @@
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BJd-tc-Byi" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="56" y="382.5" width="265" height="30"/>
+                                                <rect key="frame" x="56" y="391.5" width="265" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="mqZ-cq-n3F"/>
                                                 </constraints>
@@ -383,7 +384,7 @@
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Recover Email (Optional)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lKE-K8-r13" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="56" y="437.5" width="265" height="30"/>
+                                                <rect key="frame" x="56" y="446.5" width="265" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="XFo-u4-bU8"/>
                                                 </constraints>
@@ -416,7 +417,7 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="MIl-CE-AOA">
-                                                <rect key="frame" x="55" y="495.5" width="265" height="30"/>
+                                                <rect key="frame" x="55" y="504.5" width="265" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="eZO-Vh-vk9"/>
                                                 </constraints>
@@ -429,7 +430,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwZ-3C-ekg">
-                                                <rect key="frame" x="38" y="553.5" width="300" height="44"/>
+                                                <rect key="frame" x="38" y="562.5" width="299" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Hgq-hg-kd6"/>
@@ -448,21 +449,21 @@
                                                 </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="MbI-dj-nco">
-                                                <rect key="frame" x="21" y="331" width="22" height="22"/>
+                                                <rect key="frame" x="21" y="340.5" width="22" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="22" id="0B3-Hk-mHW"/>
                                                     <constraint firstAttribute="width" constant="22" id="WTn-Iu-CS3"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="Bwk-sb-baI">
-                                                <rect key="frame" x="21" y="386" width="22" height="22"/>
+                                                <rect key="frame" x="21" y="395.5" width="22" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="22" id="Ed9-d1-3Re"/>
                                                     <constraint firstAttribute="height" constant="22" id="Wga-Jk-4WI"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="SgK-nP-bnV">
-                                                <rect key="frame" x="21" y="441.5" width="22" height="22"/>
+                                                <rect key="frame" x="21" y="450.5" width="22" height="22"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="22" id="8Ws-gW-pye"/>
@@ -470,14 +471,14 @@
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="J4f-2M-Cl0">
-                                                <rect key="frame" x="21" y="276" width="22" height="22"/>
+                                                <rect key="frame" x="21" y="285.5" width="22" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="22" id="8ob-E8-DdY"/>
                                                     <constraint firstAttribute="height" constant="22" id="966-xM-9Q5"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="AIa-vJ-eF7">
-                                                <rect key="frame" x="23" y="221" width="22" height="22"/>
+                                                <rect key="frame" x="23" y="230.5" width="22" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="22" id="Tfx-Xo-gCI"/>
                                                     <constraint firstAttribute="height" constant="22" id="yAL-nO-e8Z"/>
@@ -491,7 +492,6 @@
                                             <constraint firstItem="dOO-af-B6t" firstAttribute="leading" secondItem="hMh-fe-2y4" secondAttribute="trailing" id="3eN-0Z-Kv7"/>
                                             <constraint firstItem="hMh-fe-2y4" firstAttribute="top" secondItem="HEX-Oc-wzA" secondAttribute="bottom" constant="56" id="6Mc-NX-kYo"/>
                                             <constraint firstAttribute="trailing" secondItem="dOO-af-B6t" secondAttribute="trailing" constant="54" id="6RD-V8-8o3"/>
-                                            <constraint firstItem="SwZ-3C-ekg" firstAttribute="centerX" secondItem="XJO-nj-02i" secondAttribute="centerX" id="7LA-3B-CcS"/>
                                             <constraint firstItem="WAM-eM-sVg" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="56" id="9dz-B0-MGF"/>
                                             <constraint firstItem="BJd-tc-Byi" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="56" id="BGj-eE-QSy"/>
                                             <constraint firstAttribute="trailing" secondItem="sfj-a2-H3S" secondAttribute="trailing" constant="26" id="CaY-lB-bDx"/>
@@ -499,18 +499,18 @@
                                             <constraint firstItem="SgK-nP-bnV" firstAttribute="centerY" secondItem="lKE-K8-r13" secondAttribute="centerY" id="DWy-bX-pv8"/>
                                             <constraint firstItem="sfj-a2-H3S" firstAttribute="top" secondItem="XJO-nj-02i" secondAttribute="top" constant="20" id="DYC-X7-Ucl"/>
                                             <constraint firstAttribute="trailing" secondItem="Z8F-vI-hLI" secondAttribute="trailing" constant="54" id="Fju-oR-7eU"/>
+                                            <constraint firstItem="SwZ-3C-ekg" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="38" id="Hja-fC-7tP"/>
                                             <constraint firstItem="ECp-md-B7C" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="20" id="LT7-CC-7xc"/>
                                             <constraint firstItem="S1o-cP-DdO" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="33" id="Lsq-Oy-Lwf"/>
                                             <constraint firstItem="MIl-CE-AOA" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="55" id="P5n-BQ-bM8"/>
-                                            <constraint firstAttribute="trailing" secondItem="SwZ-3C-ekg" secondAttribute="trailing" constant="37" id="Qe3-pF-yb2"/>
                                             <constraint firstItem="hMh-fe-2y4" firstAttribute="leading" secondItem="AIa-vJ-eF7" secondAttribute="trailing" constant="13" id="R0h-TM-OCF"/>
                                             <constraint firstItem="SwZ-3C-ekg" firstAttribute="top" secondItem="MIl-CE-AOA" secondAttribute="bottom" constant="28" id="SKk-XS-PnU"/>
                                             <constraint firstAttribute="trailing" secondItem="lKE-K8-r13" secondAttribute="trailing" constant="54" id="St6-T8-Gft"/>
                                             <constraint firstItem="lKE-K8-r13" firstAttribute="top" secondItem="BJd-tc-Byi" secondAttribute="bottom" constant="25" id="SzY-Eo-qvJ"/>
+                                            <constraint firstItem="SwZ-3C-ekg" firstAttribute="centerX" secondItem="MIl-CE-AOA" secondAttribute="centerX" id="VFO-G7-xB7"/>
                                             <constraint firstAttribute="trailing" secondItem="MIl-CE-AOA" secondAttribute="trailing" constant="55" id="Vn7-36-tCv"/>
                                             <constraint firstItem="lKE-K8-r13" firstAttribute="leading" secondItem="SgK-nP-bnV" secondAttribute="trailing" constant="13" id="Wz6-49-DGe"/>
                                             <constraint firstItem="hMh-fe-2y4" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="58" id="YBh-1f-RMk"/>
-                                            <constraint firstItem="SwZ-3C-ekg" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="38" id="aQp-fz-SOp"/>
                                             <constraint firstAttribute="trailing" secondItem="BJd-tc-Byi" secondAttribute="trailing" constant="54" id="cFp-TY-D5p"/>
                                             <constraint firstItem="HEX-Oc-wzA" firstAttribute="top" secondItem="S1o-cP-DdO" secondAttribute="bottom" constant="5" id="dty-y1-PEO"/>
                                             <constraint firstItem="Z8F-vI-hLI" firstAttribute="top" secondItem="WAM-eM-sVg" secondAttribute="bottom" constant="25" id="fCC-6r-oYj"/>
@@ -529,7 +529,7 @@
                                             <constraint firstItem="Z8F-vI-hLI" firstAttribute="leading" secondItem="MbI-dj-nco" secondAttribute="trailing" constant="13" id="wRl-iE-c8f"/>
                                             <constraint firstItem="Bwk-sb-baI" firstAttribute="centerY" secondItem="BJd-tc-Byi" secondAttribute="centerY" id="xsB-YH-wdq"/>
                                             <constraint firstItem="WAM-eM-sVg" firstAttribute="leading" secondItem="J4f-2M-Cl0" secondAttribute="trailing" constant="13" id="yLg-AS-crA"/>
-                                            <constraint firstItem="S1o-cP-DdO" firstAttribute="centerY" secondItem="XJO-nj-02i" secondAttribute="centerY" multiplier="0.35" id="yuF-jj-98J"/>
+                                            <constraint firstItem="S1o-cP-DdO" firstAttribute="centerY" secondItem="XJO-nj-02i" secondAttribute="centerY" multiplier="0.38" id="yuF-jj-98J"/>
                                             <constraint firstItem="HEX-Oc-wzA" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="33" id="zgX-hC-zRu"/>
                                         </constraints>
                                     </view>
@@ -642,7 +642,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="white-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Yqy-3d-Yj1">
-                                <rect key="frame" x="152" y="222.5" width="70" height="70"/>
+                                <rect key="frame" x="152.5" y="222.5" width="70" height="70"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.34509803919999998" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -676,7 +676,7 @@
                                 <rect key="frame" x="167" y="346.5" width="41" height="20"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVk-y1-1wB" customClass="CounterLabelUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="-0.5" width="41" height="20"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="41" height="20"/>
                                         <color key="backgroundColor" red="0.21568627450980393" green="0.26666666666666666" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -753,15 +753,26 @@
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGe-4s-CNR">
                                                 <rect key="frame" x="33" y="111" width="309" height="37"/>
-                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gh-tT-mLY">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-error" translatesAutoresizingMaskIntoConstraints="NO" id="u04-Cm-YDi">
-                                                        <rect key="frame" x="162" y="227.5" width="50" height="50"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tE-YN-9zc">
+                                                        <rect key="frame" x="47" y="218.5" width="281" height="48"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="48" id="K5s-Tz-Koz"/>
+                                                        </constraints>
+                                                        <string key="text">Your request to access this account
+was rejected by a verified device</string>
+                                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-alert" translatesAutoresizingMaskIntoConstraints="NO" id="u04-Cm-YDi">
+                                                        <rect key="frame" x="162.5" y="299.5" width="50" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="LZr-Cj-ZWh"/>
                                                             <constraint firstAttribute="height" constant="50" id="a7m-S3-MgJ"/>
@@ -773,13 +784,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBc-eE-Cy3">
-                                                        <rect key="frame" x="47" y="332.5" width="281" height="150"/>
+                                                        <rect key="frame" x="47" y="404.5" width="281" height="75"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="150" id="4zr-ZL-Axk"/>
+                                                            <constraint firstAttribute="height" constant="75" id="4zr-ZL-Axk"/>
                                                         </constraints>
-                                                        <string key="text">Device not approved.
-
-Your request to access this account was rejected by a verified device. Multiple rejections could lead your device to be blacklisted from Criptext.</string>
+                                                        <string key="text">Warning: Multiple rejections could
+lead your device to be blacklisted
+from Criptext</string>
                                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -787,9 +798,12 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
+                                                    <constraint firstItem="u04-Cm-YDi" firstAttribute="top" secondItem="2tE-YN-9zc" secondAttribute="bottom" constant="33" id="2YY-P3-Wq0"/>
                                                     <constraint firstItem="QBc-eE-Cy3" firstAttribute="top" secondItem="u04-Cm-YDi" secondAttribute="bottom" constant="55" id="Kmp-8p-zeR"/>
                                                     <constraint firstAttribute="trailing" secondItem="QBc-eE-Cy3" secondAttribute="trailing" constant="47" id="Vke-Xh-CQa"/>
-                                                    <constraint firstItem="u04-Cm-YDi" firstAttribute="centerY" secondItem="0gh-tT-mLY" secondAttribute="centerY" multiplier="0.78" id="bf4-5a-UQf"/>
+                                                    <constraint firstAttribute="trailing" secondItem="2tE-YN-9zc" secondAttribute="trailing" constant="47" id="Wa7-aw-FtI"/>
+                                                    <constraint firstItem="2tE-YN-9zc" firstAttribute="centerY" secondItem="0gh-tT-mLY" secondAttribute="centerY" multiplier="0.75" id="fjs-Gl-yp9"/>
+                                                    <constraint firstItem="2tE-YN-9zc" firstAttribute="leading" secondItem="0gh-tT-mLY" secondAttribute="leading" constant="47" id="vUc-OC-Rz9"/>
                                                     <constraint firstItem="QBc-eE-Cy3" firstAttribute="leading" secondItem="0gh-tT-mLY" secondAttribute="leading" constant="47" id="xX6-ET-Pbm"/>
                                                     <constraint firstItem="u04-Cm-YDi" firstAttribute="centerX" secondItem="0gh-tT-mLY" secondAttribute="centerX" id="xzl-sH-P6K"/>
                                                 </constraints>
@@ -807,7 +821,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2e-M6-6pu">
-                                                        <rect key="frame" x="37" y="433" width="300.5" height="44"/>
+                                                        <rect key="frame" x="37.5" y="433" width="300" height="44"/>
                                                         <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="300" id="FnF-6B-rS7"/>
@@ -848,11 +862,11 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1B-8C-PKn" customClass="ProgressArrowUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                        <rect key="frame" x="162" y="301.5" width="50" height="50"/>
+                                                        <rect key="frame" x="167.5" y="306.5" width="40" height="40"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="50" id="Mey-l3-c01"/>
-                                                            <constraint firstAttribute="height" constant="50" id="pXd-4F-Rug"/>
+                                                            <constraint firstAttribute="width" constant="40" id="Mey-l3-c01"/>
+                                                            <constraint firstAttribute="height" constant="40" id="pXd-4F-Rug"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -874,6 +888,19 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                     <constraint firstAttribute="trailing" secondItem="UEg-nZ-3Qg" secondAttribute="trailing" constant="57" id="tKI-4t-PKj"/>
                                                     <constraint firstItem="UEg-nZ-3Qg" firstAttribute="top" secondItem="CQ6-X5-Uq5" secondAttribute="bottom" constant="45" id="xii-2E-jfL"/>
                                                 </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ITv-xI-K9J">
+                                                <rect key="frame" x="154.5" y="293.5" width="66" height="66"/>
+                                                <color key="backgroundColor" red="0.86274509803921573" green="0.27450980392156865" blue="0.28235294117647058" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="66" id="14t-mF-bt1"/>
+                                                    <constraint firstAttribute="width" constant="66" id="uOu-he-qW1"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="33"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e5L-2w-7JP" customClass="CircleBackButton" customModule="iOS_Email_Client" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="20" width="42" height="42"/>
@@ -921,6 +948,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                                             <constraint firstItem="0gh-tT-mLY" firstAttribute="centerX" secondItem="IRh-yh-nrH" secondAttribute="centerX" id="NhO-tI-WCM"/>
                                             <constraint firstItem="oqf-Tb-I2x" firstAttribute="centerX" secondItem="IRh-yh-nrH" secondAttribute="centerX" id="OZS-YD-spP"/>
                                             <constraint firstItem="e5L-2w-7JP" firstAttribute="top" secondItem="IRh-yh-nrH" secondAttribute="top" constant="20" id="Otj-qh-9kg"/>
+                                            <constraint firstItem="ITv-xI-K9J" firstAttribute="centerY" secondItem="IRh-yh-nrH" secondAttribute="centerY" multiplier="0.75" constant="84" id="PbB-ly-0Zf"/>
                                             <constraint firstAttribute="bottom" secondItem="Jek-k9-O5Z" secondAttribute="bottom" constant="34" id="UVg-95-TmG"/>
                                             <constraint firstItem="Asj-th-aWW" firstAttribute="top" secondItem="IRh-yh-nrH" secondAttribute="top" constant="20" id="acr-4a-UOr"/>
                                             <constraint firstItem="0gh-tT-mLY" firstAttribute="height" secondItem="IRh-yh-nrH" secondAttribute="height" id="e7j-hj-Cmf"/>
@@ -929,6 +957,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                                             <constraint firstAttribute="trailing" secondItem="Jek-k9-O5Z" secondAttribute="trailing" constant="71" id="irj-qg-W61"/>
                                             <constraint firstItem="oqf-Tb-I2x" firstAttribute="width" secondItem="IRh-yh-nrH" secondAttribute="width" id="jXV-tE-axp"/>
                                             <constraint firstItem="Jek-k9-O5Z" firstAttribute="leading" secondItem="IRh-yh-nrH" secondAttribute="leading" constant="71" id="luz-wH-BMy"/>
+                                            <constraint firstItem="ITv-xI-K9J" firstAttribute="centerX" secondItem="IRh-yh-nrH" secondAttribute="centerX" id="smd-5i-mu8"/>
                                             <constraint firstAttribute="trailing" secondItem="AGe-4s-CNR" secondAttribute="trailing" constant="33" id="zXk-fL-IXF"/>
                                         </constraints>
                                     </view>
@@ -963,6 +992,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                     <connections>
                         <outlet property="failureDeviceView" destination="0gh-tT-mLY" id="EwJ-16-AYR"/>
                         <outlet property="hourglassImage" destination="CQ6-X5-Uq5" id="A4Z-X8-aXv"/>
+                        <outlet property="titleLabel" destination="AGe-4s-CNR" id="hBq-SA-IQn"/>
                         <outlet property="waitingDeviceView" destination="oqf-Tb-I2x" id="R2I-IK-Hgb"/>
                     </connections>
                 </viewController>
@@ -979,7 +1009,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SPl-NZ-Gze" customClass="ConnectUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="-0.5" y="10" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="10" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -1039,13 +1069,13 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NT8-w1-8Xk">
-                                                <rect key="frame" x="33" y="143.5" width="309" height="37"/>
+                                                <rect key="frame" x="33" y="146" width="309" height="31.5"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMf-wY-jdP">
-                                                <rect key="frame" x="33" y="190.5" width="309" height="48"/>
+                                                <rect key="frame" x="33" y="187.5" width="309" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="FXT-bk-n8F"/>
                                                 </constraints>
@@ -1054,7 +1084,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8N5-Z7-gsp">
-                                                <rect key="frame" x="37.5" y="435" width="300.5" height="44"/>
+                                                <rect key="frame" x="38" y="435" width="299" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="IDE-wd-lIU"/>
@@ -1073,7 +1103,10 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7VS-F9-Zdf" customClass="TextField" customModule="Material">
-                                                <rect key="frame" x="56" y="341" width="265" height="30"/>
+                                                <rect key="frame" x="56" y="340.5" width="265" height="30.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30.5" id="ygN-ca-suZ"/>
+                                                </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -1115,7 +1148,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSJ-Yq-oKk">
-                                                <rect key="frame" x="56.5" y="312" width="262" height="21"/>
+                                                <rect key="frame" x="56.5" y="311" width="262" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="ehF-Am-sHC"/>
                                                 </constraints>
@@ -1124,7 +1157,7 @@ Your request to access this account was rejected by a verified device. Multiple 
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="O3S-ch-dG6">
-                                                <rect key="frame" x="178.5" y="447" width="20" height="20"/>
+                                                <rect key="frame" x="177.5" y="447" width="20" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="2Un-Y3-w53"/>
                                                     <constraint firstAttribute="width" constant="20" id="Duk-rf-yvJ"/>
@@ -1152,24 +1185,24 @@ Your request to access this account was rejected by a verified device. Multiple 
                                             <constraint firstItem="NT8-w1-8Xk" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="33" id="0kD-mx-EiH"/>
                                             <constraint firstItem="Ctn-3x-BiI" firstAttribute="top" secondItem="7VS-F9-Zdf" secondAttribute="bottom" constant="7" id="319-Xh-m1O"/>
                                             <constraint firstAttribute="trailing" secondItem="xCo-DR-Qyr" secondAttribute="trailing" constant="26" id="3Qh-F5-p3c"/>
-                                            <constraint firstItem="8N5-Z7-gsp" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="37.5" id="4oK-EN-rV7"/>
                                             <constraint firstItem="mSJ-Yq-oKk" firstAttribute="width" secondItem="7VS-F9-Zdf" secondAttribute="width" multiplier="0.99" id="5Ua-cE-iMf"/>
                                             <constraint firstItem="O3S-ch-dG6" firstAttribute="centerX" secondItem="8N5-Z7-gsp" secondAttribute="centerX" id="A7U-UJ-Eyo"/>
+                                            <constraint firstItem="O3S-ch-dG6" firstAttribute="centerX" secondItem="Ctn-3x-BiI" secondAttribute="centerX" id="AEa-1m-k8p"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="centerY" secondItem="mGe-H4-qBL" secondAttribute="centerY" multiplier="1.1" id="Awx-Lb-gHQ"/>
-                                            <constraint firstItem="8N5-Z7-gsp" firstAttribute="centerX" secondItem="mGe-H4-qBL" secondAttribute="centerX" id="GhK-Mf-fY6"/>
+                                            <constraint firstItem="7VS-F9-Zdf" firstAttribute="top" secondItem="hMf-wY-jdP" secondAttribute="bottom" constant="105" id="JJT-9U-ii8"/>
                                             <constraint firstItem="mSJ-Yq-oKk" firstAttribute="centerX" secondItem="mGe-H4-qBL" secondAttribute="centerX" id="PWK-7Q-wgq"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="top" secondItem="mSJ-Yq-oKk" secondAttribute="bottom" constant="8.5" id="Qp6-95-LkI"/>
                                             <constraint firstItem="hMf-wY-jdP" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="33" id="Tkj-NL-cQN"/>
                                             <constraint firstItem="hMf-wY-jdP" firstAttribute="top" secondItem="NT8-w1-8Xk" secondAttribute="bottom" constant="10" id="UNY-bR-hhG"/>
                                             <constraint firstItem="xCo-DR-Qyr" firstAttribute="top" secondItem="mGe-H4-qBL" secondAttribute="top" constant="20" id="Wam-Tf-fO0"/>
                                             <constraint firstItem="bU8-ie-V7v" firstAttribute="top" secondItem="mGe-H4-qBL" secondAttribute="top" constant="20" id="g17-kI-ops"/>
-                                            <constraint firstAttribute="trailing" secondItem="8N5-Z7-gsp" secondAttribute="trailing" constant="37" id="hAj-fW-FQl"/>
                                             <constraint firstItem="Ctn-3x-BiI" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="57" id="ioc-HY-Vjg"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="leading" secondItem="Kaa-RK-1Lv" secondAttribute="trailing" constant="13" id="j80-q0-4q3"/>
                                             <constraint firstAttribute="trailing" secondItem="7VS-F9-Zdf" secondAttribute="trailing" constant="54" id="jsI-7z-Mqq"/>
                                             <constraint firstAttribute="trailing" secondItem="hMf-wY-jdP" secondAttribute="trailing" constant="33" id="kZ3-YW-xaX"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="56" id="mjz-eD-Y80"/>
                                             <constraint firstAttribute="trailing" secondItem="NT8-w1-8Xk" secondAttribute="trailing" constant="33" id="nVM-bG-txm"/>
+                                            <constraint firstItem="8N5-Z7-gsp" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="38" id="qeo-Fs-Wp8"/>
                                             <constraint firstItem="O3S-ch-dG6" firstAttribute="centerY" secondItem="8N5-Z7-gsp" secondAttribute="centerY" id="s2f-rz-CxP"/>
                                             <constraint firstItem="bU8-ie-V7v" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="20" id="srN-hq-6Au"/>
                                             <constraint firstItem="NT8-w1-8Xk" firstAttribute="centerY" secondItem="mGe-H4-qBL" secondAttribute="centerY" multiplier="0.5" id="sxw-OB-DII"/>
@@ -1224,6 +1257,7 @@ Your request to access this account was rejected by a verified device. Multiple 
     <resources>
         <image name="arrow-back" width="17" height="14"/>
         <image name="beta" width="118" height="40"/>
+        <image name="device-alert" width="49" height="42"/>
         <image name="loading-hourglass" width="38" height="53"/>
         <image name="mark-error" width="28" height="28"/>
         <image name="mark-success" width="28" height="28"/>

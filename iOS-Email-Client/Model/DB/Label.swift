@@ -58,15 +58,16 @@ class Label : Object {
     }
 }
 
-extension Label: CustomDictionary {
+extension Label {
     func toDictionary() -> [String: Any] {
-        return ["table": "label",
-                "object": [
-                    "id": id,
-                    "color": color,
-                    "text": text,
-                    "type": type,
-                    "visible": visible
+        return [
+            "table": "label",
+            "object": [
+                "id": id,
+                "color": color,
+                "text": text,
+                "type": type,
+                "visible": visible
             ]
         ]
     }

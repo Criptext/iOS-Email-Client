@@ -62,6 +62,14 @@ class ResetDeviceViewController: UIViewController{
         let username = String(email.split(separator: "@")[0])
         APIManager.loginRequest(username, password.sha256()!) { (responseData) in
             self.showLoader(false)
+            if case .TooManyDevices = responseData {
+                self.showFeedback(true, "Too many devices already logged in.")
+                return
+            }
+            if case .TooManyRequests = responseData {
+                self.showFeedback(true, "Too many sign in attempts, try again later.")
+                return
+            }
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.showFeedback(true, error.description)

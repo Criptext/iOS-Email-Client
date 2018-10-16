@@ -23,4 +23,15 @@ class Account: Object{
     override static func primaryKey() -> String? {
         return "username"
     }
+    
+    class func create(from signupData: SignUpData) -> Account {
+        let myAccount = Account()
+        myAccount.username = signupData.username
+        myAccount.name = signupData.fullname
+        myAccount.jwt = signupData.token!
+        myAccount.regId = signupData.getRegId()
+        myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""
+        myAccount.deviceId = signupData.deviceId
+        return myAccount
+    }
 }

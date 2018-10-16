@@ -345,7 +345,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.initToContacts.append(contentsOf: contactsTo)
         composerData.initCcContacts.append(contentsOf: contactsCc)
         composerData.initSubject = "\(subjectPrefix)\(email.subject)"
-        let replyBody = email.isDraft ? email.content : ("<br><div id=\"criptext_quote\">On \(email.getFullDate()), \(email.fromContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
+        let replyBody = email.isDraft ? email.content : ("<br><br><div id=\"criptext_quote\">On \(email.getFullDate()), \(email.fromContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
         composerData.initContent = replyBody
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
@@ -908,7 +908,11 @@ extension EmailDetailViewController: CoachMarksControllerDataSource, CoachMarksC
 
 extension EmailDetailViewController: LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData) {
-        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
+        linkDeviceVC.linkData = linkData
+        linkDeviceVC.myAccount = myAccount
+        self.present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
         APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })

@@ -138,8 +138,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         
-        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .authenticationRequired)
-        let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Deny", options: .destructive)
+        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .foreground)
+        let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Reject", options: .destructive)
         let linkCategory = UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.setNotificationCategories([linkCategory])
@@ -197,15 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return snackbarController
     }
     
-    func createSystemLabels(){
-        for systemLabel in SystemLabel.array {
-            let newLabel = Label(systemLabel.description)
-            newLabel.id = systemLabel.id
-            newLabel.color = systemLabel.hexColor
-            newLabel.type = "system"
-            DBManager.store(newLabel)
-        }
-    }
+    
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -222,6 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         self.triggerRefresh()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
     
     func triggerRefresh(){

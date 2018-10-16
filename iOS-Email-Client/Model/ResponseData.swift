@@ -19,4 +19,8 @@ enum ResponseData {
     case Forbidden
     case Missing
     case BadRequest
+    case AuthPending
+    case AuthDenied
+    case TooManyDevices
+    case TooManyRequests
 }

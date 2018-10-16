@@ -441,38 +441,6 @@ class ComposeViewController: UIViewController {
         })
     }
     
-    func addAttachments(to body:String) -> String{
-        guard !fileManager.registeredFiles.isEmpty else {
-            return body
-        }
-        
-        var doc:Document!
-        do {
-            doc = try SwiftSoup.parse(body)
-            let elements = try doc.getElementsByClass("criptext_attachment")
-            try elements.remove()
-            
-            for attachment in fileManager.registeredFiles {
-                
-                var preTag:Element!
-                
-                if let body = doc.body() {
-                    preTag = try body.appendElement("pre")
-                } else {
-                    preTag = try doc.appendElement("pre")
-                }
-                
-                try preTag.addClass("criptext_attachment")
-                try preTag.html("\(attachment.token):\(attachment.name):\(attachment.size)")
-                try preTag.attr("style", "color:white;display:none")
-            }
-            
-            return try doc.html()
-        } catch {
-            return body
-        }
-    }
-    
     func toggleInteraction(_ flag:Bool){
         self.navigationItem.rightBarButtonItem = flag ? self.enableSendButton : self.disableSendButton
         
@@ -587,6 +555,10 @@ class ComposeViewController: UIViewController {
     
     @IBAction func didPressAttachment(_ sender: UIButton) {
         //derpo
+        guard fileManager.registeredFiles.count < 5 else {
+            self.showAlert("Attachments cap reached", message: "\nYou can upload up to 5 attachments per email. Please consider removing one before adding another", style: .alert)
+            return
+        }
         self.showAttachmentDrawer(true)
     }
     
@@ -1052,6 +1024,10 @@ extension ComposeViewController: CNContactPickerDelegate {
     }
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
+        guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
+            self.showAlert("Recipients cap reached", message: "\nYou can add up to 300 recipients for each email. Consider removing one before adding another", style: .alert)
+            return
+        }
         guard Utils.validateEmail(value) else {
             self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
             return

@@ -33,13 +33,15 @@ class FileKey : Object {
     }
 }
 
-extension FileKey: CustomDictionary  {
-    func toDictionary() -> [String: Any] {
-        return ["table": "fileKey",
-                "object": [
-                    "id": id,
-                    "key": key,
-                    "emailId": emailId
+extension FileKey  {
+    func toDictionary(emailId: Int) -> [String: Any] {
+        return [
+            "table": "filekey",
+            "object": [
+                "id": id,
+                "key": String(key.split(separator: ":").first!),
+                "iv": String(key.split(separator: ":").last!),
+                "emailId": emailId
             ]
         ]
     }

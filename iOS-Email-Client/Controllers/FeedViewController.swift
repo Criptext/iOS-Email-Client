@@ -88,7 +88,8 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "feedTableCellView", for: indexPath) as! FeedTableViewCell
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        cell.setLabels(feed.header, feed.subject, feed.formattedDate)
+        let headline = feed.contact.email == "\(mailboxVC.myAccount.username)\(Constants.domain)" ? "Your email was opened" : feed.header
+        cell.setLabels(headline, feed.subject, feed.formattedDate)
         cell.setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
         cell.handleViewed(isNew: feed.date > lastSeen)
         return cell
