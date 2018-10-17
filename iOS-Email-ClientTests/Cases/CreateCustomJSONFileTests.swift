@@ -20,12 +20,12 @@ class CreateCustomJSONFileTests: XCTestCase {
     {"table":"contact","object":{"id":2,"name":"Test 2","email":"test2@criptext.com"}}
     {"table":"label","object":{"visible":true,"id":1,"text":"Test 1","type":"custom","color":"fff000"}}
     {"table":"label","object":{"visible":true,"id":2,"text":"Test 2","type":"custom","color":"ff00ff"}}
-    {"table":"email","object":{"content":"test 1","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","isMuted":false,"threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"secure":true,"preview":"test 1","delivered":3,"date":"2018-07-17T15:09:36.000Z","metadataKey":123,"subject":""}}
-    {"table":"emailLabel","object":{"labelId":1,"emailId":123}}
-    {"table":"emailContact","object":{"type":"from","contactId":2,"emailId":123}}
-    {"table":"emailContact","object":{"type":"to","contactId":1,"emailId":123}}
-    {"table":"file","object":{"name":"test.pdf","status":1,"emailId":123,"id":1,"token":"","readOnly":0,"size":0,"date":"2018-07-17T15:09:36.000Z"}}
-    {"table":"fileKey","object":{"id":1,"key":"fgsfgfgsfdafa:afdsfsagdfgsdf","emailId":123}}
+    {"table":"email","object":{"content":"test 1","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","isMuted":false,"threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"secure":true,"preview":"test 1","status":3,"date":"2018-07-17 15:09:36","key":123,"subject":"","id":1}}
+    {"table":"email_label","object":{"labelId":1,"emailId":1}}
+    {"table":"email_contact","object":{"type":"from","contactId":2,"emailId":1,"id":1}}
+    {"table":"email_contact","object":{"type":"to","contactId":1,"emailId":1,"id":2}}
+    {"table":"file","object":{"name":"test.pdf","status":1,"emailId":123,"id":1,"token":"","readOnly":false,"size":0,"date":"2018-07-17 15:09:36","mimeType":""}}
+    {"table":"filekey","object":{"id":1,"key":"fgsfgfgsfdafa","iv":afdsfsagdfgsdf","emailId":1}}
     """
     
     override func setUp() {
@@ -113,6 +113,9 @@ class CreateCustomJSONFileTests: XCTestCase {
             }
             let fileData = try! Data(contentsOf: myUrl)
             let fileString = String(data: fileData, encoding: .utf8)!
+            print(self.desiredDBText)
+            print("SPACE")
+            print(fileString)
             XCTAssert(fileString.count == self.desiredDBText.count)
             
             let outputPath = AESCipher.streamEncrypt(path: myUrl.path, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt)

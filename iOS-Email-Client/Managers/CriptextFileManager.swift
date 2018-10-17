@@ -20,7 +20,8 @@ class CriptextFileManager {
     var token : String!
     var chunkSize = 512000
     var registeredFiles = [File]()
-    var delegate : CriptextFileDelegate?
+    var apiManager: APIManager.Type = APIManager.self
+    var delegate: CriptextFileDelegate?
     
     internal(set) var keyPairs = [Int: (Data, Data)]()
     var encryption : Bool {
@@ -47,8 +48,8 @@ class CriptextFileManager {
             "totalChunks": totalChunks,
             "chunkSize": chunkSize
             ] as [String : Any]
-        APIManager.registerFile(parameters: requestData, token: token) { (requestError, responseData) in
-            if let error = requestError {
+        apiManager.registerFile(parameters: requestData, token: token) { (requestError, responseData) in
+            if requestError != nil {
                 return
             }
             let fileResponse = responseData as! Dictionary<String, Any>
@@ -78,7 +79,7 @@ class CriptextFileManager {
         file.requestStatus = .pending
         file.requestType = .download
         registeredFiles.append(file)
-        APIManager.getFileMetadata(filetoken: file.token, token: self.token) { (requestError, responseData) in
+        apiManager.getFileMetadata(filetoken: file.token, token: self.token) { (requestError, responseData) in
             guard let metadata = responseData?["file"] as? [String: Any] else {
                 file.requestStatus = .failed
                 self.delegate?.uploadProgressUpdate(file: file, progress: 0)
@@ -172,7 +173,7 @@ class CriptextFileManager {
             "filename": file.name,
             "mimeType": file.mimeType
         ] as [String: Any]
-        APIManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError) in
+        apiManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError) in
             guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
                 self.handleFileTurn()
                 return
@@ -192,7 +193,7 @@ class CriptextFileManager {
     
     private func downloadChunk(file: File, part: Int){
         let filetoken = file.token
-        APIManager.downloadChunk(filetoken: filetoken, part: part + 1, token: self.token, progressDelegate: self) { (requestError, chunkData) in
+        apiManager.downloadChunk(filetoken: filetoken, part: part + 1, token: self.token, progressDelegate: self) { (requestError, chunkData) in
             guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
                 self.handleFileTurn()
                 return
