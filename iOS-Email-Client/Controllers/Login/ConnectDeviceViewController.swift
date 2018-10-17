@@ -227,7 +227,6 @@ class ConnectDeviceViewController: UIViewController{
 extension ConnectDeviceViewController: ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void) {
         guard let jwt = signupData.token else {
-            print("GOING BACK 1")
             self.goBack()
             return
         }
