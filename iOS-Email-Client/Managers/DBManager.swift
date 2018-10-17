@@ -119,7 +119,7 @@ class DBManager {
             let id = object["id"] as! Int
             let email = Email()
             email.content = object["content"] as! String
-            email.messageId = object["messageId"] as! String
+            email.messageId = (object["messageId"] as? Int)?.description ?? object["messageId"] as! String
             email.isMuted = object["isMuted"] as! Bool
             email.threadId = object["threadId"] as! String
             email.unread = object["unread"] as! Bool
@@ -435,6 +435,10 @@ extension DBManager {
     }
     
     class func updateEmail(_ email: Email, status: Email.Status){
+        guard email.isSent || email.isDraft else {
+            return
+        }
+        
         let realm = try! Realm()
         
         try! realm.write() {

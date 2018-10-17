@@ -39,14 +39,17 @@ class Device {
     }
     
     class func fromDictionary(data: [String: Any]) -> Device {
-        let dateString = data["date"] as? String
+        let lastActivity = data["lastActivity"] as? [String: Any]
+        let dateString = lastActivity?["date"] as? String
+        let location = lastActivity?["ip"] as? String
         let newDevice = Device()
         newDevice.type = data["deviceType"] as! Int
         newDevice.id = data["deviceId"] as! Int
         newDevice.name = data["deviceName"] as! String
         newDevice.friendlyName = data["deviceFriendlyName"] as! String
+        
         newDevice.lastActivity = dateString != nil ? EventData.convertToDate(dateString: dateString!) : nil
-        newDevice.location = data["ip"] as? String
+        newDevice.location = location
         return newDevice
     }
     

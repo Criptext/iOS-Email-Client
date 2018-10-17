@@ -128,7 +128,6 @@ class AESCipher {
         let outBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: outBufferSize)
         CCCryptorFinal(cryptor, outBuffer, bufferSize, &dataOutMoved)
         outputStream.write(outBuffer, maxLength: dataOutMoved)
-        print(Data.init(bytes: outBuffer, count: dataOutMoved).base64EncodedString())
         
         return true
     }

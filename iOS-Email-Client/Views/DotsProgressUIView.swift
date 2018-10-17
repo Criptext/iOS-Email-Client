@@ -28,6 +28,10 @@ final class DotsProgressUIView: UIView {
         setup()
     }
     
+    deinit {
+        loadingTimer?.invalidate()
+    }
+    
     func setup(){
         currentDot = numberOfDots / 2
         spacingValue = Float(Int(frame.width) - 2 * radiusOfDots)/Float(numberOfDots - 1)

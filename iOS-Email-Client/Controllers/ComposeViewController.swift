@@ -795,8 +795,6 @@ extension ComposeViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         if tableView == self.contactTableView {
             let contact = composerData.contactArray[indexPath.row]
-            
-            print(contact.email)
             var focusInput:CLTokenInputView!
             
             if self.toField.isEditing {

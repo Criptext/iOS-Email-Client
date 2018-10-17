@@ -137,7 +137,7 @@ class ConnectUploadViewController: UIViewController{
         }
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
         APIManager.uploadLinkDBFile(dbFile: inputStream, randomId: linkData.randomId, size: fileSize, token: myAccount.jwt, progressCallback: { (progress) in
-            self.connectUIView.progressChange(value: self.PROGRESS_GET_KEYS + (self.PROGRESS_UPLOADING_FILE - self.PROGRESS_GET_KEYS) * progress / 100, message: "Uploading Mailbox", completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_GET_KEYS + (self.PROGRESS_UPLOADING_FILE - self.PROGRESS_GET_KEYS) * progress, message: "Uploading Mailbox", completion: {})
         }) { (responseData) in
             guard case .Success = responseData else {
                 self.presentProcessInterrupted()

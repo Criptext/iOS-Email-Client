@@ -42,9 +42,8 @@ class CounterLabelUIView: UILabel{
     }
     
     func setValue(_ value: Double, interval: Double){
-        if(loadingTimer == nil){
-            loadingTimer = Timer.scheduledTimer(timeInterval: fps, target: self, selector: #selector(continueProgress), userInfo: nil, repeats: true)
-        }
+        loadingTimer?.invalidate()
+        loadingTimer = Timer.scheduledTimer(timeInterval: fps, target: self, selector: #selector(continueProgress), userInfo: nil, repeats: true)
         ratio = Double(value - currentValue) * fps / interval
         targetValue = value
     }

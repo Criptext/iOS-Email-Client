@@ -112,7 +112,7 @@ class ConnectDeviceViewController: UIViewController{
             return
         }
         APIManager.downloadLinkDBFile(address: data.address, token: jwt, progressCallback: { (progress) in
-            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress / 100, message: "Downloading Mailbox", completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: "Downloading Mailbox", completion: {})
         }) { (responseData) in
             guard case let .SuccessString(filepath) =  responseData else {
                 self.presentProcessInterrupted()
@@ -227,6 +227,7 @@ class ConnectDeviceViewController: UIViewController{
 extension ConnectDeviceViewController: ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void) {
         guard let jwt = signupData.token else {
+            print("GOING BACK 1")
             self.goBack()
             return
         }

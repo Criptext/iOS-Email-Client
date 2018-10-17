@@ -30,6 +30,10 @@ class ProgressArrowUIView: UIView{
         setup()
     }
     
+    deinit {
+        loadingTimer?.invalidate()
+    }
+    
     func setup(){
         centerPositionX = Double(self.frame.width / 2)
         centerPositionY = Double(self.frame.height / 2)

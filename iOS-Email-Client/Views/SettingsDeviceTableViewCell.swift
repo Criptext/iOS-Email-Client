@@ -31,12 +31,16 @@ class SettingsDeviceTableViewCell: UITableViewCell {
         deviceImageView.image = Device.Kind(rawValue: device.type)! != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
         deviceNameLabel.text = device.friendlyName
         displayAsActive(device.active)
-        guard !device.active,
-            let date = device.lastActivity else {
+        guard !device.active else {
             return
         }
         let attrString = NSMutableAttributedString(string: "Last Activity", attributes: [NSAttributedStringKey.font: Font.bold.size(12.0)!])
-        attrString.append(NSAttributedString(string: " - \(String(DateUtils.beautyDate(date)!))", attributes: [NSAttributedStringKey.font: Font.regular.size(12.0)!]))
+        guard let date = device.lastActivity else {
+            attrString.append(NSAttributedString(string: " - Over 2 month ago", attributes: [NSAttributedStringKey.font: Font.regular.size(12.0)!]))
+            deviceLocationLabel.attributedText = attrString
+            return
+        }
+        attrString.append(NSAttributedString(string: " - \(String(DateUtils.beautyDate(date)!).replacingOccurrences(of: "at ", with: ""))", attributes: [NSAttributedStringKey.font: Font.regular.size(12.0)!]))
         deviceLocationLabel.attributedText = attrString
     }
     

@@ -543,7 +543,6 @@ extension APIManager {
             "Random-ID": randomId
         ]
         Alamofire.upload(dbFile, to: url, method: .post, headers: headers).uploadProgress { (progress) in
-            print("PROGRESS UPLOAD \(progress.fractionCompleted)")
             progressCallback(progress.fractionCompleted)
         }.responseString { (responseString) in
             let responseData = handleResponse(responseString, satisfy: .success)
@@ -560,10 +559,8 @@ extension APIManager {
             return (fileURL, [.removePreviousFile])
         }
         Alamofire.download(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers, to: destination).downloadProgress{ (progress) in
-            print("PROGRESS DOWNLOAD \(progress.fractionCompleted)")
             progressCallback(progress.fractionCompleted)
         }.response { (response) in
-            print("ALAMOFIRE REQUEST : \(response.response?.url?.description ?? "NONE") -- \(response.response?.statusCode ?? 0)")
             guard response.response?.statusCode == 200 else {
                 completion(.Error(CriptextError(code: .noValidResponse)))
                 return
