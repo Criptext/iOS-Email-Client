@@ -30,10 +30,7 @@ class SettingsDevicesViewController: UITableViewController {
         let device = devices[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsDeviceCell") as! SettingsDeviceTableViewCell
         cell.delegate = self
-        cell.deviceImageView.image = Device.Kind(rawValue: device.type)! != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
-        cell.deviceNameLabel.text = device.friendlyName
-        cell.deviceLocationLabel.text = device.location
-        cell.displayAsActive(device.active)
+        cell.setContent(device: device)
         return cell
     }
     

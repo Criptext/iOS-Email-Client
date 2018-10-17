@@ -111,7 +111,9 @@ class ConnectDeviceViewController: UIViewController{
             self.presentProcessInterrupted()
             return
         }
-        APIManager.downloadLinkDBFile(address: data.address, token: jwt) { (responseData) in
+        APIManager.downloadLinkDBFile(address: data.address, token: jwt, progressCallback: { (progress) in
+            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: "Downloading Mailbox", completion: {})
+        }) { (responseData) in
             guard case let .SuccessString(filepath) =  responseData else {
                 self.presentProcessInterrupted()
                 return
@@ -264,7 +266,6 @@ extension ConnectDeviceViewController: SingleSocketDelegate {
                 let deviceId = params?["authorizerId"] as? Int32 else {
                 break
             }
-            self.connectUIView.progressChange(value: PROGRESS_DOWNLOADING_MAILBOX, message: "Downloading mailbox", completion: {})
             scheduleWorker.cancel()
             let data = LinkSuccessData(deviceId: deviceId, key: key, address: address)
             state = .downloadDB(data)

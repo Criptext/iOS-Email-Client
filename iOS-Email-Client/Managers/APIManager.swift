@@ -535,20 +535,22 @@ extension APIManager {
 }
 
 extension APIManager {
-    class func uploadLinkDBFile(dbFile: InputStream, randomId: String, size: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func uploadLinkDBFile(dbFile: InputStream, randomId: String, size: Int, token: String, progressCallback: @escaping ((Double) -> Void), completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.linkUrl)/userdata"
         let headers = [
             "Authorization": "Bearer \(token)",
             "Content-Length": size.description,
             "Random-ID": randomId
         ]
-        Alamofire.upload(dbFile, to: url, method: .post, headers: headers).responseString { (responseString) in
+        Alamofire.upload(dbFile, to: url, method: .post, headers: headers).uploadProgress { (progress) in
+            progressCallback(progress.fractionCompleted)
+        }.responseString { (responseString) in
             let responseData = handleResponse(responseString, satisfy: .success)
             completion(responseData)
         }
     }
     
-    class func downloadLinkDBFile(address: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
+    class func downloadLinkDBFile(address: String, token: String, progressCallback: @escaping ((Double) -> Void), completion: @escaping ((ResponseData) -> Void)) {
         let url = "\(self.linkUrl)/userdata?id=\(address)"
         let headers = ["Authorization": "Bearer \(token)"]
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -556,8 +558,9 @@ extension APIManager {
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             return (fileURL, [.removePreviousFile])
         }
-        Alamofire.download(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers, to: destination).response { (response) in
-            print("ALAMOFIRE REQUEST : \(response.response?.url?.description ?? "NONE") -- \(response.response?.statusCode ?? 0)")
+        Alamofire.download(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers, to: destination).downloadProgress{ (progress) in
+            progressCallback(progress.fractionCompleted)
+        }.response { (response) in
             guard response.response?.statusCode == 200 else {
                 completion(.Error(CriptextError(code: .noValidResponse)))
                 return

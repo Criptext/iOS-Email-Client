@@ -49,7 +49,6 @@ class CriptextFileManager {
             ] as [String : Any]
         APIManager.registerFile(parameters: requestData, token: token) { (requestError, responseData) in
             if let error = requestError {
-                print(error)
                 return
             }
             let fileResponse = responseData as! Dictionary<String, Any>
@@ -199,7 +198,6 @@ class CriptextFileManager {
                 return
             }
             guard requestError == nil else {
-                print(requestError.debugDescription)
                 self.registeredFiles[fileIndex].requestStatus = .failed
                 self.chunkUpdateProgress(Double(self.PENDING)/100.0, for: file.token, part: part + 1)
                 self.delegate?.finishRequest(file: file, success: false)
@@ -308,7 +306,6 @@ extension CriptextFileManager: ProgressDelegate {
             }
             return sum + individualProgress
         } / file.chunksProgress.count
-        print("Progress: \(totalProgress) - Current Part: \(part)")
         file.progress = totalProgress
         delegate?.uploadProgressUpdate(file: file, progress: totalProgress)
     }

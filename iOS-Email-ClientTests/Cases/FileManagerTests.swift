@@ -149,7 +149,6 @@ class FileManagerTests: XCTestCase {
             }
             XCTAssert(uploadDelegate.file?.requestStatus == .finish)
             let filetoken = uploadDelegate.file!.token
-            print(filetoken)
             
             let downloadDelegate = FileManagerSpyDelegate()
             downloadDelegate.expectation = self.expectation(description: "Download Delegate Called Back")

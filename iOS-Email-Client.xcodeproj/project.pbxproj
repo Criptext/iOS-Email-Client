@@ -254,6 +254,7 @@
 		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
+		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77AD67221642AFC00C26F07 /* StreamReader.swift */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
@@ -527,7 +528,11 @@
 		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = ../../../Downloads/Firebase/Analytics/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
+		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
+		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
+		A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBarFramework.framework; path = Carthage/Build/iOS/ITProgressBarFramework.framework; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
+		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
 		A77AD67221642AFC00C26F07 /* StreamReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
 		A7F30270216E859300676DD2 /* GZipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZipTests.swift; sourceTree = "<group>"; };
@@ -603,6 +608,9 @@
 		2962C69A939AA368B015D288 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */,
+				A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */,
+				A748871421765CF8004D0BD8 /* ITProgressBar.framework */,
 				A7F3027B216EBABC00676DD2 /* Gzip.framework */,
 				7CF93F592146EDC300361837 /* Lottie.framework */,
 				7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */,
@@ -909,6 +917,7 @@
 				A7F3027D216F9B8700676DD2 /* SignInVerificationUIPopover.xib */,
 				7C1DA38A2153065100C4C38E /* ConnectView.xib */,
 				7C1DA38C2153083700C4C38E /* ConnectUIView.swift */,
+				A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1257,7 +1266,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run 3b4ddc55293ff0e9bf22a8927dc076a5ac0b17ec 2faae85cc964c755921b5b7855e90f3def29650c0a1dfcf386a29e6b2f95e8ce";
+			shellScript = "./Fabric.framework/run 3b4ddc55293ff0e9bf22a8927dc076a5ac0b17ec 2faae85cc964c755921b5b7855e90f3def29650c0a1dfcf386a29e6b2f95e8ce\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1293,6 +1302,7 @@
 				7C1E82C42116BDF2007CA853 /* HintUIView.swift in Sources */,
 				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				7C92104620FEF2B10081C048 /* FileKey.swift in Sources */,
+				A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */,
 				7C4D33CD212CA23100045B09 /* GeneralSettingsData.swift in Sources */,
 				7C5FD826205C857C000E5F14 /* Utils.swift in Sources */,
 				7CB60A7B20F81A5600C9090C /* PlainContactTableViewCell.swift in Sources */,
@@ -1556,6 +1566,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
@@ -1581,7 +1592,10 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_SWIFT_FLAGS = "\"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1614,7 +1628,10 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_SWIFT_FLAGS = "\"-DRELEASE\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1722,6 +1739,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = NO;
@@ -1747,7 +1765,10 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				OTHER_SWIFT_FLAGS = "\"-DSUPPORT\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support;
 				PRODUCT_NAME = "$(TARGET_NAME)";

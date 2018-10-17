@@ -18,9 +18,9 @@ class ConnectUIView: UIView {
     @IBOutlet weak var backgroundCircle: UIView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var goBackButton: UIButton!
-    @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var percentageView: UIView!
     @IBOutlet weak var counterLabel: CounterLabelUIView!
+    @IBOutlet weak var progressAnimatedView: ProgressAnimatedUIView!
     var goBack: (() -> Void)?
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,10 +31,8 @@ class ConnectUIView: UIView {
     }
     
     func initialLoad(email: String) {
-        progressView.layer.cornerRadius = 5
-        progressView.layer.sublayers![1].cornerRadius = 5
-        progressView.subviews[1].clipsToBounds = true
         emailLabel.text = email
+        progressAnimatedView.isHidden = false
         successImage.isHidden = true
         backgroundCircle.isHidden = true
     }
@@ -42,7 +40,7 @@ class ConnectUIView: UIView {
     func handleSuccess(){
         backgroundCircle.isHidden = false
         successImage.isHidden = false
-        progressView.isHidden = true
+        progressAnimatedView.isHidden = true
         percentageView.isHidden = true
     }
     
@@ -56,9 +54,7 @@ class ConnectUIView: UIView {
     
     func animateProgress(_ value: Double, _ duration: Double, completion: @escaping () -> Void){
         self.counterLabel.setValue(value, interval: duration)
-        UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
-            self.progressView.setProgress(Float(value/100), animated: true)
-        })
+        self.progressAnimatedView.animateProgress(value: value, duration: duration)
         DispatchQueue.main.asyncAfter(deadline: .now() + duration){
             if value == 100 {
                 self.handleSuccess()
