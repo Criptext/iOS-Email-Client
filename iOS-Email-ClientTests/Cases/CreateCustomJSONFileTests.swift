@@ -95,10 +95,7 @@ class CreateCustomJSONFileTests: XCTestCase {
         let date = EventData.convertToDate(dateString: originalDateString)
         
         let dateString = DateUtils().date(toServerString: date)!
-        print(dateString)
-        
         let parsedDate = EventData.convertToDate(dateString: dateString)
-        print(DateUtils().date(toServerString: parsedDate)!)
         
         XCTAssert(DateUtils().date(toServerString: parsedDate)! == dateString)
     }
@@ -113,9 +110,6 @@ class CreateCustomJSONFileTests: XCTestCase {
             }
             let fileData = try! Data(contentsOf: myUrl)
             let fileString = String(data: fileData, encoding: .utf8)!
-            print(self.desiredDBText)
-            print("SPACE")
-            print(fileString)
             XCTAssert(fileString.count == self.desiredDBText.count)
             
             let outputPath = AESCipher.streamEncrypt(path: myUrl.path, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt)
