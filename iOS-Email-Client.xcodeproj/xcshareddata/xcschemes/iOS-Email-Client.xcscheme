@@ -75,7 +75,7 @@
          <EnvironmentVariable
             key = "forceProduction"
             value = "true"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>
@@ -102,7 +102,7 @@
       buildConfiguration = "Support">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Support"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

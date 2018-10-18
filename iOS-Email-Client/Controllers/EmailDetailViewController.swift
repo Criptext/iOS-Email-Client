@@ -51,13 +51,6 @@ class EmailDetailViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            guard let lastIndex = self.emailData.emails.index(where: {$0.isExpanded}) else {
-                return
-            }
-            self.emailsTableView.scrollToRow(at: IndexPath(row: lastIndex, section: 0), at: .bottom, animated: false)
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -201,6 +194,11 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
+    
+    func tableViewCellDidZoom(displaceHeight: CGFloat) {
+        print(displaceHeight)
+        self.emailsTableView.setContentOffset(CGPoint(x: emailsTableView.contentOffset.x, y: emailsTableView.contentOffset.y + displaceHeight), animated: true)
+    }
     
     func tableViewCellDidTapLink(url: String) {
         let svc = SFSafariViewController(url: URL(string: url)!)

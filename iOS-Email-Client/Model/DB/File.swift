@@ -67,7 +67,7 @@ extension File{
                 "date": dateString,
                 "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId,
-                "mimeType": mimeType
+                "mimeType": mimeType.isEmpty ? mimeTypeForPath(path: name) : mimeType
             ]
         ]
     }

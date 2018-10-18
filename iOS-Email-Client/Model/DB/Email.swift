@@ -41,7 +41,7 @@ class Email: Object {
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
     var isExpanded = false
     var isUnsending = false
-    var isLoaded = false
+    var isLoaded = true
     var cellHeight : CGFloat = 0.0
     var fromContact : Contact {
         get {
