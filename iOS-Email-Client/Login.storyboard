@@ -1069,7 +1069,7 @@ from Criptext</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NT8-w1-8Xk">
-                                                <rect key="frame" x="33" y="146" width="309" height="31.5"/>
+                                                <rect key="frame" x="20" y="146" width="335" height="31.5"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1182,7 +1182,7 @@ from Criptext</string>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="NT8-w1-8Xk" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="33" id="0kD-mx-EiH"/>
+                                            <constraint firstItem="NT8-w1-8Xk" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="20" id="0kD-mx-EiH"/>
                                             <constraint firstItem="Ctn-3x-BiI" firstAttribute="top" secondItem="7VS-F9-Zdf" secondAttribute="bottom" constant="7" id="319-Xh-m1O"/>
                                             <constraint firstAttribute="trailing" secondItem="xCo-DR-Qyr" secondAttribute="trailing" constant="26" id="3Qh-F5-p3c"/>
                                             <constraint firstItem="mSJ-Yq-oKk" firstAttribute="width" secondItem="7VS-F9-Zdf" secondAttribute="width" multiplier="0.99" id="5Ua-cE-iMf"/>
@@ -1201,7 +1201,7 @@ from Criptext</string>
                                             <constraint firstAttribute="trailing" secondItem="7VS-F9-Zdf" secondAttribute="trailing" constant="54" id="jsI-7z-Mqq"/>
                                             <constraint firstAttribute="trailing" secondItem="hMf-wY-jdP" secondAttribute="trailing" constant="33" id="kZ3-YW-xaX"/>
                                             <constraint firstItem="7VS-F9-Zdf" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="56" id="mjz-eD-Y80"/>
-                                            <constraint firstAttribute="trailing" secondItem="NT8-w1-8Xk" secondAttribute="trailing" constant="33" id="nVM-bG-txm"/>
+                                            <constraint firstAttribute="trailing" secondItem="NT8-w1-8Xk" secondAttribute="trailing" constant="20" id="nVM-bG-txm"/>
                                             <constraint firstItem="8N5-Z7-gsp" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="38" id="qeo-Fs-Wp8"/>
                                             <constraint firstItem="O3S-ch-dG6" firstAttribute="centerY" secondItem="8N5-Z7-gsp" secondAttribute="centerY" id="s2f-rz-CxP"/>
                                             <constraint firstItem="bU8-ie-V7v" firstAttribute="leading" secondItem="mGe-H4-qBL" secondAttribute="leading" constant="20" id="srN-hq-6Au"/>
@@ -1247,6 +1247,7 @@ from Criptext</string>
                         <outlet property="passwordTextField" destination="7VS-F9-Zdf" id="Fu0-1D-AMN"/>
                         <outlet property="resetButton" destination="8N5-Z7-gsp" id="VLB-hi-7tM"/>
                         <outlet property="resetLoaderView" destination="O3S-ch-dG6" id="Fhc-0a-hcW"/>
+                        <outlet property="titleLabel" destination="NT8-w1-8Xk" id="14Q-RF-ZTZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fre-vs-ofe" userLabel="First Responder" sceneMemberID="firstResponder"/>

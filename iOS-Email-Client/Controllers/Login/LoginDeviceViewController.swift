@@ -33,7 +33,11 @@ class LoginDeviceViewController: UIViewController{
         socket?.delegate = self
         socket?.connect(jwt: jwt)
         scheduleWorker.delegate = self
-        self.sendLinkAuthRequest()
+        guard loginData.isTwoFactor else {
+            self.sendLinkAuthRequest()
+            return
+        }
+        self.scheduleWorker.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -42,7 +46,7 @@ class LoginDeviceViewController: UIViewController{
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @IBAction func onResendPress(_ sender: Any) {
@@ -97,7 +101,11 @@ class LoginDeviceViewController: UIViewController{
             self.navigationController?.popViewController(animated: true)
             return
         }
-        let deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        if loginData.isTwoFactor,
+            let password = loginData.password {
+            deviceInfo["password"] = password
+        }
         APIManager.linkAuth(deviceInfo: deviceInfo, token: jwt) { (responseData) in
             guard case .Success = responseData else {
                 self.onFailure()

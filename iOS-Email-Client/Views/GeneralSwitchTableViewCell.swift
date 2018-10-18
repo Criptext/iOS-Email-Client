@@ -10,5 +10,10 @@ import Foundation
 
 class GeneralSwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var optionLabel: UILabel!
+    @IBOutlet weak var availableSwitch: UISwitch!
+    var switchToggle: ((Bool) -> Void)?
     
+    @IBAction func onSwitchToggle(_ sender: Any) {
+        switchToggle?(availableSwitch.isOn)
+    }
 }

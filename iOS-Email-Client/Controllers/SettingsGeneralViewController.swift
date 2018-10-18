@@ -15,7 +15,7 @@ class SettingsGeneralViewController: UITableViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = ["ACCOUNT", "ABOUT", "VERSION"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile", "Signature", "Change Password", "Recovery Email"],
+        "ACCOUNT": ["Profile", "Signature", "Change Password", "Recovery Email", "Two-factor Authentication"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout"],
     "VERSION": ["Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
@@ -53,10 +53,10 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
-    func renderAccountCells(text: String) -> GeneralTapTableCellView {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+    func renderAccountCells(text: String) -> UITableViewCell {
         switch(text){
         case "Recovery Email":
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
             cell.optionLabel.text = text
             cell.messageLabel.text = generalData.recoveryEmailStatus.description
             cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
@@ -70,7 +70,16 @@ class SettingsGeneralViewController: UITableViewController{
             cell.loader.isHidden = true
             cell.goImageView.isHidden = false
             return cell
+        case "Two-factor Authentication":
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = text
+            cell.availableSwitch.isOn = generalData.isTwoFactor
+            cell.switchToggle = { isOn in
+                self.setTwoFactor(enable: isOn)
+            }
+            return cell
         default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
             cell.optionLabel.text = text
             cell.goImageView.isHidden = false
             cell.messageLabel.text = ""
@@ -237,6 +246,19 @@ class SettingsGeneralViewController: UITableViewController{
                     return
                 }
                 DBManager.update(account: self.myAccount, name: name)
+            }
+        }
+    }
+    
+    func setTwoFactor(enable: Bool){
+        let initialValue = self.generalData.isTwoFactor
+        self.generalData.isTwoFactor = enable
+        APIManager.setTwoFactor(isOn: enable, token: myAccount.jwt) { (responseData) in
+            guard case .Success = responseData else {
+                self.showAlert("Something went wrong", message: "Unable to \(enable ? "enable" : "disable") two pass. Please try again", style: .alert)
+                self.generalData.isTwoFactor = initialValue
+                self.reloadView()
+                return
             }
         }
     }

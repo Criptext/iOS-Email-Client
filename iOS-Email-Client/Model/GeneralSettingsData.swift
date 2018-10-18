@@ -11,6 +11,7 @@ import Foundation
 class GeneralSettingsData {
     var recoveryEmail: String?
     var recoveryEmailStatus: RecoveryStatus = .none
+    var isTwoFactor = false
     var password: String?
     
     enum RecoveryStatus {

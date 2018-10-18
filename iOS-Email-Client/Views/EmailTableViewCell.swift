@@ -88,7 +88,6 @@ class EmailTableViewCell: UITableViewCell{
             if (webView.scrollView.zoomScale == 1.0) {
                 webView.scrollView.setZoomScale(webView.scrollView.minimumZoomScale, animated: false)
             }
-            initialZoomScale = webView.scrollView.minimumZoomScale
         }
     }
     
@@ -249,6 +248,8 @@ extension EmailTableViewCell{
 
 extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate{
     
+    
+    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: 0), animated: false)
         webViewEvaluateHeight(self.webView)
@@ -273,6 +274,7 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
                 return
             }
             self.heightConstraint.constant = newHeight
+            self.webView.scrollView.contentSize = CGSize(width: self.webView.scrollView.contentSize.width, height: newHeight)
             self.delegate?.tableViewCellDidChangeHeight(newHeight, email: self.email)
         }
     }

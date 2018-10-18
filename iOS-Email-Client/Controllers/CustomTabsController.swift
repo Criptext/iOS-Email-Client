@@ -39,7 +39,7 @@ class CustomTabsController: TabsController {
             }
             guard case let .SuccessDictionary(settings) = responseData,
                 let devices = settings["devices"] as? [[String: Any]],
-                let recoveryData = settings["recoveryEmail"] as? [String: Any] else {
+                let general = settings["general"] as? [String: Any] else {
                 return
             }
             for device in devices {
@@ -49,10 +49,12 @@ class CustomTabsController: TabsController {
                 }
                 self.devicesData.devices.append(newDevice)
             }
-            let email = recoveryData["address"] as! String
-            let status = recoveryData["status"] as! Int
+            let email = general["recoveryEmail"] as! String
+            let status = general["recoveryEmailConfirmed"] as! Int
+            let isTwoFactor = general["twoFactorAuth"] as! Int
             self.generalData.recoveryEmail = email
             self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
+            self.generalData.isTwoFactor = isTwoFactor == 1 ? true : false
             self.reloadChildViews()
         }
     }
