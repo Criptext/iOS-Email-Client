@@ -50,7 +50,6 @@ class EmailTableViewCell: UITableViewCell{
     
     var email: Email!
     var isLoaded = false
-    var initialZoomScale: CGFloat = 0
     var attachments : List<File> {
         return email.files
     }
@@ -69,6 +68,7 @@ class EmailTableViewCell: UITableViewCell{
         let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
         attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentTableCell")
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.scrollView.contentSize), options: .new, context: nil)
     }
     
     func setupView(){
@@ -88,6 +88,11 @@ class EmailTableViewCell: UITableViewCell{
             if (webView.scrollView.zoomScale == 1.0) {
                 webView.scrollView.setZoomScale(webView.scrollView.minimumZoomScale, animated: false)
             }
+        }
+        if (keyPath == "scrollView.contentSize"),
+            let contentSize = change?[NSKeyValueChangeKey.newKey] as? CGSize,
+            contentSize.height != email.cellHeight {
+            webView.scrollView.contentSize = CGSize(width: contentSize.width, height: email.cellHeight)
         }
     }
     
@@ -166,7 +171,6 @@ class EmailTableViewCell: UITableViewCell{
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
         let content = "\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)"
-        webView.scrollView.minimumZoomScale = 0.5
         webView.scrollView.maximumZoomScale = 2.0
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }
@@ -248,9 +252,11 @@ extension EmailTableViewCell{
 
 extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate{
     
-    
-    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if (!webView.isLoading && scrollView.contentSize.width < webView.frame.width) {
+            let scale = (webView.frame.width * scrollView.zoomScale/scrollView.contentSize.width)
+            webView.scrollView.setZoomScale(scale, animated: false)
+        }
         scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: 0), animated: false)
         webViewEvaluateHeight(self.webView)
     }
@@ -274,7 +280,7 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
                 return
             }
             self.heightConstraint.constant = newHeight
-            self.webView.scrollView.contentSize = CGSize(width: self.webView.scrollView.contentSize.width, height: newHeight)
+            self.webView.invalidateIntrinsicContentSize()
             self.delegate?.tableViewCellDidChangeHeight(newHeight, email: self.email)
         }
     }
