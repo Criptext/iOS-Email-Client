@@ -20,7 +20,7 @@ class ComposerViewControllerTests: XCTestCase {
         guard composerVC == nil else {
             return
         }
-        DBManager.signout()
+        DBManager.destroy()
         for systemLabel in SystemLabel.array {
             let newLabel = Label(systemLabel.description)
             newLabel.id = systemLabel.id

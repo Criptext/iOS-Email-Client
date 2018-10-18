@@ -46,7 +46,6 @@ class AESCipherTests: XCTestCase {
         let sessionData = sessionString.data(using: .utf8)!
         let encryptedData = AESCipher.encrypt(data: sessionData, keyData: keyData!, ivData: ivData, operation: kCCEncrypt)
         
-        print(encryptedData?.base64EncodedString() ?? "nanai we")
         XCTAssert(encryptedData?.base64EncodedString() == encryptedSession)
     }
     
