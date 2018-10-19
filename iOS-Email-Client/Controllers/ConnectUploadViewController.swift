@@ -114,6 +114,8 @@ class ConnectUploadViewController: UIViewController{
                 self.presentProcessInterrupted()
                 return
             }
+            CriptextFileManager.deleteFile(url: myUrl)
+            CriptextFileManager.deleteFile(path: compressedPath)
             self.databasePath = outputPath
             self.state = .waiting
             self.handleState()
@@ -143,6 +145,7 @@ class ConnectUploadViewController: UIViewController{
                 self.presentProcessInterrupted()
                 return
             }
+            CriptextFileManager.deleteFile(path: path)
             self.state = .sendData
             self.handleState()
         }

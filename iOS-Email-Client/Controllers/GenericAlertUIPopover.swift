@@ -12,9 +12,12 @@ class GenericAlertUIPopover: BaseUIPopover {
     
     var myTitle: String?
     var myMessage: String?
+    var myAttributedMessage: NSAttributedString?
+    var myButton: String = "Ok"
     var onOkPress: (() -> (Void))?
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var okButton: UIButton!
     
     
     init(){
@@ -28,7 +31,12 @@ class GenericAlertUIPopover: BaseUIPopover {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.text = myTitle
-        messageLabel.text = myMessage
+        okButton.setTitle(myButton, for: .normal)
+        if let attributedMessage = myAttributedMessage {
+            messageLabel.attributedText = attributedMessage
+        } else {
+            messageLabel.text = myMessage
+        }
     }
     
     @IBAction func okPress(_ sender: Any) {

@@ -133,6 +133,8 @@ class ConnectDeviceViewController: UIViewController{
                 self.presentProcessInterrupted()
                 return
         }
+        CriptextFileManager.deleteFile(path: path)
+        CriptextFileManager.deleteFile(path: decryptedPath)
         state = .processDB(myAccount, decompressedPath, data)
         self.handleState()
     }
@@ -161,6 +163,7 @@ class ConnectDeviceViewController: UIViewController{
                 }
             }
             DBManager.insertBatchRows(rows: dbRows, maps: &maps)
+            CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: "Decrypting Mailbox") {
                     self.connectUIView.messageLabel.text = "Mailbox restored successfully!"

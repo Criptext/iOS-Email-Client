@@ -15,7 +15,7 @@ class SettingsGeneralViewController: UITableViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = ["ACCOUNT", "ABOUT", "VERSION"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile", "Signature", "Change Password", "Recovery Email", "Two-factor Authentication"],
+        "ACCOUNT": ["Profile", "Signature", "Change Password", "2-Factor Authentication", "Recovery Email"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout"],
     "VERSION": ["Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
@@ -70,7 +70,7 @@ class SettingsGeneralViewController: UITableViewController{
             cell.loader.isHidden = true
             cell.goImageView.isHidden = false
             return cell
-        case "Two-factor Authentication":
+        case "2-Factor Authentication":
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
             cell.optionLabel.text = text
             cell.availableSwitch.isOn = generalData.isTwoFactor
@@ -251,6 +251,11 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func setTwoFactor(enable: Bool){
+        guard !enable || generalData.recoveryEmailStatus == .verified else {
+            presentRecoveryPopover()
+            self.reloadView()
+            return
+        }
         let initialValue = self.generalData.isTwoFactor
         self.generalData.isTwoFactor = enable
         APIManager.setTwoFactor(isOn: enable, token: myAccount.jwt) { (responseData) in
@@ -260,7 +265,29 @@ class SettingsGeneralViewController: UITableViewController{
                 self.reloadView()
                 return
             }
+            if (self.generalData.isTwoFactor) {
+                self.presentTwoFactorPopover()
+            }
         }
+    }
+    
+    func presentRecoveryPopover() {
+        let popover = GenericAlertUIPopover()
+        let attributedRegular = NSMutableAttributedString(string: "To enable Two-Factor Authentication you must set and verify a recovery email on your account", attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
+        let attributedSemibold = NSAttributedString(string: "\n\nPlease go to Settings > Recovery Email to complete this step.", attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
+        attributedRegular.append(attributedSemibold)
+        popover.myTitle = "Recovery Email Not Set"
+        popover.myAttributedMessage = attributedRegular
+        popover.myButton = "Got it!"
+        self.presentPopover(popover: popover, height: 310)
+    }
+    
+    func presentTwoFactorPopover() {
+        let popover = GenericAlertUIPopover()
+        popover.myTitle = "2FA Enabled!"
+        popover.myMessage = "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device."
+        popover.myButton = "Got it!"
+        self.presentPopover(popover: popover, height: 263)
     }
 }
 

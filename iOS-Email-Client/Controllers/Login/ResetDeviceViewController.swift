@@ -43,7 +43,7 @@ class ResetDeviceViewController: UIViewController{
         
         if(loginData.isTwoFactor){
             resetButton.setTitle(buttonTitle, for: .normal)
-            titleLabel.text = "Two-factor Authentication"
+            titleLabel.text = "2-Factor Authentication"
         }
     }
     

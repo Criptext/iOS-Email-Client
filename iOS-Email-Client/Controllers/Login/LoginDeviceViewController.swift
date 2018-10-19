@@ -37,6 +37,7 @@ class LoginDeviceViewController: UIViewController{
             self.sendLinkAuthRequest()
             return
         }
+        titleLabel.text = "2-Factor Authentication"
         self.scheduleWorker.start()
     }
     
