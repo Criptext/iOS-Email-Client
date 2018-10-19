@@ -24,7 +24,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     {"table":"email_label","object":{"labelId":1,"emailId":1}}
     {"table":"email_contact","object":{"type":"from","contactId":2,"emailId":1,"id":1}}
     {"table":"email_contact","object":{"type":"to","contactId":1,"emailId":1,"id":2}}
-    {"table":"file","object":{"name":"test.pdf","status":1,"emailId":123,"id":1,"token":"","readOnly":false,"size":0,"date":"2018-07-17 15:09:36","mimeType":""}}
+    {"table":"file","object":{"name":"test.pdf","status":1,"emailId":123,"id":1,"token":"","readOnly":false,"size":0,"date":"2018-07-17 15:09:36","mimeType":"application\\/pdf"}}
     {"table":"filekey","object":{"id":1,"key":"fgsfgfgsfdafa","iv":afdsfsagdfgsdf","emailId":1}}
     """
     

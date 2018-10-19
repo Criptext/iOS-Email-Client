@@ -289,6 +289,15 @@ class CriptextFileManager {
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return documentsURL.appendingPathComponent(name)
     }
+    
+    static func deleteFile(path: String) {
+        let url = URL(fileURLWithPath: path)
+        try? FileManager.default.removeItem(at: url)
+    }
+    
+    static func deleteFile(url: URL) {
+        try? FileManager.default.removeItem(at: url)
+    }
 }
 
 extension CriptextFileManager: ProgressDelegate {

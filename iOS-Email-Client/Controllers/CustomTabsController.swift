@@ -28,6 +28,7 @@ class CustomTabsController: TabsController {
     }
     
     func loadData(){
+        let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
@@ -39,20 +40,17 @@ class CustomTabsController: TabsController {
             }
             guard case let .SuccessDictionary(settings) = responseData,
                 let devices = settings["devices"] as? [[String: Any]],
-                let recoveryData = settings["recoveryEmail"] as? [String: Any] else {
+                let general = settings["general"] as? [String: Any] else {
                 return
             }
-            for device in devices {
-                let newDevice = Device.fromDictionary(data: device)
-                guard !self.devicesData.devices.contains(where: {$0.id == newDevice.id && $0.active}) else {
-                    continue
-                }
-                self.devicesData.devices.append(newDevice)
-            }
-            let email = recoveryData["address"] as! String
-            let status = recoveryData["status"] as! Int
+            let myDevices = devices.map({Device.fromDictionary(data: $0)}).filter({$0.id != myDevice.id}).sorted(by: {$0.safeDate > $1.safeDate})
+            self.devicesData.devices.append(contentsOf: myDevices)
+            let email = general["recoveryEmail"] as! String
+            let status = general["recoveryEmailConfirmed"] as! Int
+            let isTwoFactor = general["twoFactorAuth"] as! Int
             self.generalData.recoveryEmail = email
             self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
+            self.generalData.isTwoFactor = isTwoFactor == 1 ? true : false
             self.reloadChildViews()
         }
     }

@@ -1387,6 +1387,9 @@
                                                 <constraint firstAttribute="width" constant="43" id="kPw-4a-gTD"/>
                                             </constraints>
                                             <color key="onTintColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="onSwitchToggle:" destination="ZzE-Yh-VbX" eventType="valueChanged" id="Ebg-dL-bAK"/>
+                                            </connections>
                                         </switch>
                                     </subviews>
                                     <constraints>
@@ -1397,6 +1400,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="availableSwitch" destination="kgW-OS-3hM" id="oVz-ch-0Ua"/>
                                     <outlet property="optionLabel" destination="5wZ-K9-zuW" id="niO-4k-IcX"/>
                                 </connections>
                             </tableViewCell>
@@ -1558,7 +1562,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NsV-eR-Br8">
-                                <rect key="frame" x="243" y="288.5" width="105" height="38"/>
+                                <rect key="frame" x="243" y="323.5" width="105" height="38"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="38" id="698-sM-68Z"/>
@@ -1578,13 +1582,20 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="i2e-ku-M8K">
-                                <rect key="frame" x="285.5" y="297.5" width="20" height="20"/>
+                                <rect key="frame" x="285.5" y="332.5" width="20" height="20"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: Changing your recovery email will turn off Two-Factor Authentication" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM2-53-pVD">
+                                <rect key="frame" x="27" y="276.5" width="321" height="38.5"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                                <color key="textColor" red="0.44705882349999998" green="0.44705882349999998" blue="0.44705882349999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Upi-pd-9ph" firstAttribute="centerY" secondItem="S9Q-rO-GEN" secondAttribute="centerY" id="08s-mZ-uvB"/>
                             <constraint firstItem="W6o-Yn-D7Z" firstAttribute="centerX" secondItem="n3y-BG-AGw" secondAttribute="centerX" id="89z-bC-lqJ"/>
+                            <constraint firstItem="lM2-53-pVD" firstAttribute="top" secondItem="nCs-ch-41A" secondAttribute="bottom" constant="18" id="AVH-O1-6N5"/>
                             <constraint firstItem="i2e-ku-M8K" firstAttribute="centerX" secondItem="NsV-eR-Br8" secondAttribute="centerX" id="C2f-ZQ-KiA"/>
                             <constraint firstItem="nCs-ch-41A" firstAttribute="trailing" secondItem="Zcd-QO-oCP" secondAttribute="trailing" id="Dob-nd-Ubf"/>
                             <constraint firstItem="nCs-ch-41A" firstAttribute="top" secondItem="Zcd-QO-oCP" secondAttribute="bottom" constant="15" id="E0I-5T-wke"/>
@@ -1598,11 +1609,13 @@
                             <constraint firstItem="n3y-BG-AGw" firstAttribute="top" secondItem="iNz-jU-IJX" secondAttribute="bottom" constant="15" id="UxJ-HK-xQo"/>
                             <constraint firstItem="Upi-pd-9ph" firstAttribute="leading" secondItem="iNz-jU-IJX" secondAttribute="trailing" id="W9j-nV-IB8"/>
                             <constraint firstItem="i2e-ku-M8K" firstAttribute="centerY" secondItem="NsV-eR-Br8" secondAttribute="centerY" id="h8k-fa-dyW"/>
+                            <constraint firstItem="lM2-53-pVD" firstAttribute="trailing" secondItem="Upi-pd-9ph" secondAttribute="trailing" id="hVx-Vm-ajx"/>
                             <constraint firstItem="Zcd-QO-oCP" firstAttribute="trailing" secondItem="Upi-pd-9ph" secondAttribute="trailing" id="lXp-jg-rre"/>
                             <constraint firstItem="Upi-pd-9ph" firstAttribute="trailing" secondItem="S9Q-rO-GEN" secondAttribute="trailing" id="nca-MU-PVK"/>
-                            <constraint firstItem="NsV-eR-Br8" firstAttribute="top" secondItem="nCs-ch-41A" secondAttribute="bottom" constant="30" id="ny8-6L-Lpd"/>
+                            <constraint firstItem="NsV-eR-Br8" firstAttribute="top" secondItem="nCs-ch-41A" secondAttribute="bottom" constant="65" id="ny8-6L-Lpd"/>
                             <constraint firstItem="NsV-eR-Br8" firstAttribute="trailing" secondItem="Zcd-QO-oCP" secondAttribute="trailing" id="p5n-hV-tK1"/>
                             <constraint firstItem="W6o-Yn-D7Z" firstAttribute="centerY" secondItem="n3y-BG-AGw" secondAttribute="centerY" id="shV-9R-cgP"/>
+                            <constraint firstItem="lM2-53-pVD" firstAttribute="leading" secondItem="Zcd-QO-oCP" secondAttribute="leading" id="t0P-WV-xcF"/>
                             <constraint firstItem="S9Q-rO-GEN" firstAttribute="leading" secondItem="Bc4-Fn-Mhk" secondAttribute="leading" constant="27" id="y1s-o5-hla"/>
                             <constraint firstItem="iNz-jU-IJX" firstAttribute="leading" secondItem="S9Q-rO-GEN" secondAttribute="leading" id="yd9-F4-Bbo"/>
                         </constraints>
@@ -1878,9 +1891,9 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Device" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="owA-aL-tUp">
-                                            <rect key="frame" x="252" y="23" width="100" height="20"/>
+                                            <rect key="frame" x="257" y="23" width="95" height="20"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="100" id="7aT-Fc-td6"/>
+                                                <constraint firstAttribute="width" constant="95" id="7aT-Fc-td6"/>
                                                 <constraint firstAttribute="height" constant="20" id="cfn-aM-jge"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
@@ -1888,16 +1901,16 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="amW-Di-fUH">
-                                            <rect key="frame" x="61" y="13" width="186" height="40"/>
+                                            <rect key="frame" x="61" y="13" width="196" height="40"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Samsung Galaxy S8" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3s-zY-auf">
-                                                    <rect key="frame" x="0.0" y="0.0" width="186" height="22"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="196" height="22"/>
                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guayaquil - 12 hours ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bv-pm-gsw">
-                                                    <rect key="frame" x="0.0" y="22" width="186" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guayaquil - 12 hours ago" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bv-pm-gsw">
+                                                    <rect key="frame" x="0.0" y="22" width="196" height="18"/>
                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1917,7 +1930,7 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="owA-aL-tUp" firstAttribute="leading" secondItem="amW-Di-fUH" secondAttribute="trailing" constant="5" id="8hW-Je-NRb"/>
+                                        <constraint firstItem="owA-aL-tUp" firstAttribute="leading" secondItem="amW-Di-fUH" secondAttribute="trailing" id="8hW-Je-NRb"/>
                                         <constraint firstItem="amW-Di-fUH" firstAttribute="centerY" secondItem="9C0-OI-bsM" secondAttribute="centerY" id="F5c-bO-nVr"/>
                                         <constraint firstItem="AGu-bu-kQR" firstAttribute="trailing" secondItem="owA-aL-tUp" secondAttribute="trailing" id="Lza-yA-9XS"/>
                                         <constraint firstItem="AGu-bu-kQR" firstAttribute="centerY" secondItem="owA-aL-tUp" secondAttribute="centerY" id="UZu-zA-hrs"/>

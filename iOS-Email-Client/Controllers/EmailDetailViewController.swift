@@ -51,13 +51,6 @@ class EmailDetailViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            guard let lastIndex = self.emailData.emails.index(where: {$0.isExpanded}) else {
-                return
-            }
-            self.emailsTableView.scrollToRow(at: IndexPath(row: lastIndex, section: 0), at: .bottom, animated: false)
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -645,6 +638,11 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case .Conflicts = responseData {
+                self.showAlert("Unsend Failed", message: "Failed to unsend the email. Time (1h) for unsending has already expired.", style: .alert)
+                self.emailsTableView.reloadData()
+                return
+            }
             guard case .Success = responseData else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
                 self.emailsTableView.reloadData()
@@ -652,6 +650,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             }
             DBManager.unsendEmail(email)
             email.isLoaded = false
+            cell.isLoaded = false
             cell.setContent(email, myEmail: self.emailData.accountEmail)
             self.emailsTableView.reloadData()
         }

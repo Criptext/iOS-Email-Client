@@ -283,6 +283,7 @@ extension InboxViewController: WebSocketManagerDelegate {
             }
             settings.generalData.recoveryEmail = address
             settings.generalData.recoveryEmailStatus = .pending
+            settings.generalData.isTwoFactor = false
             settings.reloadChildViews()
         case .RecoveryVerified:
             guard let nav = self.presentedViewController as? UINavigationController,
@@ -368,7 +369,7 @@ extension InboxViewController {
             menuViewController.reloadView()
         }
         
-        if result.emails.contains(where: {!$0.isInvalidated && $0.status != .unsent}) {
+        if result.emails.contains(where: {!$0.isInvalidated && $0.status != .unsent && !$0.isSent}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
         

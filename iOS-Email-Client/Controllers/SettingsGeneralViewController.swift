@@ -15,7 +15,7 @@ class SettingsGeneralViewController: UITableViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = ["ACCOUNT", "ABOUT", "VERSION"] as [String]
     let menus = [
-        "ACCOUNT": ["Profile", "Signature", "Change Password", "Recovery Email"],
+        "ACCOUNT": ["Profile", "Signature", "Change Password", "Two-Factor Authentication", "Recovery Email"],
     "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout"],
     "VERSION": ["Version"]] as [String: [String]]
     var generalData: GeneralSettingsData!
@@ -53,10 +53,10 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
-    func renderAccountCells(text: String) -> GeneralTapTableCellView {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+    func renderAccountCells(text: String) -> UITableViewCell {
         switch(text){
         case "Recovery Email":
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
             cell.optionLabel.text = text
             cell.messageLabel.text = generalData.recoveryEmailStatus.description
             cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
@@ -70,7 +70,16 @@ class SettingsGeneralViewController: UITableViewController{
             cell.loader.isHidden = true
             cell.goImageView.isHidden = false
             return cell
+        case "Two-Factor Authentication":
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = text
+            cell.availableSwitch.isOn = generalData.isTwoFactor
+            cell.switchToggle = { isOn in
+                self.setTwoFactor(enable: isOn)
+            }
+            return cell
         default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
             cell.optionLabel.text = text
             cell.goImageView.isHidden = false
             cell.messageLabel.text = ""
@@ -239,6 +248,50 @@ class SettingsGeneralViewController: UITableViewController{
                 DBManager.update(account: self.myAccount, name: name)
             }
         }
+    }
+    
+    func setTwoFactor(enable: Bool){
+        guard !enable || generalData.recoveryEmailStatus == .verified else {
+            presentRecoveryPopover()
+            self.reloadView()
+            return
+        }
+        let initialValue = self.generalData.isTwoFactor
+        self.generalData.isTwoFactor = enable
+        APIManager.setTwoFactor(isOn: enable, token: myAccount.jwt) { (responseData) in
+            if case .Conflicts = responseData {
+                self.presentRecoveryPopover()
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert("Something went wrong", message: "Unable to \(enable ? "enable" : "disable") two pass. Please try again", style: .alert)
+                self.generalData.isTwoFactor = initialValue
+                self.reloadView()
+                return
+            }
+            if (self.generalData.isTwoFactor) {
+                self.presentTwoFactorPopover()
+            }
+        }
+    }
+    
+    func presentRecoveryPopover() {
+        let popover = GenericAlertUIPopover()
+        let attributedRegular = NSMutableAttributedString(string: "To enable Two-Factor Authentication you must set and verify a recovery email on your account", attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
+        let attributedSemibold = NSAttributedString(string: "\n\nPlease go to Settings > Recovery Email to complete this step.", attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
+        attributedRegular.append(attributedSemibold)
+        popover.myTitle = "Recovery Email Not Set"
+        popover.myAttributedMessage = attributedRegular
+        popover.myButton = "Got it!"
+        self.presentPopover(popover: popover, height: 310)
+    }
+    
+    func presentTwoFactorPopover() {
+        let popover = GenericAlertUIPopover()
+        popover.myTitle = "2FA Enabled!"
+        popover.myMessage = "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device."
+        popover.myButton = "Got it!"
+        self.presentPopover(popover: popover, height: 263)
     }
 }
 

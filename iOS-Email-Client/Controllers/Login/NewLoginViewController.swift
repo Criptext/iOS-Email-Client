@@ -145,12 +145,20 @@ class NewLoginViewController: UIViewController{
                 self.showLoginError(error: error.description)
                 return
             }
-            guard case let .SuccessString(jwtTemp) = responseData else {
+            guard case let .SuccessDictionary(data) = responseData,
+                let twoFactor = data["twoFactorAuth"] as? Bool,
+                let jwtTemp = data["token"] as? String else {
                 self.showLoginError(error: "Unable to validate user. Please try again")
                 return
             }
             loginData.jwt = jwtTemp
-            self.jumpToLoginDeviceView(loginData: loginData)
+            guard twoFactor else {
+                self.jumpToLoginDeviceView(loginData: loginData)
+                return
+            }
+            
+            loginData.isTwoFactor = true
+            self.jumpToLoginPasswordView(loginData: loginData)
         }
     }
     

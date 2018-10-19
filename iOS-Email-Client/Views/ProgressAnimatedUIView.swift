@@ -11,7 +11,7 @@ import Foundation
 class ProgressAnimatedUIView: UIView{
     let fps = 0.02
     let width = 15
-    var progress: Float = 0.3
+    var progress: Float = 0.0
     var initialOffset = 0
     var loadingTimer: Timer?
     

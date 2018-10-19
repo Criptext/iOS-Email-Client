@@ -12,6 +12,8 @@ class LoginData{
     var email: String
     var jwt: String?
     var randomId: String?
+    var isTwoFactor = false
+    var password: String?
     
     var username: String {
         return String(email.split(separator: "@")[0])

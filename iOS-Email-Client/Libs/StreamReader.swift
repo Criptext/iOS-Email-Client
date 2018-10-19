@@ -16,8 +16,7 @@ class StreamReader {
     let delimPattern : Data
     var isAtEOF: Bool = false
     
-    init?(url: URL, delimeter: String = "\n", encoding: String.Encoding = .utf8, chunkSize: Int = 4096)
-    {
+    init?(url: URL, delimeter: String = "\n", encoding: String.Encoding = .utf8, chunkSize: Int = 4096){
         guard let fileHandle = try? FileHandle(forReadingFrom: url) else { return nil }
         self.fileHandle = fileHandle
         self.chunkSize = chunkSize

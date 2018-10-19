@@ -291,7 +291,9 @@ class EventHandler {
     }
     
     func handleSocketEvent(event: [String: Any]) -> EventData.Socket {
-        let cmd = event["cmd"] as! Int32
+        guard let cmd = event["cmd"] as? Int32 else {
+            return .Unhandled
+        }
         
         switch(cmd){
         case Event.Link.start.rawValue:

@@ -75,7 +75,7 @@
          <EnvironmentVariable
             key = "forceProduction"
             value = "true"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>

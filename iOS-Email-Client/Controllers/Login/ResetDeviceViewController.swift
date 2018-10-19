@@ -17,11 +17,15 @@ class ResetDeviceViewController: UIViewController{
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var errorMark: UIImageView!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var resetLoaderView: UIActivityIndicatorView!
     var loginData: LoginData!
     var failed = false
+    var buttonTitle: String {
+        return loginData.isTwoFactor ? "Confirm" : "Sign-in"
+    }
     
     override func viewDidLoad() {
         emailLabel.text = loginData.email
@@ -36,6 +40,10 @@ class ResetDeviceViewController: UIViewController{
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
         passwordTextField.placeholderAnimation = .hidden
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: placeholderAttrs)
+        
+        if(loginData.isTwoFactor){
+            resetButton.setTitle(buttonTitle, for: .normal)
+        }
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -54,6 +62,14 @@ class ResetDeviceViewController: UIViewController{
     }
     
     @IBAction func onResetPress(_ sender: Any) {
+        guard loginData.isTwoFactor else {
+            loginRequest()
+            return
+        }
+        loginAuth()
+    }
+    
+    func loginRequest(){
         guard let password = passwordTextField.text else {
             return
         }
@@ -77,8 +93,8 @@ class ResetDeviceViewController: UIViewController{
             }
             guard case let .SuccessString(dataString) = responseData,
                 let data = Utils.convertToDictionary(text: dataString) else {
-                self.showFeedback(true, "Wrong password. Please try again.")
-                return
+                    self.showFeedback(true, "Wrong password. Please try again.")
+                    return
             }
             let name = data["name"] as! String
             let deviceId = data["deviceId"] as! Int
@@ -88,6 +104,42 @@ class ResetDeviceViewController: UIViewController{
             signupData.token = token
             self.jumpToCreatingAccount(signupData: signupData)
         }
+    }
+    
+    func loginAuth(){
+        guard let password = passwordTextField.text,
+            let jwt = loginData.jwt else {
+            return
+        }
+        showLoader(true)
+        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        deviceInfo["password"] = password.sha256()!
+        APIManager.linkAuth(deviceInfo: deviceInfo, token: jwt) { (responseData) in
+            self.showLoader(false)
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.showFeedback(true, error.description)
+                return
+            }
+            if case .BadRequest = responseData {
+                self.showFeedback(true, "Wrong password. Please try again.")
+                return
+            }
+            guard case .Success = responseData else {
+                self.showFeedback(true, "Server Error. Please try again.")
+                return
+            }
+            self.loginData.password = password.sha256()!
+            self.jumpToLoginDeviceView(loginData: self.loginData)
+        }
+    }
+    
+    func jumpToLoginDeviceView(loginData: LoginData){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
+        controller.loginData = loginData
+        navigationController?.pushViewController(controller, animated: true)
+        showLoader(false)
     }
     
     @IBAction func textfieldDidEndOnExit(_ sender: Any) {
@@ -103,7 +155,7 @@ class ResetDeviceViewController: UIViewController{
     func checkToEnableDisableResetButton(){
         let textCount = passwordTextField.text?.count ?? 0
         resetButton.isEnabled = !(passwordTextField.isEmpty || textCount < Constants.MinCharactersPassword) && resetLoaderView.isHidden
-        resetButton.setTitle(resetLoaderView.isHidden ? "Sign In" : "", for: .normal)
+        resetButton.setTitle(resetLoaderView.isHidden ? buttonTitle : "", for: .normal)
         if(resetButton.isEnabled){
             resetButton.alpha = 1.0
         }else{
