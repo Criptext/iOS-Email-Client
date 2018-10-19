@@ -195,11 +195,6 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
     
-    func tableViewCellDidZoom(displaceHeight: CGFloat) {
-        print(displaceHeight)
-        self.emailsTableView.setContentOffset(CGPoint(x: emailsTableView.contentOffset.x, y: emailsTableView.contentOffset.y + displaceHeight), animated: true)
-    }
-    
     func tableViewCellDidTapLink(url: String) {
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)

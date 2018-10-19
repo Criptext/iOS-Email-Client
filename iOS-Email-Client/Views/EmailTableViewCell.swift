@@ -18,7 +18,6 @@ protocol EmailTableViewCellDelegate {
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
     func tableViewCellDidTapAttachment(file: File)
     func tableViewCellDidTapLink(url: String)
-    func tableViewCellDidZoom(displaceHeight: CGFloat)
 }
 
 class EmailTableViewCell: UITableViewCell{
