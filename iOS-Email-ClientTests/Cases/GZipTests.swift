@@ -2,7 +2,7 @@
 //  GZipTests.swift
 //  iOS-Email-ClientTests
 //
-//  Created by Allisson on 10/10/18.
+//  Created by Pedro Iñiguez on 10/10/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 

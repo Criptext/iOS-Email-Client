@@ -36,7 +36,7 @@ class NewLoginViewController: UIViewController{
         super.viewDidAppear(animated)
         if loggedOutRemotely {
             loggedOutRemotely = false
-            showAlert("Logged Out!", message: "This device has been removed remotely.", style: .alert)
+            showAlert(String.localize("Logged Out!"), message: String.localize("This device has been removed remotely."), style: .alert)
         }
     }
     
@@ -47,7 +47,7 @@ class NewLoginViewController: UIViewController{
     func usernameTextFieldInit(){
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Username"), attributes: placeholderAttrs)
         usernameTextField.delegate = self
         usernameTextField.autocapitalizationType = .none
         usernameTextField.autocorrectionType = .no
@@ -63,11 +63,11 @@ class NewLoginViewController: UIViewController{
         loginButton.clipsToBounds = true
         loginButton.layer.cornerRadius = 20
         
-        let boldText  = "Sign up"
+        let boldText  = String.localize("Sign up")
         let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
     
-        let normalText = "Not registered? "
+        let normalText = String.localize("Not registered? ")
         let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
         let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
     

@@ -1,0 +1,15 @@
+
+/* Class = "UIButton"; normalTitle = "Cancel sync"; ObjectID = "Arr-wh-3Qv"; */
+"Arr-wh-3Qv.normalTitle" = "Cancel sync";
+
+/* Class = "UILabel"; text = "david.grindstaff@criptext.com"; ObjectID = "I2c-6Y-BuD"; */
+"I2c-6Y-BuD.text" = "david.grindstaff@criptext.com";
+
+/* Class = "UILabel"; text = "Uploading mailbox"; ObjectID = "XjA-v0-OUS"; */
+"XjA-v0-OUS.text" = "Uploading mailbox";
+
+/* Class = "UILabel"; text = "Mailbox Sync"; ObjectID = "Zn2-S4-zxr"; */
+"Zn2-S4-zxr.text" = "Mailbox Sync";
+
+/* Class = "UILabel"; text = "0%"; ObjectID = "wzc-Ex-9uq"; */
+"wzc-Ex-9uq.text" = "0%";

@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  iOS-Email-Client
+
+  Created by Pedro on 10/19/18.
+  Copyright © 2018 Criptext Inc. All rights reserved.
+*/
+
+"Logged Out!" = "Logged Out!";
+"This device has been removed remotely." = "This device has been removed remotely."
+"Username" = "Username";
+"Sign up" = "Sign up";
+"Not registered? " = "Not registered? ";
+"Sign In" = "Sign In"
