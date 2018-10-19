@@ -17,6 +17,7 @@ class LoginDeviceViewController: UIViewController{
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var signWithPasswordButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,7 @@ class LoginDeviceViewController: UIViewController{
             self.sendLinkAuthRequest()
             return
         }
-        titleLabel.text = "2-Factor Authentication"
+        signWithPasswordButton.isHidden = true
         self.scheduleWorker.start()
     }
     

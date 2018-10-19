@@ -164,6 +164,7 @@ class RecoveryEmailViewController: UIViewController {
             }
             self.generalData.recoveryEmail = email
             self.generalData.recoveryEmailStatus = .pending
+            self.generalData.isTwoFactor = false
             self.emailTextField.detail = ""
             self.prepareView()
             self.presentResendAlert()

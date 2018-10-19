@@ -18,6 +18,12 @@ class Device {
     var active = false
     var type = Kind.ios.rawValue
     var lastActivity: Date?
+    var safeDate: Date {
+        guard let myDate = lastActivity else {
+            return Date(timeIntervalSinceNow: -(60 * 60 * 24 * 62))
+        }
+        return myDate
+    }
     
     enum Kind : Int{
         case pc = 1

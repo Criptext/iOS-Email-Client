@@ -24,7 +24,7 @@ class ResetDeviceViewController: UIViewController{
     var loginData: LoginData!
     var failed = false
     var buttonTitle: String {
-        return loginData.isTwoFactor ? "Next" : "Sign-in"
+        return loginData.isTwoFactor ? "Confirm" : "Sign-in"
     }
     
     override func viewDidLoad() {
@@ -43,7 +43,6 @@ class ResetDeviceViewController: UIViewController{
         
         if(loginData.isTwoFactor){
             resetButton.setTitle(buttonTitle, for: .normal)
-            titleLabel.text = "2-Factor Authentication"
         }
     }
     
@@ -122,8 +121,12 @@ class ResetDeviceViewController: UIViewController{
                 self.showFeedback(true, error.description)
                 return
             }
-            guard case .Success = responseData else {
+            if case .BadRequest = responseData {
                 self.showFeedback(true, "Wrong password. Please try again.")
+                return
+            }
+            guard case .Success = responseData else {
+                self.showFeedback(true, "Server Error. Please try again.")
                 return
             }
             self.loginData.password = password.sha256()!

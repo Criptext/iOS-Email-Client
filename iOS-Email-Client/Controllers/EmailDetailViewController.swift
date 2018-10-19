@@ -638,6 +638,11 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case .Conflicts = responseData {
+                self.showAlert("Unsend Failed", message: "Failed to unsend the email. Time (1h) for unsending has already expired.", style: .alert)
+                self.emailsTableView.reloadData()
+                return
+            }
             guard case .Success = responseData else {
                 self.showAlert("Unsend Failed", message: "Unable to unsend email. Please try again later", style: .alert)
                 self.emailsTableView.reloadData()
@@ -645,6 +650,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             }
             DBManager.unsendEmail(email)
             email.isLoaded = false
+            cell.isLoaded = false
             cell.setContent(email, myEmail: self.emailData.accountEmail)
             self.emailsTableView.reloadData()
         }
