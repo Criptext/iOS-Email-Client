@@ -97,8 +97,15 @@ class SettingsLabelsViewController: UITableViewController {
             return
         }
         let label = Label(labelText)
+        DBManager.store(label, incrementId: true)
+        self.labels.append(label)
+        self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
         let params = EventData.Peer.NewLabel(text: label.text, color: label.color)
-        APIManager.postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], token: myAccount.jwt) { (responseData) in
+        postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()])
+    }
+    
+    func postPeerEvent(_ params: [String: Any]){
+        APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return
@@ -107,18 +114,34 @@ class SettingsLabelsViewController: UITableViewController {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case .TooManyRequests = responseData {
+                self.queueEvent(params: params)
+                return
+            }
+            if case .ServerError = responseData {
+                self.queueEvent(params: params)
+                return
+            }
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.showAlert(String.localize("Request Error"), message: "\(String.localize("Unable to add label")) \(labelText). \(error.description). \(String.localize("Please try again"))", style: .alert)
-                return
+                self.queueEvent(params: params)
             }
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to add label")) \(labelText). \(String.localize("Please try again"))", style: .alert)
-                return
-            }
-            DBManager.store(label, incrementId: true)
-            self.labels.append(label)
-            self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
+        }
+    }
+    
+    func queueEvent(params: [String: Any]){
+        let fileURL = StaticFile.queueEvents.url
+        guard let jsonString = Utils.convertToJSONString(dictionary: params) else {
+            return
+        }
+        let rowData = "\(jsonString)\n".data(using: .utf8)!
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            let fileHandle = try! FileHandle(forUpdating: fileURL)
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(rowData)
+            fileHandle.closeFile()
+        } else {
+            try! rowData.write(to: fileURL, options: .atomic)
         }
     }
 }

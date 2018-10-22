@@ -12,7 +12,7 @@ import RealmSwift
 
 class CreateCustomJSONFileAsyncTask {
     
-    let fileURL = CriptextFileManager.getURLForFile(name: "link-device-db")
+    let fileURL = StaticFile.emailDB.url
     var contacts = [String: Int]()
     var emails = [Int: Int]()
     

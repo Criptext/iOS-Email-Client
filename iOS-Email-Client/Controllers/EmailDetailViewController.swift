@@ -148,7 +148,7 @@ class EmailDetailViewController: UIViewController {
         return email.cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : email.cellHeight
     }
     
-    func postPeerEvent(_ params: [String: Any], completion: @escaping ((ResponseData) -> Void)){
+    func postPeerEvent(_ params: [String: Any]){
         APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
@@ -158,7 +158,34 @@ class EmailDetailViewController: UIViewController {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
-            completion(responseData)
+            if case .TooManyRequests = responseData {
+                self.queueEvent(params: params)
+                return
+            }
+            if case .ServerError = responseData {
+                self.queueEvent(params: params)
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.queueEvent(params: params)
+            }
+        }
+    }
+    
+    func queueEvent(params: [String: Any]){
+        let fileURL = StaticFile.queueEvents.url
+        guard let jsonString = Utils.convertToJSONString(dictionary: params) else {
+            return
+        }
+        let rowData = "\(jsonString)\n".data(using: .utf8)!
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            let fileHandle = try! FileHandle(forUpdating: fileURL)
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(rowData)
+            fileHandle.closeFile()
+        } else {
+            try! rowData.write(to: fileURL, options: .atomic)
         }
     }
 }
@@ -432,16 +459,12 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             return
         }
         let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
+            DBManager.delete(self.emailData.emails)
+            self.mailboxData.removeSelectedRow = true
+            self.navigationController?.popViewController(animated: true)
+            
             let eventData = EventData.Peer.ThreadDeleted(threadIds: [self.emailData.threadId])
-            self.postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()]) { (responseData) in
-                guard case .Success = responseData else {
-                    self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to delete thread. Please try again"), style: .alert)
-                    return
-                }
-                DBManager.delete(self.emailData.emails)
-                self.mailboxData.removeSelectedRow = true
-                self.navigationController?.popViewController(animated: true)
-            }
+            self.postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
         }
         let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel)
         showAlert("Delete Thread", message: String.localize("This will be PERMANENTLY deleted"), style: .alert, actions: [deleteAction, cancelAction])
@@ -449,21 +472,17 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     
     func onMarkThreads() {
         let unread = self.mailboxData.unreadMails <= 0
+        for email in self.emailData.emails {
+            DBManager.updateEmail(email, unread: true)
+        }
+        self.navigationController?.popViewController(animated: true)
+        
         let params = ["cmd": Event.Peer.threadsUnread.rawValue,
                       "params": [
                         "unread": unread ? 1 : 0,
                         "threadIds": [emailData.threadId]
             ]] as [String : Any]
-        postPeerEvent(params) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to change read status. Please try again"), style: .alert)
-                return
-            }
-            for email in self.emailData.emails {
-                DBManager.updateEmail(email, unread: true)
-            }
-            self.navigationController?.popViewController(animated: true)
-        }
+        postPeerEvent(params)
     }
     
     func onMoreOptions() {
@@ -551,28 +570,18 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     func deleteSingleEmail(_ email: Email, indexPath: IndexPath){
         let eventData = EventData.Peer.EmailDeleted(metadataKeys: [email.key])
         let emailKey = email.key
-        postPeerEvent(["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()]) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to delete email. Please try again"), style: .alert)
-                return
-            }
-            DBManager.delete(email)
-            self.removeEmail(key: emailKey)
-        }
+        DBManager.delete(email)
+        self.removeEmail(key: emailKey)
+        postPeerEvent(["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()])
     }
     
     func moveSingleEmailToTrash(_ email: Email, indexPath: IndexPath){
         let changedLabels = getLabelNames(added: [SystemLabel.trash.id], removed: [])
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
         let emailKey = email.key
-        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()]) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to set labels. Please try again"), style: .alert)
-                return
-            }
-            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
-            self.removeEmail(key: emailKey)
-        }
+        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
+        self.removeEmail(key: emailKey)
+        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
     }
     
     func removeEmail(key: Int){
@@ -607,19 +616,14 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                         "metadataKeys": emailKeys
             ]] as [String : Any]
         let thresholdDate = selectedEmail.date
-        postPeerEvent(params) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to change read status. Please try again"), style: .alert)
-                return
+        for email in self.emailData.emails {
+            guard email.date >= thresholdDate else {
+                continue
             }
-            for email in self.emailData.emails {
-                guard email.date >= thresholdDate else {
-                    continue
-                }
-                DBManager.updateEmail(email, unread: true)
-            }
-            self.navigationController?.popViewController(animated: true)
+            DBManager.updateEmail(email, unread: true)
         }
+        self.navigationController?.popViewController(animated: true)
+        postPeerEvent(params)
     }
     
     func onSpamPress() {
@@ -636,15 +640,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let emailKey = email.key
         
         let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
+        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
+        self.removeEmail(key: emailKey)
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()]) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to set labels. Please try again"), style: .alert)
-                return
-            }
-            DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
-            self.removeEmail(key: emailKey)
-        }
+        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
     }
     
     func onUnsendPress() {
@@ -765,22 +764,18 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool){
         let changedLabels = getLabelNames(added: added, removed: removed)
-        let eventData = EventData.Peer.ThreadLabels(threadIds: [emailData.threadId], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) { (responseData) in
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to set labels. Please try again"), style: .alert)
-                return
-            }
-            DBManager.addRemoveLabelsForThreads(self.emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.emailData.selectedLabel)
-            self.emailData.rebuildLabels()
-            if(forceRemove){
-                self.mailboxData.removeSelectedRow = true
-                self.navigationController?.popViewController(animated: true)
-            } else {
-                self.myHeaderView = nil
-                self.emailsTableView.reloadData()
-            }
+        DBManager.addRemoveLabelsForThreads(self.emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.emailData.selectedLabel)
+        self.emailData.rebuildLabels()
+        if(forceRemove){
+            self.mailboxData.removeSelectedRow = true
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            self.myHeaderView = nil
+            self.emailsTableView.reloadData()
         }
+        
+        let eventData = EventData.Peer.ThreadLabels(threadIds: [emailData.threadId], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     func getLabelNames(added: [Int], removed: [Int]) -> ([String], [String]){

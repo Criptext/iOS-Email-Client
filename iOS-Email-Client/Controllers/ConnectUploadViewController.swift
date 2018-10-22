@@ -109,8 +109,8 @@ class ConnectUploadViewController: UIViewController{
                 self.presentProcessInterrupted()
                 return
             }
-            guard let compressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: "compressed.db", compress: true),
-                let outputPath = AESCipher.streamEncrypt(path: compressedPath, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt) else {
+            guard let compressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: StaticFile.gzippedDB.name, compress: true),
+                let outputPath = AESCipher.streamEncrypt(path: compressedPath, outputName: StaticFile.encryptedDB.name, keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt) else {
                 self.presentProcessInterrupted()
                 return
             }

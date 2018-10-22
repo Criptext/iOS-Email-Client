@@ -39,6 +39,7 @@ class APIManager {
         case authDenied = 493
         case tooManyDevices = 439
         case tooManyRequests = 429
+        case serverError = 500
     }
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
@@ -81,6 +82,9 @@ class APIManager {
         case .success, .successAccepted, .successNoContent, .notModified:
             break
         default:
+            guard status < code.serverError.rawValue else {
+                return .ServerError
+            }
             return .Error(CriptextError(message: responseRequest.result.description))
         }
         

@@ -112,7 +112,7 @@ class InboxViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
-        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60), failSilently: true)
+        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)        
     }
     
@@ -237,8 +237,8 @@ class InboxViewController: UIViewController {
                 self.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
                 break
             default:
-                //try to reconnect
-                //retry saving drafts and sending emails
+                print("BACK ONLINE")
+                self.dequeueEvents()
                 break
             }
         }
@@ -653,16 +653,15 @@ extension InboxViewController: UITableViewDataSource{
         showAlert(String.localize("Empty Trash"), message: String.localize("All your emails in Trash are going to be deleted PERMANENTLY. Do you want to continue?"), style: .alert, actions: [emptyAction, cancelAction])
     }
     
-    func emptyTrash(from date: Date = Date(), failSilently: Bool = false){
+    func emptyTrash(from date: Date = Date()){
         guard let threadIds = DBManager.getTrashThreads(from: date),
             !threadIds.isEmpty else {
             return
         }
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], failSilently: failSilently) {
-            DBManager.deleteThreads(threadIds: threadIds)
-            self.refreshThreadRows()
-        }
+        DBManager.deleteThreads(threadIds: threadIds)
+        self.refreshThreadRows()
+        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -874,9 +873,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                         "unread": 0,
                         "metadataKeys": peerKeys
             ]] as [String : Any]
-        self.postPeerEvent(params, failSilently: true) {
-            DBManager.updateEmails(peerKeys, unread: false)
-        }
+        DBManager.updateEmails(peerKeys, unread: false)
+        self.postPeerEvent(params)
     }
     
     func openEmails(openKeys: [Int], peerKeys: [Int]) {
@@ -998,12 +996,11 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
 
     func moveSingleThreadTrash(threadId: String){
-        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
+        self.removeThreads(threadIds: [threadId])
         
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) {
-            DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
-            self.removeThreads(threadIds: [threadId])
-        }
+        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     
@@ -1011,7 +1008,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
     }
     
-    func postPeerEvent(_ params: [String: Any], failSilently: Bool = false, completion: @escaping (() -> Void)){
+    func postPeerEvent(_ params: [String: Any]){
         APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
@@ -1021,21 +1018,96 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
             }
+            if case .TooManyRequests = responseData {
+                self.queueEvent(params: params)
+                return
+            }
+            if case .ServerError = responseData {
+                self.queueEvent(params: params)
+                return
+            }
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                if (!failSilently) {
-                    self.showAlert(String.localize("Request Error"), message: "\(error.description). \(String.localize("Please try again"))", style: .alert)
+                self.queueEvent(params: params)
+            }
+        }
+    }
+    
+    func queueEvent(params: [String: Any]){
+        guard let jsonString = Utils.convertToJSONString(dictionary: params) else {
+            return
+        }
+        let fileURL = StaticFile.queueEvents.url
+        let rowData = "\(jsonString)\n".data(using: .utf8)!
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            let fileHandle = try! FileHandle(forUpdating: fileURL)
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(rowData)
+            fileHandle.closeFile()
+        } else {
+            try! rowData.write(to: fileURL, options: .atomic)
+        }
+    }
+    
+    func dequeueEvents() {
+        let fileURL = StaticFile.queueEvents.url
+        let tempFileURL = StaticFile.queueEventsTemp.url
+        try? FileManager.default.removeItem(at: tempFileURL)
+        let maxBatch = 1
+        var pendingEvents = false
+        var events = [[String: Any]]()
+        guard let lineReader = StreamReader(url: fileURL) else {
+            return
+        }
+        while let line = lineReader.nextLine() {
+            guard let params = Utils.convertToDictionary(text: line) else {
+                continue
+            }
+            if events.count >= maxBatch {
+                let rowData = "\(line)\n".data(using: .utf8)!
+                if FileManager.default.fileExists(atPath: tempFileURL.path) {
+                    let fileHandle = try! FileHandle(forUpdating: tempFileURL)
+                    fileHandle.seekToEndOfFile()
+                    fileHandle.write(rowData)
+                    fileHandle.closeFile()
+                } else {
+                    try! rowData.write(to: tempFileURL, options: .atomic)
                 }
+                pendingEvents = true
+            } else {
+                events.append(params)
+            }
+        }
+        guard let firstEvent = events.first else {
+            try? FileManager.default.removeItem(at: fileURL)
+            return
+        }
+        APIManager.postPeerEvent(firstEvent, token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout()
                 return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            if case .TooManyRequests = responseData {
+                return
+            }
+            if case .ServerError = responseData {
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
             }
             guard case .Success = responseData else {
-                if (!failSilently) {
-                    self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to set labels. Please try again"), style: .alert)
-                }
                 return
             }
-            
-            completion()
+            try? FileManager.default.removeItem(at: fileURL)
+            if pendingEvents {
+                try? FileManager.default.moveItem(at: tempFileURL, to: fileURL)
+                self.dequeueEvents()
+            }
         }
     }
 }
@@ -1123,17 +1195,17 @@ extension InboxViewController {
         let shouldRemoveItems = removed.contains(where: {$0 == mailboxData.selectedLabel}) || forceRemove
         
         let changedLabels = getLabelNames(added: added, removed: removed)
-        let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) {
-            for threadId in threadIds {
-                DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
-            }
-            if(shouldRemoveItems){
-                self.removeThreads(threadIds: threadIds)
-            } else {
-                self.updateThreads(threadIds: threadIds)
-            }
+        for threadId in threadIds {
+            DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
         }
+        if(shouldRemoveItems){
+            self.removeThreads(threadIds: threadIds)
+        } else {
+            self.updateThreads(threadIds: threadIds)
+        }
+        
+        let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     func removeThreads(threadIds: [String]){
@@ -1191,13 +1263,13 @@ extension InboxViewController {
         }
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
-        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()]) {
-            self.removeThreads(threadIds: threadIds)
-            for threadId in threadIds {
-                DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
-            }
+        self.removeThreads(threadIds: threadIds)
+        for threadId in threadIds {
+            DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
         }
+        
+        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
+        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
     }
 }
 
@@ -1231,23 +1303,23 @@ extension InboxViewController: NavigationToolbarDelegate {
         }
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
         let unread = self.mailboxData.unreadMails <= 0
+        for threadId in threadIds {
+            guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
+                continue
+            }
+            DBManager.updateThread(threadId: threadId, currentLabel: self.mailboxData.selectedLabel, unread: unread)
+            thread.unread = unread
+        }
+        self.updateThreads(threadIds: threadIds)
+        self.didPressEdit(reload: true)
+        
         let params = ["cmd": Event.Peer.threadsUnread.rawValue,
                       "params": [
                         "unread": unread ? 1 : 0,
                         "threadIds": threadIds
                         ]
             ] as [String : Any]
-        postPeerEvent(params) {
-            for threadId in threadIds {
-                guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
-                    continue
-                }
-                DBManager.updateThread(threadId: threadId, currentLabel: self.mailboxData.selectedLabel, unread: unread)
-                thread.unread = unread
-            }
-            self.updateThreads(threadIds: threadIds)
-            self.didPressEdit(reload: true)
-        }
+        postPeerEvent(params)
     }
     
     func onMoreOptions() {

@@ -128,8 +128,8 @@ class ConnectDeviceViewController: UIViewController{
         self.connectUIView.progressChange(value: PROGRESS_PROCESSING_FILE, message: String.localize("Decrypting Mailbox"), completion: {})
         guard let keyData = Data(base64Encoded: data.key),
             let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: data.deviceId),
-            let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt),
-            let decompressedPath = try? AESCipher.compressFile(path: decryptedPath, outputName: "decompressed.db", compress: false) else {
+            let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: StaticFile.decryptedDB.name, keyData: decryptedKey, ivData: nil, operation: kCCDecrypt),
+            let decompressedPath = try? AESCipher.compressFile(path: decryptedPath, outputName: StaticFile.unzippedDB.name, compress: false) else {
                 self.presentProcessInterrupted()
                 return
         }

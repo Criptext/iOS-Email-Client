@@ -387,6 +387,43 @@ extension String {
     
 }
 
+enum StaticFile {
+    case encryptedDB
+    case gzippedDB
+    case emailDB
+    case unzippedDB
+    case decryptedDB
+    case queueEvents
+    case queueEventsTemp
+    
+    var name: String {
+        switch self {
+        case .encryptedDB:
+            return "secure.db"
+        case .gzippedDB:
+            return "compressed.db"
+        case .emailDB:
+            return "emails.db"
+        case .unzippedDB:
+            return "decompressed.db"
+        case .decryptedDB:
+            return "decrypted.db"
+        case .queueEvents:
+            return "events.queue"
+        case .queueEventsTemp:
+            return "events.queue.tmp"
+        }
+    }
+    
+    var url: URL {
+        return CriptextFileManager.getURLForFile(name: self.name)
+    }
+    
+    var path: String {
+        return CriptextFileManager.getURLForFile(name: self.name).path
+    }
+}
+
 enum Font {
     case regular
     case bold
