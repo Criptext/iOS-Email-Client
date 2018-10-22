@@ -24,7 +24,7 @@ class ResetDeviceViewController: UIViewController{
     var loginData: LoginData!
     var failed = false
     var buttonTitle: String {
-        return loginData.isTwoFactor ? "Confirm" : "Sign-in"
+        return loginData.isTwoFactor ? String.localize("Confirm") : String.localize("Sign-in")
     }
     
     override func viewDidLoad() {
@@ -39,7 +39,7 @@ class ResetDeviceViewController: UIViewController{
         
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
         passwordTextField.placeholderAnimation = .hidden
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: placeholderAttrs)
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Password"), attributes: placeholderAttrs)
         
         if(loginData.isTwoFactor){
             resetButton.setTitle(buttonTitle, for: .normal)
@@ -79,11 +79,11 @@ class ResetDeviceViewController: UIViewController{
         APIManager.loginRequest(username, password.sha256()!) { (responseData) in
             self.showLoader(false)
             if case .TooManyDevices = responseData {
-                self.showFeedback(true, "Too many devices already logged in.")
+                self.showFeedback(true, String.localize("Too many devices already logged in."))
                 return
             }
             if case .TooManyRequests = responseData {
-                self.showFeedback(true, "Too many sign in attempts, try again later.")
+                self.showFeedback(true, String.localize("Too many sign in attempts, try again later."))
                 return
             }
             if case let .Error(error) = responseData,
@@ -93,7 +93,7 @@ class ResetDeviceViewController: UIViewController{
             }
             guard case let .SuccessString(dataString) = responseData,
                 let data = Utils.convertToDictionary(text: dataString) else {
-                    self.showFeedback(true, "Wrong password. Please try again.")
+                    self.showFeedback(true, String.localize("Wrong password. Please try again."))
                     return
             }
             let name = data["name"] as! String
@@ -122,11 +122,11 @@ class ResetDeviceViewController: UIViewController{
                 return
             }
             if case .BadRequest = responseData {
-                self.showFeedback(true, "Wrong password. Please try again.")
+                self.showFeedback(true, String.localize("Wrong password. Please try again."))
                 return
             }
             guard case .Success = responseData else {
-                self.showFeedback(true, "Server Error. Please try again.")
+                self.showFeedback(true, String.localize("Server Error. Please try again."))
                 return
             }
             self.loginData.password = password.sha256()!
@@ -197,15 +197,15 @@ class ResetDeviceViewController: UIViewController{
             self.forgotButton.isEnabled = true
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.presentResetAlert(title: "Request Error", message: error.description)
+                self.presentResetAlert(title: String.localize("Request Error"), message: error.description)
                 return
             }
             guard case let .SuccessDictionary(data) = responseData,
                 let email = data["address"] as? String else {
-                    self.presentResetAlert(title: "Request Error", message: "A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password")
+                    self.presentResetAlert(title: String.localize("Request Error"), message: String.localize("A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password"))
                     return
             }
-            self.presentResetAlert(title: "Reset Password", message: "An email was sent to \(Utils.maskEmailAddress(email: email)) with the instructions to reset your password.")
+            self.presentResetAlert(title: String.localize("Reset Password"), message: "\(String.localize("An email was sent to "))\(Utils.maskEmailAddress(email: email))\(String.localize(" with the instructions to reset your password."))")
         }
     }
     

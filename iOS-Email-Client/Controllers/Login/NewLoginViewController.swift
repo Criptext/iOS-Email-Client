@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  NewLoginViewController.swift
 //  iOS-Email-Client
 //
 //  Created by Pedro Aim on 2/2/18.
@@ -36,7 +36,7 @@ class NewLoginViewController: UIViewController{
         super.viewDidAppear(animated)
         if loggedOutRemotely {
             loggedOutRemotely = false
-            showAlert("Logged Out!", message: "This device has been removed remotely.", style: .alert)
+            showAlert(String.localize("Logged Out!"), message: String.localize("This device has been removed remotely."), style: .alert)
         }
     }
     
@@ -47,7 +47,7 @@ class NewLoginViewController: UIViewController{
     func usernameTextFieldInit(){
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Username"), attributes: placeholderAttrs)
         usernameTextField.delegate = self
         usernameTextField.autocapitalizationType = .none
         usernameTextField.autocorrectionType = .no
@@ -63,11 +63,11 @@ class NewLoginViewController: UIViewController{
         loginButton.clipsToBounds = true
         loginButton.layer.cornerRadius = 20
         
-        let boldText  = "Sign up"
+        let boldText  = String.localize("Sign up")
         let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
     
-        let normalText = "Not registered? "
+        let normalText = String.localize("Not registered? ")
         let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
         let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
     
@@ -88,7 +88,7 @@ class NewLoginViewController: UIViewController{
             loadingView.isHidden = false
             loadingView.startAnimating()
         }else{
-            loginButton.setTitle("Sign In", for: .normal)
+            loginButton.setTitle(String.localize("Sign In"), for: .normal)
             loadingView.isHidden = true
             loadingView.stopAnimating()
         }
@@ -125,7 +125,7 @@ class NewLoginViewController: UIViewController{
         let loginData = LoginData(email)
         APIManager.linkBegin(username: username) { (responseData) in
             if case .Missing = responseData {
-                self.showLoginError(error: "Username does not exist")
+                self.showLoginError(error: String.localize("Username does not exist"))
                 return
             }
             if case .BadRequest = responseData {
@@ -133,11 +133,11 @@ class NewLoginViewController: UIViewController{
                 return
             }
             if case .TooManyDevices = responseData {
-                self.showLoginError(error: "Too many devices already logged in.")
+                self.showLoginError(error: String.localize("Too many devices already logged in."))
                 return
             }
             if case .TooManyRequests = responseData {
-                self.showLoginError(error: "Too many sign in attempts, try again later.")
+                self.showLoginError(error: String.localize("Too many sign in attempts, try again later."))
                 return
             }
             if case let .Error(error) = responseData,
@@ -148,7 +148,7 @@ class NewLoginViewController: UIViewController{
             guard case let .SuccessDictionary(data) = responseData,
                 let twoFactor = data["twoFactorAuth"] as? Bool,
                 let jwtTemp = data["token"] as? String else {
-                self.showLoginError(error: "Unable to validate user. Please try again")
+                self.showLoginError(error: String.localize("Unable to validate user. Please try again"))
                 return
             }
             loginData.jwt = jwtTemp

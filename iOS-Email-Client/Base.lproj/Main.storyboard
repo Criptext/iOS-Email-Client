@@ -2467,61 +2467,6 @@
             </objects>
             <point key="canvasLocation" x="25" y="1218"/>
         </scene>
-        <!--Attachment View Controller-->
-        <scene sceneID="anA-JW-Lzl">
-            <objects>
-                <viewController storyboardIdentifier="AttachmentViewController" id="H2u-5g-upi" customClass="AttachmentViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="AXe-xs-ata"/>
-                        <viewControllerLayoutGuide type="bottom" id="zdl-zm-xS5"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ZhV-FC-QqJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rrt-M9-Nll">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="sTP-mC-4B5"/>
-                                </constraints>
-                                <items>
-                                    <navigationItem id="BDx-GS-jwY">
-                                        <barButtonItem key="leftBarButtonItem" image="close" id="AH7-8d-Qfv">
-                                            <connections>
-                                                <action selector="didPressCancel:" destination="H2u-5g-upi" id="YVp-2x-ERK"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="elX-1m-OKN">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="delegate" destination="H2u-5g-upi" id="Zue-68-5Xu"/>
-                                </connections>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="elX-1m-OKN" firstAttribute="leading" secondItem="ZhV-FC-QqJ" secondAttribute="leading" id="26H-FG-Vb2"/>
-                            <constraint firstItem="rrt-M9-Nll" firstAttribute="top" secondItem="ZhV-FC-QqJ" secondAttribute="top" id="4Yd-R8-CD2"/>
-                            <constraint firstItem="rrt-M9-Nll" firstAttribute="leading" secondItem="ZhV-FC-QqJ" secondAttribute="leading" id="Gle-43-8NX"/>
-                            <constraint firstItem="elX-1m-OKN" firstAttribute="top" secondItem="rrt-M9-Nll" secondAttribute="bottom" id="OOh-tf-x21"/>
-                            <constraint firstAttribute="trailing" secondItem="rrt-M9-Nll" secondAttribute="trailing" id="PCc-hG-NGt"/>
-                            <constraint firstAttribute="trailing" secondItem="elX-1m-OKN" secondAttribute="trailing" id="tQr-kt-bS4"/>
-                            <constraint firstItem="zdl-zm-xS5" firstAttribute="top" secondItem="elX-1m-OKN" secondAttribute="bottom" id="ugt-ri-Jer"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="navItem" destination="BDx-GS-jwY" id="beC-3q-eDV"/>
-                        <outlet property="webView" destination="elX-1m-OKN" id="5w7-uW-65a"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sQ7-qC-Gfp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1898" y="474"/>
-        </scene>
     </scenes>
     <resources>
         <image name="activity" width="16" height="20"/>

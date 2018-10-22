@@ -91,7 +91,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func sendKeysRequest(){
-        self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: "Sending Keys", completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("Sending Keys"), completion: {})
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
             guard case let .SuccessString(jwt) = responseData else {
@@ -99,7 +99,7 @@ class ConnectDeviceViewController: UIViewController{
                 return
             }
             self.state = .waiting
-            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS, message: "Waiting for Mailbox", cancel: true, completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS, message: String.localize("Waiting for Mailbox"), cancel: true, completion: {})
             self.signupData.token = jwt
             self.socket?.connect(jwt: jwt)
             self.scheduleWorker.start()
@@ -112,7 +112,7 @@ class ConnectDeviceViewController: UIViewController{
             return
         }
         APIManager.downloadLinkDBFile(address: data.address, token: jwt, progressCallback: { (progress) in
-            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: "Downloading Mailbox", completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: String.localize("Downloading Mailbox"), completion: {})
         }) { (responseData) in
             guard case let .SuccessString(filepath) =  responseData else {
                 self.presentProcessInterrupted()
@@ -125,7 +125,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func unpackDB(myAccount: Account, path: String, data: LinkSuccessData) {
-        self.connectUIView.progressChange(value: PROGRESS_PROCESSING_FILE, message: "Decrypting Mailbox", completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_PROCESSING_FILE, message: String.localize("Decrypting Mailbox"), completion: {})
         guard let keyData = Data(base64Encoded: data.key),
             let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: data.deviceId),
             let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: "decrypted-db", keyData: decryptedKey, ivData: nil, operation: kCCDecrypt),
@@ -165,8 +165,8 @@ class ConnectDeviceViewController: UIViewController{
             DBManager.insertBatchRows(rows: dbRows, maps: &maps)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
-                self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: "Decrypting Mailbox") {
-                    self.connectUIView.messageLabel.text = "Mailbox restored successfully!"
+                self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("Decrypting Mailbox")) {
+                    self.connectUIView.messageLabel.text = String.localize("Mailbox restored successfully!")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self.goToMailbox(myAccount.username)
                         self.registerFirebaseToken(jwt: myAccount.jwt)
@@ -212,10 +212,10 @@ class ConnectDeviceViewController: UIViewController{
     
     func presentProcessInterrupted(){
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = "Looks like you're having connection issues. Would you like to retry Mailbox Sync"
-        retryPopup.initialTitle = "Sync Interrupted"
-        retryPopup.leftOption = "Cancel"
-        retryPopup.rightOption = "Retry"
+        retryPopup.initialMessage = String.localize("Looks like you're having connection issues. Would you like to retry Mailbox Sync")
+        retryPopup.initialTitle = String.localize("Sync Interrupted")
+        retryPopup.leftOption = String.localize("Cancel")
+        retryPopup.rightOption = String.localize("Retry")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.goBack()
@@ -247,8 +247,8 @@ extension ConnectDeviceViewController: ScheduleWorkerDelegate {
     
     func dangled(){
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = "Something has happened that is delaying this process. Do want to continue waiting?"
-        retryPopup.initialTitle = "Well, that’s odd…"
+        retryPopup.initialMessage = String.localize("Something has happened that is delaying this process. Do want to continue waiting?")
+        retryPopup.initialTitle = String.localize("Well, that’s odd…")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.goBack()

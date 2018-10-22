@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "Sign In Verification"; ObjectID = "3S2-tH-1Ug"; */
+"3S2-tH-1Ug.text" = "Sign In Verification";
+
+/* Class = "UILabel"; text = "Daniel’s Sony Xperia"; ObjectID = "6wv-bj-Fxr"; */
+"6wv-bj-Fxr.text" = "Daniel’s Sony Xperia";
+
+/* Class = "UILabel"; text = "Do you want to approve?"; ObjectID = "LPV-Vu-Nw4"; */
+"LPV-Vu-Nw4.text" = "Do you want to approve?";
+
+/* Class = "UIButton"; normalTitle = "Approve"; ObjectID = "fvv-Cn-cZX"; */
+"fvv-Cn-cZX.normalTitle" = "Approve";
+
+/* Class = "UIButton"; normalTitle = "Reject"; ObjectID = "vel-x6-KLE"; */
+"vel-x6-KLE.normalTitle" = "Reject";

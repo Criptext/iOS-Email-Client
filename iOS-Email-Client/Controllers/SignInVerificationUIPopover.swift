@@ -2,7 +2,7 @@
 //  SignInVerificationUIPopover.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 10/11/18.
+//  Created by Pedro Iñiguez on 10/11/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
