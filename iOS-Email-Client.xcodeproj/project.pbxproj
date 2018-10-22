@@ -148,7 +148,6 @@
 		7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */; };
 		7C8C2F7020EAB87D00FC145E /* LabelsFooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8C2F6F20EAB87D00FC145E /* LabelsFooterViewCell.swift */; };
 		7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C632034A4D800AB96EF /* StatusTextField.swift */; };
-		7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */; };
 		7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */; };
 		7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C692035FCD700AB96EF /* LoginDeviceViewController.swift */; };
 		7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */; };
@@ -428,7 +427,6 @@
 		7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDrawerController.swift; sourceTree = "<group>"; };
 		7C8C2F6F20EAB87D00FC145E /* LabelsFooterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsFooterViewCell.swift; sourceTree = "<group>"; };
 		7C8D6C632034A4D800AB96EF /* StatusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTextField.swift; sourceTree = "<group>"; };
-		7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBackButton.swift; sourceTree = "<group>"; };
 		7C8D6C692035FCD700AB96EF /* LoginDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDeviceViewController.swift; sourceTree = "<group>"; };
 		7C8D6C6B2036008700AB96EF /* DotsProgressUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsProgressUIView.swift; sourceTree = "<group>"; };
@@ -1013,7 +1011,6 @@
 				7CBD20C02024BCD700D70B87 /* NewLoginViewController.swift */,
 				7CBD20C6202A367B00D70B87 /* SignUpViewController.swift */,
 				7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */,
-				7C8D6C652034D1D600AB96EF /* WebViewViewController.swift */,
 				7C8D6C692035FCD700AB96EF /* LoginDeviceViewController.swift */,
 				7C8D6C6D20362F8600AB96EF /* ResetDeviceViewController.swift */,
 				7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */,
@@ -1438,7 +1435,6 @@
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,
 				7C46BED72153F71E00282182 /* SingleWebSocket.swift in Sources */,
 				7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */,
-				7C8D6C662034D1D600AB96EF /* WebViewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,9 +6,72 @@
   Copyright © 2018 Criptext Inc. All rights reserved.
 */
 
+"Warning" = "Warning";
+"Confirm" = "Confirm";
+"Cancel" = "Cancel";
+"Retry" = "Retry";
+"Username" = "Username";
+"Full Name" = "Full Name";
+"Password" = "Password";
+"Confirm Password" = "Confirm Password";
+
+/* NewLoginViewController.swift */
+
 "Logged Out!" = "Logged Out!";
-"This device has been removed remotely." = "This device has been removed remotely."
+"This device has been removed remotely." = "This device has been removed remotely.";
 "Username" = "Username";
 "Sign up" = "Sign up";
 "Not registered? " = "Not registered? ";
-"Sign In" = "Sign In"
+"Sign In" = "Sign In";
+"Username does not exist" = "Username does not exist";
+"Too many devices already logged in." = "Too many devices already logged in.";
+"Too many sign in attempts, try again later." = "Too many sign in attempts, try again later.";
+"Unable to validate user. Please try again" = "Unable to validate user. Please try again";
+
+/* SignUpViewController.swift */
+
+"Recovery Email (Optional)" = "Recovery Email (Optional)";
+"min 3 letters, start/end with a-z, valid 0-9, . _ -" = "min 3 letters, start/end with a-z, valid 0-9, . _ -";
+"Username already exists" = "Username already exists";
+"please enter your name" = "please enter your name";
+"password must be at least 8 characters" = "password must be at least 8 characters";
+"Passwords don't match" = "Passwords don't match";
+"this is not a valid email" = "this is not a valid email";
+"Terms & Conditions" = "Terms & Conditions";
+"By clicking create account, you agree to our " = "By clicking create account, you agree to our ";
+" Recovery Email " = " Recovery Email ";
+"\nYou did NOT set a" = "\nYou did NOT set a";
+"so account recovery is imposible if you forget your password. \n\nProceed without recovery email?" = "so account recovery is imposible if you forget your password. \n\nProceed without recovery email?";
+
+/* CreatingAccountViewController.swift */
+
+"Generating keys..." = "Generating keys...";
+"You have tried to sign-up too many times, please try again later" = "You have tried to sign-up too many times, please try again later";
+"Login into awesomeness..." = "Login into awesomeness...";
+"Unable to complete your sign-up" = "Unable to complete your sign-up";
+". would you like to try again?" = ". would you like to try again?";
+
+/* ResetDeviceViewController.swift */
+
+"Sign-in" = "Sign-in";
+"Too many devices already logged in." = "Too many devices already logged in.";
+"Too many sign in attempts, try again later." = "Too many sign in attempts, try again later.";
+"Wrong password. Please try again." = "Wrong password. Please try again.";
+"Server Error. Please try again." = "Server Error. Please try again.";
+"Request Error" = "Request Error";
+"A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password"= "A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password";
+"Reset Password" = "Reset Password";
+"An email was sent to " = "An email was sent to ";
+" with the instructions to reset your password." = " with the instructions to reset your password.";
+
+/* ConnectDeviceViewController.swift */
+
+"Sending Keys" = "Sending Keys";
+"Waiting for Mailbox" = "Waiting for Mailbox";
+"Downloading Mailbox" = "Downloading Mailbox";
+"Decrypting Mailbox" = "Decrypting Mailbox";
+"Mailbox restored successfully!" = "Mailbox restored successfully!";
+"Looks like you're having connection issues. Would you like to retry Mailbox Sync" = "Looks like you're having connection issues. Would you like to retry Mailbox Sync";
+"Sync Interrupted" = "Sync Interrupted";
+"Something has happened that is delaying this process. Do want to continue waiting?" = "Something has happened that is delaying this process. Do want to continue waiting?";
+"Well, that’s odd…" = "Well, that’s odd…";

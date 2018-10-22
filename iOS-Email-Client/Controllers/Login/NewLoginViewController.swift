@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  NewLoginViewController.swift
 //  iOS-Email-Client
 //
 //  Created by Pedro Aim on 2/2/18.
@@ -88,7 +88,7 @@ class NewLoginViewController: UIViewController{
             loadingView.isHidden = false
             loadingView.startAnimating()
         }else{
-            loginButton.setTitle("Sign In", for: .normal)
+            loginButton.setTitle(String.localize("Sign In"), for: .normal)
             loadingView.isHidden = true
             loadingView.stopAnimating()
         }
@@ -125,7 +125,7 @@ class NewLoginViewController: UIViewController{
         let loginData = LoginData(email)
         APIManager.linkBegin(username: username) { (responseData) in
             if case .Missing = responseData {
-                self.showLoginError(error: "Username does not exist")
+                self.showLoginError(error: String.localize("Username does not exist"))
                 return
             }
             if case .BadRequest = responseData {
@@ -133,11 +133,11 @@ class NewLoginViewController: UIViewController{
                 return
             }
             if case .TooManyDevices = responseData {
-                self.showLoginError(error: "Too many devices already logged in.")
+                self.showLoginError(error: String.localize("Too many devices already logged in."))
                 return
             }
             if case .TooManyRequests = responseData {
-                self.showLoginError(error: "Too many sign in attempts, try again later.")
+                self.showLoginError(error: String.localize("Too many sign in attempts, try again later."))
                 return
             }
             if case let .Error(error) = responseData,
@@ -148,7 +148,7 @@ class NewLoginViewController: UIViewController{
             guard case let .SuccessDictionary(data) = responseData,
                 let twoFactor = data["twoFactorAuth"] as? Bool,
                 let jwtTemp = data["token"] as? String else {
-                self.showLoginError(error: "Unable to validate user. Please try again")
+                self.showLoginError(error: String.localize("Unable to validate user. Please try again"))
                 return
             }
             loginData.jwt = jwtTemp
