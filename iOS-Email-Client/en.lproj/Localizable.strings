@@ -14,6 +14,14 @@
 "Full Name" = "Full Name";
 "Password" = "Password";
 "Confirm Password" = "Confirm Password";
+"Yes" = "Yes";
+"Discard" = "Discard";
+"Request Error" = "Request Error";
+"Please try again" = "Please try again";
+"Something went wrong" = "Something went wrong";
+"Delete" = "Delete";
+"Access denied" = "Access denied";
+"You need to enable access for this app in your settings" = "You need to enable access for this app in your settings";
 
 /* NewLoginViewController.swift */
 
@@ -58,7 +66,6 @@
 "Too many sign in attempts, try again later." = "Too many sign in attempts, try again later.";
 "Wrong password. Please try again." = "Wrong password. Please try again.";
 "Server Error. Please try again." = "Server Error. Please try again.";
-"Request Error" = "Request Error";
 "A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password"= "A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password";
 "Reset Password" = "Reset Password";
 "An email was sent to " = "An email was sent to ";
@@ -75,3 +82,75 @@
 "Sync Interrupted" = "Sync Interrupted";
 "Something has happened that is delaying this process. Do want to continue waiting?" = "Something has happened that is delaying this process. Do want to continue waiting?";
 "Well, that’s odd…" = "Well, that’s odd…";
+
+/* ComposeViewController.swift */
+
+"Message" = "Message";
+"To" = "To";
+"+" = "+";
+"Bcc" = "Bcc";
+"Cc" = "Cc";
+"New Secure Email" = "New Secure Email";
+"Pending Attachments" = "Pending Attachments";
+"Some attachments are being uploaded. Would you like to discard them and proceed?" = "Some attachments are being uploaded. Would you like to discard them and proceed?";
+"Save Draft" = "Save Draft";
+"Please wait for your attachments to finish processing" = "Please wait for your attachments to finish processing";
+"Attachments cap reached" = "Attachments cap reached";
+"\nYou can upload up to 5 attachments per email. Please consider removing one before adding another" = "\nYou can upload up to 5 attachments per email. Please consider removing one before adding another";
+"Invalid recipient" = "Invalid recipient";
+"Please enter a valid email address" = "Please enter a valid email address";
+"Recipients cap reached" = "Recipients cap reached";
+"\nYou can add up to 300 recipients for each email. Consider removing one before adding another" = "\nYou can add up to 300 recipients for each email. Consider removing one before adding another";
+"Add Secure\nattachments" = "Add Secure\nattachments";
+
+
+/* InboxViewController.swift */
+
+"Empty Trash" = "Empty Trash";
+"All your emails in Trash are going to be deleted PERMANENTLY. Do you want to continue?" = "All your emails in Trash are going to be deleted PERMANENTLY. Do you want to continue?";
+"No search results" = "No search results";
+"Trash and Spam are not displayed" = "Trash and Spam are not displayed";
+"There are no emails" = "There are no emails";
+"share your email address!" = "share your email address!";
+"You have no emails sent" = "You have no emails sent";
+"let's send one!" = "let's send one!";
+"There are no drafts" = "There are no drafts";
+"That's ok" = "That's ok";
+"There's no spam" = "There's no spam";
+"Cool!" = "Cool!";
+"There's no trash" = "There's no trash";
+"What a clean place!" = "What a clean place!";
+"There are no emails" = "There are no emails";
+"It's a matter of time" = "It's a matter of time";
+"Check out Criptext, I use it to email privately and securely with anyone! Get it free at https://www.criptext.com/dl" = "Check out Criptext, I use it to email privately and securely with anyone! Get it free at https://www.criptext.com/dl";
+"Do not write below this line." = "Do not write below this line.";
+"Unable to set labels. Please try again" = "Unable to set labels. Please try again";
+"Delete Threads" = "Delete Threads";
+"The selected threads will be PERMANENTLY deleted" = "The selected threads will be PERMANENTLY deleted";
+"Sending Email..." = "Sending Email...";
+"Email Failed. It will be resent in the future" = "Email Failed. It will be resent in the future";
+"It will be resent in the future" = "It will be resent in the future";
+"Tap to compose\na secure email" = "Tap to compose\na secure email";
+"See who's reading\nyour emails" = "See who's reading\nyour emails";
+
+/* FeedViewController.swift */
+
+"Your email was opened" = "Your email was opened";
+"Unmute" = "Unmute";
+"Mute" = "Mute";
+
+/* EmailDetailViewController.swift */
+
+"Remove from Spam" = "Remove from Spam";
+"Mark as Spam" = "Mark as Spam";
+"Unable to delete thread. Please try again" = "Unable to delete thread. Please try again";
+"Delete Thread" = "Delete Thread";
+"This will be PERMANENTLY deleted" = "This will be PERMANENTLY deleted";
+"Unable to change read status. Please try again" = "Unable to change read status. Please try again";
+"Delete Email" = "Delete Email";
+"The selected email will be PERMANENTLY deleted" = "The selected email will be PERMANENTLY deleted";
+"Unable to delete email. Please try again" = "Unable to delete email. Please try again";
+"Unsend Failed" = "Unsend Failed";
+"Failed to unsend the email. Time (1h) for unsending has already expired." = "Failed to unsend the email. Time (1h) for unsending has already expired.";
+"Unable to unsend email. Please try again later" = "Unable to unsend email. Please try again later";
+"Open this menu to find\nthe UNSEND button" = "Open this menu to find\nthe UNSEND button";

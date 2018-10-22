@@ -88,7 +88,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "feedTableCellView", for: indexPath) as! FeedTableViewCell
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        let headline = feed.contact.email == "\(mailboxVC.myAccount.username)\(Constants.domain)" ? "Your email was opened" : feed.header
+        let headline = feed.contact.email == "\(mailboxVC.myAccount.username)\(Constants.domain)" ? String.localize("Your email was opened") : feed.header
         cell.setLabels(headline, feed.subject, feed.formattedDate)
         cell.setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
         cell.handleViewed(isNew: feed.date > lastSeen)
@@ -125,7 +125,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     
     func muteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        let action = UIContextualAction(style: .normal, title: feed.isMuted ? "Unmute" : "Mute" ){
+        let action = UIContextualAction(style: .normal, title: feed.isMuted ? String.localize("Unmute") : String.localize("Mute")){
             (action, view, completion) in
             DBManager.updateEmail(feed.email, muted: !feed.isMuted)
             tableView.reloadRows(at: [indexPath], with: .fade)
@@ -146,7 +146,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func deleteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
-        let action = UIContextualAction(style: .destructive, title: "Delete"){
+        let action = UIContextualAction(style: .destructive, title: String.localize("Delete")){
             (action, view, completion) in
             let feed: FeedItem
             if(indexPath.section == 0){

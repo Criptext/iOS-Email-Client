@@ -23,8 +23,6 @@
 		412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */; };
 		412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */; };
 		41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */; };
-		41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */; };
-		41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F2201A9FAC00809C4D /* TourViewController.swift */; };
 		41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */; };
 		41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */; };
 		41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */; };
@@ -292,8 +290,6 @@
 		412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
 		412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
-		41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
-		41AAC4F2201A9FAC00809C4D /* TourViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TourViewController.swift; sourceTree = "<group>"; };
 		41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
 		41AAC518201A9FC300809C4D /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
@@ -700,11 +696,9 @@
 			isa = PBXGroup;
 			children = (
 				7CBD20BF2024BCB500D70B87 /* Login */,
-				41AAC4F0201A9FAC00809C4D /* AttachmentViewController.swift */,
 				41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */,
 				41AAC4EC201A9FAC00809C4D /* InboxViewController.swift */,
 				41AAC4F7201A9FAD00809C4D /* SignatureViewController.swift */,
-				41AAC4F2201A9FAC00809C4D /* TourViewController.swift */,
 				7CDB465D203E336A007C9637 /* FeedViewController.swift */,
 				7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */,
 				7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */,
@@ -1332,7 +1326,6 @@
 				41AAC52C201A9FC300809C4D /* InboxTableViewCell.swift in Sources */,
 				7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */,
 				7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */,
-				41AAC4FE201A9FAD00809C4D /* AttachmentViewController.swift in Sources */,
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
@@ -1359,7 +1352,6 @@
 				7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */,
 				7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
-				41AAC500201A9FAD00809C4D /* TourViewController.swift in Sources */,
 				7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */,
 				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,

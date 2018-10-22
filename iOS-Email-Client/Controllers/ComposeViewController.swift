@@ -113,36 +113,36 @@ class ComposeViewController: UIViewController {
         let disableImage = Icon.send.image?.tint(with: UIColor.white.withAlphaComponent(0.6))
         self.disableSendButton = UIBarButtonItem(image: disableImage, style: .plain, target: self, action: nil)
         
-        self.editorView.placeholder = "Message"
+        self.editorView.placeholder = String.localize("Message")
         self.editorView.delegate = self
         self.subjectField.delegate = self
         self.subjectField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         
-        self.toField.fieldName = "To"
+        self.toField.fieldName = String.localize("To")
         self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
         
         let toFieldButton = UIButton(type: .custom)
         toFieldButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
-        toFieldButton.setTitle("+", for: .normal)
+        toFieldButton.setTitle(String.localize("+"), for: .normal)
         toFieldButton.setTitleColor(Icon.system.color, for: .normal)
         toFieldButton.addTarget(self, action: #selector(didPressAccessoryView(_:)), for: .touchUpInside)
         self.toField.accessoryView = toFieldButton
         self.toField.accessoryView?.isHidden = true
         
-        self.bccField.fieldName = "Bcc"
+        self.bccField.fieldName = String.localize("Bcc")
         self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         
         let bccFieldButton = UIButton(type: .custom)
         bccFieldButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
-        bccFieldButton.setTitle("+", for: .normal)
+        bccFieldButton.setTitle(String.localize("+"), for: .normal)
         bccFieldButton.setTitleColor(Icon.system.color, for: .normal)
         bccFieldButton.addTarget(self, action: #selector(didPressAccessoryView(_:)), for: .touchUpInside)
         self.bccField.accessoryView = bccFieldButton
         self.bccField.accessoryView?.isHidden = true
         
-        self.ccField.fieldName = "Cc"
+        self.ccField.fieldName = String.localize("Cc")
         self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
         
@@ -188,7 +188,7 @@ class ComposeViewController: UIViewController {
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressAttachment(_:)))
         self.attachmentButtonContainerView.addGestureRecognizer(tapGesture)
-        self.title = "New Secure Email"
+        self.title = String.localize("New Secure Email")
         self.navigationItem.rightBarButtonItem = self.enableSendButton
         activityButton.setImage(Icon.attachment.vertical.image, for: .normal)
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
@@ -463,19 +463,19 @@ class ComposeViewController: UIViewController {
             return
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let sendAction = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
+        let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel, handler: nil)
+        let sendAction = UIAlertAction(title: String.localize("Yes"), style: .default, handler: { (_) in
             self.fileManager.registeredFiles = self.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
             self.tableView.reloadData()
             self.handleExit()
         })
-        self.showAlert("Pending Attachments", message: "Some attachments are being uploaded. Would you like to discard them and proceed?", style: .alert, actions: [cancelAction, sendAction])
+        self.showAlert(String.localize("Pending Attachments"), message: String.localize("Some attachments are being uploaded. Would you like to discard them and proceed?"), style: .alert, actions: [cancelAction, sendAction])
         return
     }
     
     func handleExit(){
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Discard", style: .destructive) { action in
+        sheet.addAction(UIAlertAction(title: String.localize("Discard"), style: .destructive) { action in
             APIManager.cancelAllUploads()
             if let draft = self.composerData.emailDraft {
                 self.delegate?.deleteDraft(draftId: draft.key)
@@ -483,13 +483,13 @@ class ComposeViewController: UIViewController {
             }
             self.dismiss(animated: true, completion: nil)
         })
-        sheet.addAction(UIAlertAction(title: "Save Draft", style: .default) { action in
+        sheet.addAction(UIAlertAction(title: String.localize("Save Draft"), style: .default) { action in
             APIManager.cancelAllUploads()
             let draft = self.saveDraft()
             self.delegate?.newDraft(draft: draft)
             self.dismiss(animated: true, completion: nil)
         })
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        sheet.addAction(UIAlertAction(title: String.localize("Cancel"), style: .cancel))
         
         self.present(sheet, animated: true, completion:nil)
     }
@@ -497,7 +497,7 @@ class ComposeViewController: UIViewController {
     @IBAction func didPressSend(_ sender: UIBarButtonItem) {
         self.resignKeyboard()
         guard !fileManager.pendingAttachments() else {
-            self.showAlert(nil, message: "Please wait for your attachments to finish processing", style: .alert)
+            self.showAlert(nil, message: String.localize("Please wait for your attachments to finish processing"), style: .alert)
             return
         }
         self.prepareMail()
@@ -556,7 +556,7 @@ class ComposeViewController: UIViewController {
     @IBAction func didPressAttachment(_ sender: UIButton) {
         //derpo
         guard fileManager.registeredFiles.count < 5 else {
-            self.showAlert("Attachments cap reached", message: "\nYou can upload up to 5 attachments per email. Please consider removing one before adding another", style: .alert)
+            self.showAlert(String.localize("Attachments cap reached"), message: String.localize("\nYou can upload up to 5 attachments per email. Please consider removing one before adding another"), style: .alert)
             return
         }
         self.showAttachmentDrawer(true)
@@ -570,7 +570,7 @@ class ComposeViewController: UIViewController {
                     self.imagePicker.presentGalleryPicker(from: self)
                     break
                 default:
-                    self.showAlert("Access denied", message: "You need to enable access for this app in your settings", style: .alert)
+                    self.showAlert(String.localize("Access denied"), message: String.localize("You need to enable access for this app in your settings"), style: .alert)
                     break
                 }
             }
@@ -581,7 +581,7 @@ class ComposeViewController: UIViewController {
         AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted) in
             DispatchQueue.main.async {
                 if !granted {
-                    self.showAlert("Access denied", message: "You need to enable access for this app in your settings", style: .alert)
+                    self.showAlert(String.localize("Access denied"), message:String.localize( "You need to enable access for this app in your settings"), style: .alert)
                     return
                 }
                 self.imagePicker.presentCameraPicker(from: self)
@@ -889,7 +889,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 let token = CLToken(displayText: name!, context: valueObject)
                 view.add(token)
             } else {
-                self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
+                self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
             }
             
         } else if text!.contains(" ") {
@@ -900,7 +900,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 let token = CLToken(displayText: name!, context: valueObject)
                 view.add(token)
             } else {
-                self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
+                self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
             }
         }
         
@@ -953,7 +953,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let token = CLToken(displayText: text, context: valueObject)
             view.add(token)
         } else {
-            self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
+            self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
         }
     }
     
@@ -1023,11 +1023,11 @@ extension ComposeViewController: CNContactPickerDelegate {
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
         guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
-            self.showAlert("Recipients cap reached", message: "\nYou can add up to 300 recipients for each email. Consider removing one before adding another", style: .alert)
+            self.showAlert(String.localize("Recipients cap reached"), message: String.localize("\nYou can add up to 300 recipients for each email. Consider removing one before adding another"), style: .alert)
             return
         }
         guard Utils.validateEmail(value) else {
-            self.showAlert("Invalid recipient", message: "Please enter a valid email address", style: .alert)
+            self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
             return
         }
         let valueObject = NSString(string: value)
@@ -1131,7 +1131,7 @@ extension ComposeViewController: CoachMarksControllerDataSource, CoachMarksContr
     
     func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
         let hintView = HintUIView()
-        hintView.messageLabel.text = "Add Secure\nattachments"
+        hintView.messageLabel.text = String.localize("Add Secure\nattachments")
         hintView.rightConstraint.constant = 80
         hintView.topCenterConstraint.constant = 27
         
