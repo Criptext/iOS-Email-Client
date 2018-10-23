@@ -57,7 +57,7 @@ class LogoutPopoverViewController: BaseUIPopover {
     func checkTimer(seconds: Int) {
         guard secondsLeft <= 0 else {
             UIView.performWithoutAnimation {
-                logoutButton.setTitle("Yes (\(secondsLeft))", for: .disabled)
+                logoutButton.setTitle("\(String.localize("Yes")) (\(secondsLeft))", for: .disabled)
                 self.logoutButton.layoutIfNeeded()
             }
             secondsLeft = secondsLeft - 1
@@ -67,7 +67,7 @@ class LogoutPopoverViewController: BaseUIPopover {
             myTimer.invalidate()
         }
         UIView.performWithoutAnimation {
-            self.logoutButton.setTitle("Yes", for: .normal)
+            self.logoutButton.setTitle(String.localize("Yes"), for: .normal)
             self.logoutButton.layoutIfNeeded()
         }
         logoutButton.isEnabled = true

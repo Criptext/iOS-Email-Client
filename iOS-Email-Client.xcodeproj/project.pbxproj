@@ -261,6 +261,7 @@
 		A7FFCF48217A91D600FFFDFF /* SignInVerificationUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF4A217A91D600FFFDFF /* SignInVerificationUIPopover.xib */; };
 		A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF4D217A91E200FFFDFF /* ConnectView.xib */; };
 		A7FFCF63217A93E600FFFDFF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
+		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -557,6 +558,7 @@
 		A7FFCF60217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Login.strings"; sourceTree = "<group>"; };
 		A7FFCF64217A93E600FFFDFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A7FFCF66217A93E900FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerMessage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -850,6 +852,7 @@
 				7C4D33D0212CA2DB00045B09 /* DeviceSettingsData.swift */,
 				7CCD73E7212F2207002C8C7F /* ResponseData.swift */,
 				7C6DB46A2152B910001B3749 /* LinkData.swift */,
+				A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1329,6 +1332,7 @@
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
+				A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */,
 				7C72F16F2141997E00A7DDEA /* InboxHeaderUITableCell.swift in Sources */,
 				7C7F2FEF20B4BE6400A2CB32 /* LabelsLabelTableViewCell.swift in Sources */,
 				7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */,

@@ -19,17 +19,17 @@ class SignatureEditorViewController: UIViewController {
     var keyboardManager: KeyboardManager!
     
     override func viewDidLoad() {
-        navigationItem.title = "Signature"
+        navigationItem.title = String.localize("Signature")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(saveAndReturn))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         signatureEnableSwitch.isOn = myAccount.signatureEnabled
         richEditor.isEditingEnabled = signatureEnableSwitch.isOn
         richEditor.isHidden = !signatureEnableSwitch.isOn
-        OnOffLabel.text = myAccount.signatureEnabled ? "On" : "Off"
+        OnOffLabel.text = myAccount.signatureEnabled ? String.localize("On") : String.localize("Off")
         richEditor.delegate = self
         richEditor.html = myAccount.signature
-        richEditor.placeholder = "Signature"
+        richEditor.placeholder = String.localize("Signature")
         richEditor.setTextColor(.green)
         keyboardManager = KeyboardManager(view: self.view)
         keyboardManager.toolbar.editor = richEditor
@@ -64,13 +64,13 @@ class SignatureEditorViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             return
         }
-        let saveAction = UIAlertAction(title: "Save and return", style: .default){ (alert : UIAlertAction!) -> Void in
+        let saveAction = UIAlertAction(title: String.localize("Save and return"), style: .default){ (alert : UIAlertAction!) -> Void in
             self.saveAndReturn()
         }
-        let discardAction = UIAlertAction(title: "Return without saving", style: .destructive){ (alert : UIAlertAction!) -> Void in
+        let discardAction = UIAlertAction(title: String.localize("Return without saving"), style: .destructive){ (alert : UIAlertAction!) -> Void in
             self.navigationController?.popViewController(animated: true)
         }
-        showAlert("Unsaved Changes", message: "You have made changes that were not saved. Do you wish to save and return?", style: .alert, actions: [saveAction, discardAction])
+        showAlert(String.localize("Unsaved Changes"), message: String.localize("You have made changes that were not saved. Do you wish to save and return?"), style: .alert, actions: [saveAction, discardAction])
     }
     
     @objc func saveAndReturn(){

@@ -11,18 +11,77 @@ import Material
 import SafariServices
 
 class SettingsGeneralViewController: UITableViewController{
+    
+    internal enum Section {
+        case account
+        case about
+        case version
+        
+        var name: String {
+            switch(self){
+            case .account:
+                return String.localize("ACCOUNT")
+            case .about:
+                return String.localize("ABOUT")
+            case .version:
+                return String.localize("VERSION")
+            }
+        }
+        
+        enum SubSection {
+            case profile
+            case signature
+            case changePassword
+            case twoFactor
+            case recovery
+            
+            case privacy
+            case terms
+            case openSource
+            case logout
+            
+            case version
+            
+            var name: String {
+                switch(self){
+                case .profile:
+                    return String.localize("Profile")
+                case .signature:
+                    return String.localize("Signature")
+                case .changePassword:
+                    return String.localize("Change Password")
+                case .twoFactor:
+                    return String.localize("Two-Factor Authentication")
+                case .recovery:
+                    return String.localize("Recovery Email")
+                case .privacy:
+                    return String.localize("Privacy Policy")
+                case .terms:
+                    return String.localize("Terms of Service")
+                case .openSource:
+                    return String.localize("Open Source Libraries")
+                case .logout:
+                    return String.localize("Logout")
+                case .version:
+                    return String.localize("Version")
+                }
+            }
+        }
+    }
+    
     let SECTION_VERSION = 2
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = ["ACCOUNT", "ABOUT", "VERSION"] as [String]
+    let sections = [.account, .about, .version] as [Section]
     let menus = [
-        "ACCOUNT": ["Profile", "Signature", "Change Password", "Two-Factor Authentication", "Recovery Email"],
-    "ABOUT": ["Privacy Policy", "Terms of Service", "Open Source Libraries", "Logout"],
-    "VERSION": ["Version"]] as [String: [String]]
+        .account: [.profile, .signature, .changePassword, .twoFactor, .recovery],
+        .about: [.privacy, .terms, .openSource, .logout],
+        .version : [.version]] as [Section: [Section.SubSection]
+    ]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
     
     override func viewDidLoad() {
-        let attributedTitle = NSAttributedString(string: "GENERAL", attributes: [.font: Font.semibold.size(16.0)!])
+        let attributedTitle = NSAttributedString(string: String.localize("GENERAL"), attributes: [.font: Font.semibold.size(16.0)!])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
@@ -42,22 +101,22 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let text = menus[sections[indexPath.section]]![indexPath.row]
-        switch(indexPath.section){
-        case 0:
-            return renderAccountCells(text: text)
-        case 1:
-            return renderAboutCells(text: text)
+        let subsection = menus[sections[indexPath.section]]![indexPath.row]
+        switch(sections[indexPath.section]){
+        case .account:
+            return renderAccountCells(subsection: subsection)
+        case .about:
+            return renderAboutCells(subsection: subsection)
         default:
-            return renderVersionCells(text: text)
+            return renderVersionCells()
         }
     }
     
-    func renderAccountCells(text: String) -> UITableViewCell {
-        switch(text){
-        case "Recovery Email":
+    func renderAccountCells(subsection: Section.SubSection) -> UITableViewCell {
+        switch(subsection){
+        case .recovery:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.optionLabel.text = text
+            cell.optionLabel.text = subsection.name
             cell.messageLabel.text = generalData.recoveryEmailStatus.description
             cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
             guard generalData.recoveryEmail != nil else {
@@ -70,9 +129,9 @@ class SettingsGeneralViewController: UITableViewController{
             cell.loader.isHidden = true
             cell.goImageView.isHidden = false
             return cell
-        case "Two-Factor Authentication":
+        case .twoFactor:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
-            cell.optionLabel.text = text
+            cell.optionLabel.text = subsection.name
             cell.availableSwitch.isOn = generalData.isTwoFactor
             cell.switchToggle = { isOn in
                 self.setTwoFactor(enable: isOn)
@@ -80,7 +139,7 @@ class SettingsGeneralViewController: UITableViewController{
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.optionLabel.text = text
+            cell.optionLabel.text = subsection.name
             cell.goImageView.isHidden = false
             cell.messageLabel.text = ""
             cell.loader.stopAnimating()
@@ -89,16 +148,16 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
-    func renderAboutCells(text: String) -> GeneralTapTableCellView {
+    func renderAboutCells(subsection: Section.SubSection) -> GeneralTapTableCellView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
         cell.goImageView.isHidden = false
-        cell.optionLabel.text = text
+        cell.optionLabel.text = subsection.name
         return cell
     }
     
-    func renderVersionCells(text: String) -> GeneralVersionTableViewCell {
+    func renderVersionCells() -> GeneralVersionTableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralVersion") as! GeneralVersionTableViewCell
         let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         cell.versionLabel.text = "v.\(appVersionString)"
@@ -110,7 +169,7 @@ class SettingsGeneralViewController: UITableViewController{
             return nil
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
-        cell.titleLabel.text = sections[section]
+        cell.titleLabel.text = sections[section].name
         return cell
     }
     
@@ -123,24 +182,24 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let text = menus[sections[indexPath.section]]![indexPath.row]
+        let subsection = menus[sections[indexPath.section]]![indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
-        switch(text){
-        case "Profile":
+        switch(subsection){
+        case .profile:
             presentNamePopover()
-        case "Change Password":
+        case .changePassword:
             goToChangePassword()
-        case "Signature":
+        case .signature:
             goToSignature()
-        case "Privacy Policy":
+        case .privacy:
             goToUrl(url: "https://criptext.com/privacy")
-        case "Terms of Service":
+        case .terms:
             goToUrl(url: "https://criptext.com/terms")
-        case "Open Source Libraries":
+        case .openSource:
             goToUrl(url: "https://criptext.com/open-source-ios")
-        case "Logout":
+        case .logout:
             showLogout()
-        case "Recovery Email":
+        case .recovery:
             goToRecoveryEmail()
         default:
             break
@@ -170,7 +229,7 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("Logout Error", message: "Unable to logout. Please try again", style: .alert)
+                self.showAlert(String.localize("Logout Error"), message: String.localize("Unable to logout. Please try again"), style: .alert)
                 return
             }
             self.logout(manually: true)
@@ -204,7 +263,7 @@ class SettingsGeneralViewController: UITableViewController{
     
     func presentNamePopover(){
         let changeNamePopover = SingleTextInputViewController()
-        changeNamePopover.myTitle = "Change Name"
+        changeNamePopover.myTitle = String.localize("Change Name")
         changeNamePopover.initInputText = self.myAccount.name
         changeNamePopover.onOk = { text in
             self.changeProfileName(name: text)
@@ -229,7 +288,7 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
+                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to update Profile Name. Please try again"), style: .alert)
                 return
             }
               APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (responseData) in
@@ -242,7 +301,7 @@ class SettingsGeneralViewController: UITableViewController{
                     return
                 }
                 guard case .Success = responseData else {
-                    self.showAlert("Something went wrong", message: "Unable to update Profile Name. Please try again", style: .alert)
+                    self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to update Profile Name. Please try again"), style: .alert)
                     return
                 }
                 DBManager.update(account: self.myAccount, name: name)
@@ -264,7 +323,7 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to \(enable ? "enable" : "disable") two pass. Please try again", style: .alert)
+                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)
                 self.generalData.isTwoFactor = initialValue
                 self.reloadView()
                 return
@@ -277,20 +336,20 @@ class SettingsGeneralViewController: UITableViewController{
     
     func presentRecoveryPopover() {
         let popover = GenericAlertUIPopover()
-        let attributedRegular = NSMutableAttributedString(string: "To enable Two-Factor Authentication you must set and verify a recovery email on your account", attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
-        let attributedSemibold = NSAttributedString(string: "\n\nPlease go to Settings > Recovery Email to complete this step.", attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
+        let attributedRegular = NSMutableAttributedString(string: String.localize("To enable Two-Factor Authentication you must set and verify a recovery email on your account"), attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
+        let attributedSemibold = NSAttributedString(string: String.localize("\n\nPlease go to Settings > Recovery Email to complete this step."), attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
         attributedRegular.append(attributedSemibold)
-        popover.myTitle = "Recovery Email Not Set"
+        popover.myTitle = String.localize("Recovery Email Not Set")
         popover.myAttributedMessage = attributedRegular
-        popover.myButton = "Got it!"
+        popover.myButton = String.localize("Got it!")
         self.presentPopover(popover: popover, height: 310)
     }
     
     func presentTwoFactorPopover() {
         let popover = GenericAlertUIPopover()
-        popover.myTitle = "2FA Enabled!"
-        popover.myMessage = "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device."
-        popover.myButton = "Got it!"
+        popover.myTitle = String.localize("2FA Enabled!")
+        popover.myMessage = String.localize("Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device.")
+        popover.myButton = String.localize("Got it!")
         self.presentPopover(popover: popover, height: 263)
     }
 }

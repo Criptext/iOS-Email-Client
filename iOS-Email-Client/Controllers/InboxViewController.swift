@@ -315,11 +315,12 @@ extension InboxViewController {
         }
         self.mailboxData.updating = true
         APIManager.getEvents(token: myAccount.jwt) { (responseData) in
+            print("COMPLETE \(responseData)")
+            refreshControl?.endRefreshing()
             if case .Unauthorized = responseData {
                 self.logout()
                 return
             }
-            refreshControl?.endRefreshing()
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 completion?()
@@ -345,6 +346,7 @@ extension InboxViewController {
                 self.mailboxData.updating = false
                 self.didReceiveEvents(result: result)
                 completion?()
+                print("COMPLETE HEY")
             }
         }
     }
@@ -824,7 +826,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         goToEmailDetail(selectedThread: selectedThread, selectedLabel: mailboxData.selectedLabel)
     }
     
-    func goToEmailDetail(selectedThread: Thread, selectedLabel: Int){
+    func goToEmailDetail(selectedThread: Thread, selectedLabel: Int, message: ControllerMessage? = nil){
         self.navigationDrawerController?.closeRightView()
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
@@ -857,6 +859,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
+        vc.message = message
         vc.emailData = emailDetailData
         vc.mailboxData = self.mailboxData
         vc.myAccount = self.myAccount
@@ -892,12 +895,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
     }
     
-    func goToEmailDetail(threadId: String){
+    func goToEmailDetail(threadId: String, message: ControllerMessage? = nil){
         let workingLabel = SystemLabel.inbox.id
         guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel) else {
             return
         }
-        goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel)
+        goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel, message: message)
     }
     
     func continueDraft(_ draft: Email){
@@ -1453,5 +1456,47 @@ extension InboxViewController: LinkDeviceDelegate {
         APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in
             completion()
         })
+    }
+}
+
+extension InboxViewController {
+    func markAsRead(emailKey: Int, completion: @escaping (() -> Void)){
+        guard DBManager.getMail(key: emailKey) != nil else {
+            completion()
+            return
+        }
+        let eventData = [
+            "metadataKeys": [emailKey],
+            "unread": 0
+            ] as [String : Any]
+        postPeerEvent(["params": eventData, "cmd": Event.Peer.emailsUnread.rawValue], failSilently: true) {
+            DBManager.markAsUnread(emailKeys: [emailKey], unread: false)
+            self.refreshThreadRows()
+            completion()
+        }
+    }
+    
+    func reply(emailKey: Int, completion: @escaping (() -> Void)){
+        guard let email = DBManager.getMail(key: emailKey) else {
+            completion()
+            return
+        }
+        self.view.window?.rootViewController?.dismiss(animated: false, completion: nil)
+        self.navigationController?.popToRootViewController(animated: true)
+        goToEmailDetail(threadId: email.threadId, message: ControllerMessage.ReplyThread(emailKey))
+        completion()
+    }
+    
+    func moveToTrash(emailKey: Int, completion: @escaping (() -> Void)){
+        guard let email = DBManager.getMail(key: emailKey) else {
+            completion()
+            return
+        }
+        let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.emailsLabels.rawValue], failSilently: true) {
+            DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
+            self.refreshThreadRows()
+            completion()
+        }
     }
 }

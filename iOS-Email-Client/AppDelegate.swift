@@ -138,12 +138,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         
+        let linkDeviceCategory = setupLinkDeviceNotification()
+        let newEmailCategory = setupNewEmailNotification()
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.setNotificationCategories([linkDeviceCategory, newEmailCategory])
+        UIApplication.shared.registerForRemoteNotifications()
+    }
+    
+    func setupLinkDeviceNotification() -> UNNotificationCategory {
         let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .foreground)
         let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Reject", options: .destructive)
-        let linkCategory = UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.setNotificationCategories([linkCategory])
-        UIApplication.shared.registerForRemoteNotifications()
+        return UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+    }
+    
+    func setupNewEmailNotification() -> UNNotificationCategory {
+        let emailTrash = UNNotificationAction(identifier: "EMAIL_TRASH", title: "Delete", options: .destructive)
+        let emailReply = UNNotificationAction(identifier: "EMAIL_REPLY", title: "Reply", options: .foreground)
+        let emailMark = UNNotificationAction(identifier: "EMAIL_MARK", title: "Mark as Read", options: .authenticationRequired)
+        return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailTrash, emailMark, emailReply], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
     func logout(manually: Bool = false){
@@ -255,9 +267,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
+        print("ORALE WEH")
     }
-    
+        
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
@@ -280,6 +292,33 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId)) {
                 completionHandler()
             }
+        case "EMAIL_MARK":
+            guard let keyString = userInfo["metadataKey"] as? String,
+                let key = Int(keyString) else {
+                return
+            }
+            inboxVC.markAsRead(emailKey: key) {
+                completionHandler()
+            }
+            break
+        case "EMAIL_REPLY":
+            guard let keyString = userInfo["metadataKey"] as? String,
+                let key = Int(keyString) else {
+                    return
+            }
+            inboxVC.reply(emailKey: key) {
+                completionHandler()
+            }
+            break
+        case "EMAIL_TRASH":
+            guard let keyString = userInfo["metadataKey"] as? String,
+                let key = Int(keyString) else {
+                    return
+            }
+            inboxVC.moveToTrash(emailKey: key) {
+                completionHandler()
+            }
+            break
         default:
             if let threadId = userInfo["threadId"] as? String {
                 inboxVC.goToEmailDetail(threadId: threadId)
