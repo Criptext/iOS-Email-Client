@@ -101,48 +101,7 @@ class SettingsLabelsViewController: UITableViewController {
         self.labels.append(label)
         self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
         let params = EventData.Peer.NewLabel(text: label.text, color: label.color)
-        postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()])
-    }
-    
-    func postPeerEvent(_ params: [String: Any]){
-        APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout()
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            if case .TooManyRequests = responseData {
-                self.queueEvent(params: params)
-                return
-            }
-            if case .ServerError = responseData {
-                self.queueEvent(params: params)
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.queueEvent(params: params)
-            }
-        }
-    }
-    
-    func queueEvent(params: [String: Any]){
-        let fileURL = StaticFile.queueEvents.url
-        guard let jsonString = Utils.convertToJSONString(dictionary: params) else {
-            return
-        }
-        let rowData = "\(jsonString)\n".data(using: .utf8)!
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-            let fileHandle = try! FileHandle(forUpdating: fileURL)
-            fileHandle.seekToEndOfFile()
-            fileHandle.write(rowData)
-            fileHandle.closeFile()
-        } else {
-            try! rowData.write(to: fileURL, options: .atomic)
-        }
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()])
     }
 }
 

@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.statusBarStyle = .lightContent
         
         let config = Realm.Configuration(
-            schemaVersion: 6,
+            schemaVersion: 7,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 3) {
                     migration.enumerateObjects(ofType: FeedItem.className()){ oldObject, newObject in

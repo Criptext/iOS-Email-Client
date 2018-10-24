@@ -21,7 +21,7 @@ class APIManager {
     static let baseUrl = Env.apiURL
     static let fileServiceUrl = "https://services.criptext.com"
     static let linkUrl = "https://transfer.criptext.com"
-    static let apiVersion = "2.0.0"
+    static let apiVersion = "3.0.0"
     static let versionHeader = "criptext-api-version"
     
     enum code: Int {

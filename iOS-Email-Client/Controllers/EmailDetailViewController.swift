@@ -147,47 +147,6 @@ class EmailDetailViewController: UIViewController {
         let email = emailData.emails[indexPath.row]
         return email.cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : email.cellHeight
     }
-    
-    func postPeerEvent(_ params: [String: Any]){
-        APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout()
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            if case .TooManyRequests = responseData {
-                self.queueEvent(params: params)
-                return
-            }
-            if case .ServerError = responseData {
-                self.queueEvent(params: params)
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.queueEvent(params: params)
-            }
-        }
-    }
-    
-    func queueEvent(params: [String: Any]){
-        let fileURL = StaticFile.queueEvents.url
-        guard let jsonString = Utils.convertToJSONString(dictionary: params) else {
-            return
-        }
-        let rowData = "\(jsonString)\n".data(using: .utf8)!
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-            let fileHandle = try! FileHandle(forUpdating: fileURL)
-            fileHandle.seekToEndOfFile()
-            fileHandle.write(rowData)
-            fileHandle.closeFile()
-        } else {
-            try! rowData.write(to: fileURL, options: .atomic)
-        }
-    }
 }
 
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
@@ -464,7 +423,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             self.navigationController?.popViewController(animated: true)
             
             let eventData = EventData.Peer.ThreadDeleted(threadIds: [self.emailData.threadId])
-            self.postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
+            DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
         }
         let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel)
         showAlert("Delete Thread", message: String.localize("This will be PERMANENTLY deleted"), style: .alert, actions: [deleteAction, cancelAction])
@@ -482,7 +441,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
                         "unread": unread ? 1 : 0,
                         "threadIds": [emailData.threadId]
             ]] as [String : Any]
-        postPeerEvent(params)
+        DBManager.createQueueItem(params: params)
     }
     
     func onMoreOptions() {
@@ -572,7 +531,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let emailKey = email.key
         DBManager.delete(email)
         self.removeEmail(key: emailKey)
-        postPeerEvent(["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()])
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()])
     }
     
     func moveSingleEmailToTrash(_ email: Email, indexPath: IndexPath){
@@ -581,7 +540,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let emailKey = email.key
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
         self.removeEmail(key: emailKey)
-        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
     }
     
     func removeEmail(key: Int){
@@ -623,7 +582,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             DBManager.updateEmail(email, unread: true)
         }
         self.navigationController?.popViewController(animated: true)
-        postPeerEvent(params)
+        DBManager.createQueueItem(params: params)
     }
     
     func onSpamPress() {
@@ -643,7 +602,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
         self.removeEmail(key: emailKey)
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
     }
     
     func onUnsendPress() {
@@ -775,7 +734,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
         }
         
         let eventData = EventData.Peer.ThreadLabels(threadIds: [emailData.threadId], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
+        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     func getLabelNames(added: [Int], removed: [Int]) -> ([String], [String]){

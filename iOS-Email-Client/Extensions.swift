@@ -393,8 +393,6 @@ enum StaticFile {
     case emailDB
     case unzippedDB
     case decryptedDB
-    case queueEvents
-    case queueEventsTemp
     
     var name: String {
         switch self {
@@ -408,10 +406,6 @@ enum StaticFile {
             return "decompressed.db"
         case .decryptedDB:
             return "decrypted.db"
-        case .queueEvents:
-            return "events.queue"
-        case .queueEventsTemp:
-            return "events.queue.tmp"
         }
     }
     

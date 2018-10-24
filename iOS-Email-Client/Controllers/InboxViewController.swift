@@ -55,8 +55,8 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var composeButtonBottomConstraint: NSLayoutConstraint!
     
     var myAccount: Account!
-    var originalNavigationRect:CGRect!
     var mailboxData = MailboxData()
+    var originalNavigationRect:CGRect!
     let coachMarksController = CoachMarksController()
     var currentGuide = "guideComposer"
 
@@ -67,7 +67,22 @@ class InboxViewController: UIViewController {
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewSetup()
+        WebSocketManager.sharedInstance.delegate = self
+        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
+        getPendingEvents(nil)
         
+        let queueItems = DBManager.getQueueItems()
+        mailboxData.queueItems = queueItems
+        mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
+            guard case .update = changes else {
+                return
+            }
+            self?.dequeueEvents()
+        })
+    }
+    
+    func viewSetup(){
         let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
         self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
         
@@ -94,7 +109,7 @@ class InboxViewController: UIViewController {
         self.navigationItem.searchController = self.searchController
         self.definesPresentationContext = true
         self.tableView.allowsMultipleSelection = true
-
+        
         self.initBarButtonItems()
         
         self.setButtonItems(isEditing: false)
@@ -106,14 +121,11 @@ class InboxViewController: UIViewController {
         self.generalOptionsContainerView.delegate = self
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
-        WebSocketManager.sharedInstance.delegate = self
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
         
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
-        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
-        getPendingEvents(nil)        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -661,7 +673,7 @@ extension InboxViewController: UITableViewDataSource{
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
         DBManager.deleteThreads(threadIds: threadIds)
         self.refreshThreadRows()
-        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -874,7 +886,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                         "metadataKeys": peerKeys
             ]] as [String : Any]
         DBManager.updateEmails(peerKeys, unread: false)
-        self.postPeerEvent(params)
+        DBManager.createQueueItem(params: params)
     }
     
     func openEmails(openKeys: [Int], peerKeys: [Int]) {
@@ -1000,7 +1012,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.removeThreads(threadIds: [threadId])
         
         let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
+        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     
@@ -1008,81 +1020,27 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
     }
     
-    func postPeerEvent(_ params: [String: Any]){
-        APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout()
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            if case .TooManyRequests = responseData {
-                self.queueEvent(params: params)
-                return
-            }
-            if case .ServerError = responseData {
-                self.queueEvent(params: params)
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.queueEvent(params: params)
-            }
-        }
-    }
-    
-    func queueEvent(params: [String: Any]){
-        guard let jsonString = Utils.convertToJSONString(dictionary: params) else {
-            return
-        }
-        let fileURL = StaticFile.queueEvents.url
-        let rowData = "\(jsonString)\n".data(using: .utf8)!
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-            let fileHandle = try! FileHandle(forUpdating: fileURL)
-            fileHandle.seekToEndOfFile()
-            fileHandle.write(rowData)
-            fileHandle.closeFile()
-        } else {
-            try! rowData.write(to: fileURL, options: .atomic)
-        }
-    }
-    
     func dequeueEvents() {
-        let fileURL = StaticFile.queueEvents.url
-        let tempFileURL = StaticFile.queueEventsTemp.url
-        try? FileManager.default.removeItem(at: tempFileURL)
+        
+        guard !mailboxData.isDequeueing,
+            let queueItems = mailboxData.queueItems,
+            queueItems.count > 0 else {
+                return
+        }
+        mailboxData.isDequeueing = true
         let maxBatch = 1
-        var pendingEvents = false
-        var events = [[String: Any]]()
-        guard let lineReader = StreamReader(url: fileURL) else {
-            return
-        }
-        while let line = lineReader.nextLine() {
-            guard let params = Utils.convertToDictionary(text: line) else {
-                continue
+        var peerEvents = [[String: Any]]()
+        var eventItems = [QueueItem]()
+        for queueItem in queueItems {
+            guard (peerEvents.count < maxBatch && peerEvents.count < queueItems.count) else {
+                break
             }
-            if events.count >= maxBatch {
-                let rowData = "\(line)\n".data(using: .utf8)!
-                if FileManager.default.fileExists(atPath: tempFileURL.path) {
-                    let fileHandle = try! FileHandle(forUpdating: tempFileURL)
-                    fileHandle.seekToEndOfFile()
-                    fileHandle.write(rowData)
-                    fileHandle.closeFile()
-                } else {
-                    try! rowData.write(to: tempFileURL, options: .atomic)
-                }
-                pendingEvents = true
-            } else {
-                events.append(params)
-            }
+            let currentEvent = queueItem.params
+            peerEvents.append(currentEvent)
+            eventItems.append(queueItem)
         }
-        guard let firstEvent = events.first else {
-            try? FileManager.default.removeItem(at: fileURL)
-            return
-        }
-        APIManager.postPeerEvent(firstEvent, token: myAccount.jwt) { (responseData) in
+        APIManager.postPeerEvent(["peerEvents": peerEvents], token: myAccount.jwt) { (responseData) in
+            self.mailboxData.isDequeueing = false
             if case .Unauthorized = responseData {
                 self.logout()
                 return
@@ -1103,11 +1061,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             guard case .Success = responseData else {
                 return
             }
-            try? FileManager.default.removeItem(at: fileURL)
-            if pendingEvents {
-                try? FileManager.default.moveItem(at: tempFileURL, to: fileURL)
-                self.dequeueEvents()
-            }
+            DBManager.deleteQueueItems(eventItems)
         }
     }
 }
@@ -1205,7 +1159,7 @@ extension InboxViewController {
         }
         
         let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
+        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     func removeThreads(threadIds: [String]){
@@ -1269,7 +1223,7 @@ extension InboxViewController {
         }
         
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
     }
 }
 
@@ -1319,7 +1273,7 @@ extension InboxViewController: NavigationToolbarDelegate {
                         "threadIds": threadIds
                         ]
             ] as [String : Any]
-        postPeerEvent(params)
+        DBManager.createQueueItem(params: params)
     }
     
     func onMoreOptions() {

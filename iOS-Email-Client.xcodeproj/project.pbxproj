@@ -263,6 +263,7 @@
 		A7FFCF63217A93E600FFFDFF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
 		A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */; };
+		A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -561,6 +562,7 @@
 		A7FFCF66217A93E900FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerMessage.swift; sourceTree = "<group>"; };
 		A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TLPhotoPicker.framework; path = Carthage/Build/iOS/TLPhotoPicker.framework; sourceTree = "<group>"; };
+		A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -983,6 +985,7 @@
 				7C5FD82C20607602000E5F14 /* Label.swift */,
 				9568328F20753FBE007F8489 /* File.swift */,
 				7C92104520FEF2B10081C048 /* FileKey.swift */,
+				A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */,
 			);
 			path = DB;
 			sourceTree = "<group>";
@@ -1419,6 +1422,7 @@
 				7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */,
 				7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */,
 				7CB44949207BBE0C009430EB /* MenuData.swift in Sources */,
+				A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */,
 				7C5FD82D20607602000E5F14 /* Label.swift in Sources */,
 				7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */,
 				7C1DA38D2153083700C4C38E /* ConnectUIView.swift in Sources */,
