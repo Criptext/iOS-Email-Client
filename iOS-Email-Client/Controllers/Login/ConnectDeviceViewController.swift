@@ -247,7 +247,7 @@ extension ConnectDeviceViewController: ScheduleWorkerDelegate {
     
     func dangled(){
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = String.localize("Something has happened that is delaying this process. Do want to continue waiting?")
+        retryPopup.initialMessage = String.localize("Something has happened that is delaying this process. Do you want to continue waiting?")
         retryPopup.initialTitle = String.localize("Well, that’s odd…")
         retryPopup.onResponse = { accept in
             guard accept else {

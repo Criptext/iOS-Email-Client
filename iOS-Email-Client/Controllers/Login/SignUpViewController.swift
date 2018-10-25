@@ -209,15 +209,18 @@ class SignUpViewController: UIViewController{
             return self.jumpToCreatingAccount()
         }
         
-        let alert = UIAlertController(title: String.localize("Warning"), message: "", preferredStyle: .alert)
-        let proceedAction = UIAlertAction(title: String.localize("Confirm"), style: .default){ (alert : UIAlertAction!) -> Void in
-            self.jumpToCreatingAccount()
+        let warningPopover = GenericDualAnswerUIPopover()
+        warningPopover.initialTitle = String.localize("Warning")
+        warningPopover.attributedMessage = self.buildWarningString()
+        warningPopover.leftOption = String.localize("Cancel")
+        warningPopover.rightOption = String.localize("Confirm")
+        warningPopover.onResponse = { [weak self] confirm in
+            guard confirm else {
+                return
+            }
+            self?.jumpToCreatingAccount()
         }
-        let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel)
-        alert.addAction(proceedAction)
-        alert.addAction(cancelAction)
-        alert.setValue(self.buildWarningString(), forKey: "attributedMessage")
-        self.present(alert, animated: true, completion: nil)
+        self.presentPopover(popover: warningPopover, height: 255)
     }
     
     func jumpToCreatingAccount(){
@@ -253,7 +256,7 @@ class SignUpViewController: UIViewController{
         let boldText  = String.localize(" Recovery Email ")
         let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
         
-        let textPart1 = String.localize("\nYou did NOT set a")
+        let textPart1 = String.localize("You did NOT set a")
         let stringPart1 = NSMutableAttributedString(string:textPart1, attributes: normalAttrs)
         
         let textPart2 = String.localize("so account recovery is imposible if you forget your password. \n\nProceed without recovery email?")

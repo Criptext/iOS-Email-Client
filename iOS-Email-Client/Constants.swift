@@ -16,7 +16,7 @@ struct Constants {
     static let basePopoverHeight = 102
     static let labelPopoverHeight = 48
     
-    static let footer = "<br/><br/><span>Sent with <a style=\"color:#0091ff;text-decoration: none;\" href=\"https://criptext.com/dl\">Criptext secure email</a></span>"
+    static let footer = "<br/><br/><span>Sent with <a style=\"color:#0091ff;text-decoration: none;\" href=\"https://goo.gl/qW4Aks\">Criptext</a> secure email</span>"
     
     static let unsendEmail = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
         "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +

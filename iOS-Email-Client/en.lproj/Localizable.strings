@@ -81,7 +81,7 @@
 "Mailbox restored successfully!" = "Mailbox restored successfully!";
 "Looks like you're having connection issues. Would you like to retry Mailbox Sync" = "Looks like you're having connection issues. Would you like to retry Mailbox Sync";
 "Sync Interrupted" = "Sync Interrupted";
-"Something has happened that is delaying this process. Do want to continue waiting?" = "Something has happened that is delaying this process. Do want to continue waiting?";
+"Something has happened that is delaying this process. Do you want to continue waiting?" = "Something has happened that is delaying this process. Do you want to continue waiting?";
 "Well, that’s odd…" = "Well, that’s odd…";
 
 /* ComposeViewController.swift */

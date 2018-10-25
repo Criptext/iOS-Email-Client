@@ -56,7 +56,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you want to approve DavidMac?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPV-Vu-Nw4">
-                    <rect key="frame" x="31" y="63.5" width="208" height="175.5"/>
+                    <rect key="frame" x="25" y="60.5" width="220" height="178.5"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -80,16 +80,16 @@
             <constraints>
                 <constraint firstItem="fvv-Cn-cZX" firstAttribute="top" secondItem="LPV-Vu-Nw4" secondAttribute="bottom" constant="15" id="2W1-AN-mXI"/>
                 <constraint firstItem="3S2-tH-1Ug" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="25" id="3nE-sF-0GQ"/>
-                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="31" id="8b7-6Y-OTm"/>
+                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="25" id="8b7-6Y-OTm"/>
                 <constraint firstItem="vel-x6-KLE" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="GOV-d2-R6b"/>
                 <constraint firstItem="vel-x6-KLE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NCQ-2J-sry"/>
                 <constraint firstItem="3S2-tH-1Ug" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Nd1-9f-gKR"/>
                 <constraint firstItem="fvv-Cn-cZX" firstAttribute="leading" secondItem="vel-x6-KLE" secondAttribute="trailing" id="UNb-cy-W5w"/>
                 <constraint firstItem="LPV-Vu-Nw4" firstAttribute="centerX" secondItem="3S2-tH-1Ug" secondAttribute="centerX" id="bRx-Hh-AgD"/>
                 <constraint firstItem="fvv-Cn-cZX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="j4b-r3-U6W"/>
-                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="top" secondItem="3S2-tH-1Ug" secondAttribute="bottom" constant="15" id="pHC-5u-V4c"/>
+                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="top" secondItem="3S2-tH-1Ug" secondAttribute="bottom" constant="12" id="pHC-5u-V4c"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fvv-Cn-cZX" secondAttribute="trailing" id="xgO-tQ-7fK"/>
-                <constraint firstAttribute="trailing" secondItem="LPV-Vu-Nw4" secondAttribute="trailing" constant="31" id="xrb-58-nuL"/>
+                <constraint firstAttribute="trailing" secondItem="LPV-Vu-Nw4" secondAttribute="trailing" constant="25" id="xrb-58-nuL"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="fvv-Cn-cZX" secondAttribute="bottom" id="z2X-x0-1w5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
