@@ -10,6 +10,7 @@ import Foundation
 import CLTokenInputView
 import Photos
 import CICropPicker
+import TLPhotoPicker
 import M13Checkbox
 import ContactsUI
 import RichEditorView
@@ -567,7 +568,10 @@ class ComposeViewController: UIViewController {
             DispatchQueue.main.async {
                 switch status {
                 case .authorized:
-                    self.imagePicker.presentGalleryPicker(from: self)
+                    let picker = TLPhotosPickerViewController()
+                    picker.delegate = self
+                    var configure = TLPhotosPickerConfigure()
+                    self.present(picker, animated: true, completion: nil)
                     break
                 default:
                     self.showAlert(String.localize("Access denied"), message: String.localize("You need to enable access for this app in your settings"), style: .alert)
@@ -742,33 +746,7 @@ extension ComposeViewController: UITableViewDataSource {
         cell.progressView.isHidden = attachment.requestStatus == .finish
         cell.successImageView.isHidden = attachment.requestStatus != .finish
         
-        //image icon
-        var imageIcon:UIImage!
-        switch attachment.mimeType {
-        case "application/pdf":
-            imageIcon = Icon.attachment.pdf.image
-            break
-        case _ where attachment.mimeType.contains("application/msword") ||
-            attachment.mimeType.contains("application/vnd.openxmlformats-officedocument.wordprocessingml") ||
-            attachment.mimeType.contains("application/vnd.ms-word"):
-            imageIcon = Icon.attachment.word.image
-            break
-        case "image/png", "image/jpeg":
-            imageIcon = Icon.attachment.image.image
-            break
-        case _ where attachment.mimeType.contains("application/vnd.ms-powerpoint") ||
-            attachment.mimeType.contains("application/vnd.openxmlformats-officedocument.presentationml"):
-            imageIcon = Icon.attachment.ppt.image
-            break
-        case _ where attachment.mimeType.contains("application/vnd.ms-excel") ||
-            attachment.mimeType.contains("application/vnd.openxmlformats-officedocument.spreadsheetml"):
-            imageIcon = Icon.attachment.excel.image
-            break
-        default:
-            imageIcon = Icon.attachment.generic.image
-        }
-        
-        cell.typeImageView.image = imageIcon
+        cell.typeImageView.image = Utils.getImageByFileType(attachment.mimeType)
         cell.delegate = self
         
         return cell
@@ -1149,5 +1127,33 @@ extension ComposeViewController: CoachMarksControllerDataSource, CoachMarksContr
     
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 1
+    }
+}
+
+
+extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
+    func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
+        for asset in withTLPHAssets {
+            switch(asset.type) {
+            case .photo, .livePhoto:
+                print(asset.originalFileName)
+                asset.tempCopyMediaFile { (url, mimeType) in
+                    DispatchQueue.main.async {
+                        self.fileManager.registerFile(filepath: url.path, name: asset.originalFileName ?? "unknown", mimeType: mimeType)
+                        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                        self.toggleAttachmentTable()
+                    }
+                }
+            case .video:
+                print(asset.originalFileName)
+                asset.exportVideoFile(completionBlock: { (url, mimeType) in
+                    DispatchQueue.main.async {
+                        self.fileManager.registerFile(filepath: url.path, name: asset.originalFileName ?? "unknown", mimeType: mimeType)
+                        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                        self.toggleAttachmentTable()
+                    }
+                })
+            }
+        }
     }
 }
