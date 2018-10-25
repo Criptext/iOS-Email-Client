@@ -262,8 +262,6 @@
 		A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF4D217A91E200FFFDFF /* ConnectView.xib */; };
 		A7FFCF63217A93E600FFFDFF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
-		A7FFCF82217FD24D00FFFDFF /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF81217FD24D00FFFDFF /* NotificationService.swift */; };
-		A7FFCF86217FD24D00FFFDFF /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7FFCF7F217FD24D00FFFDFF /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -274,28 +272,7 @@
 			remoteGlobalIDString = 41B6AAAB2017987500D428B7;
 			remoteInfo = "iOS-Email-Client";
 		};
-		A7FFCF84217FD24D00FFFDFF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 41B6AAA42017987500D428B7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7FFCF7E217FD24D00FFFDFF;
-			remoteInfo = NotificationExtension;
-		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A7FFCF8B217FD24D00FFFDFF /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				A7FFCF86217FD24D00FFFDFF /* NotificationExtension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		411FDF70204CF93300BCD787 /* InitialsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsImageView.swift; sourceTree = "<group>"; };
@@ -582,9 +559,6 @@
 		A7FFCF64217A93E600FFFDFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A7FFCF66217A93E900FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerMessage.swift; sourceTree = "<group>"; };
-		A7FFCF7F217FD24D00FFFDFF /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7FFCF81217FD24D00FFFDFF /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		A7FFCF83217FD24D00FFFDFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -643,13 +617,6 @@
 				7CCC82EA2125E83F00D33F84 /* FirebaseCore.framework in Frameworks */,
 				7CCC82F32125E83F00D33F84 /* Crashlytics.framework in Frameworks */,
 				7CCC82F22125E83F00D33F84 /* Fabric.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A7FFCF7C217FD24D00FFFDFF /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -799,7 +766,6 @@
 				41F3A275207C6466004BDF90 /* Crashlytics.framework */,
 				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
 				41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */,
-				A7FFCF80217FD24D00FFFDFF /* NotificationExtension */,
 				41B6AAAD2017987500D428B7 /* Products */,
 				2962C69A939AA368B015D288 /* Frameworks */,
 			);
@@ -810,7 +776,6 @@
 			children = (
 				41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */,
 				41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */,
-				A7FFCF7F217FD24D00FFFDFF /* NotificationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1072,15 +1037,6 @@
 			path = Lottie;
 			sourceTree = "<group>";
 		};
-		A7FFCF80217FD24D00FFFDFF /* NotificationExtension */ = {
-			isa = PBXGroup;
-			children = (
-				A7FFCF81217FD24D00FFFDFF /* NotificationService.swift */,
-				A7FFCF83217FD24D00FFFDFF /* Info.plist */,
-			);
-			path = NotificationExtension;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1093,12 +1049,10 @@
 				41B6AAAA2017987500D428B7 /* Resources */,
 				7C4D4FE9203CBD3A00DF6E4E /* Run Script Framework */,
 				7CD968B62139A2F9002D4833 /* ShellScript */,
-				A7FFCF8B217FD24D00FFFDFF /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A7FFCF85217FD24D00FFFDFF /* PBXTargetDependency */,
 			);
 			name = "iOS-Email-Client";
 			productName = "iOS-Email-Client";
@@ -1122,23 +1076,6 @@
 			productName = "iOS-Email-ClientTests";
 			productReference = 41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		A7FFCF7E217FD24D00FFFDFF /* NotificationExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A7FFCF8A217FD24D00FFFDFF /* Build configuration list for PBXNativeTarget "NotificationExtension" */;
-			buildPhases = (
-				A7FFCF7B217FD24D00FFFDFF /* Sources */,
-				A7FFCF7C217FD24D00FFFDFF /* Frameworks */,
-				A7FFCF7D217FD24D00FFFDFF /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = NotificationExtension;
-			productName = NotificationExtension;
-			productReference = A7FFCF7F217FD24D00FFFDFF /* NotificationExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -1174,10 +1111,6 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 41B6AAAB2017987500D428B7;
 					};
-					A7FFCF7E217FD24D00FFFDFF = {
-						CreatedOnToolsVersion = 10.0;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 41B6AAA72017987500D428B7 /* Build configuration list for PBXProject "iOS-Email-Client" */;
@@ -1196,7 +1129,6 @@
 			targets = (
 				41B6AAAB2017987500D428B7 /* iOS-Email-Client */,
 				41B6AABF2017987500D428B7 /* iOS-Email-ClientTests */,
-				A7FFCF7E217FD24D00FFFDFF /* NotificationExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1276,13 +1208,6 @@
 				7CB60A8320FA526C00C9090C /* criptextlogo.png in Resources */,
 				A7F3027A216EB78200676DD2 /* compressed.gz in Resources */,
 				A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A7FFCF7D217FD24D00FFFDFF /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1527,14 +1452,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7FFCF7B217FD24D00FFFDFF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A7FFCF82217FD24D00FFFDFF /* NotificationService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1542,11 +1459,6 @@
 			isa = PBXTargetDependency;
 			target = 41B6AAAB2017987500D428B7 /* iOS-Email-Client */;
 			targetProxy = 41B6AAC12017987500D428B7 /* PBXContainerItemProxy */;
-		};
-		A7FFCF85217FD24D00FFFDFF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7FFCF7E217FD24D00FFFDFF /* NotificationExtension */;
-			targetProxy = A7FFCF84217FD24D00FFFDFF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1847,7 +1759,6 @@
 		41B6AACA2017987500D428B7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = Criptext;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1884,7 +1795,6 @@
 		41B6AACB2017987500D428B7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = Criptext;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -2023,7 +1933,6 @@
 		7CD968B32139912C002D4833 /* Support */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = Support;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon.support;
 				CLANG_ENABLE_MODULES = YES;
@@ -2081,73 +1990,6 @@
 			};
 			name = Support;
 		};
-		A7FFCF87217FD24D00FFFDFF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65NU4336S4;
-				INFOPLIST_FILE = NotificationExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A7FFCF88217FD24D00FFFDFF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65NU4336S4;
-				INFOPLIST_FILE = NotificationExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		A7FFCF89217FD24D00FFFDFF /* Support */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65NU4336S4;
-				INFOPLIST_FILE = NotificationExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Support;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2177,16 +2019,6 @@
 				41B6AACD2017987500D428B7 /* Debug */,
 				41B6AACE2017987500D428B7 /* Release */,
 				7CD968B42139912C002D4833 /* Support */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A7FFCF8A217FD24D00FFFDFF /* Build configuration list for PBXNativeTarget "NotificationExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A7FFCF87217FD24D00FFFDFF /* Debug */,
-				A7FFCF88217FD24D00FFFDFF /* Release */,
-				A7FFCF89217FD24D00FFFDFF /* Support */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
