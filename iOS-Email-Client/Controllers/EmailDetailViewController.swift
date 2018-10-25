@@ -32,6 +32,8 @@ class EmailDetailViewController: UIViewController {
     let coachMarksController = CoachMarksController()
     var target: UIView?
     
+    var message: ControllerMessage?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -71,6 +73,23 @@ class EmailDetailViewController: UIViewController {
             self.coachMarksController.start(on: self)
             defaults.set(true, forKey: "guideUnsend")
         }
+        
+        handleControllerMessage(message)
+    }
+    
+    func handleControllerMessage(_ message: ControllerMessage?) {
+        guard let controllerMessage = message else {
+            return
+        }
+        switch(controllerMessage){
+        case .ReplyThread(let emailKey):
+            guard let index = emailData.emails.firstIndex(where: {$0.key == emailKey}) else {
+                break
+            }
+            emailsTableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
+            onReplyPress()
+        }
+        self.message = nil
     }
     
     func setupToolbar(){

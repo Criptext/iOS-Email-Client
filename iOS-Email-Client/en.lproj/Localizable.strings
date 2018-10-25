@@ -154,3 +154,68 @@
 "Failed to unsend the email. Time (1h) for unsending has already expired." = "Failed to unsend the email. Time (1h) for unsending has already expired.";
 "Unable to unsend email. Please try again later" = "Unable to unsend email. Please try again later";
 "Open this menu to find\nthe UNSEND button" = "Open this menu to find\nthe UNSEND button";
+
+/* SettingsGeneralViewController.swift */
+
+"ACCOUNT" = "ACCOUNT";
+"ABOUT" = "ABOUT";
+"VERSION" = "VERSION";
+"Profile" = "Profile";
+"Signature" = "Signature";
+"Change Password" = "Change Password";
+"Two-Factor Authentication" = "Two-Factor Authentication";
+"Recovery Email" = "Recovery Email";
+"Privacy Policy" = "Privacy Policy";
+"Terms of Service" = "Terms of Service";
+"Open Source Libraries" = "Open Source Libraries";
+"Logout" = "Logout";
+"Privacy Policy" = "Privacy Policy";
+"Terms of Service" = "Terms of Service";
+"Open Source Libraries" = "Open Source Libraries";
+"Logout" = "Logout";
+"Version" = "Version";
+"GENERAL" = "GENERAL";
+"Logout Error" = "Logout Error";
+"Unable to logout. Please try again" = "Unable to logout. Please try again";
+"Change Name" = "Change Name";
+"Unable to update Profile Name. Please try again" = "Unable to update Profile Name. Please try again";
+"Unable to" = "Unable to";
+"enable" = "enable";
+"disable"= "disable";
+"two pass. Please try again" = "two pass. Please try again";
+"To enable Two-Factor Authentication you must set and verify a recovery email on your account" = "To enable Two-Factor Authentication you must set and verify a recovery email on your account";
+"\n\nPlease go to Settings > Recovery Email to complete this step." = "\n\nPlease go to Settings > Recovery Email to complete this step.";
+"Recovery Email Not Set" = "Recovery Email Not Set";
+"Got it!" = "Got it!";
+"2FA Enabled!" = "2FA Enabled!";
+"Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device." = "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device.";
+
+/* SettingsLabelsViewController.swift */
+
+"LABELS" = "LABELS";
+"Add Label" = "Add Label";
+"Repeated Label" = "Repeated Label";
+"Label" = "Label";
+"already exist!" = "already exist!";
+"Unable to add label" = "Unable to add label";
+
+/* SettingsDevicesViewController.swift */
+
+"DEVICES" = "DEVICES";
+
+/* CustomTabsController.swift */
+
+"SETTINGS" = "SETTINGS";
+
+/* SignatureEditorViewController.swift */
+
+"On" = "On";
+"Off" = "Off";
+"Save and return" = "Save and return";
+"Return without saving" = "Return without saving";
+"Unsaved Changes" = "Unsaved Changes";
+"You have made changes that were not saved. Do you wish to save and return?" = "You have made changes that were not saved. Do you wish to save and return?";
+
+/* EmailSetPasswordViewController.swift */
+
+"Use at least 3 characters" = "Use at least 3 characters";

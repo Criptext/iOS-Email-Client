@@ -137,13 +137,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
-        
+    }
+    
+    func setupLinkDeviceNotification() -> UNNotificationCategory {
         let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .foreground)
         let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Reject", options: .destructive)
-        let linkCategory = UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.setNotificationCategories([linkCategory])
-        UIApplication.shared.registerForRemoteNotifications()
+        return UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+    }
+    
+    func setupNewEmailNotification() -> UNNotificationCategory {
+        let emailMark = UNNotificationAction(identifier: "EMAIL_MARK", title: "Mark as Read", options: .authenticationRequired)
+        let emailReply = UNNotificationAction(identifier: "EMAIL_REPLY", title: "Reply", options: .foreground)
+        let emailTrash = UNNotificationAction(identifier: "EMAIL_TRASH", title: "Delete", options: .destructive)
+        return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
     func logout(manually: Bool = false){
@@ -209,12 +215,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        WebSocketManager.sharedInstance.pause()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         self.triggerRefresh()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        WebSocketManager.sharedInstance.reconnect()
     }
     
     func triggerRefresh(){
@@ -255,16 +263,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
     }
-    
+        
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
         guard let inboxVC = getInboxVC() else {
                 return
         }
-        
+        DBManager.refresh()
         switch response.actionIdentifier {
         case "LINK_ACCEPT":
             guard let randomId = userInfo["randomId"] as? String else {
@@ -280,6 +287,33 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId)) {
                 completionHandler()
             }
+        case "EMAIL_MARK":
+            guard let keyString = userInfo["metadataKey"] as? String,
+                let key = Int(keyString) else {
+                return
+            }
+            inboxVC.markAsRead(emailKey: key) {
+                completionHandler()
+            }
+            break
+        case "EMAIL_REPLY":
+            guard let keyString = userInfo["metadataKey"] as? String,
+                let key = Int(keyString) else {
+                    return
+            }
+            inboxVC.reply(emailKey: key) {
+                completionHandler()
+            }
+            break
+        case "EMAIL_TRASH":
+            guard let keyString = userInfo["metadataKey"] as? String,
+                let key = Int(keyString) else {
+                    return
+            }
+            inboxVC.moveToTrash(emailKey: key) {
+                completionHandler()
+            }
+            break
         default:
             if let threadId = userInfo["threadId"] as? String {
                 inboxVC.goToEmailDetail(threadId: threadId)
@@ -290,15 +324,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 }
 
 extension AppDelegate: MessagingDelegate {
-    func applicationReceivedRemoteMessage(_ remoteMessage: MessagingRemoteMessage) {
-        
-    }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Messaging.messaging().appDidReceiveMessage(userInfo)
         let defaults = UserDefaults.standard
         let state = UIApplication.shared.applicationState
         guard let action = userInfo["action"] as? String else {
+            completionHandler(.noData)
             return
         }
         switch(action){
@@ -311,12 +343,18 @@ extension AppDelegate: MessagingDelegate {
                 let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
                 let navVC = rootVC.childViewControllers.first as? UINavigationController,
                 let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
+                    if (action == "open_thread") {
+                        self.showActionLocalNotification(userInfo: userInfo, category: "SIMPLE_OPEN_THREAD")
+                    }
                     completionHandler(.noData)
                     return
             }
-            inboxVC.getPendingEvents(nil) {
+            inboxVC.getPendingEvents(nil) { success in
                 let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
                 UIApplication.shared.applicationIconBadgeNumber = emails.count + 1
+                if (action == "open_thread") {
+                    self.showActionLocalNotification(userInfo: userInfo, category: success ? "OPEN_THREAD" : "SIMPLE_OPEN_THREAD")
+                }
                 completionHandler(.newData)
             }
         }
@@ -329,6 +367,25 @@ extension AppDelegate: MessagingDelegate {
             return
         }
         inboxVC.registerToken(fcmToken: fcmToken)
+    }
+    
+    func showActionLocalNotification(userInfo: [AnyHashable: Any], category: String){
+        guard let title = userInfo["title"] as? String,
+            let body = userInfo["body"] as? String else {
+            return
+        }
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.userInfo = userInfo
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = category
+        
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest.init(identifier: category, content: content, trigger: trigger)
+        
+        let center = UNUserNotificationCenter.current()
+        center.add(request)
     }
     
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {

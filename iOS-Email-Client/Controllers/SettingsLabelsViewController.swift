@@ -16,7 +16,7 @@ class SettingsLabelsViewController: UITableViewController {
         super.viewDidLoad()
         labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
         labels.append(contentsOf: DBManager.getLabels(type: "custom"))
-        let attributedTitle = NSAttributedString(string: "LABELS", attributes: [.font: Font.semibold.size(16.0)!])
+        let attributedTitle = NSAttributedString(string: String.localize("LABELS"), attributes: [.font: Font.semibold.size(16.0)!])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)
         tabItem.setTabItemColor(.black, for: .normal)
         tabItem.setTabItemColor(.mainUI, for: .selected)
@@ -78,7 +78,7 @@ class SettingsLabelsViewController: UITableViewController {
     func presentPopover(){
         let parentView = (tabsController?.view ?? self.view)!
         let changeNamePopover = SingleTextInputViewController()
-        changeNamePopover.myTitle = "Add Label"
+        changeNamePopover.myTitle = String.localize("Add Label")
         changeNamePopover.onOk = { [weak self] text in
             self?.createLabel(text: text)
         }
@@ -93,7 +93,7 @@ class SettingsLabelsViewController: UITableViewController {
     func createLabel(text: String){
         let labelText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if let existingLabel = DBManager.getLabel(text: labelText) {
-            self.showAlert("Repeated Label", message: "Label '\(existingLabel.text)' already exist!", style: .alert)
+            self.showAlert(String.localize("Repeated Label"), message: "\(String.localize("Label")) '\(existingLabel.text)' \(String.localize("already exist!"))", style: .alert)
             return
         }
         let label = Label(labelText)
@@ -109,11 +109,11 @@ class SettingsLabelsViewController: UITableViewController {
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.showAlert("Request Error", message: "Unable to add label \(labelText). \(error.description). Please try again", style: .alert)
+                self.showAlert(String.localize("Request Error"), message: "\(String.localize("Unable to add label")) \(labelText). \(error.description). \(String.localize("Please try again"))", style: .alert)
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("Something went wrong", message: "Unable to add label \(labelText). Please try again", style: .alert)
+                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to add label")) \(labelText). \(String.localize("Please try again"))", style: .alert)
                 return
             }
             DBManager.store(label, incrementId: true)

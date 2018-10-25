@@ -22,7 +22,7 @@ class CustomTabsController: TabsController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.devicesData.devices.append(Device.createActiveDevice(deviceId: myAccount.deviceId))
-        self.navigationItem.title = "SETTINGS"
+        self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
         self.loadData()
     }

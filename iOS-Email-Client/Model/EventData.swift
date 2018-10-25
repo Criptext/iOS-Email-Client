@@ -112,6 +112,11 @@ extension EventData {
                 let unreadValue = params["unread"] as! Int
                 unread = unreadValue == 0 ? false : true
             }
+            
+            init(metadataKeys: [Int], unread: Bool){
+                self.metadataKeys = metadataKeys
+                self.unread = unread
+            }
         }
         
         struct ThreadUnread: Dictionarify {
