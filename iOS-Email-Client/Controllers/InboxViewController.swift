@@ -307,15 +307,14 @@ extension InboxViewController: WebSocketManagerDelegate {
 
 extension InboxViewController {
     
-    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: (() -> Void)? = nil) {
+    @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: ((Bool) -> Void)? = nil) {
         guard !mailboxData.updating else {
-            completion?()
+            completion?(false)
             refreshControl?.endRefreshing()
             return
         }
         self.mailboxData.updating = true
         APIManager.getEvents(token: myAccount.jwt) { (responseData) in
-            print("COMPLETE \(responseData)")
             refreshControl?.endRefreshing()
             if case .Unauthorized = responseData {
                 self.logout()
@@ -323,14 +322,14 @@ extension InboxViewController {
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                completion?()
+                completion?(false)
                 self.mailboxData.updating = false
                 self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
                 return
             }
             
             if case .Forbidden = responseData {
-                completion?()
+                completion?(false)
                 self.mailboxData.updating = false
                 self.presentPasswordPopover(myAccount: self.myAccount)
                 return
@@ -338,15 +337,14 @@ extension InboxViewController {
             
             guard case let .SuccessArray(events) = responseData else {
                 self.mailboxData.updating = false
-                completion?()
+                completion?(false)
                 return
             }
             let eventHandler = EventHandler(account: self.myAccount)
             eventHandler.handleEvents(events: events){ result in
                 self.mailboxData.updating = false
                 self.didReceiveEvents(result: result)
-                completion?()
-                print("COMPLETE HEY")
+                completion?(true)
             }
         }
     }

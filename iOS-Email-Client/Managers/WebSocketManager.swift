@@ -18,6 +18,7 @@ final class WebSocketManager: NSObject {
     var delegate : WebSocketManagerDelegate?
     var socket : WebSocket!
     var myAccount : Account?
+    var shouldReconnect = true
     let SOCKET_URL = Env.socketURL
     
     private override init(){
@@ -25,12 +26,29 @@ final class WebSocketManager: NSObject {
     }
     
     func connect(account: Account){
+        shouldReconnect = true
         myAccount = account
         socket = WebSocket("\(SOCKET_URL)?token=\(account.jwt)", subProtocol: "criptext-protocol")
         socket.delegate = self
     }
     
+    func reconnect(){
+        shouldReconnect = true
+        guard socket.readyState != .open && socket.readyState != .connecting,
+            let account = self.myAccount else {
+            return
+        }
+        self.connect(account: account)
+    }
+    
+    func pause() {
+        shouldReconnect = false
+        socket.event.close = {_,_,_ in }
+        socket.close()
+    }
+    
     func close(){
+        shouldReconnect = false
         myAccount = nil
         socket.event.close = {_,_,_ in }
         socket.close()
@@ -44,10 +62,11 @@ extension WebSocketManager: WebSocketDelegate{
     
     func webSocketClose(_ code: Int, reason: String, wasClean: Bool) {
         print("Websocket - Close : \(code) -> \(reason)")
+        guard shouldReconnect else {
+            return
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
-            if let account = self.myAccount {
-                self.connect(account: account)
-            }
+            self.reconnect()
         }
     }
     

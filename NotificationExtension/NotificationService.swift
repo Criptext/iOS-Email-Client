@@ -19,7 +19,6 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(request.content)
             return
         }
-        
         bestAttemptContent.title = "HABLA WEH"
         bestAttemptContent.subtitle = "CHAO WEH"
         bestAttemptContent.body = "WEBSITE"
