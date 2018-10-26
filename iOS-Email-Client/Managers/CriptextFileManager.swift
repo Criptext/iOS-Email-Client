@@ -33,8 +33,10 @@ class CriptextFileManager {
         case download
     }
     
-    func registerFile(filepath: String, name: String, mimeType: String){
-        let fileAttributes = try! FileManager.default.attributesOfItem(atPath: filepath)
+    @discardableResult func registerFile(filepath: String, name: String, mimeType: String) -> Bool {
+        guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: filepath) else {
+            return false
+        }
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
         let totalChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
         let fileRegistry = self.createRegistry(name: name, size: fileSize, mimeType: mimeType)
@@ -57,6 +59,7 @@ class CriptextFileManager {
             fileRegistry.token = filetoken
             self.handleFileTurn()
         }
+        return true
     }
     
     func registerFile(file: File, uploading: Bool = false){
