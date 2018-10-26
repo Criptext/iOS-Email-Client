@@ -60,6 +60,9 @@ class Email: Object {
             }
         }
     }
+    var canTriggerEvent: Bool {
+        return status != .fail && status != .sending
+    }
     
     override static func primaryKey() -> String? {
         return "key"

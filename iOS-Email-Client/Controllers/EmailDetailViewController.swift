@@ -527,20 +527,26 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     }
     
     func deleteSingleEmail(_ email: Email, indexPath: IndexPath){
-        let eventData = EventData.Peer.EmailDeleted(metadataKeys: [email.key])
+        let triggerEvent = email.canTriggerEvent
         let emailKey = email.key
         DBManager.delete(email)
         self.removeEmail(key: emailKey)
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()])
+        if (triggerEvent) {
+            let eventData = EventData.Peer.EmailDeleted(metadataKeys: [emailKey])
+            DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()])
+        }
     }
     
     func moveSingleEmailToTrash(_ email: Email, indexPath: IndexPath){
+        let triggerEvent = email.canTriggerEvent
         let changedLabels = getLabelNames(added: [SystemLabel.trash.id], removed: [])
-        let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
         let emailKey = email.key
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
         self.removeEmail(key: emailKey)
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
+        if (triggerEvent) {
+            let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+            DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
+        }
     }
     
     func removeEmail(key: Int){
@@ -561,28 +567,28 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.toggleMoreOptionsView()
             return
         }
-        let selectedEmail = emailData.emails[indexPath.row]
+        let thresholdDate = emailData.emails[indexPath.row].date
         var emailKeys = [Int]()
         for email in emailData.emails {
-            guard email.date >= selectedEmail.date else {
-                continue
-            }
-            emailKeys.append(email.key)
-        }
-        let params = ["cmd": Event.Peer.emailsUnread.rawValue,
-                      "params": [
-                        "unread": 1,
-                        "metadataKeys": emailKeys
-            ]] as [String : Any]
-        let thresholdDate = selectedEmail.date
-        for email in self.emailData.emails {
             guard email.date >= thresholdDate else {
                 continue
             }
             DBManager.updateEmail(email, unread: true)
+            guard email.canTriggerEvent else {
+                continue
+            }
+            emailKeys.append(email.key)
+        }
+        if !emailKeys.isEmpty {
+            let params = ["cmd": Event.Peer.emailsUnread.rawValue,
+                          "params": [
+                            "unread": 1,
+                            "metadataKeys": emailKeys
+                ]] as [String : Any]
+            self.navigationController?.popViewController(animated: true)
+            DBManager.createQueueItem(params: params)
         }
         self.navigationController?.popViewController(animated: true)
-        DBManager.createQueueItem(params: params)
     }
     
     func onSpamPress() {

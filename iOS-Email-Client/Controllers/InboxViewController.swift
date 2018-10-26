@@ -854,7 +854,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             if(email.unread){
                 if(email.status == .none) {
                     openKeys.append(email.key)
-                } else {
+                } else if (email.canTriggerEvent) {
                     peerKeys.append(email.key)
                 }
             }
@@ -894,13 +894,10 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             openOwnEmails(peerKeys)
             return
         }
-        APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt) { responseData in
-            guard case .Success = responseData else {
-                return
-            }
-            DBManager.updateEmails(openKeys, unread: false)
-            self.openOwnEmails(peerKeys)
-        }
+        let params = ["cmd": Event.Queue.open.rawValue, "params": EventData.Queue.EmailOpen(metadataKeys: openKeys).asDictionary()] as [String : Any]
+        DBManager.updateEmails(openKeys, unread: false)
+        DBManager.createQueueItem(params: params)
+        self.openOwnEmails(peerKeys)
     }
     
     func goToEmailDetail(threadId: String, message: ControllerMessage? = nil){
@@ -1001,7 +998,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             let thread = self.mailboxData.threads[indexPath.row]
             self.moveSingleThreadTrash(threadId: thread.threadId)
         }
-        
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
         
         return [trashAction];
@@ -1146,6 +1142,7 @@ extension InboxViewController {
         }
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         let shouldRemoveItems = removed.contains(where: {$0 == mailboxData.selectedLabel}) || forceRemove
         
         let changedLabels = getLabelNames(added: added, removed: removed)
@@ -1158,7 +1155,7 @@ extension InboxViewController {
             self.updateThreads(threadIds: threadIds)
         }
         
-        let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        let eventData = EventData.Peer.ThreadLabels(threadIds: eventThreadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
         DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
@@ -1217,12 +1214,13 @@ extension InboxViewController {
         }
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         self.removeThreads(threadIds: threadIds)
         for threadId in threadIds {
             DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
         }
         
-        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
+        let eventData = EventData.Peer.ThreadDeleted(threadIds: eventThreadIds)
         DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
     }
 }
@@ -1256,6 +1254,7 @@ extension InboxViewController: NavigationToolbarDelegate {
             return
         }
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         let unread = self.mailboxData.unreadMails <= 0
         for threadId in threadIds {
             guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
@@ -1270,7 +1269,7 @@ extension InboxViewController: NavigationToolbarDelegate {
         let params = ["cmd": Event.Peer.threadsUnread.rawValue,
                       "params": [
                         "unread": unread ? 1 : 0,
-                        "threadIds": threadIds
+                        "threadIds": eventThreadIds
                         ]
             ] as [String : Any]
         DBManager.createQueueItem(params: params)

@@ -230,6 +230,16 @@ extension EventData {
             }
         }
     }
+    
+    class Queue {
+        struct EmailOpen: Dictionarify {
+            let metadataKeys: [Int]
+            
+            init(metadataKeys: [Int]){
+                self.metadataKeys = metadataKeys
+            }
+        }
+    }
 }
 
 extension Dictionarify {
