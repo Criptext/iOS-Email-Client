@@ -36,6 +36,7 @@ class ComposeViewController: UIViewController {
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
     let PASSWORD_POPUP_HEIGHT = 295
+    let MAX_ATTACHMENTS = 5
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
@@ -571,6 +572,9 @@ class ComposeViewController: UIViewController {
                     let picker = TLPhotosPickerViewController()
                     picker.delegate = self
                     var configure = TLPhotosPickerConfigure()
+                    configure.maxSelectedAssets = self.MAX_ATTACHMENTS - self.fileManager.registeredFiles.count
+                    configure.allowedVideoRecording = false
+                    picker.configure = configure
                     self.present(picker, animated: true, completion: nil)
                     break
                 default:
@@ -1136,24 +1140,26 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
         for asset in withTLPHAssets {
             switch(asset.type) {
             case .photo, .livePhoto:
-                print(asset.originalFileName)
                 asset.tempCopyMediaFile { (url, mimeType) in
                     DispatchQueue.main.async {
-                        self.fileManager.registerFile(filepath: url.path, name: asset.originalFileName ?? "unknown", mimeType: mimeType)
-                        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-                        self.toggleAttachmentTable()
+                        self.handleAssetResult(name: asset.originalFileName ?? "Unknown", url: url, mimeType: mimeType)
                     }
                 }
             case .video:
-                print(asset.originalFileName)
                 asset.exportVideoFile(completionBlock: { (url, mimeType) in
                     DispatchQueue.main.async {
-                        self.fileManager.registerFile(filepath: url.path, name: asset.originalFileName ?? "unknown", mimeType: mimeType)
-                        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-                        self.toggleAttachmentTable()
+                        self.handleAssetResult(name: asset.originalFileName ?? "Unknown", url: url, mimeType: mimeType)
                     }
                 })
             }
         }
+    }
+    
+    func handleAssetResult(name: String, url: URL, mimeType: String) {
+        guard self.fileManager.registerFile(filepath: url.path, name: name, mimeType: mimeType) else {
+            return
+        }
+        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+        self.toggleAttachmentTable()
     }
 }
