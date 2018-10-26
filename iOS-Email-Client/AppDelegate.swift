@@ -137,6 +137,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
+        
+        UNUserNotificationCenter.current().setNotificationCategories([setupLinkDeviceNotification(), setupNewEmailNotification()])
     }
     
     func setupLinkDeviceNotification() -> UNNotificationCategory {

@@ -860,26 +860,24 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         if !self.isEdited {
             self.isEdited = true
         }
+        guard let input = text else {
+            return
+        }
         
         self.navigationItem.rightBarButtonItem = self.enableSendButton
         
-        if text!.contains(",") {
-            let name = text?.replacingOccurrences(of: ",", with: "")
+        if input.contains(",") || input.contains(" ") {
+            let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
-            if APIManager.isValidEmail(text: name!) {
-                let valueObject = NSString(string: name!)
-                let token = CLToken(displayText: name!, context: valueObject)
+            guard name.contains("@") else {
+                let valueObject = NSString(string: "\(name)\(Constants.domain)")
+                let token = CLToken(displayText: "\(name)\(Constants.domain)", context: valueObject)
                 view.add(token)
-            } else {
-                self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
+                return
             }
-            
-        } else if text!.contains(" ") {
-            let name = text?.replacingOccurrences(of: " ", with: "")
-            
-            if APIManager.isValidEmail(text: name!) {
-                let valueObject = NSString(string: name!)
-                let token = CLToken(displayText: name!, context: valueObject)
+            if APIManager.isValidEmail(text: name) {
+                let valueObject = NSString(string: name)
+                let token = CLToken(displayText: name, context: valueObject)
                 view.add(token)
             } else {
                 self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
@@ -930,6 +928,12 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             return
         }
         
+        guard text.contains("@") else {
+            let valueObject = NSString(string: "\(text)\(Constants.domain)")
+            let token = CLToken(displayText: "\(text)\(Constants.domain)", context: valueObject)
+            view.add(token)
+            return
+        }
         if APIManager.isValidEmail(text: text) {
             let valueObject = NSString(string: text)
             let token = CLToken(displayText: text, context: valueObject)
@@ -1006,6 +1010,12 @@ extension ComposeViewController: CNContactPickerDelegate {
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
         guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
             self.showAlert(String.localize("Recipients cap reached"), message: String.localize("\nYou can add up to 300 recipients for each email. Consider removing one before adding another"), style: .alert)
+            return
+        }
+        guard value.contains("@") else {
+            let valueObject = NSString(string: "\(value)\(Constants.domain)")
+            let token = CLToken(displayText: "\(value)\(Constants.domain)", context: valueObject)
+            view.add(token)
             return
         }
         guard Utils.validateEmail(value) else {
