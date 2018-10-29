@@ -16,7 +16,7 @@ protocol WebSocketManagerDelegate {
 final class WebSocketManager: NSObject {
     static let sharedInstance = WebSocketManager()
     var delegate : WebSocketManagerDelegate?
-    var socket : WebSocket!
+    var socket : WebSocket?
     var myAccount : Account?
     var shouldReconnect = true
     let SOCKET_URL = Env.socketURL
@@ -29,12 +29,13 @@ final class WebSocketManager: NSObject {
         shouldReconnect = true
         myAccount = account
         socket = WebSocket("\(SOCKET_URL)?token=\(account.jwt)", subProtocol: "criptext-protocol")
-        socket.delegate = self
+        socket?.delegate = self
     }
     
     func reconnect(){
         shouldReconnect = true
-        guard socket.readyState != .open && socket.readyState != .connecting,
+        guard let mySocket = socket,
+            mySocket.readyState != .open && mySocket.readyState != .connecting,
             let account = self.myAccount else {
             return
         }
@@ -43,15 +44,15 @@ final class WebSocketManager: NSObject {
     
     func pause() {
         shouldReconnect = false
-        socket.event.close = {_,_,_ in }
-        socket.close()
+        socket?.event.close = {_,_,_ in }
+        socket?.close()
     }
     
     func close(){
         shouldReconnect = false
         myAccount = nil
-        socket.event.close = {_,_,_ in }
-        socket.close()
+        socket?.event.close = {_,_,_ in }
+        socket?.close()
     }
 }
 

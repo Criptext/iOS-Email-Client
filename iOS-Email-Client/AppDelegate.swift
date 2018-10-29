@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
-        
+        UIApplication.shared.registerForRemoteNotifications()
         UNUserNotificationCenter.current().setNotificationCategories([setupLinkDeviceNotification(), setupNewEmailNotification()])
     }
     
@@ -149,9 +149,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func setupNewEmailNotification() -> UNNotificationCategory {
         let emailMark = UNNotificationAction(identifier: "EMAIL_MARK", title: "Mark as Read", options: .authenticationRequired)
-        let emailReply = UNNotificationAction(identifier: "EMAIL_REPLY", title: "Reply", options: .foreground)
         let emailTrash = UNNotificationAction(identifier: "EMAIL_TRASH", title: "Delete", options: .destructive)
-        return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
     func logout(manually: Bool = false){
