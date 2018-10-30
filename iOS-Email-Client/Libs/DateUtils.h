@@ -32,5 +32,6 @@
 + (NSString*)beautyDate:(NSDate*)date;
 + (NSString*)prettyDate:(NSDate*)date;
 + (NSString*)conversationTime:(NSDate *)date;
++ (NSString*)dateToCompleteString:(NSDate*)date;
 
 @end
