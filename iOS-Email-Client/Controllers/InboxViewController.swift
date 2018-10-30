@@ -1016,7 +1016,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
     }
     
-    func dequeueEvents() {
+    func dequeueEvents(completion: (() -> Void)? = nil) {
         
         guard !mailboxData.isDequeueing,
             let queueItems = mailboxData.queueItems,
@@ -1037,27 +1037,19 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         APIManager.postPeerEvent(["peerEvents": peerEvents], token: myAccount.jwt) { (responseData) in
             self.mailboxData.isDequeueing = false
-            if case .Unauthorized = responseData {
+            switch(responseData) {
+            case .Unauthorized:
+                completion?()
                 self.logout()
-                return
-            }
-            if case .Forbidden = responseData {
+            case .Forbidden:
+                completion?()
                 self.presentPasswordPopover(myAccount: self.myAccount)
-                return
+            case .Success:
+                DBManager.deleteQueueItems(eventItems)
+                completion?()
+            default:
+                completion?()
             }
-            if case .TooManyRequests = responseData {
-                return
-            }
-            if case .ServerError = responseData {
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-            }
-            guard case .Success = responseData else {
-                return
-            }
-            DBManager.deleteQueueItems(eventItems)
         }
     }
 }
@@ -1488,15 +1480,11 @@ extension InboxViewController {
             completion()
             return
         }
-        let eventData = [
-            "metadataKeys": [emailKey],
-            "unread": 0
-            ] as [String : Any]
-        postPeerEvent(["params": eventData, "cmd": Event.Peer.emailsUnread.rawValue], failSilently: true) {
-            DBManager.markAsUnread(emailKeys: [emailKey], unread: false)
-            self.refreshThreadRows()
-            completion()
-        }
+        DBManager.markAsUnread(emailKeys: [emailKey], unread: false)
+        self.refreshThreadRows()
+        let eventData = EventData.Peer.EmailUnreadRaw(metadataKeys: [emailKey], unread: 0)
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()])
+        completion()
     }
     
     func reply(emailKey: Int, completion: @escaping (() -> Void)){
@@ -1515,11 +1503,10 @@ extension InboxViewController {
             completion()
             return
         }
+        DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
+        self.refreshThreadRows()
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.emailsLabels.rawValue], failSilently: true) {
-            DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
-            self.refreshThreadRows()
-            completion()
-        }
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
+        completion()
     }
 }
