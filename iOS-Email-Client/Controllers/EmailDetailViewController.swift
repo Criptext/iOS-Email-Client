@@ -260,6 +260,11 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
                         let keys = fileKey.getKeyAndIv()
                         self.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
                     }
+                    if let attachmentCell = self.getCellFromFile(file) {
+                        attachmentCell.markImageView.isHidden = true
+                        attachmentCell.progressView.isHidden = false
+                        attachmentCell.progressView.setProgress(0, animated: false)
+                    }
                     self.fileManager.registerFile(file: file)
                     break
                 default:
