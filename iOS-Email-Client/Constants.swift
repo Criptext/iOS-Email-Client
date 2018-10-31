@@ -11,6 +11,7 @@ import Foundation
 struct Constants {
     static let MinCharactersPassword = 8
     static let domain = Env.domain
+    static let maxPreviewSize = 100
     
     static let basePopoverHeight = 102
     static let labelPopoverHeight = 48

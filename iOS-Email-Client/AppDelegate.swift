@@ -394,7 +394,7 @@ extension AppDelegate: MessagingDelegate {
             showGenericNotification(userInfo: userInfo)
             return
         }
-        triggerNotification(title: title, subtitle: email.subject, body: "\(email.preview)...", category: "OPEN_THREAD", userInfo: userInfo)
+        triggerNotification(title: title, subtitle: email.subject, body: "\(email.preview)\(email.preview.count >= Constants.maxPreviewSize ? "..." : "")", category: "OPEN_THREAD", userInfo: userInfo)
     }
     
     func showActionDefaultNotification(userInfo: [AnyHashable: Any]) {
