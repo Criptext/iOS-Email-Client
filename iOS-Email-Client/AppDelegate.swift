@@ -149,8 +149,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func setupNewEmailNotification() -> UNNotificationCategory {
         let emailMark = UNNotificationAction(identifier: "EMAIL_MARK", title: "Mark as Read", options: .authenticationRequired)
+        let emailReply = UNNotificationAction(identifier: "EMAIL_REPLY", title: "Reply", options: .foreground)
         let emailTrash = UNNotificationAction(identifier: "EMAIL_TRASH", title: "Delete", options: .destructive)
-        return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
     func logout(manually: Bool = false){
@@ -294,6 +295,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
             }
             inboxVC.markAsRead(emailKey: key) {
+                let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
+                UIApplication.shared.applicationIconBadgeNumber = emails.count
                 completionHandler()
             }
             break
@@ -345,16 +348,16 @@ extension AppDelegate: MessagingDelegate {
                 let navVC = rootVC.childViewControllers.first as? UINavigationController,
                 let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
                     if (action == "open_thread") {
-                        self.showActionLocalNotification(userInfo: userInfo, category: "SIMPLE_OPEN_THREAD")
+                        self.showActionLocalNotification(userInfo: userInfo)
                     }
                     completionHandler(.noData)
                     return
             }
             inboxVC.getPendingEvents(nil) { success in
                 let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
-                UIApplication.shared.applicationIconBadgeNumber = emails.count + 1
+                UIApplication.shared.applicationIconBadgeNumber = emails.count + (success ? 0 : 1)
                 if (action == "open_thread") {
-                    self.showActionLocalNotification(userInfo: userInfo, category: success ? "OPEN_THREAD" : "SIMPLE_OPEN_THREAD")
+                    self.showActionLocalNotification(userInfo: userInfo)
                 }
                 completionHandler(.newData)
             }
@@ -370,20 +373,52 @@ extension AppDelegate: MessagingDelegate {
         inboxVC.registerToken(fcmToken: fcmToken)
     }
     
-    func showActionLocalNotification(userInfo: [AnyHashable: Any], category: String){
+    func showGenericNotification(userInfo: [AnyHashable: Any]) {
+        let defaults = UserDefaults.standard
+        guard let activeAccount = defaults.string(forKey: "activeAccount") else {
+            return
+        }
+        triggerNotification(title: "\(activeAccount)\(Constants.domain)", subtitle: nil, body: String.localize("You may have new emails"), category: "SIMPLE_OPEN_THREAD", userInfo: userInfo)
+    }
+    
+    func showActionLocalNotification(userInfo: [AnyHashable: Any]){
+        let defaults = UserDefaults.standard
+        guard !defaults.bool(forKey: "previewDisable") else {
+            showActionDefaultNotification(userInfo: userInfo)
+            return
+        }
+        guard let title = userInfo["title"] as? String,
+            let keyString = userInfo["metadataKey"] as? String,
+            let key = Int(keyString),
+            let email = DBManager.getMail(key: key) else {
+            showGenericNotification(userInfo: userInfo)
+            return
+        }
+        triggerNotification(title: title, subtitle: email.subject, body: "\(email.preview)\(email.preview.count >= Constants.maxPreviewSize ? "..." : "")", category: "OPEN_THREAD", userInfo: userInfo)
+    }
+    
+    func showActionDefaultNotification(userInfo: [AnyHashable: Any]) {
         guard let title = userInfo["title"] as? String,
             let body = userInfo["body"] as? String else {
             return
         }
+        
+        triggerNotification(title: title, subtitle: nil, body: body, category: "OPEN_THREAD", userInfo: userInfo)
+    }
+    
+    func triggerNotification(title: String, subtitle: String?, body: String, category: String, userInfo: [AnyHashable: Any]) {
         let content = UNMutableNotificationContent()
         content.title = title
+        if let sub = subtitle {
+            content.subtitle = sub
+        }
         content.body = body
         content.userInfo = userInfo
         content.sound = UNNotificationSound.default()
         content.categoryIdentifier = category
         
         let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest.init(identifier: category, content: content, trigger: trigger)
+        let request = UNNotificationRequest.init(identifier: "\(category)-\(Date().timeIntervalSinceNow)", content: content, trigger: trigger)
         
         let center = UNUserNotificationCenter.current()
         center.add(request)

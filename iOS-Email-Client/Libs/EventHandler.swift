@@ -211,7 +211,7 @@ class EventHandler {
         do {
             let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src")
             let doc: Document = try SwiftSoup.parse(content)
-            let preview = try String(doc.text().prefix(100))
+            let preview = try String(doc.text().prefix(Constants.maxPreviewSize))
             let cleanContent = try SwiftSoup.clean(content, allowList)!
             return (preview, cleanContent)
         } catch {

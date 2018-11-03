@@ -214,6 +214,19 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
     
+    func tableViewCellDidTapEmail(email: String) {
+        var contact: Contact
+        if let existingContact = DBManager.getContact(email) {
+            contact = existingContact
+        } else {
+            contact = Contact()
+            contact.email = email
+            contact.displayName = String(email.split(separator: "@").first!)
+            DBManager.store([contact])
+        }
+        presentComposer(contactsTo: [contact])
+    }
+    
     func tableViewCellDidTapLink(url: String) {
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
@@ -247,6 +260,11 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
                         let keys = fileKey.getKeyAndIv()
                         self.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
                     }
+                    if let attachmentCell = self.getCellFromFile(file) {
+                        attachmentCell.markImageView.isHidden = true
+                        attachmentCell.progressView.isHidden = false
+                        attachmentCell.progressView.setProgress(0, animated: false)
+                    }
                     self.fileManager.registerFile(file: file)
                     break
                 default:
@@ -275,7 +293,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let email = emailData.emails[indexPath.row]
         let contactsTo = Array(email.getContacts(type: .to))
         let contactsCc = Array(email.getContacts(type: .cc))
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: "")
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: email.subject, content: email.content)
     }
     
     func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
@@ -348,7 +366,7 @@ extension EmailDetailViewController: UIGestureRecognizerDelegate {
 
 extension EmailDetailViewController: EmailDetailFooterDelegate {
     
-    func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subjectPrefix: String){
+    func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subject: String, content: String){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let snackVC = SnackbarController(rootViewController: navComposeVC)
@@ -356,9 +374,8 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         let composerData = ComposerData()
         composerData.initToContacts.append(contentsOf: contactsTo)
         composerData.initCcContacts.append(contentsOf: contactsCc)
-        composerData.initSubject = "\(subjectPrefix)\(email.subject)"
-        let replyBody = email.isDraft ? email.content : ("<br><br><div id=\"criptext_quote\">On \(email.getFullDate()), \(email.fromContact.email) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
-        composerData.initContent = replyBody
+        composerData.initSubject = subject
+        composerData.initContent = content
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
         composerVC.delegate = self
@@ -372,36 +389,31 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
+    func presentComposer(contactsTo: [Contact]){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
+        let composerData = ComposerData()
+        composerData.initToContacts.append(contentsOf: contactsTo)
+        composerVC.delegate = self
+        composerVC.composerData = composerData
+        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+    }
+    
     func onFooterReplyPress() {
-        guard let lastEmail = emailData.emails.last,
-            let lastContact = emailData.emails.last?.fromContact else {
-                return
-        }
-        let contactsTo = (lastContact.email == emailData.accountEmail) ? Array(lastEmail.getContacts(type: .to)) : [lastContact]
-        let prefix = lastEmail.subject.lowercased().starts(with: "re:") ? "" : "Re: "
-        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: [], subjectPrefix: prefix)
+        emailsTableView.selectRow(at: IndexPath(row: emailData.emails.count - 1, section: 0), animated: false, scrollPosition: .none)
+        onReplyPress()
     }
     
     func onFooterReplyAllPress() {
-        guard let lastEmail = emailData.emails.last else {
-                return
-        }
-        let myEmail = emailData.accountEmail
-        var contactsTo = [Contact]()
-        var contactsCc = [Contact]()
-        contactsTo.append(contentsOf: lastEmail.getContacts(type: .from, notEqual: myEmail))
-        contactsTo.append(contentsOf: lastEmail.getContacts(type: .to, notEqual: myEmail))
-        contactsCc.append(contentsOf: lastEmail.getContacts(type: .cc, notEqual: myEmail))
-        let prefix = lastEmail.subject.lowercased().starts(with: "re:") ? "" : "Re: "
-        presentComposer(email: lastEmail, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: prefix)
+        emailsTableView.selectRow(at: IndexPath(row: emailData.emails.count - 1, section: 0), animated: false, scrollPosition: .none)
+        onReplyAllPress()
     }
     
     func onFooterForwardPress() {
-        guard let lastEmail = emailData.emails.last else {
-                return
-        }
-        let prefix = lastEmail.subject.lowercased().starts(with: "fw:") || lastEmail.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: "
-        presentComposer(email: lastEmail, contactsTo: [], contactsCc: [], subjectPrefix: prefix)
+        emailsTableView.selectRow(at: IndexPath(row: emailData.emails.count - 1, section: 0), animated: false, scrollPosition: .none)
+        onForwardPress()
     }
 }
 
@@ -472,8 +484,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
 extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     func onReplyPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleMoreOptionsView()
-            self.onFooterReplyPress()
+            moreOptionsContainerView.closeMoreOptions()
             return
         }
         moreOptionsContainerView.closeMoreOptions()
@@ -481,17 +492,18 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let email = emailData.emails[indexPath.row]
         let fromContact = email.fromContact
         let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
-        let prefix = email.subject.lowercased().starts(with: "re:") ? "" : "Re: "
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subjectPrefix: prefix)
+        let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
+        let content = ("<br><br><div class=\"criptext_quote\">On \(email.completeDate), \(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62; wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subject: subject, content: content)
     }
     
     func onReplyAllPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleMoreOptionsView()
-            self.onFooterReplyAllPress()
+            moreOptionsContainerView.closeMoreOptions()
             return
         }
-        self.toggleMoreOptionsView()
+        moreOptionsContainerView.closeMoreOptions()
+        deselectSelectedRow()
         let email = emailData.emails[indexPath.row]
         var contactsTo = [Contact]()
         var contactsCc = [Contact]()
@@ -499,20 +511,22 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
         contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
         contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
-        let prefix = email.subject.lowercased().starts(with: "re:") ? "" : "Re: "
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subjectPrefix: prefix)
+        let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
+        let content = ("<br><br><div class=\"criptext_quote\">On \(email.completeDate), \(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62; wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: subject, content: content)
     }
     
     func onForwardPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleMoreOptionsView()
-            self.onFooterReplyPress()
+            moreOptionsContainerView.closeMoreOptions()
             return
         }
-        self.toggleMoreOptionsView()
+        moreOptionsContainerView.closeMoreOptions()
+        deselectSelectedRow()
         let email = emailData.emails[indexPath.row]
-        let prefix = email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: "
-        presentComposer(email: email, contactsTo: [], contactsCc: [], subjectPrefix: prefix)
+        let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
+        let content = ("<br><br><div class=\"criptext_quote\"><span>---------- Forwarded message ---------</span><br><span>From: <b>\(email.fromContact.displayName)</b> &#60;\(email.fromContact.email)&#62;</span><br><span>Date: \(email.completeDate)</span><br><span>Subject: \(email.subject)</span><br><br>" + email.content + "</div>")
+        presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content)
     }
     
     func onDeletePress() {

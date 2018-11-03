@@ -15,6 +15,7 @@ class SettingsGeneralViewController: UITableViewController{
     internal enum Section {
         case account
         case about
+        case notifications
         case version
         
         var name: String {
@@ -23,6 +24,8 @@ class SettingsGeneralViewController: UITableViewController{
                 return String.localize("ACCOUNT")
             case .about:
                 return String.localize("ABOUT")
+            case .notifications:
+                return String.localize("NOTIFICATIONS")
             case .version:
                 return String.localize("VERSION")
             }
@@ -39,6 +42,8 @@ class SettingsGeneralViewController: UITableViewController{
             case terms
             case openSource
             case logout
+            
+            case preview
             
             case version
             
@@ -62,6 +67,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("Open Source Libraries")
                 case .logout:
                     return String.localize("Logout")
+                case .preview:
+                    return String.localize("Show Email Preview")
                 case .version:
                     return String.localize("Version")
                 }
@@ -69,12 +76,13 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
-    let SECTION_VERSION = 2
+    let SECTION_VERSION = 3
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .about, .version] as [Section]
+    let sections = [.account, .notifications, .about, .version] as [Section]
     let menus = [
         .account: [.profile, .signature, .changePassword, .twoFactor, .recovery],
         .about: [.privacy, .terms, .openSource, .logout],
+        .notifications : [.preview],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData: GeneralSettingsData!
@@ -107,6 +115,8 @@ class SettingsGeneralViewController: UITableViewController{
             return renderAccountCells(subsection: subsection)
         case .about:
             return renderAboutCells(subsection: subsection)
+        case .notifications:
+            return renderNotificationsCells(subsection: subsection)
         default:
             return renderVersionCells()
         }
@@ -154,6 +164,18 @@ class SettingsGeneralViewController: UITableViewController{
         cell.loader.isHidden = true
         cell.goImageView.isHidden = false
         cell.optionLabel.text = subsection.name
+        return cell
+    }
+    
+    func renderNotificationsCells(subsection: Section.SubSection) -> UITableViewCell {
+        let defaults = UserDefaults.standard
+        let previewDisable = defaults.bool(forKey: "previewDisable")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+        cell.optionLabel.text = subsection.name
+        cell.availableSwitch.isOn = !previewDisable
+        cell.switchToggle = { isOn in
+            defaults.set(!isOn, forKey: "previewDisable")
+        }
         return cell
     }
     

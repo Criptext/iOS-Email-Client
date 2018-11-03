@@ -110,6 +110,10 @@ class Email: Object {
         return DateUtils.prettyDate(date)
     }
     
+    var completeDate: String {
+        return DateUtils.date(toCompleteString: self.date)
+    }
+    
     func getFiles() -> [File] {
         return Array(files)
     }

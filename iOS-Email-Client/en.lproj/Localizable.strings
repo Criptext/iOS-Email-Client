@@ -22,6 +22,7 @@
 "Delete" = "Delete";
 "Access denied" = "Access denied";
 "You need to enable access for this app in your settings" = "You need to enable access for this app in your settings";
+"You may have new emails" = "You may have new emails";
 
 /* NewLoginViewController.swift */
 
@@ -158,6 +159,7 @@
 /* SettingsGeneralViewController.swift */
 
 "ACCOUNT" = "ACCOUNT";
+"NOTIFICATIONS" = "NOTIFICATIONS";
 "ABOUT" = "ABOUT";
 "VERSION" = "VERSION";
 "Profile" = "Profile";
@@ -165,6 +167,7 @@
 "Change Password" = "Change Password";
 "Two-Factor Authentication" = "Two-Factor Authentication";
 "Recovery Email" = "Recovery Email";
+"Show Email Preview" = "Show Email Preview";
 "Privacy Policy" = "Privacy Policy";
 "Terms of Service" = "Terms of Service";
 "Open Source Libraries" = "Open Source Libraries";

@@ -18,6 +18,7 @@ protocol EmailTableViewCellDelegate {
     func tableViewCellDidTapIcon(_ cell: EmailTableViewCell, _ sender: UIView, _ iconType: EmailTableViewCell.IconType)
     func tableViewCellDidTapAttachment(file: File)
     func tableViewCellDidTapLink(url: String)
+    func tableViewCellDidTapEmail(email: String)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -285,14 +286,22 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard navigationAction.navigationType == .linkActivated,
-            let link = navigationAction.request.url?.absoluteString,
-            Utils.verifyUrl(urlString: link) else {
-                decisionHandler(.allow)
+        if navigationAction.navigationType == .linkActivated,
+            let link = navigationAction.request.url?.absoluteString {
+            print(link)
+            if Utils.verifyUrl(urlString: link) {
+                decisionHandler(.cancel)
+                delegate?.tableViewCellDidTapLink(url: link)
                 return
+            }
+            if let email = link.split(separator: ":").last,
+                APIManager.isValidEmail(text: String(email)) {
+                decisionHandler(.cancel)
+                delegate?.tableViewCellDidTapEmail(email: String(email))
+                return
+            }
         }
-        decisionHandler(.cancel)
-        delegate?.tableViewCellDidTapLink(url: link)
+        decisionHandler(.allow)
     }
 }
 

@@ -11,6 +11,7 @@ import Foundation
 struct Constants {
     static let MinCharactersPassword = 8
     static let domain = Env.domain
+    static let maxPreviewSize = 100
     
     static let basePopoverHeight = 102
     static let labelPopoverHeight = 48
@@ -150,7 +151,7 @@ struct Constants {
     
     static let imagePath = Bundle.main.path(forResource: "showmore.png", ofType: nil) ?? ""
     
-    static let quoteHideScript = "var replybody = document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
+    static let quoteHideScript = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
         "var newNode = document.createElement(\"img\");" +
         "newNode.src = \"file://\(imagePath)\";" +
         "newNode.width = 30;" +

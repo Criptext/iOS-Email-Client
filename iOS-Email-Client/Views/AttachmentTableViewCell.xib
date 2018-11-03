@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,7 +32,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZP2-bJ-aKN">
-                            <rect key="frame" x="49" y="13" width="245" height="21"/>
+                            <rect key="frame" x="49" y="13.5" width="245" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="wz8-C2-UP9"/>
                             </constraints>
@@ -53,7 +53,7 @@
                             </userDefinedRuntimeAttributes>
                         </imageView>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0U8-2L-2CC">
-                            <rect key="frame" x="0.0" y="46" width="333" height="2"/>
+                            <rect key="frame" x="7" y="46" width="319" height="2"/>
                             <color key="progressTintColor" red="0.0" green="0.4577052593" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </progressView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-success" translatesAutoresizingMaskIntoConstraints="NO" id="Rme-5L-Q7E">
@@ -81,12 +81,12 @@
                         <constraint firstAttribute="bottom" secondItem="0U8-2L-2CC" secondAttribute="bottom" id="NXi-0Y-ATU"/>
                         <constraint firstItem="ZP2-bJ-aKN" firstAttribute="centerY" secondItem="ax7-C4-FBi" secondAttribute="centerY" id="Qwb-yJ-wOy"/>
                         <constraint firstItem="ZP2-bJ-aKN" firstAttribute="leading" secondItem="ax7-C4-FBi" secondAttribute="trailing" constant="10" id="XLT-1z-7lQ"/>
-                        <constraint firstAttribute="trailing" secondItem="0U8-2L-2CC" secondAttribute="trailing" id="bQf-0B-bab"/>
+                        <constraint firstAttribute="trailing" secondItem="0U8-2L-2CC" secondAttribute="trailing" constant="7" id="bQf-0B-bab"/>
                         <constraint firstItem="Rme-5L-Q7E" firstAttribute="trailing" secondItem="ax7-C4-FBi" secondAttribute="trailing" constant="7" id="bnE-XG-6os"/>
                         <constraint firstItem="pH5-Rc-G60" firstAttribute="centerY" secondItem="m8Z-E0-HmE" secondAttribute="centerY" id="eHZ-Xt-nPX"/>
                         <constraint firstItem="ax7-C4-FBi" firstAttribute="centerY" secondItem="m8Z-E0-HmE" secondAttribute="centerY" id="hED-D2-abQ"/>
                         <constraint firstAttribute="trailing" secondItem="pH5-Rc-G60" secondAttribute="trailing" constant="16" id="nvw-SR-Ow0"/>
-                        <constraint firstItem="0U8-2L-2CC" firstAttribute="leading" secondItem="m8Z-E0-HmE" secondAttribute="leading" id="utG-jo-mEy"/>
+                        <constraint firstItem="0U8-2L-2CC" firstAttribute="leading" secondItem="m8Z-E0-HmE" secondAttribute="leading" constant="7" id="utG-jo-mEy"/>
                         <constraint firstItem="ax7-C4-FBi" firstAttribute="leading" secondItem="m8Z-E0-HmE" secondAttribute="leading" constant="7" id="yUU-K1-TDY"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
