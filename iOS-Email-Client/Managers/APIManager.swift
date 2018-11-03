@@ -55,7 +55,7 @@ class APIManager {
             return ResponseData.Error(CriptextError(code: .offline))
         }
         guard let status = response?.statusCode else {
-            return .Error(CriptextError(code: .noValidResponse))
+            return .Error(CriptextError(message: "Unable to get a valid response"))
         }
         
         switch(code.init(rawValue: status) ?? .none){
