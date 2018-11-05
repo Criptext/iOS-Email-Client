@@ -21,7 +21,7 @@ class APIManager {
     static let baseUrl = Env.apiURL
     static let fileServiceUrl = "https://services.criptext.com"
     static let linkUrl = "https://transfer.criptext.com"
-    static let apiVersion = "2.0.0"
+    static let apiVersion = "3.0.0"
     static let versionHeader = "criptext-api-version"
     
     enum code: Int {
@@ -39,6 +39,7 @@ class APIManager {
         case authDenied = 493
         case tooManyDevices = 439
         case tooManyRequests = 429
+        case serverError = 500
     }
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
@@ -54,7 +55,7 @@ class APIManager {
             return ResponseData.Error(CriptextError(code: .offline))
         }
         guard let status = response?.statusCode else {
-            return .Error(CriptextError(code: .noValidResponse))
+            return .Error(CriptextError(message: "Unable to get a valid response"))
         }
         
         switch(code.init(rawValue: status) ?? .none){
@@ -81,6 +82,9 @@ class APIManager {
         case .success, .successAccepted, .successNoContent, .notModified:
             break
         default:
+            guard status < code.serverError.rawValue else {
+                return .ServerError
+            }
             return .Error(CriptextError(message: responseRequest.result.description))
         }
         

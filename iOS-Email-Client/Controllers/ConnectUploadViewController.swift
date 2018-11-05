@@ -109,8 +109,8 @@ class ConnectUploadViewController: UIViewController{
                 self.presentProcessInterrupted()
                 return
             }
-            guard let compressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: "compressed.db", compress: true),
-                let outputPath = AESCipher.streamEncrypt(path: compressedPath, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt) else {
+            guard let compressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: StaticFile.gzippedDB.name, compress: true),
+                let outputPath = AESCipher.streamEncrypt(path: compressedPath, outputName: StaticFile.encryptedDB.name, keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt) else {
                 self.presentProcessInterrupted()
                 return
             }
@@ -243,8 +243,8 @@ extension ConnectUploadViewController: ScheduleWorkerDelegate {
             return
         }
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = "Something has happened that is delaying this process. Do want to continue waiting?"
-        retryPopup.initialTitle = "Well, that’s odd…"
+        retryPopup.initialMessage = String.localize("Something has happened that is delaying this process. Do you want to continue waiting?")
+        retryPopup.initialTitle = String.localize("Well, that’s odd…")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.dismiss(animated: true, completion: nil)

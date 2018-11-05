@@ -419,6 +419,10 @@ enum Event: Int32 {
         case recoveryVerify = 312
     }
     
+    enum Queue: Int32 {
+        case open = 500
+    }
+    
     enum EventResult {
         case LinkStart([String: Any])
         case Email(Email)

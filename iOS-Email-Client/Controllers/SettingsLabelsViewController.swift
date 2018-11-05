@@ -97,29 +97,11 @@ class SettingsLabelsViewController: UITableViewController {
             return
         }
         let label = Label(labelText)
+        DBManager.store(label, incrementId: true)
+        self.labels.append(label)
+        self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
         let params = EventData.Peer.NewLabel(text: label.text, color: label.color)
-        APIManager.postPeerEvent(["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout()
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.showAlert(String.localize("Request Error"), message: "\(String.localize("Unable to add label")) \(labelText). \(error.description). \(String.localize("Please try again"))", style: .alert)
-                return
-            }
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to add label")) \(labelText). \(String.localize("Please try again"))", style: .alert)
-                return
-            }
-            DBManager.store(label, incrementId: true)
-            self.labels.append(label)
-            self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
-        }
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()])
     }
 }
 

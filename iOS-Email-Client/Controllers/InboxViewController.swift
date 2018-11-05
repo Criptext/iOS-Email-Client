@@ -55,8 +55,8 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var composeButtonBottomConstraint: NSLayoutConstraint!
     
     var myAccount: Account!
-    var originalNavigationRect:CGRect!
     var mailboxData = MailboxData()
+    var originalNavigationRect:CGRect!
     let coachMarksController = CoachMarksController()
     var currentGuide = "guideComposer"
 
@@ -67,7 +67,22 @@ class InboxViewController: UIViewController {
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewSetup()
+        WebSocketManager.sharedInstance.delegate = self
+        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
+        getPendingEvents(nil)
         
+        let queueItems = DBManager.getQueueItems()
+        mailboxData.queueItems = queueItems
+        mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
+            guard case .update = changes else {
+                return
+            }
+            self?.dequeueEvents()
+        })
+    }
+    
+    func viewSetup(){
         let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
         self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
         
@@ -94,7 +109,7 @@ class InboxViewController: UIViewController {
         self.navigationItem.searchController = self.searchController
         self.definesPresentationContext = true
         self.tableView.allowsMultipleSelection = true
-
+        
         self.initBarButtonItems()
         
         self.setButtonItems(isEditing: false)
@@ -106,14 +121,11 @@ class InboxViewController: UIViewController {
         self.generalOptionsContainerView.delegate = self
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
-        WebSocketManager.sharedInstance.delegate = self
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
         
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
-        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60), failSilently: true)
-        getPendingEvents(nil)        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -237,8 +249,8 @@ class InboxViewController: UIViewController {
                 self.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
                 break
             default:
-                //try to reconnect
-                //retry saving drafts and sending emails
+                print("BACK ONLINE")
+                self.dequeueEvents()
                 break
             }
         }
@@ -653,16 +665,15 @@ extension InboxViewController: UITableViewDataSource{
         showAlert(String.localize("Empty Trash"), message: String.localize("All your emails in Trash are going to be deleted PERMANENTLY. Do you want to continue?"), style: .alert, actions: [emptyAction, cancelAction])
     }
     
-    func emptyTrash(from date: Date = Date(), failSilently: Bool = false){
+    func emptyTrash(from date: Date = Date()){
         guard let threadIds = DBManager.getTrashThreads(from: date),
             !threadIds.isEmpty else {
             return
         }
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], failSilently: failSilently) {
-            DBManager.deleteThreads(threadIds: threadIds)
-            self.refreshThreadRows()
-        }
+        DBManager.deleteThreads(threadIds: threadIds)
+        self.refreshThreadRows()
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -843,7 +854,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             if(email.unread){
                 if(email.status == .none) {
                     openKeys.append(email.key)
-                } else {
+                } else if (email.canTriggerEvent) {
                     peerKeys.append(email.key)
                 }
             }
@@ -874,9 +885,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                         "unread": 0,
                         "metadataKeys": peerKeys
             ]] as [String : Any]
-        self.postPeerEvent(params, failSilently: true) {
-            DBManager.updateEmails(peerKeys, unread: false)
-        }
+        DBManager.updateEmails(peerKeys, unread: false)
+        DBManager.createQueueItem(params: params)
     }
     
     func openEmails(openKeys: [Int], peerKeys: [Int]) {
@@ -884,13 +894,10 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             openOwnEmails(peerKeys)
             return
         }
-        APIManager.notifyOpen(keys: openKeys, token: myAccount.jwt) { responseData in
-            guard case .Success = responseData else {
-                return
-            }
-            DBManager.updateEmails(openKeys, unread: false)
-            self.openOwnEmails(peerKeys)
-        }
+        let params = ["cmd": Event.Queue.open.rawValue, "params": EventData.Queue.EmailOpen(metadataKeys: openKeys).asDictionary()] as [String : Any]
+        DBManager.updateEmails(openKeys, unread: false)
+        DBManager.createQueueItem(params: params)
+        self.openOwnEmails(peerKeys)
     }
     
     func goToEmailDetail(threadId: String, message: ControllerMessage? = nil){
@@ -991,19 +998,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             let thread = self.mailboxData.threads[indexPath.row]
             self.moveSingleThreadTrash(threadId: thread.threadId)
         }
-        
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
         
         return [trashAction];
     }
 
     func moveSingleThreadTrash(threadId: String){
-        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
+        self.removeThreads(threadIds: [threadId])
         
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) {
-            DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
-            self.removeThreads(threadIds: [threadId])
-        }
+        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     
@@ -1011,31 +1016,40 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         return indexPath.row != mailboxData.threads.count && !mailboxData.isCustomEditing && !mailboxData.searchMode
     }
     
-    func postPeerEvent(_ params: [String: Any], failSilently: Bool = false, completion: @escaping (() -> Void)){
-        APIManager.postPeerEvent(params, token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
+    func dequeueEvents(completion: (() -> Void)? = nil) {
+        
+        guard !mailboxData.isDequeueing,
+            let queueItems = mailboxData.queueItems,
+            queueItems.count > 0 else {
+                return
+        }
+        mailboxData.isDequeueing = true
+        let maxBatch = 1
+        var peerEvents = [[String: Any]]()
+        var eventItems = [QueueItem]()
+        for queueItem in queueItems {
+            guard (peerEvents.count < maxBatch && peerEvents.count < queueItems.count) else {
+                break
+            }
+            let currentEvent = queueItem.params
+            peerEvents.append(currentEvent)
+            eventItems.append(queueItem)
+        }
+        APIManager.postPeerEvent(["peerEvents": peerEvents], token: myAccount.jwt) { (responseData) in
+            self.mailboxData.isDequeueing = false
+            switch(responseData) {
+            case .Unauthorized:
+                completion?()
                 self.logout()
-                return
-            }
-            if case .Forbidden = responseData {
+            case .Forbidden:
+                completion?()
                 self.presentPasswordPopover(myAccount: self.myAccount)
-                return
+            case .Success:
+                DBManager.deleteQueueItems(eventItems)
+                completion?()
+            default:
+                completion?()
             }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                if (!failSilently) {
-                    self.showAlert(String.localize("Request Error"), message: "\(error.description). \(String.localize("Please try again"))", style: .alert)
-                }
-                return
-            }
-            guard case .Success = responseData else {
-                if (!failSilently) {
-                    self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to set labels. Please try again"), style: .alert)
-                }
-                return
-            }
-            
-            completion()
         }
     }
 }
@@ -1120,20 +1134,21 @@ extension InboxViewController {
         }
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         let shouldRemoveItems = removed.contains(where: {$0 == mailboxData.selectedLabel}) || forceRemove
         
         let changedLabels = getLabelNames(added: added, removed: removed)
-        let eventData = EventData.Peer.ThreadLabels(threadIds: threadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue]) {
-            for threadId in threadIds {
-                DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
-            }
-            if(shouldRemoveItems){
-                self.removeThreads(threadIds: threadIds)
-            } else {
-                self.updateThreads(threadIds: threadIds)
-            }
+        for threadId in threadIds {
+            DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
         }
+        if(shouldRemoveItems){
+            self.removeThreads(threadIds: threadIds)
+        } else {
+            self.updateThreads(threadIds: threadIds)
+        }
+        
+        let eventData = EventData.Peer.ThreadLabels(threadIds: eventThreadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
     func removeThreads(threadIds: [String]){
@@ -1191,13 +1206,14 @@ extension InboxViewController {
         }
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
-        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        postPeerEvent(["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()]) {
-            self.removeThreads(threadIds: threadIds)
-            for threadId in threadIds {
-                DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
-            }
+        let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
+        self.removeThreads(threadIds: threadIds)
+        for threadId in threadIds {
+            DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
         }
+        
+        let eventData = EventData.Peer.ThreadDeleted(threadIds: eventThreadIds)
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
     }
 }
 
@@ -1230,24 +1246,25 @@ extension InboxViewController: NavigationToolbarDelegate {
             return
         }
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
+        let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         let unread = self.mailboxData.unreadMails <= 0
+        for threadId in threadIds {
+            guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
+                continue
+            }
+            DBManager.updateThread(threadId: threadId, currentLabel: self.mailboxData.selectedLabel, unread: unread)
+            thread.unread = unread
+        }
+        self.updateThreads(threadIds: threadIds)
+        self.didPressEdit(reload: true)
+        
         let params = ["cmd": Event.Peer.threadsUnread.rawValue,
                       "params": [
                         "unread": unread ? 1 : 0,
-                        "threadIds": threadIds
+                        "threadIds": eventThreadIds
                         ]
             ] as [String : Any]
-        postPeerEvent(params) {
-            for threadId in threadIds {
-                guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
-                    continue
-                }
-                DBManager.updateThread(threadId: threadId, currentLabel: self.mailboxData.selectedLabel, unread: unread)
-                thread.unread = unread
-            }
-            self.updateThreads(threadIds: threadIds)
-            self.didPressEdit(reload: true)
-        }
+        DBManager.createQueueItem(params: params)
     }
     
     func onMoreOptions() {
@@ -1463,15 +1480,11 @@ extension InboxViewController {
             completion()
             return
         }
-        let eventData = [
-            "metadataKeys": [emailKey],
-            "unread": 0
-            ] as [String : Any]
-        postPeerEvent(["params": eventData, "cmd": Event.Peer.emailsUnread.rawValue], failSilently: true) {
-            DBManager.markAsUnread(emailKeys: [emailKey], unread: false)
-            self.refreshThreadRows()
-            completion()
-        }
+        DBManager.markAsUnread(emailKeys: [emailKey], unread: false)
+        self.refreshThreadRows()
+        let eventData = EventData.Peer.EmailUnreadRaw(metadataKeys: [emailKey], unread: 0)
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()])
+        completion()
     }
     
     func reply(emailKey: Int, completion: @escaping (() -> Void)){
@@ -1490,11 +1503,10 @@ extension InboxViewController {
             completion()
             return
         }
+        DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
+        self.refreshThreadRows()
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
-        postPeerEvent(["params": eventData.asDictionary(), "cmd": Event.Peer.emailsLabels.rawValue], failSilently: true) {
-            DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
-            self.refreshThreadRows()
-            completion()
-        }
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
+        completion()
     }
 }

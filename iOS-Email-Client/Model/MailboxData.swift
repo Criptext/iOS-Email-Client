@@ -7,10 +7,14 @@
 //
 
 import Foundation
+import RealmSwift
 
 class MailboxData {
     var updating = false
     var selectedLabel = SystemLabel.inbox.id
+    var queueItems: Results<QueueItem>?
+    var queueToken: NotificationToken?
+    var isDequeueing = false
     var emailArray = [Thread]()
     var filteredEmailArray = [Thread]()
     var emailReachedEnd = false

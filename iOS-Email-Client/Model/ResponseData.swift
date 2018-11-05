@@ -24,4 +24,5 @@ enum ResponseData {
     case Conflicts
     case TooManyDevices
     case TooManyRequests
+    case ServerError
 }

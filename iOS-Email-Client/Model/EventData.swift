@@ -103,6 +103,22 @@ class EventData {
 extension EventData {
     class Peer {
         
+        struct EmailUnreadRaw: Dictionarify {
+            let metadataKeys: [Int]
+            let unread: Int
+            
+            init(params: [String: Any]){
+                metadataKeys = params["metadataKeys"] as! [Int]
+                let unreadValue = params["unread"] as! Int
+                unread = unreadValue
+            }
+            
+            init(metadataKeys: [Int], unread: Int){
+                self.metadataKeys = metadataKeys
+                self.unread = unread
+            }
+        }
+        
         struct EmailUnread: Dictionarify {
             let metadataKeys: [Int]
             let unread: Bool
@@ -227,6 +243,16 @@ extension EventData {
             
             init(name: String){
                 self.name = name
+            }
+        }
+    }
+    
+    class Queue {
+        struct EmailOpen: Dictionarify {
+            let metadataKeys: [Int]
+            
+            init(metadataKeys: [Int]){
+                self.metadataKeys = metadataKeys
             }
         }
     }

@@ -58,6 +58,7 @@ class AESCipher {
         }
         outputStream.open()
         inputStream.open()
+        
         guard let localIvData = handleIv(inputStream: inputStream, outputStream: outputStream, ivData: ivData) else {
                 return nil
         }

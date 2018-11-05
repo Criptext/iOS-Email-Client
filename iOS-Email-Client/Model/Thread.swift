@@ -30,6 +30,10 @@ class Thread {
         return lastEmail.labels.contains(where: {$0.id == SystemLabel.starred.id})
     }
     
+    var canTriggerEvent: Bool {
+        return counter > 1 || (lastEmail.status != .fail && lastEmail.status != .sending)
+    }
+    
     func getFormattedDate() -> String {
         return DateUtils.conversationTime(date)
     }

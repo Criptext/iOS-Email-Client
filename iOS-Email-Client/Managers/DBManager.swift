@@ -1222,3 +1222,31 @@ extension DBManager {
         }
     }
 }
+
+//MARK: - QueueItem
+
+extension DBManager {
+    @discardableResult class func createQueueItem(params: [String: Any]) -> QueueItem {
+        let realm = try! Realm()
+        let queueItem = QueueItem()
+        queueItem.params = params
+        
+        try! realm.write {
+            realm.add(queueItem)
+        }
+        return queueItem
+    }
+    
+    class func getQueueItems() -> Results<QueueItem> {
+        let realm = try! Realm()
+        return realm.objects(QueueItem.self).sorted(byKeyPath: "date", ascending: true)
+    }
+    
+    class func deleteQueueItems(_ queueItems: [QueueItem]) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            realm.delete(queueItems)
+        }
+    }
+}

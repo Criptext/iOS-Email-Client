@@ -313,21 +313,8 @@ class SettingsGeneralViewController: UITableViewController{
                 self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to update Profile Name. Please try again"), style: .alert)
                 return
             }
-              APIManager.postPeerEvent(["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], token: self.myAccount.jwt) { (responseData) in
-                if case .Unauthorized = responseData {
-                    self.logout()
-                    return
-                }
-                if case .Forbidden = responseData {
-                    self.presentPasswordPopover(myAccount: self.myAccount)
-                    return
-                }
-                guard case .Success = responseData else {
-                    self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to update Profile Name. Please try again"), style: .alert)
-                    return
-                }
-                DBManager.update(account: self.myAccount, name: name)
-            }
+            DBManager.update(account: self.myAccount, name: name)
+            DBManager.createQueueItem(params: ["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()])
         }
     }
     

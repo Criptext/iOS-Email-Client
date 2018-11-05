@@ -21,6 +21,7 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
     @IBOutlet weak var leftButton: UIButton!
     var initialTitle = ""
     var initialMessage = ""
+    var attributedMessage: NSAttributedString?
     var rightOption = "Yes"
     var leftOption = "No"
     var onResponse: ((Bool) -> Void)?
@@ -36,7 +37,11 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        messageLabel.text = initialMessage
+        if let message = attributedMessage {
+            messageLabel.attributedText = message
+        } else {
+            messageLabel.text = initialMessage
+        }
         titleLabel.text = initialTitle
         rightButton.setTitle(rightOption, for: .normal)
         leftButton.setTitle(leftOption, for: .normal)
