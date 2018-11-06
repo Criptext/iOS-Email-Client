@@ -842,6 +842,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel)
+        guard let subject = emails.first?.subject,
+            let lastEmailKey = emails.last?.key else {
+                refreshThreadRows()
+            return
+        }
+        
         let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
         var labelsSet = Set<Label>()
         var openKeys = [Int]()
@@ -862,11 +868,11 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         emailDetailData.emails = emails
         emailDetailData.selectedLabel = selectedLabel
         emailDetailData.labels = Array(labelsSet)
-        emailDetailData.subject = emails.first!.subject
+        emailDetailData.subject = subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
         var emailState = Email.State()
         emailState.isExpanded = true
-        emailDetailData.emailStates[emails.last!.key] = emailState
+        emailDetailData.emailStates[lastEmailKey] = emailState
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
