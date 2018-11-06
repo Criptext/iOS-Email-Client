@@ -635,13 +635,6 @@ enum Commands:Int {
     case fileCreated = 55
 }
 
-enum ContactType : String {
-    case from = "from"
-    case to = "to"
-    case cc = "cc"
-    case bcc = "bcc"
-}
-
 extension UIColor {
     
     static let mainUI = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)

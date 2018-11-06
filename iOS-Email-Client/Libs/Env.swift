@@ -30,14 +30,14 @@ struct Env {
     }
     
     static var socketURL: String {
-        return "wss://socket.criptext.com:3002"
+        return "wss://stagesocket.criptext.com:3002"
     }
     
     static var domain: String {
-        return "@criptext.com"
+        return "@jigl.com"
     }
     
     static var apiURL: String {
-        return "https://api.criptext.com"
+        return "https://stage.mail.criptext.com"
     }
 }

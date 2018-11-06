@@ -24,6 +24,13 @@ class EmailContact: Object{
     }
 }
 
+enum ContactType : String {
+    case from = "from"
+    case to = "to"
+    case cc = "cc"
+    case bcc = "bcc"
+}
+
 extension EmailContact{
     func toDictionary(id: Int, emailId: Int, contactId: Int) -> [String: Any] {
         return [

@@ -237,6 +237,30 @@
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77AD67221642AFC00C26F07 /* StreamReader.swift */; };
+		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
+		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A7CC382D2190FA6700C8355A /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
+		A7CC382E2190FA6700C8355A /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
+		A7CC382F2190FA6700C8355A /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
+		A7CC38302190FA6700C8355A /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
+		A7CC38312190FA6700C8355A /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
+		A7CC38322190FE7000C8355A /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC544201AA01400809C4D /* DBManager.swift */; };
+		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
+		A7CC38342190FE8C00C8355A /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BD207696DE00C32998 /* Realm.framework */; };
+		A7CC383E2190FEA600C8355A /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
+		A7CC383F2190FEA600C8355A /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
+		A7CC38402190FEA600C8355A /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52E201A9FCC00809C4D /* Email.swift */; };
+		A7CC38412190FEA600C8355A /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC535201A9FCD00809C4D /* FeedItem.swift */; };
+		A7CC38422190FEA600C8355A /* CRSignedPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */; };
+		A7CC38432190FEA600C8355A /* CRPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */; };
+		A7CC38442190FEA600C8355A /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
+		A7CC38452190FEA600C8355A /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
+		A7CC38462190FEA600C8355A /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
+		A7CC38472190FEA600C8355A /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82C20607602000E5F14 /* Label.swift */; };
+		A7CC38482190FEA600C8355A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
+		A7CC38492190FEA600C8355A /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104520FEF2B10081C048 /* FileKey.swift */; };
+		A7CC384A2190FEA600C8355A /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
+		A7CC384C2191004900C8355A /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69BADC20DC4A2E001ABD5B /* Thread.swift */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
 		A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F30274216EA60B00676DD2 /* gunzipped.txt */; };
@@ -274,7 +298,28 @@
 			remoteGlobalIDString = 41B6AAAB2017987500D428B7;
 			remoteInfo = "iOS-Email-Client";
 		};
+		A7CC38092190D9DA00C8355A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 41B6AAA42017987500D428B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7CC38032190D9D900C8355A;
+			remoteInfo = NotificationExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A7CC38102190D9DA00C8355A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		411FDF70204CF93300BCD787 /* InitialsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsImageView.swift; sourceTree = "<group>"; };
@@ -516,6 +561,10 @@
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
 		A77AD67221642AFC00C26F07 /* StreamReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
+		A7CC38042190D9D900C8355A /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7CC38062190D9DA00C8355A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A7CC38082190D9DA00C8355A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7CC38112190DA2D00C8355A /* NotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationExtension.entitlements; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
 		A7F30270216E859300676DD2 /* GZipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZipTests.swift; sourceTree = "<group>"; };
 		A7F30274216EA60B00676DD2 /* gunzipped.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gunzipped.txt; sourceTree = "<group>"; };
@@ -622,6 +671,15 @@
 				7CCC82EA2125E83F00D33F84 /* FirebaseCore.framework in Frameworks */,
 				7CCC82F32125E83F00D33F84 /* Crashlytics.framework in Frameworks */,
 				7CCC82F22125E83F00D33F84 /* Fabric.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7CC38012190D9D900C8355A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7CC38342190FE8C00C8355A /* Realm.framework in Frameworks */,
+				A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -772,6 +830,7 @@
 				41F3A275207C6466004BDF90 /* Crashlytics.framework */,
 				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
 				41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */,
+				A7CC38052190D9DA00C8355A /* NotificationExtension */,
 				41B6AAAD2017987500D428B7 /* Products */,
 				2962C69A939AA368B015D288 /* Frameworks */,
 			);
@@ -782,6 +841,7 @@
 			children = (
 				41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */,
 				41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */,
+				A7CC38042190D9D900C8355A /* NotificationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1044,6 +1104,16 @@
 			path = Lottie;
 			sourceTree = "<group>";
 		};
+		A7CC38052190D9DA00C8355A /* NotificationExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A7CC38112190DA2D00C8355A /* NotificationExtension.entitlements */,
+				A7CC38062190D9DA00C8355A /* NotificationService.swift */,
+				A7CC38082190D9DA00C8355A /* Info.plist */,
+			);
+			path = NotificationExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1056,10 +1126,12 @@
 				41B6AAAA2017987500D428B7 /* Resources */,
 				7C4D4FE9203CBD3A00DF6E4E /* Run Script Framework */,
 				7CD968B62139A2F9002D4833 /* ShellScript */,
+				A7CC38102190D9DA00C8355A /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A7CC380A2190D9DA00C8355A /* PBXTargetDependency */,
 			);
 			name = "iOS-Email-Client";
 			productName = "iOS-Email-Client";
@@ -1084,6 +1156,23 @@
 			productReference = 41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A7CC38032190D9D900C8355A /* NotificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7CC380C2190D9DA00C8355A /* Build configuration list for PBXNativeTarget "NotificationExtension" */;
+			buildPhases = (
+				A7CC38002190D9D900C8355A /* Sources */,
+				A7CC38012190D9D900C8355A /* Frameworks */,
+				A7CC38022190D9D900C8355A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationExtension;
+			productName = NotificationExtension;
+			productReference = A7CC38042190D9D900C8355A /* NotificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1099,6 +1188,9 @@
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -1118,6 +1210,15 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 41B6AAAB2017987500D428B7;
 					};
+					A7CC38032190D9D900C8355A = {
+						CreatedOnToolsVersion = 10.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 41B6AAA72017987500D428B7 /* Build configuration list for PBXProject "iOS-Email-Client" */;
@@ -1136,6 +1237,7 @@
 			targets = (
 				41B6AAAB2017987500D428B7 /* iOS-Email-Client */,
 				41B6AABF2017987500D428B7 /* iOS-Email-ClientTests */,
+				A7CC38032190D9D900C8355A /* NotificationExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1215,6 +1317,13 @@
 				7CB60A8320FA526C00C9090C /* criptextlogo.png in Resources */,
 				A7F3027A216EB78200676DD2 /* compressed.gz in Resources */,
 				A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7CC38022190D9D900C8355A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1462,6 +1571,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7CC38002190D9D900C8355A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7CC38432190FEA600C8355A /* CRPreKeyRecord.swift in Sources */,
+				A7CC38462190FEA600C8355A /* EmailContact.swift in Sources */,
+				A7CC384A2190FEA600C8355A /* QueueItem.swift in Sources */,
+				A7CC383F2190FEA600C8355A /* Contact.swift in Sources */,
+				A7CC38312190FA6700C8355A /* CriptextAxolotlStore.swift in Sources */,
+				A7CC38412190FEA600C8355A /* FeedItem.swift in Sources */,
+				A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */,
+				A7CC382E2190FA6700C8355A /* CriptextPreKeyStore.swift in Sources */,
+				A7CC38482190FEA600C8355A /* File.swift in Sources */,
+				A7CC382F2190FA6700C8355A /* CriptextSignedPreKeyStore.swift in Sources */,
+				A7CC382D2190FA6700C8355A /* CriptextSessionStore.swift in Sources */,
+				A7CC38402190FEA600C8355A /* Email.swift in Sources */,
+				A7CC38492190FEA600C8355A /* FileKey.swift in Sources */,
+				A7CC383E2190FEA600C8355A /* Account.swift in Sources */,
+				A7CC38302190FA6700C8355A /* CriptextIdentityKeyStore.swift in Sources */,
+				A7CC38322190FE7000C8355A /* DBManager.swift in Sources */,
+				A7CC38442190FEA600C8355A /* CRSessionRecord.swift in Sources */,
+				A7CC38472190FEA600C8355A /* Label.swift in Sources */,
+				A7CC38422190FEA600C8355A /* CRSignedPreKeyRecord.swift in Sources */,
+				A7CC384C2191004900C8355A /* Thread.swift in Sources */,
+				A7CC38452190FEA600C8355A /* CRTrustedDevice.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1469,6 +1606,11 @@
 			isa = PBXTargetDependency;
 			target = 41B6AAAB2017987500D428B7 /* iOS-Email-Client */;
 			targetProxy = 41B6AAC12017987500D428B7 /* PBXContainerItemProxy */;
+		};
+		A7CC380A2190D9DA00C8355A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7CC38032190D9D900C8355A /* NotificationExtension */;
+			targetProxy = A7CC38092190D9DA00C8355A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1769,6 +1911,7 @@
 		41B6AACA2017987500D428B7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = Criptext;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1805,6 +1948,7 @@
 		41B6AACB2017987500D428B7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = Criptext;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1943,6 +2087,7 @@
 		7CD968B32139912C002D4833 /* Support */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_DISPLAY_NAME = Support;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon.support;
 				CLANG_ENABLE_MODULES = YES;
@@ -2000,6 +2145,88 @@
 			};
 			name = Support;
 		};
+		A7CC380D2190D9DA00C8355A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = NotificationExtension/NotificationExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = NotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A7CC380E2190D9DA00C8355A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = NotificationExtension/NotificationExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = NotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A7CC380F2190D9DA00C8355A /* Support */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = NotificationExtension/NotificationExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = NotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Support;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2029,6 +2256,16 @@
 				41B6AACD2017987500D428B7 /* Debug */,
 				41B6AACE2017987500D428B7 /* Release */,
 				7CD968B42139912C002D4833 /* Support */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7CC380C2190D9DA00C8355A /* Build configuration list for PBXNativeTarget "NotificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7CC380D2190D9DA00C8355A /* Debug */,
+				A7CC380E2190D9DA00C8355A /* Release */,
+				A7CC380F2190D9DA00C8355A /* Support */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

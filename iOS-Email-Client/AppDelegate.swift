@@ -29,9 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize sign-in
         Fabric.with([Crashlytics.self])
         
-        UIApplication.shared.statusBarStyle = .lightContent
+        let realmURL = self.relocateDatabase()
         
         let config = Realm.Configuration(
+            fileURL: realmURL,
             schemaVersion: 7,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 3) {
@@ -117,6 +118,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.registerPushNotifications()
         IQKeyboardManager.shared.enable = true
         return true
+    }
+    
+    func relocateDatabase() -> URL? {
+        let fileManager = FileManager.default
+        
+        //Cache original realm path (documents directory)
+        guard let originalDefaultRealmPath = Realm.Configuration.defaultConfiguration.fileURL,
+            let appGroupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.criptext.team") else {
+                return nil
+        }
+        let realmPath = appGroupURL.appendingPathComponent("default.realm")
+        if (fileManager.fileExists(atPath: originalDefaultRealmPath.path) && !fileManager.fileExists(atPath: realmPath.path)) {
+            
+            do {
+                try fileManager.moveItem(at: originalDefaultRealmPath, to: realmPath)
+            } catch {
+                print(error)
+            }
+        }
+        
+        var config = Realm.Configuration.defaultConfiguration
+        config.fileURL = realmPath
+        Realm.Configuration.defaultConfiguration = config
+        
+        return realmPath
     }
     
     func registerPushNotifications() {
