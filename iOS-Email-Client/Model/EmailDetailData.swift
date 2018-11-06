@@ -7,9 +7,12 @@
 //
 
 import Foundation
+import RealmSwift
 
 class EmailDetailData{
-    var emails = [Email]()
+    var emails: Results<Email>!
+    var observerToken: NotificationToken?
+    var emailStates = [Int: Email.State]()
     var labels = [Label]()
     var subject = ""
     var accountEmail = ""
@@ -26,5 +29,33 @@ class EmailDetailData{
             labelsSet.formUnion(email.labels)
         }
         labels = Array(labelsSet)
+    }
+    
+    func getState(_ key: Int) -> Email.State {
+        guard let state = emailStates[key] else {
+            var newState = Email.State()
+            newState.isExpanded = true
+            emailStates[key] = newState
+            return getState(key)
+        }
+        return state
+    }
+    
+    func setState(_ key: Int, isExpanded: Bool? = nil, isUnsending: Bool? = nil, cellHeight: CGFloat? = nil) {
+        guard var state = emailStates[key] else {
+            emailStates[key] = Email.State()
+            setState(key, isExpanded: isExpanded, isUnsending: isUnsending, cellHeight: cellHeight)
+            return
+        }
+        if let expanded = isExpanded {
+            state.isExpanded = expanded
+        }
+        if let unsending = isUnsending {
+            state.isUnsending = unsending
+        }
+        if let height = cellHeight {
+            state.cellHeight = height
+        }
+        emailStates[key] = state
     }
 }

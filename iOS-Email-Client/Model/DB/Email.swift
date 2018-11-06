@@ -21,6 +21,18 @@ class Email: Object {
         case fail = 1
     }
     
+    struct State {
+        var isExpanded: Bool
+        var isUnsending: Bool
+        var cellHeight: CGFloat
+        
+        init() {
+            isExpanded = false
+            isUnsending = false
+            cellHeight = 0.0
+        }
+    }
+    
     @objc dynamic var key = 0 //metadataKey
     @objc dynamic var threadId = ""
     @objc dynamic var messageId = ""
@@ -39,14 +51,10 @@ class Email: Object {
     let labels = List<Label>()
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
-    var isExpanded = false
-    var isUnsending = false
-    var isLoaded = true
-    var cellHeight : CGFloat = 0.0
     var fromContact : Contact {
         get {
             let predicate = NSPredicate(format: "type == '\(ContactType.from.rawValue)'")
-            let contact = emailContacts.filter(predicate).first!.contact!
+            let contact = emailContacts.filter(predicate).first?.contact ?? Contact()
             return contact
         }
     }
@@ -66,10 +74,6 @@ class Email: Object {
     
     override static func primaryKey() -> String? {
         return "key"
-    }
-    
-    override static func ignoredProperties() -> [String] {
-        return ["isExpanded", "isUnsending", "isLoaded", "cellHeight"]
     }
     
     var isUnsent: Bool{
