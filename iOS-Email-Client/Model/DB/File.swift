@@ -24,7 +24,7 @@ class File : Object {
     var progress = -1
     var filepath = ""
     var chunksProgress = [Int]()
-    var requestType: CriptextFileManager.RequestType = .upload
+    var requestType: RequestType = .upload
     var requestStatus: uploadStatus = .none
 
     override static func primaryKey() -> String? {
@@ -50,6 +50,11 @@ class File : Object {
         case processing
         case finish
         case failed
+    }
+    
+    enum RequestType {
+        case upload
+        case download
     }
 }
 

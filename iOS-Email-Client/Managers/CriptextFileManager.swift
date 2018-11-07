@@ -27,11 +27,7 @@ class CriptextFileManager {
     var encryption : Bool {
         return keyPairs.count > 0
     }
-    
-    enum RequestType {
-        case upload
-        case download
-    }
+
     
     @discardableResult func registerFile(filepath: String, name: String, mimeType: String) -> Bool {
         guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: filepath) else {

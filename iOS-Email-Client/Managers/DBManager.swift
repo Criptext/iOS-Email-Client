@@ -828,7 +828,7 @@ extension DBManager {
         return trustedDevice
     }
     
-    //MARK: - Labels
+//MARK: - Labels
     
     class func store(_ label: Label, incrementId: Bool = false){
         let realm = try! Realm()
@@ -951,6 +951,19 @@ extension DBManager {
                 email.trashDate = nil
             }
         }
+    }
+    
+    class func getMoveableLabels(label: Int) -> [Label] {
+        let moveableLabels = (SystemLabel.init(rawValue: label) ?? .starred).moveableLabels
+        return moveableLabels.map({ (label) -> Label in
+            return getLabel(label.id)!
+        })
+    }
+    
+    class func getSettableLabels() -> [Label] {
+        var settableLabels = getActiveCustomLabels()
+        settableLabels.append(getLabel(SystemLabel.starred.id)!)
+        return settableLabels
     }
     
 }

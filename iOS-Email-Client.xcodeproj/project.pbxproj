@@ -239,28 +239,14 @@
 		A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77AD67221642AFC00C26F07 /* StreamReader.swift */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A7CC382D2190FA6700C8355A /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
-		A7CC382E2190FA6700C8355A /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
-		A7CC382F2190FA6700C8355A /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
-		A7CC38302190FA6700C8355A /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
-		A7CC38312190FA6700C8355A /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
-		A7CC38322190FE7000C8355A /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC544201AA01400809C4D /* DBManager.swift */; };
 		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
 		A7CC38342190FE8C00C8355A /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BD207696DE00C32998 /* Realm.framework */; };
-		A7CC383E2190FEA600C8355A /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
-		A7CC383F2190FEA600C8355A /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
-		A7CC38402190FEA600C8355A /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52E201A9FCC00809C4D /* Email.swift */; };
-		A7CC38412190FEA600C8355A /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC535201A9FCD00809C4D /* FeedItem.swift */; };
-		A7CC38422190FEA600C8355A /* CRSignedPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */; };
-		A7CC38432190FEA600C8355A /* CRPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */; };
-		A7CC38442190FEA600C8355A /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
-		A7CC38452190FEA600C8355A /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
-		A7CC38462190FEA600C8355A /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
-		A7CC38472190FEA600C8355A /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82C20607602000E5F14 /* Label.swift */; };
-		A7CC38482190FEA600C8355A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
-		A7CC38492190FEA600C8355A /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104520FEF2B10081C048 /* FileKey.swift */; };
-		A7CC384A2190FEA600C8355A /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
-		A7CC384C2191004900C8355A /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69BADC20DC4A2E001ABD5B /* Thread.swift */; };
+		A7CC384D219247B100C8355A /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52E201A9FCC00809C4D /* Email.swift */; };
+		A7CC384E219247B400C8355A /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82C20607602000E5F14 /* Label.swift */; };
+		A7CC384F219247B800C8355A /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
+		A7CC3850219247BF00C8355A /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
+		A7CC385121924D2B00C8355A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
+		A7CC3852219250D100C8355A /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
 		A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F30274216EA60B00676DD2 /* gunzipped.txt */; };
@@ -565,6 +551,8 @@
 		A7CC38062190D9DA00C8355A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A7CC38082190D9DA00C8355A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7CC38112190DA2D00C8355A /* NotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationExtension.entitlements; sourceTree = "<group>"; };
+		A7CC3853219258B800C8355A /* DateUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
+		A7CC385421933CFC00C8355A /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
 		A7F30270216E859300676DD2 /* GZipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZipTests.swift; sourceTree = "<group>"; };
 		A7F30274216EA60B00676DD2 /* gunzipped.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gunzipped.txt; sourceTree = "<group>"; };
@@ -1110,6 +1098,8 @@
 				A7CC38112190DA2D00C8355A /* NotificationExtension.entitlements */,
 				A7CC38062190D9DA00C8355A /* NotificationService.swift */,
 				A7CC38082190D9DA00C8355A /* Info.plist */,
+				A7CC3853219258B800C8355A /* DateUtils.h */,
+				A7CC385421933CFC00C8355A /* Extension-Bridging-Header.h */,
 			);
 			path = NotificationExtension;
 			sourceTree = "<group>";
@@ -1575,27 +1565,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7CC38432190FEA600C8355A /* CRPreKeyRecord.swift in Sources */,
-				A7CC38462190FEA600C8355A /* EmailContact.swift in Sources */,
-				A7CC384A2190FEA600C8355A /* QueueItem.swift in Sources */,
-				A7CC383F2190FEA600C8355A /* Contact.swift in Sources */,
-				A7CC38312190FA6700C8355A /* CriptextAxolotlStore.swift in Sources */,
-				A7CC38412190FEA600C8355A /* FeedItem.swift in Sources */,
+				A7CC384D219247B100C8355A /* Email.swift in Sources */,
+				A7CC385121924D2B00C8355A /* File.swift in Sources */,
+				A7CC384F219247B800C8355A /* EmailContact.swift in Sources */,
+				A7CC3850219247BF00C8355A /* Contact.swift in Sources */,
+				A7CC3852219250D100C8355A /* DateUtils.m in Sources */,
 				A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */,
-				A7CC382E2190FA6700C8355A /* CriptextPreKeyStore.swift in Sources */,
-				A7CC38482190FEA600C8355A /* File.swift in Sources */,
-				A7CC382F2190FA6700C8355A /* CriptextSignedPreKeyStore.swift in Sources */,
-				A7CC382D2190FA6700C8355A /* CriptextSessionStore.swift in Sources */,
-				A7CC38402190FEA600C8355A /* Email.swift in Sources */,
-				A7CC38492190FEA600C8355A /* FileKey.swift in Sources */,
-				A7CC383E2190FEA600C8355A /* Account.swift in Sources */,
-				A7CC38302190FA6700C8355A /* CriptextIdentityKeyStore.swift in Sources */,
-				A7CC38322190FE7000C8355A /* DBManager.swift in Sources */,
-				A7CC38442190FEA600C8355A /* CRSessionRecord.swift in Sources */,
-				A7CC38472190FEA600C8355A /* Label.swift in Sources */,
-				A7CC38422190FEA600C8355A /* CRSignedPreKeyRecord.swift in Sources */,
-				A7CC384C2191004900C8355A /* Thread.swift in Sources */,
-				A7CC38452190FEA600C8355A /* CRTrustedDevice.swift in Sources */,
+				A7CC384E219247B400C8355A /* Label.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2168,6 +2144,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "NotificationExtension/Extension-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2195,6 +2172,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "NotificationExtension/Extension-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2222,6 +2200,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "NotificationExtension/Extension-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

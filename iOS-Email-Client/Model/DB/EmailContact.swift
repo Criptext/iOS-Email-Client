@@ -7,6 +7,7 @@
 //
 
 import RealmSwift
+import Foundation
 
 class EmailContact: Object{
     

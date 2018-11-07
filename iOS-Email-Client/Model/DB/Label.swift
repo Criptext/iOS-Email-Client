@@ -43,19 +43,6 @@ class Label : Object {
         let realm = try! Realm()
         id = (realm.objects(Label.self).max(ofProperty: "id") as Int? ?? 0) + 1
     }
-    
-    class func getMoveableLabels(label: Int) -> [Label] {
-        let moveableLabels = (SystemLabel.init(rawValue: label) ?? .starred).moveableLabels
-        return moveableLabels.map({ (label) -> Label in
-            return DBManager.getLabel(label.id)!
-        })
-    }
-    
-    class func getSettableLabels() -> [Label] {
-        var settableLabels = DBManager.getActiveCustomLabels()
-        settableLabels.append(DBManager.getLabel(SystemLabel.starred.id)!)
-        return settableLabels
-    }
 }
 
 extension Label {
