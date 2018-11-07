@@ -249,7 +249,6 @@ class InboxViewController: UIViewController {
                 self.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
                 break
             default:
-                print("BACK ONLINE")
                 self.dequeueEvents()
                 break
             }

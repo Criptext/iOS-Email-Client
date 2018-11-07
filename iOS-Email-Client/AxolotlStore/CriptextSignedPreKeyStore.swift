@@ -20,7 +20,7 @@ class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
     }
     
     func loadSignedPrekeyOrNil(_ signedPreKeyId: Int32) -> SignedPreKeyRecord? {
-        guard let signedKeyRecord = DBManager.getSignedKeyRecordById(id: signedPreKeyId),
+        guard let signedKeyRecord = DBAxolotl.getSignedKeyRecordById(id: signedPreKeyId),
             let signedPreKeyRecordData = Data(base64Encoded: signedKeyRecord.signedPreKeyPair),
             let signedPreKeyRecord = NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordData) as? SignedPreKeyRecord
         else {
@@ -31,7 +31,7 @@ class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
     
     func loadSignedPreKeys() -> [SignedPreKeyRecord] {
         var mySignedPreKeyRecords = [SignedPreKeyRecord]()
-        for record in DBManager.getAllSignedKeyRecords() {
+        for record in DBAxolotl.getAllSignedKeyRecords() {
             guard let signedPreKeyRecordsData = Data(base64Encoded: record.signedPreKeyPair),
                 let signedPreKeyRecord = NSKeyedUnarchiver.unarchiveObject(with: signedPreKeyRecordsData) as? SignedPreKeyRecord
             else {
@@ -48,14 +48,14 @@ class CriptextSignedPreKeyStore: NSObject, SignedPreKeyStore{
         let keyRecord = CRSignedPreKeyRecord()
         keyRecord.signedPreKeyId = signedPreKeyId
         keyRecord.signedPreKeyPair = keyString
-        DBManager.store(keyRecord)
+        DBAxolotl.store(keyRecord)
     }
     
     func containsSignedPreKey(_ signedPreKeyId: Int32) -> Bool {
-        return DBManager.getSignedKeyRecordById(id: signedPreKeyId) != nil
+        return DBAxolotl.getSignedKeyRecordById(id: signedPreKeyId) != nil
     }
     
     func removeSignedPreKey(_ signedPrekeyId: Int32) {
-        DBManager.deleteSignedKeyRecord(id: signedPrekeyId)
+        DBAxolotl.deleteSignedKeyRecord(id: signedPrekeyId)
     }
 }

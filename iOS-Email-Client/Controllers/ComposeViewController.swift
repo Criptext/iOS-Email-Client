@@ -655,7 +655,7 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         
         let filename = url.lastPathComponent
         self.isEdited = true
-        self.fileManager.registerFile(filepath: url.path, name: filename, mimeType: mimeTypeForPath(path: filename))
+        self.fileManager.registerFile(filepath: url.path, name: filename, mimeType: File.mimeTypeForPath(path: filename))
         self.tableView.performUpdate({
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
         }, completion: nil)

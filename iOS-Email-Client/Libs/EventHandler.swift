@@ -267,7 +267,7 @@ class EventHandler {
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
-        file.mimeType = mimeTypeForPath(path: file.name)
+        file.mimeType = File.mimeTypeForPath(path: file.name)
         file.date = email.date
         file.readOnly = attachment["read_only"] as? Int ?? 0
         file.emailId = email.key

@@ -373,18 +373,12 @@ extension AppDelegate: MessagingDelegate {
                 let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
                 let navVC = rootVC.childViewControllers.first as? UINavigationController,
                 let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                    if (action == "open_thread") {
-                        self.showActionLocalNotification(userInfo: userInfo)
-                    }
                     completionHandler(.noData)
                     return
             }
             inboxVC.getPendingEvents(nil) { success in
                 let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
                 UIApplication.shared.applicationIconBadgeNumber = emails.count + (success ? 0 : 1)
-                if (action == "open_thread") {
-                    self.showActionLocalNotification(userInfo: userInfo)
-                }
                 completionHandler(.newData)
             }
         }

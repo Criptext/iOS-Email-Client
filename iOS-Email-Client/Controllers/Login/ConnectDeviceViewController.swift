@@ -177,7 +177,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func createAccount() -> Account {
-        let myAccount = Account.create(from: signupData)
+        let myAccount = SignUpData.createAccount(from: signupData)
         DBManager.store(myAccount)
         let myContact = Contact()
         myContact.displayName = myAccount.name

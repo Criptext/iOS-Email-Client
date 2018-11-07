@@ -15,7 +15,7 @@ class CriptextSessionStore: NSObject{
 
 extension CriptextSessionStore: SessionStore{
     func loadSession(_ contactIdentifier: String!, deviceId: Int32) -> SessionRecord! {
-        guard let rawSessionRecord = DBManager.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId),
+        guard let rawSessionRecord = DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId),
             let sessionData = Data(base64Encoded: rawSessionRecord.sessionRecord),
             let sessionRecord = NSKeyedUnarchiver.unarchiveObject(with: sessionData) as? SessionRecord else {
             return SessionRecord()
@@ -30,8 +30,8 @@ extension CriptextSessionStore: SessionStore{
     func storeSession(_ contactIdentifier: String!, deviceId: Int32, session: SessionRecord!) {
         let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
         let sessionString = sessionData.base64EncodedString()
-        if let existingSession = DBManager.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId) {
-            DBManager.update(existingSession, sessionString: sessionString)
+        if let existingSession = DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId) {
+            DBAxolotl.update(existingSession, sessionString: sessionString)
             return
         }
         let sessionRecord = CRSessionRecord()
@@ -39,19 +39,19 @@ extension CriptextSessionStore: SessionStore{
         sessionRecord.deviceId = deviceId
         sessionRecord.sessionRecord = sessionString
         sessionRecord.compoundKey = "\(contactIdentifier)-\(deviceId)"
-        DBManager.store(sessionRecord)
+        DBAxolotl.store(sessionRecord)
     }
     
     func containsSession(_ contactIdentifier: String!, deviceId: Int32) -> Bool {
-        return DBManager.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId) != nil
+        return DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId) != nil
     }
     
     func deleteSession(forContact contactIdentifier: String!, deviceId: Int32) {
-        DBManager.deleteSessionRecord(contactId: contactIdentifier, deviceId: deviceId)
+        DBAxolotl.deleteSessionRecord(contactId: contactIdentifier, deviceId: deviceId)
     }
     
     func deleteAllSessions(forContact contactIdentifier: String!) {
-        DBManager.deleteAllSessions(contactId: contactIdentifier)
+        DBAxolotl.deleteAllSessions(contactId: contactIdentifier)
     }
     
 }

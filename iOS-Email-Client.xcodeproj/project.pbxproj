@@ -247,6 +247,26 @@
 		A7CC3850219247BF00C8355A /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
 		A7CC385121924D2B00C8355A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
 		A7CC3852219250D100C8355A /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
+		A7CC3857219348C200C8355A /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3856219348C200C8355A /* APIRequest.swift */; };
+		A7CC3858219348E800C8355A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229B12076923E00C32998 /* Alamofire.framework */; };
+		A7CC385A21934C6400C8355A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385921934C6400C8355A /* Database.swift */; };
+		A7CC385B21934DC600C8355A /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
+		A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385C21934E1200C8355A /* DBAxolotl.swift */; };
+		A7CC385E21934E1200C8355A /* DBAxolotl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385C21934E1200C8355A /* DBAxolotl.swift */; };
+		A7CC385F21934EE400C8355A /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
+		A7CC386021934EE400C8355A /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
+		A7CC386121934EE400C8355A /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
+		A7CC386221934EE400C8355A /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
+		A7CC386321934EE400C8355A /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
+		A7CC386421934FDE00C8355A /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
+		A7CC386521934FF400C8355A /* CRSignedPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */; };
+		A7CC386621934FF400C8355A /* CRPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */; };
+		A7CC386721934FF400C8355A /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
+		A7CC386821934FF400C8355A /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
+		A7CC386B21936A0300C8355A /* NewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC386921936A0300C8355A /* NewEmail.swift */; };
+		A7CC386C21936A6000C8355A /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
+		A7CC386D21936D9D00C8355A /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */; };
+		A7CC3872219372AB00C8355A /* ServiceContactUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC386F21936F6700C8355A /* ServiceContactUtils.swift */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
 		A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F30274216EA60B00676DD2 /* gunzipped.txt */; };
@@ -553,6 +573,11 @@
 		A7CC38112190DA2D00C8355A /* NotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationExtension.entitlements; sourceTree = "<group>"; };
 		A7CC3853219258B800C8355A /* DateUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		A7CC385421933CFC00C8355A /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
+		A7CC3856219348C200C8355A /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		A7CC385921934C6400C8355A /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		A7CC385C21934E1200C8355A /* DBAxolotl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBAxolotl.swift; sourceTree = "<group>"; };
+		A7CC386921936A0300C8355A /* NewEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmail.swift; sourceTree = "<group>"; };
+		A7CC386F21936F6700C8355A /* ServiceContactUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceContactUtils.swift; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
 		A7F30270216E859300676DD2 /* GZipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZipTests.swift; sourceTree = "<group>"; };
 		A7F30274216EA60B00676DD2 /* gunzipped.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gunzipped.txt; sourceTree = "<group>"; };
@@ -667,6 +692,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7CC38342190FE8C00C8355A /* Realm.framework in Frameworks */,
+				A7CC386421934FDE00C8355A /* SignalProtocolFramework.framework in Frameworks */,
+				A7CC386D21936D9D00C8355A /* SwiftSoup.framework in Frameworks */,
+				A7CC3858219348E800C8355A /* Alamofire.framework in Frameworks */,
 				A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1078,6 +1106,7 @@
 				7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */,
 				7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */,
 				7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */,
+				A7CC385C21934E1200C8355A /* DBAxolotl.swift */,
 			);
 			path = AxolotlStore;
 			sourceTree = "<group>";
@@ -1100,6 +1129,10 @@
 				A7CC38082190D9DA00C8355A /* Info.plist */,
 				A7CC3853219258B800C8355A /* DateUtils.h */,
 				A7CC385421933CFC00C8355A /* Extension-Bridging-Header.h */,
+				A7CC3856219348C200C8355A /* APIRequest.swift */,
+				A7CC385921934C6400C8355A /* Database.swift */,
+				A7CC386921936A0300C8355A /* NewEmail.swift */,
+				A7CC386F21936F6700C8355A /* ServiceContactUtils.swift */,
 			);
 			path = NotificationExtension;
 			sourceTree = "<group>";
@@ -1475,6 +1508,7 @@
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,
 				7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */,
+				A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */,
 				7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */,
 				7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */,
 				7C5E404020B706860027C61F /* CustomTabsController.swift in Sources */,
@@ -1565,12 +1599,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7CC386521934FF400C8355A /* CRSignedPreKeyRecord.swift in Sources */,
+				A7CC386721934FF400C8355A /* CRSessionRecord.swift in Sources */,
+				A7CC386121934EE400C8355A /* CriptextSignedPreKeyStore.swift in Sources */,
 				A7CC384D219247B100C8355A /* Email.swift in Sources */,
+				A7CC386821934FF400C8355A /* CRTrustedDevice.swift in Sources */,
+				A7CC386221934EE400C8355A /* CriptextIdentityKeyStore.swift in Sources */,
 				A7CC385121924D2B00C8355A /* File.swift in Sources */,
 				A7CC384F219247B800C8355A /* EmailContact.swift in Sources */,
 				A7CC3850219247BF00C8355A /* Contact.swift in Sources */,
+				A7CC386021934EE400C8355A /* CriptextPreKeyStore.swift in Sources */,
 				A7CC3852219250D100C8355A /* DateUtils.m in Sources */,
+				A7CC3872219372AB00C8355A /* ServiceContactUtils.swift in Sources */,
+				A7CC386321934EE400C8355A /* CriptextAxolotlStore.swift in Sources */,
+				A7CC385F21934EE400C8355A /* CriptextSessionStore.swift in Sources */,
+				A7CC385B21934DC600C8355A /* Account.swift in Sources */,
 				A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */,
+				A7CC386621934FF400C8355A /* CRPreKeyRecord.swift in Sources */,
+				A7CC386C21936A6000C8355A /* SignalHandler.swift in Sources */,
+				A7CC385A21934C6400C8355A /* Database.swift in Sources */,
+				A7CC386B21936A0300C8355A /* NewEmail.swift in Sources */,
+				A7CC385E21934E1200C8355A /* DBAxolotl.swift in Sources */,
+				A7CC3857219348C200C8355A /* APIRequest.swift in Sources */,
 				A7CC384E219247B400C8355A /* Label.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

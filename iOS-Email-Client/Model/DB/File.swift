@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import MobileCoreServices
 
 class File : Object {
     
@@ -72,8 +73,19 @@ extension File{
                 "date": dateString,
                 "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId,
-                "mimeType": mimeType.isEmpty ? mimeTypeForPath(path: name) : mimeType
+                "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType
             ]
         ]
+    }
+    
+    class func mimeTypeForPath(path: String) -> String {
+        let url = NSURL(fileURLWithPath: path)
+        
+        if let pathExtension = url.pathExtension,
+            let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue(),
+            let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue(){
+            return mimetype as String
+        }
+        return "application/octet-stream"
     }
 }
