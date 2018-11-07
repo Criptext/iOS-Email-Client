@@ -396,9 +396,7 @@ extension InboxViewController {
             refreshThreadRows()
         } else {
             tableView.reloadRows(at: pathsToUpdate, with: .automatic)
-        }
-        notifyEmailDetailController(result: result)
-        
+        }        
         
         guard result.opens.count > 0,
             let feedVC = self.navigationDrawerController?.rightViewController as? FeedViewController else {
@@ -844,12 +842,20 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         
         let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel)
+        guard let subject = emails.first?.subject,
+            let lastEmailKey = emails.last?.key else {
+                refreshThreadRows()
+            return
+        }
+        
         let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
         var labelsSet = Set<Label>()
         var openKeys = [Int]()
         var peerKeys = [Int]()
         for email in emails {
-            email.isExpanded = email.unread
+            var emailState = Email.State()
+            emailState.isExpanded = email.unread
+            emailDetailData.emailStates[email.key] = emailState
             labelsSet.formUnion(email.labels)
             if(email.unread){
                 if(email.status == .none) {
@@ -862,9 +868,11 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         emailDetailData.emails = emails
         emailDetailData.selectedLabel = selectedLabel
         emailDetailData.labels = Array(labelsSet)
-        emailDetailData.subject = emails.first!.subject
+        emailDetailData.subject = subject
         emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
-        emails.last!.isExpanded = true
+        var emailState = Email.State()
+        emailState.isExpanded = true
+        emailDetailData.emailStates[lastEmailKey] = emailState
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
@@ -1325,24 +1333,9 @@ extension InboxViewController: ComposerSendMailDelegate {
                 self.mailboxData.threads[index].lastEmail = newEmail
             }
             self.refreshThreadRows()
-            self.notifyEmailDetailController(newEmail: newEmail)
             self.showSendingSnackBar(message: String.localize("Email Sent"), permanent: false)
             self.sendFailEmail()
         }
-    }
-    
-    func notifyEmailDetailController(newEmail: Email){
-        guard let emailDetailVC = self.navigationController?.viewControllers.first(where: {$0 is EmailDetailViewController}) as? EmailDetailViewController else {
-            return
-        }
-        emailDetailVC.incomingEmail(newEmail: newEmail)
-    }
-    
-    func notifyEmailDetailController(result: EventData.Result){
-        guard let emailDetailVC = self.navigationController?.viewControllers.first(where: {$0 is EmailDetailViewController}) as? EmailDetailViewController else {
-            return
-        }
-        emailDetailVC.didReceiveEvents(result: result)
     }
     
     func reloadIfSentMailbox(email: Email){

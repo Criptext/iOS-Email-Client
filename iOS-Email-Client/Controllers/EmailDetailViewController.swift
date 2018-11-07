@@ -53,6 +53,30 @@ class EmailDetailViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
+        
+        emailData.observerToken = emailData.emails.observe { [weak self] changes in
+            guard let tableView = self?.emailsTableView else {
+                return
+            }
+            switch(changes){
+            case .initial:
+                tableView.reloadData()
+            case .update(_, let _, let _, let _):
+                tableView.reloadData()
+                self?.emailData.rebuildLabels()
+            default:
+                break
+            }
+            
+            guard let myself = self else {
+                return
+            }
+            
+            if(myself.emailData.emails.isEmpty){
+                myself.mailboxData.removeSelectedRow = true
+                myself.navigationController?.popViewController(animated: true)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,7 +93,7 @@ class EmailDetailViewController: UIViewController {
         let defaults = UserDefaults.standard
         if !defaults.bool(forKey: "guideUnsend"),
             let email = emailData.emails.first,
-            email.isSent && email.isExpanded && emailData.emails.count == 1 {
+            email.isSent && emailData.getState(email.key).isExpanded && emailData.emails.count == 1 {
             self.coachMarksController.start(on: self)
             defaults.set(true, forKey: "guideUnsend")
         }
@@ -132,20 +156,9 @@ class EmailDetailViewController: UIViewController {
         topToolbar.swapMarkTo(unread: !asRead)
     }
     
-    func incomingEmail(newEmail: Email){
-        guard newEmail.threadId == emailData.threadId else {
-            return
-        }
-        if let index = self.emailData.emails.index(where: {$0.isInvalidated}) {
-            newEmail.isExpanded = true
-            self.emailData.emails[index] = newEmail
-        }
-        self.emailsTableView.reloadData()
-    }
-    
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let email = emailData.emails[indexPath.row]
-        return email.cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : email.cellHeight
+        return emailData.getState(email.key).cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : emailData.getState(email.key).cellHeight
     }
 }
 
@@ -154,7 +167,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
-        cell.setContent(email, myEmail: emailData.accountEmail)
+        cell.setContent(email, state: emailData.getState(email.key), myEmail: emailData.accountEmail)
         cell.delegate = self
         target = cell.moreOptionsContainerView
         return cell
@@ -219,12 +232,11 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
-        email.cellHeight = height
+        emailData.setState(email.key, cellHeight: height)
         self.emailsTableView.reloadData()
     }
     
     func tableViewCellDidLoadContent(_ cell: EmailTableViewCell, email: Email) {
-        email.isLoaded = true
         self.emailsTableView.reloadData()
     }
     
@@ -233,7 +245,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             return
         }
         let email = emailData.emails[indexPath.row]
-        email.isExpanded = !email.isExpanded
+        emailData.setState(email.key, isExpanded: !emailData.getState(email.key).isExpanded)
         emailsTableView.reloadData()
     }
     
@@ -388,17 +400,26 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
     }
     
     func onFooterReplyPress() {
-        emailsTableView.selectRow(at: IndexPath(row: emailData.emails.count - 1, section: 0), animated: false, scrollPosition: .none)
+        guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
+            return
+        }
+        emailsTableView.selectRow(at: IndexPath(row: lastIndex, section: 0), animated: false, scrollPosition: .none)
         onReplyPress()
     }
     
     func onFooterReplyAllPress() {
-        emailsTableView.selectRow(at: IndexPath(row: emailData.emails.count - 1, section: 0), animated: false, scrollPosition: .none)
+        guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
+            return
+        }
+        emailsTableView.selectRow(at: IndexPath(row: lastIndex, section: 0), animated: false, scrollPosition: .none)
         onReplyAllPress()
     }
     
     func onFooterForwardPress() {
-        emailsTableView.selectRow(at: IndexPath(row: emailData.emails.count - 1, section: 0), animated: false, scrollPosition: .none)
+        guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
+            return
+        }
+        emailsTableView.selectRow(at: IndexPath(row: lastIndex, section: 0), animated: false, scrollPosition: .none)
         onForwardPress()
     }
 }
@@ -418,7 +439,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             return
         }
         let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            DBManager.delete(self.emailData.emails)
+            DBManager.delete(Array(self.emailData.emails))
             self.mailboxData.removeSelectedRow = true
             self.navigationController?.popViewController(animated: true)
             
@@ -530,7 +551,6 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let triggerEvent = email.canTriggerEvent
         let emailKey = email.key
         DBManager.delete(email)
-        self.removeEmail(key: emailKey)
         if (triggerEvent) {
             let eventData = EventData.Peer.EmailDeleted(metadataKeys: [emailKey])
             DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsDeleted.rawValue, "params": eventData.asDictionary()])
@@ -542,23 +562,9 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let changedLabels = getLabelNames(added: [SystemLabel.trash.id], removed: [])
         let emailKey = email.key
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [])
-        self.removeEmail(key: emailKey)
         if (triggerEvent) {
             let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
             DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
-        }
-    }
-    
-    func removeEmail(key: Int){
-        guard let index = emailData.emails.index(where: {$0.isInvalidated || $0.key == key}) else {
-            return
-        }
-        emailData.emails.remove(at: index)
-        if(emailData.emails.isEmpty){
-            mailboxData.removeSelectedRow = true
-            navigationController?.popViewController(animated: true)
-        }else{
-            emailsTableView.reloadData()
         }
     }
     
@@ -606,8 +612,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         
         let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
-        self.removeEmail(key: emailKey)
-        let eventData = EventData.Peer.EmailLabels(metadataKeys: [email.key], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
         DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
     }
     
@@ -622,11 +627,11 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         guard email.status != .unsent && email.isSent else {
             return
         }
-        email.isUnsending = true
+        emailData.setState(email.key, isUnsending: true)
         emailsTableView.reloadData()
         let recipients = getEmailRecipients(contacts: email.getContacts())
         APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (responseData) in
-            email.isUnsending = false
+            self.emailData.setState(email.key, isUnsending: false)
             if case .Unauthorized = responseData {
                 self.logout()
                 return
@@ -645,11 +650,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                 self.emailsTableView.reloadData()
                 return
             }
-            DBManager.unsendEmail(email)
-            email.isLoaded = false
             cell.isLoaded = false
-            cell.setContent(email, myEmail: self.emailData.accountEmail)
-            self.emailsTableView.reloadData()
+            DBManager.unsendEmail(email)
         }
     }
     
@@ -803,63 +805,18 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
     
 }
 
-extension EmailDetailViewController {
-    
-    func didReceiveEvents(result: EventData.Result) {
-        guard result.modifiedThreadIds.contains(emailData.threadId) || result.modifiedEmailKeys.contains(where: { (key) -> Bool in
-            return emailData.emails.contains(where: {$0.isInvalidated || $0.key == key})
-        }) || result.emails.contains(where: {$0.isInvalidated || $0.threadId == emailData.threadId}) else {
-            return
-        }
-        reloadContent()
-    }
-    
-    func reloadContent(){
-        let emails = DBManager.getThreadEmails(emailData.threadId, label: emailData.selectedLabel)
-        guard emails.count > 0 else {
-            self.mailboxData.removeSelectedRow = true
-            self.navigationController?.popViewController(animated: true)
-            return
-        }
-        for email in emails {
-            guard let match = emailData.emails.first(where: {!$0.isInvalidated && $0.key == email.key}) else {
-                continue
-            }
-            email.isExpanded = match.isExpanded
-            email.cellHeight = match.cellHeight
-            email.isLoaded = match.isLoaded
-        }
-        emailData.emails = emails
-        self.emailData.rebuildLabels()
-        self.myHeaderView = nil
-        self.emailsTableView.reloadData()
-    }
-}
-
 extension EmailDetailViewController: ComposerSendMailDelegate {
     func newDraft(draft: Email) {
-        emailData.emails.append(draft)
-        draft.isExpanded = true
-        emailsTableView.reloadData()
+        
     }
     
     func deleteDraft(draftId: Int) {
-        guard let draftIndex = emailData.emails.index(where: {$0.key == draftId}) else {
-                return
-        }
-        emailData.emails.remove(at: draftIndex)
-        emailsTableView.reloadData()
     }
     
     func sendMail(email: Email) {
-        guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController,
-            email.threadId == emailData.threadId else {
+        guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController else {
             return
         }
-        
-        emailData.emails.append(email)
-        email.isExpanded = true
-        emailsTableView.reloadData()
         inboxViewController.sendMail(email: email)
     }
 }

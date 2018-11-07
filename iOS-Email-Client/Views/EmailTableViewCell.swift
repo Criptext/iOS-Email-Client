@@ -49,6 +49,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var moreOptionsIcon: UIImageView!
     
     var email: Email!
+    var emailState: Email.State!
     var isLoaded = false
     var attachments : List<File> {
         return email.files
@@ -91,24 +92,26 @@ class EmailTableViewCell: UITableViewCell{
         }
         if (keyPath == "scrollView.contentSize"),
             let contentSize = change?[NSKeyValueChangeKey.newKey] as? CGSize,
-            contentSize.height != email.cellHeight {
-            webView.scrollView.contentSize = CGSize(width: contentSize.width, height: email.cellHeight)
+            contentSize.height != emailState.cellHeight {
+            webView.scrollView.contentSize = CGSize(width: contentSize.width, height: emailState.cellHeight)
         }
     }
     
-    func setContent(_ email: Email, myEmail: String){
+    func setContent(_ email: Email, state: Email.State, myEmail: String){
         
+        self.emailState = state
         self.email = email
-        let isExpanded = email.isExpanded
+        let isExpanded = state.isExpanded
         
-        heightConstraint.constant = email.cellHeight
+        heightConstraint.constant = state.cellHeight
         attachmentsTableView.reloadData()
         attachmentsTableHeightConstraint.constant = ATTATCHMENT_CELL_HEIGHT * CGFloat(attachments.count)
         
         setReadStatus(status: email.status)
         dateLabel.text = email.getFormattedDate()
-        contactsCollapseLabel.text = email.fromContact.displayName
-        let fromContactName = email.fromContact.displayName
+        let fromContactName = email.isDraft ? String.localize("Draft") : email.fromContact.displayName
+        contactsCollapseLabel.text = fromContactName
+        contactsCollapseLabel.textColor = email.isDraft ? .alert : .black
         initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
         let size = dateLabel.sizeThatFits(CGSize(width: 100.0, height: 19))
         dateWidthConstraint.constant = size.width
@@ -128,11 +131,11 @@ class EmailTableViewCell: UITableViewCell{
             setCollapsedContent(email)
         }
         
-        if(email.isExpanded && !isLoaded){
+        if(state.isExpanded && !isLoaded){
             loadWebview(email: email)
         }
         
-        if(email.isUnsending){
+        if(state.isUnsending){
             circleLoaderUIView.loaderColor = UIColor.red.cgColor
             circleLoaderUIView.layoutSubviews()
             circleLoaderUIView.animate()
@@ -218,7 +221,7 @@ class EmailTableViewCell: UITableViewCell{
             return
         }
         let touchPt = gestureRecognizer.location(in: self.contentView)
-        guard touchPt.y < 103.0 + self.email.cellHeight,
+        guard touchPt.y < 103.0 + self.emailState.cellHeight,
             let tappedView = self.hitTest(touchPt, with: nil) else {
             return
         }
@@ -276,7 +279,7 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
                 return
             }
             let newHeight = height * self.webView.scrollView.zoomScale
-            guard newHeight != self.email.cellHeight else {
+            guard newHeight != self.emailState.cellHeight else {
                 return
             }
             self.heightConstraint.constant = newHeight

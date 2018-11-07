@@ -399,7 +399,7 @@ extension DBManager {
         return thread
     }
     
-    class func getThreadEmails(_ threadId: String, label: Int) -> [Email] {
+    class func getThreadEmails(_ threadId: String, label: Int) -> Results<Email> {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
         let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
@@ -407,7 +407,7 @@ extension DBManager {
         let predicate = (label == SystemLabel.trash.id || label == SystemLabel.spam.id || label == SystemLabel.draft.id) ? predicate2 : predicate1
         let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
         
-        return Array(results)
+        return results
     }
     
     class func getUnreadMails(from label: Int) -> [Email] {
@@ -571,7 +571,7 @@ extension DBManager {
     }
     
     class func deleteThreads(_ threadId: String, label: Int){
-        let emails = getThreadEmails(threadId, label: label)
+        let emails = Array(getThreadEmails(threadId, label: label))
         let realm = try! Realm()
         
         try! realm.write {
