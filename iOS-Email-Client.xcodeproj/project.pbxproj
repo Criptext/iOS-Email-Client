@@ -247,7 +247,6 @@
 		A7CC385121924D2B00C8355A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
 		A7CC3852219250D100C8355A /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
 		A7CC3858219348E800C8355A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229B12076923E00C32998 /* Alamofire.framework */; };
-		A7CC385A21934C6400C8355A /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385921934C6400C8355A /* Database.swift */; };
 		A7CC385B21934DC600C8355A /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385C21934E1200C8355A /* DBAxolotl.swift */; };
 		A7CC385E21934E1200C8355A /* DBAxolotl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385C21934E1200C8355A /* DBAxolotl.swift */; };
@@ -582,7 +581,6 @@
 		A7CC38112190DA2D00C8355A /* NotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationExtension.entitlements; sourceTree = "<group>"; };
 		A7CC3853219258B800C8355A /* DateUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		A7CC385421933CFC00C8355A /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
-		A7CC385921934C6400C8355A /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		A7CC385C21934E1200C8355A /* DBAxolotl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBAxolotl.swift; sourceTree = "<group>"; };
 		A7CC386921936A0300C8355A /* NewEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmail.swift; sourceTree = "<group>"; };
 		A7CC387421939B2600C8355A /* NewEmailHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmailHandler.swift; sourceTree = "<group>"; };
@@ -1140,7 +1138,6 @@
 				A7CC38082190D9DA00C8355A /* Info.plist */,
 				A7CC3853219258B800C8355A /* DateUtils.h */,
 				A7CC385421933CFC00C8355A /* Extension-Bridging-Header.h */,
-				A7CC385921934C6400C8355A /* Database.swift */,
 			);
 			path = NotificationExtension;
 			sourceTree = "<group>";
@@ -1646,7 +1643,6 @@
 				A7CC387621939B2600C8355A /* NewEmailHandler.swift in Sources */,
 				A7CC386621934FF400C8355A /* CRPreKeyRecord.swift in Sources */,
 				A7CC386C21936A6000C8355A /* SignalHandler.swift in Sources */,
-				A7CC385A21934C6400C8355A /* Database.swift in Sources */,
 				A7CC386B21936A0300C8355A /* NewEmail.swift in Sources */,
 				A7CC388121939E8800C8355A /* ContactUtils.swift in Sources */,
 				A7CC385E21934E1200C8355A /* DBAxolotl.swift in Sources */,
