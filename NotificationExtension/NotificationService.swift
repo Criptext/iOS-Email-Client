@@ -57,7 +57,7 @@ class NotificationService: UNNotificationServiceExtension {
         var focusEvent: [String: Any]? = nil
         for event in events {
             guard let paramsString = event["params"] as? String,
-                let params = convertToDictionary(text: paramsString),
+                let params = SharedUtils.convertToDictionary(text: paramsString),
                 let emailKey = params["metadataKey"] as? Int,
                 emailKey == key else {
                 continue
@@ -73,18 +73,6 @@ class NotificationService: UNNotificationServiceExtension {
         newEmailHandler.command(params: event) { (result) in
             completion(result.email)
         }
-    }
-    
-    func convertToDictionary(text: String) -> [String: Any]? {
-        guard let data = text.data(using: .utf8) else {
-            return nil
-        }
-        do {
-            return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-        } catch {
-            print(error.localizedDescription)
-        }
-        return nil
     }
     
     override func serviceExtensionTimeWillExpire() {

@@ -649,15 +649,6 @@ extension UIColor {
     static let charcoal = UIColor(red: 106/255, green: 112/255, blue: 127/255, alpha: 1)
     static let lightIcon = UIColor(red: 220/255, green: 221/255, blue: 224/255, alpha: 1)
     
-    func toHexString() -> String {
-        var r:CGFloat = 0
-        var g:CGFloat = 0
-        var b:CGFloat = 0
-        var a:CGFloat = 0
-        getRed(&r, green: &g, blue: &b, alpha: &a)
-        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
-        return String(format:"%06x", rgb)
-    }
 }
 
 var DJB_TYPE : UInt8 = 0x05;

@@ -20,7 +20,7 @@ class Label : Object {
     init(_ labelText: String) {
         super.init()
         self.text = labelText
-        self.color = "ff00ff"
+        self.color = SharedUtils.generateRandomColor().toHexString()
     }
     
     required init(realm: RLMRealm, schema: RLMObjectSchema) {
