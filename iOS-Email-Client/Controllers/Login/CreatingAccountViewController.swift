@@ -135,8 +135,9 @@ class CreatingAccountViewController: UIViewController{
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
         DBManager.store([myContact])
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        groupDefaults.set(myAccount.username, forKey: "activeAccount")
         let defaults = UserDefaults.standard
-        defaults.set(myAccount.username, forKey: "activeAccount")
         if signupData.deviceId != 1 {
             defaults.set(true, forKey: "welcomeTour")
         }

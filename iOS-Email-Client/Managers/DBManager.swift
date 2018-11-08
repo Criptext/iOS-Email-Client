@@ -205,12 +205,6 @@ class DBManager: SharedDB {
         }
     }
     
-    class func getAccountByUsername(_ username: String) -> Account? {
-        let realm = try! Realm()
-        
-        return realm.object(ofType: Account.self, forPrimaryKey: username)
-    }
-    
     class func update(account: Account, jwt: String){
         let realm = try! Realm()
         

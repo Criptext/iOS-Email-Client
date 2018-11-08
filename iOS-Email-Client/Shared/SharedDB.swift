@@ -17,6 +17,12 @@ class SharedDB {
         return realm.objects(Account.self).first
     }
     
+    class func getAccountByUsername(_ username: String) -> Account? {
+        let realm = try! Realm()
+        
+        return realm.object(ofType: Account.self, forPrimaryKey: username)
+    }
+    
     @discardableResult class func store(_ email:Email) -> Bool {
         let realm = try! Realm()
         

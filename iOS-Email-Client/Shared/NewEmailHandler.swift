@@ -13,6 +13,11 @@ class NewEmailHandler {
     
     var database: SharedDB.Type = SharedDB.self
     var api: SharedAPI.Type = SharedAPI.self
+    let username: String
+    
+    init(username: String){
+        self.username = username
+    }
     
     struct Result {
         let email: Email?
@@ -30,7 +35,7 @@ class NewEmailHandler {
     }
     
     func command(params: [String: Any], completion: @escaping (_ result: Result) -> Void){
-        guard let myAccount = database.getFirstAccount() else {
+        guard let myAccount = database.getAccountByUsername(self.username) else {
             completion(Result(success: false))
             return
         }
@@ -73,7 +78,7 @@ class NewEmailHandler {
             }
             
             guard (unsent || error == nil),
-                let myAccount = self.database.getFirstAccount(),
+                let myAccount = self.database.getAccountByUsername(self.username),
                 case let .SuccessString(body) = responseData,
                 let username = ContactUtils.getUsernameFromEmailFormat(event.from),
                 let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId) else {

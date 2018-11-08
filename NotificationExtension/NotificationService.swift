@@ -26,9 +26,11 @@ class NotificationService: UNNotificationServiceExtension {
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         guard let bestAttemptContent = bestAttemptContent,
-            let account = SharedDB.getFirstAccount() else {
+            let username = groupDefaults.string(forKey: "activeAccount"),
+            let account = SharedDB.getAccountByUsername(username) else {
                 contentHandler(request.content)
                 return
         }
@@ -40,20 +42,27 @@ class NotificationService: UNNotificationServiceExtension {
                 contentHandler(request.content)
                 return
             }
-            self.handleEvents(events, for: key) { responseEmail in
+            self.handleEvents(events, username: username, for: key) { responseEmail in
                 guard let email = responseEmail else {
                     contentHandler(request.content)
                     return
                 }
-                bestAttemptContent.title = email.fromContact.displayName
-                bestAttemptContent.subtitle = email.subject
-                bestAttemptContent.body = email.preview
+                
+                
+                if groupDefaults.bool(forKey: "previewDisable") {
+                    bestAttemptContent.title = email.fromContact.displayName
+                    bestAttemptContent.body = email.subject
+                } else {
+                    bestAttemptContent.title = email.fromContact.displayName
+                    bestAttemptContent.subtitle = email.subject
+                    bestAttemptContent.body = email.preview
+                }
                 contentHandler(bestAttemptContent)
             }
         }
     }
     
-    func handleEvents(_ events: [[String: Any]], for key: Int, completion: @escaping (_ email: Email?) -> Void){
+    func handleEvents(_ events: [[String: Any]], username: String, for key: Int, completion: @escaping (_ email: Email?) -> Void){
         var focusEvent: [String: Any]? = nil
         for event in events {
             guard let paramsString = event["params"] as? String,
@@ -69,7 +78,7 @@ class NotificationService: UNNotificationServiceExtension {
             completion(nil)
             return
         }
-        let newEmailHandler = NewEmailHandler()
+        let newEmailHandler = NewEmailHandler(username: username)
         newEmailHandler.command(params: event) { (result) in
             completion(result.email)
         }

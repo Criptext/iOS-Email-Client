@@ -106,8 +106,8 @@ class ComposeViewController: UIViewController {
         let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
         textField.font = Font.regular.size(14)
         
-        let defaults = UserDefaults.standard
-        activeAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        activeAccount = DBManager.getAccountByUsername(groupDefaults.string(forKey: "activeAccount")!)
         fileManager.token = activeAccount.jwt
         
         let sendImage = Icon.send.image?.tint(with: .white)
