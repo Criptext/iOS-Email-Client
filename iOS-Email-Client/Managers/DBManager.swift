@@ -11,7 +11,7 @@ import SwiftyJSON
 import RealmSwift
 
 //MARK: - User related
-class DBManager {
+class DBManager: SharedDB {
     
     static let PAGINATION_SIZE = 20
     
@@ -194,10 +194,9 @@ class DBManager {
             return
         }
     }
-}
 
-//MARK: - Account related
-extension DBManager {
+    //MARK: - Account related
+    
     class func store(_ account: Account){
         let realm = try! Realm()
         
@@ -210,12 +209,6 @@ extension DBManager {
         let realm = try! Realm()
         
         return realm.object(ofType: Account.self, forPrimaryKey: username)
-    }
-    
-    class func getFirstAccount() -> Account? {
-        let realm = try! Realm()
-        
-        return realm.objects(Account.self).first
     }
     
     class func update(account: Account, jwt: String){
@@ -250,10 +243,8 @@ extension DBManager {
             account.signatureEnabled = enabled
         }
     }
-}
 
-//MARK: - Email related
-extension DBManager {
+    //MARK: - Email related
 
     @discardableResult class func store(_ email:Email, update: Bool = true) -> Bool {
         let realm = try! Realm()
@@ -426,27 +417,6 @@ extension DBManager {
         return myEmails
     }
     
-    class func getMailByKey(key: Int) -> Email?{
-        let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "key == \(key)")
-        let results = realm.objects(Email.self).filter(predicate)
-        
-        return results.first
-    }
-    
-    class func updateEmail(_ email: Email, status: Email.Status){
-        guard email.isSent || email.isDraft else {
-            return
-        }
-        
-        let realm = try! Realm()
-        
-        try! realm.write() {
-            email.status = status
-        }
-    }
-    
     class func updateEmail(_ email: Email, password: String){
         let realm = try! Realm()
         
@@ -499,14 +469,6 @@ extension DBManager {
             }
             
             realm.delete(email)
-        }
-    }
-    
-    class func updateEmail(_ email: Email, unread: Bool){
-        let realm = try! Realm()
-        
-        try! realm.write() {
-            email.unread = unread
         }
     }
     
@@ -623,21 +585,8 @@ extension DBManager {
             })
         }
     }
-}
 
-//MARK: - Contacts related
-extension DBManager {
-
-    class func store(_ contacts:[Contact]){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            contacts.forEach({ (contact) in
-                contact.id = (realm.objects(Contact.self).max(ofProperty: "id") as Int? ?? 0) + 1
-                realm.add(contacts, update: true)
-            })
-        }
-    }
+    //MARK: - Contacts related
     
     class func getContacts(_ text:String) -> [Contact]{
         let realm = try! Realm()
@@ -648,27 +597,7 @@ extension DBManager {
         return Array(results)
     }
     
-    class func getContact(_ email:String) -> Contact?{
-        let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "email == '\(email)'")
-        let results = realm.objects(Contact.self).filter(predicate)
-        
-        return results.first
-    }
-    
-    class func update(contact: Contact, name: String){
-        let realm = try! Realm()
-        try! realm.write {
-            contact.displayName = name
-        }
-    }
-    
-}
-
-extension DBManager {
-    
-//MARK: - Labels
+    //MARK: - Labels
     
     class func store(_ label: Label, incrementId: Bool = false){
         let realm = try! Realm()
@@ -700,12 +629,6 @@ extension DBManager {
         let realm = try! Realm()
         
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "type = 'custom' and visible = true")))
-    }
-    
-    class func getLabel(_ labelId: Int) -> Label?{
-        let realm = try! Realm()
-        
-        return realm.object(ofType: Label.self, forPrimaryKey: labelId)
     }
     
     class func getLabel(text: String) -> Label?{
@@ -768,31 +691,6 @@ extension DBManager {
         }
     }
     
-    class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
-        let realm = try! Realm()
-        let wasInTrash = email.isTrash
-        try! realm.write {
-            for labelId in addedLabelIds {
-                guard !email.labels.contains(where: {$0.id == labelId}),
-                    let label = self.getLabel(labelId) else {
-                    continue
-                }
-                email.labels.append(label)
-            }
-            for labelId in removedLabelIds {
-                guard let index = email.labels.index(where: {$0.id == labelId}) else {
-                    continue
-                }
-                email.labels.remove(at: index)
-            }
-            if (!wasInTrash && email.isTrash) {
-                email.trashDate = Date()
-            } else if (wasInTrash && !email.isTrash) {
-                email.trashDate = nil
-            }
-        }
-    }
-    
     class func getMoveableLabels(label: Int) -> [Label] {
         let moveableLabels = (SystemLabel.init(rawValue: label) ?? .starred).moveableLabels
         return moveableLabels.map({ (label) -> Label in
@@ -806,18 +704,7 @@ extension DBManager {
         return settableLabels
     }
     
-}
-
-//MARK: - File
-
-extension DBManager {
-    class func store(_ file: File){
-        let realm = try! Realm()
-        try! realm.write {
-            file.id = (realm.objects(File.self).max(ofProperty: "id") as Int? ?? 0) + 1
-            realm.add(file, update: true)
-        }
-    }
+    //MARK: - File
     
     class func store(_ files: [File]){
         let realm = try! Realm()
@@ -854,11 +741,8 @@ extension DBManager {
             realm.delete(files)
         }
     }
-}
 
-//MARK: - Feed
-
-extension DBManager {
+    //MARK: - Feed
     
     class func store(_ feed: FeedItem){
         let realm = try! Realm()
@@ -898,20 +782,8 @@ extension DBManager {
             realm.delete(feed)
         }
     }
-}
-
-//MARK: - Email Contact
-extension DBManager {
     
-    class func store(_ emailContacts:[EmailContact]){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            for emailContact in emailContacts {
-                realm.add(emailContact, update: true)
-            }
-        }
-    }
+    //MARK: - Email Contact
     
     class func getEmailContacts() -> [EmailContact] {
         let realm = try! Realm()
@@ -924,31 +796,16 @@ extension DBManager {
         
         return Array(realm.objects(EmailContact.self).filter("email.key == \(emailKey)"))
     }
-}
 
-//MARK: - FileKey
-extension DBManager {
-    
-    class func store(_ fileKeys: [FileKey]){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            for fileKey in fileKeys {
-                fileKey.incrementID()
-                realm.add(fileKey, update: true)
-            }
-        }
-    }
+    //MARK: - FileKey
     
     class func getFileKey(emailId: Int) -> FileKey? {
         let realm = try! Realm()
         
         return realm.objects(FileKey.self).filter("emailId == %@", emailId).first
     }
-}
 
-//MARK: - Peer Events
-extension DBManager {
+    //MARK: - Peer Events
     
     class func markAsUnread(emailKeys: [Int], unread: Bool){
         let realm = try! Realm()
@@ -1074,11 +931,9 @@ extension DBManager {
             }
         }
     }
-}
 
-//MARK: - QueueItem
-
-extension DBManager {
+    //MARK: - QueueItem
+    
     @discardableResult class func createQueueItem(params: [String: Any]) -> QueueItem {
         let realm = try! Realm()
         let queueItem = QueueItem()

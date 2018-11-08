@@ -1,5 +1,5 @@
 //
-//  ContactUtils.swift
+//  SharedContactUtils.swift
 //  iOS-Email-Client
 //
 //  Created by Allisson on 11/7/18.
@@ -8,30 +8,30 @@
 
 import Foundation
 
-class ServiceContactUtils {
-    private class func parseContact(_ contactString: String, database: Database) -> Contact {
+class ContactUtils {
+    private class func parseContact(_ contactString: String) -> Contact {
         let contactMetadata = self.getStringEmailName(contact: contactString);
-        guard let existingContact = database.getContact(contactMetadata.0) else {
+        guard let existingContact = SharedDB.getContact(contactMetadata.0) else {
             let newContact = Contact(value: ["displayName": contactMetadata.1, "email": contactMetadata.0])
-            database.store([newContact])
+            SharedDB.store([newContact])
             return newContact
         }
         let isNewNameFromEmail = contactMetadata.0.starts(with: contactMetadata.1)
         if (!isNewNameFromEmail && contactMetadata.1 != existingContact.displayName) {
-            database.update(contact: existingContact, name: contactMetadata.1)
+            SharedDB.update(contact: existingContact, name: contactMetadata.1)
         }
         return existingContact
     }
     
-    class func parseEmailContacts(_ contacts: [String], database: Database, email: Email, type: ContactType){
+    class func parseEmailContacts(_ contacts: [String], email: Email, type: ContactType){
         contacts.forEach { (contactString) in
-            let contact = parseContact(contactString, database: database)
+            let contact = parseContact(contactString)
             let emailContact = EmailContact()
             emailContact.contact = contact
             emailContact.email = email
             emailContact.type = type.rawValue
             emailContact.compoundKey = "\(email.key):\(contact.email):\(type.rawValue)"
-            database.store([emailContact])
+            SharedDB.store([emailContact])
         }
     }
     

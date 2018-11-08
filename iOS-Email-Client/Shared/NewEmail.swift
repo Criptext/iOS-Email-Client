@@ -38,9 +38,9 @@ struct NewEmail {
         date = NewEmail.convertToDate(dateString: dateString)
         
         from = params["from"] as! String
-        to = (params["to"] as? [String]) ?? ServiceContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
-        cc = (params["cc"] as? [String]) ?? ServiceContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
-        bcc = (params["bcc"] as? [String]) ?? ServiceContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
+        to = (params["to"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
+        cc = (params["cc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
+        bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
         labels = (params["labels"] as? [String]) ?? [String]()
     }
     

@@ -875,7 +875,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 view.add(token)
                 return
             }
-            if APIManager.isValidEmail(text: name) {
+            if Utils.validateEmail(name) {
                 let valueObject = NSString(string: name)
                 let token = CLToken(displayText: name, context: valueObject)
                 view.add(token)
@@ -934,7 +934,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             view.add(token)
             return
         }
-        if APIManager.isValidEmail(text: text) {
+        if Utils.validateEmail(text) {
             let valueObject = NSString(string: text)
             let token = CLToken(displayText: text, context: valueObject)
             view.add(token)

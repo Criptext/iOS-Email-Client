@@ -1,6 +1,6 @@
 //
-//  Database.swift
-//  NotificationExtension
+//  SharedDB.swift
+//  iOS-Email-Client
 //
 //  Created by Allisson on 11/7/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
@@ -9,23 +9,15 @@
 import Foundation
 import RealmSwift
 
-class Database {
+class SharedDB {
     
-    init() {
-        let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.criptext.team")!.appendingPathComponent("default.realm")
-        let config = Realm.Configuration(
-            fileURL: fileURL,
-            schemaVersion: 7)
-        Realm.Configuration.defaultConfiguration = config
-    }
-    
-    func getFirstAccount() -> Account? {
+    class func getFirstAccount() -> Account? {
         let realm = try! Realm()
         
         return realm.objects(Account.self).first
     }
     
-    @discardableResult func store(_ email:Email) -> Bool {
+    @discardableResult class func store(_ email:Email) -> Bool {
         let realm = try! Realm()
         
         do {
@@ -41,7 +33,7 @@ class Database {
         }
     }
     
-    func store(_ contacts:[Contact]){
+    class func store(_ contacts:[Contact]){
         let realm = try! Realm()
         
         try! realm.write {
@@ -52,14 +44,14 @@ class Database {
         }
     }
     
-    func update(contact: Contact, name: String){
+    class func update(contact: Contact, name: String){
         let realm = try! Realm()
         try! realm.write {
             contact.displayName = name
         }
     }
     
-    func getContact(_ email:String) -> Contact?{
+    class func getContact(_ email:String) -> Contact?{
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "email == '\(email)'")
@@ -68,7 +60,7 @@ class Database {
         return results.first
     }
     
-    func store(_ emailContacts:[EmailContact]){
+    class func store(_ emailContacts:[EmailContact]){
         let realm = try! Realm()
         
         try! realm.write {
@@ -78,7 +70,7 @@ class Database {
         }
     }
     
-    func store(_ file: File){
+    class func store(_ file: File){
         let realm = try! Realm()
         try! realm.write {
             file.id = (realm.objects(File.self).max(ofProperty: "id") as Int? ?? 0) + 1
@@ -86,7 +78,7 @@ class Database {
         }
     }
     
-    func store(_ fileKeys: [FileKey]){
+    class func store(_ fileKeys: [FileKey]){
         let realm = try! Realm()
         
         try! realm.write {
@@ -97,7 +89,7 @@ class Database {
         }
     }
     
-    func updateEmail(_ email: Email, status: Email.Status){
+    class func updateEmail(_ email: Email, status: Email.Status){
         guard email.isSent || email.isDraft else {
             return
         }
@@ -109,7 +101,7 @@ class Database {
         }
     }
     
-    func updateEmail(_ email: Email, unread: Bool){
+    class func updateEmail(_ email: Email, unread: Bool){
         let realm = try! Realm()
         
         try! realm.write() {
@@ -117,7 +109,7 @@ class Database {
         }
     }
     
-    func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
+    class func addRemoveLabelsFromEmail(_ email: Email, addedLabelIds: [Int], removedLabelIds: [Int]){
         let realm = try! Realm()
         let wasInTrash = email.isTrash
         try! realm.write {
@@ -142,13 +134,13 @@ class Database {
         }
     }
     
-    func getLabel(_ labelId: Int) -> Label?{
+    class func getLabel(_ labelId: Int) -> Label?{
         let realm = try! Realm()
         
         return realm.object(ofType: Label.self, forPrimaryKey: labelId)
     }
     
-    func getMailByKey(key: Int) -> Email?{
+    class func getMailByKey(key: Int) -> Email?{
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "key == \(key)")

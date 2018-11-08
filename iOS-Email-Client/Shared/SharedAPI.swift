@@ -1,25 +1,22 @@
 //
-//  APIManager.swift
-//  Criptext Secure Email
+//  SharedAPI.swift
+//  iOS-Email-Client
 //
-//  Created by Gianni Carlo on 2/16/17.
-//  Copyright © 2017 Criptext, Inc. All rights reserved.
+//  Created by Allisson on 11/7/18.
+//  Copyright © 2018 Criptext Inc. All rights reserved.
 //
+
+import Foundation
 
 import Foundation
 import SwiftyJSON
 import Alamofire
 import RealmSwift
 
-protocol ProgressDelegate {
-    func updateProgress(_ percent:Double, for id:String)
-    func chunkUpdateProgress(_ percent: Double, for token: String, part: Int)
-}
-
-class APIRequest {
-    let baseUrl = "https://stage.mail.criptext.com"
-    let apiVersion = "3.0.0"
-    let versionHeader = "criptext-api-version"
+class SharedAPI {
+    static let baseUrl = Env.apiURL
+    static let apiVersion = "3.0.0"
+    static let versionHeader = "criptext-api-version"
     
     enum code: Int {
         case none = 0
@@ -41,58 +38,86 @@ class APIRequest {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    private func handleResponse<T>(_ responseRequest: DataResponse<T>, satisfy: code? = nil) -> Any? {
+    open class func handleResponse<T>(_ responseRequest: DataResponse<T>, satisfy: code? = nil) -> ResponseData {
         let response = responseRequest.response
         let error = responseRequest.error
-        print("ALAMOFIRE SERVICE REQUEST : \(response?.url?.description ?? "NONE") -- \(response?.statusCode ?? 0)")
+        print("ALAMOFIRE REQUEST : \(response?.url?.description ?? "NONE") -- \(response?.statusCode ?? 0)")
         
-        if error?._code == NSURLErrorTimedOut || error?._code == NSURLErrorNotConnectedToInternet || error?._code == NSURLErrorNetworkConnectionLost {
-            return nil
+        if error?._code == NSURLErrorTimedOut {
+            return ResponseData.Error(CriptextError(code: .timeout))
+        } else if error?._code == NSURLErrorNotConnectedToInternet || error?._code == NSURLErrorNetworkConnectionLost  {
+            return ResponseData.Error(CriptextError(code: .offline))
         }
-        guard (response?.statusCode) != nil else {
-            return nil
+        guard let status = response?.statusCode else {
+            return .Error(CriptextError(message: "Unable to get a valid response"))
+        }
+        
+        switch(code.init(rawValue: status) ?? .none){
+        case satisfy:
+            return .Success
+        case .unauthorized:
+            return .Unauthorized
+        case .forbidden:
+            return .Forbidden
+        case .missing:
+            return .Missing
+        case .badRequest:
+            return .BadRequest
+        case .authDenied:
+            return .AuthDenied
+        case .authPending:
+            return .AuthPending
+        case .tooManyRequests:
+            return .TooManyRequests
+        case .tooManyDevices:
+            return .TooManyDevices
+        case .conflicts:
+            return .Conflicts
+        case .success, .successAccepted, .successNoContent, .notModified:
+            break
+        default:
+            guard status < code.serverError.rawValue else {
+                return .ServerError
+            }
+            return .Error(CriptextError(message: responseRequest.result.description))
         }
         
         switch (responseRequest.result.value){
+        case let result as Int:
+            return .SuccessInt(result)
         case let result as [[String: Any]]:
-            return result
+            return .SuccessArray(result)
+        case let result as [String: Any]:
+            return .SuccessDictionary(result)
         case let result as String:
-            return result
+            return .SuccessString(result)
         default:
-            return nil
+            return .Success
         }
     }
     
-    func getEvents(token: String, completion: @escaping (([[String: Any]]?) -> Void)){
+    class func getEvents(token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event"
         let headers = ["Authorization": "Bearer \(token)",
             versionHeader: apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            guard let responseData = self.handleResponse(response) as? [[String: Any]] else {
-                completion(nil)
-                return
-            }
+            let responseData = handleResponse(response)
             completion(responseData)
         }
     }
     
-    func getEmailBody(metadataKey: Int, token: String, completion: @escaping ((String?) -> Void)){
+    class func getEmailBody(metadataKey: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let headers = ["Authorization": "Bearer \(token)",
             versionHeader: apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
-            guard let responseData = self.handleResponse(response) as? String else {
-                completion(nil)
-                return
-            }
+            let responseData = handleResponse(response)
             completion(responseData)
         }
     }
 }
 
-
-extension APIRequest {
-    
+extension SharedAPI {
     class func cancelUpload(_ id:String) {
         Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { (_, uploadDataArray, _) in
             for upload in uploadDataArray {
@@ -122,3 +147,4 @@ extension APIRequest {
         }
     }
 }
+
