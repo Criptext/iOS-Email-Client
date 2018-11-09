@@ -95,10 +95,6 @@ class SharedDB {
     }
     
     class func updateEmail(_ email: Email, status: Int){
-        guard email.isSent || email.isDraft else {
-            return
-        }
-        
         let realm = try! Realm()
         
         try! realm.write() {

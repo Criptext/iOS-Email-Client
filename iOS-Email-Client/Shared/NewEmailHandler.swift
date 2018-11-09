@@ -115,7 +115,7 @@ class NewEmailHandler {
             ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
             
             if(self.isFromMe(email: email, account: myAccount)){
-                self.database.updateEmail(email, status: .sent)
+                self.database.updateEmail(email, status: Email.Status.sent.rawValue)
                 self.database.updateEmail(email, unread: false)
                 self.database.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
             }
