@@ -75,7 +75,7 @@ class LabelsUIPopover: BaseUIPopover {
         let labelsPopover = LabelsUIPopover()
         labelsPopover.type = type
         labelsPopover.headerTitle = type == .moveTo ? "Move To" : "Add labels"
-        let labels = type == .moveTo ? Label.getMoveableLabels(label: selectedLabel) : Label.getSettableLabels()
+        let labels = type == .moveTo ? DBManager.getMoveableLabels(label: selectedLabel) : DBManager.getSettableLabels()
         labelsPopover.labels.append(contentsOf: labels)
         return labelsPopover
     }

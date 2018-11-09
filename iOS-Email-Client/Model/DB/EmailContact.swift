@@ -7,6 +7,7 @@
 //
 
 import RealmSwift
+import Foundation
 
 class EmailContact: Object{
     
@@ -22,6 +23,13 @@ class EmailContact: Object{
     override static func primaryKey() -> String? {
         return "compoundKey"
     }
+}
+
+enum ContactType : String {
+    case from = "from"
+    case to = "to"
+    case cc = "cc"
+    case bcc = "bcc"
 }
 
 extension EmailContact{

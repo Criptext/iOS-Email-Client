@@ -29,10 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize sign-in
         Fabric.with([Crashlytics.self])
         
-        UIApplication.shared.statusBarStyle = .lightContent
+        let realmURL = self.relocateDatabase()
         
         let config = Realm.Configuration(
-            schemaVersion: 7,
+            fileURL: realmURL,
+            schemaVersion: Env.databaseVersion,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 3) {
                     migration.enumerateObjects(ofType: FeedItem.className()){ oldObject, newObject in
@@ -117,6 +118,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.registerPushNotifications()
         IQKeyboardManager.shared.enable = true
         return true
+    }
+    
+    func relocateDatabase() -> URL? {
+        let fileManager = FileManager.default
+        
+        //Cache original realm path (documents directory)
+        guard let originalDefaultRealmPath = Realm.Configuration.defaultConfiguration.fileURL,
+            let appGroupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.criptext.team") else {
+                return nil
+        }
+        let realmPath = appGroupURL.appendingPathComponent("default.realm")
+        if (fileManager.fileExists(atPath: originalDefaultRealmPath.path) && !fileManager.fileExists(atPath: realmPath.path)) {
+            
+            do {
+                try fileManager.moveItem(at: originalDefaultRealmPath, to: realmPath)
+            } catch {
+                print(error)
+            }
+        }
+        
+        var config = Realm.Configuration.defaultConfiguration
+        config.fileURL = realmPath
+        Realm.Configuration.defaultConfiguration = config
+        
+        return realmPath
     }
     
     func registerPushNotifications() {
@@ -347,18 +373,12 @@ extension AppDelegate: MessagingDelegate {
                 let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
                 let navVC = rootVC.childViewControllers.first as? UINavigationController,
                 let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                    if (action == "open_thread") {
-                        self.showActionLocalNotification(userInfo: userInfo)
-                    }
                     completionHandler(.noData)
                     return
             }
             inboxVC.getPendingEvents(nil) { success in
                 let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
                 UIApplication.shared.applicationIconBadgeNumber = emails.count + (success ? 0 : 1)
-                if (action == "open_thread") {
-                    self.showActionLocalNotification(userInfo: userInfo)
-                }
                 completionHandler(.newData)
             }
         }

@@ -655,7 +655,7 @@ extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate
         
         let filename = url.lastPathComponent
         self.isEdited = true
-        self.fileManager.registerFile(filepath: url.path, name: filename, mimeType: mimeTypeForPath(path: filename))
+        self.fileManager.registerFile(filepath: url.path, name: filename, mimeType: File.mimeTypeForPath(path: filename))
         self.tableView.performUpdate({
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
         }, completion: nil)
@@ -875,7 +875,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 view.add(token)
                 return
             }
-            if APIManager.isValidEmail(text: name) {
+            if Utils.validateEmail(name) {
                 let valueObject = NSString(string: name)
                 let token = CLToken(displayText: name, context: valueObject)
                 view.add(token)
@@ -934,7 +934,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             view.add(token)
             return
         }
-        if APIManager.isValidEmail(text: text) {
+        if Utils.validateEmail(text) {
             let valueObject = NSString(string: text)
             let token = CLToken(displayText: text, context: valueObject)
             view.add(token)

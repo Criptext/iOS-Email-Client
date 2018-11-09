@@ -40,7 +40,7 @@ extension CriptextIdentityKeyStore: IdentityKeyStore{
         let trustedDevice = CRTrustedDevice()
         trustedDevice.identityB64 = rawIdentity
         trustedDevice.recipientId = recipientId
-        DBManager.store(trustedDevice)
+        DBAxolotl.store(trustedDevice)
         return true
     }
     
@@ -50,7 +50,7 @@ extension CriptextIdentityKeyStore: IdentityKeyStore{
         }
         
         guard direction == .outgoing,
-            let trustedDevice = DBManager.getTrustedDevice(recipientId: recipientId) else {
+            let trustedDevice = DBAxolotl.getTrustedDevice(recipientId: recipientId) else {
             return true
         }
         

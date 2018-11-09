@@ -40,4 +40,6 @@ struct Env {
     static var apiURL: String {
         return "https://api.criptext.com"
     }
+    
+    static let databaseVersion: UInt64 = 7
 }

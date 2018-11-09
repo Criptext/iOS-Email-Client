@@ -110,7 +110,7 @@ class SendMailAsyncTask {
         var criptextEmailsData = [[String: Any]]()
         for (recipientId, type) in criptextEmails {
             let type = type as! String
-            let recipientSessions = DBManager.getSessionRecords(recipientId: recipientId)
+            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId)
             let deviceIds = recipientSessions.map { $0.deviceId }
             recipients.append(recipientId)
             for deviceId in deviceIds {

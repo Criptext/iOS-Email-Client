@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import MobileCoreServices
 
 class File : Object {
     
@@ -24,7 +25,7 @@ class File : Object {
     var progress = -1
     var filepath = ""
     var chunksProgress = [Int]()
-    var requestType: CriptextFileManager.RequestType = .upload
+    var requestType: RequestType = .upload
     var requestStatus: uploadStatus = .none
 
     override static func primaryKey() -> String? {
@@ -51,6 +52,11 @@ class File : Object {
         case finish
         case failed
     }
+    
+    enum RequestType {
+        case upload
+        case download
+    }
 }
 
 extension File{
@@ -67,8 +73,19 @@ extension File{
                 "date": dateString,
                 "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId,
-                "mimeType": mimeType.isEmpty ? mimeTypeForPath(path: name) : mimeType
+                "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType
             ]
         ]
+    }
+    
+    class func mimeTypeForPath(path: String) -> String {
+        let url = NSURL(fileURLWithPath: path)
+        
+        if let pathExtension = url.pathExtension,
+            let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue(),
+            let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue(){
+            return mimetype as String
+        }
+        return "application/octet-stream"
     }
 }

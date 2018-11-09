@@ -119,91 +119,13 @@ class EventHandler {
     }
     
     func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Event.EventResult) -> Void){
-        let event = EventData.NewEmail.init(params: params)
-        
-        if let email = DBManager.getMailByKey(key: event.metadataKey) {
-            if(isMeARecipient(email: email)){
-                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
-                finishCallback(true, .Email(email))
+        let handler = NewEmailHandler()
+        handler.command(params: params) { (result) in
+            guard let email = result.email else {
+                finishCallback(result.success, .Empty)
                 return
             }
-            finishCallback(true, .Empty)
-            return
-        }
-        
-        let email = Email()
-        email.threadId = event.threadId
-        email.subject = event.subject
-        email.key = event.metadataKey
-        email.messageId = event.messageId
-        email.date = event.date
-        email.unread = true
-        
-        if let attachments = event.files {
-            for attachment in attachments {
-                let file = handleAttachment(attachment, email: email)
-                email.files.append(file)
-            }
-        }
-        
-        apiManager.getEmailBody(metadataKey: email.key, token: myAccount.jwt) { (responseData) in
-            var error: CriptextError?
-            var unsent = false
-            if case let .Error(err) = responseData {
-                error = err
-            }
-            if case .Missing = responseData {
-                unsent = true
-            }
-            
-            guard (unsent || error == nil),
-                let username = Utils.getUsernameFromEmailFormat(event.from),
-                case let .SuccessString(body) = responseData,
-                let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, recipientId: username, senderDeviceId: event.senderDeviceId) else {
-                finishCallback(false, .Empty)
-                return
-            }
-            let contentPreview = self.getContentPreview(content: content)
-            email.content = contentPreview.1
-            email.preview = contentPreview.0
-            if(unsent){
-                email.unsentDate = email.date
-                email.status = .unsent
-            }
-            guard DBManager.store(email, update: !unsent) else {
-                finishCallback(true, .Empty)
-                return
-            }
-            
-            if !unsent,
-                let keyString = event.fileKey,
-                let fileKeyString = self.handleBodyByMessageType(event.messageType, body: keyString, recipientId: username, senderDeviceId: event.senderDeviceId) {
-                let fKey = FileKey()
-                fKey.emailId = email.key
-                fKey.key = fileKeyString
-                DBManager.store([fKey])
-            }
-            
-            ContactUtils.parseEmailContacts([event.from], email: email, type: .from)
-            ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
-            ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
-            ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
-            
-            if(self.isFromMe(email: email)){
-                DBManager.updateEmail(email, status: .sent)
-                DBManager.updateEmail(email, unread: false)
-                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
-            }
-            if(self.isMeARecipient(email: email)){
-                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
-            }
-            if(!event.labels.isEmpty){
-                let labels = event.labels.map({ (labelName) -> Int in
-                    return SystemLabel.fromText(text: labelName)
-                })
-                DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: [])
-            }
-            finishCallback(true, .Email(email))
+            finishCallback(result.success, .Email(email))
         }
     }
     
@@ -267,7 +189,7 @@ class EventHandler {
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
-        file.mimeType = mimeTypeForPath(path: file.name)
+        file.mimeType = File.mimeTypeForPath(path: file.name)
         file.date = email.date
         file.readOnly = attachment["read_only"] as? Int ?? 0
         file.emailId = email.key

@@ -20,7 +20,7 @@ class Label : Object {
     init(_ labelText: String) {
         super.init()
         self.text = labelText
-        self.color = Utils.generateRandomColor().toHexString()
+        self.color = SharedUtils.generateRandomColor().toHexString()
     }
     
     required init(realm: RLMRealm, schema: RLMObjectSchema) {
@@ -42,19 +42,6 @@ class Label : Object {
     func incrementID() {
         let realm = try! Realm()
         id = (realm.objects(Label.self).max(ofProperty: "id") as Int? ?? 0) + 1
-    }
-    
-    class func getMoveableLabels(label: Int) -> [Label] {
-        let moveableLabels = (SystemLabel.init(rawValue: label) ?? .starred).moveableLabels
-        return moveableLabels.map({ (label) -> Label in
-            return DBManager.getLabel(label.id)!
-        })
-    }
-    
-    class func getSettableLabels() -> [Label] {
-        var settableLabels = DBManager.getActiveCustomLabels()
-        settableLabels.append(DBManager.getLabel(SystemLabel.starred.id)!)
-        return settableLabels
     }
 }
 

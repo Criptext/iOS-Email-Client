@@ -298,7 +298,7 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
                 return
             }
             if let email = link.split(separator: ":").last,
-                APIManager.isValidEmail(text: String(email)) {
+                Utils.validateEmail(String(email)) {
                 decisionHandler(.cancel)
                 delegate?.tableViewCellDidTapEmail(email: String(email))
                 return
