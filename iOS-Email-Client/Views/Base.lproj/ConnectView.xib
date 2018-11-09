@@ -28,9 +28,11 @@
                 <outlet property="dotsProgressView" destination="p8P-Xu-AGe" id="lsa-Uv-AEg"/>
                 <outlet property="emailLabel" destination="I2c-6Y-BuD" id="myo-Me-OU8"/>
                 <outlet property="goBackButton" destination="Arr-wh-3Qv" id="jx3-IJ-6dC"/>
+                <outlet property="leftDeviceImage" destination="JNI-pY-rPy" id="AbI-AE-pS4"/>
                 <outlet property="messageLabel" destination="XjA-v0-OUS" id="iFu-3n-xrl"/>
                 <outlet property="percentageView" destination="6n3-A1-hlj" id="PRr-uk-ATf"/>
                 <outlet property="progressAnimatedView" destination="BRJ-lk-cCl" id="5Xg-Qo-hSU"/>
+                <outlet property="rightDeviceImage" destination="DRm-qL-uYQ" id="2dt-ZU-aqr"/>
                 <outlet property="successImage" destination="4rh-2l-H05" id="Gc2-WX-CEK"/>
                 <outlet property="view" destination="BjD-Bq-glM" id="g5Q-h8-GG4"/>
             </connections>

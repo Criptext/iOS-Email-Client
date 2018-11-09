@@ -510,7 +510,7 @@ class ComposeViewController: UIViewController {
             return
         }
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
-        DBManager.updateEmail(email, status: .sending)
+        DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
         DBManager.updateEmail(email, secure: secure)
         if let pass = password {
             DBManager.updateEmail(email, password: pass)

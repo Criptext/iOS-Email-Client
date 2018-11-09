@@ -402,57 +402,6 @@ extension AppDelegate: MessagingDelegate {
         inboxVC.registerToken(fcmToken: fcmToken)
     }
     
-    func showGenericNotification(userInfo: [AnyHashable: Any]) {
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        guard let activeAccount = groupDefaults.string(forKey: "activeAccount") else {
-            return
-        }
-        triggerNotification(title: "\(activeAccount)\(Constants.domain)", subtitle: nil, body: String.localize("You may have new emails"), category: "SIMPLE_OPEN_THREAD", userInfo: userInfo)
-    }
-    
-    func showActionLocalNotification(userInfo: [AnyHashable: Any]){
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        guard !groupDefaults.bool(forKey: "previewDisable") else {
-            showActionDefaultNotification(userInfo: userInfo)
-            return
-        }
-        guard let title = userInfo["title"] as? String,
-            let keyString = userInfo["metadataKey"] as? String,
-            let key = Int(keyString),
-            let email = DBManager.getMail(key: key) else {
-            showGenericNotification(userInfo: userInfo)
-            return
-        }
-        triggerNotification(title: title, subtitle: email.subject, body: "\(email.preview)\(email.preview.count >= Constants.maxPreviewSize ? "..." : "")", category: "OPEN_THREAD", userInfo: userInfo)
-    }
-    
-    func showActionDefaultNotification(userInfo: [AnyHashable: Any]) {
-        guard let title = userInfo["title"] as? String,
-            let body = userInfo["body"] as? String else {
-            return
-        }
-        
-        triggerNotification(title: title, subtitle: nil, body: body, category: "OPEN_THREAD", userInfo: userInfo)
-    }
-    
-    func triggerNotification(title: String, subtitle: String?, body: String, category: String, userInfo: [AnyHashable: Any]) {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        if let sub = subtitle {
-            content.subtitle = sub
-        }
-        content.body = body
-        content.userInfo = userInfo
-        content.sound = UNNotificationSound.default()
-        content.categoryIdentifier = category
-        
-        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest.init(identifier: "\(category)-\(Date().timeIntervalSinceNow)", content: content, trigger: trigger)
-        
-        let center = UNUserNotificationCenter.current()
-        center.add(request)
-    }
-    
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
         
     }

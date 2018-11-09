@@ -18,6 +18,7 @@ class ConnectDeviceViewController: UIViewController{
     let PROGRESS_COMPLETE = 100.0
     @IBOutlet var connectUIView: ConnectUIView!
     var signupData: SignUpData!
+    var linkData: LoginDeviceViewController.LinkAccept?
     var socket : SingleWebSocket?
     var scheduleWorker = ScheduleWorker(interval: 10.0, maxRetries: 18)
     var state: ConnectionState = .sendKeys
@@ -27,7 +28,6 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     internal struct LinkSuccessData {
-        var deviceId: Int32
         var key: String
         var address: String
     }
@@ -49,6 +49,9 @@ class ConnectDeviceViewController: UIViewController{
         scheduleWorker.delegate = self
         connectUIView.goBack = {
             self.goBack()
+        }
+        if let linkAcceptData = linkData {
+            self.connectUIView.setDeviceIcons(leftType: Device.Kind(rawValue: linkAcceptData.authorizerType)!, rightType: .current)
         }
         
         handleState()
@@ -126,8 +129,9 @@ class ConnectDeviceViewController: UIViewController{
     
     func unpackDB(myAccount: Account, path: String, data: LinkSuccessData) {
         self.connectUIView.progressChange(value: PROGRESS_PROCESSING_FILE, message: String.localize("Decrypting Mailbox"), completion: {})
-        guard let keyData = Data(base64Encoded: data.key),
-            let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: data.deviceId),
+        guard let linkAcceptData = self.linkData,
+            let keyData = Data(base64Encoded: data.key),
+            let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: linkAcceptData.authorizerId),
             let decryptedPath = AESCipher.streamEncrypt(path: path, outputName: StaticFile.decryptedDB.name, keyData: decryptedKey, ivData: nil, operation: kCCDecrypt),
             let decompressedPath = try? AESCipher.compressFile(path: decryptedPath, outputName: StaticFile.unzippedDB.name, compress: false) else {
                 self.presentProcessInterrupted()
@@ -266,12 +270,11 @@ extension ConnectDeviceViewController: SingleSocketDelegate {
         switch(cmd){
         case Event.Link.success.rawValue:
             guard let address = params?["dataAddress"] as? String,
-                let key = params?["key"] as? String,
-                let deviceId = params?["authorizerId"] as? Int32 else {
+                let key = params?["key"] as? String else {
                 break
             }
             scheduleWorker.cancel()
-            let data = LinkSuccessData(deviceId: deviceId, key: key, address: address)
+            let data = LinkSuccessData(key: key, address: address)
             state = .downloadDB(data)
             handleState()
         default:

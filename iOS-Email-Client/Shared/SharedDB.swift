@@ -95,6 +95,18 @@ class SharedDB {
         }
     }
     
+    class func updateEmail(_ email: Email, status: Int){
+        guard email.isSent || email.isDraft else {
+            return
+        }
+        
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.delivered = status
+        }
+    }
+    
     class func updateEmail(_ email: Email, status: Email.Status){
         guard email.isSent || email.isDraft else {
             return

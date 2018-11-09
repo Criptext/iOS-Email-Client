@@ -438,7 +438,7 @@ class DBManager: SharedDB {
             newEmail.key = key
             newEmail.messageId = messageId
             newEmail.threadId = threadId
-            newEmail.status = .sent
+            newEmail.delivered = Email.Status.sent.rawValue
             newEmail.unread = false
             newEmail.secure = email.secure
             newEmail.subject = email.subject

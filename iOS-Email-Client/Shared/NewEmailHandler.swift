@@ -128,6 +128,11 @@ class NewEmailHandler {
                 self.database.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: [])
             }
             
+            if let myContact = SharedDB.getContact("\(myAccount.username)\(Env.domain)"),
+                myContact.displayName != myAccount.name {
+                SharedDB.update(contact: myContact, name: myAccount.name)
+            }
+            
             completion(Result(email: email))
         }
     }

@@ -63,7 +63,7 @@ class Email: Object {
             return Status.init(rawValue: delivered)!
         }
         set(typeValue) {
-            if(self.delivered != Status.unsent.rawValue){
+            if(self.delivered != Status.unsent.rawValue && self.delivered != Status.none.rawValue){
                 self.delivered = typeValue.rawValue
             }
         }

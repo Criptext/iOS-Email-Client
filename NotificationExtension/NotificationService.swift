@@ -39,16 +39,20 @@ class NotificationService: UNNotificationServiceExtension {
             guard case let .SuccessArray(events) = responseData,
                 let keyString = userInfo["metadataKey"] as? String,
                 let key = Int(keyString) else {
-                contentHandler(request.content)
+                bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
+                bestAttemptContent.title = "\(username)\(Env.domain)"
+                bestAttemptContent.body = "You may have new emails"
+                contentHandler(bestAttemptContent)
                 return
             }
             self.handleEvents(events, username: username, for: key) { responseEmail in
                 guard let email = responseEmail else {
-                    contentHandler(request.content)
+                    bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
+                    bestAttemptContent.title = "\(username)\(Env.domain)"
+                    bestAttemptContent.body = "You may have new emails"
+                    contentHandler(bestAttemptContent)
                     return
                 }
-                
-                
                 if groupDefaults.bool(forKey: "previewDisable") {
                     bestAttemptContent.title = email.fromContact.displayName
                     bestAttemptContent.body = email.subject
@@ -87,7 +91,13 @@ class NotificationService: UNNotificationServiceExtension {
     override func serviceExtensionTimeWillExpire() {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
-        if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
+        if let groupDefaults = UserDefaults.init(suiteName: Env.groupApp),
+            let activeAccount = groupDefaults.string(forKey: "activeAccount"),
+            let contentHandler = contentHandler,
+            let bestAttemptContent =  bestAttemptContent {
+            bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
+            bestAttemptContent.title = "\(activeAccount)\(Env.domain)"
+            bestAttemptContent.body = "You may have new emails"
             contentHandler(bestAttemptContent)
         }
     }

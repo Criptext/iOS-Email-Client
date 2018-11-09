@@ -53,6 +53,7 @@ class ConnectUploadViewController: UIViewController{
         connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
         scheduleWorker.delegate = self
         self.connectUIView.goBackButton.isHidden = true
+        self.connectUIView.setDeviceIcons(leftType: Device.Kind.current, rightType: Device.Kind(rawValue: linkData.deviceType)!)
         handleState()
     }
     
