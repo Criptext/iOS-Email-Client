@@ -14,6 +14,7 @@ class NewEmailHandler {
     var database: SharedDB.Type = SharedDB.self
     var api: SharedAPI.Type = SharedAPI.self
     let username: String
+    let PREVIEW_SIZE = 300
     
     init(username: String){
         self.username = username
@@ -142,7 +143,11 @@ class NewEmailHandler {
             let deviceId = senderDeviceId else {
                 return body
         }
-        return SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipientId, deviceId: deviceId)
+        var trueBody : String?
+        tryBlock {
+            trueBody = SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipientId, deviceId: deviceId)
+        }
+        return trueBody
     }
     
     func handleAttachment(_ attachment: [String: Any], email: Email) -> File {
@@ -177,11 +182,11 @@ class NewEmailHandler {
         do {
             let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src")
             let doc: Document = try SwiftSoup.parse(content)
-            let preview = try String(doc.text().prefix(100))
+            let preview = try String(doc.text().prefix(self.PREVIEW_SIZE))
             let cleanContent = try SwiftSoup.clean(content, allowList)!
             return (preview, cleanContent)
         } catch {
-            let preview = String(content.prefix(100))
+            let preview = String(content.prefix(self.PREVIEW_SIZE))
             return (preview, content)
         }
     }

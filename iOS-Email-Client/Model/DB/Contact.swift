@@ -10,7 +10,6 @@ import RealmSwift
 import Foundation
 
 class Contact: Object {
-    @objc dynamic var id = 0
     @objc dynamic var displayName = "" //name
     @objc dynamic var email = ""
     

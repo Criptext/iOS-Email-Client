@@ -94,6 +94,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newObject?["trashDate"] = isTrash ? Date() : nil
                     }
                 }
+                if (oldSchemaVersion < 8) {
+                    var existingEmails = [String: MigrationObject]()
+                    var mapFailureEmails = [String: String]()
+                    migration.enumerateObjects(ofType: Contact.className(), { (oldObject, newObject) in
+                        guard let newContact = newObject,
+                            let oldContact = oldObject,
+                            let email = oldContact["email"] as? String else {
+                            return
+                        }
+                        let emailSplit = email.split(separator: " ")
+                        guard emailSplit.count > 1 else {
+                            existingEmails[email] = newContact
+                            return
+                        }
+                        let correctedEmail = String(emailSplit.last!)
+                        mapFailureEmails[email] = correctedEmail
+                        migration.delete(newContact)
+                    })
+                    migration.enumerateObjects(ofType: EmailContact.className(), { (oldObject, newObject) in
+                        guard let oldEmailContact = oldObject,
+                            let emailContact = newObject else {
+                            return
+                        }
+                        guard let contact = oldEmailContact["contact"] as? MigrationObject,
+                            let email = contact["email"] as? String,
+                            let correctedEmail = mapFailureEmails[email] else {
+                            return
+                        }
+                        if let existingContact = existingEmails[correctedEmail] {
+                            emailContact["contact"] = existingContact
+                            return
+                        }
+                        let newContact = migration.create(Contact.className())
+                        newContact["email"] = correctedEmail
+                        newContact["displayName"] = email.replacingOccurrences(of: correctedEmail, with: "").trimmed
+                        emailContact["contact"] = newContact
+                    })
+                    migration.enumerateObjects(ofType: FeedItem.className(), { (oldObject, newObject) in
+                        guard let oldFeed = oldObject,
+                            let newFeed = newObject else {
+                                return
+                        }
+                        guard let contact = oldFeed["contact"] as? MigrationObject,
+                            let email = contact["email"] as? String,
+                            let correctedEmail = mapFailureEmails[email] else {
+                                return
+                        }
+                        if let existingContact = existingEmails[correctedEmail] {
+                            newFeed["contact"] = existingContact
+                            return
+                        }
+                        migration.delete(newFeed)
+                    })
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm

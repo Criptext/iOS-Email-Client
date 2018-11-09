@@ -44,7 +44,6 @@ class SharedDB {
         
         try! realm.write {
             contacts.forEach({ (contact) in
-                contact.id = (realm.objects(Contact.self).max(ofProperty: "id") as Int? ?? 0) + 1
                 realm.add(contacts, update: true)
             })
         }
