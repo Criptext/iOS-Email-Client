@@ -81,9 +81,12 @@ class NewEmailHandler {
             guard (unsent || error == nil),
                 let myAccount = self.database.getAccountByUsername(self.username),
                 case let .SuccessString(body) = responseData,
-                let username = ContactUtils.getUsernameFromEmailFormat(event.from),
-                let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId) else {
+                let username = ContactUtils.getUsernameFromEmailFormat(event.from) else {
                     completion(Result(success: false))
+                    return
+            }
+            guard let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId) else {
+                    completion(Result(success: true))
                     return
             }
             
@@ -95,6 +98,27 @@ class NewEmailHandler {
                 email.unsentDate = email.date
                 email.status = .unsent
             }
+            
+            if self.isFromMe(email: email, account: myAccount, event: event),
+                let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
+                email.delivered = Email.Status.sent.rawValue
+                email.unread = false
+                email.labels.append(sentLabel)
+            }
+            if self.isMeARecipient(email: email, account: myAccount, event: event),
+                let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
+                email.labels.append(inboxLabel)
+            }
+            if(!event.labels.isEmpty){
+                let labels = event.labels.reduce([Label](), { (labelsArray, labelText) -> [Label] in
+                    guard let label = SharedDB.getLabel(text: labelText) else {
+                        return labelsArray
+                    }
+                    return labelsArray.appending(label)
+                })
+                email.labels.append(objectsIn: labels)
+            }
+            
             guard self.database.store(email) else {
                 completion(Result(success: true))
                 return
@@ -113,21 +137,6 @@ class NewEmailHandler {
             ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
             ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
             ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
-            
-            if(self.isFromMe(email: email, account: myAccount)){
-                self.database.updateEmail(email, status: Email.Status.sent.rawValue)
-                self.database.updateEmail(email, unread: false)
-                self.database.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
-            }
-            if(self.isMeARecipient(email: email, account: myAccount)){
-                self.database.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
-            }
-            if(!event.labels.isEmpty){
-                let labels = event.labels.map({ (labelName) -> Int in
-                    return SystemLabel.fromText(text: labelName)
-                })
-                self.database.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: [])
-            }
             
             if let myContact = SharedDB.getContact("\(myAccount.username)\(Env.domain)"),
                 myContact.displayName != myAccount.name {
@@ -176,6 +185,19 @@ class NewEmailHandler {
     func isFromMe(email: Email, account: Account) -> Bool {
         let accountEmail = "\(account.username)\(Env.domain)"
         return accountEmail == email.fromContact.email
+    }
+    
+    func isMeARecipient(email: Email, account: Account, event: NewEmail) -> Bool {
+        let accountEmail = "\(account.username)\(Env.domain)"
+        let isInBcc = event.bcc.contains(where: {ContactUtils.getStringEmailName(contact: $0).0 == accountEmail})
+        let isInCc = event.cc.contains(where: {ContactUtils.getStringEmailName(contact: $0).0 == accountEmail})
+        let isInTo = event.to.contains(where: {ContactUtils.getStringEmailName(contact: $0).0 == accountEmail})
+        return isInBcc || isInCc || isInTo
+    }
+    
+    func isFromMe(email: Email, account: Account, event: NewEmail) -> Bool {
+        let accountEmail = "\(account.username)\(Env.domain)"
+        return accountEmail == ContactUtils.getStringEmailName(contact: event.from).0
     }
     
     func getContentPreview(content: String) -> (String, String) {

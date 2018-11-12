@@ -626,12 +626,6 @@ class DBManager: SharedDB {
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "type = 'custom' and visible = true")))
     }
     
-    class func getLabel(text: String) -> Label?{
-        let realm = try! Realm()
-        
-        return realm.objects(Label.self).filter(NSPredicate(format: "text = %@", text)).first
-    }
-    
     class func getLabels() -> [Label]{
         let realm = try! Realm()
         

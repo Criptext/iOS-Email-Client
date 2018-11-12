@@ -26,3 +26,11 @@ extension String {
         return NSLocalizedString(text, comment: "")
     }
 }
+
+extension Array {
+    func appending(_ newElement: Element) -> Array {
+        var a = Array(self)
+        a.append(newElement)
+        return a
+    }
+}
