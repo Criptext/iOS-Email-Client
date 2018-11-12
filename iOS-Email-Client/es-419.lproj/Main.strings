@@ -114,7 +114,7 @@
 "ie7-GD-mqQ.text" = "Not Confirmed";
 
 /* Class = "UILabel"; text = "Criptext Beta"; ObjectID = "jvs-ss-sIQ"; */
-"jvs-ss-sIQ.text" = "Criptext Beta";
+"jvs-ss-sIQ.text" = "Criptext";
 
 /* Class = "UILabel"; text = "Note: Changing your recovery email will turn off Two-Factor Authentication"; ObjectID = "lM2-53-pVD"; */
 "lM2-53-pVD.text" = "Note: Changing your recovery email will turn off Two-Factor Authentication";

@@ -210,7 +210,7 @@
                                                     <action selector="backButtonPress:" destination="OMZ-WS-rzb" eventType="touchUpInside" id="Bh9-4d-84w"/>
                                                 </connections>
                                             </button>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beta" translatesAutoresizingMaskIntoConstraints="NO" id="sfj-a2-H3S">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="criptext-logo" translatesAutoresizingMaskIntoConstraints="NO" id="sfj-a2-H3S">
                                                 <rect key="frame" x="229" y="20" width="120" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="120" id="PeL-st-DaT"/>
@@ -744,7 +744,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IRh-yh-nrH">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beta" translatesAutoresizingMaskIntoConstraints="NO" id="Asj-th-aWW">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="criptext-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Asj-th-aWW">
                                                 <rect key="frame" x="229" y="20" width="120" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="mHk-0F-jon"/>
@@ -1062,7 +1062,7 @@ from Criptext</string>
                                                     <action selector="backButtonPress:" destination="SKd-jY-l7u" eventType="touchUpInside" id="utB-bs-sUs"/>
                                                 </connections>
                                             </button>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beta" translatesAutoresizingMaskIntoConstraints="NO" id="xCo-DR-Qyr">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="criptext-logo" translatesAutoresizingMaskIntoConstraints="NO" id="xCo-DR-Qyr">
                                                 <rect key="frame" x="229" y="20" width="120" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="120" id="fff-uM-dmN"/>
@@ -1258,7 +1258,7 @@ from Criptext</string>
     </scenes>
     <resources>
         <image name="arrow-back" width="17" height="14"/>
-        <image name="beta" width="118" height="40"/>
+        <image name="criptext-logo" width="118" height="31"/>
         <image name="device-alert" width="49" height="42"/>
         <image name="loading-hourglass" width="38" height="53"/>
         <image name="mark-error" width="28" height="28"/>
