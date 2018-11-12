@@ -104,11 +104,15 @@ class NewEmailHandler {
                 email.delivered = Email.Status.sent.rawValue
                 email.unread = false
                 email.labels.append(sentLabel)
-            }
-            if self.isMeARecipient(email: email, account: myAccount, event: event),
-                let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
+                if self.isMeARecipient(email: email, account: myAccount, event: event),
+                    let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
+                    email.unread = true
+                    email.labels.append(inboxLabel)
+                }
+            } else if let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
                 email.labels.append(inboxLabel)
             }
+            
             if(!event.labels.isEmpty){
                 let labels = event.labels.reduce([Label](), { (labelsArray, labelText) -> [Label] in
                     guard let label = SharedDB.getLabel(text: labelText) else {
