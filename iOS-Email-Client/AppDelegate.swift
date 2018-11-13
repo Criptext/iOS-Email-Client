@@ -130,6 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newContact["email"] = correctedEmail
                         newContact["displayName"] = email.replacingOccurrences(of: correctedEmail, with: "").trimmed
                         emailContact["contact"] = newContact
+                        existingEmails[correctedEmail] = newContact
                     })
                     migration.enumerateObjects(ofType: FeedItem.className(), { (oldObject, newObject) in
                         guard let oldFeed = oldObject,
