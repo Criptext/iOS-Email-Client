@@ -349,10 +349,6 @@ extension Notification.Name {
 
 extension String {
     
-    static func localize(_ text: String) -> String {
-        return NSLocalizedString(text, comment: "")
-    }
-    
     func sha256() -> String? {
         guard let data = self.data(using: String.Encoding.utf8),
             let shaData = AESCipher.sha256(data) else { return nil }

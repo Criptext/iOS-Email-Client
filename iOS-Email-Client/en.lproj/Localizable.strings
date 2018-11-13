@@ -222,3 +222,7 @@
 /* EmailSetPasswordViewController.swift */
 
 "Use at least 3 characters" = "Use at least 3 characters";
+
+/* PUSH */
+
+"You may have new emails" = "You may have new emails";

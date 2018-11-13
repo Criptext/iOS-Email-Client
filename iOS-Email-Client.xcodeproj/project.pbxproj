@@ -233,6 +233,7 @@
 		A713109C21596F2E00534F13 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */; };
 		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
+		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
@@ -1375,6 +1376,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

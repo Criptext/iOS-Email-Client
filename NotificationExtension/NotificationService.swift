@@ -41,7 +41,7 @@ class NotificationService: UNNotificationServiceExtension {
                 let key = Int(keyString) else {
                 bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
                 bestAttemptContent.title = "\(username)\(Env.domain)"
-                bestAttemptContent.body = "You may have new emails"
+                bestAttemptContent.body = String.localize("You may have new emails")
                 contentHandler(bestAttemptContent)
                 return
             }
@@ -49,7 +49,7 @@ class NotificationService: UNNotificationServiceExtension {
                 guard let email = responseEmail else {
                     bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
                     bestAttemptContent.title = "\(username)\(Env.domain)"
-                    bestAttemptContent.body = "You may have new emails"
+                    bestAttemptContent.body = String.localize("You may have new emails")
                     contentHandler(bestAttemptContent)
                     return
                 }
@@ -97,7 +97,7 @@ class NotificationService: UNNotificationServiceExtension {
             let bestAttemptContent =  bestAttemptContent {
             bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
             bestAttemptContent.title = "\(activeAccount)\(Env.domain)"
-            bestAttemptContent.body = "You may have new emails"
+            bestAttemptContent.body = String.localize("You may have new emails")
             contentHandler(bestAttemptContent)
         }
     }
