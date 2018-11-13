@@ -155,6 +155,7 @@
 "Failed to unsend the email. Time (1h) for unsending has already expired." = "Failed to unsend the email. Time (1h) for unsending has already expired.";
 "Unable to unsend email. Please try again later" = "Unable to unsend email. Please try again later";
 "Open this menu to find\nthe UNSEND button" = "Open this menu to find\nthe UNSEND button";
+"You have a new email" = "You have a new email";
 
 /* SettingsGeneralViewController.swift */
 

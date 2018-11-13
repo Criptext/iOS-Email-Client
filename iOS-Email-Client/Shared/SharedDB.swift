@@ -153,6 +153,12 @@ class SharedDB {
         return realm.object(ofType: Label.self, forPrimaryKey: labelId)
     }
     
+    class func getLabel(text: String) -> Label?{
+        let realm = try! Realm()
+        
+        return realm.objects(Label.self).filter(NSPredicate(format: "text = %@", text)).first
+    }
+    
     class func getMailByKey(key: Int) -> Email?{
         let realm = try! Realm()
         

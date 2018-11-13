@@ -28,7 +28,6 @@ class EmailDetailViewController: UIViewController {
     
     var myHeaderView : UIView?
     let fileManager = CriptextFileManager()
-    let emailCells = [Int: EmailTableViewCell]()
     let coachMarksController = CoachMarksController()
     var target: UIView?
     
@@ -61,9 +60,19 @@ class EmailDetailViewController: UIViewController {
             switch(changes){
             case .initial:
                 tableView.reloadData()
-            case .update(_, let _, let _, let _):
+            case .update(_, let _, let insertions, let _):
                 tableView.reloadData()
                 self?.emailData.rebuildLabels()
+                let hasNewInboxEmail = insertions.contains(where: { (position) -> Bool in
+                    guard let email = self?.emailData.emails[position],
+                        email.labels.contains(where: {$0.id == SystemLabel.inbox.id}) else {
+                            return false
+                    }
+                    return true
+                })
+                if (hasNewInboxEmail) {
+                    self?.showSnackbar(String.localize("You have a new email"), attributedText: nil, buttons: "", permanent: false)
+                }
             default:
                 break
             }
