@@ -14,31 +14,35 @@ class SendMailAsyncTask {
     
     let fileKey: String?
     let threadId: String?
-    let password: String?
     let subject: String
     let body: String
     var guestEmails: [String: Any]!
     let criptextEmails: [String: Any]!
     let files: [[String: Any]]!
-    
+    let password: String?
+    let isSecure: Bool
     let username: String
+    let emailKey: Int
     let emailRef: ThreadSafeReference<Object>
     
-    init(account: Account, email: Email){
+    init(account: Account, email: Email, password: String?){
         let files = SendMailAsyncTask.getFilesRequestData(email: email)
         let fileKey = DBManager.getFileKey(emailId: email.key)?.key
         let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, files: files, fileKey: fileKey)
         
-        self.password = email.password
         self.username = account.username
+        self.emailKey = email.key
         self.subject = email.subject
         self.body = email.content
+        self.isSecure = email.secure
         self.threadId = email.threadId.isEmpty || email.threadId == email.key.description ? nil : email.threadId
         self.guestEmails = recipients.0
         self.criptextEmails = recipients.1
         self.files = files
         self.emailRef = DBManager.getReference(email)
         self.fileKey = fileKey
+        
+        self.password = password
     }
     
     private class func getFilesRequestData(email: Email) -> [[String: Any]]{
@@ -103,8 +107,30 @@ class SendMailAsyncTask {
     
     private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            completion(ResponseData.Error(CriptextError(message: "Unable to handle email")))
             return
         }
+        
+        if isSecure && !guestEmails.isEmpty {
+            if let enteredPassword = password {
+                let dummySessionData = self.buildDummySession(password: enteredPassword, myAccount: myAccount)
+                self.guestEmails["body"] = dummySessionData.body
+                self.guestEmails["session"] = dummySessionData.session
+                let dummySession = DummySession()
+                dummySession.body = dummySessionData.body
+                dummySession.session = dummySessionData.session
+                dummySession.key = emailKey
+                DBManager.store(dummySession)
+            } else if let dummySession = DBManager.getDummySession(key: emailKey) {
+                self.guestEmails["body"] = dummySession.body
+                self.guestEmails["session"] = dummySession.session
+            } else {
+                deleteUnhandledEmail()
+                completion(ResponseData.Error(CriptextError(message: "Unable to handle email")))
+                return
+            }
+        }
+        
         var recipients = [String]()
         var knownAddresses = [String: [Int32]]()
         var criptextEmailsData = [[String: Any]]()
@@ -255,6 +281,13 @@ class SendMailAsyncTask {
         DBManager.updateEmail(email, status: Email.Status.fail.rawValue)
     }
     
+    func deleteUnhandledEmail(){
+        guard let email = DBManager.getObject(emailRef) as? Email else {
+            return
+        }
+        DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
+    }
+    
     func updateEmailData(_ updateData : [String: Any]) -> Int? {
         guard let email = DBManager.getObject(emailRef) as? Email else {
             return nil
@@ -263,6 +296,7 @@ class SendMailAsyncTask {
         let messageId = updateData["messageId"] as! String
         let threadId = updateData["threadId"] as! String
         DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
+        DBManager.deleteDummySession(key: emailKey)
         updateFiles(emailId: key)
         return key
     }

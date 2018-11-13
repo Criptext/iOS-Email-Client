@@ -1302,13 +1302,13 @@ extension InboxViewController: ComposerSendMailDelegate {
             return
         }
         DBManager.updateEmail(email, status: .sending)
-        sendMail(email: email)
+        sendMail(email: email, password: nil)
     }
     
-    func sendMail(email: Email) {
+    func sendMail(email: Email, password: String?) {
         showSendingSnackBar(message: String.localize("Sending Email..."), permanent: true)
         reloadIfSentMailbox(email: email)
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email)
+        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, password: password)
         sendMailAsyncTask.start { responseData in
             if case .Unauthorized = responseData {
                 self.logout()

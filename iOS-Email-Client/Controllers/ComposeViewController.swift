@@ -21,7 +21,7 @@ import SignalProtocolFramework
 import Instructions
 
 protocol ComposerSendMailDelegate {
-    func sendMail(email: Email)
+    func sendMail(email: Email, password: String?)
     func newDraft(draft: Email)
     func deleteDraft(draftId: Int)
 }
@@ -512,11 +512,8 @@ class ComposeViewController: UIViewController {
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
         DBManager.updateEmail(email, secure: secure)
-        if let pass = password {
-            DBManager.updateEmail(email, password: pass)
-        }
         self.dismiss(animated: true){
-            self.delegate?.sendMail(email: email)
+            self.delegate?.sendMail(email: email, password: password)
         }
     }
     
