@@ -106,8 +106,8 @@ class ComposeViewController: UIViewController {
         let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
         textField.font = Font.regular.size(14)
         
-        let defaults = UserDefaults.standard
-        activeAccount = DBManager.getAccountByUsername(defaults.string(forKey: "activeAccount")!)
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        activeAccount = DBManager.getAccountByUsername(groupDefaults.string(forKey: "activeAccount")!)
         fileManager.token = activeAccount.jwt
         
         let sendImage = Icon.send.image?.tint(with: .white)
@@ -510,7 +510,7 @@ class ComposeViewController: UIViewController {
             return
         }
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
-        DBManager.updateEmail(email, status: .sending)
+        DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
         DBManager.updateEmail(email, secure: secure)
         if let pass = password {
             DBManager.updateEmail(email, password: pass)

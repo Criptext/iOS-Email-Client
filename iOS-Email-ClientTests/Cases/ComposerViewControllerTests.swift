@@ -33,8 +33,8 @@ class ComposerViewControllerTests: XCTestCase {
         account.deviceId = 1
         DBManager.store(account)
         
-        let defaults = UserDefaults.standard
-        defaults.set(account.username, forKey: "activeAccount")
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        groupDefaults.set(account.username, forKey: "activeAccount")
         
         let testContact = Contact()
         testContact.email = "test@criptext.com"

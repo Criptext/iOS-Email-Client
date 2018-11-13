@@ -41,5 +41,6 @@ struct Env {
         return "https://api.criptext.com"
     }
     
-    static let databaseVersion: UInt64 = 7
+    static let databaseVersion: UInt64 = 8
+    static let groupApp = "group.criptext.team"
 }

@@ -103,11 +103,11 @@ class DBManager: SharedDB {
         switch(table){
         case "contact":
             let contact = Contact()
+            let contactId = object["id"] as! Int
             contact.email = object["email"] as! String
             contact.displayName = object["name"] as? String ?? String(contact.email.split(separator: "@").first!)
-            contact.id = object["id"] as! Int
             realm.add(contact, update: true)
-            maps.contacts[contact.id] = contact.email
+            maps.contacts[contactId] = contact.email
         case "label":
             let label = Label()
             label.id = object["id"] as! Int
@@ -150,7 +150,8 @@ class DBManager: SharedDB {
             let contactId = object["contactId"] as! Int
             let emailId = object["emailId"] as! Int
             guard let emailKey = maps.emails[emailId],
-                let contact = realm.objects(Contact.self).filter("id == \(contactId)").first,
+                let contactEmail = maps.contacts[contactId],
+                let contact = realm.object(ofType: Contact.self, forPrimaryKey: contactEmail),
                 let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
                     return
             }
@@ -203,12 +204,6 @@ class DBManager: SharedDB {
         try! realm.write {
             realm.add(account, update: true)
         }
-    }
-    
-    class func getAccountByUsername(_ username: String) -> Account? {
-        let realm = try! Realm()
-        
-        return realm.object(ofType: Account.self, forPrimaryKey: username)
     }
     
     class func update(account: Account, jwt: String){
@@ -444,7 +439,7 @@ class DBManager: SharedDB {
             newEmail.key = key
             newEmail.messageId = messageId
             newEmail.threadId = threadId
-            newEmail.status = .sent
+            newEmail.delivered = Email.Status.sent.rawValue
             newEmail.unread = false
             newEmail.secure = email.secure
             newEmail.subject = email.subject

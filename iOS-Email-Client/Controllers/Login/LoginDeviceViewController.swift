@@ -86,13 +86,14 @@ class LoginDeviceViewController: UIViewController{
         titleLabel.text = "Sign In Rejected"
     }
     
-    func jumpToConnectDevice(name: String, deviceId: Int){
+    func jumpToConnectDevice(data: LinkAccept){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
-        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: name, optionalEmail: nil)
-        signupData.deviceId = deviceId
+        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: data.name, optionalEmail: nil)
+        signupData.deviceId = data.deviceId
         signupData.token = loginData.jwt
         controller.signupData = signupData
+        controller.linkData = data
         present(controller, animated: true, completion: {
             self.navigationController?.popViewController(animated: false)
         })
@@ -159,13 +160,17 @@ extension LoginDeviceViewController: SingleSocketDelegate {
         switch(cmd){
         case Event.Link.accept.rawValue:
             guard let deviceId = params?["deviceId"] as? Int,
-                let name = params?["name"] as? String else {
+                let name = params?["name"] as? String,
+                let authorizerId = params?["authorizerId"] as? Int32,
+                let authorizerName = params?["authorizerName"] as? String,
+                let authorizerType = params?["authorizerType"] as? Int else {
                 break
             }
+            let linkAcceptData = LinkAccept(deviceId: deviceId, name: name, authorizerId: authorizerId, authorizerName: authorizerName, authorizerType: authorizerType)
             self.presentedViewController?.dismiss(animated: true, completion: nil)
             self.scheduleWorker.cancel()
             self.socket?.close()
-            self.jumpToConnectDevice(name: name, deviceId: deviceId)
+            self.jumpToConnectDevice(data: linkAcceptData)
         case Event.Link.deny.rawValue:
             self.presentedViewController?.dismiss(animated: true, completion: nil)
             self.scheduleWorker.cancel()
@@ -173,6 +178,22 @@ extension LoginDeviceViewController: SingleSocketDelegate {
             self.onFailure()
         default:
             break
+        }
+    }
+    
+    struct LinkAccept {
+        let deviceId: Int
+        let name: String
+        let authorizerId: Int32
+        let authorizerName: String
+        let authorizerType: Int
+        
+        init(deviceId: Int, name: String, authorizerId: Int32, authorizerName: String, authorizerType: Int) {
+            self.deviceId = deviceId
+            self.name = name
+            self.authorizerId = authorizerId
+            self.authorizerName = authorizerName
+            self.authorizerType = authorizerType
         }
     }
 }

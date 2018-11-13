@@ -19,6 +19,8 @@ class ConnectUIView: UIView {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var goBackButton: UIButton!
     @IBOutlet weak var percentageView: UIView!
+    @IBOutlet weak var leftDeviceImage: UIImageView!
+    @IBOutlet weak var rightDeviceImage: UIImageView!
     @IBOutlet weak var counterLabel: CounterLabelUIView!
     @IBOutlet weak var progressAnimatedView: ProgressAnimatedUIView!
     var goBack: (() -> Void)?
@@ -60,6 +62,22 @@ class ConnectUIView: UIView {
                 self.handleSuccess()
             }
             completion()
+        }
+    }
+    
+    func setDeviceIcons(leftType: Device.Kind, rightType: Device.Kind) {
+        switch(leftType){
+        case .pc:
+            leftDeviceImage.image = UIImage(named: "device-desktop")!
+        case .ios, .android:
+            leftDeviceImage.image = UIImage(named: "device-mobile")!
+        }
+        
+        switch(rightType){
+        case .pc:
+            rightDeviceImage.image = UIImage(named: "device-desktop")!
+        case .ios, .android:
+            rightDeviceImage.image = UIImage(named: "device-mobile")!
         }
     }
 

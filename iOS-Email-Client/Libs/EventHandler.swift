@@ -119,7 +119,7 @@ class EventHandler {
     }
     
     func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Event.EventResult) -> Void){
-        let handler = NewEmailHandler()
+        let handler = NewEmailHandler(username: myAccount.username)
         handler.command(params: params) { (result) in
             guard let email = result.email else {
                 finishCallback(result.success, .Empty)
@@ -127,31 +127,6 @@ class EventHandler {
             }
             finishCallback(result.success, .Email(email))
         }
-    }
-    
-    func getContentPreview(content: String) -> (String, String) {
-        do {
-            let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src")
-            let doc: Document = try SwiftSoup.parse(content)
-            let preview = try String(doc.text().prefix(Constants.maxPreviewSize))
-            let cleanContent = try SwiftSoup.clean(content, allowList)!
-            return (preview, cleanContent)
-        } catch {
-            let preview = String(content.removeHtmlTags().replaceNewLineCharater(separator: " ").prefix(100))
-            return (preview, content)
-        }
-    }
-    
-    func handleBodyByMessageType(_ messageType: MessageType, body: String, recipientId: String, senderDeviceId: Int32?) -> String? {
-        guard messageType != .none,
-            let deviceId = senderDeviceId else {
-            return body
-        }
-        var trueBody : String?
-        tryBlock {
-            trueBody = self.signalHandler.decryptMessage(body, messageType: messageType, account: self.myAccount, recipientId: recipientId, deviceId: deviceId)
-        }
-        return trueBody
     }
     
     func handleEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){

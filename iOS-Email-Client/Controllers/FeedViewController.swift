@@ -49,7 +49,11 @@ class FeedViewController: UIViewController{
         feedsData.newFeeds = feeds.0
         feedsData.oldFeeds = feeds.1
         newFeedsToken = feedsData.newFeeds.observe { [weak self] changes in
-            guard let tableView = self?.feedsTableView else {
+            guard let myself = self,
+                !myself.mailboxVC.myAccount.isInvalidated,
+                let tableView = self?.feedsTableView else {
+                    self?.oldFeedsToken?.invalidate()
+                    self?.newFeedsToken?.invalidate()
                 return
             }
             switch(changes){

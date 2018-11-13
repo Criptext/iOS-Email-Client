@@ -20,3 +20,9 @@ extension UIColor {
         return String(format:"%06x", rgb)
     }
 }
+
+extension String {
+    static func localize(_ text: String) -> String {
+        return NSLocalizedString(text, comment: "")
+    }
+}

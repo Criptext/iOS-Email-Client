@@ -17,6 +17,12 @@ class SharedDB {
         return realm.objects(Account.self).first
     }
     
+    class func getAccountByUsername(_ username: String) -> Account? {
+        let realm = try! Realm()
+        
+        return realm.object(ofType: Account.self, forPrimaryKey: username)
+    }
+    
     @discardableResult class func store(_ email:Email) -> Bool {
         let realm = try! Realm()
         
@@ -38,7 +44,6 @@ class SharedDB {
         
         try! realm.write {
             contacts.forEach({ (contact) in
-                contact.id = (realm.objects(Contact.self).max(ofProperty: "id") as Int? ?? 0) + 1
                 realm.add(contacts, update: true)
             })
         }
@@ -86,6 +91,14 @@ class SharedDB {
                 fileKey.incrementID()
                 realm.add(fileKey, update: true)
             }
+        }
+    }
+    
+    class func updateEmail(_ email: Email, status: Int){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            email.delivered = status
         }
     }
     

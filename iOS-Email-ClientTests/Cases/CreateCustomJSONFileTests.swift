@@ -31,7 +31,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let defaults = UserDefaults.standard
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
         defaults.removeObject(forKey: "activeAccount")
         
         DBManager.destroy()

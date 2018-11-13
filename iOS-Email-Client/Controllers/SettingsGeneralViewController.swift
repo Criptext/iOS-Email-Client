@@ -168,13 +168,13 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func renderNotificationsCells(subsection: Section.SubSection) -> UITableViewCell {
-        let defaults = UserDefaults.standard
-        let previewDisable = defaults.bool(forKey: "previewDisable")
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        let previewDisable = groupDefaults.bool(forKey: "previewDisable")
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
         cell.optionLabel.text = subsection.name
         cell.availableSwitch.isOn = !previewDisable
         cell.switchToggle = { isOn in
-            defaults.set(!isOn, forKey: "previewDisable")
+            groupDefaults.set(!isOn, forKey: "previewDisable")
         }
         return cell
     }

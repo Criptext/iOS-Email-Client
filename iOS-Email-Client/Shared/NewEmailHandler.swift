@@ -13,6 +13,12 @@ class NewEmailHandler {
     
     var database: SharedDB.Type = SharedDB.self
     var api: SharedAPI.Type = SharedAPI.self
+    let username: String
+    let PREVIEW_SIZE = 300
+    
+    init(username: String){
+        self.username = username
+    }
     
     struct Result {
         let email: Email?
@@ -30,7 +36,7 @@ class NewEmailHandler {
     }
     
     func command(params: [String: Any], completion: @escaping (_ result: Result) -> Void){
-        guard let myAccount = database.getFirstAccount() else {
+        guard let myAccount = database.getAccountByUsername(self.username) else {
             completion(Result(success: false))
             return
         }
@@ -73,7 +79,7 @@ class NewEmailHandler {
             }
             
             guard (unsent || error == nil),
-                let myAccount = self.database.getFirstAccount(),
+                let myAccount = self.database.getAccountByUsername(self.username),
                 case let .SuccessString(body) = responseData,
                 let username = ContactUtils.getUsernameFromEmailFormat(event.from),
                 let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId) else {
@@ -109,7 +115,7 @@ class NewEmailHandler {
             ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
             
             if(self.isFromMe(email: email, account: myAccount)){
-                self.database.updateEmail(email, status: .sent)
+                self.database.updateEmail(email, status: Email.Status.sent.rawValue)
                 self.database.updateEmail(email, unread: false)
                 self.database.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
             }
@@ -123,6 +129,11 @@ class NewEmailHandler {
                 self.database.addRemoveLabelsFromEmail(email, addedLabelIds: labels, removedLabelIds: [])
             }
             
+            if let myContact = SharedDB.getContact("\(myAccount.username)\(Env.domain)"),
+                myContact.displayName != myAccount.name {
+                SharedDB.update(contact: myContact, name: myAccount.name)
+            }
+            
             completion(Result(email: email))
         }
     }
@@ -132,7 +143,11 @@ class NewEmailHandler {
             let deviceId = senderDeviceId else {
                 return body
         }
-        return SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipientId, deviceId: deviceId)
+        var trueBody : String?
+        tryBlock {
+            trueBody = SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipientId, deviceId: deviceId)
+        }
+        return trueBody
     }
     
     func handleAttachment(_ attachment: [String: Any], email: Email) -> File {
@@ -167,11 +182,11 @@ class NewEmailHandler {
         do {
             let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src")
             let doc: Document = try SwiftSoup.parse(content)
-            let preview = try String(doc.text().prefix(100))
+            let preview = try String(doc.text().prefix(self.PREVIEW_SIZE))
             let cleanContent = try SwiftSoup.clean(content, allowList)!
             return (preview, cleanContent)
         } catch {
-            let preview = String(content.prefix(100))
+            let preview = String(content.prefix(self.PREVIEW_SIZE))
             return (preview, content)
         }
     }

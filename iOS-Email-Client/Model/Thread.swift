@@ -14,7 +14,6 @@ class Thread {
     var counter = 1
     var participants = Set<Contact>()
     var hasAttachments = false
-    var participantsString = ""
     var subject = ""
     var threadId = ""
     var date = Date()
@@ -43,14 +42,14 @@ class Thread {
         for contact in participants {
             let contactName = contact.email == email ? "Me" : contact.displayName
             guard !contact.displayName.contains("@") else {
-                contactsTitle += "\(contactName), "
+                contactsTitle += "\(contactName.split(separator: "@").first!), "
                 continue
             }
             guard participants.count > 1 else {
                 contactsTitle += "\(contactName), "
                 continue
             }
-            contactsTitle += "\(contactName), "
+            contactsTitle += "\(contactName.split(separator: " ").first ?? Substring(contactName)), "
         }
         guard participants.count > 0 else {
             return contactsTitle

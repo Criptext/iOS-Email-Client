@@ -252,7 +252,7 @@ class SendMailAsyncTask {
         guard let email = DBManager.getObject(emailRef) as? Email else {
             return
         }
-        DBManager.updateEmail(email, status: .fail)
+        DBManager.updateEmail(email, status: Email.Status.fail.rawValue)
     }
     
     func updateEmailData(_ updateData : [String: Any]) -> Int? {
