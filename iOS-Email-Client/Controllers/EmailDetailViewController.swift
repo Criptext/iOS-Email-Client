@@ -822,11 +822,11 @@ extension EmailDetailViewController: ComposerSendMailDelegate {
     func deleteDraft(draftId: Int) {
     }
     
-    func sendMail(email: Email) {
+    func sendMail(email: Email, password: String?) {
         guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController else {
             return
         }
-        inboxViewController.sendMail(email: email)
+        inboxViewController.sendMail(email: email, password: password)
     }
 }
 

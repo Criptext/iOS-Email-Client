@@ -46,7 +46,6 @@ class Email: Object {
     @objc dynamic var date = Date()
     @objc dynamic var unsentDate: Date?
     @objc dynamic var trashDate: Date?
-    @objc dynamic var password: String?
     @objc dynamic var isMuted = false
     
     let labels = List<Label>()

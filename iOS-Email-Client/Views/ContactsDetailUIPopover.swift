@@ -33,7 +33,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
     override func viewDidLoad() {
         super.viewDidLoad()
         setFromContact()
-        dateLabel.text = email.getFullDate()
+        dateLabel.text = email.completeDate
         replyToView.isHidden = true
         toHeightConstraint.constant = CGFloat(email.getContacts(type: .to).count * 28)
         ccViewHeightConstraint.constant = CGFloat(email.getContacts(type: .cc).count * 28)

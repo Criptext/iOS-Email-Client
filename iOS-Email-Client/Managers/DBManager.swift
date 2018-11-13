@@ -412,14 +412,6 @@ class DBManager: SharedDB {
         return myEmails
     }
     
-    class func updateEmail(_ email: Email, password: String){
-        let realm = try! Realm()
-        
-        try! realm.write() {
-            email.password = password
-        }
-    }
-    
     class func updateEmail(_ email: Email, secure: Bool){
         let realm = try! Realm()
         
@@ -448,7 +440,6 @@ class DBManager: SharedDB {
             newEmail.date = email.date
             newEmail.unsentDate = email.unsentDate
             newEmail.isMuted = email.isMuted
-            newEmail.password = nil
             newEmail.labels.append(objectsIn: email.labels)
             newEmail.files.append(objectsIn: email.files)
             
@@ -944,6 +935,32 @@ class DBManager: SharedDB {
         
         try! realm.write() {
             realm.delete(queueItems)
+        }
+    }
+    
+    //MARK: - DummySession
+    
+    class func store(_ dummySession: DummySession) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(dummySession)
+        }
+    }
+    
+    class func getDummySession(key: Int) -> DummySession? {
+        let realm = try! Realm()
+        return realm.object(ofType: DummySession.self, forPrimaryKey: key)
+    }
+    
+    class func deleteDummySession(key: Int) {
+        let realm = try! Realm()
+        guard let dummySession = realm.object(ofType: DummySession.self, forPrimaryKey: key) else {
+            return
+        }
+        
+        try! realm.write() {
+            realm.delete(dummySession)
         }
     }
 }
