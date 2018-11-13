@@ -28,7 +28,6 @@ class EmailDetailViewController: UIViewController {
     
     var myHeaderView : UIView?
     let fileManager = CriptextFileManager()
-    let emailCells = [Int: EmailTableViewCell]()
     let coachMarksController = CoachMarksController()
     var target: UIView?
     
@@ -72,7 +71,7 @@ class EmailDetailViewController: UIViewController {
                     return true
                 })
                 if (hasNewInboxEmail) {
-                    self?.showSnackbar("You have a new email", attributedText: nil, buttons: "", permanent: false)
+                    self?.showSnackbar(String.localize("You have a new email"), attributedText: nil, buttons: "", permanent: false)
                 }
             default:
                 break
