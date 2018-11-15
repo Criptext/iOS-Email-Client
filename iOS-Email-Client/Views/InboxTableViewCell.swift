@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol InboxTableViewCellDelegate {
+protocol InboxTableViewCellDelegate: class {
     func tableViewCellDidLongPress(_ cell:InboxTableViewCell)
 }
 
@@ -33,7 +33,7 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var starredImageView: UIImageView!
     
     var holdGestureRecognizer:UILongPressGestureRecognizer!
-    var delegate:InboxTableViewCellDelegate?
+    weak var delegate:InboxTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()

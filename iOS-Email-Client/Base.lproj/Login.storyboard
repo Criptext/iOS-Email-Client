@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -425,9 +425,6 @@
                                                 <state key="normal" title="Button">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
-                                                <connections>
-                                                    <segue destination="dno-Ix-0Gm" kind="presentation" identifier="signuptowebview" id="DgR-kZ-38a"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwZ-3C-ekg">
                                                 <rect key="frame" x="38" y="562.5" width="299" height="44"/>
@@ -580,58 +577,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V72-OU-ugA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1232.8" y="36.431784107946029"/>
-        </scene>
-        <!--Web View View Controller-->
-        <scene sceneID="ojB-CP-5Wn">
-            <objects>
-                <viewController storyboardIdentifier="webviewViewController" id="dno-Ix-0Gm" customClass="WebViewViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="jfk-SW-kCX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xRn-kb-PlQ">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <items>
-                                    <navigationItem id="M8M-YR-2SD">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="UvP-FE-pSG">
-                                            <connections>
-                                                <action selector="onClosePress:" destination="dno-Ix-0Gm" id="C6s-Wj-x9Z"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wu0-SG-zQv">
-                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="YES"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="xRn-kb-PlQ" firstAttribute="top" secondItem="ndA-py-sog" secondAttribute="top" id="7Yj-PC-khs"/>
-                            <constraint firstItem="ndA-py-sog" firstAttribute="bottom" secondItem="Wu0-SG-zQv" secondAttribute="bottom" id="Ghg-5w-Q5C"/>
-                            <constraint firstItem="Wu0-SG-zQv" firstAttribute="top" secondItem="xRn-kb-PlQ" secondAttribute="bottom" id="Qww-cW-GTj"/>
-                            <constraint firstItem="xRn-kb-PlQ" firstAttribute="leading" secondItem="ndA-py-sog" secondAttribute="leading" id="fbK-Og-C0R"/>
-                            <constraint firstItem="Wu0-SG-zQv" firstAttribute="leading" secondItem="ndA-py-sog" secondAttribute="leading" id="j02-CC-MgY"/>
-                            <constraint firstItem="Wu0-SG-zQv" firstAttribute="trailing" secondItem="ndA-py-sog" secondAttribute="trailing" id="wyV-2i-feJ"/>
-                            <constraint firstItem="xRn-kb-PlQ" firstAttribute="trailing" secondItem="ndA-py-sog" secondAttribute="trailing" id="yVa-Iv-9VS"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="ndA-py-sog"/>
-                    </view>
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="myNavigationItem" destination="M8M-YR-2SD" id="hq0-G9-434"/>
-                        <outlet property="webview" destination="Wu0-SG-zQv" id="hm4-dO-7Jq"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="w6y-kg-eCD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2096.8000000000002" y="-538.38080959520244"/>
         </scene>
         <!--Creating Account View Controller-->
         <scene sceneID="6H1-eK-V8Y">

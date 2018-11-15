@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol LabelsUIPopoverDelegate {
+protocol LabelsUIPopoverDelegate: class {
     func setLabels(added: [Int], removed: [Int])
     func moveTo(labelId: Int)
 }
@@ -24,7 +24,7 @@ class LabelsUIPopover: BaseUIPopover {
     var labels = [Label]()
     var selectedLabels = [Int: Label]()
     var type : ActionType = .addLabels
-    var delegate : LabelsUIPopoverDelegate?
+    weak var delegate : LabelsUIPopoverDelegate?
     
     init(){
         super.init("LabelsUIPopover")

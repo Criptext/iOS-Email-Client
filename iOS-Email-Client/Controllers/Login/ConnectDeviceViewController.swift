@@ -267,6 +267,9 @@ extension ConnectDeviceViewController: ScheduleWorkerDelegate {
 
 extension ConnectDeviceViewController: SingleSocketDelegate {
     func newMessage(cmd: Int32, params: [String : Any]?) {
+        guard case .waiting = state else {
+            return
+        }
         switch(cmd){
         case Event.Link.success.rawValue:
             guard let address = params?["dataAddress"] as? String,

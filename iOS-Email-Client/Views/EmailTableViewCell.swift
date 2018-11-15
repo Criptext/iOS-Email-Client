@@ -11,7 +11,7 @@ import WebKit
 import RealmSwift
 import SwiftSoup
 
-protocol EmailTableViewCellDelegate {
+protocol EmailTableViewCellDelegate: class {
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email)
     func tableViewCellDidLoadContent(_ cell:EmailTableViewCell, email: Email)
     func tableViewCellDidTap(_ cell: EmailTableViewCell)
@@ -54,7 +54,7 @@ class EmailTableViewCell: UITableViewCell{
     var attachments : List<File> {
         return email.files
     }
-    var delegate: EmailTableViewCellDelegate?
+    weak var delegate: EmailTableViewCellDelegate?
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
     let RECIPIENTS_MAX_WIDTH: CGFloat = 130.0
     let READ_STATUS_MARGIN: CGFloat = 5.0

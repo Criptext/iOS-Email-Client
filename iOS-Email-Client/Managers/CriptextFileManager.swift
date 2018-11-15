@@ -46,14 +46,15 @@ class CriptextFileManager {
             "totalChunks": totalChunks,
             "chunkSize": chunkSize
             ] as [String : Any]
-        apiManager.registerFile(parameters: requestData, token: token) { (requestError, responseData) in
-            if requestError != nil {
+        apiManager.registerFile(parameters: requestData, token: token) { [weak self] (requestError, responseData) in
+            guard let weakSelf = self,
+                requestError == nil else {
                 return
             }
             let fileResponse = responseData as! Dictionary<String, Any>
             let filetoken = fileResponse["filetoken"] as! String
             fileRegistry.token = filetoken
-            self.handleFileTurn()
+            weakSelf.handleFileTurn()
         }
         return true
     }
@@ -78,19 +79,22 @@ class CriptextFileManager {
         file.requestStatus = .pending
         file.requestType = .download
         registeredFiles.append(file)
-        apiManager.getFileMetadata(filetoken: file.token, token: self.token) { (requestError, responseData) in
+        apiManager.getFileMetadata(filetoken: file.token, token: self.token) { [weak self] (requestError, responseData) in
+            guard let weakSelf = self else {
+                return
+            }
             guard let metadata = responseData?["file"] as? [String: Any] else {
                 file.requestStatus = .failed
-                self.delegate?.uploadProgressUpdate(file: file, progress: 0)
-                self.delegate?.finishRequest(file: file, success: false)
-                if let index = self.registeredFiles.index(where: {$0.token == file.token}) {
-                    self.registeredFiles.remove(at: index)
+                weakSelf.delegate?.uploadProgressUpdate(file: file, progress: 0)
+                weakSelf.delegate?.finishRequest(file: file, success: false)
+                if let index = weakSelf.registeredFiles.index(where: {$0.token == file.token}) {
+                    weakSelf.registeredFiles.remove(at: index)
                 }
                 return
             }
             let totalChunks = metadata["chunks"] as! Int
-            file.chunksProgress = Array(repeating: self.PENDING, count: totalChunks)
-            self.handleFileTurn()
+            file.chunksProgress = Array(repeating: weakSelf.PENDING, count: totalChunks)
+            weakSelf.handleFileTurn()
         }
     }
     
@@ -172,41 +176,47 @@ class CriptextFileManager {
             "filename": file.name,
             "mimeType": file.mimeType
         ] as [String: Any]
-        apiManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { (requestError) in
-            guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
-                self.handleFileTurn()
+        apiManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { [weak self] (requestError) in
+            guard let weakSelf = self else {
+                return
+            }
+            guard let fileIndex = weakSelf.registeredFiles.index(where: {$0.token == filetoken}) else {
+                weakSelf.handleFileTurn()
                 return
             }
             guard requestError == nil else {
-                self.registeredFiles[fileIndex].requestStatus = .failed
-                self.chunkUpdateProgress(Double(self.PENDING)/100.0, for: file.token, part: part + 1)
-                self.delegate?.finishRequest(file: file, success: false)
-                self.handleFileTurn()
+                weakSelf.registeredFiles[fileIndex].requestStatus = .failed
+                weakSelf.chunkUpdateProgress(Double(weakSelf.PENDING)/100.0, for: file.token, part: part + 1)
+                weakSelf.delegate?.finishRequest(file: file, success: false)
+                weakSelf.handleFileTurn()
                 return
             }
-            file.chunksProgress[part] = self.COMPLETE
-            self.checkCompleteUpload(filetoken: filetoken)
-            self.startRequest(filetoken)
+            file.chunksProgress[part] = weakSelf.COMPLETE
+            weakSelf.checkCompleteUpload(filetoken: filetoken)
+            weakSelf.startRequest(filetoken)
         }
     }
     
     private func downloadChunk(file: File, part: Int){
         let filetoken = file.token
-        apiManager.downloadChunk(filetoken: filetoken, part: part + 1, token: self.token, progressDelegate: self) { (requestError, chunkData) in
-            guard let fileIndex = self.registeredFiles.index(where: {$0.token == filetoken}) else {
-                self.handleFileTurn()
+        apiManager.downloadChunk(filetoken: filetoken, part: part + 1, token: self.token, progressDelegate: self) { [weak self] (requestError, chunkData) in
+            guard let weakSelf = self else {
+                return
+            }
+            guard let fileIndex = weakSelf.registeredFiles.index(where: {$0.token == filetoken}) else {
+                weakSelf.handleFileTurn()
                 return
             }
             guard requestError == nil else {
-                self.registeredFiles[fileIndex].requestStatus = .failed
-                self.chunkUpdateProgress(Double(self.PENDING)/100.0, for: file.token, part: part + 1)
-                self.delegate?.finishRequest(file: file, success: false)
-                self.handleFileTurn()
+                weakSelf.registeredFiles[fileIndex].requestStatus = .failed
+                weakSelf.chunkUpdateProgress(Double(weakSelf.PENDING)/100.0, for: file.token, part: part + 1)
+                weakSelf.delegate?.finishRequest(file: file, success: false)
+                weakSelf.handleFileTurn()
                 return
             }
-            file.chunksProgress[part] = self.COMPLETE
-            self.checkCompleteUpload(filetoken: filetoken)
-            self.startRequest(filetoken)
+            file.chunksProgress[part] = weakSelf.COMPLETE
+            weakSelf.checkCompleteUpload(filetoken: filetoken)
+            weakSelf.startRequest(filetoken)
         }
     }
     

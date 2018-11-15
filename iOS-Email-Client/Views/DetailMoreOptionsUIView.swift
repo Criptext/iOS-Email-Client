@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DetailMoreOptionsViewDelegate{
+protocol DetailMoreOptionsViewDelegate: class{
     func onReplyPress()
     func onReplyAllPress()
     func onForwardPress()
@@ -25,7 +25,7 @@ class DetailMoreOptionsUIView: UIView {
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
     var tapGestureRecognizer:UITapGestureRecognizer!
     @IBOutlet var view: UIView!
-    var delegate: DetailMoreOptionsViewDelegate?
+    weak var delegate: DetailMoreOptionsViewDelegate?
     @IBOutlet weak var spamButton: UIButton!
     @IBOutlet weak var unsendButton: UIButton!
     
