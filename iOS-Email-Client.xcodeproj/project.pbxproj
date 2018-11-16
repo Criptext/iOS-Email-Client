@@ -283,6 +283,7 @@
 		A7CC3887219496E600C8355A /* SharedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3885219496E600C8355A /* SharedUtils.swift */; };
 		A7CC38892194979A00C8355A /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
 		A7CC388A2194979A00C8355A /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
+		A7E399F5219F61CD007EEC1C /* GoogleService-Info-Support.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
 		A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F30274216EA60B00676DD2 /* gunzipped.txt */; };
@@ -598,6 +599,7 @@
 		A7CC387F21939E8800C8355A /* ContactUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUtils.swift; sourceTree = "<group>"; };
 		A7CC3885219496E600C8355A /* SharedUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUtils.swift; sourceTree = "<group>"; };
 		A7CC38882194979A00C8355A /* SharedExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedExtensions.swift; sourceTree = "<group>"; };
+		A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Support.plist"; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
 		A7F30270216E859300676DD2 /* GZipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZipTests.swift; sourceTree = "<group>"; };
 		A7F30274216EA60B00676DD2 /* gunzipped.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gunzipped.txt; sourceTree = "<group>"; };
@@ -905,6 +907,7 @@
 				41B6AAB32017987500D428B7 /* Main.storyboard */,
 				41B6AAB62017987500D428B7 /* Assets.xcassets */,
 				7C5322112111394000C78981 /* GoogleService-Info.plist */,
+				A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */,
 				41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */,
 				41B6AABB2017987500D428B7 /* Info.plist */,
 				41AAC54E201AA05E00809C4D /* mark_read.png */,
@@ -1347,6 +1350,7 @@
 				412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */,
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
 				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
+				A7E399F5219F61CD007EEC1C /* GoogleService-Info-Support.plist in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
 				A7FFCF30217A910A00FFFDFF /* LabelsFooterTableViewCell.xib in Resources */,
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
@@ -2241,6 +2245,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "NotificationExtension/Extension-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
@@ -2269,6 +2274,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "NotificationExtension/Extension-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
@@ -2297,6 +2303,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "NotificationExtension/Extension-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;

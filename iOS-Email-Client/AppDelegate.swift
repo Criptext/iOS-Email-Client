@@ -209,7 +209,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func registerPushNotifications() {
-        FirebaseApp.configure()
+        let filepath = Env.googleFileName
+        if let fileOps = FirebaseOptions(contentsOfFile: filepath) {
+            FirebaseApp.configure(options: fileOps)
+        } else {
+            FirebaseApp.configure()
+        }
+        
         Messaging.messaging().delegate = self
         
         if #available(iOS 10.0, *) {

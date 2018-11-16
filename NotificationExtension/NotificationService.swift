@@ -16,8 +16,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     override init() {
         super.init()
-        
-        let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.criptext.team")!.appendingPathComponent("default.realm")
+        let fileURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Env.groupApp)!.appendingPathComponent("default.realm")
         let config = Realm.Configuration(
             fileURL: fileURL,
             schemaVersion: Env.databaseVersion)

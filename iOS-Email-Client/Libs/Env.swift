@@ -25,6 +25,22 @@ struct Env {
         #endif
     }()
     
+    static let googleFileName: String = {
+        #if SUPPORT
+        return "GoogleService-Info-Support.plist"
+        #else
+        return "GoogleService-Info.plist"
+        #endif
+    }()
+    
+    static let groupApp: String = {
+        #if SUPPORT
+        return "group.criptext.support"
+        #else
+        return "group.criptext.team"
+        #endif
+    }()
+    
     static var isProduction: Bool {
         return self.production
     }
@@ -42,5 +58,4 @@ struct Env {
     }
     
     static let databaseVersion: UInt64 = 8
-    static let groupApp = "group.criptext.team"
 }
