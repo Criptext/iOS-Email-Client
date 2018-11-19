@@ -19,17 +19,17 @@ class EmailDetailViewController: UIViewController {
     let CONTACTS_ROW_HEIGHT = 28
     
     var emailData : EmailDetailData!
-    var mailboxData : MailboxData!
-    var myAccount: Account!
+    weak var mailboxData : MailboxData!
+    weak var myAccount: Account!
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var topToolbar: TopbarUIView!
     @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
     @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
     
-    var myHeaderView : UIView?
+    weak var myHeaderView : UIView?
+    weak var target: UIView?
     let fileManager = CriptextFileManager()
     let coachMarksController = CoachMarksController()
-    var target: UIView?
     
     var message: ControllerMessage?
     
@@ -60,7 +60,7 @@ class EmailDetailViewController: UIViewController {
             switch(changes){
             case .initial:
                 tableView.reloadData()
-            case .update(_, let _, let insertions, let _):
+            case .update(_, _, let insertions, _):
                 tableView.reloadData()
                 self?.emailData.rebuildLabels()
                 let hasNewInboxEmail = insertions.contains(where: { (position) -> Bool in
@@ -260,22 +260,25 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewCellDidTapAttachment(file: File) {
         PHPhotoLibrary.requestAuthorization({ (status) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
                 switch status {
                 case .authorized:
                     if let fileKey = DBManager.getFileKey(emailId: file.emailId) {
                         let keys = fileKey.getKeyAndIv()
-                        self.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
+                        weakSelf.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
                     }
-                    if let attachmentCell = self.getCellFromFile(file) {
+                    if let attachmentCell = weakSelf.getCellFromFile(file) {
                         attachmentCell.markImageView.isHidden = true
                         attachmentCell.progressView.isHidden = false
                         attachmentCell.progressView.setProgress(0, animated: false)
                     }
-                    self.fileManager.registerFile(file: file)
+                    weakSelf.fileManager.registerFile(file: file)
                     break
                 default:
-                    self.showAlert(String.localize("Access denied"), message: String.localize("You need to enable access for this app in your settings"), style: .alert)
+                    weakSelf.showAlert(String.localize("Access denied"), message: String.localize("You need to enable access for this app in your settings"), style: .alert)
                     break
                 }
             }
@@ -435,6 +438,8 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
 
 extension EmailDetailViewController: NavigationToolbarDelegate {
     func onBackPress() {
+        self.emailData.observerToken?.invalidate()
+        self.emailData.observerToken = nil
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -447,12 +452,15 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
-        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            DBManager.delete(Array(self.emailData.emails))
-            self.mailboxData.removeSelectedRow = true
-            self.navigationController?.popViewController(animated: true)
+        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ [weak self] (alert) in
+            guard let weakSelf = self else {
+                return
+            }
+            DBManager.delete(Array(weakSelf.emailData.emails))
+            weakSelf.mailboxData.removeSelectedRow = true
+            weakSelf.navigationController?.popViewController(animated: true)
             
-            let eventData = EventData.Peer.ThreadDeleted(threadIds: [self.emailData.threadId])
+            let eventData = EventData.Peer.ThreadDeleted(threadIds: [weakSelf.emailData.threadId])
             DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
         }
         let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel)
@@ -548,9 +556,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.moveSingleEmailToTrash(email, indexPath: indexPath)
             return
         }
-        
-        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.deleteSingleEmail(email, indexPath: indexPath)
+        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ [weak self] (alert) in
+            self?.deleteSingleEmail(email, indexPath: indexPath)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         showAlert(String.localize("Delete Email"), message: String.localize("The selected email will be PERMANENTLY deleted"), style: .alert, actions: [deleteAction, cancelAction])
@@ -639,24 +646,27 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         emailData.setState(email.key, isUnsending: true)
         emailsTableView.reloadData()
         let recipients = getEmailRecipients(contacts: email.getContacts())
-        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { (responseData) in
-            self.emailData.setState(email.key, isUnsending: false)
+        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.emailData.setState(email.key, isUnsending: false)
             if case .Unauthorized = responseData {
-                self.logout()
+                weakSelf.logout()
                 return
             }
             if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
+                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
                 return
             }
             if case .Conflicts = responseData {
-                self.showAlert(String.localize("Unsend Failed"), message: String.localize("Failed to unsend the email. Time (1h) for unsending has already expired."), style: .alert)
-                self.emailsTableView.reloadData()
+                weakSelf.showAlert(String.localize("Unsend Failed"), message: String.localize("Failed to unsend the email. Time (1h) for unsending has already expired."), style: .alert)
+                weakSelf.emailsTableView.reloadData()
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert(String.localize("Unsend Failed"), message: String.localize("Unable to unsend email. Please try again later"), style: .alert)
-                self.emailsTableView.reloadData()
+                weakSelf.showAlert(String.localize("Unsend Failed"), message: String.localize("Unable to unsend email. Please try again later"), style: .alert)
+                weakSelf.emailsTableView.reloadData()
                 return
             }
             cell.isLoaded = false
@@ -718,9 +728,12 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     func presentPopover(_ popover: LabelsUIPopover, height: Int){
         popover.delegate = self
         popover.preparePopover(rootView: self, height: height)
-        self.present(popover, animated: true){
-            self.generalOptionsContainerView.closeMoreOptions()
-            self.view.layoutIfNeeded()
+        self.present(popover, animated: true){ [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.generalOptionsContainerView.closeMoreOptions()
+            weakSelf.view.layoutIfNeeded()
         }
     }
     
@@ -851,8 +864,7 @@ extension EmailDetailViewController: CoachMarksControllerDataSource, CoachMarksC
     }
     
     func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
-        var coachMark = coachMarksController.helper.makeCoachMark(for: target){
-            (frame: CGRect) -> UIBezierPath in
+        var coachMark = coachMarksController.helper.makeCoachMark(for: target) { frame in
             return UIBezierPath(ovalIn: frame.insetBy(dx: -4, dy: -4))
         }
         coachMark.allowTouchInsideCutoutPath = true

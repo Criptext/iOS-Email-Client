@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol GeneralMoreOptionsViewDelegate {
+protocol GeneralMoreOptionsViewDelegate: class {
     func onDismissPress()
     func onMoveToPress()
     func onAddLabesPress()
@@ -37,7 +37,7 @@ class GeneralMoreOptionsUIView : UIView {
     @IBOutlet weak var archiveButtonHeightConstraint: NSLayoutConstraint!
     
     var neededHeight: CGFloat = -196.0
-    var delegate : GeneralMoreOptionsViewDelegate?
+    weak var delegate : GeneralMoreOptionsViewDelegate?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

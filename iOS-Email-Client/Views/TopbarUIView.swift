@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol NavigationToolbarDelegate {
+protocol NavigationToolbarDelegate: class {
     func onBackPress()
     func onMoveThreads()
     func onTrashThreads()
@@ -27,7 +27,7 @@ class TopbarUIView: UIView {
     @IBOutlet weak var markButton: UIButton!
     @IBOutlet weak var trashButtonXConstraint: NSLayoutConstraint!
     @IBOutlet weak var markButtonLeadingConstraint: NSLayoutConstraint!
-    var delegate: NavigationToolbarDelegate?
+    weak var delegate: NavigationToolbarDelegate?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

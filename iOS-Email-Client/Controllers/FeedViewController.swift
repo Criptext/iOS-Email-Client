@@ -34,6 +34,18 @@ class FeedViewController: UIViewController{
         loadFeeds()
     }
     
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        invalidateObservers()
+        super.dismiss(animated: flag, completion: completion)
+    }
+    
+    func invalidateObservers() {
+        oldFeedsToken?.invalidate()
+        newFeedsToken?.invalidate()
+        oldFeedsToken = nil
+        newFeedsToken = nil
+    }
+    
     func checkIfFeedsEmpty(){
         if(feedsData.newFeeds.isEmpty && feedsData.oldFeeds.isEmpty){
             noFeedsView.isHidden = false
@@ -50,30 +62,30 @@ class FeedViewController: UIViewController{
         feedsData.oldFeeds = feeds.1
         newFeedsToken = feedsData.newFeeds.observe { [weak self] changes in
             guard let myself = self,
-                !myself.mailboxVC.myAccount.isInvalidated,
-                let tableView = self?.feedsTableView else {
+                !myself.mailboxVC.myAccount.isInvalidated else {
                     self?.oldFeedsToken?.invalidate()
                     self?.newFeedsToken?.invalidate()
                 return
             }
             switch(changes){
             case .initial:
-                tableView.reloadData()
+                myself.feedsTableView.reloadData()
             case .update(_, let deletions, let insertions, let modifications):
-                tableView.applyChanges(section: 0, deletions: deletions, insertions: insertions, updates: modifications)
+                myself.feedsTableView.applyChanges(section: 0, deletions: deletions, insertions: insertions, updates: modifications)
             default:
                 break
             }
         }
         oldFeedsToken = feedsData.oldFeeds.observe { [weak self] changes in
-            guard let tableView = self?.feedsTableView else {
+            guard let myself = self,
+                !myself.mailboxVC.myAccount.isInvalidated else {
                 return
             }
             switch(changes){
             case .initial:
-                tableView.reloadData()
+                myself.feedsTableView.reloadData()
             case .update(_, let deletions, let insertions, let modifications):
-                tableView.applyChanges(section: 1, deletions: deletions, insertions: insertions, updates: modifications)
+                myself.feedsTableView.applyChanges(section: 1, deletions: deletions, insertions: insertions, updates: modifications)
             default:
                 break
             }
@@ -150,13 +162,15 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func deleteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
-        let action = UIContextualAction(style: .destructive, title: String.localize("Delete")){
-            (action, view, completion) in
+        let action = UIContextualAction(style: .destructive, title: String.localize("Delete")){ [weak self] (action, view, completion) in
+            guard let weakSelf = self else {
+                return
+            }
             let feed: FeedItem
             if(indexPath.section == 0){
-                feed = self.feedsData.newFeeds[indexPath.row]
+                feed = weakSelf.feedsData.newFeeds[indexPath.row]
             }else{
-                feed = self.feedsData.oldFeeds[indexPath.row]
+                feed = weakSelf.feedsData.oldFeeds[indexPath.row]
             }
             DBManager.delete(feed: feed)
             completion(true)

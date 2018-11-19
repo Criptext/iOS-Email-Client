@@ -75,7 +75,8 @@ class InboxViewController: UIViewController {
         let queueItems = DBManager.getQueueItems()
         mailboxData.queueItems = queueItems
         mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
-            guard case .update = changes else {
+            guard self?.myAccount.isInvalidated ?? false,
+                case .update = changes else {
                 return
             }
             self?.dequeueEvents()
@@ -186,6 +187,11 @@ class InboxViewController: UIViewController {
         self.coachMarksController.stop(immediately: true)
     }
     
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        mailboxData.queueToken?.invalidate()
+        super.dismiss(animated: flag, completion: completion)
+    }
+    
     func initBarButtonItems(){
         self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
@@ -241,15 +247,15 @@ class InboxViewController: UIViewController {
     
     func startNetworkListener(){
         APIManager.reachabilityManager.startListening()
-        APIManager.reachabilityManager.listener = { status in
+        APIManager.reachabilityManager.listener = { [weak self] status in
             
             switch status {
             case .notReachable, .unknown:
                 //do nothing
-                self.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
+                self?.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
                 break
             default:
-                self.dequeueEvents()
+                self?.dequeueEvents()
                 break
             }
         }
@@ -265,8 +271,8 @@ class InboxViewController: UIViewController {
         let welcomeTourVC = WelcomeTourViewController(nibName: "WelcomeTourView", bundle: nil)
         welcomeTourVC.modalPresentationStyle = .overCurrentContext
         welcomeTourVC.modalTransitionStyle = .crossDissolve
-        welcomeTourVC.onDismiss = {
-            self.showGuide()
+        welcomeTourVC.onDismiss = { [weak self] in
+            self?.showGuide()
             defaults.set(true, forKey: "welcomeTour")
         }
         self.present(welcomeTourVC, animated: false, completion: nil)
@@ -325,36 +331,39 @@ extension InboxViewController {
             return
         }
         self.mailboxData.updating = true
-        APIManager.getEvents(token: myAccount.jwt) { (responseData) in
+        APIManager.getEvents(token: myAccount.jwt) { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
             refreshControl?.endRefreshing()
             if case .Unauthorized = responseData {
-                self.logout()
+                weakSelf.logout()
                 return
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 completion?(false)
-                self.mailboxData.updating = false
-                self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+                weakSelf.mailboxData.updating = false
+                weakSelf.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
                 return
             }
             
             if case .Forbidden = responseData {
                 completion?(false)
-                self.mailboxData.updating = false
-                self.presentPasswordPopover(myAccount: self.myAccount)
+                weakSelf.mailboxData.updating = false
+                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
                 return
             }
             
             guard case let .SuccessArray(events) = responseData else {
-                self.mailboxData.updating = false
+                weakSelf.mailboxData.updating = false
                 completion?(false)
                 return
             }
-            let eventHandler = EventHandler(account: self.myAccount)
-            eventHandler.handleEvents(events: events){ result in
-                self.mailboxData.updating = false
-                self.didReceiveEvents(result: result)
+            let eventHandler = EventHandler(account: weakSelf.myAccount)
+            eventHandler.handleEvents(events: events){ [weak self] result in
+                self?.mailboxData.updating = false
+                self?.didReceiveEvents(result: result)
                 completion?(true)
             }
         }
@@ -552,16 +561,16 @@ extension InboxViewController{
 extension InboxViewController{
     
     func signout(){
-        DBManager.signout()
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let vc = storyboard.instantiateInitialViewController()!
-        
-        self.present(vc, animated: true){
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.replaceRootViewController(vc)
+        self.logout(manually: true)
+    }
+    
+    func invalidateObservers(){
+        mailboxData.queueToken?.invalidate()
+        mailboxData.queueToken = nil
+        guard let feedVC = navigationDrawerController?.rightViewController as? FeedViewController else {
+            return
         }
+        feedVC.invalidateObservers()
     }
 }
 
@@ -939,8 +948,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             file.requestStatus = .finish
             composerVC.fileManager.registeredFiles.append(file)
         }
-        self.present(snackVC, animated: true, completion: {
-            self.navigationDrawerController?.closeLeftView()
+        self.present(snackVC, animated: true, completion: { [weak self] in
+            self?.navigationDrawerController?.closeLeftView()
         })
     }
     
@@ -1001,9 +1010,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return []
         }
         
-        let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { (action, index) in
-            let thread = self.mailboxData.threads[indexPath.row]
-            self.moveSingleThreadTrash(threadId: thread.threadId)
+        let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { [weak self] (action, index) in
+            guard let weakSelf = self else {
+                return
+            }
+            let thread = weakSelf.mailboxData.threads[indexPath.row]
+            weakSelf.moveSingleThreadTrash(threadId: thread.threadId)
         }
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
         
@@ -1031,7 +1043,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 return
         }
         mailboxData.isDequeueing = true
-        let maxBatch = 1
+        let maxBatch = 100
         var peerEvents = [[String: Any]]()
         var eventItems = [QueueItem]()
         for queueItem in queueItems {
@@ -1042,15 +1054,18 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             peerEvents.append(currentEvent)
             eventItems.append(queueItem)
         }
-        APIManager.postPeerEvent(["peerEvents": peerEvents], token: myAccount.jwt) { (responseData) in
-            self.mailboxData.isDequeueing = false
+        APIManager.postPeerEvent(["peerEvents": peerEvents], token: myAccount.jwt) { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.mailboxData.isDequeueing = false
             switch(responseData) {
             case .Unauthorized:
                 completion?()
-                self.logout()
+                weakSelf.logout()
             case .Forbidden:
                 completion?()
-                self.presentPasswordPopover(myAccount: self.myAccount)
+                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
             case .Success:
                 DBManager.deleteQueueItems(eventItems)
                 completion?()
@@ -1309,31 +1324,34 @@ extension InboxViewController: ComposerSendMailDelegate {
         showSendingSnackBar(message: String.localize("Sending Email..."), permanent: true)
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, password: password)
-        sendMailAsyncTask.start { responseData in
+        sendMailAsyncTask.start { [weak self] responseData in
+            guard let weakSelf = self else {
+                return
+            }
             if case .Unauthorized = responseData {
-                self.logout()
+                weakSelf.logout()
                 return
             }
             if case .Forbidden = responseData {
-                self.showSnackbar(String.localize("Email Failed. It will be resent in the future"), attributedText: nil, buttons: "", permanent: false)
-                self.presentPasswordPopover(myAccount: self.myAccount)
+                weakSelf.showSnackbar(String.localize("Email Failed. It will be resent in the future"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
                 return
             }
             if case let .Error(error) = responseData {
-                self.showSnackbar("\(error.description). \(String.localize("It will be resent in the future"))", attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar("\(error.description). \(String.localize("It will be resent in the future"))", attributedText: nil, buttons: "", permanent: false)
                 return
             }
             guard case let .SuccessInt(key) = responseData,
                 let newEmail = DBManager.getMail(key: key) else {
-                self.showSnackbar(String.localize("Email Failed. It will be resent in the future"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar(String.localize("Email Failed. It will be resent in the future"), attributedText: nil, buttons: "", permanent: false)
                 return
             }
-            if let index = self.mailboxData.threads.index(where: {!$0.lastEmail.isInvalidated && $0.threadId == newEmail.threadId}) {
-                self.mailboxData.threads[index].lastEmail = newEmail
+            if let index = weakSelf.mailboxData.threads.index(where: {!$0.lastEmail.isInvalidated && $0.threadId == newEmail.threadId}) {
+                weakSelf.mailboxData.threads[index].lastEmail = newEmail
             }
-            self.refreshThreadRows()
-            self.showSendingSnackBar(message: String.localize("Email Sent"), permanent: false)
-            self.sendFailEmail()
+            weakSelf.refreshThreadRows()
+            weakSelf.showSendingSnackBar(message: String.localize("Email Sent"), permanent: false)
+            weakSelf.sendFailEmail()
         }
     }
     
@@ -1384,17 +1402,23 @@ extension InboxViewController: GeneralMoreOptionsViewDelegate{
 extension InboxViewController: SnackbarControllerDelegate {
     func snackbarController(snackbarController: SnackbarController, willShow snackbar: Snackbar) {
         self.view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.25) {
-            self.composeButtonBottomConstraint.constant = self.SNACKBAR_PADDING
-            self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.composeButtonBottomConstraint.constant = weakSelf.SNACKBAR_PADDING
+            weakSelf.view.layoutIfNeeded()
         }
     }
     
     func snackbarController(snackbarController: SnackbarController, willHide snackbar: Snackbar) {
         self.view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.25) {
-            self.composeButtonBottomConstraint.constant = self.BOTTOM_PADDING
-            self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.composeButtonBottomConstraint.constant = weakSelf.BOTTOM_PADDING
+            weakSelf.view.layoutIfNeeded()
         }
     }
 }

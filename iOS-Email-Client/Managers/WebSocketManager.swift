@@ -9,13 +9,13 @@
 import Foundation
 import SwiftWebSocket
 
-protocol WebSocketManagerDelegate {
+protocol WebSocketManagerDelegate: class {
     func newMessage(result: EventData.Socket)
 }
 
 final class WebSocketManager: NSObject {
     static let sharedInstance = WebSocketManager()
-    var delegate : WebSocketManagerDelegate?
+    weak var delegate : WebSocketManagerDelegate?
     var socket : WebSocket?
     var myAccount : Account?
     var shouldReconnect = true

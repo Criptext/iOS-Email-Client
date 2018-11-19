@@ -209,7 +209,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func registerPushNotifications() {
-        FirebaseApp.configure()
+        let filepath = Env.googleFileName
+        if let fileOps = FirebaseOptions(contentsOfFile: filepath) {
+            FirebaseApp.configure(options: fileOps)
+        } else {
+            FirebaseApp.configure()
+        }
+        
         Messaging.messaging().delegate = self
         
         if #available(iOS 10.0, *) {
@@ -244,6 +250,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func logout(manually: Bool = false){
+        if let mailboxVC = getInboxVC() {
+            mailboxVC.invalidateObservers()
+        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!

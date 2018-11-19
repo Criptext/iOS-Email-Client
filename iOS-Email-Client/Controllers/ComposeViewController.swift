@@ -20,7 +20,7 @@ import IQKeyboardManagerSwift
 import SignalProtocolFramework
 import Instructions
 
-protocol ComposerSendMailDelegate {
+protocol ComposerSendMailDelegate: class {
     func sendMail(email: Email, password: String?)
     func newDraft(draft: Email)
     func deleteDraft(draftId: Int)
@@ -94,7 +94,7 @@ class ComposeViewController: UIViewController {
     let fileManager = CriptextFileManager()
     let coachMarksController = CoachMarksController()
     
-    var delegate : ComposerSendMailDelegate?
+    weak var delegate : ComposerSendMailDelegate?
     
     var enableSendButton: UIBarButtonItem!
     var disableSendButton: UIBarButtonItem!

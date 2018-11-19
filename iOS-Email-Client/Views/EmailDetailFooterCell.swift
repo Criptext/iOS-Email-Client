@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol EmailDetailFooterDelegate {
+protocol EmailDetailFooterDelegate: class {
     func onFooterReplyPress()
     func onFooterReplyAllPress()
     func onFooterForwardPress()
@@ -16,7 +16,7 @@ protocol EmailDetailFooterDelegate {
 
 class EmailDetailFooterCell: UITableViewHeaderFooterView{
     
-    var delegate : EmailDetailFooterDelegate?
+    weak var delegate : EmailDetailFooterDelegate?
     
     @IBAction func onPressReply(_ sender: Any) {
         delegate?.onFooterReplyPress()
