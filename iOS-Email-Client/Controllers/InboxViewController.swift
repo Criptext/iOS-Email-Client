@@ -67,7 +67,6 @@ class InboxViewController: UIViewController {
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("View Controller \(self)")
         viewSetup()
         WebSocketManager.sharedInstance.delegate = self
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
