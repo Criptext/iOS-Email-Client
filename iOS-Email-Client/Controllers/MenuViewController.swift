@@ -109,9 +109,9 @@ class MenuViewController: UIViewController{
     }
     
     func refreshBadges(){
-        let inboxCounter = DBManager.getUnreadMails(from: SystemLabel.inbox.id).count
+        let inboxCounter = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
         let draftCounter = DBManager.getThreads(from: SystemLabel.draft.id, since: Date(), limit: 100).count
-        let spamCounter = DBManager.getUnreadMails(from: SystemLabel.spam.id).count
+        let spamCounter = DBManager.getUnreadMailsCounter(from: SystemLabel.spam.id)
         
         inboxMenuItem.showBadge(inboxCounter)
         draftMenuItem.showBadge(draftCounter)

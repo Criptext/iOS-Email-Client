@@ -256,10 +256,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.applicationIconBadgeNumber = 0
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
+        WebSocketManager.sharedInstance.delegate = nil
         let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        let defaults = UserDefaults.standard
         groupDefaults.removeObject(forKey: "activeAccount")
-        defaults.removeObject(forKey: "welcomeTour")
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if let loginVC = initialVC.topViewController as? NewLoginViewController {
@@ -310,8 +309,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
-        UIApplication.shared.applicationIconBadgeNumber = emails.count
+        UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -395,8 +393,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
             }
             inboxVC.markAsRead(emailKey: key) {
-                let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
-                UIApplication.shared.applicationIconBadgeNumber = emails.count
+                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
                 completionHandler()
             }
             break
@@ -451,8 +448,7 @@ extension AppDelegate: MessagingDelegate {
                     return
             }
             inboxVC.getPendingEvents(nil) { success in
-                let emails = DBManager.getUnreadMails(from: SystemLabel.inbox.id)
-                UIApplication.shared.applicationIconBadgeNumber = emails.count + (success ? 0 : 1)
+                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
                 completionHandler(.newData)
             }
         }

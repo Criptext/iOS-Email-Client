@@ -56,7 +56,7 @@ class EmailTableViewCell: UITableViewCell{
     }
     weak var delegate: EmailTableViewCellDelegate?
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
-    let RECIPIENTS_MAX_WIDTH: CGFloat = 130.0
+    let RECIPIENTS_MAX_WIDTH: CGFloat = 190.0
     let READ_STATUS_MARGIN: CGFloat = 5.0
     
     override func awakeFromNib() {
@@ -166,7 +166,7 @@ class EmailTableViewCell: UITableViewCell{
             }
             return "\(result), \(displayName)"
         })
-        let size = contactsLabel.sizeThatFits(CGSize(width: 130.0, height: 22.0))
+        let size = contactsLabel.sizeThatFits(CGSize(width: RECIPIENTS_MAX_WIDTH, height: 22.0))
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
     }
     

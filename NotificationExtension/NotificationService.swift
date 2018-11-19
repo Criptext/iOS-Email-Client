@@ -60,6 +60,7 @@ class NotificationService: UNNotificationServiceExtension {
                     bestAttemptContent.subtitle = email.subject
                     bestAttemptContent.body = email.preview
                 }
+                bestAttemptContent.badge = NSNumber(integerLiteral: SharedDB.getUnreadMailsCounter(from: SystemLabel.inbox.id))
                 contentHandler(bestAttemptContent)
             }
         }
