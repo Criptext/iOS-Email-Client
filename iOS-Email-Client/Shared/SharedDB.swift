@@ -39,6 +39,12 @@ class SharedDB {
         }
     }
     
+    class func getUnreadMailsCounter(from label: Int) -> Int {
+        let realm = try! Realm()
+        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
+        return realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@)", label, rejectedLabels).distinct(by: ["threadId"]).count
+    }
+    
     class func store(_ contacts:[Contact]){
         let realm = try! Realm()
         

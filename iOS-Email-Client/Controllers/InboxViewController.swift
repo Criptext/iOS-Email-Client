@@ -489,7 +489,7 @@ extension InboxViewController{
         let label =  SystemLabel(rawValue: mailboxData.selectedLabel) ?? .all
         let mailboxCounter = label == .draft
             ? DBManager.getThreads(from: mailboxData.selectedLabel, since: Date(), limit: 100).count
-            : DBManager.getUnreadMails(from: mailboxData.selectedLabel).count
+            : DBManager.getUnreadMailsCounter(from: mailboxData.selectedLabel)
         countBarButton.title = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
     }
     
