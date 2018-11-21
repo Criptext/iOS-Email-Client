@@ -241,6 +241,45 @@
 		A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77AD67221642AFC00C26F07 /* StreamReader.swift */; };
 		A77C30A721A4DE720031E219 /* PasscodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30A621A4DE720031E219 /* PasscodeConfig.swift */; };
 		A77C30A921A4EC240031E219 /* PasscodeLock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77C30A821A4EC240031E219 /* PasscodeLock.framework */; };
+		A77C30B121A5055A0031E219 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30B021A5055A0031E219 /* ShareViewController.swift */; };
+		A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A77C30B221A5055A0031E219 /* MainInterface.storyboard */; };
+		A77C30B821A5055A0031E219 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A77C30AE21A5055A0031E219 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A7ADA11D21A5A3610027FC1C /* ChangePinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */; };
+		A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
+		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
+		A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
+		A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
+		A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7ADA12221A5CE840027FC1C /* ComposerUIView.xib */; };
+		A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */; };
+		A7ADA12721A5DCC80027FC1C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
+		A7ADA12821A5F1CA0027FC1C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
+		A7ADA12921A5F1CD0027FC1C /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
+		A7ADA12A21A5F1D00027FC1C /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52E201A9FCC00809C4D /* Email.swift */; };
+		A7ADA12B21A5F1DA0027FC1C /* CRSignedPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD27220449A730080A32C /* CRSignedPreKeyRecord.swift */; };
+		A7ADA12C21A5F1DA0027FC1C /* CRPreKeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEA203DDEF400DF6E4E /* CRPreKeyRecord.swift */; };
+		A7ADA12D21A5F1DA0027FC1C /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
+		A7ADA12E21A5F1DA0027FC1C /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
+		A7ADA12F21A5F1DD0027FC1C /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
+		A7ADA13021A5F1E10027FC1C /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82C20607602000E5F14 /* Label.swift */; };
+		A7ADA13121A5F1E50027FC1C /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
+		A7ADA13221A5F1EC0027FC1C /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104520FEF2B10081C048 /* FileKey.swift */; };
+		A7ADA13321A5F1F10027FC1C /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
+		A7ADA13421A5F1FA0027FC1C /* NewEmailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387421939B2600C8355A /* NewEmailHandler.swift */; };
+		A7ADA13521A5F1FA0027FC1C /* NewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC386921936A0300C8355A /* NewEmail.swift */; };
+		A7ADA13621A5F1FA0027FC1C /* SharedDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387921939C3D00C8355A /* SharedDB.swift */; };
+		A7ADA13721A5F1FA0027FC1C /* SharedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387C21939D6500C8355A /* SharedAPI.swift */; };
+		A7ADA13821A5F1FA0027FC1C /* ContactUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387F21939E8800C8355A /* ContactUtils.swift */; };
+		A7ADA13921A5F1FA0027FC1C /* SharedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3885219496E600C8355A /* SharedUtils.swift */; };
+		A7ADA13A21A5F2100027FC1C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
+		A7ADA13B21A5F2100027FC1C /* CriptextPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2692040B80A0080A32C /* CriptextPreKeyStore.swift */; };
+		A7ADA13C21A5F2100027FC1C /* CriptextSignedPreKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26B2040BAF40080A32C /* CriptextSignedPreKeyStore.swift */; };
+		A7ADA13D21A5F2100027FC1C /* CriptextIdentityKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD26D2040BE340080A32C /* CriptextIdentityKeyStore.swift */; };
+		A7ADA13E21A5F2100027FC1C /* CriptextAxolotlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD0204DE76B00D72F6E /* CriptextAxolotlStore.swift */; };
+		A7ADA13F21A5F2100027FC1C /* DBAxolotl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385C21934E1200C8355A /* DBAxolotl.swift */; };
+		A7ADA14221A5F3D80027FC1C /* ResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E7212F2207002C8C7F /* ResponseData.swift */; };
+		A7ADA14321A5F3EE0027FC1C /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
+		A7ADA14421A5F4100027FC1C /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
+		A7ADA14521A5F4340027FC1C /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
@@ -323,6 +362,13 @@
 			remoteGlobalIDString = 41B6AAAB2017987500D428B7;
 			remoteInfo = "iOS-Email-Client";
 		};
+		A77C30B621A5055A0031E219 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 41B6AAA42017987500D428B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A77C30AD21A5055A0031E219;
+			remoteInfo = ShareExtension;
+		};
 		A7CC38092190D9DA00C8355A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 41B6AAA42017987500D428B7 /* Project object */;
@@ -339,6 +385,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				A77C30B821A5055A0031E219 /* ShareExtension.appex in Embed App Extensions */,
 				A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -589,6 +636,16 @@
 		A77AD67221642AFC00C26F07 /* StreamReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
 		A77C30A621A4DE720031E219 /* PasscodeConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeConfig.swift; sourceTree = "<group>"; };
 		A77C30A821A4EC240031E219 /* PasscodeLock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PasscodeLock.framework; path = Carthage/Build/iOS/PasscodeLock.framework; sourceTree = "<group>"; };
+		A77C30AE21A5055A0031E219 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A77C30B021A5055A0031E219 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		A77C30B321A5055A0031E219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		A77C30B521A5055A0031E219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7ADA11B21A507D70027FC1C /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinViewController.swift; sourceTree = "<group>"; };
+		A7ADA12221A5CE840027FC1C /* ComposerUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposerUIView.xib; sourceTree = "<group>"; };
+		A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerUIView.swift; sourceTree = "<group>"; };
+		A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
+		A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		A7CC38042190D9D900C8355A /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CC38062190D9DA00C8355A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A7CC38082190D9DA00C8355A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -714,6 +771,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A77C30AB21A5055A0031E219 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */,
+				A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7CC38012190D9D900C8355A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -830,6 +896,7 @@
 				7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */,
 				7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */,
 				A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */,
+				A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -875,6 +942,7 @@
 				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
 				41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */,
 				A7CC38052190D9DA00C8355A /* NotificationExtension */,
+				A77C30AF21A5055A0031E219 /* ShareExtension */,
 				41B6AAAD2017987500D428B7 /* Products */,
 				2962C69A939AA368B015D288 /* Frameworks */,
 			);
@@ -886,6 +954,7 @@
 				41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */,
 				41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */,
 				A7CC38042190D9D900C8355A /* NotificationExtension.appex */,
+				A77C30AE21A5055A0031E219 /* ShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1152,6 +1221,21 @@
 			path = Lottie;
 			sourceTree = "<group>";
 		};
+		A77C30AF21A5055A0031E219 /* ShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A7ADA11B21A507D70027FC1C /* ShareExtension.entitlements */,
+				A77C30B021A5055A0031E219 /* ShareViewController.swift */,
+				A77C30B221A5055A0031E219 /* MainInterface.storyboard */,
+				A77C30B521A5055A0031E219 /* Info.plist */,
+				A7ADA12221A5CE840027FC1C /* ComposerUIView.xib */,
+				A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */,
+				A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */,
+				A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */,
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
 		A7CC38052190D9DA00C8355A /* NotificationExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1197,6 +1281,7 @@
 			);
 			dependencies = (
 				A7CC380A2190D9DA00C8355A /* PBXTargetDependency */,
+				A77C30B721A5055A0031E219 /* PBXTargetDependency */,
 			);
 			name = "iOS-Email-Client";
 			productName = "iOS-Email-Client";
@@ -1221,6 +1306,23 @@
 			productReference = 41B6AAC02017987500D428B7 /* iOS-Email-ClientTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A77C30AD21A5055A0031E219 /* ShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A77C30B921A5055A0031E219 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
+			buildPhases = (
+				A77C30AA21A5055A0031E219 /* Sources */,
+				A77C30AB21A5055A0031E219 /* Frameworks */,
+				A77C30AC21A5055A0031E219 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareExtension;
+			productName = ShareExtension;
+			productReference = A77C30AE21A5055A0031E219 /* ShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A7CC38032190D9D900C8355A /* NotificationExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7CC380C2190D9DA00C8355A /* Build configuration list for PBXNativeTarget "NotificationExtension" */;
@@ -1244,7 +1346,7 @@
 		41B6AAA42017987500D428B7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Criptext Inc.";
 				TargetAttributes = {
@@ -1275,6 +1377,15 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 41B6AAAB2017987500D428B7;
 					};
+					A77C30AD21A5055A0031E219 = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					A7CC38032190D9D900C8355A = {
 						CreatedOnToolsVersion = 10.0;
 						ProvisioningStyle = Automatic;
@@ -1303,6 +1414,7 @@
 				41B6AAAB2017987500D428B7 /* iOS-Email-Client */,
 				41B6AABF2017987500D428B7 /* iOS-Email-ClientTests */,
 				A7CC38032190D9D900C8355A /* NotificationExtension */,
+				A77C30AD21A5055A0031E219 /* ShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1383,6 +1495,16 @@
 				7CB60A8320FA526C00C9090C /* criptextlogo.png in Resources */,
 				A7F3027A216EB78200676DD2 /* compressed.gz in Resources */,
 				A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A77C30AC21A5055A0031E219 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */,
+				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
+				A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1557,6 +1679,7 @@
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,
+				A7ADA11D21A5A3610027FC1C /* ChangePinViewController.swift in Sources */,
 				7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */,
 				A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */,
 				7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */,
@@ -1650,6 +1773,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A77C30AA21A5055A0031E219 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7ADA12921A5F1CD0027FC1C /* Contact.swift in Sources */,
+				A7ADA14321A5F3EE0027FC1C /* CriptextError.swift in Sources */,
+				A7ADA12A21A5F1D00027FC1C /* Email.swift in Sources */,
+				A7ADA13821A5F1FA0027FC1C /* ContactUtils.swift in Sources */,
+				A7ADA12821A5F1CA0027FC1C /* Account.swift in Sources */,
+				A7ADA13921A5F1FA0027FC1C /* SharedUtils.swift in Sources */,
+				A7ADA13C21A5F2100027FC1C /* CriptextSignedPreKeyStore.swift in Sources */,
+				A7ADA12B21A5F1DA0027FC1C /* CRSignedPreKeyRecord.swift in Sources */,
+				A7ADA14221A5F3D80027FC1C /* ResponseData.swift in Sources */,
+				A7ADA12D21A5F1DA0027FC1C /* CRSessionRecord.swift in Sources */,
+				A7ADA13021A5F1E10027FC1C /* Label.swift in Sources */,
+				A7ADA13621A5F1FA0027FC1C /* SharedDB.swift in Sources */,
+				A7ADA13721A5F1FA0027FC1C /* SharedAPI.swift in Sources */,
+				A7ADA12C21A5F1DA0027FC1C /* CRPreKeyRecord.swift in Sources */,
+				A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */,
+				A7ADA13B21A5F2100027FC1C /* CriptextPreKeyStore.swift in Sources */,
+				A7ADA13D21A5F2100027FC1C /* CriptextIdentityKeyStore.swift in Sources */,
+				A7ADA12721A5DCC80027FC1C /* Env.swift in Sources */,
+				A7ADA13121A5F1E50027FC1C /* File.swift in Sources */,
+				A7ADA13221A5F1EC0027FC1C /* FileKey.swift in Sources */,
+				A7ADA14421A5F4100027FC1C /* SignalHandler.swift in Sources */,
+				A7ADA14521A5F4340027FC1C /* DateUtils.m in Sources */,
+				A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */,
+				A7ADA13F21A5F2100027FC1C /* DBAxolotl.swift in Sources */,
+				A7ADA13E21A5F2100027FC1C /* CriptextAxolotlStore.swift in Sources */,
+				A7ADA12F21A5F1DD0027FC1C /* EmailContact.swift in Sources */,
+				A7ADA13321A5F1F10027FC1C /* DummySession.swift in Sources */,
+				A7ADA13421A5F1FA0027FC1C /* NewEmailHandler.swift in Sources */,
+				A7ADA12E21A5F1DA0027FC1C /* CRTrustedDevice.swift in Sources */,
+				A77C30B121A5055A0031E219 /* ShareViewController.swift in Sources */,
+				A7ADA13521A5F1FA0027FC1C /* NewEmail.swift in Sources */,
+				A7ADA13A21A5F2100027FC1C /* CriptextSessionStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7CC38002190D9D900C8355A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1695,6 +1857,11 @@
 			target = 41B6AAAB2017987500D428B7 /* iOS-Email-Client */;
 			targetProxy = 41B6AAC12017987500D428B7 /* PBXContainerItemProxy */;
 		};
+		A77C30B721A5055A0031E219 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A77C30AD21A5055A0031E219 /* ShareExtension */;
+			targetProxy = A77C30B621A5055A0031E219 /* PBXContainerItemProxy */;
+		};
 		A7CC380A2190D9DA00C8355A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7CC38032190D9D900C8355A /* NotificationExtension */;
@@ -1719,6 +1886,14 @@
 				A7FFCF5F217A920600FFFDFF /* es-419 */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A77C30B221A5055A0031E219 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A77C30B321A5055A0031E219 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		A7FFCF1D217A8FE300FFFDFF /* Login.storyboard */ = {
@@ -2233,6 +2408,91 @@
 			};
 			name = Support;
 		};
+		A77C30BA21A5055A0031E219 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/Extension-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A77C30BB21A5055A0031E219 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/Extension-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A77C30BC21A5055A0031E219 /* Support */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65NU4336S4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/Extension-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Support;
+		};
 		A7CC380D2190D9DA00C8355A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2350,6 +2610,16 @@
 				41B6AACD2017987500D428B7 /* Debug */,
 				41B6AACE2017987500D428B7 /* Release */,
 				7CD968B42139912C002D4833 /* Support */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A77C30B921A5055A0031E219 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A77C30BA21A5055A0031E219 /* Debug */,
+				A77C30BB21A5055A0031E219 /* Release */,
+				A77C30BC21A5055A0031E219 /* Support */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

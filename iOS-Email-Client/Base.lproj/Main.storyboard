@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -339,7 +339,7 @@
                                             <outlet property="delegate" destination="Rmr-j3-9Sc" id="T5o-zp-ejt"/>
                                         </connections>
                                     </tableView>
-                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c58-aV-hT9">
+                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c58-aV-hT9">
                                         <rect key="frame" x="0.0" y="46" width="375" height="502"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
@@ -1784,6 +1784,81 @@
             </objects>
             <point key="canvasLocation" x="-3613.5999999999999" y="1900.2998500749627"/>
         </scene>
+        <!--Change Pin View Controller-->
+        <scene sceneID="80p-U5-W7b">
+            <objects>
+                <viewController storyboardIdentifier="changePinViewController" id="Q8c-MN-jgJ" customClass="ChangePinViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ed8-BK-AII"/>
+                        <viewControllerLayoutGuide type="bottom" id="3Vh-bN-bbP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="H8b-nh-4Sy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wOf-DA-eAI">
+                                <rect key="frame" x="305" y="43" width="45" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="7LH-dK-La2"/>
+                                    <constraint firstAttribute="width" constant="43" id="NjV-3D-orV"/>
+                                </constraints>
+                                <color key="onTintColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="onLockToggle:" destination="Q8c-MN-jgJ" eventType="valueChanged" id="Yp4-JH-2BG"/>
+                                </connections>
+                            </switch>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8tP-x8-wJ5">
+                                <rect key="frame" x="27" y="85" width="321" height="0.5"/>
+                                <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.5" id="6op-KI-poJ"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KLj-cZ-RmB">
+                                <rect key="frame" x="27" y="85.5" width="321" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="KId-os-rTE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                                <inset key="contentEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Change Pin">
+                                    <color key="titleColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onChangePinPress:" destination="Q8c-MN-jgJ" eventType="touchUpInside" id="tta-cE-n0W"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PIN Lock" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufV-LV-Xc1">
+                                <rect key="frame" x="27" y="45" width="321" height="24"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="8tP-x8-wJ5" firstAttribute="top" secondItem="H8b-nh-4Sy" secondAttribute="topMargin" constant="65" id="0QK-NI-byo"/>
+                            <constraint firstItem="wOf-DA-eAI" firstAttribute="centerY" secondItem="ufV-LV-Xc1" secondAttribute="centerY" id="122-qT-ySp"/>
+                            <constraint firstItem="8tP-x8-wJ5" firstAttribute="trailing" secondItem="ufV-LV-Xc1" secondAttribute="trailing" id="O29-3W-NtD"/>
+                            <constraint firstItem="KLj-cZ-RmB" firstAttribute="trailing" secondItem="ufV-LV-Xc1" secondAttribute="trailing" id="ZhP-2f-IPl"/>
+                            <constraint firstItem="KLj-cZ-RmB" firstAttribute="top" secondItem="8tP-x8-wJ5" secondAttribute="bottom" id="cuK-Tx-132"/>
+                            <constraint firstItem="wOf-DA-eAI" firstAttribute="trailing" secondItem="ufV-LV-Xc1" secondAttribute="trailing" id="g87-fz-SPY"/>
+                            <constraint firstItem="8tP-x8-wJ5" firstAttribute="leading" secondItem="ufV-LV-Xc1" secondAttribute="leading" id="lzy-hG-Rsr"/>
+                            <constraint firstAttribute="trailing" secondItem="ufV-LV-Xc1" secondAttribute="trailing" constant="27" id="nTk-Yy-JJs"/>
+                            <constraint firstItem="ufV-LV-Xc1" firstAttribute="top" secondItem="ed8-BK-AII" secondAttribute="bottom" constant="25" id="qhe-up-UZk"/>
+                            <constraint firstItem="ufV-LV-Xc1" firstAttribute="leading" secondItem="H8b-nh-4Sy" secondAttribute="leading" constant="27" id="sbT-NO-yic"/>
+                            <constraint firstItem="KLj-cZ-RmB" firstAttribute="leading" secondItem="ufV-LV-Xc1" secondAttribute="leading" id="w3M-qf-xgz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="changeButton" destination="KLj-cZ-RmB" id="QLJ-Kj-PZP"/>
+                        <outlet property="lockSwitch" destination="wOf-DA-eAI" id="tLd-Dt-tUf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgq-lw-ACM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3634.4000000000001" y="2610.9445277361319"/>
+        </scene>
         <!--Signature Editor View Controller-->
         <scene sceneID="9DW-7S-z9E">
             <objects>
@@ -1806,7 +1881,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cb5-Ym-zzt">
-                                        <rect key="frame" x="308" y="18.5" width="45" height="28"/>
+                                        <rect key="frame" x="305" y="18.5" width="45" height="28"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="43" id="BJt-VC-KVz"/>
                                             <constraint firstAttribute="height" constant="28" id="PCg-Tj-zWh"/>
@@ -1817,7 +1892,7 @@
                                         </connections>
                                     </switch>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FG0-Iq-Ffg">
-                                        <rect key="frame" x="28" y="64.5" width="322" height="0.5"/>
+                                        <rect key="frame" x="27" y="64.5" width="321" height="0.5"/>
                                         <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="uiY-9F-nyH"/>
@@ -1827,13 +1902,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="FG0-Iq-Ffg" secondAttribute="bottom" id="7ut-ik-92i"/>
-                                    <constraint firstItem="FG0-Iq-Ffg" firstAttribute="leading" secondItem="TlD-VH-mNM" secondAttribute="leading" constant="28" id="8K6-uG-dVI"/>
-                                    <constraint firstAttribute="trailing" secondItem="FG0-Iq-Ffg" secondAttribute="trailing" constant="25" id="PrZ-SB-Z8s"/>
+                                    <constraint firstItem="FG0-Iq-Ffg" firstAttribute="leading" secondItem="TlD-VH-mNM" secondAttribute="leading" constant="27" id="8K6-uG-dVI"/>
+                                    <constraint firstAttribute="trailing" secondItem="FG0-Iq-Ffg" secondAttribute="trailing" constant="27" id="PrZ-SB-Z8s"/>
                                     <constraint firstItem="cb5-Ym-zzt" firstAttribute="centerY" secondItem="TlD-VH-mNM" secondAttribute="centerY" id="R53-SK-qRo"/>
                                     <constraint firstAttribute="height" constant="65" id="ZBW-ne-NiL"/>
                                     <constraint firstItem="wbm-oq-FDu" firstAttribute="leading" secondItem="TlD-VH-mNM" secondAttribute="leading" constant="27" id="erQ-eo-b0z"/>
                                     <constraint firstItem="wbm-oq-FDu" firstAttribute="centerY" secondItem="TlD-VH-mNM" secondAttribute="centerY" id="uo2-2n-L6l"/>
-                                    <constraint firstAttribute="trailing" secondItem="cb5-Ym-zzt" secondAttribute="trailing" constant="24" id="zoS-S6-T4a"/>
+                                    <constraint firstAttribute="trailing" secondItem="cb5-Ym-zzt" secondAttribute="trailing" constant="27" id="zoS-S6-T4a"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eM-lg-clQ" customClass="RichEditorView" customModule="RichEditorView">

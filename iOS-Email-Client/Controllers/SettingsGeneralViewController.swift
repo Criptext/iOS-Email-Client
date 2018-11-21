@@ -187,16 +187,11 @@ class SettingsGeneralViewController: UITableViewController{
             }
             return cell
         case .pin:
-            let groupDefaults = UserDefaults.standard
-            let locked = groupDefaults.string(forKey: "lock") != nil
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+            cell.messageLabel.text = ""
+            cell.loader.isHidden = true
+            cell.goImageView.isHidden = false
             cell.optionLabel.text = subsection.name
-            cell.availableSwitch.isOn = locked
-            cell.switchToggle = { [weak self] isOn in
-                let configuration = PasscodeConfig()
-                let passcodeVC = PasscodeLockViewController(state: isOn ? .set : .remove, configuration: configuration, animateOnDismiss: true)
-                self?.present(passcodeVC, animated: true, completion: nil)
-            }
             return cell
         case .readReceipts:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
@@ -258,6 +253,8 @@ class SettingsGeneralViewController: UITableViewController{
             showLogout()
         case .recovery:
             goToRecoveryEmail()
+        case .pin:
+            goToPinLock()
         default:
             break
         }
@@ -309,6 +306,13 @@ class SettingsGeneralViewController: UITableViewController{
         let changePassVC = storyboard.instantiateViewController(withIdentifier: "changePassViewController") as! ChangePassViewController
         changePassVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(changePassVC, animated: true)
+    }
+    
+    func goToPinLock(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let pinLockVC = storyboard.instantiateViewController(withIdentifier: "changePinViewController") as! ChangePinViewController
+        pinLockVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(pinLockVC, animated: true)
     }
     
     func goToSignature(){

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Cof-QW-bVS">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Share View Controller-->
+        <scene sceneID="UEa-UH-6OO">
+            <objects>
+                <viewController id="Cof-QW-bVS" customClass="ShareViewController" customModule="ShareExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nGS-z5-xcO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cpa-84-Qp0" customClass="ComposerUIView" customModule="ShareExtension" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Cpa-84-Qp0" firstAttribute="top" secondItem="kjq-mq-4Yd" secondAttribute="top" id="8p0-b4-0fV"/>
+                            <constraint firstItem="kjq-mq-4Yd" firstAttribute="trailing" secondItem="Cpa-84-Qp0" secondAttribute="trailing" id="HkT-5f-Iz5"/>
+                            <constraint firstItem="Cpa-84-Qp0" firstAttribute="leading" secondItem="kjq-mq-4Yd" secondAttribute="leading" id="Tsl-Lx-UeC"/>
+                            <constraint firstItem="kjq-mq-4Yd" firstAttribute="bottom" secondItem="Cpa-84-Qp0" secondAttribute="bottom" id="wdC-BB-qJc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="kjq-mq-4Yd"/>
+                    </view>
+                    <connections>
+                        <outlet property="composerUIView" destination="Cpa-84-Qp0" id="xl4-4K-LT2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h5F-pN-VAU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-156" y="-54.422788605697157"/>
+        </scene>
+    </scenes>
+</document>
