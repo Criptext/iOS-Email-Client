@@ -46,7 +46,7 @@ class SettingsGeneralViewController: UITableViewController{
             
             case preview
             case readReceipts
-            case security
+            case pin
             
             case version
             
@@ -74,8 +74,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("Show Email Preview")
                 case .readReceipts:
                     return String.localize("Read Receipts")
-                case .security:
-                    return String.localize("Security")
+                case .pin:
+                    return String.localize("PIN Lock")
                 case .version:
                     return String.localize("Version")
                 }
@@ -89,7 +89,7 @@ class SettingsGeneralViewController: UITableViewController{
     let menus = [
         .account: [.profile, .signature, .changePassword, .twoFactor, .recovery],
         .about: [.privacy, .terms, .openSource, .logout],
-        .privacy : [.preview, .readReceipts, .security],
+        .privacy : [.preview, .readReceipts, .pin],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData: GeneralSettingsData!
@@ -186,7 +186,7 @@ class SettingsGeneralViewController: UITableViewController{
                 groupDefaults.set(!isOn, forKey: "previewDisable")
             }
             return cell
-        case .security:
+        case .pin:
             let groupDefaults = UserDefaults.standard
             let locked = groupDefaults.string(forKey: "lock") != nil
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
@@ -196,6 +196,14 @@ class SettingsGeneralViewController: UITableViewController{
                 let configuration = PasscodeConfig()
                 let passcodeVC = PasscodeLockViewController(state: isOn ? .set : .remove, configuration: configuration, animateOnDismiss: true)
                 self?.present(passcodeVC, animated: true, completion: nil)
+            }
+            return cell
+        case .readReceipts:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = generalData.hasEmailReceipts
+            cell.switchToggle = { isOn in
+                self.setReadReceipts(enable: isOn)
             }
             return cell
         default:
@@ -366,6 +374,19 @@ class SettingsGeneralViewController: UITableViewController{
             }
             if (self.generalData.isTwoFactor) {
                 self.presentTwoFactorPopover()
+            }
+        }
+    }
+    
+    func setReadReceipts(enable: Bool){
+        let initialValue = self.generalData.hasEmailReceipts
+        self.generalData.hasEmailReceipts = enable
+        APIManager.setReadReceipts(enable: enable, token: myAccount.jwt) { (responseData) in
+            guard case .Success = responseData else {
+                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)
+                self.generalData.hasEmailReceipts = initialValue
+                self.reloadView()
+                return
             }
         }
     }
