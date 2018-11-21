@@ -22,17 +22,16 @@ class ShareViewController: UIViewController {
     override func viewDidLoad() {
         configRealm()
         getAccount()
-        handleExtensionItems()
         composerUIView.initialLoad()
         composerUIView.delegate = self
-        self.composerUIView.addToContent(text: "Pepito")
-        self.composerUIView.addToContent(text: " PELON")
+        handleExtensionItems()
     }
     
     func handleExtensionItems() {
-        _ = kUTTypeURL as String
+        let contentTypeUrl = kUTTypeURL as String
         let contentTypeImage = kUTTypeImage as String
         let contentTypeText = kUTTypePlainText as String
+        let contentTypeFileUrl = kUTTypeFileURL as String
         
         guard let items = self.extensionContext?.inputItems else {
             return
@@ -54,6 +53,26 @@ class ShareViewController: UIViewController {
             }
             if (provider.hasItemConformingToTypeIdentifier(contentTypeImage)) {
                 provider.loadItem(forTypeIdentifier: contentTypeImage, options: nil) { (it, error) in
+                    guard let url = it as? URL else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        self.composerUIView.addToContent(text: url.path)
+                    }
+                }
+            }
+            if (provider.hasItemConformingToTypeIdentifier(contentTypeUrl)) {
+                provider.loadItem(forTypeIdentifier: contentTypeUrl, options: nil) { (it, error) in
+                    guard let url = it as? URL else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        self.composerUIView.addToContent(text: url.path)
+                    }
+                }
+            }
+            if (provider.hasItemConformingToTypeIdentifier(contentTypeFileUrl)) {
+                provider.loadItem(forTypeIdentifier: contentTypeFileUrl, options: nil) { (it, error) in
                     guard let url = it as? URL else {
                         return
                     }
