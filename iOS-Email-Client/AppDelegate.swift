@@ -17,11 +17,18 @@ import CLTokenInputView
 import Firebase
 import FirebaseMessaging
 import FirebaseInstanceID
+import PasscodeLock
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    
+    lazy var passcodeLockPresenter: PasscodeLockPresenter = {
+        let configuration = PasscodeConfig()
+        let presenter = PasscodeLockPresenter(mainWindow: self.window, configuration: configuration)
+        return presenter
+    }()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -180,6 +187,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.replaceRootViewController(initialVC)
         self.registerPushNotifications()
         IQKeyboardManager.shared.enable = true
+        
+        passcodeLockPresenter.present()
         return true
     }
     
@@ -316,6 +325,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         WebSocketManager.sharedInstance.pause()
+        passcodeLockPresenter.present()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {

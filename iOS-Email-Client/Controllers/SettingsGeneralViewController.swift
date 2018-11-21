@@ -9,13 +9,14 @@
 import Foundation
 import Material
 import SafariServices
+import PasscodeLock
 
 class SettingsGeneralViewController: UITableViewController{
     
     internal enum Section {
         case account
         case about
-        case notifications
+        case privacy
         case version
         
         var name: String {
@@ -24,8 +25,8 @@ class SettingsGeneralViewController: UITableViewController{
                 return String.localize("ACCOUNT")
             case .about:
                 return String.localize("ABOUT")
-            case .notifications:
-                return String.localize("NOTIFICATIONS")
+            case .privacy:
+                return String.localize("PRIVACY")
             case .version:
                 return String.localize("VERSION")
             }
@@ -44,6 +45,8 @@ class SettingsGeneralViewController: UITableViewController{
             case logout
             
             case preview
+            case readReceipts
+            case security
             
             case version
             
@@ -69,6 +72,10 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("Logout")
                 case .preview:
                     return String.localize("Show Email Preview")
+                case .readReceipts:
+                    return String.localize("Read Receipts")
+                case .security:
+                    return String.localize("Security")
                 case .version:
                     return String.localize("Version")
                 }
@@ -78,11 +85,11 @@ class SettingsGeneralViewController: UITableViewController{
     
     let SECTION_VERSION = 3
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .notifications, .about, .version] as [Section]
+    let sections = [.account, .privacy, .about, .version] as [Section]
     let menus = [
         .account: [.profile, .signature, .changePassword, .twoFactor, .recovery],
         .about: [.privacy, .terms, .openSource, .logout],
-        .notifications : [.preview],
+        .privacy : [.preview, .readReceipts, .security],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData: GeneralSettingsData!
@@ -115,7 +122,7 @@ class SettingsGeneralViewController: UITableViewController{
             return renderAccountCells(subsection: subsection)
         case .about:
             return renderAboutCells(subsection: subsection)
-        case .notifications:
+        case .privacy:
             return renderNotificationsCells(subsection: subsection)
         default:
             return renderVersionCells()
@@ -168,15 +175,35 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func renderNotificationsCells(subsection: Section.SubSection) -> UITableViewCell {
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        let previewDisable = groupDefaults.bool(forKey: "previewDisable")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
-        cell.optionLabel.text = subsection.name
-        cell.availableSwitch.isOn = !previewDisable
-        cell.switchToggle = { isOn in
-            groupDefaults.set(!isOn, forKey: "previewDisable")
+        switch(subsection) {
+        case .preview:
+            let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+            let previewDisable = groupDefaults.bool(forKey: "previewDisable")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = !previewDisable
+            cell.switchToggle = { isOn in
+                groupDefaults.set(!isOn, forKey: "previewDisable")
+            }
+            return cell
+        case .security:
+            let groupDefaults = UserDefaults.standard
+            let locked = groupDefaults.string(forKey: "lock") != nil
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = locked
+            cell.switchToggle = { [weak self] isOn in
+                let configuration = PasscodeConfig()
+                let passcodeVC = PasscodeLockViewController(state: isOn ? .set : .remove, configuration: configuration, animateOnDismiss: true)
+                self?.present(passcodeVC, animated: true, completion: nil)
+            }
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = false
+            return cell
         }
-        return cell
     }
     
     func renderVersionCells() -> GeneralVersionTableViewCell {
