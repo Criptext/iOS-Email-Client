@@ -42,6 +42,7 @@ class ComposerUIView: UIView {
     @IBOutlet weak var editorHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentTableHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentsTableView: UITableView!
+    @IBOutlet weak var navigationItem: UINavigationItem!
     weak var delegate: ComposerDelegate?
     
     var initialText: String?
@@ -57,8 +58,11 @@ class ComposerUIView: UIView {
     }
     
     func initialLoad() {
+        navigationItem.detailLabel.tintColor = .white
         self.editorView.placeholder = String.localize("Message")
         self.editorView.delegate = self
+        self.editorView.isScrollEnabled = false
+        self.editorHeightConstraint.constant = 150
         
         self.toField.fieldName = String.localize("To")
         self.toField.tintColor = Icon.system.color
@@ -76,6 +80,8 @@ class ComposerUIView: UIView {
         if let content = initialText {
             editorView.html = content
         }
+        
+        toField.becomeFirstResponder()
     }
     
     @IBAction func onClosePress(_ sender: Any) {
@@ -127,13 +133,15 @@ extension ComposerUIView: RichEditorDelegate {
         let diff = cgheight - self.editorHeightConstraint.constant
         let offset = self.scrollView.contentOffset
         
-        var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
-        if diff == -ENTER_LINE_HEIGHT  {
-            newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
-        }
-        
-        if !editor.webView.isLoading {
-            self.scrollView.setContentOffset(newOffset, animated: true)
+        if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) > self.view.frame.origin.y + self.view.frame.width {
+            var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
+            if diff == -ENTER_LINE_HEIGHT  {
+                newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
+            }
+            
+            if !editor.webView.isLoading {
+                self.scrollView.setContentOffset(newOffset, animated: true)
+            }
         }
         
         guard height > COMPOSER_MIN_HEIGHT else {

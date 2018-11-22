@@ -25,6 +25,7 @@
                 <outlet property="ccHeightConstraint" destination="ZPe-Is-asO" id="MBt-lX-yuP"/>
                 <outlet property="editorHeightConstraint" destination="mU1-qR-BAR" id="dA8-dd-X0E"/>
                 <outlet property="editorView" destination="y6r-pP-m3L" id="9Y7-cZ-5G3"/>
+                <outlet property="navigationItem" destination="lGj-g1-km4" id="MXd-qv-hlN"/>
                 <outlet property="scrollView" destination="1os-vN-Gop" id="agd-Rk-FeK"/>
                 <outlet property="subjectTextField" destination="KxY-Rb-6fc" id="6cK-Xp-gX0"/>
                 <outlet property="toField" destination="bis-oP-llK" id="RTm-cq-1RA"/>
@@ -44,7 +45,7 @@
                     </constraints>
                     <color key="barTintColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.26666666666666666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <items>
-                        <navigationItem id="lGj-g1-km4">
+                        <navigationItem title="New Secure Email" id="lGj-g1-km4">
                             <barButtonItem key="leftBarButtonItem" image="close-rounded" id="CxK-9q-V2m">
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
