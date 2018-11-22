@@ -10,21 +10,37 @@ import Foundation
 import UIKit
 import RichEditorView
 import CLTokenInputView
+import Material
 
 protocol ComposerDelegate: class {
     func close()
+    func send()
+    func badRecipient()
 }
 
 class ComposerUIView: UIView {
     
+    let CONTACT_FIELDS_HEIGHT = 90
+    let ENTER_LINE_HEIGHT : CGFloat = 28.0
+    let COMPOSER_MIN_HEIGHT = 150
+    let TOOLBAR_MARGIN_HEIGHT = 25
+    let DEFAULT_ATTACHMENTS_HEIGHT = 303
+    let MAX_ROWS_BEFORE_CALC_HEIGHT = 3
+    let ATTACHMENT_ROW_HEIGHT = 65
+    let MARGIN_TOP = 20
+    
     @IBOutlet var view: UIView!
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var editorView: RichEditorView!
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
     @IBOutlet weak var bccField: CLTokenInputView!
+    @IBOutlet weak var subjectTextField: UITextField!
     @IBOutlet weak var bccHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var ccHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var toHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var editorHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var attachmentTableHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentsTableView: UITableView!
     weak var delegate: ComposerDelegate?
     
@@ -67,7 +83,7 @@ class ComposerUIView: UIView {
     }
     
     @IBAction func onSendPress(_ sender: Any) {
-        
+        delegate?.send()
     }
     
     @IBAction func onCollapsePress(_ sender: Any) {
@@ -79,6 +95,22 @@ class ComposerUIView: UIView {
         }
     }
     
+    func getPlainEditorContent () -> String {
+        return self.editorView.text.replaceNewLineCharater(separator: " ")
+    }
+    
+    func resizeAttachmentTable(numberOfAttachments: Int){
+        var height = DEFAULT_ATTACHMENTS_HEIGHT
+        if numberOfAttachments > MAX_ROWS_BEFORE_CALC_HEIGHT {
+            height = MARGIN_TOP + (numberOfAttachments * ATTACHMENT_ROW_HEIGHT)
+        }
+        
+        if numberOfAttachments <= 0 {
+            height = 0
+        }
+        
+        self.attachmentTableHeightConstraint.constant = CGFloat(height)
+    }
 }
 
 extension ComposerUIView: RichEditorDelegate {
@@ -88,6 +120,27 @@ extension ComposerUIView: RichEditorDelegate {
     
     func addToContent(text: String) {
         editorView.html = editorView.html + text
+    }
+    
+    func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
+        let cgheight = CGFloat(height)
+        let diff = cgheight - self.editorHeightConstraint.constant
+        let offset = self.scrollView.contentOffset
+        
+        var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
+        if diff == -ENTER_LINE_HEIGHT  {
+            newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
+        }
+        
+        if !editor.webView.isLoading {
+            self.scrollView.setContentOffset(newOffset, animated: true)
+        }
+        
+        guard height > COMPOSER_MIN_HEIGHT else {
+            return
+        }
+        
+        self.editorHeightConstraint.constant = cgheight
     }
 }
 
@@ -106,9 +159,14 @@ extension ComposerUIView: CLTokenInputViewDelegate {
                 view.add(token)
                 return
             }
-            let valueObject = NSString(string: name)
-            let token = CLToken(displayText: name, context: valueObject)
-            view.add(token)
+            
+            if Utils.validateEmail(name) {
+                let valueObject = NSString(string: name)
+                let token = CLToken(displayText: name, context: valueObject)
+                view.add(token)
+            } else {
+                self.delegate?.badRecipient()
+            }
         }
     }
     
@@ -124,6 +182,29 @@ extension ComposerUIView: CLTokenInputViewDelegate {
             bccHeightConstraint.constant = height
         default:
             break
+        }
+    }
+    
+    func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
+        
+        //self.contactTableView.isHidden = true
+        
+        guard let text = view.text, text.count > 0 else {
+            return
+        }
+        
+        guard text.contains("@") else {
+            let valueObject = NSString(string: "\(text)\(Constants.domain)")
+            let token = CLToken(displayText: "\(text)\(Constants.domain)", context: valueObject)
+            view.add(token)
+            return
+        }
+        if Utils.validateEmail(text) {
+            let valueObject = NSString(string: text)
+            let token = CLToken(displayText: text, context: valueObject)
+            view.add(token)
+        } else {
+            self.delegate?.badRecipient()
         }
     }
 }

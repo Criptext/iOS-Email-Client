@@ -15,22 +15,6 @@ class DBManager: SharedDB {
     
     static let PAGINATION_SIZE = 20
     
-    class func getReference(_ obj:Object) -> ThreadSafeReference<Object> {
-        return ThreadSafeReference(to: obj)
-    }
-    
-    class func getObject(_ ref:ThreadSafeReference<Object>) -> Object? {
-        let realm = try! Realm()
-        
-        return realm.resolve(ref)
-    }
-    
-    class func refresh(){
-        let realm = try! Realm()
-        
-        realm.refresh()
-    }
-    
     class func signout(){
         let realm = try! Realm()
         
@@ -412,52 +396,6 @@ class DBManager: SharedDB {
         return myEmails
     }
     
-    class func updateEmail(_ email: Email, secure: Bool){
-        let realm = try! Realm()
-        
-        try! realm.write() {
-            email.secure = secure
-        }
-    }
-    
-    class func updateEmail(_ email: Email, key: Int, messageId: String, threadId: String) {
-        let realm = try! Realm()
-        try! realm.write() {
-            if let fileKey = getFileKey(emailId: email.key) {
-                fileKey.emailId = key
-            }
-            
-            let newEmail = Email()
-            newEmail.key = key
-            newEmail.messageId = messageId
-            newEmail.threadId = threadId
-            newEmail.delivered = Email.Status.sent.rawValue
-            newEmail.unread = false
-            newEmail.secure = email.secure
-            newEmail.subject = email.subject
-            newEmail.content = email.content
-            newEmail.preview = email.preview
-            newEmail.date = email.date
-            newEmail.unsentDate = email.unsentDate
-            newEmail.isMuted = email.isMuted
-            newEmail.labels.append(objectsIn: email.labels)
-            newEmail.files.append(objectsIn: email.files)
-            
-            realm.add(newEmail)
-            
-            let emailContacts = getEmailContacts(emailKey: email.key)
-            for emailContact in emailContacts {
-                emailContact.email = newEmail
-                if(emailContact.type != ContactType.from.rawValue && email.fromContact == emailContact.contact) {
-                    newEmail.status = .delivered
-                    newEmail.unread = true
-                }
-            }
-            
-            realm.delete(email)
-        }
-    }
-    
     class func updateEmails(_ emailKeys: [Int], unread: Bool) {
         let realm = try! Realm()
         
@@ -503,18 +441,6 @@ class DBManager: SharedDB {
         
         try? realm.write {
             self.deleteEmail(realm: realm, emails: emails)
-        }
-    }
-    
-    class func deleteDraftInComposer(_ draft: Email){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            realm.delete(draft.emailContacts)
-            if let fileKey = self.getFileKey(emailId: draft.key){
-                realm.delete(fileKey)
-            }
-            realm.delete(draft)
         }
     }
     
@@ -629,34 +555,6 @@ class DBManager: SharedDB {
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "NOT (id IN %@)", ids)))
     }
     
-    class func setLabelsForEmail(_ email: Email, labels: [Int]){
-        let realm = try! Realm()
-        let wasInTrash = email.isTrash
-        try! realm.write {
-            let keepLabels = email.labels.reduce(List<Label>(), { (labels, label) -> List<Label> in
-                guard label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id else {
-                    return labels
-                }
-                return labels + [label]
-            })
-            email.labels.removeAll()
-            email.trashDate = nil
-            email.labels.append(objectsIn: keepLabels)
-            for label in labels {
-                guard label != SystemLabel.draft.id && label != SystemLabel.sent.id,
-                    let labelToAdd = getLabel(label)  else {
-                    continue
-                }
-                email.labels.append(labelToAdd)
-            }
-            if (!wasInTrash && email.isTrash) {
-                email.trashDate = Date()
-            } else if (wasInTrash && !email.isTrash) {
-                email.trashDate = nil
-            }
-        }
-    }
-    
     class func setLabelsForThread(_ threadId: String, labels: [Int], currentLabel: Int){
         let emails = getThreadEmails(threadId, label: currentLabel)
         for email in emails {
@@ -685,34 +583,6 @@ class DBManager: SharedDB {
     }
     
     //MARK: - File
-    
-    class func store(_ files: [File]){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            files.forEach({ (file) in
-                file.id = (realm.objects(File.self).max(ofProperty: "id") as Int? ?? 0) + 1
-                realm.add(files, update: true)
-            })
-        }
-    }
-    
-    class func getFile(_ filetoken: String) -> File?{
-        let realm = try! Realm()
-        
-        return realm.object(ofType: File.self, forPrimaryKey: filetoken)
-    }
-    
-    class func update(filetoken: String, emailId: Int){
-        guard let file = getFile(filetoken) else {
-            return
-        }
-        
-        let realm = try! Realm()
-        try! realm.write() {
-            file.emailId = emailId
-        }
-    }
     
     class func delete(_ files: [File]){
         let realm = try! Realm()
@@ -769,20 +639,6 @@ class DBManager: SharedDB {
         let realm = try! Realm()
         
         return Array(realm.objects(EmailContact.self))
-    }
-    
-    class func getEmailContacts(emailKey: Int) -> [EmailContact] {
-        let realm = try! Realm()
-        
-        return Array(realm.objects(EmailContact.self).filter("email.key == \(emailKey)"))
-    }
-
-    //MARK: - FileKey
-    
-    class func getFileKey(emailId: Int) -> FileKey? {
-        let realm = try! Realm()
-        
-        return realm.objects(FileKey.self).filter("emailId == %@", emailId).first
     }
 
     //MARK: - Peer Events
@@ -935,32 +791,6 @@ class DBManager: SharedDB {
         
         try! realm.write() {
             realm.delete(queueItems)
-        }
-    }
-    
-    //MARK: - DummySession
-    
-    class func store(_ dummySession: DummySession) {
-        let realm = try! Realm()
-        
-        try! realm.write {
-            realm.add(dummySession)
-        }
-    }
-    
-    class func getDummySession(key: Int) -> DummySession? {
-        let realm = try! Realm()
-        return realm.object(ofType: DummySession.self, forPrimaryKey: key)
-    }
-    
-    class func deleteDummySession(key: Int) {
-        let realm = try! Realm()
-        guard let dummySession = realm.object(ofType: DummySession.self, forPrimaryKey: key) else {
-            return
-        }
-        
-        try! realm.write() {
-            realm.delete(dummySession)
         }
     }
 }

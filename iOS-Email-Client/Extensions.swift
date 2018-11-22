@@ -424,38 +424,6 @@ enum Commands:Int {
     case fileCreated = 55
 }
 
-var DJB_TYPE : UInt8 = 0x05;
-
-extension Data {
-    
-    func prependByte() -> Data {
-        guard self.count == 32 else {
-            return self
-        }
-        let myData = NSMutableData(bytes: &DJB_TYPE, length: 1)
-        myData.append(self)
-        return myData as Data
-    }
-    
-    func removeByte() -> Data {
-        guard self.count == 33 else {
-            return self
-        }
-        return self.suffix(from: 1)
-    }
-    
-    func customBase64String() -> String {
-        let dataPlus = self.prependByte()
-        let customBase64String = dataPlus.base64EncodedString()
-        return customBase64String
-    }
-    
-    func plainBase64String() -> String {
-        let customBase64String = self.base64EncodedString()
-        return customBase64String
-    }
-}
-
 extension UIWindow {
     class func getBottomMargin(window: UIWindow?) -> CGFloat {
         return window?.safeAreaInsets.bottom ?? 0.0

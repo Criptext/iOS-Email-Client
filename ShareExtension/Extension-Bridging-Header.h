@@ -9,3 +9,4 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import "DateUtils.h"
 #import "ExceptionCatcher.h"
+#import "ECKeyPair+KeyPairOpenPrivate.h"

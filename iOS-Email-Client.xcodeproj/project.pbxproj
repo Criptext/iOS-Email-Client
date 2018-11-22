@@ -230,6 +230,12 @@
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
 		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
 		9568329020753FBE007F8489 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
+		A70609F521A72E7C0066BFA4 /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
+		A70609F621A72F470066BFA4 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
+		A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF2F217A910100FFFDFF /* EmailSetPasswordUIPopover.xib */; };
+		A70609F921A74C0A0066BFA4 /* EmailSetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */; };
+		A70609FA21A74C250066BFA4 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
+		A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
 		A713109C21596F2E00534F13 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */; };
 		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -300,6 +306,11 @@
 		A7ADA15721A61A1B0027FC1C /* NunitoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */; };
 		A7ADA15821A61A1B0027FC1C /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */; };
 		A7ADA15921A61A1B0027FC1C /* NunitoSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02A2037402C005D1B3F /* NunitoSans-SemiBoldItalic.ttf */; };
+		A7ADA15A21A725460027FC1C /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC822078195900B8994F /* Material.framework */; };
+		A7ADA15B21A728D80027FC1C /* SendMailAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */; };
+		A7ADA15C21A729A10027FC1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
+		A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
+		A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
@@ -644,6 +655,7 @@
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
 		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = ../../../Downloads/Firebase/Analytics/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
@@ -797,6 +809,8 @@
 			files = (
 				A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */,
 				A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */,
+				A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */,
+				A7ADA15A21A725460027FC1C /* Material.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1252,6 +1266,7 @@
 				A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */,
 				A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */,
 				A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */,
+				A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */,
 			);
 			path = ShareExtension;
 			sourceTree = "<group>";
@@ -1537,6 +1552,7 @@
 				A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */,
 				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
 				A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */,
+				A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */,
 				A7ADA14D21A61A1B0027FC1C /* NunitoSans-BlackItalic.ttf in Resources */,
 				A7ADA14C21A61A1B0027FC1C /* NunitoSans-Black.ttf in Resources */,
 				A7ADA15921A61A1B0027FC1C /* NunitoSans-SemiBoldItalic.ttf in Resources */,
@@ -1814,15 +1830,19 @@
 			files = (
 				A7ADA12921A5F1CD0027FC1C /* Contact.swift in Sources */,
 				A7ADA14321A5F3EE0027FC1C /* CriptextError.swift in Sources */,
+				A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */,
 				A7ADA12A21A5F1D00027FC1C /* Email.swift in Sources */,
 				A7ADA13821A5F1FA0027FC1C /* ContactUtils.swift in Sources */,
 				A7ADA14621A60B2E0027FC1C /* CriptextFileManager.swift in Sources */,
+				A70609FA21A74C250066BFA4 /* BaseUIPopover.swift in Sources */,
 				A7ADA12821A5F1CA0027FC1C /* Account.swift in Sources */,
+				A7ADA15B21A728D80027FC1C /* SendMailAsyncTask.swift in Sources */,
 				A7ADA13921A5F1FA0027FC1C /* SharedUtils.swift in Sources */,
 				A7ADA13C21A5F2100027FC1C /* CriptextSignedPreKeyStore.swift in Sources */,
 				A7ADA12B21A5F1DA0027FC1C /* CRSignedPreKeyRecord.swift in Sources */,
 				A7ADA14221A5F3D80027FC1C /* ResponseData.swift in Sources */,
 				A7ADA12D21A5F1DA0027FC1C /* CRSessionRecord.swift in Sources */,
+				A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */,
 				A7ADA13021A5F1E10027FC1C /* Label.swift in Sources */,
 				A7ADA14721A60B500027FC1C /* APIManager.swift in Sources */,
 				A7ADA14B21A610440027FC1C /* Utils.swift in Sources */,
@@ -1831,6 +1851,7 @@
 				A7ADA12C21A5F1DA0027FC1C /* CRPreKeyRecord.swift in Sources */,
 				A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */,
 				A7ADA13B21A5F2100027FC1C /* CriptextPreKeyStore.swift in Sources */,
+				A7ADA15C21A729A10027FC1C /* Constants.swift in Sources */,
 				A7ADA13D21A5F2100027FC1C /* CriptextIdentityKeyStore.swift in Sources */,
 				A7ADA12721A5DCC80027FC1C /* Env.swift in Sources */,
 				A7ADA13121A5F1E50027FC1C /* File.swift in Sources */,
@@ -1838,7 +1859,9 @@
 				A7ADA13221A5F1EC0027FC1C /* FileKey.swift in Sources */,
 				A7ADA14421A5F4100027FC1C /* SignalHandler.swift in Sources */,
 				A7ADA14521A5F4340027FC1C /* DateUtils.m in Sources */,
+				A70609F921A74C0A0066BFA4 /* EmailSetPasswordViewController.swift in Sources */,
 				A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */,
+				A70609F621A72F470066BFA4 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				A7ADA13F21A5F2100027FC1C /* DBAxolotl.swift in Sources */,
 				A7ADA13E21A5F2100027FC1C /* CriptextAxolotlStore.swift in Sources */,
 				A7ADA12F21A5F1DD0027FC1C /* EmailContact.swift in Sources */,
@@ -1871,6 +1894,7 @@
 				A7CC386221934EE400C8355A /* CriptextIdentityKeyStore.swift in Sources */,
 				A7CC385121924D2B00C8355A /* File.swift in Sources */,
 				A7CC384F219247B800C8355A /* EmailContact.swift in Sources */,
+				A70609F521A72E7C0066BFA4 /* DummySession.swift in Sources */,
 				A7CC3850219247BF00C8355A /* Contact.swift in Sources */,
 				A7CC386021934EE400C8355A /* CriptextPreKeyStore.swift in Sources */,
 				A7CC3852219250D100C8355A /* DateUtils.m in Sources */,
