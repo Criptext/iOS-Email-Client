@@ -6,5 +6,6 @@
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
+#import <CommonCrypto/CommonCrypto.h>
 #import "DateUtils.h"
 #import "ExceptionCatcher.h"

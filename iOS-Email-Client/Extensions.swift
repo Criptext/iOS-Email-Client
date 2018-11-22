@@ -375,12 +375,6 @@ extension String {
         return randomString
     }
     
-    func hideMidChars() -> String {
-        return String(self.enumerated().map { index, char in
-            return [0, self.count - 1].contains(index) ? char : "*"
-        })
-    }
-    
 }
 
 enum StaticFile {
@@ -414,47 +408,6 @@ enum StaticFile {
     }
 }
 
-enum Font {
-    case regular
-    case bold
-    case semibold
-    case italic
-    
-    func size(_ size:CGFloat) -> UIFont?{
-        switch self {
-        case .bold:
-            return UIFont(name: "NunitoSans-Bold", size: size)
-        case .semibold:
-            return UIFont(name: "NunitoSans-SemiBold", size: size)
-        case .italic:
-            return UIFont(name: "NunitoSans-Italic", size: size)
-        default:
-            return UIFont(name: "NunitoSans-Regular", size: size)
-        }
-    }
-    
-    func attributedString(_ text:String, size:CGFloat) -> NSMutableAttributedString{
-        switch self {
-        case .bold:
-            let font = UIFont(name: "NunitoSans-Bold", size: size)!
-            let attrs = [NSAttributedStringKey.font : font]
-            return NSMutableAttributedString(string:text, attributes:attrs)
-        case .semibold:
-            let font = UIFont(name: "NunitoSans-SemiBold", size: size)!
-            let attrs = [NSAttributedStringKey.font : font]
-            return NSMutableAttributedString(string:text, attributes:attrs)
-        case .italic:
-            let font = UIFont(name: "NunitoSans-Italic", size: size)!
-            let attrs = [NSAttributedStringKey.font : font]
-            return NSMutableAttributedString(string:text, attributes:attrs)
-        default:
-            let font = UIFont(name: "NunitoSans-Regular", size: size)!
-            let attrs = [NSAttributedStringKey.font : font]
-            return NSMutableAttributedString(string:text, attributes:attrs)
-        }
-    }
-}
-
 enum FontSize: CGFloat {
     case feed = 14.0
     case feedDate = 11.0
@@ -469,22 +422,6 @@ enum Commands:Int {
     case userStatus = 20
     case emailCreated = 54
     case fileCreated = 55
-}
-
-extension UIColor {
-    
-    static let mainUI = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
-    static let mainUILight = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 0.63)
-    static let neutral = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1)
-    static let alert = UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1)
-    static let alertLight = UIColor(red: 227/255, green: 102/255, blue: 102/255, alpha: 1)
-    static let alertText = UIColor(red: 238/255, green: 163/255, blue: 163/255, alpha: 1)
-    static let itemSelected = UIColor(red: 242/255, green: 248/255, blue: 255/255, alpha: 1)
-    static let lightText = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 1)
-    static let bright = UIColor(red: 157/255, green: 157/255, blue: 157/255, alpha: 1)
-    static let charcoal = UIColor(red: 106/255, green: 112/255, blue: 127/255, alpha: 1)
-    static let lightIcon = UIColor(red: 220/255, green: 221/255, blue: 224/255, alpha: 1)
-    
 }
 
 var DJB_TYPE : UInt8 = 0x05;

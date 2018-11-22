@@ -304,6 +304,7 @@ class ComposeViewController: UIViewController {
         self.resignKeyboard()
         
         //create draft
+        DBManager.store(fileManager.registeredFiles)
         let draft = Email()
         draft.status = .none
         draft.content = self.editorView.html
@@ -315,7 +316,7 @@ class ComposeViewController: UIViewController {
         draft.key = Int("\(activeAccount.deviceId)\(Int(draft.date.timeIntervalSince1970))")!
         draft.threadId = composerData.threadId ?? "\(draft.key)"
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
-        draft.files.append(objectsIn: fileManager.storeFiles())
+        draft.files.append(objectsIn: fileManager.registeredFiles)
         DBManager.store(draft)
         
         if fileManager.encryption && !fileManager.registeredFiles.isEmpty,

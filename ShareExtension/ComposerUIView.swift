@@ -25,6 +25,7 @@ class ComposerUIView: UIView {
     @IBOutlet weak var bccHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var ccHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var toHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var attachmentsTableView: UITableView!
     weak var delegate: ComposerDelegate?
     
     var initialText: String?

@@ -280,6 +280,26 @@
 		A7ADA14321A5F3EE0027FC1C /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
 		A7ADA14421A5F4100027FC1C /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
 		A7ADA14521A5F4340027FC1C /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
+		A7ADA14621A60B2E0027FC1C /* CriptextFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C26229A20A5E5E100F077FD /* CriptextFileManager.swift */; };
+		A7ADA14721A60B500027FC1C /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC540201A9FF500809C4D /* APIManager.swift */; };
+		A7ADA14821A60B8D0027FC1C /* AESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104720FFD5690081C048 /* AESCipher.swift */; };
+		A7ADA14921A60E0C0027FC1C /* AttachmentTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD823205C377F000E5F14 /* AttachmentTableCell.swift */; };
+		A7ADA14A21A60E190027FC1C /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5FD821205C2FBA000E5F14 /* AttachmentTableViewCell.xib */; };
+		A7ADA14B21A610440027FC1C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD825205C857C000E5F14 /* Utils.swift */; };
+		A7ADA14C21A61A1B0027FC1C /* NunitoSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */; };
+		A7ADA14D21A61A1B0027FC1C /* NunitoSans-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02B2037402C005D1B3F /* NunitoSans-BlackItalic.ttf */; };
+		A7ADA14E21A61A1B0027FC1C /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0332037402D005D1B3F /* NunitoSans-Bold.ttf */; };
+		A7ADA14F21A61A1B0027FC1C /* NunitoSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0292037402C005D1B3F /* NunitoSans-BoldItalic.ttf */; };
+		A7ADA15021A61A1B0027FC1C /* NunitoSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02F2037402C005D1B3F /* NunitoSans-ExtraBold.ttf */; };
+		A7ADA15121A61A1B0027FC1C /* NunitoSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02D2037402C005D1B3F /* NunitoSans-ExtraBoldItalic.ttf */; };
+		A7ADA15221A61A1B0027FC1C /* NunitoSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0312037402D005D1B3F /* NunitoSans-ExtraLight.ttf */; };
+		A7ADA15321A61A1B0027FC1C /* NunitoSans-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02C2037402C005D1B3F /* NunitoSans-ExtraLightItalic.ttf */; };
+		A7ADA15421A61A1B0027FC1C /* NunitoSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0302037402C005D1B3F /* NunitoSans-Italic.ttf */; };
+		A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02E2037402C005D1B3F /* NunitoSans-Light.ttf */; };
+		A7ADA15621A61A1B0027FC1C /* NunitoSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */; };
+		A7ADA15721A61A1B0027FC1C /* NunitoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0322037402D005D1B3F /* NunitoSans-Regular.ttf */; };
+		A7ADA15821A61A1B0027FC1C /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0342037402D005D1B3F /* NunitoSans-SemiBold.ttf */; };
+		A7ADA15921A61A1B0027FC1C /* NunitoSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB02A2037402C005D1B3F /* NunitoSans-SemiBoldItalic.ttf */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
@@ -1502,9 +1522,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7ADA14A21A60E190027FC1C /* AttachmentTableViewCell.xib in Resources */,
+				A7ADA15421A61A1B0027FC1C /* NunitoSans-Italic.ttf in Resources */,
+				A7ADA15021A61A1B0027FC1C /* NunitoSans-ExtraBold.ttf in Resources */,
+				A7ADA15721A61A1B0027FC1C /* NunitoSans-Regular.ttf in Resources */,
+				A7ADA15121A61A1B0027FC1C /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
+				A7ADA15621A61A1B0027FC1C /* NunitoSans-LightItalic.ttf in Resources */,
+				A7ADA14E21A61A1B0027FC1C /* NunitoSans-Bold.ttf in Resources */,
+				A7ADA15321A61A1B0027FC1C /* NunitoSans-ExtraLightItalic.ttf in Resources */,
 				A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */,
+				A7ADA14F21A61A1B0027FC1C /* NunitoSans-BoldItalic.ttf in Resources */,
+				A7ADA15821A61A1B0027FC1C /* NunitoSans-SemiBold.ttf in Resources */,
+				A7ADA15221A61A1B0027FC1C /* NunitoSans-ExtraLight.ttf in Resources */,
+				A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */,
 				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
 				A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */,
+				A7ADA14D21A61A1B0027FC1C /* NunitoSans-BlackItalic.ttf in Resources */,
+				A7ADA14C21A61A1B0027FC1C /* NunitoSans-Black.ttf in Resources */,
+				A7ADA15921A61A1B0027FC1C /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1781,6 +1816,7 @@
 				A7ADA14321A5F3EE0027FC1C /* CriptextError.swift in Sources */,
 				A7ADA12A21A5F1D00027FC1C /* Email.swift in Sources */,
 				A7ADA13821A5F1FA0027FC1C /* ContactUtils.swift in Sources */,
+				A7ADA14621A60B2E0027FC1C /* CriptextFileManager.swift in Sources */,
 				A7ADA12821A5F1CA0027FC1C /* Account.swift in Sources */,
 				A7ADA13921A5F1FA0027FC1C /* SharedUtils.swift in Sources */,
 				A7ADA13C21A5F2100027FC1C /* CriptextSignedPreKeyStore.swift in Sources */,
@@ -1788,6 +1824,8 @@
 				A7ADA14221A5F3D80027FC1C /* ResponseData.swift in Sources */,
 				A7ADA12D21A5F1DA0027FC1C /* CRSessionRecord.swift in Sources */,
 				A7ADA13021A5F1E10027FC1C /* Label.swift in Sources */,
+				A7ADA14721A60B500027FC1C /* APIManager.swift in Sources */,
+				A7ADA14B21A610440027FC1C /* Utils.swift in Sources */,
 				A7ADA13621A5F1FA0027FC1C /* SharedDB.swift in Sources */,
 				A7ADA13721A5F1FA0027FC1C /* SharedAPI.swift in Sources */,
 				A7ADA12C21A5F1DA0027FC1C /* CRPreKeyRecord.swift in Sources */,
@@ -1796,6 +1834,7 @@
 				A7ADA13D21A5F2100027FC1C /* CriptextIdentityKeyStore.swift in Sources */,
 				A7ADA12721A5DCC80027FC1C /* Env.swift in Sources */,
 				A7ADA13121A5F1E50027FC1C /* File.swift in Sources */,
+				A7ADA14921A60E0C0027FC1C /* AttachmentTableCell.swift in Sources */,
 				A7ADA13221A5F1EC0027FC1C /* FileKey.swift in Sources */,
 				A7ADA14421A5F4100027FC1C /* SignalHandler.swift in Sources */,
 				A7ADA14521A5F4340027FC1C /* DateUtils.m in Sources */,
@@ -1805,6 +1844,7 @@
 				A7ADA12F21A5F1DD0027FC1C /* EmailContact.swift in Sources */,
 				A7ADA13321A5F1F10027FC1C /* DummySession.swift in Sources */,
 				A7ADA13421A5F1FA0027FC1C /* NewEmailHandler.swift in Sources */,
+				A7ADA14821A60B8D0027FC1C /* AESCipher.swift in Sources */,
 				A7ADA12E21A5F1DA0027FC1C /* CRTrustedDevice.swift in Sources */,
 				A77C30B121A5055A0031E219 /* ShareViewController.swift in Sources */,
 				A7ADA13521A5F1FA0027FC1C /* NewEmail.swift in Sources */,

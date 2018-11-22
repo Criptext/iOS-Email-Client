@@ -276,11 +276,6 @@ class CriptextFileManager {
         return registeredFiles.contains(where: {$0.requestStatus != .finish})
     }
     
-    func storeFiles() -> [File] {
-        DBManager.store(registeredFiles)
-        return registeredFiles
-    }
-    
     func getFilesRequestData() -> [[String: Any]] {
         return registeredFiles.map({ (file) -> [String: Any] in
             return ["token": file.token,
