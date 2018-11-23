@@ -55,16 +55,6 @@ class ShareViewController: UIViewController {
                 continue
             }
             for provider in attachments {
-                if (provider.hasItemConformingToTypeIdentifier(contentTypeText)) {
-                    provider.loadItem(forTypeIdentifier: contentTypeText, options: nil) { (it, error) in
-                        guard let text = it as? String else {
-                            return
-                        }
-                        DispatchQueue.main.async {
-                            self.composerUIView.addToContent(text: text)
-                        }
-                    }
-                }
                 if (provider.hasItemConformingToTypeIdentifier(contentTypeImage)) {
                     provider.loadItem(forTypeIdentifier: contentTypeImage, options: nil) { (it, error) in
                         guard let url = it as? URL else {
@@ -74,24 +64,31 @@ class ShareViewController: UIViewController {
                             self.addFile(url: url)
                         }
                     }
-                }
-                if (provider.hasItemConformingToTypeIdentifier(contentTypeUrl)) {
-                    provider.loadItem(forTypeIdentifier: contentTypeUrl, options: nil) { (it, error) in
-                        guard let url = it as? URL else {
+                } else if (provider.hasItemConformingToTypeIdentifier(contentTypeText)) {
+                    provider.loadItem(forTypeIdentifier: contentTypeText, options: nil) { (it, error) in
+                        guard let text = it as? String else {
                             return
                         }
                         DispatchQueue.main.async {
-                            self.composerUIView.addToContent(text: url.path)
+                            self.composerUIView.addToContent(text: text)
                         }
                     }
-                }
-                if (provider.hasItemConformingToTypeIdentifier(contentTypeFileUrl)) {
+                } else if (provider.hasItemConformingToTypeIdentifier(contentTypeFileUrl)) {
                     provider.loadItem(forTypeIdentifier: contentTypeFileUrl, options: nil) { (it, error) in
                         guard let url = it as? URL else {
                             return
                         }
                         DispatchQueue.main.async {
                             self.addFile(url: url)
+                        }
+                    }
+                } else if (provider.hasItemConformingToTypeIdentifier(contentTypeUrl)) {
+                    provider.loadItem(forTypeIdentifier: contentTypeUrl, options: nil) { (it, error) in
+                        guard let url = it as? URL else {
+                            return
+                        }
+                        DispatchQueue.main.async {
+                            self.composerUIView.addToContent(text: url.path)
                         }
                     }
                 }

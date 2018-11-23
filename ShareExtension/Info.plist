@@ -33,7 +33,7 @@
                 <key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
                 <integer>1</integer>
                 <key>NSExtensionActivationSupportsFileWithMaxCount</key>
-                <integer>1</integer>
+                <integer>5</integer>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
