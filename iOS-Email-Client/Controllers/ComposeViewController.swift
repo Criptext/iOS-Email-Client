@@ -790,7 +790,6 @@ extension ComposeViewController: UITableViewDelegate {
             }
             
             self.addToken(contact.displayName, value: contact.email.lowercased(), to: focusInput)
-            return
         }
     }
 }

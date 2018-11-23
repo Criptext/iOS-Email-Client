@@ -61,6 +61,17 @@ class SharedDB {
         return realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@)", label, rejectedLabels).distinct(by: ["threadId"]).count
     }
     
+    //MARK: - Contacts related
+    
+    class func getContacts(_ text:String) -> [Contact]{
+        let realm = try! Realm()
+        
+        let predicate = NSPredicate(format: "email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
+        let results = realm.objects(Contact.self).filter(predicate)
+        
+        return Array(results)
+    }
+    
     class func store(_ contacts:[Contact]){
         let realm = try! Realm()
         

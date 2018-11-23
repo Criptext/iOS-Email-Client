@@ -497,17 +497,6 @@ class DBManager: SharedDB {
             })
         }
     }
-
-    //MARK: - Contacts related
-    
-    class func getContacts(_ text:String) -> [Contact]{
-        let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
-        let results = realm.objects(Contact.self).filter(predicate)
-        
-        return Array(results)
-    }
     
     //MARK: - Labels
     

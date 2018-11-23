@@ -22,6 +22,7 @@ class ShareViewController: UIViewController {
     var myAccount: Account!
     var fileManager = CriptextFileManager()
     var emailDraft: Email?
+    var contacts = [Contact]()
     
     override func viewDidLoad() {
         configRealm()
@@ -30,6 +31,8 @@ class ShareViewController: UIViewController {
         composerUIView.delegate = self
         composerUIView.attachmentsTableView.delegate = self
         composerUIView.attachmentsTableView.dataSource = self
+        composerUIView.contactsTableView.delegate = self
+        composerUIView.contactsTableView.dataSource = self
         let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
         composerUIView.attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentCell")
         fileManager.token = myAccount.jwt
@@ -123,6 +126,12 @@ class ShareViewController: UIViewController {
 }
 
 extension ShareViewController: ComposerDelegate {
+    func typingRecipient(text: String) {
+        contacts = SharedDB.getContacts(text)
+        self.composerUIView.contactsTableView.isHidden = contacts.isEmpty
+        self.composerUIView.contactsTableView.reloadData()
+    }
+    
     func send() {
         self.prepareMail()
     }
@@ -140,18 +149,47 @@ extension ShareViewController: ComposerDelegate {
 
 extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fileManager.registeredFiles.count
+        switch(tableView){
+        case self.composerUIView.contactsTableView:
+            return contacts.count
+        default:
+            return fileManager.registeredFiles.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell
-        cell.setFields(fileManager.registeredFiles[indexPath.row])
-        cell.iconDownloadImageView.isHidden = true
-        return cell
+        switch(tableView){
+        case self.composerUIView.contactsTableView:
+            let contact = contacts[indexPath.row]
+            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+            cell.textLabel?.text = contact.displayName
+            cell.detailTextLabel?.text = contact.email
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell
+            cell.setFields(fileManager.registeredFiles[indexPath.row])
+            cell.iconDownloadImageView.isHidden = true
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65.0
+        switch(tableView){
+        case self.composerUIView.contactsTableView:
+            return 60.0
+        default:
+            return 65.0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard tableView == self.composerUIView.contactsTableView else {
+            return
+        }
+        
+        let contact = contacts[indexPath.row]
+        composerUIView.addContact(name: contact.displayName, email: contact.email)
     }
 }
 
@@ -295,7 +333,7 @@ extension ShareViewController {
         SharedDB.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         SharedDB.updateEmail(email, status: Email.Status.sending.rawValue)
         SharedDB.updateEmail(email, secure: secure)
-        sendMail(email: email, password: nil)
+        sendMail(email: email, password: password)
     }
     
     func sendMail(email: Email, password: String?) {
@@ -316,7 +354,6 @@ extension ShareViewController {
                 return
             }
             guard case .SuccessInt = responseData else {
-                SharedDB.deleteDraftInComposer(email)
                 alert.dismiss(animated: true, completion: { [weak self] in
                     let alert = UIAlertController(title: "Unable to send email", message: "\nPlease check your internet connection and try again", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Got it!", style: .cancel, handler: nil))

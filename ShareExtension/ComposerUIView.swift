@@ -16,6 +16,7 @@ protocol ComposerDelegate: class {
     func close()
     func send()
     func badRecipient()
+    func typingRecipient(text: String)
 }
 
 class ComposerUIView: UIView {
@@ -42,7 +43,9 @@ class ComposerUIView: UIView {
     @IBOutlet weak var editorHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentTableHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentsTableView: UITableView!
+    @IBOutlet weak var contactsTableView: UITableView!
     @IBOutlet weak var navigationItem: UINavigationItem!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     weak var delegate: ComposerDelegate?
     
     var initialText: String?
@@ -58,6 +61,7 @@ class ComposerUIView: UIView {
     }
     
     func initialLoad() {
+        navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationItem.detailLabel.tintColor = .white
         self.editorView.placeholder = String.localize("Message")
         self.editorView.delegate = self
@@ -74,6 +78,7 @@ class ComposerUIView: UIView {
         self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         
+        contactsTableView.isHidden = true
         ccHeightConstraint.constant = 0
         bccHeightConstraint.constant = 0
         
@@ -116,6 +121,26 @@ class ComposerUIView: UIView {
         }
         
         self.attachmentTableHeightConstraint.constant = CGFloat(height)
+    }
+    
+    func addContact(name: String, email: String) {
+        var focusInput:CLTokenInputView!
+        
+        if self.toField.isEditing {
+            focusInput = self.toField
+        }
+        
+        if self.ccField.isEditing {
+            focusInput = self.ccField
+        }
+        
+        if self.bccField.isEditing {
+            focusInput = self.bccField
+        }
+        
+        let valueObject = NSString(string: email)
+        let token = CLToken(displayText: name, context: valueObject)
+        focusInput.add(token)
     }
 }
 
@@ -176,6 +201,8 @@ extension ComposerUIView: CLTokenInputViewDelegate {
                 self.delegate?.badRecipient()
             }
         }
+        
+        self.delegate?.typingRecipient(text: input)
     }
     
     func tokenInputView(_ view: CLTokenInputView, didChangeHeightTo height: CGFloat) {
