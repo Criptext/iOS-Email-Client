@@ -12,7 +12,6 @@ import MobileCoreServices
 
 class File : Object {
     
-    @objc dynamic var id = 0
     @objc dynamic var token = ""
     @objc dynamic var name = ""
     @objc dynamic var size = 0
@@ -21,6 +20,8 @@ class File : Object {
     @objc dynamic var readOnly = 0 //bool
     @objc dynamic var emailId = 0
     @objc dynamic var mimeType = ""
+    @objc dynamic var shouldDuplicate = false
+    @objc dynamic var originalToken: String?
     var filePath = ""
     var progress = -1
     var filepath = ""
@@ -60,7 +61,7 @@ class File : Object {
 }
 
 extension File{
-    func toDictionary(emailId: Int) -> [String: Any] {
+    func toDictionary(id: Int, emailId: Int) -> [String: Any] {
         let dateString = DateUtils().date(toServerString: date)!
         return [
             "table": "file",
@@ -87,5 +88,19 @@ extension File{
             return mimetype as String
         }
         return "application/octet-stream"
+    }
+    
+    func duplicate() -> File {
+        let newFile = File()
+        newFile.token = "\(self.token):\(Date().timeIntervalSince1970)"
+        newFile.name = self.name
+        newFile.size = self.size
+        newFile.status = self.status
+        newFile.date = self.date
+        newFile.readOnly = self.readOnly
+        newFile.mimeType = self.mimeType
+        newFile.shouldDuplicate = true
+        newFile.originalToken = self.token
+        return newFile
     }
 }

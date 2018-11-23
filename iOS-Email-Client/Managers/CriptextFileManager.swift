@@ -249,7 +249,10 @@ class CriptextFileManager {
         }
         let key = keys.0
         let iv = keys.1
-        return AESCipher.encrypt(data: chunkData, keyData: key, ivData: iv, operation: kCCDecrypt)!
+        guard let decryptedChunk = AESCipher.encrypt(data: chunkData, keyData: key, ivData: iv, operation: kCCDecrypt) else {
+            return chunkData
+        }
+        return decryptedChunk
     }
     
     private func checkCompleteUpload(filetoken: String){
