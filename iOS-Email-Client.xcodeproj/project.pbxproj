@@ -236,6 +236,8 @@
 		A70609F921A74C0A0066BFA4 /* EmailSetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */; };
 		A70609FA21A74C250066BFA4 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
 		A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
+		A70609FD21A9BEE80066BFA4 /* OptionsPickerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70609FC21A9BEE70066BFA4 /* OptionsPickerUIPopover.xib */; };
+		A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */; };
 		A713109C21596F2E00534F13 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */; };
 		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -656,6 +658,8 @@
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
 		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
+		A70609FC21A9BEE70066BFA4 /* OptionsPickerUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsPickerUIPopover.xib; sourceTree = "<group>"; };
+		A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPickerUIPopover.swift; sourceTree = "<group>"; };
 		A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = ../../../Downloads/Firebase/Analytics/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
@@ -931,6 +935,7 @@
 				7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */,
 				A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */,
 				A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */,
+				A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1151,6 +1156,7 @@
 				A7FFCF4D217A91E200FFFDFF /* ConnectView.xib */,
 				7C1DA38C2153083700C4C38E /* ConnectUIView.swift */,
 				A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */,
+				A70609FC21A9BEE70066BFA4 /* OptionsPickerUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1512,6 +1518,7 @@
 				7C63AB56205330A00053219F /* ReadHistoryTableCell.xib in Resources */,
 				A7FFCF21217A90D100FFFDFF /* LabelsUIPopover.xib in Resources */,
 				A7FFCF33217A911400FFFDFF /* EmailTableFooterView.xib in Resources */,
+				A70609FD21A9BEE80066BFA4 /* OptionsPickerUIPopover.xib in Resources */,
 				7C4D33C1212C733700045B09 /* GenericAlertUIPopover.xib in Resources */,
 				A7FFCF3C217A913900FFFDFF /* PasswordUIPopover.xib in Resources */,
 				7C1E987A20C9B96A003205F8 /* showmore.png in Resources */,
@@ -1674,6 +1681,7 @@
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
+				A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */,
 				7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */,
 				A7CC3886219496E600C8355A /* SharedUtils.swift in Sources */,
 				7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */,

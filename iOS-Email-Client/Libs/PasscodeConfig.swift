@@ -14,7 +14,7 @@ class PasscodeConfig: PasscodeLockConfigurationType {
     
     var passcodeLength: Int = 4
     
-    var isTouchIDAllowed: Bool = true
+    var isTouchIDAllowed: Bool = UserDefaults.standard.bool(forKey: "fingerprintUnlock")
     
     var shouldRequestTouchIDImmediately: Bool = false
     
