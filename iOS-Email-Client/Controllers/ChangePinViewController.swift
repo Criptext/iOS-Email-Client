@@ -63,7 +63,7 @@ class ChangePinViewController: UIViewController {
         lockSwitch.isOn = locked
         changeButton.isEnabled = locked
         autoLockLabel.text = timerStringValue
-        autoLockButton.isEnabled = false
+        unlockButton.isEnabled = false
         navigationItem.title = "PIN Lock"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)

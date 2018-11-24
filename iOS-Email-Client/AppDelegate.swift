@@ -23,12 +23,49 @@ import PasscodeLock
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var goneTimestamp: TimeInterval {
+        get {
+            let defaults = UserDefaults.standard
+            return defaults.double(forKey: "goneTimestamp")
+        }
+        set (value) {
+            let defaults = UserDefaults.standard
+            defaults.set(value, forKey: "goneTimestamp")
+        }
+    }
     
     lazy var passcodeLockPresenter: PasscodeLockPresenter = {
         let configuration = PasscodeConfig()
         let presenter = PasscodeLockPresenter(mainWindow: self.window, configuration: configuration)
         return presenter
     }()
+    
+    func shouldShowPinLock() -> Bool {
+        let defaults = UserDefaults.standard
+        guard defaults.string(forKey: "lock") != nil else {
+            return false
+        }
+        guard let timerStringValue = defaults.string(forKey: "lockTimer"),
+            timerStringValue != "Immediately" else {
+            return true
+        }
+        let timestamp = goneTimestamp
+        let currentTimestamp = Date().timeIntervalSince1970
+        switch(timerStringValue) {
+        case "1 minute":
+            return currentTimestamp - timestamp >= 60
+        case "5 minutes":
+            return currentTimestamp - timestamp >= (60 * 5)
+        case "15 minutes":
+            return currentTimestamp - timestamp >= (60 * 15)
+        case "1 hour":
+            return currentTimestamp - timestamp >= (60 * 60)
+        case "24 hours":
+            return currentTimestamp - timestamp >= (60 * 60 * 24)
+        default:
+            return true
+        }
+    }
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -325,7 +362,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         WebSocketManager.sharedInstance.pause()
-        passcodeLockPresenter.present()
+        goneTimestamp = Date().timeIntervalSince1970
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -333,6 +370,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.triggerRefresh()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         WebSocketManager.sharedInstance.reconnect()
+        if shouldShowPinLock() {
+            passcodeLockPresenter.present()
+        }
     }
     
     func triggerRefresh(){
