@@ -36,7 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var passcodeLockPresenter: PasscodeLockPresenter = {
         let configuration = PasscodeConfig()
-        let presenter = PasscodeLockPresenter(mainWindow: self.window, configuration: configuration)
+        let vc = CustomPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
+        let presenter = PasscodeLockPresenter(mainWindow: self.window, configuration: configuration, viewController: vc)
         return presenter
     }()
     
@@ -295,7 +296,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
-    func logout(manually: Bool = false){
+    func logout(manually: Bool = false, message: String = "This device has been removed remotely."){
         if let mailboxVC = getInboxVC() {
             mailboxVC.invalidateObservers()
         }
@@ -303,12 +304,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
+        let defaults = UserDefaults.standard
         let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
         groupDefaults.removeObject(forKey: "activeAccount")
+        defaults.removeObject(forKey: "lock")
+        defaults.removeObject(forKey: "fingerprintUnlock")
+        defaults.removeObject(forKey: "faceUnlock")
+        defaults.removeObject(forKey: "goneTimestamp")
+        defaults.removeObject(forKey: "lockTimer")
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
-        if let loginVC = initialVC.topViewController as? NewLoginViewController {
-            loginVC.loggedOutRemotely = !manually
+        if !manually,
+            let loginVC = initialVC.topViewController as? NewLoginViewController {
+            loginVC.loggedOutRemotely = message
         }
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop

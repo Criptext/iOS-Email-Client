@@ -85,9 +85,9 @@ extension UIViewController {
         return self
     }
     
-    func logout(manually: Bool = false){
+    func logout(manually: Bool = false, message: String = "This device has been removed remotely."){
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            delegate.logout(manually: manually)
+            delegate.logout(manually: manually, message: message)
         }
     }
     

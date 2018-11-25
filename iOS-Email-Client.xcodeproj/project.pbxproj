@@ -238,6 +238,8 @@
 		A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
 		A70609FD21A9BEE80066BFA4 /* OptionsPickerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70609FC21A9BEE70066BFA4 /* OptionsPickerUIPopover.xib */; };
 		A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */; };
+		A7060A0121AA5A880066BFA4 /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7060A0021AA5A880066BFA4 /* PasscodeLockView.xib */; };
+		A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */; };
 		A713109C21596F2E00534F13 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */; };
 		A713109D21596F2E00534F13 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A713109B21596F2E00534F13 /* GoogleUtilities.framework */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -660,6 +662,8 @@
 		A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		A70609FC21A9BEE70066BFA4 /* OptionsPickerUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsPickerUIPopover.xib; sourceTree = "<group>"; };
 		A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPickerUIPopover.swift; sourceTree = "<group>"; };
+		A7060A0021AA5A880066BFA4 /* PasscodeLockView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasscodeLockView.xib; sourceTree = "<group>"; };
+		A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPasscodeViewController.swift; sourceTree = "<group>"; };
 		A713109A21596F2E00534F13 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = ../../../Downloads/Firebase/Analytics/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
@@ -936,6 +940,7 @@
 				A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */,
 				A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */,
 				A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */,
+				A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1157,6 +1162,7 @@
 				7C1DA38C2153083700C4C38E /* ConnectUIView.swift */,
 				A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */,
 				A70609FC21A9BEE70066BFA4 /* OptionsPickerUIPopover.xib */,
+				A7060A0021AA5A880066BFA4 /* PasscodeLockView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1490,6 +1496,7 @@
 				7CF93F562146E41700361837 /* Lock.json in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
+				A7060A0121AA5A880066BFA4 /* PasscodeLockView.xib in Resources */,
 				A7FFCF63217A93E600FFFDFF /* Localizable.strings in Resources */,
 				7CF93F582146E41700361837 /* Email.json in Resources */,
 				A7FFCF27217A90E500FFFDFF /* GeneralMoreOptionsUIView.xib in Resources */,
@@ -1762,6 +1769,7 @@
 				7C6DB46B2152B910001B3749 /* LinkData.swift in Sources */,
 				41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */,
 				7CF93F5C214963A500361837 /* GeneralVersionTableViewCell.swift in Sources */,
+				A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */,
 				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,

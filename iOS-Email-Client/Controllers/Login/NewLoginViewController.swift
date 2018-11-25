@@ -16,7 +16,7 @@ class NewLoginViewController: UIViewController{
     @IBOutlet weak var errorImage: UIImageView!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var loginErrorLabel: UILabel!
-    var loggedOutRemotely = false
+    var loggedOutRemotely: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,9 +34,9 @@ class NewLoginViewController: UIViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if loggedOutRemotely {
-            loggedOutRemotely = false
-            showAlert(String.localize("Logged Out!"), message: String.localize("This device has been removed remotely."), style: .alert)
+        if let removeMessage = loggedOutRemotely {
+            loggedOutRemotely = nil
+            showAlert(String.localize("Logged Out!"), message: String.localize(removeMessage), style: .alert)
         }
     }
     

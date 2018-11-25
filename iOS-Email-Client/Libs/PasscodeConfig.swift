@@ -18,7 +18,7 @@ class PasscodeConfig: PasscodeLockConfigurationType {
     
     var shouldRequestTouchIDImmediately: Bool = false
     
-    var maximumInccorectPasscodeAttempts: Int = 5
+    var maximumInccorectPasscodeAttempts: Int = Env.maxRetryAttempts
     
     internal class PasscodeType: PasscodeRepositoryType {
         var hasPasscode: Bool {
