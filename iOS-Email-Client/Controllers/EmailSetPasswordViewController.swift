@@ -8,6 +8,7 @@
 
 import Foundation
 import Material
+import IQKeyboardManagerSwift
 
 protocol EmailSetPasswordDelegate {
     func setPassword(active: Bool, password: String?)
@@ -30,7 +31,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
     
     override func viewDidLoad() {
         passwordTextField.detailColor = .alert
-        //passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
+        passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(sender:)))
         guard let scrollview = self.view as? UIScrollView else {
             return
         }

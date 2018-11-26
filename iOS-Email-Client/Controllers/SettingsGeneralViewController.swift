@@ -198,7 +198,8 @@ class SettingsGeneralViewController: UITableViewController{
             cell.optionLabel.text = subsection.name
             cell.availableSwitch.isOn = generalData.hasEmailReceipts
             cell.switchToggle = { isOn in
-                self.setReadReceipts(enable: isOn)
+                cell.availableSwitch.isEnabled = false
+                self.setReadReceipts(enable: isOn, sender: cell.availableSwitch)
             }
             return cell
         default:
@@ -382,10 +383,11 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
-    func setReadReceipts(enable: Bool){
+    func setReadReceipts(enable: Bool, sender: UISwitch?){
         let initialValue = self.generalData.hasEmailReceipts
         self.generalData.hasEmailReceipts = enable
         APIManager.setReadReceipts(enable: enable, token: myAccount.jwt) { (responseData) in
+            sender?.isEnabled = true
             guard case .Success = responseData else {
                 self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)
                 self.generalData.hasEmailReceipts = initialValue
