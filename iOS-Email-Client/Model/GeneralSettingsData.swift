@@ -12,6 +12,7 @@ class GeneralSettingsData {
     var recoveryEmail: String?
     var recoveryEmailStatus: RecoveryStatus = .none
     var isTwoFactor = false
+    var hasEmailReceipts = false
     var password: String?
     
     enum RecoveryStatus {

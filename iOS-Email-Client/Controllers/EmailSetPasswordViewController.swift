@@ -8,6 +8,7 @@
 
 import Foundation
 import Material
+import IQKeyboardManagerSwift
 
 protocol EmailSetPasswordDelegate {
     func setPassword(active: Bool, password: String?)

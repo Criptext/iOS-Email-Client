@@ -193,6 +193,19 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
+    
+    class func setReadReceipts(enable: Bool, token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/readtracking"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "enable": enable
+            ] as [String: Any]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
 
     class func changePassword(oldPassword: String, newPassword: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/password/change"

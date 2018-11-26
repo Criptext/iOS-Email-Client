@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol AttachmentTableCellDelegate {
     func tableCellDidTap(_ cell: AttachmentTableCell)
@@ -47,10 +48,10 @@ class AttachmentTableCell: UITableViewCell{
     }
     
     func setNameAndSize(_ name: String, _ size: String){
-        let nameAttrs = [NSAttributedStringKey.font : Font.bold.size(15.0)!, NSAttributedStringKey.foregroundColor : UIColor.black]
+        let nameAttrs = [NSAttributedString.Key.foregroundColor : UIColor.black]
         let myName = NSMutableAttributedString(string: name + " ", attributes: nameAttrs)
         
-        let sizeAttrs = [NSAttributedStringKey.font : Font.regular.size(12.0)!, NSAttributedStringKey.foregroundColor : UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)]
+        let sizeAttrs = [NSAttributedString.Key.foregroundColor : UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)]
         let mySize = NSMutableAttributedString(string: "  \(size)", attributes: sizeAttrs)
         
         myName.append(mySize)
@@ -62,7 +63,7 @@ class AttachmentTableCell: UITableViewCell{
     }
     
     func setAsUnsend(){
-        let attrs = [NSAttributedStringKey.font : Font.bold.size(15.0)!, NSAttributedStringKey.foregroundColor : UIColor.black]
+        let attrs = [NSAttributedString.Key.font : Font.bold.size(15.0)!, NSAttributedString.Key.foregroundColor : UIColor.black]
         let myName = NSMutableAttributedString(string: "Attachment Unsent", attributes: attrs)
         attachmentLabel.attributedText = myName
         progressView.isHidden = true

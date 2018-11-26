@@ -27,7 +27,7 @@ class SendMailAsyncTask {
     
     init(account: Account, email: Email, password: String?){
         let files = SendMailAsyncTask.getFilesRequestData(email: email)
-        let fileKey = DBManager.getFileKey(emailId: email.key)?.key
+        let fileKey = SharedDB.getFileKey(emailId: email.key)?.key
         let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, files: files, fileKey: fileKey)
         
         self.username = account.username
@@ -39,7 +39,7 @@ class SendMailAsyncTask {
         self.guestEmails = recipients.0
         self.criptextEmails = recipients.1
         self.files = files
-        self.emailRef = DBManager.getReference(email)
+        self.emailRef = SharedDB.getReference(email)
         self.fileKey = fileKey
         
         self.password = password
@@ -62,7 +62,7 @@ class SendMailAsyncTask {
         
         let toContacts = email.getContacts(type: .to)
         for contact in toContacts {
-            if(contact.email.contains(Constants.domain)){
+            if(contact.email.contains(Env.domain)){
                 criptextEmails[String(contact.email.split(separator: "@")[0])] = "to"
             } else {
                 toArray.append(contact.email)
@@ -71,7 +71,7 @@ class SendMailAsyncTask {
         
         let ccContacts = email.getContacts(type: .cc)
         for contact in ccContacts {
-            if(contact.email.contains(Constants.domain)){
+            if(contact.email.contains(Env.domain)){
                 criptextEmails[String(contact.email.split(separator: "@")[0])] = "cc"
             } else {
                 ccArray.append(contact.email)
@@ -80,7 +80,7 @@ class SendMailAsyncTask {
         
         let bccContacts = email.getContacts(type: .bcc)
         for contact in bccContacts {
-            if(contact.email.contains(Constants.domain)){
+            if(contact.email.contains(Env.domain)){
                 criptextEmails[String(contact.email.split(separator: "@")[0])] = "bcc"
             } else {
                 bccArray.append(contact.email)
@@ -106,7 +106,7 @@ class SendMailAsyncTask {
     }
     
     private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
             completion(ResponseData.Error(CriptextError(message: "Unable to handle email")))
             return
         }
@@ -120,8 +120,8 @@ class SendMailAsyncTask {
                 dummySession.body = dummySessionData.body
                 dummySession.session = dummySessionData.session
                 dummySession.key = emailKey
-                DBManager.store(dummySession)
-            } else if let dummySession = DBManager.getDummySession(key: emailKey) {
+                SharedDB.store(dummySession)
+            } else if let dummySession = SharedDB.getDummySession(key: emailKey) {
                 self.guestEmails["body"] = dummySession.body
                 self.guestEmails["session"] = dummySession.session
             } else {
@@ -155,7 +155,7 @@ class SendMailAsyncTask {
             ] as [String : Any]
         
         APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { responseData in
-            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
                 return
             }
             guard case let .SuccessArray(keysArray) = responseData else {
@@ -230,7 +230,7 @@ class SendMailAsyncTask {
     }
     
     private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
             return
         }
         var requestParams = ["subject": subject] as [String : Any]
@@ -268,35 +268,35 @@ class SendMailAsyncTask {
                 return
             }
             DispatchQueue.main.async {
-                DBManager.refresh()
+                SharedDB.refresh()
                 completion(ResponseData.SuccessInt(key))
             }
         }
     }
     
     func setEmailAsFailed(){
-        guard let email = DBManager.getObject(emailRef) as? Email else {
+        guard let email = SharedDB.getObject(emailRef) as? Email else {
             return
         }
-        DBManager.updateEmail(email, status: Email.Status.fail.rawValue)
+        SharedDB.updateEmail(email, status: Email.Status.fail.rawValue)
     }
     
     func deleteUnhandledEmail(){
-        guard let email = DBManager.getObject(emailRef) as? Email else {
+        guard let email = SharedDB.getObject(emailRef) as? Email else {
             return
         }
-        DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
+        SharedDB.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
     }
     
     func updateEmailData(_ updateData : [String: Any]) -> Int? {
-        guard let email = DBManager.getObject(emailRef) as? Email else {
+        guard let email = SharedDB.getObject(emailRef) as? Email else {
             return nil
         }
         let key = updateData["metadataKey"] as! Int
         let messageId = updateData["messageId"] as! String
         let threadId = updateData["threadId"] as! String
-        DBManager.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
-        DBManager.deleteDummySession(key: emailKey)
+        SharedDB.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
+        SharedDB.deleteDummySession(key: emailKey)
         updateFiles(emailId: key)
         return key
     }
@@ -306,7 +306,7 @@ class SendMailAsyncTask {
             guard let filetoken = file["token"] as? String else {
                 continue
             }
-            DBManager.update(filetoken: filetoken, emailId: emailId)
+            SharedDB.update(filetoken: filetoken, emailId: emailId)
         }
     }
     

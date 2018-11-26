@@ -9,13 +9,14 @@
 import Foundation
 import Material
 import SafariServices
+import PasscodeLock
 
 class SettingsGeneralViewController: UITableViewController{
     
     internal enum Section {
         case account
         case about
-        case notifications
+        case privacy
         case version
         
         var name: String {
@@ -24,8 +25,8 @@ class SettingsGeneralViewController: UITableViewController{
                 return String.localize("ACCOUNT")
             case .about:
                 return String.localize("ABOUT")
-            case .notifications:
-                return String.localize("NOTIFICATIONS")
+            case .privacy:
+                return String.localize("PRIVACY")
             case .version:
                 return String.localize("VERSION")
             }
@@ -44,6 +45,8 @@ class SettingsGeneralViewController: UITableViewController{
             case logout
             
             case preview
+            case readReceipts
+            case pin
             
             case version
             
@@ -69,6 +72,10 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("Logout")
                 case .preview:
                     return String.localize("Show Email Preview")
+                case .readReceipts:
+                    return String.localize("Read Receipts")
+                case .pin:
+                    return String.localize("PIN Lock")
                 case .version:
                     return String.localize("Version")
                 }
@@ -78,11 +85,11 @@ class SettingsGeneralViewController: UITableViewController{
     
     let SECTION_VERSION = 3
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .notifications, .about, .version] as [Section]
+    let sections = [.account, .privacy, .about, .version] as [Section]
     let menus = [
         .account: [.profile, .signature, .changePassword, .twoFactor, .recovery],
         .about: [.privacy, .terms, .openSource, .logout],
-        .notifications : [.preview],
+        .privacy : [.preview, .readReceipts, .pin],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData: GeneralSettingsData!
@@ -115,7 +122,7 @@ class SettingsGeneralViewController: UITableViewController{
             return renderAccountCells(subsection: subsection)
         case .about:
             return renderAboutCells(subsection: subsection)
-        case .notifications:
+        case .privacy:
             return renderNotificationsCells(subsection: subsection)
         default:
             return renderVersionCells()
@@ -168,15 +175,39 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func renderNotificationsCells(subsection: Section.SubSection) -> UITableViewCell {
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        let previewDisable = groupDefaults.bool(forKey: "previewDisable")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
-        cell.optionLabel.text = subsection.name
-        cell.availableSwitch.isOn = !previewDisable
-        cell.switchToggle = { isOn in
-            groupDefaults.set(!isOn, forKey: "previewDisable")
+        switch(subsection) {
+        case .preview:
+            let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+            let previewDisable = groupDefaults.bool(forKey: "previewDisable")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = !previewDisable
+            cell.switchToggle = { isOn in
+                groupDefaults.set(!isOn, forKey: "previewDisable")
+            }
+            return cell
+        case .pin:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+            cell.messageLabel.text = ""
+            cell.loader.isHidden = true
+            cell.goImageView.isHidden = false
+            cell.optionLabel.text = subsection.name
+            return cell
+        case .readReceipts:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = generalData.hasEmailReceipts
+            cell.switchToggle = { isOn in
+                cell.availableSwitch.isEnabled = false
+                self.setReadReceipts(enable: isOn, sender: cell.availableSwitch)
+            }
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = false
+            return cell
         }
-        return cell
     }
     
     func renderVersionCells() -> GeneralVersionTableViewCell {
@@ -223,6 +254,8 @@ class SettingsGeneralViewController: UITableViewController{
             showLogout()
         case .recovery:
             goToRecoveryEmail()
+        case .pin:
+            goToPinLock()
         default:
             break
         }
@@ -274,6 +307,13 @@ class SettingsGeneralViewController: UITableViewController{
         let changePassVC = storyboard.instantiateViewController(withIdentifier: "changePassViewController") as! ChangePassViewController
         changePassVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(changePassVC, animated: true)
+    }
+    
+    func goToPinLock(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let pinLockVC = storyboard.instantiateViewController(withIdentifier: "changePinViewController") as! ChangePinViewController
+        pinLockVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(pinLockVC, animated: true)
     }
     
     func goToSignature(){
@@ -339,6 +379,20 @@ class SettingsGeneralViewController: UITableViewController{
             }
             if (self.generalData.isTwoFactor) {
                 self.presentTwoFactorPopover()
+            }
+        }
+    }
+    
+    func setReadReceipts(enable: Bool, sender: UISwitch?){
+        let initialValue = self.generalData.hasEmailReceipts
+        self.generalData.hasEmailReceipts = enable
+        APIManager.setReadReceipts(enable: enable, token: myAccount.jwt) { (responseData) in
+            sender?.isEnabled = true
+            guard case .Success = responseData else {
+                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)
+                self.generalData.hasEmailReceipts = initialValue
+                self.reloadView()
+                return
             }
         }
     }

@@ -48,9 +48,11 @@ class CustomTabsController: TabsController {
             let email = general["recoveryEmail"] as! String
             let status = general["recoveryEmailConfirmed"] as! Int
             let isTwoFactor = general["twoFactorAuth"] as! Int
+            let hasEmailReceipts = 0
             self.generalData.recoveryEmail = email
             self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
             self.generalData.isTwoFactor = isTwoFactor == 1 ? true : false
+            self.generalData.hasEmailReceipts = hasEmailReceipts == 1 ? true : false
             self.reloadChildViews()
         }
     }
