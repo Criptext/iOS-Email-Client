@@ -1797,7 +1797,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wOf-DA-eAI">
-                                <rect key="frame" x="297" y="41" width="45" height="28"/>
+                                <rect key="frame" x="297" y="43" width="45" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="7LH-dK-La2"/>
                                     <constraint firstAttribute="width" constant="43" id="NjV-3D-orV"/>
@@ -1821,14 +1821,17 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Change Pin">
-                                    <color key="titleColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.26666666666666666" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="onChangePinPress:" destination="Q8c-MN-jgJ" eventType="touchUpInside" id="tta-cE-n0W"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PIN Lock" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufV-LV-Xc1">
-                                <rect key="frame" x="27" y="45" width="321" height="20"/>
+                                <rect key="frame" x="27" y="45" width="321" height="23.5"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1866,6 +1869,9 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Auto-Lock">
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
                                     <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1886,7 +1892,10 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Unlock with fingerprint">
-                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="0.34000000000000002" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dwf-vl-sS5">
@@ -1897,11 +1906,11 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 hour" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zU-i4-aPr">
-                                <rect key="frame" x="198" y="280.5" width="150" height="20"/>
+                                <rect key="frame" x="198" y="280.5" width="150" height="20.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="rgP-fV-gbV"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.26666666666666666" alpha="0.34000000000000002" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1913,7 +1922,6 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                                 <color key="onTintColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <action selector="onLockToggle:" destination="Q8c-MN-jgJ" eventType="valueChanged" id="OMM-b7-Tzu"/>
                                     <action selector="onUnlockToggle:" destination="Q8c-MN-jgJ" eventType="valueChanged" id="OcL-2e-fqV"/>
                                 </connections>
                             </switch>

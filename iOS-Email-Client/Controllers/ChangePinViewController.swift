@@ -12,6 +12,8 @@ import LocalAuthentication
 
 class ChangePinViewController: UIViewController {
     
+    let textColor = UIColor.mainUI
+    let disableColor = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 0.34)
     @IBOutlet weak var changeButton: UIButton!
     @IBOutlet weak var lockSwitch: UISwitch!
     @IBOutlet weak var unlockSwitch: UISwitch!
@@ -23,39 +25,39 @@ class ChangePinViewController: UIViewController {
     
     var locked: Bool {
         let defaults = UserDefaults.standard
-        return defaults.string(forKey: "lock") != nil
+        return defaults.string(forKey: PIN.lock.rawValue) != nil
     }
     var useFingerprint: Bool {
         get {
             let defaults = UserDefaults.standard
-            return defaults.bool(forKey: "fingerprintUnlock")
+            return defaults.bool(forKey: PIN.fingerprint.rawValue)
         }
         set (value) {
             let defaults = UserDefaults.standard
-            defaults.set(value, forKey: "fingerprintUnlock")
+            defaults.set(value, forKey: PIN.fingerprint.rawValue)
         }
     }
     var useFaceId: Bool {
         get {
             let defaults = UserDefaults.standard
-            return defaults.bool(forKey: "faceUnlock")
+            return defaults.bool(forKey: PIN.faceid.rawValue)
         }
         set (value) {
             let defaults = UserDefaults.standard
-            defaults.set(value, forKey: "faceUnlock")
+            defaults.set(value, forKey: PIN.faceid.rawValue)
         }
     }
     var timerStringValue: String {
         get {
             let defaults = UserDefaults.standard
-            guard let value = defaults.string(forKey: "lockTimer") else {
-                return "Not Set"
+            guard let value = defaults.string(forKey: PIN.lockTimer.rawValue) else {
+                return PIN.time.immediately.rawValue
             }
             return value
         }
         set (value) {
             let defaults = UserDefaults.standard
-            defaults.set(value, forKey: "lockTimer")
+            defaults.set(value, forKey: PIN.lockTimer.rawValue)
         }
     }
     
@@ -63,12 +65,20 @@ class ChangePinViewController: UIViewController {
         lockSwitch.isOn = locked
         changeButton.isEnabled = locked
         autoLockLabel.text = timerStringValue
-        unlockButton.isEnabled = false
+        autoLockButton.isEnabled = locked
+        unlockButton.isEnabled = locked
+        autoLockLabel.textColor = lockSwitch.isOn ? textColor : disableColor
         navigationItem.title = "PIN Lock"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         
-        if biometricType != .touchID {
+        if biometricType != .none {
+            unlockButton.isHidden = false
+            unlockSwitch.isHidden = false
+            unlockSwitch.isOn = useFaceId || useFingerprint
+            unlockSeparator.isHidden = false
+            unlockButton.setTitle(biometricType == .touchID ? "Unlock with fingerprint" : "Unlock with FaceID", for: .normal)
+        } else {
             unlockButton.isHidden = true
             unlockSwitch.isHidden = true
             unlockSeparator.isHidden = true
@@ -92,10 +102,11 @@ class ChangePinViewController: UIViewController {
     @IBAction func onLockToggle(_ sender: Any) {
         changeButton.isEnabled = lockSwitch.isOn
         autoLockButton.isEnabled = lockSwitch.isOn
+        autoLockLabel.textColor = lockSwitch.isOn ? textColor : disableColor
         unlockSwitch.isEnabled = lockSwitch.isOn
         guard lockSwitch.isOn else {
             let defaults = UserDefaults.standard
-            defaults.removeObject(forKey: "lock")
+            defaults.removeObject(forKey: PIN.lock.rawValue)
             return
         }
         presentPasscodeController(state: .set)
@@ -113,7 +124,14 @@ class ChangePinViewController: UIViewController {
     
     @IBAction func onAutoLockPress(_ sender: Any) {
         let pickerPopover = OptionsPickerUIPopover()
-        pickerPopover.options = ["Immediately", "1 minute", "5 minutes", "15 minutes", "1 hour", "24 hours"]
+        pickerPopover.options = [
+            PIN.time.immediately.rawValue,
+            PIN.time.oneminute.rawValue,
+            PIN.time.fiveminutes.rawValue,
+            PIN.time.fifteenminutes.rawValue,
+            PIN.time.onehour.rawValue,
+            PIN.time.oneday.rawValue
+        ]
         pickerPopover.onComplete = { [weak self] option in
             if let stringValue = option {
                 self?.timerStringValue = stringValue
@@ -152,5 +170,22 @@ class ChangePinViewController: UIViewController {
                 return  .touchID
             }
         }
+    }
+}
+
+enum PIN: String {
+    case lock = "lock"
+    case fingerprint = "fingerprintUnlock"
+    case faceid = "faceUnlock"
+    case lockTimer = "lockTimer"
+    case goneTimestamp = "goneTimestamp"
+    
+    enum time: String {
+        case immediately = "Immediately"
+        case oneminute = "1 minute"
+        case fiveminutes = "5 minutes"
+        case fifteenminutes = "15 minutes"
+        case onehour = "1 hour"
+        case oneday = "24 hours"
     }
 }

@@ -26,11 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var goneTimestamp: TimeInterval {
         get {
             let defaults = UserDefaults.standard
-            return defaults.double(forKey: "goneTimestamp")
+            return defaults.double(forKey: PIN.goneTimestamp.rawValue)
         }
         set (value) {
             let defaults = UserDefaults.standard
-            defaults.set(value, forKey: "goneTimestamp")
+            defaults.set(value, forKey: PIN.goneTimestamp.rawValue)
         }
     }
     
@@ -43,25 +43,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func shouldShowPinLock() -> Bool {
         let defaults = UserDefaults.standard
-        guard defaults.string(forKey: "lock") != nil else {
+        guard defaults.string(forKey: PIN.lock.rawValue) != nil else {
             return false
         }
-        guard let timerStringValue = defaults.string(forKey: "lockTimer"),
-            timerStringValue != "Immediately" else {
+        guard let timerStringValue = defaults.string(forKey: PIN.lockTimer.rawValue),
+            timerStringValue != PIN.time.immediately.rawValue else {
             return true
         }
         let timestamp = goneTimestamp
         let currentTimestamp = Date().timeIntervalSince1970
-        switch(timerStringValue) {
-        case "1 minute":
+        switch(PIN.time(rawValue: timerStringValue) ?? .immediately) {
+        case .oneminute:
             return currentTimestamp - timestamp >= 60
-        case "5 minutes":
+        case .fiveminutes:
             return currentTimestamp - timestamp >= (60 * 5)
-        case "15 minutes":
+        case .fifteenminutes:
             return currentTimestamp - timestamp >= (60 * 15)
-        case "1 hour":
+        case .onehour:
             return currentTimestamp - timestamp >= (60 * 60)
-        case "24 hours":
+        case .oneday:
             return currentTimestamp - timestamp >= (60 * 60 * 24)
         default:
             return true
@@ -307,11 +307,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = UserDefaults.standard
         let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
         groupDefaults.removeObject(forKey: "activeAccount")
-        defaults.removeObject(forKey: "lock")
-        defaults.removeObject(forKey: "fingerprintUnlock")
-        defaults.removeObject(forKey: "faceUnlock")
-        defaults.removeObject(forKey: "goneTimestamp")
-        defaults.removeObject(forKey: "lockTimer")
+        defaults.removeObject(forKey: PIN.lock.rawValue)
+        defaults.removeObject(forKey: PIN.fingerprint.rawValue)
+        defaults.removeObject(forKey: PIN.faceid.rawValue)
+        defaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
+        defaults.removeObject(forKey: PIN.lockTimer.rawValue)
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if !manually,
