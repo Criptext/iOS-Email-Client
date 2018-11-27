@@ -107,6 +107,7 @@ class ChangePinViewController: UIViewController {
         guard lockSwitch.isOn else {
             let defaults = UserDefaults.standard
             defaults.removeObject(forKey: PIN.lock.rawValue)
+            self.toggleActions()
             return
         }
         presentPasscodeController(state: .set)
