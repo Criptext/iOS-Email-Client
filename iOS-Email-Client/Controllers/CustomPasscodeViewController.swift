@@ -12,13 +12,16 @@ import LocalAuthentication
 
 class CustomPasscodeViewController: PasscodeLockViewController {
     
+    var showSignOut = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "PIN Lock"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
-        let attrText = NSAttributedString(string: biometricType == .faceID ? "Face ID" : "Touch ID", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.underlineColor: UIColor.white, NSAttributedString.Key.underlineStyle: NSUnderlineStyle.styleSingle.rawValue])
-        touchIDButton?.setAttributedTitle(attrText, for: .normal)
+        
+        touchIDButton?.setImage(UIImage(named: biometricType == .faceID ? "faceID" : "touchID"), for: .normal)
+        signoutButton?.isHidden = !showSignOut
     }
     
     var incorrectPasscodeAttempts: Int {

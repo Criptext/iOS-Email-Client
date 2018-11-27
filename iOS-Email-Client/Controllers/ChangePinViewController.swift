@@ -62,12 +62,7 @@ class ChangePinViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        lockSwitch.isOn = locked
-        changeButton.isEnabled = locked
-        autoLockLabel.text = timerStringValue
-        autoLockButton.isEnabled = locked
-        unlockButton.isEnabled = locked
-        autoLockLabel.textColor = lockSwitch.isOn ? textColor : disableColor
+        self.toggleActions()
         navigationItem.title = "PIN Lock"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
@@ -87,8 +82,17 @@ class ChangePinViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.toggleActions()
+    }
+    
+    func toggleActions() {
         lockSwitch.isOn = locked
         changeButton.isEnabled = locked
+        autoLockLabel.text = timerStringValue
+        autoLockButton.isEnabled = locked
+        autoLockLabel.textColor = locked ? textColor : disableColor
+        unlockButton.isEnabled = locked
+        unlockSwitch.isEnabled = locked
     }
     
     @objc func goBack(){
@@ -100,10 +104,6 @@ class ChangePinViewController: UIViewController {
     }
     
     @IBAction func onLockToggle(_ sender: Any) {
-        changeButton.isEnabled = lockSwitch.isOn
-        autoLockButton.isEnabled = lockSwitch.isOn
-        autoLockLabel.textColor = lockSwitch.isOn ? textColor : disableColor
-        unlockSwitch.isEnabled = lockSwitch.isOn
         guard lockSwitch.isOn else {
             let defaults = UserDefaults.standard
             defaults.removeObject(forKey: PIN.lock.rawValue)
@@ -114,7 +114,7 @@ class ChangePinViewController: UIViewController {
     
     func presentPasscodeController(state: PasscodeLockViewController.LockState) {
         let configuration = PasscodeConfig()
-        let passcodeVC = PasscodeLockViewController(state: state, configuration: configuration, animateOnDismiss: true)
+        let passcodeVC = CustomPasscodeViewController(state: state, configuration: configuration, animateOnDismiss: true)
         self.navigationController?.pushViewController(passcodeVC, animated: true)
     }
     

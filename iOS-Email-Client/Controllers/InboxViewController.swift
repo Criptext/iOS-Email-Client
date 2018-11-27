@@ -150,6 +150,13 @@ class InboxViewController: UIViewController {
         }
     }
     
+    func syncContacts() {
+        let task = RetrieveContactsTask()
+        task.start { (success) in
+            
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateBadges()
@@ -264,6 +271,7 @@ class InboxViewController: UIViewController {
     func presentWelcomeTour(){
         let defaults = UserDefaults.standard
         guard !defaults.bool(forKey: "welcomeTour") else {
+            syncContacts()
             self.showGuide()
             return
         }
@@ -272,6 +280,7 @@ class InboxViewController: UIViewController {
         welcomeTourVC.modalPresentationStyle = .overCurrentContext
         welcomeTourVC.modalTransitionStyle = .crossDissolve
         welcomeTourVC.onDismiss = { [weak self] in
+            self?.syncContacts()
             self?.showGuide()
             defaults.set(true, forKey: "welcomeTour")
         }

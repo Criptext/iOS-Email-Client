@@ -13,8 +13,4 @@ class GeneralTapTableCellView : UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var goImageView: UIImageView!
     @IBOutlet weak var loader: UIActivityIndicatorView!
-    
-    override func awakeFromNib() {
-        goImageView.transform = goImageView.transform.rotated(by: CGFloat(Double.pi * 1.5))
-    }
 }

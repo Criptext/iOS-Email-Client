@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var passcodeLockPresenter: PasscodeLockPresenter = {
         let configuration = PasscodeConfig()
         let vc = CustomPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
+        vc.showSignOut = true
         let presenter = PasscodeLockPresenter(mainWindow: self.window, configuration: configuration, viewController: vc)
         return presenter
     }()

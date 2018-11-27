@@ -24,6 +24,7 @@
                 <outlet property="deleteSignButton" destination="8tb-fB-RLr" id="599-BO-p17"/>
                 <outlet property="descriptionLabel" destination="l31-50-fkY" id="EZn-dV-riu"/>
                 <outlet property="placeholdersX" destination="J2p-7B-TUf" id="oEK-e5-syC"/>
+                <outlet property="signoutButton" destination="Enc-b8-gfn" id="dIT-6P-bhZ"/>
                 <outlet property="titleLabel" destination="dbF-GF-mtZ" id="9Yv-mF-V8l"/>
                 <outlet property="touchIDButton" destination="3z4-k8-z31" id="mDR-cC-lLr"/>
                 <outlet property="view" destination="iN0-l3-epB" id="CT1-Gr-WAG"/>
@@ -479,64 +480,55 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TX1-m6-FjE">
-                    <rect key="frame" x="50" y="612" width="275" height="25"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Enc-b8-gfn">
-                            <rect key="frame" x="0.0" y="0.0" width="137.5" height="25"/>
-                            <state key="normal">
-                                <attributedString key="attributedTitle">
-                                    <fragment content="Sign Out">
-                                        <attributes>
-                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <font key="NSFont" size="17" name="NunitoSans-Regular"/>
-                                            <font key="NSOriginalFont" size="17" name="NunitoSans-Regular"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                            <integer key="NSUnderline" value="1"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                            </state>
-                            <connections>
-                                <action selector="signout:" destination="-1" eventType="touchUpInside" id="Bl7-0C-EDv"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3z4-k8-z31">
-                            <rect key="frame" x="137.5" y="0.0" width="137.5" height="25"/>
-                            <state key="normal">
-                                <attributedString key="attributedTitle">
-                                    <fragment content="Touch ID">
-                                        <attributes>
-                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <font key="NSFont" size="17" name="NunitoSans-Regular"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                            <integer key="NSUnderline" value="1"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                            </state>
-                            <connections>
-                                <action selector="touchIDButtonTap:" destination="-1" eventType="touchUpInside" id="kyF-yO-Od6"/>
-                            </connections>
-                        </button>
-                    </subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Enc-b8-gfn">
+                    <rect key="frame" x="154" y="633.5" width="67" height="23.5"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="25" id="XlU-BB-3l1"/>
-                        <constraint firstItem="Enc-b8-gfn" firstAttribute="width" secondItem="TX1-m6-FjE" secondAttribute="width" multiplier="0.5" priority="250" id="bLP-Dv-2f7"/>
+                        <constraint firstAttribute="height" constant="23.5" id="vR4-w2-9d9"/>
                     </constraints>
-                </stackView>
+                    <state key="normal">
+                        <attributedString key="attributedTitle">
+                            <fragment content="Sign Out">
+                                <attributes>
+                                    <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <font key="NSFont" size="17" name="NunitoSans-Regular"/>
+                                    <font key="NSOriginalFont" size="17" name="NunitoSans-Regular"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                    <integer key="NSUnderline" value="1"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                    </state>
+                    <connections>
+                        <action selector="signout:" destination="-1" eventType="touchUpInside" id="Bl7-0C-EDv"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3z4-k8-z31">
+                    <rect key="frame" x="162.5" y="563.5" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="JDG-1f-uGH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                    <state key="normal" image="touchID">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="touchIDButtonTap:" destination="-1" eventType="touchUpInside" id="kyF-yO-Od6"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="Enc-b8-gfn" firstAttribute="top" secondItem="3z4-k8-z31" secondAttribute="bottom" constant="20" id="4tK-9M-eUG"/>
                 <constraint firstItem="QK0-bw-YF6" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="7fv-EK-jC9"/>
                 <constraint firstItem="QK0-bw-YF6" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="BEA-p1-s9s"/>
+                <constraint firstItem="3z4-k8-z31" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="BOQ-af-t1M"/>
+                <constraint firstItem="Enc-b8-gfn" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="DTn-ab-ZbC"/>
+                <constraint firstItem="3z4-k8-z31" firstAttribute="top" secondItem="QK0-bw-YF6" secondAttribute="bottom" constant="20" id="U1E-vJ-vsV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Enc-b8-gfn" secondAttribute="bottom" constant="10" id="WrY-Yw-YLP"/>
                 <constraint firstItem="l31-50-fkY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="XPM-g7-LM4"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="TX1-m6-FjE" secondAttribute="bottom" constant="30" id="b88-cP-P8w"/>
                 <constraint firstItem="dbF-GF-mtZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="50" id="i7k-V0-9c4"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dbF-GF-mtZ" secondAttribute="trailing" constant="50" id="iIG-rn-XWg"/>
                 <constraint firstItem="l31-50-fkY" firstAttribute="top" secondItem="dbF-GF-mtZ" secondAttribute="bottom" constant="5" id="jtK-Nx-J2R"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="TX1-m6-FjE" secondAttribute="trailing" constant="50" id="lb4-fT-LTZ"/>
-                <constraint firstItem="TX1-m6-FjE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="50" id="lpM-fl-s9f"/>
                 <constraint firstItem="QK0-bw-YF6" firstAttribute="top" secondItem="dbF-GF-mtZ" secondAttribute="bottom" constant="55" id="uwU-RV-nMB"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="l31-50-fkY" secondAttribute="trailing" constant="20" id="wQM-Ms-P58"/>
             </constraints>
@@ -544,4 +536,7 @@
             <point key="canvasLocation" x="53.600000000000001" y="48.125937031484263"/>
         </view>
     </objects>
+    <resources>
+        <image name="touchID" width="40" height="40"/>
+    </resources>
 </document>

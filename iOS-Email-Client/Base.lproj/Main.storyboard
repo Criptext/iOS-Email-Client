@@ -1311,15 +1311,15 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="12" width="118" height="20"/>
+                                            <rect key="frame" x="27" y="10" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new-arrow-down" translatesAutoresizingMaskIntoConstraints="NO" id="YWl-rK-hcC">
-                                            <rect key="frame" x="342" y="18.5" width="12" height="7"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-next" translatesAutoresizingMaskIntoConstraints="NO" id="YWl-rK-hcC">
+                                            <rect key="frame" x="342" y="16" width="12" height="12"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="7" id="cRM-Pi-7Eh"/>
+                                                <constraint firstAttribute="height" constant="12" id="cRM-Pi-7Eh"/>
                                                 <constraint firstAttribute="width" constant="12" id="hBy-wF-GJ7"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
@@ -1797,7 +1797,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wOf-DA-eAI">
-                                <rect key="frame" x="297" y="43" width="45" height="28"/>
+                                <rect key="frame" x="297" y="41" width="45" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="7LH-dK-La2"/>
                                     <constraint firstAttribute="width" constant="43" id="NjV-3D-orV"/>
@@ -1831,7 +1831,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PIN Lock" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufV-LV-Xc1">
-                                <rect key="frame" x="27" y="45" width="321" height="23.5"/>
+                                <rect key="frame" x="27" y="45" width="321" height="20"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1906,7 +1906,7 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 hour" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zU-i4-aPr">
-                                <rect key="frame" x="198" y="280.5" width="150" height="20.5"/>
+                                <rect key="frame" x="198" y="282" width="150" height="17.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="rgP-fV-gbV"/>
                                 </constraints>
@@ -2666,6 +2666,7 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
     </scenes>
     <resources>
         <image name="activity" width="16" height="20"/>
+        <image name="arrow-next" width="8" height="12"/>
         <image name="attachment" width="20" height="36"/>
         <image name="attachment_camera" width="28" height="21"/>
         <image name="attachment_docproviders" width="33" height="20"/>
