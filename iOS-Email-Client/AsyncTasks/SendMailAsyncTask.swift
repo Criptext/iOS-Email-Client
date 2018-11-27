@@ -16,9 +16,10 @@ class SendMailAsyncTask {
     let threadId: String?
     let subject: String
     let body: String
-    var guestEmails: [String: Any]!
-    let criptextEmails: [String: Any]!
-    let files: [[String: Any]]!
+    var guestEmails: [String: Any]
+    let criptextEmails: [String: Any]
+    var files: [[String: Any]]
+    let duplicates: [String]
     let password: String?
     let isSecure: Bool
     let username: String
@@ -26,7 +27,9 @@ class SendMailAsyncTask {
     let emailRef: ThreadSafeReference<Object>
     
     init(account: Account, email: Email, password: String?){
-        let files = SendMailAsyncTask.getFilesRequestData(email: email)
+        let fileParams = SendMailAsyncTask.getFilesRequestData(email: email)
+        let files = fileParams.0
+        let duplicates = fileParams.1
         let fileKey = SharedDB.getFileKey(emailId: email.key)?.key
         let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, files: files, fileKey: fileKey)
         
@@ -39,19 +42,31 @@ class SendMailAsyncTask {
         self.guestEmails = recipients.0
         self.criptextEmails = recipients.1
         self.files = files
+        self.duplicates = duplicates
         self.emailRef = SharedDB.getReference(email)
         self.fileKey = fileKey
         
         self.password = password
     }
     
-    private class func getFilesRequestData(email: Email) -> [[String: Any]]{
-        return email.files.map { (file) -> [String: Any] in
-            return ["token": file.token,
-                    "name": file.name,
-                    "size": file.size,
-                    "mimeType": file.mimeType]
+    private class func getFilesRequestData(email: Email) -> ([[String: Any]], [String]){
+        var files = [[String: Any]]()
+        var duplicates = [String]()
+        for file in email.files {
+            if (file.shouldDuplicate) {
+                guard let token = file.originalToken else {
+                    continue
+                }
+                duplicates.append(token)
+            } else {
+                let fileparams = ["token": file.token,
+                                  "name": file.name,
+                                  "size": file.size,
+                                  "mimeType": file.mimeType] as [String : Any]
+                files.append(fileparams)
+            }
         }
+        return (files, duplicates)
     }
     
     private class func getRecipientEmails(username: String, email: Email, files: [[String: Any]], fileKey: String?) -> ([String: Any], [String: Any]) {
@@ -101,6 +116,27 @@ class SendMailAsyncTask {
     func start(completion: @escaping ((ResponseData) -> Void)){
         let queue = DispatchQueue(label: "com.email.sendmail", qos: .background, attributes: .concurrent)
         queue.async {
+            self.getDuplicatedFiles(queue: queue, completion: completion)
+        }
+    }
+    
+    private func getDuplicatedFiles(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)) {
+        guard !duplicates.isEmpty else {
+            getSessionAndEncrypt(queue: queue, completion: completion)
+            return
+        }
+        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+            completion(ResponseData.Error(CriptextError(message: "Unable to handle email")))
+            return
+        }
+        APIManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
+            guard case let .SuccessDictionary(response) = responseData,
+                let duplicates = response["duplicates"] as? [String: Any],
+                let fileParams = SharedDB.duplicateFiles(key: self.emailKey, duplicates: duplicates) else {
+                completion(ResponseData.Error(CriptextError(message: "Unable to handle file duplicates")))
+                return
+            }
+            self.files.append(contentsOf: fileParams)
             self.getSessionAndEncrypt(queue: queue, completion: completion)
         }
     }

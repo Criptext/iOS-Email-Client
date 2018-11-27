@@ -117,7 +117,6 @@ class SharedDB {
     class func store(_ file: File){
         let realm = try! Realm()
         try! realm.write {
-            file.id = (realm.objects(File.self).max(ofProperty: "id") as Int? ?? 0) + 1
             realm.add(file, update: true)
         }
     }
@@ -127,7 +126,6 @@ class SharedDB {
         
         try! realm.write {
             files.forEach({ (file) in
-                file.id = (realm.objects(File.self).max(ofProperty: "id") as Int? ?? 0) + 1
                 realm.add(files, update: true)
             })
         }
@@ -165,6 +163,36 @@ class SharedDB {
         let realm = try! Realm()
         
         return realm.objects(FileKey.self).filter("emailId == %@", emailId).first
+    }
+    
+    class func duplicateFiles(key: Int, duplicates: [String: Any]) -> [[String: Any]]? {
+        let realm = try! Realm()
+        
+        guard let email = realm.object(ofType: Email.self, forPrimaryKey: key) else {
+            return nil
+        }
+        
+        var fileParams = [[String: Any]]()
+        try! realm.write {
+            for (originalToken, newToken) in duplicates {
+                guard let token = newToken as? String,
+                    let file = realm.objects(File.self).filter("originalToken == '\(originalToken)'").first else {
+                        continue
+                }
+                let newFile = file.duplicate()
+                newFile.shouldDuplicate = false
+                newFile.token = token
+                realm.add(newFile, update: true)
+                realm.delete(file)
+                email.files.append(newFile)
+                let fileparam = ["token": newFile.token,
+                                 "name": newFile.name,
+                                 "size": newFile.size,
+                                 "mimeType": newFile.mimeType] as [String : Any]
+                fileParams.append(fileparam)
+            }
+        }
+        return fileParams
     }
     
     class func updateEmail(_ email: Email, status: Int){

@@ -243,7 +243,9 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
-    
+}
+
+extension APIManager {
     class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
         let headers = ["Authorization": "Bearer \(token)"]
@@ -305,6 +307,19 @@ class APIManager: SharedAPI {
                     return
             }
             completion(nil, responseData)
+        }
+    }
+    
+    class func duplicateFiles(filetokens: [String], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.fileServiceUrl)/file/duplicate"
+        let headers = ["Authorization": "Bearer \(token)"]
+        let params = [
+            "files": filetokens
+        ]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) {
+            (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     

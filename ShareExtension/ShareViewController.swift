@@ -37,6 +37,7 @@ class ShareViewController: UIViewController {
         composerUIView.attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentCell")
         fileManager.token = myAccount.jwt
         fileManager.delegate = self
+        fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         self.handleExtensionItems()
     }
     
@@ -252,6 +253,9 @@ extension ShareViewController {
     }
     
     func saveDraft() -> Email {
+        if let draft = emailDraft {
+            SharedDB.deleteDraftInComposer(draft)
+        }
         
         //create draft
         SharedDB.store(fileManager.registeredFiles)

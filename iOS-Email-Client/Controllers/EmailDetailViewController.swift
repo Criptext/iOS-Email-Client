@@ -376,7 +376,7 @@ extension EmailDetailViewController: UIGestureRecognizerDelegate {
 
 extension EmailDetailViewController: EmailDetailFooterDelegate {
     
-    func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subject: String, content: String){
+    func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subject: String, content: String, attachments: [File]? = nil){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let snackVC = SnackbarController(rootViewController: navComposeVC)
@@ -388,14 +388,21 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.initContent = content
         composerData.threadId = emailData.threadId
         composerData.emailDraft = email.isDraft ? email : nil
-        composerVC.delegate = self
-        composerVC.composerData = composerData
         if(email.isDraft){
             for file in email.files {
                 file.requestStatus = .finish
                 composerVC.fileManager.registeredFiles.append(file)
             }
+        } else if let files = attachments {
+            for file in files {
+                let newFile = file.duplicate()
+                newFile.requestStatus = .finish
+                composerVC.fileManager.registeredFiles.append(newFile)
+            }
+            composerData.initialFileKey = DBManager.getFileKey(emailId: email.key)
         }
+        composerVC.delegate = self
+        composerVC.composerData = composerData
         self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
     }
     
@@ -542,7 +549,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let email = emailData.emails[indexPath.row]
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         let content = ("<br><br><div class=\"criptext_quote\"><span>---------- Forwarded message ---------</span><br><span>From: <b>\(email.fromContact.displayName)</b> &#60;\(email.fromContact.email)&#62;</span><br><span>Date: \(email.completeDate)</span><br><span>Subject: \(email.subject)</span><br><br>" + email.content + "</div>")
-        presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content)
+        presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content, attachments: email.getFiles())
     }
     
     func onDeletePress() {

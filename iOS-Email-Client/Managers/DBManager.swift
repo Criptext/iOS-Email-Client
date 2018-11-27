@@ -155,7 +155,6 @@ class DBManager: SharedDB {
             file.name = object["name"] as! String
             file.status = object["status"] as! Int
             file.emailId = emailKey
-            file.id = object["id"] as! Int
             file.token = object["token"] as! String
             file.readOnly = (object["readOnly"] as! Bool) ? 1 : 0
             file.size = object["size"] as! Int
