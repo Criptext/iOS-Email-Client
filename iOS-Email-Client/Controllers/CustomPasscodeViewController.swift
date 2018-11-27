@@ -24,6 +24,12 @@ class CustomPasscodeViewController: PasscodeLockViewController {
         signoutButton?.isHidden = !showSignOut
     }
     
+    override func appWillEnterForegroundHandler(_ notification: Notification) {
+        super.appWillEnterForegroundHandler(notification)
+        touchIDButton?.setImage(UIImage(named: biometricType == .faceID ? "faceID" : "touchID"), for: .normal)
+        showLocalAuth()
+    }
+    
     var incorrectPasscodeAttempts: Int {
         get {
             return UserDefaults.standard.integer(forKey: "incorrectPasscodeAttemps")
@@ -69,6 +75,10 @@ class CustomPasscodeViewController: PasscodeLockViewController {
             weakSelf.confirmLogout()
         }
         self.presentPopover(popover: logoutPopover, height: 245)
+    }
+    
+    func showLocalAuth(){
+        touchIDButton?.isHidden = !(showSignOut && biometricType != .none && passcodeLock.configuration.isTouchIDAllowed)
     }
     
     func confirmLogout(){
