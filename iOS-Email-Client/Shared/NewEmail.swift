@@ -23,6 +23,7 @@ struct NewEmail {
     let files: [[String: Any]]?
     let fileKey: String?
     let labels: [String]
+    let isExternal: Bool
     
     init(params: [String: Any]){
         threadId = params["threadId"] as! String
@@ -33,6 +34,7 @@ struct NewEmail {
         messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? MessageType.none.rawValue))!
         files = params["files"] as? [[String: Any]]
         fileKey = params["fileKey"] as? String
+        isExternal = params["external"] as? Bool ?? false
         
         let dateString = params["date"] as! String
         date = NewEmail.convertToDate(dateString: dateString)
