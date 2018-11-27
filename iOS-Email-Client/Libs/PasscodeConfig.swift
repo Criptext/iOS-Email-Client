@@ -14,7 +14,7 @@ class PasscodeConfig: PasscodeLockConfigurationType {
     
     var passcodeLength: Int = 4
     
-    var isTouchIDAllowed: Bool = UserDefaults.standard.bool(forKey: PIN.fingerprint.rawValue) || UserDefaults.standard.bool(forKey: PIN.faceid.rawValue)
+    var isTouchIDAllowed: Bool =  UserDefaults.standard.string(forKey: PIN.lock.rawValue) != nil && (UserDefaults.standard.bool(forKey: PIN.fingerprint.rawValue) || UserDefaults.standard.bool(forKey: PIN.faceid.rawValue))
     
     var shouldRequestTouchIDImmediately: Bool = true
     

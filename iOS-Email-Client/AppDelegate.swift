@@ -379,7 +379,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.triggerRefresh()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         WebSocketManager.sharedInstance.reconnect()
-        if shouldShowPinLock() {
+        let showBiometrics = shouldShowPinLock() && UserDefaults.standard.string(forKey: PIN.lock.rawValue) != nil
+        passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.shouldRequestTouchIDImmediately = showBiometrics
+        if showBiometrics {
             passcodeLockPresenter.present()
         }
     }

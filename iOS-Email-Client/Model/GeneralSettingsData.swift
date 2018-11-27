@@ -59,7 +59,7 @@ class GeneralSettingsData {
             case .syncing:
                 return nil
             case .success:
-                return UIImage(named: "check")?.tint(with: .green)
+                return UIImage(named: "check")?.tint(with: UIColor(red: 97/255, green: 185/255, blue: 0, alpha: 1))
             }
         }
     }
