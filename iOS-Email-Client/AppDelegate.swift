@@ -48,6 +48,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return presenter
     }()
     
+    var isPasslockPresented: Bool {
+        return passcodeLockPresenter.isPasscodePresented
+    }
+    
     func shouldShowPinLock() -> Bool {
         let defaults = UserDefaults.standard
         guard defaults.string(forKey: PIN.lock.rawValue) != nil else {

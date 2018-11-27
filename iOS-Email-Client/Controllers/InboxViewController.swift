@@ -151,9 +151,20 @@ class InboxViewController: UIViewController {
     }
     
     func syncContacts() {
-        let task = RetrieveContactsTask()
-        task.start { (success) in
-            
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+            guard weakSelf.viewIfLoaded?.window != nil,
+                !delegate.isPasslockPresented else {
+                weakSelf.syncContacts()
+                return
+            }
+            let task = RetrieveContactsTask()
+            task.start { (_) in }
         }
     }
     
