@@ -76,7 +76,6 @@ class RetrieveContactsTask {
                     
                 }
                 for contact in contacts {
-                    print("\(contact.givenName) : \(contact.emailAddresses.description)")
                     guard contact.emailAddresses.count > 0 else {
                         continue
                     }

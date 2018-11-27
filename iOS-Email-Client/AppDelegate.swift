@@ -22,6 +22,12 @@ import PasscodeLock
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    let ONE_MINUTE: Double = 60
+    let FIVE_MINUTES: Double = 60 * 5
+    let FIFTEEN_MINUTES: Double = 60 * 15
+    let ONE_HOUR: Double = 60 * 60
+    let ONE_DAY: Double = 60 * 60 * 24
+    
     var window: UIWindow?
     var goneTimestamp: TimeInterval {
         get {
@@ -55,15 +61,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentTimestamp = Date().timeIntervalSince1970
         switch(PIN.time(rawValue: timerStringValue) ?? .immediately) {
         case .oneminute:
-            return currentTimestamp - timestamp >= 60
+            return currentTimestamp - timestamp >= ONE_MINUTE
         case .fiveminutes:
-            return currentTimestamp - timestamp >= (60 * 5)
+            return currentTimestamp - timestamp >= FIVE_MINUTES
         case .fifteenminutes:
-            return currentTimestamp - timestamp >= (60 * 15)
+            return currentTimestamp - timestamp >= FIFTEEN_MINUTES
         case .onehour:
-            return currentTimestamp - timestamp >= (60 * 60)
+            return currentTimestamp - timestamp >= ONE_HOUR
         case .oneday:
-            return currentTimestamp - timestamp >= (60 * 60 * 24)
+            return currentTimestamp - timestamp >= ONE_DAY
         default:
             return true
         }

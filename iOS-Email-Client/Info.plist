@@ -57,7 +57,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Take pictures and add them to your emails</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Easily access your contacts&apos; emails</string>
+	<string>This will allow Criptext to suggest email addresses that are stored in your contacts when composing emails. Would you like to enable Phonebook Contacts?</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Add photos to your emails</string>
 	<key>UIAppFonts</key>

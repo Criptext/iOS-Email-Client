@@ -74,7 +74,7 @@ class SettingsGeneralViewController: UITableViewController{
                 case .logout:
                     return String.localize("Logout")
                 case .preview:
-                    return String.localize("Show Email Preview")
+                    return String.localize("Notification Preview")
                 case .readReceipts:
                     return String.localize("Read Receipts")
                 case .pin:
