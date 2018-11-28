@@ -20,4 +20,4 @@ github "malcommac/UIWindowTransitions"
 github "airbnb/lottie-ios" "master"
 github "1024jp/GzipSwift"
 github "tilltue/TLPhotoPicker"
-git "/Users/allisson/Documents/GitCriptext/SwiftPasscodeLock" == 2.2.2
+github "Hirobreak/SwiftPasscodeLock" == 2.2.2

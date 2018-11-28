@@ -2,7 +2,7 @@
 //  ComposerUIView.swift
 //  ShareExtension
 //
-//  Created by Allisson on 11/21/18.
+//  Created by Pedro on 11/21/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 

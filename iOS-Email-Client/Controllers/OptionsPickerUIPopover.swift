@@ -2,7 +2,7 @@
 //  OptionsPickerUIPopover.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 11/24/18.
+//  Created by Pedro on 11/24/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
