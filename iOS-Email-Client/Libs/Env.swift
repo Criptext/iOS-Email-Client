@@ -58,4 +58,5 @@ struct Env {
     }
     
     static let databaseVersion: UInt64 = 10
+    static let maxRetryAttempts: Int = 10
 }

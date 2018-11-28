@@ -118,7 +118,7 @@ class CriptextFileManager {
         return attachment
     }
     
-    private func handleFileTurn(){
+    func handleFileTurn(){
         for file in registeredFiles.reversed() {
             if(file.requestStatus == .pending){
                 startRequest(file.token)

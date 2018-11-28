@@ -2,7 +2,7 @@
 //  QueueItem.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 10/24/18.
+//  Created by Pedro on 10/24/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 

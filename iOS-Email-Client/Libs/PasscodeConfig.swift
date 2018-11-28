@@ -2,7 +2,7 @@
 //  PasscodeConfig.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 11/20/18.
+//  Created by Pedro on 11/20/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
@@ -14,11 +14,11 @@ class PasscodeConfig: PasscodeLockConfigurationType {
     
     var passcodeLength: Int = 4
     
-    var isTouchIDAllowed: Bool = true
+    var isTouchIDAllowed: Bool = UserDefaults.standard.bool(forKey: "fingerprintUnlock")
     
     var shouldRequestTouchIDImmediately: Bool = false
     
-    var maximumInccorectPasscodeAttempts: Int = 5
+    var maximumInccorectPasscodeAttempts: Int = Env.maxRetryAttempts
     
     internal class PasscodeType: PasscodeRepositoryType {
         var hasPasscode: Bool {
