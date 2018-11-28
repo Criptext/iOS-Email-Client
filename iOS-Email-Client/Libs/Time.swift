@@ -15,6 +15,6 @@ class Time {
     class func remaining(seconds: Int64) -> String {
         let hoursLeft = Int(floor(Double(seconds/Int64(Time.ONE_HOUR))))
         let minutesLeft = Int(ceil(Double(seconds / 60)))
-        return hoursLeft > 0 ? "\(hoursLeft) hours" : "\(minutesLeft) minutes"
+        return "\(hoursLeft > 0 ? "\(hoursLeft) hours " : "")\(minutesLeft > 0 ? "\(minutesLeft) minutes" : "")"
     }
 }

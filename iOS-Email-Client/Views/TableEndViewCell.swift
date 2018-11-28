@@ -17,6 +17,7 @@ class TableEndViewCell: UITableViewCell{
         loader.color = .black
         loader.activityIndicatorViewStyle = .gray
         isUserInteractionEnabled = false
+        backgroundColor = .clear
     }
     
     func displayLoader(){
