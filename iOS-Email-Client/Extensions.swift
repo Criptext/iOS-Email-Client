@@ -98,7 +98,7 @@ extension UIViewController {
         passwordVC.onLogoutPress = {
             self.logout(manually: false)
         }
-        self.presentPopover(popover: passwordVC, height: 213)
+        self.presentPopover(popover: passwordVC, height: 225)
     }
     
     func presentLinkDevicePopover(linkData: LinkData){

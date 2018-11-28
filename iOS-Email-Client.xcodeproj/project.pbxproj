@@ -246,6 +246,7 @@
 		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
 		A72B864821AC93EE00DCC601 /* RetrieveContactsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */; };
+		A72C185321AEEB1F00D899EE /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
@@ -669,6 +670,7 @@
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
 		A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveContactsTask.swift; sourceTree = "<group>"; };
+		A72C185221AEEB1F00D899EE /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
 		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
 		A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBarFramework.framework; path = Carthage/Build/iOS/ITProgressBarFramework.framework; sourceTree = "<group>"; };
@@ -967,6 +969,7 @@
 				A77AD67221642AFC00C26F07 /* StreamReader.swift */,
 				A7F3026C216679D800676DD2 /* ScheduleWorker.swift */,
 				A77C30A621A4DE720031E219 /* PasscodeConfig.swift */,
+				A72C185221AEEB1F00D899EE /* Time.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1691,6 +1694,7 @@
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
+				A72C185321AEEB1F00D899EE /* Time.swift in Sources */,
 				A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */,
 				7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */,
 				A7CC3886219496E600C8355A /* SharedUtils.swift in Sources */,

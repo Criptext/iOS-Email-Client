@@ -20,6 +20,7 @@ class ResetDeviceViewController: UIViewController{
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var passwordTextField: TextField!
+    @IBOutlet weak var labelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var resetLoaderView: UIActivityIndicatorView!
     var loginData: LoginData!
     var failed = false
@@ -82,8 +83,12 @@ class ResetDeviceViewController: UIViewController{
                 self.showFeedback(true, String.localize("Too many devices already logged in."))
                 return
             }
-            if case .TooManyRequests = responseData {
-                self.showFeedback(true, String.localize("Too many sign in attempts, try again later."))
+            if case let .TooManyRequests(waitingTime) = responseData {
+                if waitingTime < 0 {
+                    self.showFeedback(true, String.localize("Too many sign in attempts, try again later."))
+                } else {
+                    self.showFeedback(true, String.localize("Too many consecutive attempts. Please try again in \(Time.remaining(seconds: waitingTime))"))
+                }
                 return
             }
             if case let .Error(error) = responseData,
@@ -166,6 +171,9 @@ class ResetDeviceViewController: UIViewController{
     func showFeedback(_ show: Bool, _ message: String? = nil){
         errorMark.isHidden = !show
         errorLabel.isHidden = !show
+        if let errorMessage = message {
+            labelHeightConstraint.constant = Utils.getLabelHeight(errorMessage, width: errorLabel.frame.width, fontSize: errorLabel.fontSize)
+        }
         errorLabel.text = message ?? ""
     }
     

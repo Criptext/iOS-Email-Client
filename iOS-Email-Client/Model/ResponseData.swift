@@ -23,6 +23,6 @@ enum ResponseData {
     case AuthDenied
     case Conflicts
     case TooManyDevices
-    case TooManyRequests
+    case TooManyRequests(Int64)
     case ServerError
 }

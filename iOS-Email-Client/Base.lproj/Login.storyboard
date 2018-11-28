@@ -1093,7 +1093,7 @@ from Criptext</string>
                                                     <constraint firstAttribute="height" constant="22" id="R2Z-NF-Xch"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSJ-Yq-oKk">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect Password" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSJ-Yq-oKk">
                                                 <rect key="frame" x="56.5" y="311" width="262" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="ehF-Am-sHC"/>
@@ -1190,6 +1190,7 @@ from Criptext</string>
                         <outlet property="errorLabel" destination="mSJ-Yq-oKk" id="VQR-PW-5za"/>
                         <outlet property="errorMark" destination="Kaa-RK-1Lv" id="4HI-Th-wmR"/>
                         <outlet property="forgotButton" destination="Ctn-3x-BiI" id="W2h-bk-qFb"/>
+                        <outlet property="labelHeightConstraint" destination="ehF-Am-sHC" id="DNh-gj-oV8"/>
                         <outlet property="passwordTextField" destination="7VS-F9-Zdf" id="Fu0-1D-AMN"/>
                         <outlet property="resetButton" destination="8N5-Z7-gsp" id="VLB-hi-7tM"/>
                         <outlet property="resetLoaderView" destination="O3S-ch-dG6" id="Fhc-0a-hcW"/>

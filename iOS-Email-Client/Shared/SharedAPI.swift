@@ -68,7 +68,8 @@ class SharedAPI {
         case .authPending:
             return .AuthPending
         case .tooManyRequests:
-            return .TooManyRequests
+            let waitingTime = Int64(response?.allHeaderFields["retry-after"] as? String ?? "-1") ?? -1
+            return .TooManyRequests(waitingTime)
         case .tooManyDevices:
             return .TooManyDevices
         case .conflicts:

@@ -77,10 +77,6 @@ class CreatingAccountViewController: UIViewController{
                 self.displayErrorMessage(message: error.description)
                 return
             }
-            if case .TooManyRequests = responseData {
-                self.displayErrorMessage(message: String.localize("You have tried to sign-up too many times, please try again later"))
-                return
-            }
             guard case let .SuccessString(jwt) = responseData else {
                 self.displayErrorMessage()
                 return
@@ -101,8 +97,12 @@ class CreatingAccountViewController: UIViewController{
                 self.displayErrorMessage(message: error.description)
                 return
             }
-            if case .TooManyRequests = responseData {
-                self.displayErrorMessage(message: String.localize("You have tried to sign-up too many times, please try again later"))
+            if case let .TooManyRequests(waitingTime) = responseData {
+                if waitingTime < 0 {
+                    self.displayErrorMessage(message: String.localize("You have tried to sign-up too many times, please try again later"))
+                } else {
+                    self.displayErrorMessage(message: String.localize("Too many consecutive attempts. Please try again in \(Time.remaining(seconds: waitingTime))"))
+                }
                 return
             }
             guard case let .SuccessString(token) = responseData else {
