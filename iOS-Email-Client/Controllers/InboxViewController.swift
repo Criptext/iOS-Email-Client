@@ -86,6 +86,8 @@ class InboxViewController: UIViewController {
     func viewSetup(){
         let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
         self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
+        let newsHeaderNib = UINib(nibName: "MailboxNewsHeaderUITableCell", bundle: nil)
+        self.tableView.register(newsHeaderNib, forHeaderFooterViewReuseIdentifier: "NewsHeaderTableViewCell")
         
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
@@ -672,6 +674,10 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard mailboxData.selectedLabel != SystemLabel.inbox.id else {
+            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "NewsHeaderTableViewCell") as! MailboxNewsHeaderUITableCell
+            return cell
+        }
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return nil
         }
@@ -703,6 +709,9 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard mailboxData.selectedLabel != SystemLabel.inbox.id else {
+            return 125.0
+        }
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return 0.0
         }
