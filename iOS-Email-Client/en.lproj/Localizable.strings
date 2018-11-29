@@ -227,3 +227,11 @@
 /* PUSH */
 
 "You may have new emails" = "You may have new emails";
+
+/* OptionsPickerUIPopover.swift */
+"Immediately" = "Immediately";
+"1 minute" = "1 minute";
+"5 minutes" = "5 minutes";
+"15 minutes" = "15 minutes";
+"1 hour" = "1 hour";
+"24 hours" = "24 hours";

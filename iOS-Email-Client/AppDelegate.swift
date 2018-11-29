@@ -22,12 +22,6 @@ import PasscodeLock
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let ONE_MINUTE: Double = 60
-    let FIVE_MINUTES: Double = 60 * 5
-    let FIFTEEN_MINUTES: Double = 60 * 15
-    let ONE_HOUR: Double = 60 * 60
-    let ONE_DAY: Double = 60 * 60 * 24
-    
     var window: UIWindow?
     var goneTimestamp: TimeInterval {
         get {
@@ -65,15 +59,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentTimestamp = Date().timeIntervalSince1970
         switch(PIN.time(rawValue: timerStringValue) ?? .immediately) {
         case .oneminute:
-            return currentTimestamp - timestamp >= ONE_MINUTE
+            return currentTimestamp - timestamp >= Utils.ONE_MINUTE
         case .fiveminutes:
-            return currentTimestamp - timestamp >= FIVE_MINUTES
+            return currentTimestamp - timestamp >= Utils.FIVE_MINUTES
         case .fifteenminutes:
-            return currentTimestamp - timestamp >= FIFTEEN_MINUTES
+            return currentTimestamp - timestamp >= Utils.FIFTEEN_MINUTES
         case .onehour:
-            return currentTimestamp - timestamp >= ONE_HOUR
+            return currentTimestamp - timestamp >= Utils.ONE_HOUR
         case .oneday:
-            return currentTimestamp - timestamp >= ONE_DAY
+            return currentTimestamp - timestamp >= Utils.ONE_DAY
         default:
             return true
         }
@@ -315,14 +309,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
-        let defaults = UserDefaults.standard
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        groupDefaults.removeObject(forKey: "activeAccount")
-        defaults.removeObject(forKey: PIN.lock.rawValue)
-        defaults.removeObject(forKey: PIN.fingerprint.rawValue)
-        defaults.removeObject(forKey: PIN.faceid.rawValue)
-        defaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
-        defaults.removeObject(forKey: PIN.lockTimer.rawValue)
+        self.clearDefaults()
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if !manually,
@@ -340,6 +327,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             DBManager.signout()
         }
+    }
+    
+    func clearDefaults() {
+        let defaults = UserDefaults.standard
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        groupDefaults.removeObject(forKey: "activeAccount")
+        defaults.removeObject(forKey: PIN.lock.rawValue)
+        defaults.removeObject(forKey: PIN.fingerprint.rawValue)
+        defaults.removeObject(forKey: PIN.faceid.rawValue)
+        defaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
+        defaults.removeObject(forKey: PIN.lockTimer.rawValue)
     }
     
     func replaceRootViewController(_ viewController:UIViewController){
