@@ -275,7 +275,12 @@ class SettingsGeneralViewController: UITableViewController{
         case .openSource:
             goToUrl(url: "https://criptext.com/open-source-ios")
         case .logout:
-            showLogout()
+            guard let customTabsVC = self.tabsController as? CustomTabsController,
+                customTabsVC.devicesData.devices.count <= 1 else {
+                showLogout()
+                return
+            }
+            showWarningLogout()
         case .recovery:
             goToRecoveryEmail()
         case .pin:
@@ -305,14 +310,34 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func showLogout(){
-        let logoutPopover = LogoutPopoverViewController()
-        logoutPopover.onTrigger = { accept in
+        let logoutPopover = GenericDualAnswerUIPopover()
+        logoutPopover.initialTitle = "Sign out"
+        logoutPopover.initialMessage = "Are you sure you want to logout?"
+        logoutPopover.leftOption = "Cancel"
+        logoutPopover.rightOption = "Yes"
+        logoutPopover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.confirmLogout()
+        }
+        self.presentPopover(popover: logoutPopover, height: 175)
+    }
+    
+    func showWarningLogout() {
+        let logoutPopover = GenericDualAnswerUIPopover()
+        logoutPopover.initialTitle = "Warning"
+        logoutPopover.initialMessage = "Since this is your last signed in device, 2FA will be turned off. Do you want to turn off 2FA and sign out?"
+        logoutPopover.leftOption = "Cancel"
+        logoutPopover.rightOption = "Yes"
+        logoutPopover.onResponse = { accept in
             guard accept else {
                 return
             }
             self.confirmLogout()
         }
-        self.presentPopover(popover: logoutPopover, height: 245)
+        self.presentPopover(popover: logoutPopover, height: 223)
     }
     
     func confirmLogout(){

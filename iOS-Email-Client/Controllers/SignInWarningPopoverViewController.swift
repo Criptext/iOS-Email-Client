@@ -8,14 +8,16 @@
 
 import Foundation
 
-class LogoutPopoverViewController: BaseUIPopover {
+class SignInWarningPopoverViewController: BaseUIPopover {
     var onTrigger: ((Bool) -> Void)?
     var timer: Timer?
     var secondsLeft = 10
+    var initialMessage: NSAttributedString?
+    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
     
     init(){
-        super.init("LogoutUIPopover")
+        super.init("SignInWarningUIPopover")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -24,6 +26,7 @@ class LogoutPopoverViewController: BaseUIPopover {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        messageLabel.attributedText = initialMessage
         startTimer()
     }
     

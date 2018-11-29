@@ -117,10 +117,64 @@ class NewLoginViewController: UIViewController{
         }
         toggleLoadingView(true)
         checkUsername(username)
-        
     }
     
-    func checkUsername(_ username: String){
+    func showWarningPopup(username: String, previous: String) {
+        let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
+        let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
+        let warningPopover = SignInWarningPopoverViewController()
+        let attrText = NSMutableAttributedString(string: "Sign in with a different account ", attributes: regularAttrs)
+        let attrTextBold = NSAttributedString(string: "will erase all mailbox data ", attributes: boldAttrs)
+        let attrText2 = NSAttributedString(string: "stored on this device for account\n\n", attributes: regularAttrs)
+        let attrTextBold2 = NSAttributedString(string: "\(previous.hideMidChars())\(Env.domain)\n\n", attributes: boldAttrs)
+        let attrText3 = NSAttributedString(string: "Would you like to continue?", attributes: regularAttrs)
+        attrText.append(attrTextBold)
+        attrText.append(attrText2)
+        attrText.append(attrTextBold2)
+        attrText.append(attrText3)
+        warningPopover.initialMessage = attrText
+        warningPopover.shouldDismiss = false
+        warningPopover.onTrigger = { [weak self] next in
+            guard next else {
+                self?.toggleLoadingView(false)
+                return
+            }
+            self?.linkBegin(username: username)
+        }
+        self.presentPopover(popover: warningPopover, height: 250)
+    }
+    
+    func existingAccount(_ username: String) -> String? {
+        guard let existingAccount = DBManager.getFirstAccount(),
+            existingAccount.username != username else {
+            return nil
+        }
+        return existingAccount.username
+    }
+    
+    func checkUsername(_ username: String) {
+        APIManager.checkAvailableUsername(username) { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
+            if case .Success = responseData {
+                weakSelf.showLoginError(error: String.localize("Username does not exist"))
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                weakSelf.showLoginError(error: error.description)
+                return
+            }
+            guard let user = weakSelf.existingAccount(username) else {
+                weakSelf.linkBegin(username: username)
+                return
+            }
+            weakSelf.showWarningPopup(username: username, previous: user)
+        }
+    }
+    
+    func linkBegin(username: String){
         let email = "\(usernameTextField.text!.lowercased())\(Constants.domain)"
         let loginData = LoginData(email)
         APIManager.linkBegin(username: username) { (responseData) in

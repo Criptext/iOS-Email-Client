@@ -213,7 +213,7 @@ class SignUpViewController: UIViewController{
         warningPopover.initialTitle = String.localize("Warning")
         warningPopover.attributedMessage = self.buildWarningString()
         warningPopover.leftOption = String.localize("Cancel")
-        warningPopover.rightOption = String.localize("Confirm")
+        warningPopover.rightOption = String.localize("Continue")
         warningPopover.onResponse = { [weak self] confirm in
             guard confirm else {
                 return
@@ -253,13 +253,13 @@ class SignUpViewController: UIViewController{
         let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
         let boldAttrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
         
-        let boldText  = String.localize(" Recovery Email ")
+        let boldText  = String.localize("account recovery is imposible ")
         let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
         
-        let textPart1 = String.localize("You did NOT set a")
+        let textPart1 = String.localize("You did NOT set a Recovery Email, so ")
         let stringPart1 = NSMutableAttributedString(string:textPart1, attributes: normalAttrs)
         
-        let textPart2 = String.localize("so account recovery is imposible if you forget your password. \n\nProceed without recovery email?")
+        let textPart2 = String.localize("if you forget your password")
         let stringPart2 = NSMutableAttributedString(string:textPart2, attributes: normalAttrs)
         
         boldString.append(stringPart2)
