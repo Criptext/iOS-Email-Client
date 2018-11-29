@@ -220,7 +220,7 @@ class SignUpViewController: UIViewController{
             }
             self?.jumpToCreatingAccount()
         }
-        self.presentPopover(popover: warningPopover, height: 255)
+        self.presentPopover(popover: warningPopover, height: 215)
     }
     
     func jumpToCreatingAccount(){
