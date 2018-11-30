@@ -38,6 +38,7 @@ class SettingsGeneralViewController: UITableViewController{
             case changePassword
             case twoFactor
             case recovery
+            case syncContact
             
             case privacy
             case terms
@@ -52,6 +53,8 @@ class SettingsGeneralViewController: UITableViewController{
             
             var name: String {
                 switch(self){
+                case .syncContact:
+                    return String.localize("Sync Phonebook Contacts")
                 case .profile:
                     return String.localize("Profile")
                 case .signature:
@@ -71,7 +74,7 @@ class SettingsGeneralViewController: UITableViewController{
                 case .logout:
                     return String.localize("Logout")
                 case .preview:
-                    return String.localize("Show Email Preview")
+                    return String.localize("Notification Preview")
                 case .readReceipts:
                     return String.localize("Read Receipts")
                 case .pin:
@@ -87,7 +90,7 @@ class SettingsGeneralViewController: UITableViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = [.account, .privacy, .about, .version] as [Section]
     let menus = [
-        .account: [.profile, .signature, .changePassword, .twoFactor, .recovery],
+        .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .syncContact],
         .about: [.privacy, .terms, .openSource, .logout],
         .privacy : [.preview, .readReceipts, .pin],
         .version : [.version]] as [Section: [Section.SubSection]
@@ -152,6 +155,27 @@ class SettingsGeneralViewController: UITableViewController{
             cell.availableSwitch.isOn = generalData.isTwoFactor
             cell.switchToggle = { isOn in
                 self.setTwoFactor(enable: isOn)
+            }
+            return cell
+        case .syncContact:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+            cell.optionLabel.text = subsection.name
+            cell.messageLabel.text = ""
+            switch(generalData.syncStatus){
+            case .fail, .success:
+                cell.loader.isHidden = true
+                cell.loader.stopAnimating()
+                cell.goImageView.isHidden = false
+                cell.goImageView.image = generalData.syncStatus.image
+            case .none:
+                cell.optionLabel.text = subsection.name
+                cell.goImageView.isHidden = true
+                cell.loader.stopAnimating()
+                cell.loader.isHidden = true
+            case .syncing:
+                cell.goImageView.isHidden = true
+                cell.loader.isHidden = false
+                cell.loader.startAnimating()
             }
             return cell
         default:
@@ -256,10 +280,28 @@ class SettingsGeneralViewController: UITableViewController{
             goToRecoveryEmail()
         case .pin:
             goToPinLock()
+        case .syncContact:
+            guard generalData.syncStatus != .syncing else {
+                break
+            }
+            syncContacts(indexPath: indexPath)
         default:
             break
         }
         
+    }
+    
+    func syncContacts(indexPath: IndexPath){
+        generalData.syncStatus = .syncing
+        tableView.reloadData()
+        let syncContactsTask = RetrieveContactsTask()
+        syncContactsTask.start { [weak self] (success) in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.generalData.syncStatus = success ? .success : .fail
+            weakSelf.tableView.reloadData()
+        }
     }
     
     func showLogout(){

@@ -168,7 +168,7 @@
 "Change Password" = "Change Password";
 "Two-Factor Authentication" = "Two-Factor Authentication";
 "Recovery Email" = "Recovery Email";
-"Show Email Preview" = "Show Email Preview";
+"Notification Preview" = "Notification Preview";
 "Privacy Policy" = "Privacy Policy";
 "Terms of Service" = "Terms of Service";
 "Open Source Libraries" = "Open Source Libraries";
@@ -227,3 +227,11 @@
 /* PUSH */
 
 "You may have new emails" = "You may have new emails";
+
+/* OptionsPickerUIPopover.swift */
+"Immediately" = "Immediately";
+"1 minute" = "1 minute";
+"5 minutes" = "5 minutes";
+"15 minutes" = "15 minutes";
+"1 hour" = "1 hour";
+"24 hours" = "24 hours";

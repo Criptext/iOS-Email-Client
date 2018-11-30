@@ -154,8 +154,12 @@ class RecoveryEmailViewController: UIViewController {
                 self.showAlert("Network Error", message: "\(error.description). Please try again", style: .alert)
                 return
             }
+            if case .BadRequest = responseData {
+                self.showAlert("Well, that's odd...", message: "You entered a wrong password", style: .alert)
+                return
+            }
             if case .Conflicts = responseData {
-                self.showAlert("Well, that's odd...", message: "Please enter a new recovery email.", style: .alert)
+                self.showAlert("Well, that's odd...", message: "Please enter a different recovery email.", style: .alert)
                 return
             }
             guard case .Success = responseData else {

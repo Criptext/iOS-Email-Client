@@ -11,6 +11,12 @@ import UIKit
 
 class Utils: SharedUtils {
     
+    static let ONE_MINUTE: Double = 60
+    static let FIVE_MINUTES: Double = 60 * 5
+    static let FIFTEEN_MINUTES: Double = 60 * 15
+    static let ONE_HOUR: Double = 60 * 60
+    static let ONE_DAY: Double = 60 * 60 * 24
+    
     class func createLabelWithDynamicHeight(_ width: CGFloat, _ fontSize: CGFloat) -> UILabel {
         let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
         

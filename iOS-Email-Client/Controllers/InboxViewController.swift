@@ -150,6 +150,24 @@ class InboxViewController: UIViewController {
         }
     }
     
+    func syncContacts() {
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+            guard weakSelf.viewIfLoaded?.window != nil,
+                !delegate.isPasslockPresented else {
+                weakSelf.syncContacts()
+                return
+            }
+            let task = RetrieveContactsTask()
+            task.start { (_) in }
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateBadges()
@@ -264,6 +282,7 @@ class InboxViewController: UIViewController {
     func presentWelcomeTour(){
         let defaults = UserDefaults.standard
         guard !defaults.bool(forKey: "welcomeTour") else {
+            syncContacts()
             self.showGuide()
             return
         }
@@ -272,6 +291,7 @@ class InboxViewController: UIViewController {
         welcomeTourVC.modalPresentationStyle = .overCurrentContext
         welcomeTourVC.modalTransitionStyle = .crossDissolve
         welcomeTourVC.onDismiss = { [weak self] in
+            self?.syncContacts()
             self?.showGuide()
             defaults.set(true, forKey: "welcomeTour")
         }

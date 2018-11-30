@@ -57,6 +57,6 @@ struct Env {
         return "https://api.criptext.com"
     }
     
-    static let databaseVersion: UInt64 = 10
+    static let databaseVersion: UInt64 = 11
     static let maxRetryAttempts: Int = 10
 }

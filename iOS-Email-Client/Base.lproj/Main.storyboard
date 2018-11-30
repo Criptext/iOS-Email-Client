@@ -1311,15 +1311,15 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-zH-dU7">
-                                            <rect key="frame" x="27" y="12" width="118" height="20"/>
+                                            <rect key="frame" x="27" y="10" width="117" height="23.5"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                             <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="new-arrow-down" translatesAutoresizingMaskIntoConstraints="NO" id="YWl-rK-hcC">
-                                            <rect key="frame" x="342" y="18.5" width="12" height="7"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-next" translatesAutoresizingMaskIntoConstraints="NO" id="YWl-rK-hcC">
+                                            <rect key="frame" x="342" y="16" width="12" height="12"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="7" id="cRM-Pi-7Eh"/>
+                                                <constraint firstAttribute="height" constant="12" id="cRM-Pi-7Eh"/>
                                                 <constraint firstAttribute="width" constant="12" id="hBy-wF-GJ7"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
@@ -1821,7 +1821,10 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Change Pin">
-                                    <color key="titleColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.26666666666666666" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="onChangePinPress:" destination="Q8c-MN-jgJ" eventType="touchUpInside" id="tta-cE-n0W"/>
@@ -1866,6 +1869,9 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Auto-Lock">
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
                                     <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1886,7 +1892,10 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <state key="normal" title="Unlock with fingerprint">
-                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="0.34000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.2156862745" green="0.2274509804" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="0.34000000000000002" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dwf-vl-sS5">
@@ -1897,11 +1906,11 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 hour" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zU-i4-aPr">
-                                <rect key="frame" x="198" y="280.5" width="150" height="20"/>
+                                <rect key="frame" x="198" y="282" width="150" height="17.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="rgP-fV-gbV"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.26666666666666666" alpha="0.34000000000000002" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1913,7 +1922,6 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
                                 </constraints>
                                 <color key="onTintColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <action selector="onLockToggle:" destination="Q8c-MN-jgJ" eventType="valueChanged" id="OMM-b7-Tzu"/>
                                     <action selector="onUnlockToggle:" destination="Q8c-MN-jgJ" eventType="valueChanged" id="OcL-2e-fqV"/>
                                 </connections>
                             </switch>
@@ -2658,6 +2666,7 @@ Warning: 10 failed attempts will result in all data to be erased from the app fo
     </scenes>
     <resources>
         <image name="activity" width="16" height="20"/>
+        <image name="arrow-next" width="8" height="12"/>
         <image name="attachment" width="20" height="36"/>
         <image name="attachment_camera" width="28" height="21"/>
         <image name="attachment_docproviders" width="33" height="20"/>

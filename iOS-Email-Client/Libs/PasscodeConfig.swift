@@ -14,26 +14,26 @@ class PasscodeConfig: PasscodeLockConfigurationType {
     
     var passcodeLength: Int = 4
     
-    var isTouchIDAllowed: Bool = UserDefaults.standard.bool(forKey: "fingerprintUnlock")
+    var isTouchIDAllowed: Bool =  UserDefaults.standard.string(forKey: PIN.lock.rawValue) != nil && (UserDefaults.standard.bool(forKey: PIN.fingerprint.rawValue) || UserDefaults.standard.bool(forKey: PIN.faceid.rawValue))
     
-    var shouldRequestTouchIDImmediately: Bool = false
+    var shouldRequestTouchIDImmediately: Bool = true
     
     var maximumInccorectPasscodeAttempts: Int = Env.maxRetryAttempts
     
     internal class PasscodeType: PasscodeRepositoryType {
         var hasPasscode: Bool {
             let defaults = UserDefaults.standard
-            return defaults.string(forKey: "lock") != nil
+            return defaults.string(forKey: PIN.lock.rawValue) != nil
         }
         
         func save(passcode: String) {
             let defaults = UserDefaults.standard
-            defaults.set(passcode, forKey: "lock")
+            defaults.set(passcode, forKey: PIN.lock.rawValue)
         }
         
         func check(passcode: String) -> Bool {
             let defaults = UserDefaults.standard
-            guard let pass = defaults.string(forKey: "lock") else {
+            guard let pass = defaults.string(forKey: PIN.lock.rawValue) else {
                 return false
             }
             return passcode == pass
@@ -41,7 +41,7 @@ class PasscodeConfig: PasscodeLockConfigurationType {
         
         func delete() {
             let defaults = UserDefaults.standard
-            defaults.removeObject(forKey: "lock")
+            defaults.removeObject(forKey: PIN.lock.rawValue)
         }
     }
 }

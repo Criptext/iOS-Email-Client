@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.18</string>
+	<string>1.0.20</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>2</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -55,7 +55,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Take pictures and add them to your emails</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Easily access your contacts' emails</string>
+	<string>This will allow Criptext to suggest email addresses that are stored in your contacts when composing emails. Would you like to enable Phonebook Contacts?</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Criptext would like to use FaceID to unlock the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Add photos to your emails</string>
 	<key>UIAppFonts</key>

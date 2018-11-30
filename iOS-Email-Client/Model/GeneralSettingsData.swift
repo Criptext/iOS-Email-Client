@@ -14,6 +14,7 @@ class GeneralSettingsData {
     var isTwoFactor = false
     var hasEmailReceipts = false
     var password: String?
+    var syncStatus: SyncStatus = .none
     
     enum RecoveryStatus {
         case pending
@@ -39,6 +40,26 @@ class GeneralSettingsData {
                 return .white
             case .verified:
                 return UIColor(red: 97/255, green: 185/255, blue: 0, alpha: 1)
+            }
+        }
+    }
+    
+    enum SyncStatus {
+        case fail
+        case none
+        case syncing
+        case success
+        
+        var image: UIImage? {
+            switch(self){
+            case .fail:
+                return UIImage(named: "close-rounded")?.tint(with: .alertText)
+            case .none:
+                return nil
+            case .syncing:
+                return nil
+            case .success:
+                return UIImage(named: "check")?.tint(with: UIColor(red: 97/255, green: 185/255, blue: 0, alpha: 1))
             }
         }
     }

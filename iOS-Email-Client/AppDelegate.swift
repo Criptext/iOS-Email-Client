@@ -26,43 +26,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var goneTimestamp: TimeInterval {
         get {
             let defaults = UserDefaults.standard
-            return defaults.double(forKey: "goneTimestamp")
+            return defaults.double(forKey: PIN.goneTimestamp.rawValue)
         }
         set (value) {
             let defaults = UserDefaults.standard
-            defaults.set(value, forKey: "goneTimestamp")
+            defaults.set(value, forKey: PIN.goneTimestamp.rawValue)
         }
     }
     
     lazy var passcodeLockPresenter: PasscodeLockPresenter = {
         let configuration = PasscodeConfig()
         let vc = CustomPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
+        vc.showSignOut = true
         let presenter = PasscodeLockPresenter(mainWindow: self.window, configuration: configuration, viewController: vc)
         return presenter
     }()
     
+    var isPasslockPresented: Bool {
+        return passcodeLockPresenter.isPasscodePresented
+    }
+    
     func shouldShowPinLock() -> Bool {
         let defaults = UserDefaults.standard
-        guard defaults.string(forKey: "lock") != nil else {
+        guard defaults.string(forKey: PIN.lock.rawValue) != nil else {
             return false
         }
-        guard let timerStringValue = defaults.string(forKey: "lockTimer"),
-            timerStringValue != "Immediately" else {
+        guard let timerStringValue = defaults.string(forKey: PIN.lockTimer.rawValue),
+            timerStringValue != PIN.time.immediately.rawValue else {
             return true
         }
         let timestamp = goneTimestamp
         let currentTimestamp = Date().timeIntervalSince1970
-        switch(timerStringValue) {
-        case "1 minute":
-            return currentTimestamp - timestamp >= 60
-        case "5 minutes":
-            return currentTimestamp - timestamp >= (60 * 5)
-        case "15 minutes":
-            return currentTimestamp - timestamp >= (60 * 15)
-        case "1 hour":
-            return currentTimestamp - timestamp >= (60 * 60)
-        case "24 hours":
-            return currentTimestamp - timestamp >= (60 * 60 * 24)
+        switch(PIN.time(rawValue: timerStringValue) ?? .immediately) {
+        case .oneminute:
+            return currentTimestamp - timestamp >= Utils.ONE_MINUTE
+        case .fiveminutes:
+            return currentTimestamp - timestamp >= Utils.FIVE_MINUTES
+        case .fifteenminutes:
+            return currentTimestamp - timestamp >= Utils.FIFTEEN_MINUTES
+        case .onehour:
+            return currentTimestamp - timestamp >= Utils.ONE_HOUR
+        case .oneday:
+            return currentTimestamp - timestamp >= Utils.ONE_DAY
         default:
             return true
         }
@@ -304,14 +309,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
-        let defaults = UserDefaults.standard
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        groupDefaults.removeObject(forKey: "activeAccount")
-        defaults.removeObject(forKey: "lock")
-        defaults.removeObject(forKey: "fingerprintUnlock")
-        defaults.removeObject(forKey: "faceUnlock")
-        defaults.removeObject(forKey: "goneTimestamp")
-        defaults.removeObject(forKey: "lockTimer")
+        self.clearDefaults()
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if !manually,
@@ -329,6 +327,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             DBManager.signout()
         }
+    }
+    
+    func clearDefaults() {
+        let defaults = UserDefaults.standard
+        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        groupDefaults.removeObject(forKey: "activeAccount")
+        defaults.removeObject(forKey: PIN.lock.rawValue)
+        defaults.removeObject(forKey: PIN.fingerprint.rawValue)
+        defaults.removeObject(forKey: PIN.faceid.rawValue)
+        defaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
+        defaults.removeObject(forKey: PIN.lockTimer.rawValue)
     }
     
     func replaceRootViewController(_ viewController:UIViewController){
@@ -378,7 +387,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.triggerRefresh()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         WebSocketManager.sharedInstance.reconnect()
-        if shouldShowPinLock() {
+        let defaults = UserDefaults.standard
+        let showBiometrics = shouldShowPinLock()
+        passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.isTouchIDAllowed = defaults.string(forKey: PIN.lock.rawValue) != nil && (defaults.bool(forKey: PIN.fingerprint.rawValue) || defaults.bool(forKey: PIN.faceid.rawValue))
+        passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.shouldRequestTouchIDImmediately = showBiometrics
+        if showBiometrics {
             passcodeLockPresenter.present()
         }
     }
