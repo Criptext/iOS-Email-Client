@@ -246,19 +246,16 @@ class APIManager: SharedAPI {
 }
 
 extension APIManager {
-    class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((Error?, Any?) -> Void)){
+    class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
         let headers = ["Authorization": "Bearer \(token)"]
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
-            guard let value = response.result.value else {
-                completion(response.error, nil)
-                return
-            }
-            completion(nil, value)
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
-    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?) -> Void)){
+    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/chunk"
         let headers = ["Authorization": "Bearer \(token)"]
         let filetoken = params["filetoken"] as! String
@@ -277,20 +274,11 @@ extension APIManager {
                     progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
                 })
                 request.responseJSON(completionHandler: { (response) in
-                    if let error = response.error {
-                        completion(error)
-                        return
-                    }
-                    guard response.response?.statusCode == 200 else {
-                        let criptextError = CriptextError(code: .noValidResponse)
-                        completion(criptextError)
-                        return
-                    }
-                    completion(nil)
+                    let responseData = handleResponse(response, satisfy: .success)
+                    completion(responseData)
                 })
             case .failure(_):
-                let error = CriptextError(code: .noValidResponse)
-                completion(error)
+                completion(ResponseData.Error(CriptextError(message: "Unable to handle request")))
             }
         }
     }
@@ -349,7 +337,7 @@ extension APIManager {
     
     class func commitFile(filetoken: String, token: String, completion: @escaping ((Error?) -> Void)){
         let url = "\(self.fileServiceUrl)/file/save"
-        let headers = ["Authorization": "Basic \(token)"]
+        let headers = ["Authorization": "Bearer \(token)"]
         let params = ["files" : [
             ["token": filetoken]
             ]]

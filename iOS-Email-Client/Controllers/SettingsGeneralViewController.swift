@@ -72,7 +72,7 @@ class SettingsGeneralViewController: UITableViewController{
                 case .openSource:
                     return String.localize("Open Source Libraries")
                 case .logout:
-                    return String.localize("Logout")
+                    return String.localize("Sign out")
                 case .preview:
                     return String.localize("Notification Preview")
                 case .readReceipts:

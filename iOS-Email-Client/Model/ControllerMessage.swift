@@ -10,4 +10,5 @@ import Foundation
 
 enum ControllerMessage {
     case ReplyThread(Int)
+    case LinkDevice(LinkData)
 }

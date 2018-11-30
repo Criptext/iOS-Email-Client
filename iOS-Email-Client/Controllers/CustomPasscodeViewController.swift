@@ -89,7 +89,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
         let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
         guard let username = groupDefaults.string(forKey: "activeAccount"),
             let account = SharedDB.getAccountByUsername(username) else {
-            self.showAlert(String.localize("Logout Error"), message: String.localize("Not signed in, please restart the app."), style: .alert)
+            self.showAlert(String.localize("Sign out error"), message: String.localize("Not signed in, please restart the app."), style: .alert)
             return
         }
         APIManager.logout(token: account.jwt) { [weak self] (responseData) in
@@ -105,7 +105,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
                 return
             }
             guard case .Success = responseData else {
-                weakSelf.showAlert(String.localize("Logout Error"), message: String.localize("Unable to logout. Please try again"), style: .alert)
+                weakSelf.showAlert(String.localize("Sign out error"), message: String.localize("Unable to sign out. Please try again"), style: .alert)
                 return
             }
             weakSelf.forceOut(manually: true)

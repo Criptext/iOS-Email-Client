@@ -11,6 +11,7 @@ import Foundation
 protocol CriptextFileDelegate {
     func uploadProgressUpdate(file: File, progress: Int)
     func finishRequest(file: File, success: Bool)
+    func fileError(message: String)
 }
 
 class CriptextFileManager {
@@ -46,12 +47,22 @@ class CriptextFileManager {
             "totalChunks": totalChunks,
             "chunkSize": chunkSize
             ] as [String : Any]
-        apiManager.registerFile(parameters: requestData, token: token) { [weak self] (requestError, responseData) in
-            guard let weakSelf = self,
-                requestError == nil else {
+        apiManager.registerFile(parameters: requestData, token: token) { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                fileRegistry.requestStatus = .failed
                 return
             }
-            let fileResponse = responseData as! Dictionary<String, Any>
+            if case let .EntityTooLarge(maxSize) = responseData {
+                weakSelf.removeFile(path: filepath)
+                weakSelf.delegate?.fileError(message: "The file \(name) exceeds \(File.prettyPrintSize(size: Int(maxSize)))")
+                weakSelf.handleFileTurn()
+                return
+            }
+            guard case let .SuccessDictionary(fileResponse) = responseData else {
+                fileRegistry.requestStatus = .failed
+                weakSelf.handleFileTurn()
+                return
+            }
             let filetoken = fileResponse["filetoken"] as! String
             fileRegistry.token = filetoken
             weakSelf.handleFileTurn()
@@ -176,7 +187,7 @@ class CriptextFileManager {
             "filename": file.name,
             "mimeType": file.mimeType
         ] as [String: Any]
-        apiManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { [weak self] (requestError) in
+        apiManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -184,7 +195,7 @@ class CriptextFileManager {
                 weakSelf.handleFileTurn()
                 return
             }
-            guard requestError == nil else {
+            guard case .Success = responseData else {
                 weakSelf.registeredFiles[fileIndex].requestStatus = .failed
                 weakSelf.chunkUpdateProgress(Double(weakSelf.PENDING)/100.0, for: file.token, part: part + 1)
                 weakSelf.delegate?.finishRequest(file: file, success: false)
@@ -270,6 +281,13 @@ class CriptextFileManager {
     
     func removeFile(filetoken: String){
         guard let index = registeredFiles.index(where: {$0.token == filetoken}) else {
+            return
+        }
+        registeredFiles.remove(at: index)
+    }
+    
+    func removeFile(path: String){
+        guard let index = registeredFiles.index(where: {$0.filepath == path}) else {
             return
         }
         registeredFiles.remove(at: index)

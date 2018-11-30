@@ -38,6 +38,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let configuration = PasscodeConfig()
         let vc = CustomPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
         vc.showSignOut = true
+        vc.successCallback = { [weak self] lock in
+            guard let weakSelf = self,
+                let mailboxVC = weakSelf.getInboxVC() else {
+                    return
+            }
+            mailboxVC.handleControllerMessage()
+        }
         let presenter = PasscodeLockPresenter(mainWindow: self.window, configuration: configuration, viewController: vc)
         return presenter
     }()

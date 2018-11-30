@@ -33,6 +33,7 @@ class SharedAPI {
         case authDenied = 493
         case tooManyDevices = 439
         case tooManyRequests = 429
+        case entityTooLarge = 413
         case serverError = 500
     }
     
@@ -72,6 +73,9 @@ class SharedAPI {
             return .TooManyRequests(waitingTime)
         case .tooManyDevices:
             return .TooManyDevices
+        case .entityTooLarge:
+            let maxSize = Int64(response?.allHeaderFields["Max-Size"] as? String ?? "-1") ?? -1
+            return .EntityTooLarge(maxSize)
         case .conflicts:
             return .Conflicts
         case .success, .successAccepted, .successNoContent, .notModified:

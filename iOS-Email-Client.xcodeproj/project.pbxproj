@@ -319,6 +319,9 @@
 		A7ADA15C21A729A10027FC1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
+		A7C3589E21B19AE300386295 /* GenericAlertUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */; };
+		A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */; };
+		A7C358A021B19CB800386295 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
@@ -1576,6 +1579,7 @@
 				A7ADA14F21A61A1B0027FC1C /* NunitoSans-BoldItalic.ttf in Resources */,
 				A7ADA15821A61A1B0027FC1C /* NunitoSans-SemiBold.ttf in Resources */,
 				A7ADA15221A61A1B0027FC1C /* NunitoSans-ExtraLight.ttf in Resources */,
+				A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */,
 				A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */,
 				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
 				A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */,
@@ -1869,6 +1873,7 @@
 				A70609FA21A74C250066BFA4 /* BaseUIPopover.swift in Sources */,
 				A7ADA12821A5F1CA0027FC1C /* Account.swift in Sources */,
 				A7ADA15B21A728D80027FC1C /* SendMailAsyncTask.swift in Sources */,
+				A7C3589E21B19AE300386295 /* GenericAlertUIPopover.swift in Sources */,
 				A7ADA13921A5F1FA0027FC1C /* SharedUtils.swift in Sources */,
 				A7ADA13C21A5F2100027FC1C /* CriptextSignedPreKeyStore.swift in Sources */,
 				A7ADA12B21A5F1DA0027FC1C /* CRSignedPreKeyRecord.swift in Sources */,
@@ -1918,6 +1923,7 @@
 				A7CC387B21939C3D00C8355A /* SharedDB.swift in Sources */,
 				A7CC386721934FF400C8355A /* CRSessionRecord.swift in Sources */,
 				A7CC386121934EE400C8355A /* CriptextSignedPreKeyStore.swift in Sources */,
+				A7C358A021B19CB800386295 /* Constants.swift in Sources */,
 				A7CC384D219247B100C8355A /* Email.swift in Sources */,
 				A7CC386821934FF400C8355A /* CRTrustedDevice.swift in Sources */,
 				A7CC38832193A1C600C8355A /* CriptextError.swift in Sources */,
