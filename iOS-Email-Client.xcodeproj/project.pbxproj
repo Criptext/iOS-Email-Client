@@ -246,6 +246,9 @@
 		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
 		A72B864821AC93EE00DCC601 /* RetrieveContactsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */; };
+		A72C185321AEEB1F00D899EE /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
+		A72C185521AF0EB800D899EE /* MailboxNewsHeaderUITableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72C185421AF0EB800D899EE /* MailboxNewsHeaderUITableCell.xib */; };
+		A72C185721AF165700D899EE /* MailboxNewsHeaderUITableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185621AF165700D899EE /* MailboxNewsHeaderUITableCell.swift */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
@@ -669,6 +672,9 @@
 		A713109B21596F2E00534F13 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = ../../../Downloads/Firebase/Analytics/GoogleUtilities.framework; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
 		A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveContactsTask.swift; sourceTree = "<group>"; };
+		A72C185221AEEB1F00D899EE /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		A72C185421AF0EB800D899EE /* MailboxNewsHeaderUITableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailboxNewsHeaderUITableCell.xib; sourceTree = "<group>"; };
+		A72C185621AF165700D899EE /* MailboxNewsHeaderUITableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxNewsHeaderUITableCell.swift; sourceTree = "<group>"; };
 		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
 		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
 		A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBarFramework.framework; path = Carthage/Build/iOS/ITProgressBarFramework.framework; sourceTree = "<group>"; };
@@ -967,6 +973,7 @@
 				A77AD67221642AFC00C26F07 /* StreamReader.swift */,
 				A7F3026C216679D800676DD2 /* ScheduleWorker.swift */,
 				A77C30A621A4DE720031E219 /* PasscodeConfig.swift */,
+				A72C185221AEEB1F00D899EE /* Time.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1165,6 +1172,8 @@
 				A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */,
 				A70609FC21A9BEE70066BFA4 /* OptionsPickerUIPopover.xib */,
 				A7060A0021AA5A880066BFA4 /* PasscodeLockView.xib */,
+				A72C185421AF0EB800D899EE /* MailboxNewsHeaderUITableCell.xib */,
+				A72C185621AF165700D899EE /* MailboxNewsHeaderUITableCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1492,6 +1501,7 @@
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
 				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
+				A72C185521AF0EB800D899EE /* MailboxNewsHeaderUITableCell.xib in Resources */,
 				A7FFCF48217A91D600FFFDFF /* SignInVerificationUIPopover.xib in Resources */,
 				A7FFCF1B217A8FE300FFFDFF /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
@@ -1691,6 +1701,7 @@
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
+				A72C185321AEEB1F00D899EE /* Time.swift in Sources */,
 				A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */,
 				7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */,
 				A7CC3886219496E600C8355A /* SharedUtils.swift in Sources */,
@@ -1717,6 +1728,7 @@
 				A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */,
 				7C72F16F2141997E00A7DDEA /* InboxHeaderUITableCell.swift in Sources */,
 				7C7F2FEF20B4BE6400A2CB32 /* LabelsLabelTableViewCell.swift in Sources */,
+				A72C185721AF165700D899EE /* MailboxNewsHeaderUITableCell.swift in Sources */,
 				7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */,
 				7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */,
 				7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */,

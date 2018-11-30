@@ -85,7 +85,7 @@ class NewEmailHandler {
                     completion(Result(success: false))
                     return
             }
-            guard let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId) else {
+            guard let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) else {
                     completion(Result(success: true))
                     return
             }
@@ -130,7 +130,7 @@ class NewEmailHandler {
             
             if !unsent,
                 let keyString = event.fileKey,
-                let fileKeyString = self.handleBodyByMessageType(event.messageType, body: keyString, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId) {
+                let fileKeyString = self.handleBodyByMessageType(event.messageType, body: keyString, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) {
                 let fKey = FileKey()
                 fKey.emailId = email.key
                 fKey.key = fileKeyString
@@ -151,14 +151,16 @@ class NewEmailHandler {
         }
     }
     
-    func handleBodyByMessageType(_ messageType: MessageType, body: String, account: Account, recipientId: String, senderDeviceId: Int32?) -> String? {
+    func handleBodyByMessageType(_ messageType: MessageType, body: String, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
+        let recipient = isExternal ? "b" : recipientId
+        let senderDevice = isExternal ? 1 : senderDeviceId
         guard messageType != .none,
-            let deviceId = senderDeviceId else {
+            let deviceId = senderDevice else {
                 return body
         }
         var trueBody : String?
         tryBlock {
-            trueBody = SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipientId, deviceId: deviceId)
+            trueBody = SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
         return trueBody
     }

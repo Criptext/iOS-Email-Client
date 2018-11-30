@@ -86,6 +86,8 @@ class InboxViewController: UIViewController {
     func viewSetup(){
         let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
         self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
+        let newsHeaderNib = UINib(nibName: "MailboxNewsHeaderUITableCell", bundle: nil)
+        self.tableView.register(newsHeaderNib, forHeaderFooterViewReuseIdentifier: "NewsHeaderTableViewCell")
         
         self.navigationController?.navigationBar.addSubview(self.topToolbar)
         let margins = self.navigationController!.navigationBar.layoutMarginsGuide
@@ -353,15 +355,17 @@ extension InboxViewController {
         self.mailboxData.updating = true
         APIManager.getEvents(token: myAccount.jwt) { [weak self] (responseData) in
             guard let weakSelf = self else {
+                refreshControl?.endRefreshing()
                 return
             }
-            refreshControl?.endRefreshing()
             if case .Unauthorized = responseData {
+                refreshControl?.endRefreshing()
                 weakSelf.logout()
                 return
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
+                refreshControl?.endRefreshing()
                 completion?(false)
                 weakSelf.mailboxData.updating = false
                 weakSelf.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
@@ -369,6 +373,7 @@ extension InboxViewController {
             }
             
             if case .Forbidden = responseData {
+                refreshControl?.endRefreshing()
                 completion?(false)
                 weakSelf.mailboxData.updating = false
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
@@ -377,13 +382,15 @@ extension InboxViewController {
             
             guard case let .SuccessArray(events) = responseData else {
                 weakSelf.mailboxData.updating = false
+                refreshControl?.endRefreshing()
                 completion?(false)
                 return
             }
             let eventHandler = EventHandler(account: weakSelf.myAccount)
             eventHandler.handleEvents(events: events){ [weak self] result in
-                self?.mailboxData.updating = false
                 self?.didReceiveEvents(result: result)
+                self?.mailboxData.updating = false
+                refreshControl?.endRefreshing()
                 completion?(true)
             }
         }
@@ -672,6 +679,14 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard mailboxData.selectedLabel != SystemLabel.inbox.id || mailboxData.feature == nil else {
+            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "NewsHeaderTableViewCell") as! MailboxNewsHeaderUITableCell
+            cell.fillFields(feature: mailboxData.feature!)
+            cell.onClose = { [weak self] in
+                self?.closeNewsHeader()
+            }
+            return cell
+        }
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return nil
         }
@@ -681,6 +696,11 @@ extension InboxViewController: UITableViewDataSource{
             self.showEmptyTrashWarning()
         }
         return cell
+    }
+    
+    func closeNewsHeader() {
+        mailboxData.feature = nil
+        tableView.reloadData()
     }
     
     func showEmptyTrashWarning() {
@@ -703,6 +723,9 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard mailboxData.selectedLabel != SystemLabel.inbox.id || mailboxData.feature == nil else {
+            return 125.0
+        }
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return 0.0
         }

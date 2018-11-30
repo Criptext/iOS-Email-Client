@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Bold.ttf">
+            <string>NunitoSans-Bold</string>
+        </array>
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MailboxNewsHeaderUITableCell" customModule="iOS_Email_Client" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="554" height="183"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kej-cY-mvc" customClass="GradientUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="20" width="554" height="163"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                            <color key="value" red="0.0" green="0.76862745098039209" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                            <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oIg-KI-qRk">
+                    <rect key="frame" x="523" y="34" width="14" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="14" id="WQN-Sy-h6A"/>
+                        <constraint firstAttribute="height" constant="14" id="saA-Bv-ebK"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="close"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onClosePress:" destination="-2" eventType="touchUpInside" id="8h3-CP-JFp"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ra-GM-q5Z">
+                    <rect key="frame" x="72" y="101.5" width="432" height="38.5"/>
+                    <string key="text">Two-Factor Authentication is here, 
+to add a new layer of security</string>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JZB-Ac-NX6">
+                    <rect key="frame" x="177" y="101.5" width="200" height="0.0"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="RYY-bl-BBX"/>
+                        <constraint firstAttribute="height" id="ehl-Nv-0Jr"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock" translatesAutoresizingMaskIntoConstraints="NO" id="W8I-de-wDe">
+                    <rect key="frame" x="20" y="85.5" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="wrr-tk-V76"/>
+                        <constraint firstAttribute="height" constant="32" id="yh1-h4-RfT"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There’s a new feature!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9UW-Ic-J27">
+                    <rect key="frame" x="72" y="68.5" width="432" height="22"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="6ra-GM-q5Z" firstAttribute="top" secondItem="JZB-Ac-NX6" secondAttribute="bottom" id="7LT-Fm-4dw"/>
+                <constraint firstItem="6ra-GM-q5Z" firstAttribute="top" secondItem="9UW-Ic-J27" secondAttribute="bottom" constant="11" id="DBn-3A-6h7"/>
+                <constraint firstItem="oIg-KI-qRk" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="14" id="FOZ-Oo-Nzf"/>
+                <constraint firstItem="9UW-Ic-J27" firstAttribute="leading" secondItem="6ra-GM-q5Z" secondAttribute="leading" id="GZW-GX-0vj"/>
+                <constraint firstItem="JZB-Ac-NX6" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Nm6-N9-GER"/>
+                <constraint firstItem="kej-cY-mvc" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" id="P1O-P3-Hu2"/>
+                <constraint firstItem="kej-cY-mvc" firstAttribute="height" secondItem="vUN-kp-3ea" secondAttribute="height" id="Rzc-d4-8rx"/>
+                <constraint firstItem="9UW-Ic-J27" firstAttribute="trailing" secondItem="6ra-GM-q5Z" secondAttribute="trailing" id="SyB-AM-FeT"/>
+                <constraint firstItem="JZB-Ac-NX6" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Syn-1I-zKX"/>
+                <constraint firstItem="W8I-de-wDe" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="VT4-JN-rzY"/>
+                <constraint firstItem="kej-cY-mvc" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="ZO7-SO-Wid"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="oIg-KI-qRk" secondAttribute="trailing" constant="17" id="bOb-MB-tq6"/>
+                <constraint firstItem="kej-cY-mvc" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="l3k-go-mkS"/>
+                <constraint firstItem="W8I-de-wDe" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="n6q-f5-FBu"/>
+                <constraint firstItem="6ra-GM-q5Z" firstAttribute="leading" secondItem="W8I-de-wDe" secondAttribute="trailing" constant="20" id="wum-jk-kZM"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6ra-GM-q5Z" secondAttribute="trailing" constant="50" id="yB8-Tu-liY"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="newsImageView" destination="W8I-de-wDe" id="spB-Ni-RGB"/>
+                <outlet property="subtitleLabel" destination="6ra-GM-q5Z" id="Sge-XP-pjQ"/>
+                <outlet property="titleLabel" destination="9UW-Ic-J27" id="ioM-mK-9FD"/>
+            </connections>
+            <point key="canvasLocation" x="-104" y="183.95802098950526"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="close" width="28" height="28"/>
+        <image name="lock" width="9" height="10"/>
+    </resources>
+</document>

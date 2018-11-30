@@ -61,8 +61,25 @@ class PasswordUIPopover: BaseUIPopover {
         }
         APIManager.unlockDevice(password: password.sha256()!, token: jwt) { (responseData) in
             self.showLoader(false)
-            guard case .Success = responseData else {
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.passwordTextField.detail = error.description
+                return
+            }
+            if case .BadRequest = responseData {
                 self.passwordTextField.detail = "Wrong Password!"
+                return
+            }
+            if case let .TooManyRequests(waitingTime) = responseData {
+                if waitingTime < 0 {
+                    self.passwordTextField.detail = String.localize("You have tried to validate too many times, please try again later")
+                } else {
+                    self.passwordTextField.detail = String.localize("Too many consecutive attempts. Please try again in \(Time.remaining(seconds: waitingTime))")
+                }
+                return
+            }
+            guard case .Success = responseData else {
+                self.passwordTextField.detail = "Unable to validate user. Please try again"
                 return
             }
             self.dismiss(animated: true, completion: { [weak self] in
