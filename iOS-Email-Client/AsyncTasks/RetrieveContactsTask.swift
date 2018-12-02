@@ -36,7 +36,8 @@ class RetrieveContactsTask {
     
     func storeContacts(contacts: [PhoneContact]) {
         for contact in contacts {
-            guard DBManager.getContact(contact.email) == nil else {
+            guard Utils.validateEmail(contact.email),
+                DBManager.getContact(contact.email) == nil else {
                 continue
             }
             let dbContact = Contact()
