@@ -249,6 +249,10 @@
 		A72C185321AEEB1F00D899EE /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
 		A72C185521AF0EB800D899EE /* MailboxNewsHeaderUITableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72C185421AF0EB800D899EE /* MailboxNewsHeaderUITableCell.xib */; };
 		A72C185721AF165700D899EE /* MailboxNewsHeaderUITableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185621AF165700D899EE /* MailboxNewsHeaderUITableCell.swift */; };
+		A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
+		A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
+		A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
+		A74CF31E21B5BD0800559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
@@ -682,6 +686,7 @@
 		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
 		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
 		A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBarFramework.framework; path = Carthage/Build/iOS/ITProgressBarFramework.framework; sourceTree = "<group>"; };
+		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
 		A774DAC12196215100C411BD /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
@@ -978,6 +983,7 @@
 				A7F3026C216679D800676DD2 /* ScheduleWorker.swift */,
 				A77C30A621A4DE720031E219 /* PasscodeConfig.swift */,
 				A72C185221AEEB1F00D899EE /* Time.swift */,
+				A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1745,6 +1751,7 @@
 				7CF93F4D214329C700361837 /* ChangePassViewController.swift in Sources */,
 				7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */,
 				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,
+				A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
 				A7CC387A21939C3D00C8355A /* SharedDB.swift in Sources */,
@@ -1849,6 +1856,7 @@
 			files = (
 				7CC44BE220FD583A004BF759 /* CreateCustomJSONFileTests.swift in Sources */,
 				7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */,
+				A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */,
 				A7F30271216E859300676DD2 /* GZipTests.swift in Sources */,
 				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
 				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,
@@ -1868,6 +1876,7 @@
 			files = (
 				A7ADA12921A5F1CD0027FC1C /* Contact.swift in Sources */,
 				A7ADA14321A5F3EE0027FC1C /* CriptextError.swift in Sources */,
+				A74CF31E21B5BD0800559490 /* CriptextDefaults.swift in Sources */,
 				A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */,
 				A7ADA12A21A5F1D00027FC1C /* Email.swift in Sources */,
 				A7ADA13821A5F1FA0027FC1C /* ContactUtils.swift in Sources */,
@@ -1943,6 +1952,7 @@
 				A7CC385B21934DC600C8355A /* Account.swift in Sources */,
 				A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */,
 				A7CC387621939B2600C8355A /* NewEmailHandler.swift in Sources */,
+				A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */,
 				A7CC386621934FF400C8355A /* CRPreKeyRecord.swift in Sources */,
 				A7CC386C21936A6000C8355A /* SignalHandler.swift in Sources */,
 				A7CC386B21936A0300C8355A /* NewEmail.swift in Sources */,

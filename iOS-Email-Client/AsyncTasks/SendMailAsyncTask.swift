@@ -103,8 +103,8 @@ class SendMailAsyncTask {
         }
         
         var guestEmails = [String : Any]()
-        let body = email.content + SendMailAsyncTask.buildAttachmentsHtml(attachments: files, keys: fileKey)
         if(!toArray.isEmpty || !ccArray.isEmpty || !bccArray.isEmpty){
+            let body = email.content + SendMailAsyncTask.buildAttachmentsHtml(attachments: files, keys: fileKey)
             guestEmails["to"] = toArray
             guestEmails["cc"] = ccArray
             guestEmails["bcc"] = bccArray
@@ -137,6 +137,10 @@ class SendMailAsyncTask {
                 return
             }
             self.files.append(contentsOf: fileParams)
+            if self.guestEmails["body"] != nil {
+                let body = self.body + SendMailAsyncTask.buildAttachmentsHtml(attachments: self.files, keys: self.fileKey)
+                self.guestEmails["body"] = "\(body)\(self.isSecure ? "" : Constants.footer)"
+            }
             self.getSessionAndEncrypt(queue: queue, completion: completion)
         }
     }
@@ -347,23 +351,27 @@ class SendMailAsyncTask {
     }
     
     private class func buildAttachmentsHtml(attachments: [[String: Any]], keys: String?) -> String {
-        guard !attachments.isEmpty,
-            let fileKeys = keys else {
+        guard !attachments.isEmpty else {
             return ""
         }
         return "<br/><div>" + attachments.reduce("") { (result, attachment) -> String in
-            let params = "\(attachment["token"] as! String):\(fileKeys)"
-            let encodedParams = params.data(using: .utf8)!.base64EncodedString()
+            let urlParams: String
+            if let fileKeys = keys {
+                let params = "\(attachment["token"] as! String):\(fileKeys)"
+                urlParams = "\(params.data(using: .utf8)!.base64EncodedString())?e=1"
+            } else {
+                urlParams = "\(attachment["token"] as! String)"
+            }
             let size = attachment["size"] as! Int
             let sizeString = File.prettyPrintSize(size: size)
-            return result + buildAttachmentHtml(name: attachment["name"] as! String, mimeType: attachment["mimeType"] as! String, size: sizeString, encodedParams: encodedParams)
+            return result + buildAttachmentHtml(name: attachment["name"] as! String, mimeType: attachment["mimeType"] as! String, size: sizeString, encodedParams: urlParams)
         } + "</div>"
     }
     
     private class func buildAttachmentHtml(name: String, mimeType: String, size: String, encodedParams: String) -> String{
         return """
         <div style="margin-top: 6px; float: left;">
-            <a style="cursor: pointer; text-decoration: none;" href="https://services.criptext.com/downloader/\(encodedParams)?e=1">
+            <a style="cursor: pointer; text-decoration: none;" href="https://services.criptext.com/downloader/\(encodedParams)">
                 <div style="align-items: center; border: 1px solid #e7e5e5; border-radius: 6px; display: flex; height: 20px; margin-right: 20px; padding: 10px; position: relative; width: 236px;">
                     <div style="position: relative;">
                         <div style="align-items: center; border-radius: 4px; display: flex; height: 22px; width: 22px;">

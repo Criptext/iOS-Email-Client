@@ -99,12 +99,12 @@ class EmailDetailViewController: UIViewController {
         super.viewDidAppear(animated)
         self.topToolbar.swapTrashIcon(labelId: emailData.selectedLabel)
         self.topToolbar.isHidden = false
-        let defaults = UserDefaults.standard
-        if !defaults.bool(forKey: "guideUnsend"),
+        let defaults = CriptextDefaults()
+        if !defaults.guideUnsend,
             let email = emailData.emails.first,
             email.isSent && emailData.getState(email.key).isExpanded && emailData.emails.count == 1 {
             self.coachMarksController.start(on: self)
-            defaults.set(true, forKey: "guideUnsend")
+            defaults.guideUnsend = true
         }
         
         handleControllerMessage(message)

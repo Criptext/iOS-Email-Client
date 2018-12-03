@@ -86,8 +86,8 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     }
     
     func confirmLogout(){
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        guard let username = groupDefaults.string(forKey: "activeAccount"),
+        let defaults = CriptextDefaults()
+        guard let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username) else {
             self.showAlert(String.localize("Sign out error"), message: String.localize("Not signed in, please restart the app."), style: .alert)
             return
