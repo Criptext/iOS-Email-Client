@@ -123,7 +123,7 @@ class NewLoginViewController: UIViewController{
         let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
         let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
         let warningPopover = SignInWarningPopoverViewController()
-        let attrText = NSMutableAttributedString(string: "Sign in with a different account ", attributes: regularAttrs)
+        let attrText = NSMutableAttributedString(string: "Signing in with a different account ", attributes: regularAttrs)
         let attrTextBold = NSAttributedString(string: "will erase all mailbox data ", attributes: boldAttrs)
         let attrText2 = NSAttributedString(string: "stored on this device for account\n\n", attributes: regularAttrs)
         let attrTextBold2 = NSAttributedString(string: "\(previous.hideMidChars())\(Env.domain)\n\n", attributes: boldAttrs)

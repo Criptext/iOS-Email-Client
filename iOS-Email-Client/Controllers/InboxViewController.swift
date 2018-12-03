@@ -148,17 +148,17 @@ class InboxViewController: UIViewController {
     }
     
     func showGuide(){
-        let defaults = UserDefaults.standard
-        if !defaults.bool(forKey: "guideComposer") {
-            currentGuide = "guideComposer"
+        let defaults = CriptextDefaults()
+        if !defaults.guideComposer {
+            currentGuide = CriptextDefaults.Guide.composer.rawValue
             self.coachMarksController.start(on: self)
-            defaults.set(true, forKey: "guideComposer")
-        } else if !defaults.bool(forKey: "guideFeed"),
+            defaults.guideComposer = true
+        } else if !defaults.guideFeed,
             let feedVC = navigationDrawerController?.rightViewController as? FeedViewController,
             feedVC.feedsData.newFeeds.count > 0 {
-            currentGuide = "guideFeed"
+            currentGuide = CriptextDefaults.Guide.feed.rawValue
             self.coachMarksController.start(on: self)
-            defaults.set(true, forKey: "guideFeed")
+            defaults.guideFeed = true
         }
     }
     
@@ -292,8 +292,8 @@ class InboxViewController: UIViewController {
     }
     
     func presentWelcomeTour(){
-        let defaults = UserDefaults.standard
-        guard !defaults.bool(forKey: "welcomeTour") else {
+        let defaults = CriptextDefaults()
+        guard !defaults.welcomeTour else {
             syncContacts()
             self.showGuide()
             return
@@ -305,7 +305,7 @@ class InboxViewController: UIViewController {
         welcomeTourVC.onDismiss = { [weak self] in
             self?.syncContacts()
             self?.showGuide()
-            defaults.set(true, forKey: "welcomeTour")
+            defaults.welcomeTour = true
         }
         self.present(welcomeTourVC, animated: false, completion: nil)
     }

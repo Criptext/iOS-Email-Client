@@ -86,8 +86,8 @@ class RecoveryEmailViewController: UIViewController {
                 return
             }
             self.presentResendAlert()
-            let defaults = UserDefaults.standard
-            defaults.set(Date().timeIntervalSince1970, forKey: "lastTimeResent")
+            let defaults = CriptextDefaults()
+            defaults.lastTimeResent = Date().timeIntervalSince1970
             self.showLoaderTimer(false)
         }
     }
@@ -180,8 +180,8 @@ class RecoveryEmailViewController: UIViewController {
             resendLoader.stopAnimating()
             resendLoader.isHidden = true
             
-            let defaults = UserDefaults.standard
-            let lastTimeResent = defaults.double(forKey: "lastTimeResent")
+            let defaults = CriptextDefaults()
+            let lastTimeResent = defaults.lastTimeResent
             guard lastTimeResent == 0 || Date().timeIntervalSince1970 - lastTimeResent > WAIT_TIME else {
                 resendButton.backgroundColor = UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1)
                 resendButton.isEnabled = false
@@ -240,8 +240,8 @@ class RecoveryEmailViewController: UIViewController {
     }
     
     @discardableResult func setButtonTimerLable() -> Double {
-        let defaults = UserDefaults.standard
-        let lastTimeResent = defaults.double(forKey: "lastTimeResent")
+        let defaults = CriptextDefaults()
+        let lastTimeResent = defaults.lastTimeResent
         let currentTime = Date().timeIntervalSince1970
         let secondsLeft = 300 - (currentTime - lastTimeResent)
         let minsLeft = Int(ceil(secondsLeft/60))

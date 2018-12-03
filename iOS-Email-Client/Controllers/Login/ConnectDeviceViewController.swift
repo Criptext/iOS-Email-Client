@@ -85,11 +85,11 @@ class ConnectDeviceViewController: UIViewController{
             APIManager.logout(token: jwt, completion: {_ in })
             return
         }
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        guard groupDefaults.string(forKey: "activeAccount") != nil else {
+        let defaults = CriptextDefaults()
+        guard defaults.hasActiveAccount else {
             return
         }
-        groupDefaults.removeObject(forKey: "activeAccount")
+        defaults.removeActiveAccount()
         DBManager.destroy()
     }
     
@@ -188,10 +188,9 @@ class ConnectDeviceViewController: UIViewController{
         myContact.email = "\(myAccount.username)\(Constants.domain)"
         DBManager.store([myContact])
         DBManager.createSystemLabels()
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        groupDefaults.set(myAccount.username, forKey: "activeAccount")
-        let defaults = UserDefaults.standard
-        defaults.set(true, forKey: "welcomeTour")
+        let defaults = CriptextDefaults()
+        defaults.activeAccount = myAccount.username
+        defaults.welcomeTour = true
         return myAccount
     }
     

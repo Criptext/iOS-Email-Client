@@ -98,8 +98,8 @@ class ShareViewController: UIViewController {
     }
     
     func getAccount() {
-        guard let groupDefaults = UserDefaults.init(suiteName: Env.groupApp),
-            let username = groupDefaults.string(forKey: "activeAccount"),
+        let defaults = CriptextDefaults()
+        guard let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username) else {
                 self.close()
                 return

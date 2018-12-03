@@ -201,13 +201,13 @@ class SettingsGeneralViewController: UITableViewController{
     func renderNotificationsCells(subsection: Section.SubSection) -> UITableViewCell {
         switch(subsection) {
         case .preview:
-            let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-            let previewDisable = groupDefaults.bool(forKey: "previewDisable")
+            let defaults = CriptextDefaults()
+            let previewDisable = defaults.previewDisable
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
             cell.optionLabel.text = subsection.name
             cell.availableSwitch.isOn = !previewDisable
             cell.switchToggle = { isOn in
-                groupDefaults.set(!isOn, forKey: "previewDisable")
+                defaults.previewDisable = !isOn
             }
             return cell
         case .pin:
@@ -276,7 +276,7 @@ class SettingsGeneralViewController: UITableViewController{
             goToUrl(url: "https://criptext.com/open-source-ios")
         case .logout:
             guard let customTabsVC = self.tabsController as? CustomTabsController,
-                customTabsVC.devicesData.devices.count <= 1 else {
+                customTabsVC.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
                 showLogout()
                 return
             }
@@ -312,7 +312,7 @@ class SettingsGeneralViewController: UITableViewController{
     func showLogout(){
         let logoutPopover = GenericDualAnswerUIPopover()
         logoutPopover.initialTitle = "Sign out"
-        logoutPopover.initialMessage = "Are you sure you want to logout?"
+        logoutPopover.initialMessage = "Are you sure you want to sign out?"
         logoutPopover.leftOption = "Cancel"
         logoutPopover.rightOption = "Yes"
         logoutPopover.onResponse = { [weak self] accept in
@@ -351,7 +351,7 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert(String.localize("Logout Error"), message: String.localize("Unable to logout. Please try again"), style: .alert)
+                self.showAlert(String.localize("Sign out error"), message: String.localize("Unable to sign out. Please try again"), style: .alert)
                 return
             }
             self.logout(manually: true)
