@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Bold.ttf">
+            <string>NunitoSans-Bold</string>
+        </array>
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CustomPasscodeViewController" customModule="ShareExtension" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="KOL-HQ-Pp5" id="MGz-J1-2hW"/>
+                <outlet property="deleteSignButton" destination="8tb-fB-RLr" id="599-BO-p17"/>
+                <outlet property="descriptionLabel" destination="l31-50-fkY" id="EZn-dV-riu"/>
+                <outlet property="placeholdersX" destination="J2p-7B-TUf" id="oEK-e5-syC"/>
+                <outlet property="titleLabel" destination="dbF-GF-mtZ" id="9Yv-mF-V8l"/>
+                <outlet property="touchIDButton" destination="3z4-k8-z31" id="mDR-cC-lLr"/>
+                <outlet property="view" destination="iN0-l3-epB" id="CT1-Gr-WAG"/>
+                <outletCollection property="placeholders" destination="eeb-lT-GKy" id="RLh-at-cgB"/>
+                <outletCollection property="placeholders" destination="rhy-sW-SZD" id="AbS-aK-XJq"/>
+                <outletCollection property="placeholders" destination="g0h-Gs-bpK" id="2lz-US-CTR"/>
+                <outletCollection property="placeholders" destination="IN5-oo-ZP6" id="iLr-rp-d7b"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter PIN Code to unlock Inbox" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dbF-GF-mtZ">
+                    <rect key="frame" x="50" y="62.5" width="275" height="26"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="19"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QK0-bw-YF6">
+                    <rect key="frame" x="50" y="143.5" width="275" height="400"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3RA-R3-c6e" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="0.0" y="30" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="Gwf-Qc-sgx"/>
+                                <constraint firstAttribute="height" constant="70" id="KdD-Gh-FBD"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="1">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="1"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="xY5-fF-BSA"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCF-cV-3H6" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="102.5" y="30" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="gfc-g8-k4R"/>
+                                <constraint firstAttribute="width" constant="70" id="uDY-4I-ZBk"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="2">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="2"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="HdX-Zy-EXq"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vDo-ob-1QV" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="205" y="30" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="xjO-oG-YI2"/>
+                                <constraint firstAttribute="width" constant="70" id="zG0-Ck-SBY"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="3">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="3"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="h3U-DD-lsf"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fLe-Pg-H7X" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="0.0" y="131" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="kYY-rS-l3h"/>
+                                <constraint firstAttribute="height" constant="70" id="mP1-mF-Dep"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="4">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="4"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="BeF-Lr-cMt"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YAx-LG-H1B" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="102.5" y="131" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="D9C-or-Y0C"/>
+                                <constraint firstAttribute="height" constant="70" id="Fjo-Qq-TcP"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="5">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="5"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="PPw-tu-1RJ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YDL-Gm-0Np" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="205" y="131" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="Rsu-ah-eC8"/>
+                                <constraint firstAttribute="height" constant="70" id="WoD-vX-btQ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="6">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="6"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="z2R-sH-KjE"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsI-Rf-OpM" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="0.0" y="232" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="vNb-64-aW0"/>
+                                <constraint firstAttribute="height" constant="70" id="zzs-U1-nOR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="7">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="7"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="eSV-fk-jg7"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tm6-HC-xwZ" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="102.5" y="232" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="Tck-P0-Rgw"/>
+                                <constraint firstAttribute="height" constant="70" id="vIB-7h-0sR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="8">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="8"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="ACf-dc-uKc"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-cP-FSc" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="205" y="232" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="0cQ-rU-Cm6"/>
+                                <constraint firstAttribute="height" constant="70" id="jUb-nb-Uq7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="9">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="9"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="se3-WV-oid"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MgE-1a-SN7" customClass="PasscodeSignButton" customModule="PasscodeLock">
+                            <rect key="frame" x="102.5" y="333" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="JnP-Xw-rct"/>
+                                <constraint firstAttribute="width" constant="70" id="TVz-yy-Tvh"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="0">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="highlightBackgroundColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="passcodeSign" value="0"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderRadius">
+                                    <integer key="value" value="35"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="passcodeSignButtonTap:" destination="-1" eventType="touchUpInside" id="pgo-dM-s3j"/>
+                            </connections>
+                        </button>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qCR-5L-Xb1">
+                            <rect key="frame" x="136.5" y="0.0" width="2" height="11"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="11" id="c1d-5q-v3T"/>
+                                <constraint firstAttribute="width" constant="2" id="rUY-GZ-5vF"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eeb-lT-GKy" userLabel="Placeholder 1" customClass="PasscodeSignPlaceholderView" customModule="PasscodeLock">
+                            <rect key="frame" x="103" y="0.0" width="11" height="11"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="11" id="mz0-4E-I6F"/>
+                                <constraint firstAttribute="height" constant="11" id="w3H-Qq-8sm"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="errorColor">
+                                    <color key="value" red="0.95294117649999999" green="0.4823529412" blue="0.4823529412" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="activeColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="inactiveColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhy-sW-SZD" userLabel="Placeholder 2" customClass="PasscodeSignPlaceholderView" customModule="PasscodeLock">
+                            <rect key="frame" x="122" y="0.0" width="11" height="11"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="11" id="j8i-Yu-NZW"/>
+                                <constraint firstAttribute="width" constant="11" id="mYK-1T-TKn"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="errorColor">
+                                    <color key="value" red="0.95294117649999999" green="0.4823529412" blue="0.4823529412" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="activeColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="inactiveColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IN5-oo-ZP6" userLabel="Placeholder 4" customClass="PasscodeSignPlaceholderView" customModule="PasscodeLock">
+                            <rect key="frame" x="161" y="0.0" width="11" height="11"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="11" id="2Cs-wX-VV7"/>
+                                <constraint firstAttribute="height" constant="11" id="Rea-Vo-zaN"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="errorColor">
+                                    <color key="value" red="0.95294117649999999" green="0.4823529412" blue="0.4823529412" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="activeColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="inactiveColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g0h-Gs-bpK" userLabel="Placeholder 3" customClass="PasscodeSignPlaceholderView" customModule="PasscodeLock">
+                            <rect key="frame" x="142" y="0.0" width="11" height="11"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="11" id="JsK-kF-Jzh"/>
+                                <constraint firstAttribute="width" constant="11" id="vbd-pC-a27"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="errorColor">
+                                    <color key="value" red="0.95294117649999999" green="0.4823529412" blue="0.4823529412" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="activeColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="inactiveColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8tb-fB-RLr">
+                            <rect key="frame" x="205" y="330" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="Geq-50-KLf"/>
+                                <constraint firstAttribute="width" constant="70" id="LBs-OI-hbu"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="Delete">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="deleteSignButtonTap:" destination="-1" eventType="touchUpInside" id="YWY-fg-oGW"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOL-HQ-Pp5">
+                            <rect key="frame" x="0.0" y="330" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="7SA-1y-lzO"/>
+                                <constraint firstAttribute="width" constant="70" id="km9-11-GO7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelButtonTap:" destination="-1" eventType="touchUpInside" id="FVF-W8-Yn4"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="YAx-LG-H1B" firstAttribute="centerY" secondItem="fLe-Pg-H7X" secondAttribute="centerY" id="16l-cf-UKt"/>
+                        <constraint firstItem="fLe-Pg-H7X" firstAttribute="top" secondItem="3RA-R3-c6e" secondAttribute="bottom" constant="31" id="1Gk-4e-rcK"/>
+                        <constraint firstItem="eeb-lT-GKy" firstAttribute="top" secondItem="QK0-bw-YF6" secondAttribute="top" id="3Z2-xk-19A"/>
+                        <constraint firstItem="kCF-cV-3H6" firstAttribute="centerX" secondItem="QK0-bw-YF6" secondAttribute="centerX" id="7rA-wo-VZc"/>
+                        <constraint firstItem="CsI-Rf-OpM" firstAttribute="leading" secondItem="QK0-bw-YF6" secondAttribute="leading" id="9uW-Pn-Mk7"/>
+                        <constraint firstAttribute="bottom" secondItem="8tb-fB-RLr" secondAttribute="bottom" id="E3u-Fd-3Pt"/>
+                        <constraint firstAttribute="trailing" secondItem="Fbn-cP-FSc" secondAttribute="trailing" id="G8r-FP-h3L"/>
+                        <constraint firstItem="Fbn-cP-FSc" firstAttribute="centerY" secondItem="tm6-HC-xwZ" secondAttribute="centerY" id="GZO-ML-Y2B"/>
+                        <constraint firstAttribute="width" constant="275" id="IKM-iR-0wI"/>
+                        <constraint firstItem="qCR-5L-Xb1" firstAttribute="centerX" secondItem="QK0-bw-YF6" secondAttribute="centerX" id="J2p-7B-TUf"/>
+                        <constraint firstItem="tm6-HC-xwZ" firstAttribute="centerY" secondItem="CsI-Rf-OpM" secondAttribute="centerY" id="LfM-G5-ug5"/>
+                        <constraint firstItem="MgE-1a-SN7" firstAttribute="top" secondItem="tm6-HC-xwZ" secondAttribute="bottom" constant="31" id="N8m-0b-3lZ"/>
+                        <constraint firstAttribute="trailing" secondItem="8tb-fB-RLr" secondAttribute="trailing" id="ODn-Lk-idn"/>
+                        <constraint firstItem="CsI-Rf-OpM" firstAttribute="centerX" secondItem="3RA-R3-c6e" secondAttribute="centerX" id="OcG-ft-OgU"/>
+                        <constraint firstItem="kCF-cV-3H6" firstAttribute="centerY" secondItem="3RA-R3-c6e" secondAttribute="centerY" id="PcQ-gH-c5m"/>
+                        <constraint firstItem="YAx-LG-H1B" firstAttribute="centerX" secondItem="QK0-bw-YF6" secondAttribute="centerX" id="RpO-mt-gYf"/>
+                        <constraint firstAttribute="bottom" secondItem="KOL-HQ-Pp5" secondAttribute="bottom" id="SaV-FA-bZ9"/>
+                        <constraint firstItem="YDL-Gm-0Np" firstAttribute="centerY" secondItem="YAx-LG-H1B" secondAttribute="centerY" id="Sfv-2M-F9W"/>
+                        <constraint firstItem="CsI-Rf-OpM" firstAttribute="top" secondItem="fLe-Pg-H7X" secondAttribute="bottom" constant="31" id="TdC-UB-Lyf"/>
+                        <constraint firstItem="g0h-Gs-bpK" firstAttribute="leading" secondItem="qCR-5L-Xb1" secondAttribute="trailing" constant="3.5" id="Upd-Z5-yrP"/>
+                        <constraint firstItem="rhy-sW-SZD" firstAttribute="centerY" secondItem="eeb-lT-GKy" secondAttribute="centerY" id="apE-VP-9CI"/>
+                        <constraint firstItem="qCR-5L-Xb1" firstAttribute="top" secondItem="QK0-bw-YF6" secondAttribute="top" id="cEz-0g-ons"/>
+                        <constraint firstItem="YDL-Gm-0Np" firstAttribute="centerX" secondItem="vDo-ob-1QV" secondAttribute="centerX" id="dm1-xp-RXm"/>
+                        <constraint firstAttribute="trailing" secondItem="vDo-ob-1QV" secondAttribute="trailing" id="iGV-XW-7PW"/>
+                        <constraint firstItem="qCR-5L-Xb1" firstAttribute="leading" secondItem="eeb-lT-GKy" secondAttribute="trailing" constant="22.5" id="jVo-zX-awE"/>
+                        <constraint firstItem="3RA-R3-c6e" firstAttribute="top" secondItem="QK0-bw-YF6" secondAttribute="top" constant="30" id="jbX-4Z-noO"/>
+                        <constraint firstItem="KOL-HQ-Pp5" firstAttribute="leading" secondItem="QK0-bw-YF6" secondAttribute="leading" id="jp6-o5-cnl"/>
+                        <constraint firstItem="g0h-Gs-bpK" firstAttribute="centerY" secondItem="IN5-oo-ZP6" secondAttribute="centerY" id="mCK-XK-KLN"/>
+                        <constraint firstItem="fLe-Pg-H7X" firstAttribute="centerX" secondItem="3RA-R3-c6e" secondAttribute="centerX" id="nH4-18-MZS"/>
+                        <constraint firstAttribute="height" constant="400" id="oNZ-8f-Y3B"/>
+                        <constraint firstItem="qCR-5L-Xb1" firstAttribute="leading" secondItem="rhy-sW-SZD" secondAttribute="trailing" constant="3.5" id="r4X-S7-pl3"/>
+                        <constraint firstItem="3RA-R3-c6e" firstAttribute="leading" secondItem="QK0-bw-YF6" secondAttribute="leading" id="rTl-9c-jSj"/>
+                        <constraint firstItem="tm6-HC-xwZ" firstAttribute="centerX" secondItem="QK0-bw-YF6" secondAttribute="centerX" id="rz2-Q8-LrQ"/>
+                        <constraint firstItem="MgE-1a-SN7" firstAttribute="centerX" secondItem="tm6-HC-xwZ" secondAttribute="centerX" id="sma-iu-wyG"/>
+                        <constraint firstItem="vDo-ob-1QV" firstAttribute="centerY" secondItem="kCF-cV-3H6" secondAttribute="centerY" id="x3P-q8-Avo"/>
+                        <constraint firstItem="IN5-oo-ZP6" firstAttribute="centerY" secondItem="eeb-lT-GKy" secondAttribute="centerY" id="z4b-99-LlP"/>
+                        <constraint firstItem="IN5-oo-ZP6" firstAttribute="leading" secondItem="qCR-5L-Xb1" secondAttribute="trailing" constant="22.5" id="zF0-JU-2x9"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect PIN, 5 attempts remaining" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l31-50-fkY">
+                    <rect key="frame" x="20" y="93.5" width="335" height="19.5"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Enc-b8-gfn">
+                    <rect key="frame" x="161.5" y="633.5" width="52" height="23.5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23.5" id="vR4-w2-9d9"/>
+                    </constraints>
+                    <state key="normal">
+                        <attributedString key="attributedTitle">
+                            <fragment content="Cancel">
+                                <attributes>
+                                    <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <font key="NSFont" size="17" name="NunitoSans-Regular"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                    <integer key="NSUnderline" value="1"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                    </state>
+                    <connections>
+                        <action selector="signout:" destination="-1" eventType="touchUpInside" id="Bl7-0C-EDv"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3z4-k8-z31">
+                    <rect key="frame" x="162.5" y="563.5" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="JDG-1f-uGH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                    <state key="normal" image="touchID">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="touchIDButtonTap:" destination="-1" eventType="touchUpInside" id="kyF-yO-Od6"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Enc-b8-gfn" firstAttribute="top" secondItem="3z4-k8-z31" secondAttribute="bottom" constant="20" id="4tK-9M-eUG"/>
+                <constraint firstItem="QK0-bw-YF6" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="7fv-EK-jC9"/>
+                <constraint firstItem="QK0-bw-YF6" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="BEA-p1-s9s"/>
+                <constraint firstItem="3z4-k8-z31" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="BOQ-af-t1M"/>
+                <constraint firstItem="Enc-b8-gfn" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="DTn-ab-ZbC"/>
+                <constraint firstItem="3z4-k8-z31" firstAttribute="top" secondItem="QK0-bw-YF6" secondAttribute="bottom" constant="20" id="U1E-vJ-vsV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Enc-b8-gfn" secondAttribute="bottom" constant="10" id="WrY-Yw-YLP"/>
+                <constraint firstItem="l31-50-fkY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="XPM-g7-LM4"/>
+                <constraint firstItem="dbF-GF-mtZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="50" id="i7k-V0-9c4"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dbF-GF-mtZ" secondAttribute="trailing" constant="50" id="iIG-rn-XWg"/>
+                <constraint firstItem="l31-50-fkY" firstAttribute="top" secondItem="dbF-GF-mtZ" secondAttribute="bottom" constant="5" id="jtK-Nx-J2R"/>
+                <constraint firstItem="QK0-bw-YF6" firstAttribute="top" secondItem="dbF-GF-mtZ" secondAttribute="bottom" constant="55" id="uwU-RV-nMB"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="l31-50-fkY" secondAttribute="trailing" constant="20" id="wQM-Ms-P58"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="53.600000000000001" y="48.125937031484263"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="touchID" width="40" height="40"/>
+    </resources>
+</document>

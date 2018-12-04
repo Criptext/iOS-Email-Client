@@ -74,7 +74,7 @@ class SharedAPI {
         case .tooManyDevices:
             return .TooManyDevices
         case .entityTooLarge:
-            let maxSize = Int64(response?.allHeaderFields["Max-Size"] as? String ?? "-1") ?? -1
+            let maxSize = Int64(response?.allHeaderFields["max-size"] as? String ?? "-1") ?? -1
             return .EntityTooLarge(maxSize)
         case .conflicts:
             return .Conflicts

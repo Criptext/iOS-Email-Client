@@ -147,6 +147,15 @@ class CriptextDefaults {
         }
     }
     
+    var pinAttempts: Int {
+        get {
+            return groupDefaults.integer(forKey: Config.pinAttempts.rawValue)
+        }
+        set (value) {
+            groupDefaults.set(value, forKey: Config.pinAttempts.rawValue)
+        }
+    }
+    
     enum Guide: String {
         case welcomeTour = "welcomeTour"
         case attachments = "guideAttachments"
@@ -161,6 +170,7 @@ class CriptextDefaults {
         case faceid = "faceUnlock"
         case lockTimer = "lockTimer"
         case goneTimestamp = "goneTimestamp"
+        case pinAttempts = "pinAttempts"
     }
     
 }
