@@ -10,6 +10,17 @@ import Foundation
 import PasscodeLock
 
 class PasscodeConfig: PasscodeLockConfigurationType {
+    var incorrectPasscodeAttempts: Int {
+        get {
+            let defaults = CriptextDefaults()
+            return defaults.pinAttempts
+        }
+        set {
+            let defaults = CriptextDefaults()
+            defaults.pinAttempts = newValue
+        }
+    }
+    
     var repository: PasscodeRepositoryType = PasscodeType()
     
     var passcodeLength: Int = 4

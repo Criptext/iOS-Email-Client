@@ -27,12 +27,14 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     override func appWillEnterForegroundHandler(_ notification: Notification) {
         super.appWillEnterForegroundHandler(notification)
         touchIDButton?.setImage(UIImage(named: biometricType == .faceID ? "faceID" : "touchID"), for: .normal)
+        
         showLocalAuth()
     }
     
     var incorrectPasscodeAttempts: Int {
         get {
-            return UserDefaults.standard.integer(forKey: "incorrectPasscodeAttemps")
+            let defaults = CriptextDefaults()
+            return defaults.pinAttempts
         }
     }
     
