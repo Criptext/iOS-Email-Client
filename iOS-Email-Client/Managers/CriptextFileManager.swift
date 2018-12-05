@@ -100,6 +100,7 @@ class CriptextFileManager {
                 weakSelf.delegate?.finishRequest(file: file, success: false)
                 if let index = weakSelf.registeredFiles.index(where: {$0.token == file.token}) {
                     weakSelf.registeredFiles.remove(at: index)
+                    weakSelf.delegate?.fileError(message: String.localize("UNABLE_FILE"))
                 }
                 return
             }

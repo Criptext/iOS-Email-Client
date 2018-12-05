@@ -156,8 +156,16 @@
 "Unable to unsend email. Please try again later" = "Unable to unsend email. Please try again later";
 "Open this menu to find\nthe UNSEND button" = "Open this menu to find\nthe UNSEND button";
 "You have a new email" = "You have a new email";
+"UNABLE_FILE" = "Unable to retrieve file. Please try again";
 
 /* SettingsGeneralViewController.swift */
+
+"SIGNOUT" = "Sign out";
+"Q_SURE_LOGOUT" = "Are you sure you want to logout?";
+"CANCEL"  = "Cancel";
+"YES" = "Yes";
+"WARNING" = "Warning";
+"Q_SIGNOUT_2FA" = "Since this is your last signed in device, 2FA will be turned off. Do you want to turn off 2FA and sign out?";
 
 "ACCOUNT" = "ACCOUNT";
 "NOTIFICATIONS" = "NOTIFICATIONS";
@@ -235,3 +243,13 @@
 "15 minutes" = "15 minutes";
 "1 hour" = "1 hour";
 "24 hours" = "24 hours";
+
+/* ShareViewController.swift */
+
+"LARGE_FILE" = "File too large";
+"FILE_ERROR" = "File Error";
+
+/* LoginDeviceViewController.swift */
+"IF_YOU_SIGN_IN" = "If you sign in using your password your ";
+"MAILBOX_HISTORY" = "mailbox history from other devices won't be available ";
+"ON_THIS_DEVICE" = "on this device. Would you like to continue?";

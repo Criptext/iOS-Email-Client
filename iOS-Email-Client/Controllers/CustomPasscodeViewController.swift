@@ -67,10 +67,10 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     
     func showLogout(){
         let logoutPopover = GenericDualAnswerUIPopover()
-        logoutPopover.initialTitle = "Sign out"
-        logoutPopover.initialMessage = "Are you sure you want to logout?"
-        logoutPopover.leftOption = "Cancel"
-        logoutPopover.rightOption = "Yes"
+        logoutPopover.initialTitle = String.localize("SIGNOUT")
+        logoutPopover.initialMessage = String.localize("Q_SURE_LOGOUT")
+        logoutPopover.leftOption = String.localize("CANCEL")
+        logoutPopover.rightOption = String.localize("YES")
         logoutPopover.onResponse = { [weak self] accept in
             guard accept,
                 let weakSelf = self else {

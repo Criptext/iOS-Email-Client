@@ -311,10 +311,10 @@ class SettingsGeneralViewController: UITableViewController{
     
     func showLogout(){
         let logoutPopover = GenericDualAnswerUIPopover()
-        logoutPopover.initialTitle = "Sign out"
-        logoutPopover.initialMessage = "Are you sure you want to logout?"
-        logoutPopover.leftOption = "Cancel"
-        logoutPopover.rightOption = "Yes"
+        logoutPopover.initialTitle = String.localize("SIGNOUT")
+        logoutPopover.initialMessage = String.localize("Q_SURE_LOGOUT")
+        logoutPopover.leftOption = String.localize("CANCEL")
+        logoutPopover.rightOption = String.localize("YES")
         logoutPopover.onResponse = { [weak self] accept in
             guard accept,
                 let weakSelf = self else {
@@ -327,10 +327,10 @@ class SettingsGeneralViewController: UITableViewController{
     
     func showWarningLogout() {
         let logoutPopover = GenericDualAnswerUIPopover()
-        logoutPopover.initialTitle = "Warning"
-        logoutPopover.initialMessage = "Since this is your last signed in device, 2FA will be turned off. Do you want to turn off 2FA and sign out?"
-        logoutPopover.leftOption = "Cancel"
-        logoutPopover.rightOption = "Yes"
+        logoutPopover.initialTitle = String.localize("WARNING")
+        logoutPopover.initialMessage = String.localize("Q_SIGNOUT_2FA")
+        logoutPopover.leftOption = String.localize("CANCEL")
+        logoutPopover.rightOption = String.localize("YES")
         logoutPopover.onResponse = { accept in
             guard accept else {
                 return

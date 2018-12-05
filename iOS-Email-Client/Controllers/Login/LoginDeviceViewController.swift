@@ -68,14 +68,14 @@ class LoginDeviceViewController: UIViewController{
     
     func presentLoginPasswordPopover() {
         let popover = GenericDualAnswerUIPopover()
-        popover.leftOption = "Cancel"
-        popover.rightOption = "Yes"
-        popover.initialTitle = "Warning"
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.initialTitle = String.localize("WARNING")
         let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
         let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
-        let attrText = NSMutableAttributedString(string: "If you sign in using your password your ", attributes: regularAttrs)
-        let attrBold = NSAttributedString(string: "mailbox history from other devices won't be available ", attributes: boldAttrs)
-        let attrText2 = NSMutableAttributedString(string: "on this device. Would you like to continue?", attributes: regularAttrs)
+        let attrText = NSMutableAttributedString(string: String.localize("IF_YOU_SIGN_IN"), attributes: regularAttrs)
+        let attrBold = NSAttributedString(string: String.localize("MAILBOX_HISTORY"), attributes: boldAttrs)
+        let attrText2 = NSMutableAttributedString(string: String.localize("ON_THIS_DEVICE"), attributes: regularAttrs)
         attrText.append(attrBold)
         attrText.append(attrText2)
         popover.attributedMessage = attrText

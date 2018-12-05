@@ -194,7 +194,7 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
 extension ShareViewController: CriptextFileDelegate {
     func fileError(message: String) {
         let alertPopover = GenericAlertUIPopover()
-        alertPopover.myTitle = "File too large"
+        alertPopover.myTitle = String.localize("LARGE_FILE")
         alertPopover.myMessage = message
         self.presentPopover(popover: alertPopover, height: 205)
     }

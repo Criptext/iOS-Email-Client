@@ -1040,7 +1040,7 @@ extension ComposeViewController: CriptextFileDelegate {
     func fileError(message: String) {
         self.tableView.reloadData()
         let alertPopover = GenericAlertUIPopover()
-        alertPopover.myTitle = "File too large"
+        alertPopover.myTitle = String.localize("LARGE_FILE")
         alertPopover.myMessage = message
         if presentedViewController == nil {
             self.presentPopover(popover: alertPopover, height: 205)
