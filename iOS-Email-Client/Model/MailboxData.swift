@@ -21,7 +21,7 @@ class MailboxData {
     var filteredReachedEnd = false
     var isCustomEditing = false
     var unreadMails = 0
-    var feature: Feature? = Feature(imageUrl: "https://vignette.wikia.nocookie.net/nintendo/images/7/70/Smash_Logo.png/revision/latest?cb=20150610044606&path-prefix=en", title: "There’s a new feature!", subtitle: "Two-Factor Authentication is here, to add a new layer of security")
+    var feature: Feature?
     var reachedEnd : Bool {
         get {
             return searchMode ? filteredReachedEnd : emailReachedEnd

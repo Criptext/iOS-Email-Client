@@ -192,6 +192,13 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension ShareViewController: CriptextFileDelegate {
+    func fileError(message: String) {
+        let alertPopover = GenericAlertUIPopover()
+        alertPopover.myTitle = String.localize("LARGE_FILE")
+        alertPopover.myMessage = message
+        self.presentPopover(popover: alertPopover, height: 205)
+    }
+    
     func uploadProgressUpdate(file: File, progress: Int) {
         guard let attachmentCell = getCellForFile(file) else {
             return

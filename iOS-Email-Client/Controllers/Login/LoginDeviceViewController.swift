@@ -63,14 +63,30 @@ class LoginDeviceViewController: UIViewController{
     }
     
     @IBAction func onCantLoginPress(_ sender: Any) {
-        let alert = UIAlertController(title: "Can't Log In?", message: "If you lost your device or can't seem to log in, you will be asked to enter your password to enable this device, but without all the data you previously had", preferredStyle: .alert)
-        let proceedAction = UIAlertAction(title: "Continue", style: .default){ (alert : UIAlertAction!) -> Void in
-            self.jumpToResetDevice()
+        self.presentLoginPasswordPopover()
+    }
+    
+    func presentLoginPasswordPopover() {
+        let popover = GenericDualAnswerUIPopover()
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.initialTitle = String.localize("WARNING")
+        let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
+        let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
+        let attrText = NSMutableAttributedString(string: String.localize("IF_YOU_SIGN_IN"), attributes: regularAttrs)
+        let attrBold = NSAttributedString(string: String.localize("MAILBOX_HISTORY"), attributes: boldAttrs)
+        let attrText2 = NSMutableAttributedString(string: String.localize("ON_THIS_DEVICE"), attributes: regularAttrs)
+        attrText.append(attrBold)
+        attrText.append(attrText2)
+        popover.attributedMessage = attrText
+        popover.onResponse = { [weak self] ok in
+            guard ok,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.jumpToResetDevice()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addAction(proceedAction)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
+        presentPopover(popover: popover, height: 205)
     }
     
     func jumpToResetDevice(){

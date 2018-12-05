@@ -111,7 +111,7 @@
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
 		7C5322122111394000C78981 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C5322112111394000C78981 /* GoogleService-Info.plist */; };
-		7C53AC3A21121DE400938A3D /* LogoutPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C53AC3921121DE400938A3D /* LogoutPopoverViewController.swift */; };
+		7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */; };
 		7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
 		7C5E404020B706860027C61F /* CustomTabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5E403F20B706860027C61F /* CustomTabsController.swift */; };
 		7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */; };
@@ -258,6 +258,7 @@
 		A77C30B121A5055A0031E219 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30B021A5055A0031E219 /* ShareViewController.swift */; };
 		A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A77C30B221A5055A0031E219 /* MainInterface.storyboard */; };
 		A77C30B821A5055A0031E219 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A77C30AE21A5055A0031E219 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A789B24021B8228800F89DF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A7ADA11D21A5A3610027FC1C /* ChangePinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */; };
 		A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
@@ -319,6 +320,9 @@
 		A7ADA15C21A729A10027FC1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
+		A7C3589E21B19AE300386295 /* GenericAlertUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */; };
+		A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */; };
+		A7C358A021B19CB800386295 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
@@ -380,7 +384,7 @@
 		A7FFCF30217A910A00FFFDFF /* LabelsFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF32217A910A00FFFDFF /* LabelsFooterTableViewCell.xib */; };
 		A7FFCF33217A911400FFFDFF /* EmailTableFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF35217A911400FFFDFF /* EmailTableFooterView.xib */; };
 		A7FFCF36217A911B00FFFDFF /* LabelsHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF38217A911B00FFFDFF /* LabelsHeaderTableViewCell.xib */; };
-		A7FFCF39217A912800FFFDFF /* LogoutUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF3B217A912800FFFDFF /* LogoutUIPopover.xib */; };
+		A7FFCF39217A912800FFFDFF /* SignInWarningUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF3B217A912800FFFDFF /* SignInWarningUIPopover.xib */; };
 		A7FFCF3C217A913900FFFDFF /* PasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF3E217A913900FFFDFF /* PasswordUIPopover.xib */; };
 		A7FFCF3F217A914000FFFDFF /* RemoveDeviceUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF41217A914000FFFDFF /* RemoveDeviceUIPopover.xib */; };
 		A7FFCF42217A91C300FFFDFF /* WelcomeTourView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF44217A91C300FFFDFF /* WelcomeTourView.xib */; };
@@ -546,7 +550,7 @@
 		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
 		7C5322112111394000C78981 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7C53AC3921121DE400938A3D /* LogoutPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopoverViewController.swift; sourceTree = "<group>"; };
+		7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWarningPopoverViewController.swift; sourceTree = "<group>"; };
 		7C55B88B20863D7900BA96E8 /* CriptextError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextError.swift; sourceTree = "<group>"; };
 		7C5E403F20B706860027C61F /* CustomTabsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabsController.swift; sourceTree = "<group>"; };
 		7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureEditorViewController.swift; sourceTree = "<group>"; };
@@ -725,7 +729,7 @@
 		A7FFCF31217A910A00FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LabelsFooterTableViewCell.xib; sourceTree = "<group>"; };
 		A7FFCF34217A911400FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EmailTableFooterView.xib; sourceTree = "<group>"; };
 		A7FFCF37217A911B00FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LabelsHeaderTableViewCell.xib; sourceTree = "<group>"; };
-		A7FFCF3A217A912800FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LogoutUIPopover.xib; sourceTree = "<group>"; };
+		A7FFCF3A217A912800FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignInWarningUIPopover.xib; sourceTree = "<group>"; };
 		A7FFCF3D217A913900FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasswordUIPopover.xib; sourceTree = "<group>"; };
 		A7FFCF40217A914000FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RemoveDeviceUIPopover.xib; sourceTree = "<group>"; };
 		A7FFCF43217A91C300FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WelcomeTourView.xib; sourceTree = "<group>"; };
@@ -741,7 +745,7 @@
 		A7FFCF54217A920400FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/LabelsFooterTableViewCell.strings"; sourceTree = "<group>"; };
 		A7FFCF55217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailTableFooterView.strings"; sourceTree = "<group>"; };
 		A7FFCF56217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/LabelsHeaderTableViewCell.strings"; sourceTree = "<group>"; };
-		A7FFCF57217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/LogoutUIPopover.strings"; sourceTree = "<group>"; };
+		A7FFCF57217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/SignInWarningUIPopover.strings"; sourceTree = "<group>"; };
 		A7FFCF58217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasswordUIPopover.strings"; sourceTree = "<group>"; };
 		A7FFCF59217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/RemoveDeviceUIPopover.strings"; sourceTree = "<group>"; };
 		A7FFCF5A217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/WelcomeTourView.strings"; sourceTree = "<group>"; };
@@ -937,7 +941,7 @@
 				7C5E403F20B706860027C61F /* CustomTabsController.swift */,
 				7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */,
 				7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */,
-				7C53AC3921121DE400938A3D /* LogoutPopoverViewController.swift */,
+				7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */,
 				7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */,
 				7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */,
 				7C4D33C6212C7B8400045B09 /* PasswordUIPopover.swift */,
@@ -1153,7 +1157,7 @@
 				7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */,
 				7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */,
 				7C92104B21022B290081C048 /* CircleLoaderUIView.swift */,
-				A7FFCF3B217A912800FFFDFF /* LogoutUIPopover.xib */,
+				A7FFCF3B217A912800FFFDFF /* SignInWarningUIPopover.xib */,
 				7C1E82C12116BD43007CA853 /* HintUIView.xib */,
 				7C1E82C32116BDF2007CA853 /* HintUIView.swift */,
 				7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */,
@@ -1496,7 +1500,7 @@
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
 				A7FFCF42217A91C300FFFDFF /* WelcomeTourView.xib in Resources */,
 				7CF93F572146E41700361837 /* Arm.json in Resources */,
-				A7FFCF39217A912800FFFDFF /* LogoutUIPopover.xib in Resources */,
+				A7FFCF39217A912800FFFDFF /* SignInWarningUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
@@ -1574,8 +1578,10 @@
 				A7ADA15321A61A1B0027FC1C /* NunitoSans-ExtraLightItalic.ttf in Resources */,
 				A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */,
 				A7ADA14F21A61A1B0027FC1C /* NunitoSans-BoldItalic.ttf in Resources */,
+				A789B24021B8228800F89DF3 /* Localizable.strings in Resources */,
 				A7ADA15821A61A1B0027FC1C /* NunitoSans-SemiBold.ttf in Resources */,
 				A7ADA15221A61A1B0027FC1C /* NunitoSans-ExtraLight.ttf in Resources */,
+				A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */,
 				A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */,
 				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
 				A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */,
@@ -1689,7 +1695,7 @@
 				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */,
 				A7CC38892194979A00C8355A /* SharedExtensions.swift in Sources */,
-				7C53AC3A21121DE400938A3D /* LogoutPopoverViewController.swift in Sources */,
+				7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */,
 				7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
@@ -1869,6 +1875,7 @@
 				A70609FA21A74C250066BFA4 /* BaseUIPopover.swift in Sources */,
 				A7ADA12821A5F1CA0027FC1C /* Account.swift in Sources */,
 				A7ADA15B21A728D80027FC1C /* SendMailAsyncTask.swift in Sources */,
+				A7C3589E21B19AE300386295 /* GenericAlertUIPopover.swift in Sources */,
 				A7ADA13921A5F1FA0027FC1C /* SharedUtils.swift in Sources */,
 				A7ADA13C21A5F2100027FC1C /* CriptextSignedPreKeyStore.swift in Sources */,
 				A7ADA12B21A5F1DA0027FC1C /* CRSignedPreKeyRecord.swift in Sources */,
@@ -1918,6 +1925,7 @@
 				A7CC387B21939C3D00C8355A /* SharedDB.swift in Sources */,
 				A7CC386721934FF400C8355A /* CRSessionRecord.swift in Sources */,
 				A7CC386121934EE400C8355A /* CriptextSignedPreKeyStore.swift in Sources */,
+				A7C358A021B19CB800386295 /* Constants.swift in Sources */,
 				A7CC384D219247B100C8355A /* Email.swift in Sources */,
 				A7CC386821934FF400C8355A /* CRTrustedDevice.swift in Sources */,
 				A7CC38832193A1C600C8355A /* CriptextError.swift in Sources */,
@@ -2082,13 +2090,13 @@
 			name = LabelsHeaderTableViewCell.xib;
 			sourceTree = "<group>";
 		};
-		A7FFCF3B217A912800FFFDFF /* LogoutUIPopover.xib */ = {
+		A7FFCF3B217A912800FFFDFF /* SignInWarningUIPopover.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF3A217A912800FFFDFF /* Base */,
 				A7FFCF57217A920500FFFDFF /* es-419 */,
 			);
-			name = LogoutUIPopover.xib;
+			name = SignInWarningUIPopover.xib;
 			sourceTree = "<group>";
 		};
 		A7FFCF3E217A913900FFFDFF /* PasswordUIPopover.xib */ = {

@@ -31,39 +31,6 @@ extension UIColor {
 }
 
 extension UIViewController {
-    func presentPopover(popover: UIViewController, height: Int, arrowDirections: UIPopoverArrowDirection = []){
-        popover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: height)
-        popover.popoverPresentationController?.sourceView = self.view
-        popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-        popover.popoverPresentationController?.permittedArrowDirections = arrowDirections
-        popover.popoverPresentationController?.backgroundColor = UIColor.white
-        
-        if let activePopover = self.presentedViewController as? BaseUIPopover {
-            activePopover.dismiss(animated: false, completion: nil)
-            self.present(popover, animated: false)
-            return
-        }
-        if let overViewController = self.presentedViewController {
-            overViewController.presentPopover(popover: popover, height: height)
-            return
-        }
-        if let overViewController = self.navigationController?.presentedViewController {
-            overViewController.presentPopover(popover: popover, height: height)
-            return
-        }
-        if let topViewController = self.navigationController?.topViewController,
-            topViewController != self {
-            topViewController.presentPopover(popover: popover, height: height)
-            return
-        }
-        if let navController = self as? UINavigationController,
-            let topViewController = navController.topViewController {
-            topViewController.presentPopover(popover: popover, height: height)
-            return
-        }
-        self.present(popover, animated: true)
-    }
-    
     func getTopView() -> UIViewController {
         if let _ = self.presentedViewController as? BaseUIPopover {
             return self

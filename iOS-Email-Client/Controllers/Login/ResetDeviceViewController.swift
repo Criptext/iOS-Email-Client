@@ -12,6 +12,8 @@ import Material
 class ResetDeviceViewController: UIViewController{
 
     let POPOVER_HEIGHT = 220
+    let POPOVER_RECOVERY_HEIGHT = 225
+    let POPOVER_NO_RECOVERY_HEIGHT = 255
     
     @IBOutlet weak var forgotButton: UIButton!
     @IBOutlet weak var emailLabel: UILabel!
@@ -205,22 +207,47 @@ class ResetDeviceViewController: UIViewController{
             self.forgotButton.isEnabled = true
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.presentResetAlert(title: String.localize("Request Error"), message: error.description)
+                self.presentResetAlert(height: self.POPOVER_HEIGHT, title: String.localize("Request Error"), message: error.description)
+                return
+            }
+            if case .BadRequest = responseData {
+                self.presentNoRecovery()
                 return
             }
             guard case let .SuccessDictionary(data) = responseData,
                 let email = data["address"] as? String else {
-                    self.presentResetAlert(title: String.localize("Request Error"), message: String.localize("A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password"))
+                    self.presentResetAlert(height: self.POPOVER_HEIGHT, title: String.localize("Well that's odd..."), message: String.localize("Unable to process password recovery. Please try again."))
                     return
             }
-            self.presentResetAlert(title: String.localize("Reset Password"), message: "\(String.localize("An email was sent to "))\(Utils.maskEmailAddress(email: email))\(String.localize(" with the instructions to reset your password."))")
+            self.presentRecoveryEmail(email)
         }
     }
     
-    func presentResetAlert(title: String, message: String){
+    func presentNoRecovery(){
+        let regularAttr = [NSAttributedString.Key.font: Font.regular.size(14)!]
+        let boldAttr = [NSAttributedString.Key.font: Font.bold.size(14)!]
+        let attrText = NSMutableAttributedString(string: "Password recovery is imposible since no recovery email was set on your account. For further asssistance contact us: \n\n", attributes: regularAttr)
+        let attrBold = NSMutableAttributedString(string: "support@criptext.com", attributes: boldAttr)
+        attrText.append(attrBold)
+        self.presentResetAlert(height: POPOVER_NO_RECOVERY_HEIGHT, title: String.localize("No Recovery Email"), message: "", attributedText: attrText)
+    }
+    
+    func presentRecoveryEmail(_ email: String){
+        let regularAttr = [NSAttributedString.Key.font: Font.regular.size(14)!]
+        let boldAttr = [NSAttributedString.Key.font: Font.bold.size(14)!]
+        let attrText = NSMutableAttributedString(string: "A password reset link was sent to:\n\n", attributes: regularAttr)
+        let attrBold = NSMutableAttributedString(string: "\(email)\n\n", attributes: boldAttr)
+        let attrText2 = NSMutableAttributedString(string: "Link will expire in 30 mins.", attributes: regularAttr)
+        attrText.append(attrBold)
+        attrText.append(attrText2)
+        self.presentResetAlert(height: POPOVER_RECOVERY_HEIGHT, title: String.localize("Password Reset"), message: "", attributedText: attrText)
+    }
+    
+    func presentResetAlert(height: Int, title: String, message: String, attributedText: NSAttributedString? = nil){
         let alertVC = GenericAlertUIPopover()
         alertVC.myTitle = title
         alertVC.myMessage = message
-        self.presentPopover(popover: alertVC, height: POPOVER_HEIGHT)
+        alertVC.myAttributedMessage = attributedText
+        self.presentPopover(popover: alertVC, height: height)
     }
 }

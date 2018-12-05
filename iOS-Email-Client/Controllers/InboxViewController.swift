@@ -59,6 +59,7 @@ class InboxViewController: UIViewController {
     var originalNavigationRect:CGRect!
     let coachMarksController = CoachMarksController()
     var currentGuide = "guideComposer"
+    var controllerMessage: ControllerMessage?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -135,6 +136,15 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         presentWelcomeTour()
+    }
+    
+    func handleControllerMessage() {
+        guard let message = controllerMessage,
+            case let .LinkDevice(linkData) = message else {
+            return
+        }
+        controllerMessage = nil
+        self.onAcceptLinkDevice(linkData: linkData)
     }
     
     func showGuide(){
@@ -1510,13 +1520,19 @@ extension InboxViewController: LinkDeviceDelegate {
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
         linkDeviceVC.myAccount = myAccount
-        self.present(linkDeviceVC, animated: true, completion: nil)
+        self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
+        self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
         APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
     }
     
     func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate,
+            !delegate.passcodeLockPresenter.isPasscodePresented else {
+                controllerMessage = ControllerMessage.LinkDevice(linkData)
+                return
+        }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData

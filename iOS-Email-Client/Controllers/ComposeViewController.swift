@@ -98,6 +98,7 @@ class ComposeViewController: UIViewController {
     
     var enableSendButton: UIBarButtonItem!
     var disableSendButton: UIBarButtonItem!
+    var popoverToPresent: BaseUIPopover?
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -265,6 +266,10 @@ class ComposeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         IQKeyboardManager.shared.enable = false
+        if let popover = popoverToPresent {
+            self.presentPopover(popover: popover, height: 205)
+            popoverToPresent = nil
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1032,6 +1037,18 @@ extension ComposeViewController: CNContactPickerDelegate {
 }
 
 extension ComposeViewController: CriptextFileDelegate {
+    func fileError(message: String) {
+        self.tableView.reloadData()
+        let alertPopover = GenericAlertUIPopover()
+        alertPopover.myTitle = String.localize("LARGE_FILE")
+        alertPopover.myMessage = message
+        if presentedViewController == nil {
+            self.presentPopover(popover: alertPopover, height: 205)
+        } else {
+            self.popoverToPresent = alertPopover
+        }
+    }
+    
     func finishRequest(file: File, success: Bool) {
         guard let cell = getCellForFile(file) else {
             return

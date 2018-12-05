@@ -72,7 +72,7 @@ class SettingsGeneralViewController: UITableViewController{
                 case .openSource:
                     return String.localize("Open Source Libraries")
                 case .logout:
-                    return String.localize("Logout")
+                    return String.localize("Sign out")
                 case .preview:
                     return String.localize("Notification Preview")
                 case .readReceipts:
@@ -275,7 +275,12 @@ class SettingsGeneralViewController: UITableViewController{
         case .openSource:
             goToUrl(url: "https://criptext.com/open-source-ios")
         case .logout:
-            showLogout()
+            guard let customTabsVC = self.tabsController as? CustomTabsController,
+                customTabsVC.devicesData.devices.count <= 1 else {
+                showLogout()
+                return
+            }
+            showWarningLogout()
         case .recovery:
             goToRecoveryEmail()
         case .pin:
@@ -305,14 +310,34 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func showLogout(){
-        let logoutPopover = LogoutPopoverViewController()
-        logoutPopover.onTrigger = { accept in
+        let logoutPopover = GenericDualAnswerUIPopover()
+        logoutPopover.initialTitle = String.localize("SIGNOUT")
+        logoutPopover.initialMessage = String.localize("Q_SURE_LOGOUT")
+        logoutPopover.leftOption = String.localize("CANCEL")
+        logoutPopover.rightOption = String.localize("YES")
+        logoutPopover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.confirmLogout()
+        }
+        self.presentPopover(popover: logoutPopover, height: 175)
+    }
+    
+    func showWarningLogout() {
+        let logoutPopover = GenericDualAnswerUIPopover()
+        logoutPopover.initialTitle = String.localize("WARNING")
+        logoutPopover.initialMessage = String.localize("Q_SIGNOUT_2FA")
+        logoutPopover.leftOption = String.localize("CANCEL")
+        logoutPopover.rightOption = String.localize("YES")
+        logoutPopover.onResponse = { accept in
             guard accept else {
                 return
             }
             self.confirmLogout()
         }
-        self.presentPopover(popover: logoutPopover, height: 245)
+        self.presentPopover(popover: logoutPopover, height: 223)
     }
     
     func confirmLogout(){

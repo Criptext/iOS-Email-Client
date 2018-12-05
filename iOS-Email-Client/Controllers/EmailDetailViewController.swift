@@ -121,6 +121,8 @@ class EmailDetailViewController: UIViewController {
             }
             emailsTableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
             onReplyPress()
+        default:
+            break
         }
         self.message = nil
     }
@@ -794,6 +796,13 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
 }
 
 extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractionControllerDelegate {
+    func fileError(message: String) {
+        let alertPopover = GenericAlertUIPopover()
+        alertPopover.myTitle = String.localize("FILE_ERROR")
+        alertPopover.myMessage = message
+        self.presentPopover(popover: alertPopover, height: 205)
+    }
+    
     
     func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
