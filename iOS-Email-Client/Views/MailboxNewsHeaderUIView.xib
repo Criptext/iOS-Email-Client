@@ -18,9 +18,16 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MailboxNewsHeaderUITableCell" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="newsImageView" destination="W8I-de-wDe" id="3Ad-4W-44Q"/>
+                <outlet property="subtitleLabel" destination="6ra-GM-q5Z" id="2Cd-up-rac"/>
+                <outlet property="titleLabel" destination="9UW-Ic-J27" id="pih-X6-Lt5"/>
+                <outlet property="view" destination="iN0-l3-epB" id="A5N-iS-K4C"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MailboxNewsHeaderUITableCell" customModule="iOS_Email_Client" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="554" height="183"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -51,6 +58,7 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="onClosePress:" destination="-2" eventType="touchUpInside" id="8h3-CP-JFp"/>
+                        <action selector="onClosePress:" destination="-1" eventType="touchUpInside" id="TH8-Fs-K9j"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ra-GM-q5Z">
@@ -104,11 +112,6 @@ to add a new layer of security</string>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <connections>
-                <outlet property="newsImageView" destination="W8I-de-wDe" id="spB-Ni-RGB"/>
-                <outlet property="subtitleLabel" destination="6ra-GM-q5Z" id="Sge-XP-pjQ"/>
-                <outlet property="titleLabel" destination="9UW-Ic-J27" id="ioM-mK-9FD"/>
-            </connections>
             <point key="canvasLocation" x="-104" y="183.95802098950526"/>
         </view>
     </objects>
