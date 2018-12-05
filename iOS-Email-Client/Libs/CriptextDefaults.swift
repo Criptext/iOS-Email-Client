@@ -181,16 +181,16 @@ extension CriptextDefaults {
     }
     
     func removePasscode() {
-        defaults.removeObject(forKey: PIN.lock.rawValue)
+        groupDefaults.removeObject(forKey: PIN.lock.rawValue)
     }
     
     func removeConfig() {
         groupDefaults.removeObject(forKey: "activeAccount")
-        defaults.removeObject(forKey: PIN.lock.rawValue)
-        defaults.removeObject(forKey: PIN.fingerprint.rawValue)
-        defaults.removeObject(forKey: PIN.faceid.rawValue)
-        defaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
-        defaults.removeObject(forKey: PIN.lockTimer.rawValue)
+        groupDefaults.removeObject(forKey: PIN.lock.rawValue)
+        groupDefaults.removeObject(forKey: PIN.fingerprint.rawValue)
+        groupDefaults.removeObject(forKey: PIN.faceid.rawValue)
+        groupDefaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
+        groupDefaults.removeObject(forKey: PIN.lockTimer.rawValue)
     }
     
     func removeQuickGuideFlags(){

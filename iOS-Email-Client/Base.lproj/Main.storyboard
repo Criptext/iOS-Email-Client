@@ -659,6 +659,13 @@
                                     <constraint firstAttribute="height" constant="88" id="p0S-lX-gC1"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZfB-jw-VMM" customClass="MailboxNewsHeaderUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="hyy-yY-wgw"/>
+                                </constraints>
+                            </view>
                             <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mwd-eq-N7c">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <subviews>
@@ -890,21 +897,24 @@
                         <constraints>
                             <constraint firstItem="fhP-Ga-19D" firstAttribute="top" secondItem="AIM-Zi-4Pj" secondAttribute="topMargin" id="1FK-zo-6bs"/>
                             <constraint firstAttribute="trailing" secondItem="xJq-0v-4GG" secondAttribute="trailing" id="1KX-8O-A0o"/>
-                            <constraint firstItem="RGw-Kx-VBy" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="31E-ct-vFG"/>
                             <constraint firstItem="Mwd-eq-N7c" firstAttribute="width" secondItem="AIM-Zi-4Pj" secondAttribute="width" id="9cI-pE-uKG"/>
                             <constraint firstItem="Mwd-eq-N7c" firstAttribute="centerX" secondItem="AIM-Zi-4Pj" secondAttribute="centerX" id="CDH-67-kgq"/>
+                            <constraint firstItem="ZfB-jw-VMM" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="D01-sQ-3if"/>
+                            <constraint firstAttribute="trailing" secondItem="ZfB-jw-VMM" secondAttribute="trailing" id="DCa-jT-Bhz"/>
                             <constraint firstItem="xJq-0v-4GG" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="EMQ-ya-TC6"/>
+                            <constraint firstItem="ulq-Th-0Cu" firstAttribute="top" secondItem="Mwd-eq-N7c" secondAttribute="bottom" id="J22-kN-JTv"/>
                             <constraint firstAttribute="trailing" secondItem="xaY-yy-tiI" secondAttribute="trailing" constant="18" id="J6e-Pb-0ci"/>
                             <constraint firstItem="xJq-0v-4GG" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="Jbf-Sm-xAb"/>
                             <constraint firstItem="RGw-Kx-VBy" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="Jyf-Hl-HgU"/>
-                            <constraint firstItem="Mwd-eq-N7c" firstAttribute="centerY" secondItem="AIM-Zi-4Pj" secondAttribute="centerY" id="V35-Am-PiR"/>
                             <constraint firstAttribute="bottomMargin" secondItem="fhP-Ga-19D" secondAttribute="bottom" id="Vbn-18-Hl0"/>
+                            <constraint firstItem="Mwd-eq-N7c" firstAttribute="top" secondItem="ZfB-jw-VMM" secondAttribute="bottom" id="bBn-rq-HZZ"/>
+                            <constraint firstItem="ZfB-jw-VMM" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="ega-7h-GeI"/>
                             <constraint firstAttribute="trailing" secondItem="RGw-Kx-VBy" secondAttribute="trailing" id="epY-zD-fMa"/>
                             <constraint firstItem="ulq-Th-0Cu" firstAttribute="top" secondItem="RGw-Kx-VBy" secondAttribute="bottom" id="fue-n8-ZgB"/>
                             <constraint firstItem="ulq-Th-0Cu" firstAttribute="top" secondItem="xaY-yy-tiI" secondAttribute="bottom" constant="18" id="khG-Th-8UP"/>
                             <constraint firstItem="fhP-Ga-19D" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="lZk-8d-veS"/>
                             <constraint firstAttribute="trailing" secondItem="fhP-Ga-19D" secondAttribute="trailing" id="rew-CF-bn7"/>
-                            <constraint firstItem="Mwd-eq-N7c" firstAttribute="height" secondItem="AIM-Zi-4Pj" secondAttribute="height" id="u9g-fz-0EG"/>
+                            <constraint firstItem="RGw-Kx-VBy" firstAttribute="top" secondItem="ZfB-jw-VMM" secondAttribute="bottom" id="wB9-yW-MZv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ot7-Yo-7gJ"/>
@@ -915,7 +925,9 @@
                         <outlet property="envelopeSubtitleView" destination="IrZ-fh-55m" id="HSU-LL-82Z"/>
                         <outlet property="envelopeTitleView" destination="nel-C4-iB9" id="qLw-XL-S45"/>
                         <outlet property="envelopeView" destination="Mwd-eq-N7c" id="ax7-3e-tra"/>
+                        <outlet property="featureHeaderHeightConstraint" destination="hyy-yY-wgw" id="3BK-HO-CUu"/>
                         <outlet property="generalOptionsContainerView" destination="fhP-Ga-19D" id="Kkq-Qi-Q9p"/>
+                        <outlet property="newsHeaderView" destination="ZfB-jw-VMM" id="k1y-Mt-8H8"/>
                         <outlet property="tableView" destination="RGw-Kx-VBy" id="PUS-eO-VVj"/>
                         <outlet property="topToolbar" destination="xJq-0v-4GG" id="ciI-OE-wd4"/>
                         <segue destination="U03-Od-wtY" kind="presentation" identifier="showComposer" id="Lr4-gz-kw3"/>

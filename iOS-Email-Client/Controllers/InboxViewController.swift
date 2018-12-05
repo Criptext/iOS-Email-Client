@@ -28,6 +28,7 @@ class InboxViewController: UIViewController {
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var topToolbar: TopbarUIView!
     @IBOutlet weak var buttonCompose: UIButton!
+    @IBOutlet weak var newsHeaderView: MailboxNewsHeaderUIView!
     
     var searchController = UISearchController(searchResultsController: nil)
     var spaceBarButton:UIBarButtonItem!
@@ -53,6 +54,7 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var envelopeSubtitleView: UILabel!
     @IBOutlet weak var envelopeView: UIView!
     @IBOutlet weak var composeButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var featureHeaderHeightConstraint: NSLayoutConstraint!
     
     var myAccount: Account!
     var mailboxData = MailboxData()
@@ -74,6 +76,10 @@ class InboxViewController: UIViewController {
         getPendingEvents(nil)
         
         let queueItems = DBManager.getQueueItems()
+        newsHeaderView.onClose = { [weak self] in
+            self?.mailboxData.feature = nil
+            self?.closeNewsHeader()
+        }
         mailboxData.queueItems = queueItems
         mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
             guard self?.myAccount.isInvalidated ?? false,
@@ -82,6 +88,18 @@ class InboxViewController: UIViewController {
             }
             self?.dequeueEvents()
         })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.viewSetupNews()
+        }
+    }
+    
+    func viewSetupNews() {
+        if let feature = mailboxData.feature {
+            newsHeaderView.fillFields(feature: feature)
+            openNewsHeader()
+        } else {
+            closeNewsHeader()
+        }
     }
     
     func viewSetup(){
@@ -689,14 +707,6 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard mailboxData.selectedLabel != SystemLabel.inbox.id || mailboxData.feature == nil else {
-            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "NewsHeaderTableViewCell") as! MailboxNewsHeaderUITableCell
-            cell.fillFields(feature: mailboxData.feature!)
-            cell.onClose = { [weak self] in
-                self?.closeNewsHeader()
-            }
-            return cell
-        }
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return nil
         }
@@ -709,8 +719,20 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func closeNewsHeader() {
-        mailboxData.feature = nil
-        tableView.reloadData()
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            self?.featureHeaderHeightConstraint.constant = 0
+            self?.view.layoutIfNeeded()
+        }) { [weak self] (success) in
+            self?.newsHeaderView.isHidden = true
+        }
+    }
+    
+    func openNewsHeader() {
+        newsHeaderView.isHidden = false
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.featureHeaderHeightConstraint.constant = 125
+            self?.view.layoutIfNeeded()
+        }
     }
     
     func showEmptyTrashWarning() {
@@ -733,9 +755,6 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard mailboxData.selectedLabel != SystemLabel.inbox.id || mailboxData.feature == nil else {
-            return 125.0
-        }
         guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
             return 0.0
         }

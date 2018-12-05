@@ -1,5 +1,5 @@
 //
-//  MailboxNewsHeaderUITableCell.swift
+//  MailboxNewsHeaderUIView.swift
 //  iOS-Email-Client
 //
 //  Created by Pedro on 11/28/18.
@@ -9,7 +9,8 @@
 import Foundation
 import SDWebImage
 
-class MailboxNewsHeaderUITableCell: UITableViewHeaderFooterView {
+class MailboxNewsHeaderUIView: UIView {
+    @IBOutlet var view: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var newsImageView: UIImageView!
@@ -18,6 +19,13 @@ class MailboxNewsHeaderUITableCell: UITableViewHeaderFooterView {
     
     @IBAction func onClosePress(_ sender: Any) {
         onClose?()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        UINib(nibName: "MailboxNewsHeaderUIView", bundle: nil).instantiate(withOwner: self, options: nil)
+        addSubview(view)
+        view.frame = self.bounds
     }
     
     func fillFields(feature: MailboxData.Feature) {
