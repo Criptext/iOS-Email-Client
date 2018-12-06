@@ -194,6 +194,12 @@
 "2FA Enabled!" = "2FA Enabled!";
 "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device." = "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device.";
 
+"DELETE_ACCOUNT" = "Delete Account";
+"DELETING_ACCOUNT" = "Deleting your account ";
+"DELETE_WILL_ERASE" = "will erase all data in all devices ";
+"DELETE_NO_LONGER" = "and will make this user name no longer available. Are you sure?";
+"DELETE_ACCOUNT_SUCCESS" = "\nAccount was deleted successfully.";
+
 /* SettingsLabelsViewController.swift */
 
 "LABELS" = "LABELS";

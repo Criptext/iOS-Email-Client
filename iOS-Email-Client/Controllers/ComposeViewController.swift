@@ -1132,7 +1132,7 @@ extension ComposeViewController: RichEditorDelegate {
     func richEditorTookFocus(_ editor: RichEditorView) {
         self.collapseCC(true)
         let defaults = CriptextDefaults()
-        if defaults.guideAttachments {
+        if !defaults.guideAttachments {
             self.coachMarksController.start(on: self)
             defaults.guideAttachments = true
         }
