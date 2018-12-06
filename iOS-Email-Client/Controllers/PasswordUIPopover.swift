@@ -11,15 +11,22 @@ import Material
 
 class PasswordUIPopover: BaseUIPopover {
     
+    var answerShouldDismiss = true
     var onOkPress: ((String) -> (Void))?
     var onLogoutPress: (() -> (Void))?
     var myAccount: Account?
     var remotelyCheckPassword = false
+    var initialTitle: String?
+    var initialAttrMessage: NSAttributedString?
+    var initialMessage: String?
+    @IBOutlet weak var titleHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var messageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     @IBOutlet weak var passwordTitleLabel: UILabel!
+    @IBOutlet weak var passwordMessageLabel: UILabel!
     
     init(){
         super.init("PasswordUIPopover")
@@ -36,6 +43,22 @@ class PasswordUIPopover: BaseUIPopover {
         passwordTextField.detailColor = .alert
         shouldDismiss = !remotelyCheckPassword
         passwordTitleLabel.text = remotelyCheckPassword ? "Your password has changed. Confirm your new password, if you Cancel, all local data will be erased." : "Enter your password to continue"
+        if let title = initialTitle {
+            passwordTitleLabel.text = title
+        }
+        if let attrMessage = initialAttrMessage {
+            passwordMessageLabel.attributedText = attrMessage
+            let height = Utils.getLabelHeight(attrMessage.string, width: passwordMessageLabel.frame.width, fontSize: 14)
+            messageHeightConstraint.constant = height
+            if let title = initialTitle {
+                titleHeightConstraint.constant = Utils.getLabelHeight(title, width: passwordMessageLabel.frame.width, fontSize: 16) + 30
+            }
+        } else if let message = initialMessage {
+            passwordMessageLabel.text = message
+        } else {
+            messageHeightConstraint.constant = 0
+        }
+        
         showLoader(false)
     }
     
@@ -47,6 +70,10 @@ class PasswordUIPopover: BaseUIPopover {
         passwordTextField.resignFirstResponder()
         guard !remotelyCheckPassword else {
             validatePassword(password)
+            return
+        }
+        guard answerShouldDismiss else {
+            self.onOkPress?(password)
             return
         }
         self.dismiss(animated: true, completion: { [weak self] in
@@ -89,6 +116,7 @@ class PasswordUIPopover: BaseUIPopover {
     }
     
     func showLoader(_ show: Bool){
+        self.shouldDismiss = !show
         self.okButton.isEnabled = !show
         self.cancelButton.isEnabled = !show
         self.passwordTextField.isEnabled = !show

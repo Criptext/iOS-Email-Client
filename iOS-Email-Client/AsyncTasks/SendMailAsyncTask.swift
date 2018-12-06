@@ -109,6 +109,9 @@ class SendMailAsyncTask {
             guestEmails["cc"] = ccArray
             guestEmails["bcc"] = bccArray
             guestEmails["body"] = "\(body)\(email.secure ? "" : Constants.footer)"
+            if let fKey = fileKey {
+                guestEmails["fileKey"] = fKey
+            }
         }
         return (guestEmails, criptextEmails)
     }
@@ -351,21 +354,7 @@ class SendMailAsyncTask {
     }
     
     private class func buildAttachmentsHtml(attachments: [[String: Any]], keys: String?) -> String {
-        guard !attachments.isEmpty else {
-            return ""
-        }
-        return "<br/><div>" + attachments.reduce("") { (result, attachment) -> String in
-            let urlParams: String
-            if let fileKeys = keys {
-                let params = "\(attachment["token"] as! String):\(fileKeys)"
-                urlParams = "\(params.data(using: .utf8)!.base64EncodedString())?e=1"
-            } else {
-                urlParams = "\(attachment["token"] as! String)"
-            }
-            let size = attachment["size"] as! Int
-            let sizeString = File.prettyPrintSize(size: size)
-            return result + buildAttachmentHtml(name: attachment["name"] as! String, mimeType: attachment["mimeType"] as! String, size: sizeString, encodedParams: urlParams)
-        } + "</div>"
+        return ""
     }
     
     private class func buildAttachmentHtml(name: String, mimeType: String, size: String, encodedParams: String) -> String{

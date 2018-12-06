@@ -176,13 +176,15 @@ class SharedDB {
         try! realm.write {
             for (originalToken, newToken) in duplicates {
                 guard let token = newToken as? String,
-                    let file = realm.objects(File.self).filter("originalToken == '\(originalToken)'").first else {
+                    let fileIndex = email.files.firstIndex(where: {$0.originalToken == originalToken}) else {
                         continue
                 }
+                let file = email.files[fileIndex]
                 let newFile = file.duplicate()
                 newFile.shouldDuplicate = false
                 newFile.token = token
                 realm.add(newFile, update: true)
+                email.files.remove(at: fileIndex)
                 realm.delete(file)
                 email.files.append(newFile)
                 let fileparam = ["token": newFile.token,

@@ -243,6 +243,19 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
+    
+    class func deleteAccount(password: String, token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "password": password
+            ] as [String: Any]
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
 }
 
 extension APIManager {

@@ -39,6 +39,7 @@ class SettingsGeneralViewController: UITableViewController{
             case twoFactor
             case recovery
             case syncContact
+            case deleteAccount
             
             case privacy
             case terms
@@ -61,6 +62,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("Signature")
                 case .changePassword:
                     return String.localize("Change Password")
+                case .deleteAccount:
+                    return String.localize("DELETE_ACCOUNT")
                 case .twoFactor:
                     return String.localize("Two-Factor Authentication")
                 case .recovery:
@@ -91,7 +94,7 @@ class SettingsGeneralViewController: UITableViewController{
     let sections = [.account, .privacy, .about, .version] as [Section]
     let menus = [
         .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .syncContact],
-        .about: [.privacy, .terms, .openSource, .logout],
+        .about: [.privacy, .terms, .openSource, .logout, .deleteAccount],
         .privacy : [.preview, .readReceipts, .pin],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
@@ -193,7 +196,7 @@ class SettingsGeneralViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
-        cell.goImageView.isHidden = false
+        cell.goImageView.isHidden = subsection == .deleteAccount || subsection == .logout
         cell.optionLabel.text = subsection.name
         return cell
     }
@@ -281,6 +284,8 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             showWarningLogout()
+        case .deleteAccount:
+            showDeleteAccount()
         case .recovery:
             goToRecoveryEmail()
         case .pin:
@@ -323,6 +328,49 @@ class SettingsGeneralViewController: UITableViewController{
             weakSelf.confirmLogout()
         }
         self.presentPopover(popover: logoutPopover, height: 175)
+    }
+    
+    func showDeleteAccount(){
+        let passwordPopover = PasswordUIPopover()
+        passwordPopover.answerShouldDismiss = false
+        passwordPopover.initialTitle = String.localize("DELETE_ACCOUNT")
+        let attrRegularText = NSMutableAttributedString(string: String.localize("DELETING_ACCOUNT"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let attrBoldText = NSMutableAttributedString(string: String.localize("DELETE_WILL_ERASE"), attributes: [NSAttributedString.Key.font: Font.bold.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let attrRegularText2 = NSMutableAttributedString(string: String.localize("DELETE_NO_LONGER"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        attrRegularText.append(attrBoldText)
+        attrRegularText.append(attrRegularText2)
+        passwordPopover.initialAttrMessage = attrRegularText
+        passwordPopover.onOkPress = { [weak self] pass in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.deleteAccount(password: pass)
+        }
+        self.presentPopover(popover: passwordPopover, height: 260)
+    }
+    
+    func deleteAccount(password: String){
+        APIManager.deleteAccount(password: password.sha256()!, token: self.myAccount.jwt, completion: { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
+            if case .BadRequest = responseData {
+                if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
+                    popover.dismiss(animated: false, completion: nil)
+                }
+                weakSelf.showAlert("Delete Account Failed", message: "Wrong Password. Please try again", style: .alert)
+                return
+            }
+            guard case .Success = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                    if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
+                        popover.dismiss(animated: false, completion: nil)
+                    }
+                    weakSelf.showAlert("Delete Account Failed", message: "Something went wrong while deleting your account. Please try again", style: .alert)
+                return
+            }
+            delegate.logout(manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
+        })
     }
     
     func showWarningLogout() {
