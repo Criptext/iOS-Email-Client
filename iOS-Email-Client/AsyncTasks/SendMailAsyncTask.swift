@@ -108,7 +108,8 @@ class SendMailAsyncTask {
             guestEmails["cc"] = ccArray
             guestEmails["bcc"] = bccArray
             guestEmails["body"] = "\(email.content)\(email.secure ? "" : Constants.footer)"
-            if let fKey = fileKey {
+            if !email.secure,
+                let fKey = fileKey {
                 guestEmails["fileKey"] = fKey
             }
         }

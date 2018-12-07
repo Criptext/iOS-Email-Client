@@ -26,7 +26,7 @@
 
 /* NewLoginViewController.swift */
 
-"Logged Out!" = "Logged Out!";
+"SIGNED_OUT!" = "Signed Out!";
 "This device has been removed remotely." = "This device has been removed remotely.";
 "Username" = "Username";
 "Sign up" = "Sign up";
