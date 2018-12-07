@@ -67,14 +67,21 @@
                     <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bis-oP-llK" customClass="CLTokenInputView">
-                            <rect key="frame" x="0.0" y="0.0" width="376" height="45"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="kqz-PS-Mhg"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWv-qE-xQG" customClass="CLTokenInputView">
+                            <rect key="frame" x="0.0" y="45" width="375" height="45"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="ZPe-Is-asO"/>
+                            </constraints>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6aJ-Qs-ku0">
-                            <rect key="frame" x="324" y="0.0" width="52" height="45"/>
+                            <rect key="frame" x="323" y="0.0" width="52" height="45"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="52" id="8Md-dR-4IV"/>
@@ -85,29 +92,22 @@
                                 <action selector="onCollapsePress:" destination="-1" eventType="touchUpInside" id="pls-xj-DAH"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWv-qE-xQG" customClass="CLTokenInputView">
-                            <rect key="frame" x="0.0" y="45" width="376" height="45"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="45" id="ZPe-Is-asO"/>
-                            </constraints>
-                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ORb-mH-PWG" customClass="CLTokenInputView">
-                            <rect key="frame" x="0.0" y="90" width="376" height="45"/>
+                            <rect key="frame" x="0.0" y="90" width="375" height="45"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="esA-i5-QZ6"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Pe-6h-to0">
-                            <rect key="frame" x="0.0" y="135" width="376" height="1"/>
+                            <rect key="frame" x="0.0" y="135" width="375" height="1"/>
                             <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="t4W-df-sCP"/>
                             </constraints>
                         </view>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="KxY-Rb-6fc">
-                            <rect key="frame" x="13" y="141" width="348" height="30"/>
+                            <rect key="frame" x="13" y="141" width="347" height="30"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="uko-7g-Vr5"/>
@@ -117,21 +117,21 @@
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6r-pP-m3L" customClass="RichEditorView" customModule="RichEditorView">
-                            <rect key="frame" x="13" y="186" width="348" height="150"/>
+                            <rect key="frame" x="13" y="186" width="347" height="150"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="150" id="mU1-qR-BAR"/>
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lgr-7H-82B">
-                            <rect key="frame" x="0.0" y="336" width="376" height="303"/>
+                            <rect key="frame" x="0.0" y="336" width="375" height="303"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="303" id="xQx-hv-vhL"/>
                             </constraints>
                         </tableView>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vDn-Eg-utq">
-                            <rect key="frame" x="0.0" y="136" width="376" height="530"/>
+                            <rect key="frame" x="0.0" y="136" width="375" height="530"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                     </subviews>
@@ -158,7 +158,7 @@
                         <constraint firstAttribute="trailing" secondItem="ORb-mH-PWG" secondAttribute="trailing" id="Z4J-2B-66Q"/>
                         <constraint firstItem="6Pe-6h-to0" firstAttribute="top" secondItem="ORb-mH-PWG" secondAttribute="bottom" id="abQ-h1-qaU"/>
                         <constraint firstAttribute="trailing" secondItem="6Pe-6h-to0" secondAttribute="trailing" id="eBb-Ko-RlV"/>
-                        <constraint firstItem="bis-oP-llK" firstAttribute="width" secondItem="1os-vN-Gop" secondAttribute="width" constant="1" id="ede-74-g2i"/>
+                        <constraint firstItem="bis-oP-llK" firstAttribute="width" secondItem="1os-vN-Gop" secondAttribute="width" id="ede-74-g2i"/>
                         <constraint firstItem="bis-oP-llK" firstAttribute="top" secondItem="1os-vN-Gop" secondAttribute="top" id="jaw-3d-R3u"/>
                         <constraint firstItem="bis-oP-llK" firstAttribute="leading" secondItem="1os-vN-Gop" secondAttribute="leading" id="kOV-Si-0Yg"/>
                         <constraint firstItem="vDn-Eg-utq" firstAttribute="top" secondItem="6Pe-6h-to0" secondAttribute="bottom" id="l73-jl-LYg"/>
@@ -175,6 +175,7 @@
                 <constraint firstItem="1os-vN-Gop" firstAttribute="trailing" secondItem="SlT-XZ-Wvh" secondAttribute="trailing" id="G2O-oe-fzI"/>
                 <constraint firstItem="SlT-XZ-Wvh" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="JI8-6p-6UZ"/>
                 <constraint firstItem="SlT-XZ-Wvh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="O0D-48-Pba"/>
+                <constraint firstItem="1os-vN-Gop" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="WTx-EM-B1X"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="1os-vN-Gop" secondAttribute="bottom" id="nSC-mW-Jrg"/>
                 <constraint firstItem="1os-vN-Gop" firstAttribute="leading" secondItem="SlT-XZ-Wvh" secondAttribute="leading" id="umT-Qd-fHZ"/>
                 <constraint firstItem="1os-vN-Gop" firstAttribute="top" secondItem="SlT-XZ-Wvh" secondAttribute="top" constant="44" id="y6f-tg-QLw"/>
