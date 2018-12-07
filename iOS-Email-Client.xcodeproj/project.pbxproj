@@ -249,6 +249,8 @@
 		A72C185321AEEB1F00D899EE /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
 		A72C185521AF0EB800D899EE /* MailboxNewsHeaderUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72C185421AF0EB800D899EE /* MailboxNewsHeaderUIView.xib */; };
 		A72C185721AF165700D899EE /* MailboxNewsHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185621AF165700D899EE /* MailboxNewsHeaderUIView.swift */; };
+		A73151C321B9F2FA00D20B72 /* PrivacyUIViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */; };
+		A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */; };
 		A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
@@ -685,6 +687,8 @@
 		A72C185221AEEB1F00D899EE /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		A72C185421AF0EB800D899EE /* MailboxNewsHeaderUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailboxNewsHeaderUIView.xib; sourceTree = "<group>"; };
 		A72C185621AF165700D899EE /* MailboxNewsHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxNewsHeaderUIView.swift; sourceTree = "<group>"; };
+		A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyUIViewCell.swift; sourceTree = "<group>"; };
+		A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityPrivacyViewController.swift; sourceTree = "<group>"; };
 		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
 		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
 		A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBarFramework.framework; path = Carthage/Build/iOS/ITProgressBarFramework.framework; sourceTree = "<group>"; };
@@ -962,6 +966,7 @@
 				A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */,
 				A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */,
 				A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */,
+				A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1188,6 +1193,7 @@
 				A7060A0021AA5A880066BFA4 /* PasscodeLockView.xib */,
 				A72C185421AF0EB800D899EE /* MailboxNewsHeaderUIView.xib */,
 				A72C185621AF165700D899EE /* MailboxNewsHeaderUIView.swift */,
+				A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1724,6 +1730,7 @@
 				7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */,
 				A7CC3886219496E600C8355A /* SharedUtils.swift in Sources */,
 				7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */,
+				A73151C321B9F2FA00D20B72 /* PrivacyUIViewCell.swift in Sources */,
 				7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */,
 				7CB3B940208A57EF00EDD427 /* DetailMoreOptionsUIView.swift in Sources */,
 				A7CC387D21939D6500C8355A /* SharedAPI.swift in Sources */,
@@ -1813,6 +1820,7 @@
 				7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
+				A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */,
 				7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */,
 				7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */,
 				A77C30A721A4DE720031E219 /* PasscodeConfig.swift in Sources */,
