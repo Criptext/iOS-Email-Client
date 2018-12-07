@@ -104,12 +104,13 @@ class SendMailAsyncTask {
         
         var guestEmails = [String : Any]()
         if(!toArray.isEmpty || !ccArray.isEmpty || !bccArray.isEmpty){
-            let body = email.content + SendMailAsyncTask.buildAttachmentsHtml(attachments: files, keys: fileKey)
+            let body = email.content
             guestEmails["to"] = toArray
             guestEmails["cc"] = ccArray
             guestEmails["bcc"] = bccArray
             guestEmails["body"] = "\(body)\(email.secure ? "" : Constants.footer)"
-            if let fKey = fileKey {
+            if !email.secure,
+                let fKey = fileKey {
                 guestEmails["fileKey"] = fKey
             }
         }
@@ -141,8 +142,7 @@ class SendMailAsyncTask {
             }
             self.files.append(contentsOf: fileParams)
             if self.guestEmails["body"] != nil {
-                let body = self.body + SendMailAsyncTask.buildAttachmentsHtml(attachments: self.files, keys: self.fileKey)
-                self.guestEmails["body"] = "\(body)\(self.isSecure ? "" : Constants.footer)"
+                self.guestEmails["body"] = "\(self.body)\(self.isSecure ? "" : Constants.footer)"
             }
             self.getSessionAndEncrypt(queue: queue, completion: completion)
         }
@@ -351,30 +351,6 @@ class SendMailAsyncTask {
             }
             SharedDB.update(filetoken: filetoken, emailId: emailId)
         }
-    }
-    
-    private class func buildAttachmentsHtml(attachments: [[String: Any]], keys: String?) -> String {
-        return ""
-    }
-    
-    private class func buildAttachmentHtml(name: String, mimeType: String, size: String, encodedParams: String) -> String{
-        return """
-        <div style="margin-top: 6px; float: left;">
-            <a style="cursor: pointer; text-decoration: none;" href="https://services.criptext.com/downloader/\(encodedParams)">
-                <div style="align-items: center; border: 1px solid #e7e5e5; border-radius: 6px; display: flex; height: 20px; margin-right: 20px; padding: 10px; position: relative; width: 236px;">
-                    <div style="position: relative;">
-                        <div style="align-items: center; border-radius: 4px; display: flex; height: 22px; width: 22px;">
-                            <img src="https://cdn.criptext.com/External-Email/imgs/\(Utils.getExternalImage(mimeType)).png" style="height: 100%; width: 100%;"/>
-                        </div>
-                    </div>
-                    <div style="padding-top: 1px; display: flex; flex-grow: 1; height: 100%; margin-left: 10px; width: calc(100% - 32px);">
-                        <span style="color: black; padding-top: 1px; width: 160px; flex-grow: 1; font-size: 14px; font-weight: 700; overflow: hidden; padding-right: 5px; text-overflow: ellipsis; white-space: nowrap;">\(name)</span>
-                        <span style="color: #9b9b9b; flex-grow: 0; font-size: 13px; white-space: nowrap; line-height: 21px;">\(size)</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        """
     }
     
 }

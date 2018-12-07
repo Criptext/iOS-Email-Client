@@ -88,13 +88,11 @@ class InboxViewController: UIViewController {
             }
             self?.dequeueEvents()
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.viewSetupNews()
-        }
     }
     
     func viewSetupNews() {
-        if let feature = mailboxData.feature {
+        if mailboxData.selectedLabel == SystemLabel.inbox.id,
+            let feature = mailboxData.feature {
             newsHeaderView.fillFields(feature: feature)
             openNewsHeader()
         } else {
@@ -153,6 +151,7 @@ class InboxViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         sendFailEmail()
+        viewSetupNews()
         presentWelcomeTour()
     }
     
@@ -433,6 +432,11 @@ extension InboxViewController {
             return
         }
         
+        if let feature = result.feature {
+            mailboxData.feature = feature
+            viewSetupNews()
+        }
+        
         if !result.linkStartData.isEmpty {
             handleLinkStart(data: result.linkStartData)
         }
@@ -528,6 +532,7 @@ extension InboxViewController{
         loadMails(since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
         topToolbar.swapTrashIcon(labelId: labelId)
+        self.viewSetupNews()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
         self.navigationDrawerController?.closeLeftView()
     }

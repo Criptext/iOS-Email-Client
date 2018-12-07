@@ -256,6 +256,14 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
+    
+    class func getNews(code: Int32, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "https://raw.githubusercontent.com/Criptext/News/master/\(NSLocale.preferredLanguages.first!.replacingOccurrences(of: "-", with: "_").lowercased())/\(code)"
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
 }
 
 extension APIManager {
