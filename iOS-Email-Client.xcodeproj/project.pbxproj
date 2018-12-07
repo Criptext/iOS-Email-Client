@@ -268,7 +268,6 @@
 		A789B23C21B5E48800F89DF3 /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A789B23B21B5E48800F89DF3 /* PasscodeLockView.xib */; };
 		A789B23E21B5E49200F89DF3 /* LightPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789B23D21B5E49200F89DF3 /* LightPasscodeViewController.swift */; };
 		A789B23F21B5E4A700F89DF3 /* PasscodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30A621A4DE720031E219 /* PasscodeConfig.swift */; };
-		A7ADA11D21A5A3610027FC1C /* ChangePinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */; };
 		A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -707,7 +706,6 @@
 		A789B23B21B5E48800F89DF3 /* PasscodeLockView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PasscodeLockView.xib; path = ../../../PasscodeLockView.xib; sourceTree = "<group>"; };
 		A789B23D21B5E49200F89DF3 /* LightPasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LightPasscodeViewController.swift; path = ../../../LightPasscodeViewController.swift; sourceTree = "<group>"; };
 		A7ADA11B21A507D70027FC1C /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
-		A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinViewController.swift; sourceTree = "<group>"; };
 		A7ADA12221A5CE840027FC1C /* ComposerUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposerUIView.xib; sourceTree = "<group>"; };
 		A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerUIView.swift; sourceTree = "<group>"; };
 		A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -964,7 +962,6 @@
 				7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */,
 				7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */,
 				A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */,
-				A7ADA11C21A5A3610027FC1C /* ChangePinViewController.swift */,
 				A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */,
 				A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */,
 				A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */,
@@ -1788,7 +1785,6 @@
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,
-				A7ADA11D21A5A3610027FC1C /* ChangePinViewController.swift in Sources */,
 				7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */,
 				A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */,
 				7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */,
