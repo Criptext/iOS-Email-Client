@@ -12,6 +12,7 @@ import RichEditorView
 import CLTokenInputView
 import RealmSwift
 import MobileCoreServices
+import PasscodeLock
 
 class ShareViewController: UIViewController {
     
@@ -23,6 +24,13 @@ class ShareViewController: UIViewController {
     var fileManager = CriptextFileManager()
     var emailDraft: Email?
     var contacts = [Contact]()
+    
+    lazy var passcodeLockViewController: LightPasscodeViewController = {
+        let configuration = PasscodeConfig()
+        let vc = LightPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
+        vc.sharingViewController = self
+        return vc
+    }()
     
     override func viewDidLoad() {
         configRealm()
@@ -39,6 +47,36 @@ class ShareViewController: UIViewController {
         fileManager.delegate = self
         fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         self.handleExtensionItems()
+        
+        if shouldShowPinLock() {
+            self.present(passcodeLockViewController, animated: true, completion: nil)
+        }
+    }
+    
+    func shouldShowPinLock() -> Bool {
+        let defaults = CriptextDefaults()
+        guard defaults.hasPIN else {
+            return false
+        }
+        guard defaults.lockTimer != PIN.time.immediately.rawValue else {
+            return true
+        }
+        let timestamp = defaults.goneTimestamp
+        let currentTimestamp = Date().timeIntervalSince1970
+        switch(PIN.time(rawValue: defaults.lockTimer) ?? .immediately) {
+        case .oneminute:
+            return currentTimestamp - timestamp >= Utils.ONE_MINUTE
+        case .fiveminutes:
+            return currentTimestamp - timestamp >= Utils.FIVE_MINUTES
+        case .fifteenminutes:
+            return currentTimestamp - timestamp >= Utils.FIFTEEN_MINUTES
+        case .onehour:
+            return currentTimestamp - timestamp >= Utils.ONE_HOUR
+        case .oneday:
+            return currentTimestamp - timestamp >= Utils.ONE_DAY
+        default:
+            return true
+        }
     }
     
     func handleExtensionItems() {
@@ -98,8 +136,8 @@ class ShareViewController: UIViewController {
     }
     
     func getAccount() {
-        guard let groupDefaults = UserDefaults.init(suiteName: Env.groupApp),
-            let username = groupDefaults.string(forKey: "activeAccount"),
+        let defaults = CriptextDefaults()
+        guard let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username) else {
                 self.close()
                 return

@@ -107,8 +107,8 @@ class ComposeViewController: UIViewController {
         let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
         textField.font = Font.regular.size(14)
         
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        activeAccount = DBManager.getAccountByUsername(groupDefaults.string(forKey: "activeAccount")!)
+        let defaults = CriptextDefaults()
+        activeAccount = DBManager.getAccountByUsername(defaults.activeAccount!)
         fileManager.token = activeAccount.jwt
         
         let sendImage = Icon.send.image?.tint(with: .white)
@@ -1131,10 +1131,10 @@ extension ComposeViewController: RichEditorDelegate {
     
     func richEditorTookFocus(_ editor: RichEditorView) {
         self.collapseCC(true)
-        let defaults = UserDefaults.standard
-        if !defaults.bool(forKey: "guideAttachments") {
+        let defaults = CriptextDefaults()
+        if defaults.guideAttachments {
             self.coachMarksController.start(on: self)
-            defaults.set(true, forKey: "guideAttachments")
+            defaults.guideAttachments = true
         }
     }
 }

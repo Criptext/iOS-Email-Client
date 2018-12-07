@@ -25,10 +25,10 @@ class NotificationService: UNNotificationServiceExtension {
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        let defaults = CriptextDefaults()
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         guard let bestAttemptContent = bestAttemptContent,
-            let username = groupDefaults.string(forKey: "activeAccount"),
+            let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username) else {
                 contentHandler(request.content)
                 return
@@ -52,7 +52,7 @@ class NotificationService: UNNotificationServiceExtension {
                     contentHandler(bestAttemptContent)
                     return
                 }
-                if groupDefaults.bool(forKey: "previewDisable") {
+                if defaults.previewDisable {
                     bestAttemptContent.title = email.fromContact.displayName
                     bestAttemptContent.body = email.subject
                 } else {
@@ -91,8 +91,8 @@ class NotificationService: UNNotificationServiceExtension {
     override func serviceExtensionTimeWillExpire() {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
-        if let groupDefaults = UserDefaults.init(suiteName: Env.groupApp),
-            let activeAccount = groupDefaults.string(forKey: "activeAccount"),
+        let defaults = CriptextDefaults()
+        if let activeAccount = defaults.activeAccount,
             let contentHandler = contentHandler,
             let bestAttemptContent =  bestAttemptContent {
             bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"

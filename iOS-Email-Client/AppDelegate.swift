@@ -25,12 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var goneTimestamp: TimeInterval {
         get {
-            let defaults = UserDefaults.standard
-            return defaults.double(forKey: PIN.goneTimestamp.rawValue)
+            let defaults = CriptextDefaults()
+            return defaults.goneTimestamp
         }
         set (value) {
-            let defaults = UserDefaults.standard
-            defaults.set(value, forKey: PIN.goneTimestamp.rawValue)
+            let defaults = CriptextDefaults()
+            defaults.goneTimestamp = value
         }
     }
     
@@ -54,17 +54,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func shouldShowPinLock() -> Bool {
-        let defaults = UserDefaults.standard
-        guard defaults.string(forKey: PIN.lock.rawValue) != nil else {
+        let defaults = CriptextDefaults()
+        guard defaults.hasPIN else {
             return false
         }
-        guard let timerStringValue = defaults.string(forKey: PIN.lockTimer.rawValue),
-            timerStringValue != PIN.time.immediately.rawValue else {
+        guard defaults.lockTimer != PIN.time.immediately.rawValue else {
             return true
         }
         let timestamp = goneTimestamp
         let currentTimestamp = Date().timeIntervalSince1970
-        switch(PIN.time(rawValue: timerStringValue) ?? .immediately) {
+        switch(PIN.time(rawValue: defaults.lockTimer) ?? .immediately) {
         case .oneminute:
             return currentTimestamp - timestamp >= Utils.ONE_MINUTE
         case .fiveminutes:
@@ -79,7 +78,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
     }
-    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -215,16 +213,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var initialVC:UIViewController!
         
-        let defaults = UserDefaults.standard
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        let defaults = CriptextDefaults()
+        defaults.migrate()
         
-        if let activeAccount = defaults.string(forKey: "activeAccount"),
-            groupDefaults.string(forKey: "activeAccount") == nil {
-            defaults.removeObject(forKey: "activeAccount")
-            groupDefaults.setValue(activeAccount, forKey: "activeAccount")
-        }
-        
-        if let activeAccount = groupDefaults.string(forKey: "activeAccount") {
+        if let activeAccount = defaults.activeAccount {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions, activeAccount)
         }else{
@@ -337,14 +329,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func clearDefaults() {
-        let defaults = UserDefaults.standard
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        groupDefaults.removeObject(forKey: "activeAccount")
-        defaults.removeObject(forKey: PIN.lock.rawValue)
-        defaults.removeObject(forKey: PIN.fingerprint.rawValue)
-        defaults.removeObject(forKey: PIN.faceid.rawValue)
-        defaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
-        defaults.removeObject(forKey: PIN.lockTimer.rawValue)
+        let defaults = CriptextDefaults()
+        defaults.removeConfig()
     }
     
     func replaceRootViewController(_ viewController:UIViewController){
@@ -386,7 +372,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         WebSocketManager.sharedInstance.pause()
-        goneTimestamp = Date().timeIntervalSince1970
+        if !self.passcodeLockPresenter.isPasscodePresented {
+            goneTimestamp = Date().timeIntervalSince1970
+        }
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -394,9 +382,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.triggerRefresh()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         WebSocketManager.sharedInstance.reconnect()
-        let defaults = UserDefaults.standard
+        let defaults = CriptextDefaults()
         let showBiometrics = shouldShowPinLock()
-        passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.isTouchIDAllowed = defaults.string(forKey: PIN.lock.rawValue) != nil && (defaults.bool(forKey: PIN.fingerprint.rawValue) || defaults.bool(forKey: PIN.faceid.rawValue))
+        passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.isTouchIDAllowed = defaults.hasPIN && (defaults.hasFingerPrint || defaults.hasFaceID)
         passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.shouldRequestTouchIDImmediately = showBiometrics
         if showBiometrics {
             passcodeLockPresenter.present()
@@ -506,7 +494,7 @@ extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Messaging.messaging().appDidReceiveMessage(userInfo)
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
+        let defaults = CriptextDefaults()
         let state = UIApplication.shared.applicationState
         guard let action = userInfo["action"] as? String else {
             completionHandler(.noData)
@@ -516,7 +504,7 @@ extension AppDelegate: MessagingDelegate {
         case "link_device":
             completionHandler(.noData)
         default:
-            guard groupDefaults.string(forKey: "activeAccount") != nil,
+            guard defaults.hasActiveAccount,
                 state == .background,
                 let snackVC = self.window?.rootViewController?.snackbarController,
                 let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
@@ -533,8 +521,8 @@ extension AppDelegate: MessagingDelegate {
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        guard groupDefaults.string(forKey: "activeAccount") != nil,
+        let defaults = CriptextDefaults()
+        guard defaults.hasActiveAccount,
             let inboxVC = getInboxVC() else {
             return
         }

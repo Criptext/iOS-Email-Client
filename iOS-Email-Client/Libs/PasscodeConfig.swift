@@ -10,11 +10,25 @@ import Foundation
 import PasscodeLock
 
 class PasscodeConfig: PasscodeLockConfigurationType {
+    var incorrectPasscodeAttempts: Int {
+        get {
+            let defaults = CriptextDefaults()
+            return defaults.pinAttempts
+        }
+        set {
+            let defaults = CriptextDefaults()
+            defaults.pinAttempts = newValue
+        }
+    }
+    
     var repository: PasscodeRepositoryType = PasscodeType()
     
     var passcodeLength: Int = 4
     
-    var isTouchIDAllowed: Bool =  UserDefaults.standard.string(forKey: PIN.lock.rawValue) != nil && (UserDefaults.standard.bool(forKey: PIN.fingerprint.rawValue) || UserDefaults.standard.bool(forKey: PIN.faceid.rawValue))
+    var isTouchIDAllowed: Bool = {
+        let defaults = CriptextDefaults()
+        return defaults.hasPIN && (defaults.hasFingerPrint || defaults.hasFaceID)
+    }()
     
     var shouldRequestTouchIDImmediately: Bool = true
     
@@ -22,26 +36,26 @@ class PasscodeConfig: PasscodeLockConfigurationType {
     
     internal class PasscodeType: PasscodeRepositoryType {
         var hasPasscode: Bool {
-            let defaults = UserDefaults.standard
-            return defaults.string(forKey: PIN.lock.rawValue) != nil
+            let defaults = CriptextDefaults()
+            return defaults.hasPIN
         }
         
         func save(passcode: String) {
-            let defaults = UserDefaults.standard
-            defaults.set(passcode, forKey: PIN.lock.rawValue)
+            let defaults = CriptextDefaults()
+            defaults.pin = passcode
         }
         
         func check(passcode: String) -> Bool {
-            let defaults = UserDefaults.standard
-            guard let pass = defaults.string(forKey: PIN.lock.rawValue) else {
+            let defaults = CriptextDefaults()
+            guard let pass = defaults.pin else {
                 return false
             }
             return passcode == pass
         }
         
         func delete() {
-            let defaults = UserDefaults.standard
-            defaults.removeObject(forKey: PIN.lock.rawValue)
+            let defaults = CriptextDefaults()
+            defaults.removePasscode()
         }
     }
 }

@@ -27,12 +27,14 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     override func appWillEnterForegroundHandler(_ notification: Notification) {
         super.appWillEnterForegroundHandler(notification)
         touchIDButton?.setImage(UIImage(named: biometricType == .faceID ? "faceID" : "touchID"), for: .normal)
+        
         showLocalAuth()
     }
     
     var incorrectPasscodeAttempts: Int {
         get {
-            return UserDefaults.standard.integer(forKey: "incorrectPasscodeAttemps")
+            let defaults = CriptextDefaults()
+            return defaults.pinAttempts
         }
     }
     
@@ -86,8 +88,8 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     }
     
     func confirmLogout(){
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        guard let username = groupDefaults.string(forKey: "activeAccount"),
+        let defaults = CriptextDefaults()
+        guard let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username) else {
             self.showAlert(String.localize("Sign out error"), message: String.localize("Not signed in, please restart the app."), style: .alert)
             return

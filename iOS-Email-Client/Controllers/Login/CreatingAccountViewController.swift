@@ -61,11 +61,8 @@ class CreatingAccountViewController: UIViewController{
     }
     
     func removeQuickGuideFlags(){
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: "guideAttachments")
-        defaults.removeObject(forKey: "guideUnsend")
-        defaults.removeObject(forKey: "guideFeed")
-        defaults.removeObject(forKey: "guideComposer")
+        let defaults = CriptextDefaults()
+        defaults.removeQuickGuideFlags()
     }
     
     func sendKeysRequest(){
@@ -135,11 +132,10 @@ class CreatingAccountViewController: UIViewController{
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
         DBManager.store([myContact])
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        groupDefaults.set(myAccount.username, forKey: "activeAccount")
-        let defaults = UserDefaults.standard
+        let defaults = CriptextDefaults()
+        defaults.activeAccount = myAccount.username
         if signupData.deviceId != 1 {
-            defaults.set(true, forKey: "welcomeTour")
+            defaults.welcomeTour = true
         }
         registerFirebaseToken(jwt: myAccount.jwt)
         animateProgress(100.0, 2.0) {

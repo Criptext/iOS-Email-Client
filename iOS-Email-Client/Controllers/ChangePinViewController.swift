@@ -24,40 +24,37 @@ class ChangePinViewController: UIViewController {
     weak var myAccount: Account!
     
     var locked: Bool {
-        let defaults = UserDefaults.standard
-        return defaults.string(forKey: PIN.lock.rawValue) != nil
+        let defaults = CriptextDefaults()
+        return defaults.hasPIN
     }
     var useFingerprint: Bool {
         get {
-            let defaults = UserDefaults.standard
-            return defaults.bool(forKey: PIN.fingerprint.rawValue)
+            let defaults = CriptextDefaults()
+            return defaults.hasFingerPrint
         }
         set (value) {
-            let defaults = UserDefaults.standard
-            defaults.set(value, forKey: PIN.fingerprint.rawValue)
+            let defaults = CriptextDefaults()
+            defaults.fingerprintUnlock = value
         }
     }
     var useFaceId: Bool {
         get {
-            let defaults = UserDefaults.standard
-            return defaults.bool(forKey: PIN.faceid.rawValue)
+            let defaults = CriptextDefaults()
+            return defaults.hasFaceID
         }
         set (value) {
-            let defaults = UserDefaults.standard
-            defaults.set(value, forKey: PIN.faceid.rawValue)
+            let defaults = CriptextDefaults()
+            defaults.faceUnlock = value
         }
     }
     var timerStringValue: String {
         get {
-            let defaults = UserDefaults.standard
-            guard let value = defaults.string(forKey: PIN.lockTimer.rawValue) else {
-                return PIN.time.immediately.rawValue
-            }
-            return value
+            let defaults = CriptextDefaults()
+            return defaults.lockTimer
         }
         set (value) {
-            let defaults = UserDefaults.standard
-            defaults.set(value, forKey: PIN.lockTimer.rawValue)
+            let defaults = CriptextDefaults()
+            defaults.lockTimer = value
         }
     }
     
@@ -105,8 +102,8 @@ class ChangePinViewController: UIViewController {
     
     @IBAction func onLockToggle(_ sender: Any) {
         guard lockSwitch.isOn else {
-            let defaults = UserDefaults.standard
-            defaults.removeObject(forKey: PIN.lock.rawValue)
+            let defaults = CriptextDefaults()
+            defaults.removePasscode()
             self.toggleActions()
             return
         }
@@ -174,19 +171,3 @@ class ChangePinViewController: UIViewController {
     }
 }
 
-enum PIN: String {
-    case lock = "lock"
-    case fingerprint = "fingerprintUnlock"
-    case faceid = "faceUnlock"
-    case lockTimer = "lockTimer"
-    case goneTimestamp = "goneTimestamp"
-    
-    enum time: String {
-        case immediately = "Immediately"
-        case oneminute = "1 minute"
-        case fiveminutes = "5 minutes"
-        case fifteenminutes = "15 minutes"
-        case onehour = "1 hour"
-        case oneday = "24 hours"
-    }
-}
