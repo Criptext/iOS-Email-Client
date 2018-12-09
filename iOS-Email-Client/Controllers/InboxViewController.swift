@@ -82,7 +82,7 @@ class InboxViewController: UIViewController {
         }
         mailboxData.queueItems = queueItems
         mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
-            guard self?.myAccount.isInvalidated ?? false,
+            guard !(self?.myAccount.isInvalidated ?? false),
                 case .update = changes else {
                 return
             }
@@ -235,7 +235,7 @@ class InboxViewController: UIViewController {
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        mailboxData.queueToken?.invalidate()
+        invalidateObservers()
         super.dismiss(animated: flag, completion: completion)
     }
     
@@ -1113,7 +1113,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func dequeueEvents(completion: (() -> Void)? = nil) {
-        
         guard !mailboxData.isDequeueing,
             let queueItems = mailboxData.queueItems,
             queueItems.count > 0 else {
