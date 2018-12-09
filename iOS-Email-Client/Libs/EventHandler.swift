@@ -294,12 +294,12 @@ extension EventHandler {
         APIManager.getNews(code: event.code) { (responseData) in
             guard case let .SuccessDictionary(news) = responseData,
                 let title = news["title"] as? String,
-                let body = news["body"] as? String else {
+                let body = news["body"] as? String,
+                let imageUrl = news["imageUrl"] as? String else {
                 finishCallback(false, .Empty)
                 return
             }
-            let imgUrl = "https://cdn.criptext.com/news/security.png"
-            let feature = MailboxData.Feature(imageUrl: imgUrl, title: title, subtitle: body)
+            let feature = MailboxData.Feature(imageUrl: imageUrl, title: title, subtitle: body)
             print(feature)
             finishCallback(true, .News(feature))
         }
