@@ -10,6 +10,7 @@ import Foundation
 
 class PrivacyUIViewCell: UITableViewCell {
     var switchToggle: ((Bool) -> Void)?
+    var didTap: (() -> Void)?
     @IBOutlet weak var detailContainerView: UIView!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var optionSwitch: UISwitch!
@@ -20,6 +21,8 @@ class PrivacyUIViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         optionSwitch.transform = CGAffineTransform(scaleX: 0.67, y: 0.67)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        self.addGestureRecognizer(tap)
     }
     
     func fillFields(option: SecurityPrivacyViewController.PrivacyOption) {
@@ -40,6 +43,21 @@ class PrivacyUIViewCell: UITableViewCell {
             optionPickLabel.textColor = .bright
             optionSwitch.isEnabled = false
         }
+    }
+    
+    @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
+        let touchPt = gestureRecognizer.location(in: self.contentView)
+        guard optionSwitch.isEnabled,
+            let toggle = switchToggle,
+            let tappedView = self.hitTest(touchPt, with: nil),
+            tappedView != detailContainerView,
+            tappedView != optionSwitch else {
+                didTap?()
+                return
+        }
+        let isOn = !optionSwitch.isOn
+        optionSwitch.setOn(isOn, animated: true)
+        toggle(isOn)
     }
     
     @IBAction func onSwitchToggle(_ sender: Any) {

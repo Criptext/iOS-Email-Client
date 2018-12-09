@@ -138,8 +138,24 @@ class SecurityPrivacyViewController: UITableViewController {
                 }
                 weakSelf.toggleOptions()
             }
-        default:
+        case .changePin:
             cell.selectionStyle = UITableViewCellSelectionStyle.gray
+            cell.didTap = { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                weakSelf.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                weakSelf.tableView(weakSelf.tableView, didSelectRowAt: indexPath)
+            }
+        case .autoLock:
+            cell.selectionStyle = UITableViewCellSelectionStyle.gray
+            cell.didTap = { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                weakSelf.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                weakSelf.tableView(weakSelf.tableView, didSelectRowAt: indexPath)
+            }
         }
         return cell
     }
@@ -160,12 +176,7 @@ class SecurityPrivacyViewController: UITableViewController {
         case .autoLock:
             self.openPicker()
         default:
-            guard let cell = tableView.cellForRow(at: indexPath) as? PrivacyUIViewCell,
-                let isOn = option.isOn else {
-                    return
-            }
-            cell.optionSwitch.setOn(!isOn, animated: true)
-            cell.onSwitchToggle(self)
+            break
         }
         
     }
