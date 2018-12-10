@@ -9,4 +9,5 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import "DateUtils.h"
 #import "ExceptionCatcher.h"
+#import <UIImageView_Letters/UIImageView+Letters.h>
 #import "ECKeyPair+KeyPairOpenPrivate.h"
