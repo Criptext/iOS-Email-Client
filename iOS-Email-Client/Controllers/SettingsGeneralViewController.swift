@@ -16,7 +16,6 @@ class SettingsGeneralViewController: UITableViewController{
     internal enum Section {
         case account
         case about
-        case privacy
         case version
         
         var name: String {
@@ -25,8 +24,6 @@ class SettingsGeneralViewController: UITableViewController{
                 return String.localize("ACCOUNT")
             case .about:
                 return String.localize("ABOUT")
-            case .privacy:
-                return String.localize("PRIVACY")
             case .version:
                 return String.localize("VERSION")
             }
@@ -39,15 +36,14 @@ class SettingsGeneralViewController: UITableViewController{
             case twoFactor
             case recovery
             case syncContact
+            case deleteAccount
             
             case privacy
             case terms
             case openSource
             case logout
             
-            case preview
-            case readReceipts
-            case pin
+            case privacySecurity
             
             case version
             
@@ -61,6 +57,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("Signature")
                 case .changePassword:
                     return String.localize("Change Password")
+                case .deleteAccount:
+                    return String.localize("DELETE_ACCOUNT")
                 case .twoFactor:
                     return String.localize("Two-Factor Authentication")
                 case .recovery:
@@ -73,12 +71,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("Open Source Libraries")
                 case .logout:
                     return String.localize("Sign out")
-                case .preview:
-                    return String.localize("Notification Preview")
-                case .readReceipts:
-                    return String.localize("Read Receipts")
-                case .pin:
-                    return String.localize("PIN Lock")
+                case .privacySecurity:
+                    return String.localize("Privacy and Security")
                 case .version:
                     return String.localize("Version")
                 }
@@ -88,11 +82,10 @@ class SettingsGeneralViewController: UITableViewController{
     
     let SECTION_VERSION = 3
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .privacy, .about, .version] as [Section]
+    let sections = [.account, .about, .version] as [Section]
     let menus = [
-        .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .syncContact],
-        .about: [.privacy, .terms, .openSource, .logout],
-        .privacy : [.preview, .readReceipts, .pin],
+        .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .privacySecurity, .syncContact],
+        .about: [.privacy, .terms, .openSource, .logout, .deleteAccount],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData: GeneralSettingsData!
@@ -125,8 +118,6 @@ class SettingsGeneralViewController: UITableViewController{
             return renderAccountCells(subsection: subsection)
         case .about:
             return renderAboutCells(subsection: subsection)
-        case .privacy:
-            return renderNotificationsCells(subsection: subsection)
         default:
             return renderVersionCells()
         }
@@ -193,45 +184,9 @@ class SettingsGeneralViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
-        cell.goImageView.isHidden = false
+        cell.goImageView.isHidden = subsection == .deleteAccount || subsection == .logout
         cell.optionLabel.text = subsection.name
         return cell
-    }
-    
-    func renderNotificationsCells(subsection: Section.SubSection) -> UITableViewCell {
-        switch(subsection) {
-        case .preview:
-            let defaults = CriptextDefaults()
-            let previewDisable = defaults.previewDisable
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
-            cell.optionLabel.text = subsection.name
-            cell.availableSwitch.isOn = !previewDisable
-            cell.switchToggle = { isOn in
-                defaults.previewDisable = !isOn
-            }
-            return cell
-        case .pin:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.messageLabel.text = ""
-            cell.loader.isHidden = true
-            cell.goImageView.isHidden = false
-            cell.optionLabel.text = subsection.name
-            return cell
-        case .readReceipts:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
-            cell.optionLabel.text = subsection.name
-            cell.availableSwitch.isOn = generalData.hasEmailReceipts
-            cell.switchToggle = { isOn in
-                cell.availableSwitch.isEnabled = false
-                self.setReadReceipts(enable: isOn, sender: cell.availableSwitch)
-            }
-            return cell
-        default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
-            cell.optionLabel.text = subsection.name
-            cell.availableSwitch.isOn = false
-            return cell
-        }
     }
     
     func renderVersionCells() -> GeneralVersionTableViewCell {
@@ -281,10 +236,12 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             showWarningLogout()
+        case .deleteAccount:
+            showDeleteAccount()
         case .recovery:
             goToRecoveryEmail()
-        case .pin:
-            goToPinLock()
+        case .privacySecurity:
+            goToPrivacyAndSecurity()
         case .syncContact:
             guard generalData.syncStatus != .syncing else {
                 break
@@ -323,6 +280,49 @@ class SettingsGeneralViewController: UITableViewController{
             weakSelf.confirmLogout()
         }
         self.presentPopover(popover: logoutPopover, height: 175)
+    }
+    
+    func showDeleteAccount(){
+        let passwordPopover = PasswordUIPopover()
+        passwordPopover.answerShouldDismiss = false
+        passwordPopover.initialTitle = String.localize("DELETE_ACCOUNT")
+        let attrRegularText = NSMutableAttributedString(string: String.localize("DELETING_ACCOUNT"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let attrBoldText = NSMutableAttributedString(string: String.localize("DELETE_WILL_ERASE"), attributes: [NSAttributedString.Key.font: Font.bold.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let attrRegularText2 = NSMutableAttributedString(string: String.localize("DELETE_NO_LONGER"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        attrRegularText.append(attrBoldText)
+        attrRegularText.append(attrRegularText2)
+        passwordPopover.initialAttrMessage = attrRegularText
+        passwordPopover.onOkPress = { [weak self] pass in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.deleteAccount(password: pass)
+        }
+        self.presentPopover(popover: passwordPopover, height: 260)
+    }
+    
+    func deleteAccount(password: String){
+        APIManager.deleteAccount(password: password.sha256()!, token: self.myAccount.jwt, completion: { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
+            if case .BadRequest = responseData {
+                if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
+                    popover.dismiss(animated: false, completion: nil)
+                }
+                weakSelf.showAlert("Delete Account Failed", message: "Wrong Password. Please try again", style: .alert)
+                return
+            }
+            guard case .Success = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                    if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
+                        popover.dismiss(animated: false, completion: nil)
+                    }
+                    weakSelf.showAlert("Delete Account Failed", message: "Something went wrong while deleting your account. Please try again", style: .alert)
+                return
+            }
+            delegate.logout(manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
+        })
     }
     
     func showWarningLogout() {
@@ -376,11 +376,12 @@ class SettingsGeneralViewController: UITableViewController{
         self.navigationController?.pushViewController(changePassVC, animated: true)
     }
     
-    func goToPinLock(){
+    func goToPrivacyAndSecurity(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let pinLockVC = storyboard.instantiateViewController(withIdentifier: "changePinViewController") as! ChangePinViewController
-        pinLockVC.myAccount = self.myAccount
-        self.navigationController?.pushViewController(pinLockVC, animated: true)
+        let securityVC = storyboard.instantiateViewController(withIdentifier: "securityPrivacyViewController") as! SecurityPrivacyViewController
+        securityVC.generalData = self.generalData
+        securityVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(securityVC, animated: true)
     }
     
     func goToSignature(){
@@ -446,20 +447,6 @@ class SettingsGeneralViewController: UITableViewController{
             }
             if (self.generalData.isTwoFactor) {
                 self.presentTwoFactorPopover()
-            }
-        }
-    }
-    
-    func setReadReceipts(enable: Bool, sender: UISwitch?){
-        let initialValue = self.generalData.hasEmailReceipts
-        self.generalData.hasEmailReceipts = enable
-        APIManager.setReadReceipts(enable: enable, token: myAccount.jwt) { (responseData) in
-            sender?.isEnabled = true
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)
-                self.generalData.hasEmailReceipts = initialValue
-                self.reloadView()
-                return
             }
         }
     }
