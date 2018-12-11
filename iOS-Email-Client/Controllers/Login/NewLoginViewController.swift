@@ -36,7 +36,7 @@ class NewLoginViewController: UIViewController{
         super.viewDidAppear(animated)
         if let removeMessage = loggedOutRemotely {
             loggedOutRemotely = nil
-            showAlert(String.localize("Logged Out!"), message: String.localize(removeMessage), style: .alert)
+            showAlert(String.localize("SIGNED_OUT"), message: String.localize(removeMessage), style: .alert)
         }
     }
     
@@ -141,7 +141,7 @@ class NewLoginViewController: UIViewController{
             }
             self?.linkBegin(username: username)
         }
-        self.presentPopover(popover: warningPopover, height: 250)
+        self.presentPopover(popover: warningPopover, height: 275)
     }
     
     func existingAccount(_ username: String) -> String? {

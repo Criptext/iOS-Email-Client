@@ -34,6 +34,7 @@ class EventData {
         var removed = false
         var updateSideMenu = false
         var linkStartData = [String: Any]()
+        var feature: MailboxData.Feature? = nil
     }
     
     struct NewEmail {
@@ -243,6 +244,16 @@ extension EventData {
             
             init(name: String){
                 self.name = name
+            }
+        }
+    }
+    
+    class Server {
+        struct News: Dictionarify {
+            let code: Int32
+            
+            init(params: [String: Any]){
+                code = (params["code"] as! NSString).intValue
             }
         }
     }

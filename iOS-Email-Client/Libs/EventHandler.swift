@@ -39,6 +39,8 @@ class EventHandler {
                 result.updateSideMenu = true
             case .LinkStart(let params):
                 result.linkStartData = params
+            case .News(let feature):
+                result.feature = feature
             default:
                 break
             }
@@ -108,6 +110,8 @@ class EventHandler {
             handleCreateLabelCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.changeName.rawValue:
             handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
+        case Event.Server.news.rawValue:
+            handleNewsCommand(params: params, finishCallback: handleEventResponse)
         case Event.serverError.rawValue:
             handleEventResponse(successfulEvent: true, result: .Empty)
         case Event.Link.start.rawValue:
@@ -284,6 +288,21 @@ extension EventHandler {
         DBManager.update(account: myAccount, name: event.name)
         finishCallback(true, .NameChanged)
     }
+    
+    func handleNewsCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        let event = EventData.Server.News(params: params)
+        APIManager.getNews(code: event.code) { (responseData) in
+            guard case let .SuccessDictionary(news) = responseData,
+                let title = news["title"] as? String,
+                let body = news["body"] as? String,
+                let imageUrl = news["imageUrl"] as? String else {
+                finishCallback(false, .Empty)
+                return
+            }
+            let feature = MailboxData.Feature(imageUrl: imageUrl, title: title, subtitle: body)
+            finishCallback(true, .News(feature))
+        }
+    }
 }
 
 enum Event: Int32 {
@@ -316,6 +335,10 @@ enum Event: Int32 {
         case recoveryVerify = 312
     }
     
+    enum Server: Int32 {
+        case news = 401
+    }
+    
     enum Queue: Int32 {
         case open = 500
     }
@@ -329,5 +352,6 @@ enum Event: Int32 {
         case NameChanged
         case LabelCreated
         case Empty
+        case News(MailboxData.Feature)
     }
 }
