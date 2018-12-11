@@ -10,3 +10,4 @@
 #import "DateUtils.h"
 #import "ExceptionCatcher.h"
 #import "ECKeyPair+KeyPairOpenPrivate.h"
+#import <UIImageView_Letters/UIImageView+Letters.h>
