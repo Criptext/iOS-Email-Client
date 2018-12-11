@@ -259,13 +259,11 @@ class DBManager: SharedDB {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
-        let predicate1 = NSPredicate(format: "NOT (ANY labels.id IN %@)", rejectedLabels)
-        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND NOT (ANY labels.id IN %@)", label, rejectedLabels)
-        let predicate = label == SystemLabel.all.id ? predicate1 : predicate2
-        let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false)
+        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@)", rejectedLabels)
+        let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"])
         let threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
             guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
-                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, email.threadId)
+                return NSPredicate(format: "threadId = %@", email.threadId)
             }
             return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
@@ -275,7 +273,7 @@ class DBManager: SharedDB {
     class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE) -> [Thread] {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.all.rejectedLabelIds
-        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@)", rejectedLabels, searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false)
+        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@)", rejectedLabels, searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"])
         return customDistinctEmailThreads(emails: emails, label: SystemLabel.all.id, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
             return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
         })
@@ -293,15 +291,6 @@ class DBManager: SharedDB {
             guard threads.count < limit else {
                 break
             }
-            guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
-                if(email.date < date){
-                    thread.subject = email.subject
-                    thread.participants.formUnion(email.getContacts(type: .to))
-                    thread.participants.formUnion(email.getContacts(type: .cc))
-                    threads.append(thread)
-                }
-                continue
-            }
             guard !threadIds.contains(email.threadId) else {
                 continue
             }
@@ -312,6 +301,9 @@ class DBManager: SharedDB {
             let threadEmails = realm.objects(Email.self).filter(emailFilter(email)).sorted(byKeyPath: "date", ascending: true)
             thread.lastEmail = threadEmails.last ?? email
             thread.threadId = thread.lastEmail.threadId
+            thread.unread = threadEmails.contains(where: {$0.unread})
+            thread.counter = threadEmails.count
+            thread.subject = threadEmails.first!.subject
             for threadEmail in threadEmails {
                 if(label == SystemLabel.sent.id){
                     if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
@@ -325,11 +317,15 @@ class DBManager: SharedDB {
                     thread.hasAttachments = true
                 }
             }
-            thread.unread = threadEmails.contains(where: {$0.unread})
-            thread.counter = threadEmails.count
-            thread.subject = threadEmails.first!.subject
-            threadIds.insert(thread.threadId)
-            threads.append(thread)
+            if(label == SystemLabel.all.id){
+                threadIds.insert(thread.threadId)
+                threads.append(thread)
+            }else{
+                if(threadEmails.contains(where: {$0.labels.contains(where: {$0.id == label })})){
+                    threadIds.insert(thread.threadId)
+                    threads.append(thread)
+                }
+            }
         }
         return threads
     }
