@@ -287,14 +287,15 @@ class DBManager: SharedDB {
         var threadIds = Set<String>()
         for email in emails {
             let thread = Thread()
-            thread.date = email.date
             thread.threadId = email.threadId
             thread.lastEmail = email
+            let threadEmails = realm.objects(Email.self).filter(emailFilter(email)).sorted(byKeyPath: "date", ascending: true)
+            thread.date = threadEmails.last!.date
             guard threads.count < limit else {
                 break
             }
             guard !email.labels.contains(where: {$0.id == SystemLabel.draft.id}) else {
-                if(email.date < date){
+                if(threadEmails.last!.date < date){
                     thread.subject = email.subject
                     thread.participants.formUnion(email.getContacts(type: .to))
                     thread.participants.formUnion(email.getContacts(type: .cc))
@@ -305,11 +306,10 @@ class DBManager: SharedDB {
             guard !threadIds.contains(email.threadId) else {
                 continue
             }
-            guard email.date < date else {
+            guard threadEmails.last!.date < date else {
                 threadIds.insert(thread.threadId)
                 continue
             }
-            let threadEmails = realm.objects(Email.self).filter(emailFilter(email)).sorted(byKeyPath: "date", ascending: true)
             thread.lastEmail = threadEmails.last ?? email
             thread.threadId = thread.lastEmail.threadId
             for threadEmail in threadEmails {
@@ -327,10 +327,11 @@ class DBManager: SharedDB {
             }
             thread.unread = threadEmails.contains(where: {$0.unread})
             thread.counter = threadEmails.count
-            thread.subject = threadEmails.first!.subject
+            thread.subject = threadEmails.last!.subject
             threadIds.insert(thread.threadId)
             threads.append(thread)
         }
+        threads.sort { $0.date > $1.date }
         return threads
     }
     
@@ -363,7 +364,8 @@ class DBManager: SharedDB {
         thread.lastEmail = threadEmails.last ?? email
         thread.threadId = thread.lastEmail.threadId
         thread.unread = threadEmails.contains(where: {$0.unread})
-        thread.subject = threadEmails.first!.subject
+        thread.subject = threadEmails.last!.subject
+        thread.date = threadEmails.last!.date
         thread.counter = threadEmails.count
         return thread
     }
