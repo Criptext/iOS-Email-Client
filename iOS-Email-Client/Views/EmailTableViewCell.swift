@@ -291,7 +291,6 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == .linkActivated,
             let link = navigationAction.request.url?.absoluteString {
-            print(link)
             if Utils.verifyUrl(urlString: link) {
                 decisionHandler(.cancel)
                 delegate?.tableViewCellDidTapLink(url: link)

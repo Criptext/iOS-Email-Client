@@ -300,7 +300,6 @@ extension EventHandler {
                 return
             }
             let feature = MailboxData.Feature(imageUrl: imageUrl, title: title, subtitle: body)
-            print(feature)
             finishCallback(true, .News(feature))
         }
     }
