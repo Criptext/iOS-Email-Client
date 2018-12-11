@@ -13,6 +13,7 @@ import CLTokenInputView
 import RealmSwift
 import MobileCoreServices
 import PasscodeLock
+import UIImageView_Letters
 
 class ShareViewController: UIViewController {
     
@@ -41,8 +42,10 @@ class ShareViewController: UIViewController {
         composerUIView.attachmentsTableView.dataSource = self
         composerUIView.contactsTableView.delegate = self
         composerUIView.contactsTableView.dataSource = self
-        let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
-        composerUIView.attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentCell")
+        let nibAttachment = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
+        composerUIView.attachmentsTableView.register(nibAttachment, forCellReuseIdentifier: "attachmentCell")
+        let nibContact = UINib(nibName: "ContactShareTableViewCell", bundle: nil)
+        composerUIView.contactsTableView.register(nibContact, forCellReuseIdentifier: "ContactShareTableViewCell")
         fileManager.token = myAccount.jwt
         fileManager.delegate = self
         fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
@@ -197,9 +200,11 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
         switch(tableView){
         case self.composerUIView.contactsTableView:
             let contact = contacts[indexPath.row]
-            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
-            cell.textLabel?.text = contact.displayName
-            cell.detailTextLabel?.text = contact.email
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ContactShareTableViewCell", for: indexPath) as! ContactShareTableViewCell
+            cell.nameLabel?.text = contact.displayName
+            cell.emailLabel?.text = contact.email
+            let color = UIColor.init().colorByName(name: contact.displayName)
+            cell.avatarImageView.setImageWith(contact.displayName, color: color, circular: true, fontName: "NunitoSans-Regular")
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell

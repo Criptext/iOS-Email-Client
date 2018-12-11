@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CommonCrypto
 
 extension UIColor {
     func toHexString() -> String {
@@ -18,6 +19,36 @@ extension UIColor {
         getRed(&r, green: &g, blue: &b, alpha: &a)
         let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
         return String(format:"%06x", rgb)
+    }
+    
+    func toColorString(hex: String)->UIColor {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+        
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        
+        return UIColor.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff, alpha: 1
+        )
+    }
+    
+    func colorByName(name: String) -> UIColor{
+        var color = "0091ff"
+        let md5Data = Data.init().MD5(string: name)
+        let md5 =  md5Data.map { String(format: "%02hhx", $0) }.joined()
+        if(md5.count >= 7){
+            let start = md5.index(md5.startIndex, offsetBy: 1)
+            let end = md5.index(md5.startIndex, offsetBy: 7)
+            let range = start..<end
+            color = String(md5[range])
+        }
+        return toColorString(hex: color)
     }
 }
 
@@ -287,5 +318,16 @@ extension Data {
     func plainBase64String() -> String {
         let customBase64String = self.base64EncodedString()
         return customBase64String
+    }
+    
+    func MD5(string: String) -> Data {
+        let messageData = string.data(using:.utf8)!
+        var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+        _ = digestData.withUnsafeMutableBytes {digestBytes in
+            messageData.withUnsafeBytes {messageBytes in
+                CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+            }
+        }
+        return digestData
     }
 }
