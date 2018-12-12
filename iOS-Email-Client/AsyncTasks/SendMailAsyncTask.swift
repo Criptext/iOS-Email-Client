@@ -196,7 +196,7 @@ class SendMailAsyncTask {
             "knownAddresses": knownAddresses
             ] as [String : Any]
         
-        APIManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { responseData in
+        APIManager.getKeysRequest(params, account: myAccount, queue: queue) { responseData in
             guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
                 return
             }
@@ -288,7 +288,7 @@ class SendMailAsyncTask {
         if let thread = self.threadId {
             requestParams["threadId"] = thread
         }
-        APIManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { responseData in
+        APIManager.postMailRequest(requestParams, account: myAccount, queue: queue) { responseData in
             if case .TooManyRequests = responseData {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()

@@ -66,7 +66,7 @@ class RecoveryEmailViewController: UIViewController {
     
     @IBAction func onResendPress(_ sender: Any) {
         self.showLoaderTimer(true)
-        APIManager.resendConfirmationEmail(token: myAccount.jwt) { (responseData) in
+        APIManager.resendConfirmationEmail(account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return
@@ -139,7 +139,7 @@ class RecoveryEmailViewController: UIViewController {
             return
         }
         showLoader(true)
-        APIManager.changeRecoveryEmail(email: email, password: password, token: myAccount.jwt) { responseData in
+        APIManager.changeRecoveryEmail(email: email, password: password, account: myAccount) { responseData in
             if case .Unauthorized = responseData {
                 self.logout()
                 return
@@ -275,6 +275,6 @@ extension RecoveryEmailViewController: LinkDeviceDelegate {
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
-        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
     }
 }

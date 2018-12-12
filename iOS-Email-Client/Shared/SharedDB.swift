@@ -39,6 +39,14 @@ class SharedDB {
         return realm.object(ofType: Account.self, forPrimaryKey: username)
     }
     
+    class func update(_ account: Account, jwt: String) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.jwt = jwt
+        }
+    }
+    
     @discardableResult class func store(_ email:Email) -> Bool {
         let realm = try! Realm()
         

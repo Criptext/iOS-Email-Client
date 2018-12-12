@@ -14,6 +14,7 @@ class Account: Object{
     @objc dynamic var deviceId = 1
     @objc dynamic var name = ""
     @objc dynamic var jwt = ""
+    @objc dynamic var refreshToken: String? = nil
     @objc dynamic var identityB64 = ""
     @objc dynamic var regId : Int32 = 0
     @objc dynamic var signature = ""

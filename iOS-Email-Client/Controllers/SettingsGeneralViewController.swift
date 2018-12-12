@@ -302,7 +302,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func deleteAccount(password: String){
-        APIManager.deleteAccount(password: password.sha256()!, token: self.myAccount.jwt, completion: { [weak self] (responseData) in
+        APIManager.deleteAccount(password: password.sha256()!, account: self.myAccount, completion: { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -341,7 +341,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func confirmLogout(){
-        APIManager.logout(token: myAccount.jwt) { (responseData) in
+        APIManager.logout(account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return
@@ -408,7 +408,7 @@ class SettingsGeneralViewController: UITableViewController{
     
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
-        APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
+        APIManager.updateName(name: name, account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return
@@ -434,7 +434,7 @@ class SettingsGeneralViewController: UITableViewController{
         }
         let initialValue = self.generalData.isTwoFactor
         self.generalData.isTwoFactor = enable
-        APIManager.setTwoFactor(isOn: enable, token: myAccount.jwt) { (responseData) in
+        APIManager.setTwoFactor(isOn: enable, account: myAccount) { (responseData) in
             if case .Conflicts = responseData {
                 self.presentRecoveryPopover()
                 return

@@ -203,6 +203,7 @@ class InboxViewController: UIViewController {
         
         guard let indexPath = self.tableView.indexPathForSelectedRow, !mailboxData.isCustomEditing else {
             mailboxData.removeSelectedRow = false
+            refreshThreadRows()
             return
         }
         
@@ -380,7 +381,7 @@ extension InboxViewController {
             return
         }
         self.mailboxData.updating = true
-        APIManager.getEvents(token: myAccount.jwt) { [weak self] (responseData) in
+        APIManager.getEvents(account: myAccount) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 refreshControl?.endRefreshing()
                 return
@@ -998,6 +999,11 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel) else {
             return
         }
+        self.navigationController?.popToRootViewController(animated: false)
+        self.dismiss(animated: false, completion: nil)
+        if let index = mailboxData.threads.firstIndex(where: {$0.threadId == threadId}) {
+            self.tableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
+        }
         goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel, message: message)
     }
     
@@ -1130,7 +1136,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             peerEvents.append(currentEvent)
             eventItems.append(queueItem)
         }
-        APIManager.postPeerEvent(["peerEvents": peerEvents], token: myAccount.jwt) { [weak self] (responseData) in
+        APIManager.postPeerEvent(["peerEvents": peerEvents], account: myAccount) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -1547,7 +1553,7 @@ extension InboxViewController: LinkDeviceDelegate {
         self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
-        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
     }
     
     func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
@@ -1566,7 +1572,7 @@ extension InboxViewController: LinkDeviceDelegate {
         }
     }
     func onCancelLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
-        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in
+        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
             completion()
         })
     }
