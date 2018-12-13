@@ -18,7 +18,7 @@ We use GitHub for bug tracking. Please search the existing issues for your bug a
 
 ## Contributing Code
 
-Firebase dependencies are not included within the repo. you should be able to add them manually downloading the [SDK](https://firebase.google.com/download/ios) and reading the instructions in the Readme. Or you can follow this steps:
+Firebase dependencies are not included within the repo. you should be able to add them manually downloading the [SDK](https://cdn.criptext.com/ios/Firebase-5.4.1.zip) and reading the instructions in the Readme. Or you can follow this steps:
 - Download the SDK
 - Import everything inside `Analytics/` and `Messaging/` in the root dir of your porject (when importing, don't forget to check *Copy items if needed*)
 - Go to App -> Build Settings -> Other Linker Flags, double-click it, double-click `+` and add `-ObjC`
