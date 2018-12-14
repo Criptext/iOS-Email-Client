@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "JWi-Fa-1cW"; */
+"JWi-Fa-1cW.normalTitle" = "Cancel";
+
+/* Class = "UITextField"; placeholder = "Enter Profile Name"; ObjectID = "WB5-Un-Tan"; */
+"WB5-Un-Tan.placeholder" = "Enter Profile Name";
+
+/* Class = "UILabel"; text = "Profile Name"; ObjectID = "nfM-2G-pON"; */
+"nfM-2G-pON.text" = "Profile Name";
+
+/* Class = "UIButton"; normalTitle = "Ok"; ObjectID = "wJg-AJ-UXv"; */
+"wJg-AJ-UXv.normalTitle" = "Ok";
