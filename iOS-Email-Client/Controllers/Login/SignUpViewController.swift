@@ -50,25 +50,25 @@ class SignUpViewController: UIViewController{
         usernameTextField.markView = usernameMark
         usernameTextField.font = Font.regular.size(17.0)
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Username"), attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: placeholderAttrs)
         fullnameTextField.markView = fullnameMark
         fullnameTextField.font = Font.regular.size(17.0)
         fullnameTextField.placeholderAnimation = .hidden
-        fullnameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Full Name"), attributes: placeholderAttrs)
+        fullnameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("FULLNAME"), attributes: placeholderAttrs)
         passwordTextField.markView = passwordMark
         passwordTextField.font = Font.regular.size(17.0)
         passwordTextField.rightViewMode = .always
         passwordTextField.placeholderAnimation = .hidden
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Password"), attributes: placeholderAttrs)
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: placeholderAttrs)
         confirmPasswordTextField.markView = confirmPasswordMark
         confirmPasswordTextField.font = Font.regular.size(17.0)
         confirmPasswordTextField.rightViewMode = .always
         confirmPasswordTextField.placeholderAnimation = .hidden
-        confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Confirm Password"), attributes: placeholderAttrs)
+        confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("CONFIRM_PASSWORD"), attributes: placeholderAttrs)
         emailTextField.markView = emailMark
         emailTextField.font = Font.regular.size(17.0)
         emailTextField.placeholderAnimation = .hidden
-        emailTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Recovery Email (Optional)"), attributes: placeholderAttrs)
+        emailTextField.attributedPlaceholder = NSAttributedString(string: String.localize("RECOVERY_OPT"), attributes: placeholderAttrs)
         checkToEnableDisableCreateButton()
         scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: 647.0)
         usernameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
@@ -126,7 +126,7 @@ class SignUpViewController: UIViewController{
         usernameTextField.text = usernameTextField.text?.lowercased()
         guard let username = usernameTextField.text,
             isValidUsername(username) else {
-            let inputError = String.localize("min 3 letters, start/end with a-z, valid 0-9, . _ -")
+            let inputError = String.localize("VALID_EMAIL_CONDITION")
             usernameTextField.setStatus(.invalid, inputError)
             return
         }
@@ -141,7 +141,7 @@ class SignUpViewController: UIViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.usernameTextField.setStatus(.invalid, String.localize("Username already exists"))
+                self.usernameTextField.setStatus(.invalid, String.localize("USERNAME_EXISTS"))
                 self.checkToEnableDisableCreateButton()
                 return
             }
@@ -152,7 +152,7 @@ class SignUpViewController: UIViewController{
     
     func checkFullname(){
         guard !fullnameTextField.isEmpty else {
-            let inputError = String.localize("please enter your name")
+            let inputError = String.localize("ENTER_NAME")
             fullnameTextField.setStatus(.invalid, inputError)
             return
         }
@@ -164,14 +164,14 @@ class SignUpViewController: UIViewController{
         confirmPasswordTextField.setStatus(.none)
         guard let password = passwordTextField.text,
             password.count >= Constants.MinCharactersPassword else {
-            let inputError = String.localize("password must be at least 8 characters")
+            let inputError = String.localize("PASSWORD_LENGTH")
             passwordTextField.setStatus(.invalid, inputError)
             return
         }
         passwordTextField.setStatus(.valid)
         
         guard let confirmPassword = confirmPasswordTextField.text, confirmPassword == password else {
-            let inputError = String.localize("Passwords don't match")
+            let inputError = String.localize("PASSWORD_NOT_MATCH")
             confirmPasswordTextField.setStatus(.invalid, inputError)
             return
         }
@@ -185,7 +185,7 @@ class SignUpViewController: UIViewController{
             return
         }
         guard Utils.validateEmail(emailTextField.text!) else {
-            let inputError = String.localize("this is not a valid email")
+            let inputError = String.localize("NOT_VALID_EMAIL")
             emailTextField.setStatus(.invalid, inputError)
             return
         }
@@ -210,10 +210,10 @@ class SignUpViewController: UIViewController{
         }
         
         let warningPopover = GenericDualAnswerUIPopover()
-        warningPopover.initialTitle = String.localize("Warning")
+        warningPopover.initialTitle = String.localize("WARNING")
         warningPopover.attributedMessage = self.buildWarningString()
-        warningPopover.leftOption = String.localize("Cancel")
-        warningPopover.rightOption = String.localize("Continue")
+        warningPopover.leftOption = String.localize("CANCEL")
+        warningPopover.rightOption = String.localize("CONTINUE")
         warningPopover.onResponse = { [weak self] confirm in
             guard confirm else {
                 return
@@ -236,11 +236,11 @@ class SignUpViewController: UIViewController{
     }
     
     func labelInit(){
-        let boldText  = String.localize("Terms & Conditions")
+        let boldText  = String.localize("TERMS_CONDITIONS")
         let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.white]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
         
-        let normalText = String.localize("By clicking create account, you agree to our ")
+        let normalText = String.localize("ACCEPT_TERMS")
         let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.white]
         let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
         
@@ -253,13 +253,13 @@ class SignUpViewController: UIViewController{
         let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
         let boldAttrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
         
-        let boldText  = String.localize("account recovery is imposible ")
+        let boldText  = String.localize("WARNING_RECOVERY_1")
         let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
         
-        let textPart1 = String.localize("You did NOT set a Recovery Email, so ")
+        let textPart1 = String.localize("WARNING_RECOVERY_2")
         let stringPart1 = NSMutableAttributedString(string:textPart1, attributes: normalAttrs)
         
-        let textPart2 = String.localize("if you forget your password")
+        let textPart2 = String.localize("WARNING_RECOVERY_3")
         let stringPart2 = NSMutableAttributedString(string:textPart2, attributes: normalAttrs)
         
         boldString.append(stringPart2)

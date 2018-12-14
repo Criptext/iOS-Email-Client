@@ -31,7 +31,7 @@ class PrivacyUIViewCell: UITableViewCell {
         optionNextImage.isHidden = !option.hasFlow
         optionSwitch.isHidden = option.isOn == nil
         optionSwitch.isOn = option.isOn ?? false
-        optionTextLabel.text = option.label.rawValue
+        optionTextLabel.text = String.localize(option.label.rawValue)
         optionPickLabel.isHidden = option.pick == nil
         optionPickLabel.text = option.pick
         if option.isEnabled {

@@ -246,9 +246,9 @@ class InboxViewController: UIViewController {
         self.fixedSpaceBarButton.width = 25.0
         self.flexibleSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         
-        self.titleBarButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Bold", size: 16.0)!, NSAttributedStringKey.foregroundColor: UIColor.white], for: .disabled)
+        self.titleBarButton.setTitleTextAttributes([NSAttributedStringKey.font: Font.bold.size(16)!, NSAttributedStringKey.foregroundColor: UIColor.white], for: .disabled)
         self.titleBarButton.isEnabled = false
-        self.countBarButton.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Bold", size: 16.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
+        self.countBarButton.setTitleTextAttributes([NSAttributedStringKey.font: Font.bold.size(16)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
         self.countBarButton.isEnabled = false
         
         let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
@@ -742,11 +742,11 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func showEmptyTrashWarning() {
-        let emptyAction = UIAlertAction(title: String.localize("Yes"), style: .destructive){ (alert : UIAlertAction!) -> Void in
+        let emptyAction = UIAlertAction(title: String.localize("YES"), style: .destructive){ (alert : UIAlertAction!) -> Void in
             self.emptyTrash()
         }
-        let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel)
-        showAlert(String.localize("Empty Trash"), message: String.localize("All your emails in Trash are going to be deleted PERMANENTLY. Do you want to continue?"), style: .alert, actions: [emptyAction, cancelAction])
+        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel)
+        showAlert(String.localize("EMPTY_TRASH"), message: String.localize("ALL_TRASH_DELETE"), style: .alert, actions: [emptyAction, cancelAction])
     }
     
     func emptyTrash(from date: Date = Date()){
@@ -781,22 +781,22 @@ extension InboxViewController: UITableViewDataSource{
             return
         }
         guard !mailboxData.searchMode else {
-            setEnvelopeMessages(title: String.localize("No search results"), subtitle: String.localize("Trash and Spam are not displayed"))
+            setEnvelopeMessages(title: String.localize("NO_RESULTS"), subtitle: String.localize("NOR_TRASH_SPAM"))
             return
         }
         switch(mailboxData.selectedLabel){
         case SystemLabel.inbox.id:
-            setEnvelopeMessages(title: String.localize("There are no emails"), subtitle: String.localize("share your email address!"))
+            setEnvelopeMessages(title: String.localize("NO_INBOXES"), subtitle: String.localize("SHARE_EMAIL"))
         case SystemLabel.sent.id:
-            setEnvelopeMessages(title: String.localize("You have no emails sent"), subtitle: String.localize("let's send one!"))
+            setEnvelopeMessages(title: String.localize("NO_SENTS"), subtitle: String.localize("LETS_SEND"))
         case SystemLabel.draft.id:
-            setEnvelopeMessages(title: String.localize("There are no drafts"), subtitle: String.localize("That's ok"))
+            setEnvelopeMessages(title: String.localize("NO_DRAFTS"), subtitle: String.localize("THATS_OK"))
         case SystemLabel.spam.id:
-            setEnvelopeMessages(title: String.localize("There's no spam"), subtitle: String.localize("Cool!"))
+            setEnvelopeMessages(title: String.localize("NO_SPAM"), subtitle: String.localize("COOL"))
         case SystemLabel.trash.id:
-            setEnvelopeMessages(title: String.localize("There's no trash"), subtitle: String.localize("What a clean place!"))
+            setEnvelopeMessages(title: String.localize("NO_TRASHES"), subtitle: String.localize("CLEAN_PLACE"))
         default:
-            setEnvelopeMessages(title: String.localize("There are no emails"), subtitle: String.localize("It's a matter of time"))
+            setEnvelopeMessages(title: String.localize("NO_INBOXES"), subtitle: String.localize("MATTER_OF_TIME"))
         }
     }
     
@@ -1037,7 +1037,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func inviteFriend(){
-        let textToShare = String.localize("Check out Criptext, I use it to email privately and securely with anyone! Get it free at https://www.criptext.com/dl")
+        let textToShare = String.localize("CHECKOUT_CRIPTEXT")
         let shareObject = [textToShare] as [Any]
         let activityVC = UIActivityViewController(activityItems: shareObject, applicationActivities: nil)
         activityVC.completionWithItemsHandler = { (activity, success, items, error) in
@@ -1056,7 +1056,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         supportContact.displayName = "Criptext Support"
         supportContact.email = "support@criptext.com"
         let composerData = ComposerData()
-        composerData.initContent = "<br/><br/><span>\(String.localize("Do not write below this line."))</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(systemIdentifier())</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
+        composerData.initContent = "<br/><br/><span>\(String.localize("DONT_WRITE_BELOW"))</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(systemIdentifier())</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
         composerData.initToContacts = [supportContact]
         composerData.initSubject = "Customer Support - iOS"
         openComposer(composerData: composerData, files: List<File>())
@@ -1338,11 +1338,11 @@ extension InboxViewController: NavigationToolbarDelegate {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
-        let archiveAction = UIAlertAction(title: "Ok", style: .destructive){ (alert : UIAlertAction!) -> Void in
+        let archiveAction = UIAlertAction(title: "OK", style: .destructive){ (alert : UIAlertAction!) -> Void in
             self.deleteThreads()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        showAlert(String.localize("Delete Threads"), message: String.localize("The selected threads will be PERMANENTLY deleted"), style: .alert, actions: [archiveAction, cancelAction])
+        let cancelAction = UIAlertAction(title: "CANCEL", style: .cancel)
+        showAlert(String.localize("DELETE_THREADS"), message: String.localize("SELECTED_DELETE_PERMANENTLY"), style: .alert, actions: [archiveAction, cancelAction])
     }
     
     func onMarkThreads() {
@@ -1403,7 +1403,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func sendMail(email: Email, password: String?) {
-        showSendingSnackBar(message: String.localize("Sending Email..."), permanent: true)
+        showSendingSnackBar(message: String.localize("SENDING_MAIL"), permanent: true)
         reloadIfSentMailbox(email: email)
         let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, password: password)
         sendMailAsyncTask.start { [weak self] responseData in
@@ -1415,24 +1415,24 @@ extension InboxViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Forbidden = responseData {
-                weakSelf.showSnackbar(String.localize("Email Failed. It will be resent in the future"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
                 return
             }
             if case let .Error(error) = responseData {
-                weakSelf.showSnackbar("\(error.description). \(String.localize("It will be resent in the future"))", attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, buttons: "", permanent: false)
                 return
             }
             guard case let .SuccessInt(key) = responseData,
                 let newEmail = DBManager.getMail(key: key) else {
-                weakSelf.showSnackbar(String.localize("Email Failed. It will be resent in the future"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
                 return
             }
             if let index = weakSelf.mailboxData.threads.index(where: {!$0.lastEmail.isInvalidated && $0.threadId == newEmail.threadId}) {
                 weakSelf.mailboxData.threads[index].lastEmail = newEmail
             }
             weakSelf.refreshThreadRows()
-            weakSelf.showSendingSnackBar(message: String.localize("Email Sent"), permanent: false)
+            weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
             weakSelf.sendFailEmail()
         }
     }
@@ -1509,12 +1509,12 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
     
     func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
         let hintView = HintUIView()
-        hintView.messageLabel.text = String.localize("Tap to compose\na secure email")
+        hintView.messageLabel.text = String.localize("GUIDE_TAP_COMPOSE")
         
         if(currentGuide == "guideFeed"){
             hintView.topCenterConstraint.constant = -10
             hintView.rightConstraint.constant = 35
-            hintView.messageLabel.text = String.localize("See who's reading\nyour emails")
+            hintView.messageLabel.text = String.localize("GUIDE_FEEDS")
         }
         
         return (bodyView: hintView, arrowView: nil)

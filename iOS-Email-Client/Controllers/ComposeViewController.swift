@@ -191,7 +191,7 @@ class ComposeViewController: UIViewController {
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressAttachment(_:)))
         self.attachmentButtonContainerView.addGestureRecognizer(tapGesture)
-        self.title = String.localize("New Secure Email")
+        self.title = String.localize("NEW_SECURE_EMAIL")
         self.navigationItem.rightBarButtonItem = self.enableSendButton
         activityButton.setImage(Icon.attachment.vertical.image, for: .normal)
         activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
@@ -477,19 +477,19 @@ class ComposeViewController: UIViewController {
             return
         }
         
-        let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel, handler: nil)
-        let sendAction = UIAlertAction(title: String.localize("Yes"), style: .default, handler: { (_) in
+        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel, handler: nil)
+        let sendAction = UIAlertAction(title: String.localize("YES"), style: .default, handler: { (_) in
             self.fileManager.registeredFiles = self.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
             self.tableView.reloadData()
             self.handleExit()
         })
-        self.showAlert(String.localize("Pending Attachments"), message: String.localize("Some attachments are being uploaded. Would you like to discard them and proceed?"), style: .alert, actions: [cancelAction, sendAction])
+        self.showAlert(String.localize("PENDING_ATTACH"), message: String.localize("ATTACH_UPLOADING_DISCARD"), style: .alert, actions: [cancelAction, sendAction])
         return
     }
     
     func handleExit(){
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: String.localize("Discard"), style: .destructive) { action in
+        sheet.addAction(UIAlertAction(title: String.localize("DISCARD"), style: .destructive) { action in
             APIManager.cancelAllUploads()
             if let draft = self.composerData.emailDraft {
                 self.delegate?.deleteDraft(draftId: draft.key)
@@ -497,13 +497,13 @@ class ComposeViewController: UIViewController {
             }
             self.dismiss(animated: true, completion: nil)
         })
-        sheet.addAction(UIAlertAction(title: String.localize("Save Draft"), style: .default) { action in
+        sheet.addAction(UIAlertAction(title: String.localize("SAVE_DRAFT"), style: .default) { action in
             APIManager.cancelAllUploads()
             let draft = self.saveDraft()
             self.delegate?.newDraft(draft: draft)
             self.dismiss(animated: true, completion: nil)
         })
-        sheet.addAction(UIAlertAction(title: String.localize("Cancel"), style: .cancel))
+        sheet.addAction(UIAlertAction(title: String.localize("CANCEL"), style: .cancel))
         
         self.present(sheet, animated: true, completion:nil)
     }
@@ -511,7 +511,7 @@ class ComposeViewController: UIViewController {
     @IBAction func didPressSend(_ sender: UIBarButtonItem) {
         self.resignKeyboard()
         guard !fileManager.pendingAttachments() else {
-            self.showAlert(nil, message: String.localize("Please wait for your attachments to finish processing"), style: .alert)
+            self.showAlert(nil, message: String.localize("WAIT_ATTACHMENT"), style: .alert)
             return
         }
         self.prepareMail()
@@ -567,7 +567,7 @@ class ComposeViewController: UIViewController {
     @IBAction func didPressAttachment(_ sender: UIButton) {
         //derpo
         guard fileManager.registeredFiles.count < 5 else {
-            self.showAlert(String.localize("Attachments cap reached"), message: String.localize("\nYou can upload up to 5 attachments per email. Please consider removing one before adding another"), style: .alert)
+            self.showAlert(String.localize("ATTACHMENT_CAP"), message: String.localize("ATTACHMENT_CAP_SIZE"), style: .alert)
             return
         }
         self.showAttachmentDrawer(true)
@@ -587,7 +587,7 @@ class ComposeViewController: UIViewController {
                     self.present(picker, animated: true, completion: nil)
                     break
                 default:
-                    self.showAlert(String.localize("Access denied"), message: String.localize("You need to enable access for this app in your settings"), style: .alert)
+                    self.showAlert(String.localize("ACCESS_DENIED"), message: String.localize("NEED_ENABLE_ACCESS"), style: .alert)
                     break
                 }
             }
@@ -598,7 +598,7 @@ class ComposeViewController: UIViewController {
         AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted) in
             DispatchQueue.main.async {
                 if !granted {
-                    self.showAlert(String.localize("Access denied"), message:String.localize( "You need to enable access for this app in your settings"), style: .alert)
+                    self.showAlert(String.localize("ACCESS_DENIED"), message:String.localize("NEED_ENABLE_ACCESS"), style: .alert)
                     return
                 }
                 self.imagePicker.presentCameraPicker(from: self)
@@ -888,7 +888,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
                 let token = CLToken(displayText: name, context: valueObject)
                 view.add(token)
             } else {
-                self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
+                self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             }
         }
         
@@ -947,7 +947,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let token = CLToken(displayText: text, context: valueObject)
             view.add(token)
         } else {
-            self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
+            self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
         }
     }
     
@@ -1017,7 +1017,7 @@ extension ComposeViewController: CNContactPickerDelegate {
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
         guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
-            self.showAlert(String.localize("Recipients cap reached"), message: String.localize("\nYou can add up to 300 recipients for each email. Consider removing one before adding another"), style: .alert)
+            self.showAlert(String.localize("RECIPIENTS_CAP"), message: String.localize("RECIPIENTS_CAP_SIZE"), style: .alert)
             return
         }
         guard value.contains("@") else {
@@ -1027,7 +1027,7 @@ extension ComposeViewController: CNContactPickerDelegate {
             return
         }
         guard Utils.validateEmail(value) else {
-            self.showAlert(String.localize("Invalid recipient"), message: String.localize("Please enter a valid email address"), style: .alert)
+            self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             return
         }
         let valueObject = NSString(string: value)
@@ -1143,7 +1143,7 @@ extension ComposeViewController: CoachMarksControllerDataSource, CoachMarksContr
     
     func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
         let hintView = HintUIView()
-        hintView.messageLabel.text = String.localize("Add Secure\nattachments")
+        hintView.messageLabel.text = String.localize("ADD_ATTACHMENT")
         hintView.rightConstraint.constant = 80
         hintView.topCenterConstraint.constant = 27
         

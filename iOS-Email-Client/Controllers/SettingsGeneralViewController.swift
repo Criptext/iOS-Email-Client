@@ -50,31 +50,31 @@ class SettingsGeneralViewController: UITableViewController{
             var name: String {
                 switch(self){
                 case .syncContact:
-                    return String.localize("Sync Phonebook Contacts")
+                    return String.localize("SYNC_PHONEBOOK")
                 case .profile:
-                    return String.localize("Profile")
+                    return String.localize("PROFILE")
                 case .signature:
-                    return String.localize("Signature")
+                    return String.localize("SIGNATURE")
                 case .changePassword:
-                    return String.localize("Change Password")
+                    return String.localize("CHANGE_PASS")
                 case .deleteAccount:
                     return String.localize("DELETE_ACCOUNT")
                 case .twoFactor:
-                    return String.localize("Two-Factor Authentication")
+                    return String.localize("TWO_FACTOR")
                 case .recovery:
-                    return String.localize("Recovery Email")
+                    return String.localize("RECOVERY_EMAIL")
                 case .privacy:
-                    return String.localize("Privacy Policy")
+                    return String.localize("POLICY")
                 case .terms:
-                    return String.localize("Terms of Service")
+                    return String.localize("TERMS")
                 case .openSource:
-                    return String.localize("Open Source Libraries")
+                    return String.localize("OPEN_LIBS")
                 case .logout:
-                    return String.localize("Sign out")
+                    return String.localize("SINGOUT")
                 case .privacySecurity:
-                    return String.localize("Privacy and Security")
+                    return String.localize("PRIVACY_SECURITY")
                 case .version:
-                    return String.localize("Version")
+                    return String.localize("VERSION")
                 }
             }
         }
@@ -310,7 +310,7 @@ class SettingsGeneralViewController: UITableViewController{
                 if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
                     popover.dismiss(animated: false, completion: nil)
                 }
-                weakSelf.showAlert("Delete Account Failed", message: "Wrong Password. Please try again", style: .alert)
+                weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: "WRONG_PASS_RETRY", style: .alert)
                 return
             }
             guard case .Success = responseData,
@@ -318,7 +318,7 @@ class SettingsGeneralViewController: UITableViewController{
                     if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
                         popover.dismiss(animated: false, completion: nil)
                     }
-                    weakSelf.showAlert("Delete Account Failed", message: "Something went wrong while deleting your account. Please try again", style: .alert)
+                    weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("UNABLE_DELETE_ACCOUNT"), style: .alert)
                 return
             }
             delegate.logout(manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
@@ -351,7 +351,7 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert(String.localize("Sign out error"), message: String.localize("Unable to sign out. Please try again"), style: .alert)
+                self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("UNABLE_SIGNOUT"), style: .alert)
                 return
             }
             self.logout(manually: true)
@@ -393,7 +393,7 @@ class SettingsGeneralViewController: UITableViewController{
     
     func presentNamePopover(){
         let changeNamePopover = SingleTextInputViewController()
-        changeNamePopover.myTitle = String.localize("Change Name")
+        changeNamePopover.myTitle = String.localize("CHANGE_NAME")
         changeNamePopover.initInputText = self.myAccount.name
         changeNamePopover.onOk = { text in
             self.changeProfileName(name: text)
@@ -418,7 +418,7 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: String.localize("Unable to update Profile Name. Please try again"), style: .alert)
+                self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_UPDATE_PROFILE"), style: .alert)
                 return
             }
             DBManager.update(account: self.myAccount, name: name)
@@ -440,7 +440,7 @@ class SettingsGeneralViewController: UITableViewController{
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)
+                self.showAlert(String.localize("SOMETHING_WRONG"), message: "\(String.localize("UNABLE_TO")) \(enable ? String.localize("ENABLE") : String.localize("DISABLE")) \(String.localize("TWO_FACTOR_RETRY"))", style: .alert)
                 self.generalData.isTwoFactor = initialValue
                 self.reloadView()
                 return
@@ -453,20 +453,20 @@ class SettingsGeneralViewController: UITableViewController{
     
     func presentRecoveryPopover() {
         let popover = GenericAlertUIPopover()
-        let attributedRegular = NSMutableAttributedString(string: String.localize("To enable Two-Factor Authentication you must set and verify a recovery email on your account"), attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
-        let attributedSemibold = NSAttributedString(string: String.localize("\n\nPlease go to Settings > Recovery Email to complete this step."), attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
+        let attributedRegular = NSMutableAttributedString(string: String.localize("TO_ENABLE_2FA_1"), attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
+        let attributedSemibold = NSAttributedString(string: String.localize("TO_ENABLE_2FA_2"), attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
         attributedRegular.append(attributedSemibold)
-        popover.myTitle = String.localize("Recovery Email Not Set")
+        popover.myTitle = String.localize("RECOVERY_NOT_SET")
         popover.myAttributedMessage = attributedRegular
-        popover.myButton = String.localize("Got it!")
+        popover.myButton = String.localize("GOT_IT")
         self.presentPopover(popover: popover, height: 310)
     }
     
     func presentTwoFactorPopover() {
         let popover = GenericAlertUIPopover()
-        popover.myTitle = String.localize("2FA Enabled!")
-        popover.myMessage = String.localize("Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device.")
-        popover.myButton = String.localize("Got it!")
+        popover.myTitle = String.localize("2FA_ENABLED")
+        popover.myMessage = String.localize("NEXT_TIME_2FA")
+        popover.myButton = String.localize("GOT_IT")
         self.presentPopover(popover: popover, height: 263)
     }
 }

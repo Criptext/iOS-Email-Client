@@ -27,7 +27,7 @@ class ResetDeviceViewController: UIViewController{
     var loginData: LoginData!
     var failed = false
     var buttonTitle: String {
-        return loginData.isTwoFactor ? String.localize("Confirm") : String.localize("Sign-in")
+        return loginData.isTwoFactor ? String.localize("CONFIRM") : String.localize("SIGNIN")
     }
     
     override func viewDidLoad() {
@@ -42,7 +42,7 @@ class ResetDeviceViewController: UIViewController{
         
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
         passwordTextField.placeholderAnimation = .hidden
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Password"), attributes: placeholderAttrs)
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: placeholderAttrs)
         
         if(loginData.isTwoFactor){
             resetButton.setTitle(buttonTitle, for: .normal)
@@ -82,14 +82,14 @@ class ResetDeviceViewController: UIViewController{
         APIManager.loginRequest(username, password.sha256()!) { (responseData) in
             self.showLoader(false)
             if case .TooManyDevices = responseData {
-                self.showFeedback(true, String.localize("Too many devices already logged in."))
+                self.showFeedback(true, String.localize("TOO_MANY_DEVICES"))
                 return
             }
             if case let .TooManyRequests(waitingTime) = responseData {
                 if waitingTime < 0 {
-                    self.showFeedback(true, String.localize("Too many sign in attempts, try again later."))
+                    self.showFeedback(true, String.localize("TOO_MANY_SIGNIN"))
                 } else {
-                    self.showFeedback(true, String.localize("Too many consecutive attempts. Please try again in \(Time.remaining(seconds: waitingTime))"))
+                    self.showFeedback(true, String.localize("ATTEMPTS_TIME_LEFT", arguments: Time.remaining(seconds: waitingTime)))
                 }
                 return
             }
@@ -100,7 +100,7 @@ class ResetDeviceViewController: UIViewController{
             }
             guard case let .SuccessString(dataString) = responseData,
                 let data = Utils.convertToDictionary(text: dataString) else {
-                    self.showFeedback(true, String.localize("Wrong password. Please try again."))
+                    self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
                     return
             }
             let name = data["name"] as! String
@@ -129,11 +129,11 @@ class ResetDeviceViewController: UIViewController{
                 return
             }
             if case .BadRequest = responseData {
-                self.showFeedback(true, String.localize("Wrong password. Please try again."))
+                self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
                 return
             }
             guard case .Success = responseData else {
-                self.showFeedback(true, String.localize("Server Error. Please try again."))
+                self.showFeedback(true, String.localize("SERVER_ERROR_RETRY"))
                 return
             }
             self.loginData.password = password.sha256()!
@@ -207,7 +207,7 @@ class ResetDeviceViewController: UIViewController{
             self.forgotButton.isEnabled = true
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.presentResetAlert(height: self.POPOVER_HEIGHT, title: String.localize("Request Error"), message: error.description)
+                self.presentResetAlert(height: self.POPOVER_HEIGHT, title: String.localize("REQUEST_ERROR"), message: error.description)
                 return
             }
             if case .BadRequest = responseData {
@@ -216,7 +216,7 @@ class ResetDeviceViewController: UIViewController{
             }
             guard case let .SuccessDictionary(data) = responseData,
                 let email = data["address"] as? String else {
-                    self.presentResetAlert(height: self.POPOVER_HEIGHT, title: String.localize("Well that's odd..."), message: String.localize("Unable to process password recovery. Please try again."))
+                    self.presentResetAlert(height: self.POPOVER_HEIGHT, title: String.localize("ODD"), message: String.localize("UNABLE_RECOVERY_RETRY"))
                     return
             }
             self.presentRecoveryEmail(email)
@@ -226,7 +226,7 @@ class ResetDeviceViewController: UIViewController{
     func presentNoRecovery(){
         let regularAttr = [NSAttributedString.Key.font: Font.regular.size(14)!]
         let boldAttr = [NSAttributedString.Key.font: Font.bold.size(14)!]
-        let attrText = NSMutableAttributedString(string: "Password recovery is imposible since no recovery email was set on your account. For further asssistance contact us: \n\n", attributes: regularAttr)
+        let attrText = NSMutableAttributedString(string: String.localize("RECOVER_IMPOSIBLE"), attributes: regularAttr)
         let attrBold = NSMutableAttributedString(string: "support@criptext.com", attributes: boldAttr)
         attrText.append(attrBold)
         self.presentResetAlert(height: POPOVER_NO_RECOVERY_HEIGHT, title: String.localize("No Recovery Email"), message: "", attributedText: attrText)
@@ -235,12 +235,12 @@ class ResetDeviceViewController: UIViewController{
     func presentRecoveryEmail(_ email: String){
         let regularAttr = [NSAttributedString.Key.font: Font.regular.size(14)!]
         let boldAttr = [NSAttributedString.Key.font: Font.bold.size(14)!]
-        let attrText = NSMutableAttributedString(string: "A password reset link was sent to:\n\n", attributes: regularAttr)
+        let attrText = NSMutableAttributedString(string: String.localize("RESET_LINK_SENT_1"), attributes: regularAttr)
         let attrBold = NSMutableAttributedString(string: "\(email)\n\n", attributes: boldAttr)
-        let attrText2 = NSMutableAttributedString(string: "Link will expire in 30 mins.", attributes: regularAttr)
+        let attrText2 = NSMutableAttributedString(string: String.localize("RESET_LINK_SENT_2"), attributes: regularAttr)
         attrText.append(attrBold)
         attrText.append(attrText2)
-        self.presentResetAlert(height: POPOVER_RECOVERY_HEIGHT, title: String.localize("Password Reset"), message: "", attributedText: attrText)
+        self.presentResetAlert(height: POPOVER_RECOVERY_HEIGHT, title: String.localize("PASSWORD_RESET"), message: "", attributedText: attrText)
     }
     
     func presentResetAlert(height: Int, title: String, message: String, attributedText: NSAttributedString? = nil){

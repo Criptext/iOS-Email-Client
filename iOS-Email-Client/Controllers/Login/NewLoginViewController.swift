@@ -47,7 +47,7 @@ class NewLoginViewController: UIViewController{
     func usernameTextFieldInit(){
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Username"), attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: placeholderAttrs)
         usernameTextField.delegate = self
         usernameTextField.autocapitalizationType = .none
         usernameTextField.autocorrectionType = .no
@@ -63,11 +63,11 @@ class NewLoginViewController: UIViewController{
         loginButton.clipsToBounds = true
         loginButton.layer.cornerRadius = 20
         
-        let boldText  = String.localize("Sign up")
+        let boldText  = String.localize("SIGNUP")
         let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
     
-        let normalText = String.localize("Not registered? ")
+        let normalText = String.localize("NOT_REGISTERED")
         let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
         let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
     
@@ -88,7 +88,7 @@ class NewLoginViewController: UIViewController{
             loadingView.isHidden = false
             loadingView.startAnimating()
         }else{
-            loginButton.setTitle(String.localize("Sign In"), for: .normal)
+            loginButton.setTitle(String.localize("SIGNIN"), for: .normal)
             loadingView.isHidden = true
             loadingView.stopAnimating()
         }
@@ -123,11 +123,11 @@ class NewLoginViewController: UIViewController{
         let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
         let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
         let warningPopover = SignInWarningPopoverViewController()
-        let attrText = NSMutableAttributedString(string: "Signing in with a different account ", attributes: regularAttrs)
-        let attrTextBold = NSAttributedString(string: "will erase all mailbox data ", attributes: boldAttrs)
-        let attrText2 = NSAttributedString(string: "stored on this device for account\n\n", attributes: regularAttrs)
+        let attrText = NSMutableAttributedString(string: "SIGIN_WARNING_1", attributes: regularAttrs)
+        let attrTextBold = NSAttributedString(string: "SIGIN_WARNING_2", attributes: boldAttrs)
+        let attrText2 = NSAttributedString(string: "SIGIN_WARNING_3", attributes: regularAttrs)
         let attrTextBold2 = NSAttributedString(string: "\(previous.hideMidChars())\(Env.domain)\n\n", attributes: boldAttrs)
-        let attrText3 = NSAttributedString(string: "Would you like to continue?", attributes: regularAttrs)
+        let attrText3 = NSAttributedString(string: "SIGIN_WARNING_4", attributes: regularAttrs)
         attrText.append(attrTextBold)
         attrText.append(attrText2)
         attrText.append(attrTextBold2)
@@ -158,7 +158,7 @@ class NewLoginViewController: UIViewController{
                 return
             }
             if case .Success = responseData {
-                weakSelf.showLoginError(error: String.localize("Username does not exist"))
+                weakSelf.showLoginError(error: String.localize("USERNAME_NOT"))
                 return
             }
             if case let .Error(error) = responseData,
@@ -179,7 +179,7 @@ class NewLoginViewController: UIViewController{
         let loginData = LoginData(email)
         APIManager.linkBegin(username: username) { (responseData) in
             if case .Missing = responseData {
-                self.showLoginError(error: String.localize("Username does not exist"))
+                self.showLoginError(error: String.localize("USERNAME_NOT"))
                 return
             }
             if case .BadRequest = responseData {
@@ -187,7 +187,7 @@ class NewLoginViewController: UIViewController{
                 return
             }
             if case .TooManyDevices = responseData {
-                self.showLoginError(error: String.localize("Too many devices already logged in."))
+                self.showLoginError(error: String.localize("TOO_MANY_DEVICES"))
                 return
             }
             if case let .Error(error) = responseData,
@@ -198,7 +198,7 @@ class NewLoginViewController: UIViewController{
             guard case let .SuccessDictionary(data) = responseData,
                 let twoFactor = data["twoFactorAuth"] as? Bool,
                 let jwtTemp = data["token"] as? String else {
-                self.showLoginError(error: String.localize("Unable to validate user. Please try again"))
+                self.showLoginError(error: String.localize("FALLBACK_ERROR"))
                 return
             }
             loginData.jwt = jwtTemp
