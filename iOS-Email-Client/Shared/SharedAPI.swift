@@ -107,6 +107,7 @@ class SharedAPI {
             return
         }
         guard let refreshToken = account.refreshToken else {
+            updgrateToRefreshToken(responseData: responseData, account: account, queue: queue, completionHandler: completionHandler)
             return
         }
         let url = "\(self.baseUrl)/user/refreshtoken"
@@ -124,6 +125,26 @@ class SharedAPI {
                 return
             }
             SharedDB.update(refdAccount, jwt: newJwt)
+            completionHandler(nil)
+        }
+    }
+    
+    class func updgrateToRefreshToken(responseData: ResponseData, account: Account, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?) -> Void)) {
+        let url = "\(self.baseUrl)/user/refreshtoken/upgrade"
+        let headers = ["Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion]
+        let accountRef = SharedDB.getReference(account)
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
+            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                completionHandler(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                return
+            }
+            let refreshResponseData = handleResponse(response)
+            guard case let .SuccessString(newRefreshToken) = refreshResponseData else {
+                completionHandler(refreshResponseData)
+                return
+            }
+            SharedDB.update(refdAccount, refreshToken: newRefreshToken)
             completionHandler(nil)
         }
     }

@@ -47,6 +47,14 @@ class SharedDB {
         }
     }
     
+    class func update(_ account: Account, refreshToken: String) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.refreshToken = refreshToken
+        }
+    }
+    
     @discardableResult class func store(_ email:Email) -> Bool {
         let realm = try! Realm()
         
