@@ -70,7 +70,7 @@ class SettingsGeneralViewController: UITableViewController{
                 case .openSource:
                     return String.localize("OPEN_LIBS")
                 case .logout:
-                    return String.localize("SINGOUT")
+                    return String.localize("SIGNOUT")
                 case .privacySecurity:
                     return String.localize("PRIVACY_SECURITY")
                 case .version:

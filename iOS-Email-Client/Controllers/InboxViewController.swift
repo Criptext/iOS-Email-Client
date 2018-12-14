@@ -725,6 +725,9 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func closeNewsHeader() {
+        guard !newsHeaderView.isHidden else {
+            return
+        }
         UIView.animate(withDuration: 0.5, animations: { [weak self] in
             self?.featureHeaderHeightConstraint.constant = 0
             self?.view.layoutIfNeeded()
@@ -734,6 +737,9 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func openNewsHeader() {
+        guard newsHeaderView.isHidden else {
+            return
+        }
         newsHeaderView.isHidden = false
         UIView.animate(withDuration: 0.5) { [weak self] in
             self?.featureHeaderHeightConstraint.constant = 125
