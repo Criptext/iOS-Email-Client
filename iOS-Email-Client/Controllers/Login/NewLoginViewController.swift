@@ -123,11 +123,11 @@ class NewLoginViewController: UIViewController{
         let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
         let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
         let warningPopover = SignInWarningPopoverViewController()
-        let attrText = NSMutableAttributedString(string: "SIGNIN_WARNING_1", attributes: regularAttrs)
-        let attrTextBold = NSAttributedString(string: "SIGNIN_WARNING_2", attributes: boldAttrs)
-        let attrText2 = NSAttributedString(string: "SIGNIN_WARNING_3", attributes: regularAttrs)
+        let attrText = NSMutableAttributedString(string: String.localize("SIGNIN_WARNING_1"), attributes: regularAttrs)
+        let attrTextBold = NSAttributedString(string: String.localize("SIGNIN_WARNING_2"), attributes: boldAttrs)
+        let attrText2 = NSAttributedString(string: String.localize("SIGNIN_WARNING_3"), attributes: regularAttrs)
         let attrTextBold2 = NSAttributedString(string: "\(previous.hideMidChars())\(Env.domain)\n\n", attributes: boldAttrs)
-        let attrText3 = NSAttributedString(string: "SIGNIN_WARNING_4", attributes: regularAttrs)
+        let attrText3 = NSAttributedString(string: String.localize("SIGNIN_WARNING_4"), attributes: regularAttrs)
         attrText.append(attrTextBold)
         attrText.append(attrText2)
         attrText.append(attrTextBold2)
