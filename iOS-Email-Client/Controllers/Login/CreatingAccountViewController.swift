@@ -74,7 +74,6 @@ class CreatingAccountViewController: UIViewController{
                 self.displayErrorMessage(message: error.description)
                 return
             }
-            print(responseData)
             guard case let .SuccessDictionary(tokens) = responseData,
                 let jwt = tokens["token"] as? String,
                 let refreshToken = tokens["refreshToken"] as? String else {
