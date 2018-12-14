@@ -64,15 +64,15 @@ class ChangePassViewController: UIViewController {
             self.forgotButton.isEnabled = true
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.presentResetAlert(title: "Request Error", message: error.description)
+                self.presentResetAlert(title: String.localize("REQUEST_ERROR"), message: error.description)
                 return
             }
             guard case let .SuccessDictionary(data) = responseData,
                 let email = data["address"] as? String else {
-                    self.presentResetAlert(title: "Request Error", message: "A recovery email address has not been set up or confirmed for this account, without it you cannot reset the password")
+                    self.presentResetAlert(title: String.localize("REQUEST_ERROR"), message: "RECOVERY_NOT_SET_RESET")
                     return
             }
-            self.presentResetAlert(title: "Reset Password", message: "An email was sent to \(Utils.maskEmailAddress(email: email)) with the instructions to reset your password.")
+            self.presentResetAlert(title: String.localize("RESET_PASSWORD"), message: String.localize("EMAIL_INSTRUCTIONS", arguments: Utils.maskEmailAddress(email: email)))
         }
     }
     
@@ -87,18 +87,18 @@ class ChangePassViewController: UIViewController {
         switch(sender){
         case oldPassTextField:
             guard oldPassTextField.text!.count > 7 else {
-                setValidField(oldPassTextField, valid: false, error: "must be 8 characters long")
+                setValidField(oldPassTextField, valid: false, error: String.localize("8_CHARS"))
                 break
             }
             setValidField(oldPassTextField, valid: true)
         case newPassTextField, confirmPassTextField:
             guard newPassTextField.text!.count > 7 else {
-                setValidField(newPassTextField, valid: false, error: "must be 8 characters long")
+                setValidField(newPassTextField, valid: false, error: String.localize("8_CHARS"))
                 break
             }
             setValidField(newPassTextField, valid: true)
             guard confirmPassTextField.text == newPassTextField.text else {
-                setValidField(confirmPassTextField, valid: false, error: "Passwords must match!")
+                setValidField(confirmPassTextField, valid: false, error: String.localize("PASS_MATCH"))
                 break
             }
             setValidField(confirmPassTextField, valid: true)
@@ -151,7 +151,7 @@ class ChangePassViewController: UIViewController {
             }
             guard case .Success = responseData else {
                 self.showLoader(false)
-                self.presentResetAlert(title: "Request Error", message: "Unable to change password. Please verify that your password is correct!")
+                self.presentResetAlert(title: String.localize("REQUEST_ERROR"), message: String.localize("UNABLE_CHANGE_PASS"))
                 return
             }
             self.goBack()
@@ -167,7 +167,7 @@ class ChangePassViewController: UIViewController {
         
         guard show else {
             saveLoader.stopAnimating()
-            saveButton.setTitle("Save", for: .disabled)
+            saveButton.setTitle(String.localize("SAVE"), for: .disabled)
             return
         }
         saveLoader.startAnimating()

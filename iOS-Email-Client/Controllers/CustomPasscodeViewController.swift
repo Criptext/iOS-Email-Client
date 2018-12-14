@@ -16,7 +16,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "PIN Lock"
+        navigationItem.title = String.localize("PIN_LOCK");
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         
@@ -40,23 +40,23 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     
     override func passcodeLockDidSucceed(_ lock: PasscodeLockType) {
         super.passcodeLockDidSucceed(lock)
-        descriptionLabel!.text = "Enter your passcode to proceed."
+        descriptionLabel!.text = String.localize("ENTER_PASSCODE")
     }
     
     override func passcodeLockDidFail(_ lock: PasscodeLockType) {
         super.passcodeLockDidFail(lock)
         let attemptsLeft = Env.maxRetryAttempts - incorrectPasscodeAttempts
         if (attemptsLeft > 3) {
-            descriptionLabel!.text = "Incorrect PIN, \(attemptsLeft) attempts remaining"
+            descriptionLabel!.text = String.localize("INCORRECT_ATTEMPTS_LEFT", arguments: attemptsLeft)
         } else if (attemptsLeft > 1) {
-            descriptionLabel!.text = "WARNING: \(attemptsLeft) attempts until secure data wipe"
+            descriptionLabel!.text = String.localize("WARNING_ATTEMPTS", arguments: attemptsLeft)
         } else {
-            descriptionLabel!.text = "WARNING: \(attemptsLeft) attempt until secure data wipe"
+            descriptionLabel!.text = String.localize("WARNING_ATTEMPT", arguments: attemptsLeft)
         }
         guard attemptsLeft <= 0 else {
             return
         }
-        forceOut(manually: false, message: "\nYou have reached the maximum PIN retries. Your data has been deleted from this device!")
+        forceOut(manually: false, message: String.localize("MAX_PIN_ACCOUNT_DELETE"))
     }
     
     @objc func goBack(){
@@ -91,7 +91,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
         let defaults = CriptextDefaults()
         guard let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username) else {
-            self.showAlert(String.localize("Sign out error"), message: String.localize("Not signed in, please restart the app."), style: .alert)
+            self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("RESTART_APP"), style: .alert)
             return
         }
         APIManager.logout(account: account) { [weak self] (responseData) in
@@ -107,14 +107,14 @@ class CustomPasscodeViewController: PasscodeLockViewController {
                 return
             }
             guard case .Success = responseData else {
-                weakSelf.showAlert(String.localize("Sign out error"), message: String.localize("Unable to sign out. Please try again"), style: .alert)
+                weakSelf.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("UNABLE_SIGNOUT"), style: .alert)
                 return
             }
             weakSelf.forceOut(manually: true)
         }
     }
     
-    func forceOut(manually: Bool = false, message: String = "This device has been removed remotely."){
+    func forceOut(manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
         self.logout(manually: manually, message: message)
         self.cancelButtonTap(self.cancelButton!)
     }

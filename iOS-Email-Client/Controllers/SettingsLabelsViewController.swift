@@ -78,7 +78,7 @@ class SettingsLabelsViewController: UITableViewController {
     func presentPopover(){
         let parentView = (tabsController?.view ?? self.view)!
         let changeNamePopover = SingleTextInputViewController()
-        changeNamePopover.myTitle = String.localize("Add Label")
+        changeNamePopover.myTitle = String.localize("ADD_LABEL")
         changeNamePopover.onOk = { [weak self] text in
             self?.createLabel(text: text)
         }
@@ -93,7 +93,7 @@ class SettingsLabelsViewController: UITableViewController {
     func createLabel(text: String){
         let labelText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if let existingLabel = DBManager.getLabel(text: labelText) {
-            self.showAlert(String.localize("Repeated Label"), message: "\(String.localize("Label")) '\(existingLabel.text)' \(String.localize("already exist!"))", style: .alert)
+            self.showAlert(String.localize("REPEATED_LABEL"), message: String.localize("LABEL_EXISTS", arguments: existingLabel.text), style: .alert)
             return
         }
         let label = Label(labelText)

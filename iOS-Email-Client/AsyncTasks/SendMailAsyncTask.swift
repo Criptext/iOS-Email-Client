@@ -129,14 +129,14 @@ class SendMailAsyncTask {
             return
         }
         guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
-            completion(ResponseData.Error(CriptextError(message: "Unable to handle email")))
+            completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
         APIManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
             guard case let .SuccessDictionary(response) = responseData,
                 let duplicates = response["duplicates"] as? [String: Any],
                 let fileParams = SharedDB.duplicateFiles(key: self.emailKey, duplicates: duplicates) else {
-                completion(ResponseData.Error(CriptextError(message: "Unable to handle file duplicates")))
+                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_DUPLICATE"))))
                 return
             }
             self.files.append(contentsOf: fileParams)
@@ -149,7 +149,7 @@ class SendMailAsyncTask {
     
     private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
-            completion(ResponseData.Error(CriptextError(message: "Unable to handle email")))
+            completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
         
@@ -168,7 +168,7 @@ class SendMailAsyncTask {
                 self.guestEmails["session"] = dummySession.session
             } else {
                 deleteUnhandledEmail()
-                completion(ResponseData.Error(CriptextError(message: "Unable to handle email")))
+                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
                 return
             }
         }
@@ -292,7 +292,7 @@ class SendMailAsyncTask {
             if case .TooManyRequests = responseData {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()
-                    completion(ResponseData.Error(CriptextError(message: "Failed to send e-mail. Email cap reached. It will be sent later.")))
+                    completion(ResponseData.Error(CriptextError(message: String.localize("EMAIL_CAP_MAX"))))
                 }
                 return
             }

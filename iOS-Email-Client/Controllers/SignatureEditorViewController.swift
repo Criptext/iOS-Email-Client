@@ -50,7 +50,7 @@ class SignatureEditorViewController: UIViewController {
         isEdited = true
         richEditor.isEditingEnabled = signatureEnableSwitch.isOn
         richEditor.isHidden = !signatureEnableSwitch.isOn
-        OnOffLabel.text = signatureEnableSwitch.isOn ? "On" : "Off"
+        OnOffLabel.text = signatureEnableSwitch.isOn ? String.localize("ON") : String.localize("OFF")
         if(signatureEnableSwitch.isOn){
             richEditor.focus()
         } else {
@@ -64,13 +64,13 @@ class SignatureEditorViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             return
         }
-        let saveAction = UIAlertAction(title: String.localize("Save and return"), style: .default){ (alert : UIAlertAction!) -> Void in
+        let saveAction = UIAlertAction(title: String.localize("SAVE_RETURN"), style: .default){ (alert : UIAlertAction!) -> Void in
             self.saveAndReturn()
         }
-        let discardAction = UIAlertAction(title: String.localize("Return without saving"), style: .destructive){ (alert : UIAlertAction!) -> Void in
+        let discardAction = UIAlertAction(title: String.localize("RETURN_DONT_SAVE"), style: .destructive){ (alert : UIAlertAction!) -> Void in
             self.navigationController?.popViewController(animated: true)
         }
-        showAlert(String.localize("Unsaved Changes"), message: String.localize("You have made changes that were not saved. Do you wish to save and return?"), style: .alert, actions: [saveAction, discardAction])
+        showAlert(String.localize("UNSAVED_CHANGES"), message: String.localize("CHANGES_WERE_MADE"), style: .alert, actions: [saveAction, discardAction])
     }
     
     @objc func saveAndReturn(){

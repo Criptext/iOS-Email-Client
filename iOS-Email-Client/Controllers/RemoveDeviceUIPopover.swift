@@ -47,7 +47,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         passwordTextField.detail = ""
         guard let password = passwordTextField.text,
             password.count > 7 else {
-            passwordTextField.detail = "Please enter 8 characters"
+            passwordTextField.detail = String.localize("PASSWORD_LENGTH")
             return
         }
         let deviceId = device.id
@@ -59,12 +59,12 @@ class RemoveDeviceUIPopover: BaseUIPopover {
             }
             if case .Missing = responseData {
                 self.showLoader(false)
-                self.passwordTextField.detail = "Wrong password. Please try again."
+                self.passwordTextField.detail = String.localize("WRONG_PASS_RETRY")
                 return
             }
             guard case .Success = responseData else {
                 self.showLoader(false)
-                self.passwordTextField.detail = "Unable to remove device \(self.device.friendlyName)"
+                self.passwordTextField.detail = String.localize("UNABLE_REMOVE_DEVICE", arguments: self.device.friendlyName)
                 return
             }
             self.onSuccess?(deviceId)
@@ -77,8 +77,8 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         passwordTextField.isEnabled = !show
         confirmButton.isEnabled = !show
         cancelButton.isEnabled = !show
-        cancelButton.setTitle(show ? "" : "Cancel", for: .normal)
-        confirmButton.setTitle(show ? "" : "Confirm", for: .normal)
+        cancelButton.setTitle(show ? "" : "CANCEL", for: .normal)
+        confirmButton.setTitle(show ? "" : "CONFIRM", for: .normal)
         loader.isHidden = !show
         guard show else {
             loader.stopAnimating()

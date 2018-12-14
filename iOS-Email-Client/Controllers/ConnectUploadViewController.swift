@@ -81,11 +81,11 @@ class ConnectUploadViewController: UIViewController{
     func linkAccept() {
         APIManager.linkAccept(randomId: linkData.randomId, account: myAccount) { (responseData) in
             if case .Missing = responseData {
-                self.showErrorAlert(message: "Device was already rejected")
+                self.showErrorAlert(message: String.localize("DEVICE_REJECTED"))
                 return
             }
             if case .BadRequest = responseData {
-                self.showErrorAlert(message: "Device already authorized")
+                self.showErrorAlert(message: String.localize("DEVICE_AUTHORIZED"))
                 return
             }
             guard case let .SuccessDictionary(data) = responseData,
@@ -93,7 +93,7 @@ class ConnectUploadViewController: UIViewController{
                     self.presentProcessInterrupted()
                     return
             }
-            self.connectUIView.progressChange(value: self.PROGRESS_PREPARING_MAILBOX, message: "Preparing Mailbox", completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_PREPARING_MAILBOX, message: String.localize("PREPARING_MAIL"), completion: {})
             self.linkData.deviceId = deviceId
             self.state = .creatingDB(deviceId)
             self.handleState()
@@ -140,7 +140,7 @@ class ConnectUploadViewController: UIViewController{
         }
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
         APIManager.uploadLinkDBFile(dbFile: inputStream, randomId: linkData.randomId, size: fileSize, token: myAccount.jwt, progressCallback: { (progress) in
-            self.connectUIView.progressChange(value: self.PROGRESS_GET_KEYS + (self.PROGRESS_UPLOADING_FILE - self.PROGRESS_GET_KEYS) * progress, message: "Uploading Mailbox", completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_GET_KEYS + (self.PROGRESS_UPLOADING_FILE - self.PROGRESS_GET_KEYS) * progress, message: String.localize("UPLOADING_MAIL"), completion: {})
         }) { (responseData) in
             guard case .Success = responseData else {
                 self.presentProcessInterrupted()
@@ -173,13 +173,13 @@ class ConnectUploadViewController: UIViewController{
             "deviceId": deviceId,
             "key": encryptedKey
         ] as [String: Any]
-        self.connectUIView.progressChange(value: PROGRESS_SEND_DATA, message: "Uploading Mailbox", completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_SEND_DATA, message: String.localize("UPLOADING_MAIL"), completion: {})
         APIManager.linkDataAddress(params: params, account: myAccount) { (responseData) in
             guard case .Success = responseData else {
                 self.presentProcessInterrupted()
                 return
             }
-            self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: "Mailbox Uploaded Successfully", completion: {
+            self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("MAIL_UPLOADED"), completion: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.dismiss(animated: true)
                 }
@@ -189,10 +189,10 @@ class ConnectUploadViewController: UIViewController{
     
     func presentProcessInterrupted(){
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = "Looks like you're having connection issues. Would you like to retry Mailbox Sync"
-        retryPopup.initialTitle = "Sync Interrupted"
-        retryPopup.leftOption = "Cancel"
-        retryPopup.rightOption = "Retry"
+        retryPopup.initialMessage = String.localize("SYNC_CONNECTION_ISSUES")
+        retryPopup.initialTitle = String.localize("SYNC_INTERRUPTED")
+        retryPopup.leftOption = String.localize("CANCEL")
+        retryPopup.rightOption = String.localize("RETRY")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.dismiss(animated: true)
@@ -204,10 +204,10 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func showErrorAlert(message: String){
-        let okAction = UIAlertAction(title: "Ok", style: .default, handler: { (_) in
+        let okAction = UIAlertAction(title: String.localize("OK"), style: .default, handler: { (_) in
             self.dismiss(animated: true)
         })
-        self.showAlert("Error Linking Device", message: message, style: .alert, actions: [okAction])
+        self.showAlert(String.localize("ERROR_LINK"), message: message, style: .alert, actions: [okAction])
     }
 }
 
@@ -218,7 +218,7 @@ extension ConnectUploadViewController: ScheduleWorkerDelegate {
             return
         }
         if databasePath != nil {
-            self.connectUIView.progressChange(value: PROGRESS_GET_KEYS, message: "Getting Keys", cancel: true, completion: {})
+            self.connectUIView.progressChange(value: PROGRESS_GET_KEYS, message: String.localize("GETTING_KEYS"), cancel: true, completion: {})
         }
         APIManager.getKeybundle(deviceId: deviceId, account: myAccount) { (responseData) in
             guard case let .SuccessDictionary(keys) = responseData else {
@@ -244,8 +244,8 @@ extension ConnectUploadViewController: ScheduleWorkerDelegate {
             return
         }
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = String.localize("Something has happened that is delaying this process. Do you want to continue waiting?")
-        retryPopup.initialTitle = String.localize("Well, that’s odd…")
+        retryPopup.initialMessage = String.localize("DELAYED_PROCESS_RETRY")
+        retryPopup.initialTitle = String.localize("ODD")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.dismiss(animated: true, completion: nil)

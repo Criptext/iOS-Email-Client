@@ -300,7 +300,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
-    func logout(manually: Bool = false, message: String = "This device has been removed remotely."){
+    func logout(manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
         if let mailboxVC = getInboxVC() {
             mailboxVC.invalidateObservers()
         }

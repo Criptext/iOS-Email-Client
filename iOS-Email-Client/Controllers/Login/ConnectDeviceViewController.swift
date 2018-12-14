@@ -93,7 +93,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func sendKeysRequest(){
-        self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("Sending Keys"), completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("SENDING_KEYS"), completion: {})
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
             guard case let .SuccessDictionary(tokens) = responseData,
@@ -103,7 +103,7 @@ class ConnectDeviceViewController: UIViewController{
                     return
             }
             self.state = .waiting
-            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS, message: String.localize("Waiting for Mailbox"), cancel: true, completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS, message: String.localize("WAITING_MAIL"), cancel: true, completion: {})
             self.signupData.token = jwt
             self.signupData.refreshToken = refreshToken
             self.socket?.connect(jwt: jwt)
@@ -117,7 +117,7 @@ class ConnectDeviceViewController: UIViewController{
             return
         }
         APIManager.downloadLinkDBFile(address: data.address, token: jwt, progressCallback: { (progress) in
-            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: String.localize("Downloading Mailbox"), completion: {})
+            self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: String.localize("DOWNLOADING_MAIL"), completion: {})
         }) { (responseData) in
             guard case let .SuccessString(filepath) =  responseData else {
                 self.presentProcessInterrupted()
@@ -130,7 +130,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func unpackDB(myAccount: Account, path: String, data: LinkSuccessData) {
-        self.connectUIView.progressChange(value: PROGRESS_PROCESSING_FILE, message: String.localize("Decrypting Mailbox"), completion: {})
+        self.connectUIView.progressChange(value: PROGRESS_PROCESSING_FILE, message: String.localize("DECRYPTING_MAIL"), completion: {})
         guard let linkAcceptData = self.linkData,
             let keyData = Data(base64Encoded: data.key),
             let decryptedKey = SignalHandler.decryptData(keyData, messageType: .preKey, account: myAccount, recipientId: myAccount.username, deviceId: linkAcceptData.authorizerId),
@@ -171,8 +171,8 @@ class ConnectDeviceViewController: UIViewController{
             DBManager.insertBatchRows(rows: dbRows, maps: &maps)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
-                self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("Decrypting Mailbox")) {
-                    self.connectUIView.messageLabel.text = String.localize("Mailbox restored successfully!")
+                self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
+                    self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self.goToMailbox(myAccount.username)
                         self.registerFirebaseToken(jwt: myAccount.jwt)
@@ -218,10 +218,10 @@ class ConnectDeviceViewController: UIViewController{
     
     func presentProcessInterrupted(){
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = String.localize("Looks like you're having connection issues. Would you like to retry Mailbox Sync")
-        retryPopup.initialTitle = String.localize("Sync Interrupted")
-        retryPopup.leftOption = String.localize("Cancel")
-        retryPopup.rightOption = String.localize("Retry")
+        retryPopup.initialMessage = String.localize("SYNC_CONNECTION_ISSUES")
+        retryPopup.initialTitle = String.localize("SYNC_INTERRUPTED")
+        retryPopup.leftOption = String.localize("CANCEL")
+        retryPopup.rightOption = String.localize("RETRY")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.goBack()
@@ -253,8 +253,8 @@ extension ConnectDeviceViewController: ScheduleWorkerDelegate {
     
     func dangled(){
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = String.localize("Something has happened that is delaying this process. Do you want to continue waiting?")
-        retryPopup.initialTitle = String.localize("Well, that’s odd…")
+        retryPopup.initialMessage = String.localize("DELAYED_PROCESS_RETRY")
+        retryPopup.initialTitle = String.localize("ODD")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.goBack()

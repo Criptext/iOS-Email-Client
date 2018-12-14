@@ -139,7 +139,7 @@ class PasswordUIPopover: BaseUIPopover {
         APIManager.logout(account: account) { (responseData) in
             self.showLoader(false)
             guard case .Success = responseData else {
-                self.passwordTextField.detail = "Unable to logout. Try again."
+                self.passwordTextField.detail = String.localize("UNABLE_SIGNOUT")
                 return
             }
             self.dismiss(animated: true, completion: { [weak self] in

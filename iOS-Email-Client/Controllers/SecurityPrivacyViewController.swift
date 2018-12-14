@@ -36,7 +36,7 @@ class SecurityPrivacyViewController: UITableViewController {
     var myAccount: Account!
     
     override func viewDidLoad() {
-        navigationItem.title = "PRIVACY AND SECURITY"
+        navigationItem.title = String.localize("PRIVACY_AND_SECURITY")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         
@@ -54,11 +54,11 @@ class SecurityPrivacyViewController: UITableViewController {
     }
     
     func initializeOptions(){
-        let pinCode = PrivacyOption(label: .pincode, pick: nil, isOn: true, hasFlow: false, detail: "If you forget your PIN code you'll have to sign out and sign back in again.\n\nWarning: 10 failed attempts will result in all data to be erased from the app for security purposes.", isEnabled: true)
+        let pinCode = PrivacyOption(label: .pincode, pick: nil, isOn: true, hasFlow: false, detail: String.localize("PIN_DETAIL"), isEnabled: true)
         let changePin = PrivacyOption(label: .changePin, pick: nil, isOn: nil, hasFlow: true, detail: nil, isEnabled: true)
         let autolock = PrivacyOption(label: .autoLock, pick: "1 minute", isOn: nil, hasFlow: false, detail: nil, isEnabled: true)
-        let preview = PrivacyOption(label: .preview, pick: nil, isOn: true, hasFlow: false, detail: "Preview the content of emails in Push notifications.", isEnabled: true)
-        let receipts = PrivacyOption(label: .receipts, pick: nil, isOn: true, hasFlow: false, detail: "If disabled, you won't be able to know when others read your emails.", isEnabled: true)
+        let preview = PrivacyOption(label: .preview, pick: nil, isOn: true, hasFlow: false, detail: String.localize("PREVIEW_DETAIL"), isEnabled: true)
+        let receipts = PrivacyOption(label: .receipts, pick: nil, isOn: true, hasFlow: false, detail: String.localize("RECEIPTS_DETAIL"), isEnabled: true)
         options.append(pinCode)
         options.append(changePin)
         options.append(autolock)
@@ -122,7 +122,7 @@ class SecurityPrivacyViewController: UITableViewController {
                 self?.setReadReceipts(enable: isOn, sender: cell.optionSwitch)
             }
         case .biometric:
-            cell.optionTextLabel.text = biometricType == .faceID ? "Unlock with FaceID" : "Unlock with Fingerprint"
+            cell.optionTextLabel.text = biometricType == .faceID ? String.localize("UNLOCK_FACE") : String.localize("UNLOCK_TOUCH")
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             cell.switchToggle = { [weak self] (isOn) in
                 guard let weakSelf = self else {
@@ -214,7 +214,7 @@ class SecurityPrivacyViewController: UITableViewController {
         APIManager.setReadReceipts(enable: enable, account: myAccount) { (responseData) in
             sender?.isEnabled = true
             guard case .Success = responseData else {
-                self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)
+                self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_RECEIPTS"), style: .alert)
                 self.generalData.hasEmailReceipts = initialValue
                 self.toggleOptions()
                 return

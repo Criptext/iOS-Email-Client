@@ -53,8 +53,9 @@ class CriptextFileManager {
                 return
             }
             if case let .EntityTooLarge(maxSize) = responseData {
+                let maxSize = File.prettyPrintSize(size: Int(maxSize))
                 weakSelf.removeFile(path: filepath)
-                weakSelf.delegate?.fileError(message: "The file \(name) exceeds \(File.prettyPrintSize(size: Int(maxSize)))")
+                weakSelf.delegate?.fileError(message: String.localize("THE_FILE_EXCEEDS", arguments: name, maxSize))
                 weakSelf.handleFileTurn()
                 return
             }

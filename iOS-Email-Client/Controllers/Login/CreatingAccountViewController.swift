@@ -66,7 +66,7 @@ class CreatingAccountViewController: UIViewController{
     }
     
     func sendKeysRequest(){
-        feedbackLabel.text = String.localize("Generating keys...")
+        feedbackLabel.text = String.localize("GENERATING_KEYS")
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
             if case let .Error(error) = responseData,
@@ -91,7 +91,7 @@ class CreatingAccountViewController: UIViewController{
     }
     
     func sendSignUpRequest(){
-        feedbackLabel.text = String.localize("Generating keys...")
+        feedbackLabel.text = String.localize("GENERATING_KEYS")
         APIManager.signUpRequest(signupData.buildDataForRequest()) { (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
@@ -100,9 +100,9 @@ class CreatingAccountViewController: UIViewController{
             }
             if case let .TooManyRequests(waitingTime) = responseData {
                 if waitingTime < 0 {
-                    self.displayErrorMessage(message: String.localize("You have tried to sign-up too many times, please try again later"))
+                    self.displayErrorMessage(message: String.localize("TOO_MANY_SIGNIN_ATTEMPTS"))
                 } else {
-                    self.displayErrorMessage(message: String.localize("Too many consecutive attempts. Please try again in \(Time.remaining(seconds: waitingTime))"))
+                    self.displayErrorMessage(message: String.localize("ATTEMPTS_TIME_LEFT", arguments: Time.remaining(seconds: waitingTime)))
                 }
                 return
             }
@@ -122,11 +122,11 @@ class CreatingAccountViewController: UIViewController{
     }
     
     func sendNewKeysRequest(){
-        feedbackLabel.text = String.localize("Generating keys...")
+        feedbackLabel.text = String.localize("GENERATING_KEYS")
     }
     
     func createAccount(){
-        feedbackLabel.text = String.localize("Login into awesomeness...")
+        feedbackLabel.text = String.localize("LOGIN_AWESOME")
         let myAccount = Account()
         myAccount.username = signupData.username
         myAccount.name = signupData.fullname
@@ -151,12 +151,12 @@ class CreatingAccountViewController: UIViewController{
         }
     }
     
-    func displayErrorMessage(message: String = String.localize("Unable to complete your sign-up")){
-        let alert = UIAlertController(title: String.localize("Warning"), message: "\(message)\(String.localize(". would you like to try again?"))", preferredStyle: .alert)
-        let proceedAction = UIAlertAction(title: String.localize("Retry"), style: .default){ (alert : UIAlertAction!) -> Void in
+    func displayErrorMessage(message: String = String.localize("SIGNUP_FALLBACK_ERROR")){
+        let alert = UIAlertController(title: String.localize("WARNING"), message: "\(message)\(String.localize("WOULD_TRY_AGAIN"))", preferredStyle: .alert)
+        let proceedAction = UIAlertAction(title: String.localize("RETRY"), style: .default){ (alert : UIAlertAction!) -> Void in
             self.handleState()
         }
-        let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel){ (alert : UIAlertAction!) -> Void in
+        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel){ (alert : UIAlertAction!) -> Void in
             self.dismiss(animated: true, completion: nil)
         }
         alert.addAction(proceedAction)

@@ -57,6 +57,10 @@ extension String {
         return NSLocalizedString(text, comment: "")
     }
     
+    static func localize(_ text: String, arguments: CVarArg...) -> String {
+        return String(format: String.localize(text), arguments)
+    }
+    
     func hideMidChars() -> String {
         return String(self.enumerated().map { index, char in
             return [0, self.count - 1].contains(index) ? char : "*"

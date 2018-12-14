@@ -38,11 +38,7 @@ class CriptextError : Error {
 }
 
 enum ErrorCode {
-    case singUpFailure
-    case invalidUsername
     case noValidResponse
-    case missingData
-    case loggedOut
     case timeout
     case offline
     case unreferencedAccount
@@ -50,22 +46,14 @@ enum ErrorCode {
     
     var description: String {
         switch self {
-        case .singUpFailure:
-            return "Unable to complete your sign-up"
-        case .invalidUsername:
-            return "Username already exists"
         case .noValidResponse:
-            return "Couldn't get a valid response"
-        case .missingData:
-            return "Content not found"
-        case .loggedOut:
-            return "This device was remotely logged out"
+            return String.localize("NOT_VALID_RESPONSE")
         case .timeout:
-            return "Connection Timeout!"
+            return String.localize("TIMEOUT")
         case .offline:
-            return "No internet connection"
+            return String.localize("NO_INTERNET")
         case .unreferencedAccount:
-            return "Unable to obtain account from reference"
+            return String.localize("UNREF_ACCOUNT")
         case .custom:
             return ""
         }

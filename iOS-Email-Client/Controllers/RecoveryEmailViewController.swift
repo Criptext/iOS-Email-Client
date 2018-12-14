@@ -35,7 +35,7 @@ class RecoveryEmailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Recovery Email"
+        navigationItem.title = String.localize("RECOVERY_EMAIL")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         prepareView()
@@ -78,11 +78,11 @@ class RecoveryEmailViewController: UIViewController {
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.showAlert("Request Error", message: "\(error.description). please try again.", style: .alert)
+                self.showAlert("REQUEST_ERROR", message: "\(error.description). \(String.localize("TRY_AGAIN"))", style: .alert)
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("Network Error", message: "Unable to resend link, please try again.", style: .alert)
+                self.showAlert("NETWORK_ERROR", message: "UNABLE_RESEND_LINK", style: .alert)
                 return
             }
             self.presentResendAlert()
@@ -94,8 +94,8 @@ class RecoveryEmailViewController: UIViewController {
     
     func presentResendAlert(){
         let alertVC = GenericAlertUIPopover()
-        alertVC.myTitle = "Confirmation Link Sent"
-        alertVC.myMessage = "Please check your inbox for a confirmation email. Click the link in the email to confirm your email address."
+        alertVC.myTitle = String.localize("LINK_SENT")
+        alertVC.myMessage = String.localize("CHECK_INBOX_LINK")
         self.presentPopover(popover: alertVC, height: POPOVER_HEIGHT)
     }
     
@@ -116,11 +116,11 @@ class RecoveryEmailViewController: UIViewController {
             return
         }
         guard email != "\(myAccount.username)\(Constants.domain)" else {
-            emailTextField.detail = "Don't use the same criptext account"
+            emailTextField.detail = String.localize("SAME_ACCOUNT")
             return
         }
         guard email != generalData.recoveryEmail else {
-            emailTextField.detail = "Please enter a different email"
+            emailTextField.detail = String.localize("DIFFERENT_EMAIL")
             return
         }
         presentChangePasswordPopover()
@@ -151,19 +151,19 @@ class RecoveryEmailViewController: UIViewController {
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.showAlert("Network Error", message: "\(error.description). Please try again", style: .alert)
+                self.showAlert("NETWORK_ERROR", message: "\(error.description). Please try again", style: .alert)
                 return
             }
             if case .BadRequest = responseData {
-                self.showAlert("Well, that's odd...", message: "You entered a wrong password", style: .alert)
+                self.showAlert("ODD", message: String.localize("ENTERED_WRONG_PASS"), style: .alert)
                 return
             }
             if case .Conflicts = responseData {
-                self.showAlert("Well, that's odd...", message: "Please enter a different recovery email.", style: .alert)
+                self.showAlert("ODD", message: String.localize("DIFFERENT_RECOVERY"), style: .alert)
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("Well, that's odd...", message: "Unable to change recovery email. Please try again", style: .alert)
+                self.showAlert("ODD", message: String.localize("UNABLE_CHANGHE_RECOVERY"), style: .alert)
                 return
             }
             self.generalData.recoveryEmail = email
@@ -190,7 +190,7 @@ class RecoveryEmailViewController: UIViewController {
             }
             
             resendButton.isEnabled = true
-            resendButton.setTitle("Resend Link", for: .normal)
+            resendButton.setTitle(String.localize("RESEND_LINK"), for: .normal)
             return
         }
         
@@ -205,7 +205,7 @@ class RecoveryEmailViewController: UIViewController {
             buttonLoader.isHidden = true
             buttonLoader.stopAnimating()
             doneButton.isEnabled = true
-            doneButton.setTitle("Change", for: .normal)
+            doneButton.setTitle(String.localize("Change"), for: .normal)
             return
         }
         
@@ -234,7 +234,7 @@ class RecoveryEmailViewController: UIViewController {
             myTimer.invalidate()
         }
         resendButton.isEnabled = true
-        resendButton.setTitle("Resend Link", for: .normal)
+        resendButton.setTitle(String.localize("RESEND_LINK"), for: .normal)
         resendButton.backgroundColor = .mainUI
         resendButton.setTitleColor(.white, for: .normal)
     }

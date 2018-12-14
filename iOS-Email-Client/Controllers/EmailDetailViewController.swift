@@ -71,7 +71,7 @@ class EmailDetailViewController: UIViewController {
                     return true
                 })
                 if (hasNewInboxEmail) {
-                    self?.showSnackbar(String.localize("You have a new email"), attributedText: nil, buttons: "", permanent: false)
+                    self?.showSnackbar(String.localize("HAVE_NEW_EMAIL"), attributedText: nil, buttons: "", permanent: false)
                 }
             default:
                 break
@@ -280,7 +280,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
                     weakSelf.fileManager.registerFile(file: file)
                     break
                 default:
-                    weakSelf.showAlert(String.localize("Access denied"), message: String.localize("You need to enable access for this app in your settings"), style: .alert)
+                    weakSelf.showAlert(String.localize("ACCESS_DENIED"), message: String.localize("NEED_ENABLE_ACCESS"), style: .alert)
                     break
                 }
             }
@@ -331,7 +331,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
-        moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? String.localize("Remove from Spam") : String.localize("Mark as Spam"), for: .normal)
+        moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? String.localize("REMOVE_SPAM") : String.localize("MARK_SPAM"), for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = emailData.emails[indexPath.row]
         moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none)
@@ -461,7 +461,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
-        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ [weak self] (alert) in
+        let deleteAction = UIAlertAction(title: "OK", style: .destructive){ [weak self] (alert) in
             guard let weakSelf = self else {
                 return
             }
@@ -472,8 +472,8 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             let eventData = EventData.Peer.ThreadDeleted(threadIds: [weakSelf.emailData.threadId])
             DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
         }
-        let cancelAction = UIAlertAction(title: String.localize("Cancel"), style: .cancel)
-        showAlert("Delete Thread", message: String.localize("This will be PERMANENTLY deleted"), style: .alert, actions: [deleteAction, cancelAction])
+        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel)
+        showAlert("DELETE_THREADS", message: String.localize("THESE_DELETED_PERMANENTLY"), style: .alert, actions: [deleteAction, cancelAction])
     }
     
     func onMarkThreads() {
@@ -569,7 +569,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self?.deleteSingleEmail(email, indexPath: indexPath)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        showAlert(String.localize("Delete Email"), message: String.localize("The selected email will be PERMANENTLY deleted"), style: .alert, actions: [deleteAction, cancelAction])
+        showAlert(String.localize("DELETE_EMAIL"), message: String.localize("SELECTED_DELETE_PERMANENTLY"), style: .alert, actions: [deleteAction, cancelAction])
     }
     
     func deleteSingleEmail(_ email: Email, indexPath: IndexPath){
@@ -669,12 +669,12 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                 return
             }
             if case .Conflicts = responseData {
-                weakSelf.showAlert(String.localize("Unsend Failed"), message: String.localize("Failed to unsend the email. Time (1h) for unsending has already expired."), style: .alert)
+                weakSelf.showAlert(String.localize("UNSEND_FAILED"), message: String.localize("UNSEND_EXPIRED"), style: .alert)
                 weakSelf.emailsTableView.reloadData()
                 return
             }
             guard case .Success = responseData else {
-                weakSelf.showAlert(String.localize("Unsend Failed"), message: String.localize("Unable to unsend email. Please try again later"), style: .alert)
+                weakSelf.showAlert(String.localize("UNSEND_FAILED"), message: String.localize("UNABLE_UNSEND"), style: .alert)
                 weakSelf.emailsTableView.reloadData()
                 return
             }
@@ -872,7 +872,7 @@ extension EmailDetailViewController: CoachMarksControllerDataSource, CoachMarksC
     
     func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
         let hintView = HintUIView()
-        hintView.messageLabel.text = String.localize("Open this menu to find\nthe UNSEND button")
+        hintView.messageLabel.text = String.localize("GUIDE_UNSEND")
         hintView.rightConstraint.constant = 50
         hintView.topCenterConstraint.constant = -25
         
