@@ -77,8 +77,8 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         passwordTextField.isEnabled = !show
         confirmButton.isEnabled = !show
         cancelButton.isEnabled = !show
-        cancelButton.setTitle(show ? "" : "CANCEL", for: .normal)
-        confirmButton.setTitle(show ? "" : "CONFIRM", for: .normal)
+        cancelButton.setTitle(show ? "" : String.localize("CANCEL"), for: .normal)
+        confirmButton.setTitle(show ? "" : String.localize("CONFIRM"), for: .normal)
         loader.isHidden = !show
         guard show else {
             loader.stopAnimating()
