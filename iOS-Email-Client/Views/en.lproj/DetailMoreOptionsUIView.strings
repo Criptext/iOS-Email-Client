@@ -1,0 +1,21 @@
+
+/* Class = "UIButton"; normalTitle = "Delete"; ObjectID = "GJm-V9-TCb"; */
+"GJm-V9-TCb.normalTitle" = "Delete";
+
+/* Class = "UIButton"; normalTitle = "Reply All"; ObjectID = "J6Q-6A-qL7"; */
+"J6Q-6A-qL7.normalTitle" = "Reply All";
+
+/* Class = "UIButton"; normalTitle = "Reply"; ObjectID = "L6Z-y6-wWR"; */
+"L6Z-y6-wWR.normalTitle" = "Reply";
+
+/* Class = "UIButton"; normalTitle = "Mark as Unread from here on"; ObjectID = "WAE-Yn-KsO"; */
+"WAE-Yn-KsO.normalTitle" = "Mark as Unread from here on";
+
+/* Class = "UIButton"; normalTitle = "Mark as Spam"; ObjectID = "Za1-6Y-W6N"; */
+"Za1-6Y-W6N.normalTitle" = "Mark as Spam";
+
+/* Class = "UIButton"; normalTitle = "Forward"; ObjectID = "hBy-Yi-wAI"; */
+"hBy-Yi-wAI.normalTitle" = "Forward";
+
+/* Class = "UIButton"; normalTitle = "Unsend"; ObjectID = "tTf-Hb-35Y"; */
+"tTf-Hb-35Y.normalTitle" = "Unsend";
