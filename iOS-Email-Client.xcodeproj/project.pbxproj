@@ -712,6 +712,27 @@
 		A7D2DE7321C42BBF002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/OptionsPickerUIPopover.strings"; sourceTree = "<group>"; };
 		A7D2DE7521C42BC8002ED6F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
 		A7D2DE7821C42BCB002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLockView.strings"; sourceTree = "<group>"; };
+		A7D2DE7A21C470D8002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE7C21C470F3002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE7E21C470F7002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DetailMoreOptionsUIView.strings; sourceTree = "<group>"; };
+		A7D2DE8021C470FA002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GeneralMoreOptionsUIView.strings; sourceTree = "<group>"; };
+		A7D2DE8221C470FE002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SingleTextInputUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE8421C47101002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE8621C47104002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
+		A7D2DE8821C4710A002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
+		A7D2DE8A21C4710D002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
+		A7D2DE8C21C47110002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SignInWarningUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE8E21C47114002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasswordUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE9021C47117002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RemoveDeviceUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE9221C4711C002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WelcomeTourView.strings; sourceTree = "<group>"; };
+		A7D2DE9421C4711F002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MailboxHeaderUITableCell.strings; sourceTree = "<group>"; };
+		A7D2DE9621C47123002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SignInVerificationUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE9821C47127002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ConnectView.strings; sourceTree = "<group>"; };
+		A7D2DE9A21C4712B002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/OptionsPickerUIPopover.strings; sourceTree = "<group>"; };
+		A7D2DE9C21C47131002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		A7D2DE9E21C47178002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		A7D2DEA021C4717D002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		A7D2DEA221C47184002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Login.strings; sourceTree = "<group>"; };
 		A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Support.plist"; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
 		A7F30270216E859300676DD2 /* GZipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZipTests.swift; sourceTree = "<group>"; };
@@ -2005,6 +2026,7 @@
 			children = (
 				41B6AAB42017987500D428B7 /* Base */,
 				A7FFCF5E217A920600FFFDFF /* es-419 */,
+				A7D2DE9E21C47178002ED6F8 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -2014,6 +2036,7 @@
 			children = (
 				41B6AAB92017987500D428B7 /* Base */,
 				A7FFCF5F217A920600FFFDFF /* es-419 */,
+				A7D2DEA021C4717D002ED6F8 /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -2031,6 +2054,7 @@
 			children = (
 				A7D2DE7021C42BB6002ED6F8 /* Base */,
 				A7D2DE7321C42BBF002ED6F8 /* es-419 */,
+				A7D2DE9A21C4712B002ED6F8 /* en */,
 			);
 			name = OptionsPickerUIPopover.xib;
 			sourceTree = "<group>";
@@ -2040,6 +2064,7 @@
 			children = (
 				A7D2DE7521C42BC8002ED6F8 /* Base */,
 				A7D2DE7821C42BCB002ED6F8 /* es-419 */,
+				A7D2DE9C21C47131002ED6F8 /* en */,
 			);
 			name = PasscodeLockView.xib;
 			sourceTree = "<group>";
@@ -2049,6 +2074,7 @@
 			children = (
 				A7FFCF1C217A8FE300FFFDFF /* Base */,
 				A7FFCF60217A920600FFFDFF /* es-419 */,
+				A7D2DEA221C47184002ED6F8 /* en */,
 			);
 			name = Login.storyboard;
 			sourceTree = "<group>";
@@ -2058,6 +2084,7 @@
 			children = (
 				A7FFCF1F217A90B300FFFDFF /* Base */,
 				A7FFCF4E217A920400FFFDFF /* es-419 */,
+				A7D2DE7A21C470D8002ED6F8 /* en */,
 			);
 			name = ContactsDetailUIPopover.xib;
 			sourceTree = "<group>";
@@ -2067,6 +2094,7 @@
 			children = (
 				A7FFCF22217A90D100FFFDFF /* Base */,
 				A7FFCF4F217A920400FFFDFF /* es-419 */,
+				A7D2DE7C21C470F3002ED6F8 /* en */,
 			);
 			name = LabelsUIPopover.xib;
 			sourceTree = "<group>";
@@ -2076,6 +2104,7 @@
 			children = (
 				A7FFCF25217A90E000FFFDFF /* Base */,
 				A7FFCF50217A920400FFFDFF /* es-419 */,
+				A7D2DE7E21C470F7002ED6F8 /* en */,
 			);
 			name = DetailMoreOptionsUIView.xib;
 			sourceTree = "<group>";
@@ -2085,6 +2114,7 @@
 			children = (
 				A7FFCF28217A90E500FFFDFF /* Base */,
 				A7FFCF51217A920400FFFDFF /* es-419 */,
+				A7D2DE8021C470FA002ED6F8 /* en */,
 			);
 			name = GeneralMoreOptionsUIView.xib;
 			sourceTree = "<group>";
@@ -2094,6 +2124,7 @@
 			children = (
 				A7FFCF2B217A90FA00FFFDFF /* Base */,
 				A7FFCF52217A920400FFFDFF /* es-419 */,
+				A7D2DE8221C470FE002ED6F8 /* en */,
 			);
 			name = SingleTextInputUIPopover.xib;
 			sourceTree = "<group>";
@@ -2103,6 +2134,7 @@
 			children = (
 				A7FFCF2E217A910100FFFDFF /* Base */,
 				A7FFCF53217A920400FFFDFF /* es-419 */,
+				A7D2DE8421C47101002ED6F8 /* en */,
 			);
 			name = EmailSetPasswordUIPopover.xib;
 			sourceTree = "<group>";
@@ -2112,6 +2144,7 @@
 			children = (
 				A7FFCF31217A910A00FFFDFF /* Base */,
 				A7FFCF54217A920400FFFDFF /* es-419 */,
+				A7D2DE8621C47104002ED6F8 /* en */,
 			);
 			name = LabelsFooterTableViewCell.xib;
 			sourceTree = "<group>";
@@ -2121,6 +2154,7 @@
 			children = (
 				A7FFCF34217A911400FFFDFF /* Base */,
 				A7FFCF55217A920500FFFDFF /* es-419 */,
+				A7D2DE8821C4710A002ED6F8 /* en */,
 			);
 			name = EmailTableFooterView.xib;
 			sourceTree = "<group>";
@@ -2130,6 +2164,7 @@
 			children = (
 				A7FFCF37217A911B00FFFDFF /* Base */,
 				A7FFCF56217A920500FFFDFF /* es-419 */,
+				A7D2DE8A21C4710D002ED6F8 /* en */,
 			);
 			name = LabelsHeaderTableViewCell.xib;
 			sourceTree = "<group>";
@@ -2139,6 +2174,7 @@
 			children = (
 				A7FFCF3A217A912800FFFDFF /* Base */,
 				A7FFCF57217A920500FFFDFF /* es-419 */,
+				A7D2DE8C21C47110002ED6F8 /* en */,
 			);
 			name = SignInWarningUIPopover.xib;
 			sourceTree = "<group>";
@@ -2148,6 +2184,7 @@
 			children = (
 				A7FFCF3D217A913900FFFDFF /* Base */,
 				A7FFCF58217A920500FFFDFF /* es-419 */,
+				A7D2DE8E21C47114002ED6F8 /* en */,
 			);
 			name = PasswordUIPopover.xib;
 			sourceTree = "<group>";
@@ -2157,6 +2194,7 @@
 			children = (
 				A7FFCF40217A914000FFFDFF /* Base */,
 				A7FFCF59217A920500FFFDFF /* es-419 */,
+				A7D2DE9021C47117002ED6F8 /* en */,
 			);
 			name = RemoveDeviceUIPopover.xib;
 			sourceTree = "<group>";
@@ -2166,6 +2204,7 @@
 			children = (
 				A7FFCF43217A91C300FFFDFF /* Base */,
 				A7FFCF5A217A920600FFFDFF /* es-419 */,
+				A7D2DE9221C4711C002ED6F8 /* en */,
 			);
 			name = WelcomeTourView.xib;
 			sourceTree = "<group>";
@@ -2175,6 +2214,7 @@
 			children = (
 				A7FFCF46217A91C900FFFDFF /* Base */,
 				A7FFCF5B217A920600FFFDFF /* es-419 */,
+				A7D2DE9421C4711F002ED6F8 /* en */,
 			);
 			name = MailboxHeaderUITableCell.xib;
 			sourceTree = "<group>";
@@ -2184,6 +2224,7 @@
 			children = (
 				A7FFCF49217A91D600FFFDFF /* Base */,
 				A7FFCF5C217A920600FFFDFF /* es-419 */,
+				A7D2DE9621C47123002ED6F8 /* en */,
 			);
 			name = SignInVerificationUIPopover.xib;
 			sourceTree = "<group>";
@@ -2193,6 +2234,7 @@
 			children = (
 				A7FFCF4C217A91E200FFFDFF /* Base */,
 				A7FFCF5D217A920600FFFDFF /* es-419 */,
+				A7D2DE9821C47127002ED6F8 /* en */,
 			);
 			name = ConnectView.xib;
 			sourceTree = "<group>";
