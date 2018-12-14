@@ -82,7 +82,6 @@ class ConnectDeviceViewController: UIViewController{
     
     func cleanData(){
         if let jwt = signupData.token {
-            APIManager.logout(token: jwt, completion: {_ in })
             return
         }
         let defaults = CriptextDefaults()
@@ -97,13 +96,16 @@ class ConnectDeviceViewController: UIViewController{
         self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("Sending Keys"), completion: {})
         let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
-            guard case let .SuccessString(jwt) = responseData else {
-                self.presentProcessInterrupted()
-                return
+            guard case let .SuccessDictionary(tokens) = responseData,
+                let jwt = tokens["token"] as? String,
+                let refreshToken = tokens["refreshToken"] as? String else {
+                    self.presentProcessInterrupted()
+                    return
             }
             self.state = .waiting
             self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS, message: String.localize("Waiting for Mailbox"), cancel: true, completion: {})
             self.signupData.token = jwt
+            self.signupData.refreshToken = refreshToken
             self.socket?.connect(jwt: jwt)
             self.scheduleWorker.start()
         }

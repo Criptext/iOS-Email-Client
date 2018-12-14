@@ -23,6 +23,7 @@ class SignUpData{
     var store = CriptextAxolotlStore()
     var publicKeys: [String : Any]?
     var token: String?
+    var refreshToken: String?
     
     init(username: String, password: String, fullname: String, optionalEmail: String?){
         self.username = username

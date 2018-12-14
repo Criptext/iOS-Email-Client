@@ -34,6 +34,7 @@ class MailboxData {
             }
         }
     }
+    var selectedThread: String? = nil
     var removeSelectedRow = false
     var fetchWorker: DispatchWorkItem?
     var searchMode = false

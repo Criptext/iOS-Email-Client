@@ -211,7 +211,7 @@ class SecurityPrivacyViewController: UITableViewController {
         let initialValue = self.generalData.hasEmailReceipts
         self.generalData.hasEmailReceipts = enable
         self.toggleOptions()
-        APIManager.setReadReceipts(enable: enable, token: myAccount.jwt) { (responseData) in
+        APIManager.setReadReceipts(enable: enable, account: myAccount) { (responseData) in
             sender?.isEnabled = true
             guard case .Success = responseData else {
                 self.showAlert(String.localize("Something went wrong"), message: "\(String.localize("Unable to")) \(enable ? String.localize("enable") : String.localize("disable")) \(String.localize("two pass. Please try again"))", style: .alert)

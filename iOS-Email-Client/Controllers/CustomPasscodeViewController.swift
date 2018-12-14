@@ -94,7 +94,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
             self.showAlert(String.localize("Sign out error"), message: String.localize("Not signed in, please restart the app."), style: .alert)
             return
         }
-        APIManager.logout(token: account.jwt) { [weak self] (responseData) in
+        APIManager.logout(account: account) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }

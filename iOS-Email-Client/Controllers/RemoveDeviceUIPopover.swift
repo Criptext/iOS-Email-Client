@@ -52,7 +52,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         }
         let deviceId = device.id
         showLoader(true)
-        APIManager.removeDevice(deviceId: deviceId, password: password.sha256()!, token: myAccount.jwt) { (responseData) in
+        APIManager.removeDevice(deviceId: deviceId, password: password.sha256()!, account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
                 return

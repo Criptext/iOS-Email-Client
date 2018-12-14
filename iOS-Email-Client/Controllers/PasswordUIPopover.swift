@@ -83,10 +83,10 @@ class PasswordUIPopover: BaseUIPopover {
     
     func validatePassword(_ password: String){
         passwordTextField.detail = ""
-        guard let jwt = myAccount?.jwt else {
+        guard let account = myAccount else {
             return
         }
-        APIManager.unlockDevice(password: password.sha256()!, token: jwt) { (responseData) in
+        APIManager.unlockDevice(password: password.sha256()!, account: account) { (responseData) in
             self.showLoader(false)
             if case let .Error(error) = responseData,
                 error.code != .custom {
@@ -131,12 +131,12 @@ class PasswordUIPopover: BaseUIPopover {
     @IBAction func cancelPress(_ sender: Any) {
         passwordTextField.detail = ""
         guard self.remotelyCheckPassword,
-            let jwt = myAccount?.jwt else {
+            let account = myAccount else {
             dismiss(animated: true)
             return
         }
         self.showLoader(true)
-        APIManager.logout(token: jwt) { (responseData) in
+        APIManager.logout(account: account) { (responseData) in
             self.showLoader(false)
             guard case .Success = responseData else {
                 self.passwordTextField.detail = "Unable to logout. Try again."

@@ -655,7 +655,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         emailData.setState(email.key, isUnsending: true)
         emailsTableView.reloadData()
         let recipients = getEmailRecipients(contacts: email.getContacts())
-        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { [weak self] (responseData) in
+        APIManager.unsendEmail(key: email.key, recipients: recipients, account: myAccount) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -901,6 +901,6 @@ extension EmailDetailViewController: LinkDeviceDelegate {
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
-        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
     }
 }

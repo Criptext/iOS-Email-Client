@@ -74,11 +74,14 @@ class CreatingAccountViewController: UIViewController{
                 self.displayErrorMessage(message: error.description)
                 return
             }
-            guard case let .SuccessString(jwt) = responseData else {
+            guard case let .SuccessDictionary(tokens) = responseData,
+                let jwt = tokens["token"] as? String,
+                let refreshToken = tokens["refreshToken"] as? String else {
                 self.displayErrorMessage()
                 return
             }
             self.signupData.token = jwt
+            self.signupData.refreshToken = refreshToken
             self.animateProgress(50.0, 2.0) {
                 self.state = .accountCreate
                 self.handleState()
@@ -102,11 +105,14 @@ class CreatingAccountViewController: UIViewController{
                 }
                 return
             }
-            guard case let .SuccessString(token) = responseData else {
+            guard case let .SuccessDictionary(tokens) = responseData,
+                let sessionToken = tokens["token"] as? String,
+                let refreshToken = tokens["refreshToken"] as? String else {
                 self.displayErrorMessage()
                 return
             }
-            self.signupData.token = token
+            self.signupData.token = sessionToken
+            self.signupData.refreshToken = refreshToken
             self.animateProgress(50.0, 2.0) {
                 self.state = .accountCreate
                 self.handleState()
@@ -124,6 +130,7 @@ class CreatingAccountViewController: UIViewController{
         myAccount.username = signupData.username
         myAccount.name = signupData.fullname
         myAccount.jwt = signupData.token!
+        myAccount.refreshToken = signupData.refreshToken
         myAccount.regId = signupData.getRegId()
         myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""
         myAccount.deviceId = signupData.deviceId

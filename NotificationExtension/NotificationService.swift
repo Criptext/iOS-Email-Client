@@ -33,7 +33,7 @@ class NotificationService: UNNotificationServiceExtension {
                 contentHandler(request.content)
                 return
         }
-        SharedAPI.getEvents(token: account.jwt) { (responseData) in
+        SharedAPI.getEvents(account: account) { (responseData) in
             let userInfo = request.content.userInfo
             guard case let .SuccessArray(events) = responseData,
                 let keyString = userInfo["metadataKey"] as? String,

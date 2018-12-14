@@ -79,7 +79,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func linkAccept() {
-        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt) { (responseData) in
+        APIManager.linkAccept(randomId: linkData.randomId, account: myAccount) { (responseData) in
             if case .Missing = responseData {
                 self.showErrorAlert(message: "Device was already rejected")
                 return
@@ -174,7 +174,7 @@ class ConnectUploadViewController: UIViewController{
             "key": encryptedKey
         ] as [String: Any]
         self.connectUIView.progressChange(value: PROGRESS_SEND_DATA, message: "Uploading Mailbox", completion: {})
-        APIManager.linkDataAddress(params: params, token: myAccount.jwt) { (responseData) in
+        APIManager.linkDataAddress(params: params, account: myAccount) { (responseData) in
             guard case .Success = responseData else {
                 self.presentProcessInterrupted()
                 return
@@ -220,7 +220,7 @@ extension ConnectUploadViewController: ScheduleWorkerDelegate {
         if databasePath != nil {
             self.connectUIView.progressChange(value: PROGRESS_GET_KEYS, message: "Getting Keys", cancel: true, completion: {})
         }
-        APIManager.getKeybundle(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
+        APIManager.getKeybundle(deviceId: deviceId, account: myAccount) { (responseData) in
             guard case let .SuccessDictionary(keys) = responseData else {
                 completion(false)
                 return

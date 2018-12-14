@@ -96,6 +96,6 @@ extension SignatureEditorViewController: LinkDeviceDelegate {
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
-        APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
     }
 }

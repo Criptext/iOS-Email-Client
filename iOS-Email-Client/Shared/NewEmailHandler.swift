@@ -67,7 +67,7 @@ class NewEmailHandler {
             }
         }
         
-        api.getEmailBody(metadataKey: email.key, token: myAccount.jwt) { (responseData) in
+        api.getEmailBody(metadataKey: email.key, account: myAccount) { (responseData) in
             
             var error: CriptextError?
             var unsent = false

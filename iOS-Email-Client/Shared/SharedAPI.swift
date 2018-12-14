@@ -15,7 +15,7 @@ import RealmSwift
 
 class SharedAPI {
     static let baseUrl = Env.apiURL
-    static let apiVersion = "3.0.0"
+    static let apiVersion = "4.0.0"
     static let versionHeader = "criptext-api-version"
     
     enum code: Int {
@@ -101,23 +101,62 @@ class SharedAPI {
         }
     }
     
-    class func getEvents(token: String, completion: @escaping ((ResponseData) -> Void)){
-        let url = "\(self.baseUrl)/event"
-        let headers = ["Authorization": "Bearer \(token)",
+    class func authorizationRequest(responseData: ResponseData, account: Account, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?) -> Void)) {
+        guard case .Unauthorized = responseData else {
+            completionHandler(responseData)
+            return
+        }
+        guard let refreshToken = account.refreshToken else {
+            return
+        }
+        let url = "\(self.baseUrl)/user/refreshtoken"
+        let headers = ["Authorization": "Bearer \(refreshToken)",
             versionHeader: apiVersion]
-        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            let responseData = handleResponse(response)
-            completion(responseData)
+        let accountRef = SharedDB.getReference(account)
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
+            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                completionHandler(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                return
+            }
+            let refreshResponseData = handleResponse(response)
+            guard case let .SuccessString(newJwt) = refreshResponseData else {
+                completionHandler(refreshResponseData)
+                return
+            }
+            SharedDB.update(refdAccount, jwt: newJwt)
+            completionHandler(nil)
         }
     }
     
-    class func getEmailBody(metadataKey: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func getEvents(account: Account, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/event"
+        let headers = ["Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            let responseData = handleResponse(response)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.getEvents(account: account, completion: completion)
+            }
+        }
+    }
+    
+    class func getEmailBody(metadataKey: Int, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let headers = ["Authorization": "Bearer \(token)",
+        let headers = ["Authorization": "Bearer \(account.jwt)",
             versionHeader: apiVersion]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             let responseData = handleResponse(response)
-            completion(responseData)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.getEmailBody(metadataKey: metadataKey, account: account, completion: completion)
+            }
         }
     }
 }

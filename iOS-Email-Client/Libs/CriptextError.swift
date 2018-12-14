@@ -45,6 +45,7 @@ enum ErrorCode {
     case loggedOut
     case timeout
     case offline
+    case unreferencedAccount
     case custom
     
     var description: String {
@@ -63,6 +64,8 @@ enum ErrorCode {
             return "Connection Timeout!"
         case .offline:
             return "No internet connection"
+        case .unreferencedAccount:
+            return "Unable to obtain account from reference"
         case .custom:
             return ""
         }
