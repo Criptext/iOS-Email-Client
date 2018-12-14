@@ -10,31 +10,64 @@ import Foundation
 import UIKit
 
 protocol AttachmentTableCellDelegate {
-    func tableCellDidTap(_ cell: AttachmentTableCell)
+    func tableVCellDidTapReadOnly(_ cell:AttachmentTableCell)
+    func tableCellDidTapPassword(_ cell:AttachmentTableCell)
+    func tableCellDidTapRemove(_ cell:AttachmentTableCell)
+    func tableCellDidTap(_ cell:AttachmentTableCell)
 }
 
 class AttachmentTableCell: UITableViewCell{
     @IBOutlet weak var attachmentLabel: UILabel!
+    @IBOutlet weak var attachmentSizeLabel: UILabel!
     @IBOutlet weak var attachmentContainer: UIView!
     @IBOutlet weak var typeView: UIImageView!
+    @IBOutlet weak var lockView: UIImageView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var markImageView: UIImageView!
     @IBOutlet weak var iconDownloadImageView: UIImageView!
+    @IBOutlet weak var viewClose: UIView!
+    @IBOutlet weak var buttonClose: UIButton!
+    
+    var tapGestureRecognizer:UITapGestureRecognizer!
+    var holdGestureRecognizer:UILongPressGestureRecognizer!
     var delegate: AttachmentTableCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        attachmentContainer.layer.borderWidth = 1
-        attachmentContainer.layer.borderColor = UIColor(red:216/255, green:216/255, blue:216/255, alpha: 0.45).cgColor
+        self.attachmentContainer.layer.borderColor = UIColor(red:216/255, green:216/255, blue:216/255, alpha: 0.45).cgColor
+        self.attachmentContainer.layer.borderWidth = 1.5
+        self.attachmentContainer.layer.cornerRadius = 6.0
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
+        self.tapGestureRecognizer = tap
+        
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        self.addGestureRecognizer(hold)
+        self.holdGestureRecognizer = hold
+        
+        self.viewClose.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).cgColor
+        self.buttonClose.addTarget(self, action: #selector(didPressCloseButton(_:)), for: .touchUpInside)
+    }
+    
+    @objc func didPressCloseButton(_ view: UIButton){
+        guard let delegate = self.delegate else {
+            return
+        }
+        delegate.tableCellDidTapRemove(self)
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
-        delegate?.tableCellDidTap(self)
+        guard let delegate = self.delegate else {
+            return
+        }
+        delegate.tableCellDidTap(self)
     }
     
+    @objc func handleLongPress(_ gestureRecognizer:UITapGestureRecognizer){
+        
+    }
+
     func setFields(_ attachment: File){
         setNameAndSize(attachment.name, attachment.prettyPrintSize())
         setAttachmentType(attachment.mimeType)
@@ -53,9 +86,8 @@ class AttachmentTableCell: UITableViewCell{
         
         let sizeAttrs = [NSAttributedString.Key.foregroundColor : UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)]
         let mySize = NSMutableAttributedString(string: "  \(size)", attributes: sizeAttrs)
-        
-        myName.append(mySize)
         attachmentLabel.attributedText = myName
+        attachmentSizeLabel.attributedText = mySize
     }
     
     func setAttachmentType(_ mimeType: String){
