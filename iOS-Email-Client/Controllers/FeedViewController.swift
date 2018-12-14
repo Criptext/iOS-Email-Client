@@ -162,7 +162,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func deleteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
-        let action = UIContextualAction(style: .destructive, title: String.localize("Delete")){ [weak self] (action, view, completion) in
+        let action = UIContextualAction(style: .destructive, title: String.localize("DELETE")){ [weak self] (action, view, completion) in
             guard let weakSelf = self else {
                 return
             }

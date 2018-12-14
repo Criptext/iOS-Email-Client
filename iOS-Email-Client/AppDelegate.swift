@@ -288,15 +288,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setupLinkDeviceNotification() -> UNNotificationCategory {
-        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: "Approve", options: .foreground)
-        let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: "Reject", options: .destructive)
+        let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: String.localize("APPROVE"), options: .foreground)
+        let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: String.localize("REJECT"), options: .destructive)
         return UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
     func setupNewEmailNotification() -> UNNotificationCategory {
-        let emailMark = UNNotificationAction(identifier: "EMAIL_MARK", title: "Mark as Read", options: .authenticationRequired)
-        let emailReply = UNNotificationAction(identifier: "EMAIL_REPLY", title: "Reply", options: .foreground)
-        let emailTrash = UNNotificationAction(identifier: "EMAIL_TRASH", title: "Delete", options: .destructive)
+        let emailMark = UNNotificationAction(identifier: "EMAIL_MARK", title: String.localize("MARK_READ"), options: .authenticationRequired)
+        let emailReply = UNNotificationAction(identifier: "EMAIL_REPLY", title: String.localize("REPLY"), options: .foreground)
+        let emailTrash = UNNotificationAction(identifier: "EMAIL_TRASH", title: String.localize("DELETE"), options: .destructive)
         return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     

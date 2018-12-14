@@ -336,3 +336,10 @@
 /* CriptextFileManager */
 
 "THE_FILE_EXCEEDS" = "The file %s exceeds %s";
+
+/* AppDelegate.swift */
+
+"MARK_READ" = "Mark as Read";
+"APPROVE" = "Approve";
+"REJECT" = "Reject";
+
