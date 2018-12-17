@@ -69,7 +69,7 @@ class ChangePassViewController: UIViewController {
             }
             guard case let .SuccessDictionary(data) = responseData,
                 let email = data["address"] as? String else {
-                    self.presentResetAlert(title: String.localize("REQUEST_ERROR"), message: "RECOVERY_NOT_SET_RESET")
+                    self.presentResetAlert(title: String.localize("REQUEST_ERROR"), message: String.localize("RECOVERY_NOT_SET_RESET"))
                     return
             }
             self.presentResetAlert(title: String.localize("RESET_PASSWORD"), message: String.localize("EMAIL_INSTRUCTIONS", arguments: Utils.maskEmailAddress(email: email)))
@@ -147,6 +147,11 @@ class ChangePassViewController: UIViewController {
         APIManager.changePassword(oldPassword: oldPass.sha256()!, newPassword: newPass.sha256()!, account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout()
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.presentResetAlert(title: String.localize("REQUEST_ERROR"), message: error.description)
                 return
             }
             guard case .Success = responseData else {

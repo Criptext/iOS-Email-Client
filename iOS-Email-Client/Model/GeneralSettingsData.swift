@@ -24,11 +24,11 @@ class GeneralSettingsData {
         var description: String {
             switch(self){
             case .pending:
-                return "Not Confirmed"
+                return String.localize("NOT_CONFIRMED")
             case .none:
                 return ""
             case .verified:
-                return "Verified"
+                return String.localize("VERIFIED")
             }
         }
         

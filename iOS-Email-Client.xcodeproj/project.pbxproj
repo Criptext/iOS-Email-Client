@@ -254,7 +254,6 @@
 		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
-		A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7ADA12221A5CE840027FC1C /* ComposerUIView.xib */; };
 		A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */; };
 		A7ADA12721A5DCC80027FC1C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A7ADA12821A5F1CA0027FC1C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
@@ -368,6 +367,10 @@
 		A7D2DE6421C2AD30002ED6F8 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D2DE6221C2AD2F002ED6F8 /* FirebaseMessaging.framework */; };
 		A7D2DE6F21C42BB6002ED6F8 /* OptionsPickerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DE7121C42BB6002ED6F8 /* OptionsPickerUIPopover.xib */; };
 		A7D2DE7421C42BC8002ED6F8 /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DE7621C42BC8002ED6F8 /* PasscodeLockView.xib */; };
+		A7D2DEA721C83EEE002ED6F8 /* ComposerUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DEA921C83EEE002ED6F8 /* ComposerUIView.xib */; };
+		A7D2DEB021C852A6002ED6F8 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */; };
+		A7D2DEB421C85328002ED6F8 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */; };
+		A7D2DEB521C85329002ED6F8 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */; };
 		A7E399F5219F61CD007EEC1C /* GoogleService-Info-Support.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
@@ -691,7 +694,6 @@
 		A789B23B21B5E48800F89DF3 /* PasscodeLockView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PasscodeLockView.xib; path = ../../../PasscodeLockView.xib; sourceTree = "<group>"; };
 		A789B23D21B5E49200F89DF3 /* LightPasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LightPasscodeViewController.swift; path = ../../../LightPasscodeViewController.swift; sourceTree = "<group>"; };
 		A7ADA11B21A507D70027FC1C /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
-		A7ADA12221A5CE840027FC1C /* ComposerUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposerUIView.xib; sourceTree = "<group>"; };
 		A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerUIView.swift; sourceTree = "<group>"; };
 		A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
@@ -745,6 +747,13 @@
 		A7D2DE9E21C47178002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		A7D2DEA021C4717D002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		A7D2DEA221C47184002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Login.strings; sourceTree = "<group>"; };
+		A7D2DEA421C83EDE002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainInterface.strings; sourceTree = "<group>"; };
+		A7D2DEA621C83EE3002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/MainInterface.strings"; sourceTree = "<group>"; };
+		A7D2DEA821C83EEE002ED6F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ComposerUIView.xib; sourceTree = "<group>"; };
+		A7D2DEAB21C83EF0002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
+		A7D2DEAD21C83EF1002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/ComposerUIView.strings"; sourceTree = "<group>"; };
+		A7D2DEB121C852A7002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
+		A7D2DEB321C852AE002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLock.strings"; sourceTree = "<group>"; };
 		A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Support.plist"; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
 		A7F30270216E859300676DD2 /* GZipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZipTests.swift; sourceTree = "<group>"; };
@@ -1079,6 +1088,7 @@
 				A7FFCF1D217A8FE300FFFDFF /* Login.storyboard */,
 				7C8D6C73203735E000AB96EF /* Constants.swift */,
 				A7FFCF65217A93E600FFFDFF /* Localizable.strings */,
+				A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */,
 			);
 			path = "iOS-Email-Client";
 			sourceTree = "<group>";
@@ -1323,7 +1333,7 @@
 				A77C30B021A5055A0031E219 /* ShareViewController.swift */,
 				A77C30B221A5055A0031E219 /* MainInterface.storyboard */,
 				A77C30B521A5055A0031E219 /* Info.plist */,
-				A7ADA12221A5CE840027FC1C /* ComposerUIView.xib */,
+				A7D2DEA921C83EEE002ED6F8 /* ComposerUIView.xib */,
 				A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */,
 				A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */,
 				A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */,
@@ -1537,6 +1547,7 @@
 				7CF93F572146E41700361837 /* Arm.json in Resources */,
 				A7FFCF39217A912800FFFDFF /* SignInWarningUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
+				A7D2DEB021C852A6002ED6F8 /* PasscodeLock.strings in Resources */,
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
 				412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */,
@@ -1619,10 +1630,11 @@
 				A7ADA15821A61A1B0027FC1C /* NunitoSans-SemiBold.ttf in Resources */,
 				A7ADA15221A61A1B0027FC1C /* NunitoSans-ExtraLight.ttf in Resources */,
 				A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */,
+				A7D2DEB421C85328002ED6F8 /* PasscodeLock.strings in Resources */,
 				A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */,
 				A789B23C21B5E48800F89DF3 /* PasscodeLockView.xib in Resources */,
 				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
-				A7ADA12321A5CE840027FC1C /* ComposerUIView.xib in Resources */,
+				A7D2DEA721C83EEE002ED6F8 /* ComposerUIView.xib in Resources */,
 				A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */,
 				A7ADA14D21A61A1B0027FC1C /* NunitoSans-BlackItalic.ttf in Resources */,
 				A7ADA14C21A61A1B0027FC1C /* NunitoSans-Black.ttf in Resources */,
@@ -1635,6 +1647,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */,
+				A7D2DEB521C85329002ED6F8 /* PasscodeLock.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2045,6 +2058,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				A77C30B321A5055A0031E219 /* Base */,
+				A7D2DEA421C83EDE002ED6F8 /* en */,
+				A7D2DEA621C83EE3002ED6F8 /* es-419 */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -2067,6 +2082,25 @@
 				A7D2DE9C21C47131002ED6F8 /* en */,
 			);
 			name = PasscodeLockView.xib;
+			sourceTree = "<group>";
+		};
+		A7D2DEA921C83EEE002ED6F8 /* ComposerUIView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A7D2DEA821C83EEE002ED6F8 /* Base */,
+				A7D2DEAB21C83EF0002ED6F8 /* en */,
+				A7D2DEAD21C83EF1002ED6F8 /* es-419 */,
+			);
+			name = ComposerUIView.xib;
+			sourceTree = "<group>";
+		};
+		A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A7D2DEB121C852A7002ED6F8 /* en */,
+				A7D2DEB321C852AE002ED6F8 /* es-419 */,
+			);
+			name = PasscodeLock.strings;
 			sourceTree = "<group>";
 		};
 		A7FFCF1D217A8FE300FFFDFF /* Login.storyboard */ = {

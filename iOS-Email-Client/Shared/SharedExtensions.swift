@@ -58,7 +58,8 @@ extension String {
     }
     
     static func localize(_ text: String, arguments: CVarArg...) -> String {
-        return String(format: String.localize(text), arguments)
+        print(String.localize(text))
+        return String(format: String.localize(text), arguments: arguments)
     }
     
     func hideMidChars() -> String {

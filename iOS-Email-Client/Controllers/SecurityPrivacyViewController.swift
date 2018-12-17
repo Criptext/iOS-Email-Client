@@ -21,13 +21,30 @@ class SecurityPrivacyViewController: UITableViewController {
         var isEnabled = true
     }
     
-    enum Privacy: String {
-        case pincode = "Use PIN Code"
-        case changePin = "Change PIN Code"
-        case autoLock = "Auto-Lock"
-        case preview = "Notification Preview"
-        case receipts = "Read Receipts"
-        case biometric = ""
+    enum Privacy {
+        case pincode
+        case changePin
+        case autoLock
+        case preview
+        case receipts
+        case biometric
+        
+        var description: String {
+            switch(self) {
+            case .pincode:
+                return String.localize("USE_PIN")
+            case .changePin:
+                return String.localize("CHANGE_PIN")
+            case .autoLock:
+                return String.localize("AUTO_LOCK")
+            case .preview:
+                return String.localize("NOTIFICATION_PREVIEW")
+            case .receipts:
+                return String.localize("READ_RECEIPTS")
+            case .biometric:
+                return ""
+            }
+        }
     }
     
     var options = [PrivacyOption]()

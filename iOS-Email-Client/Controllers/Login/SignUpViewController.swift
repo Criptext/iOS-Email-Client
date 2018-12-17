@@ -253,10 +253,10 @@ class SignUpViewController: UIViewController{
         let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
         let boldAttrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
         
-        let boldText  = String.localize("WARNING_RECOVERY_1")
+        let boldText  = String.localize("WARNING_RECOVERY_2")
         let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)
         
-        let textPart1 = String.localize("WARNING_RECOVERY_2")
+        let textPart1 = String.localize("WARNING_RECOVERY_1")
         let stringPart1 = NSMutableAttributedString(string:textPart1, attributes: normalAttrs)
         
         let textPart2 = String.localize("WARNING_RECOVERY_3")

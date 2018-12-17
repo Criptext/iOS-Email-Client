@@ -76,19 +76,19 @@ enum SystemLabel: Int {
     var description: String {
         switch self {
         case .inbox:
-            return "Inbox"
+            return String.localize("INBOX")
         case .draft:
-            return "Draft"
+            return String.localize("DRAFT")
         case .sent:
-            return "Sent"
+            return String.localize("SENT")
         case .spam:
-            return "Spam"
+            return String.localize("SPAM")
         case .trash:
-            return "Trash"
+            return String.localize("TRASH")
         case .starred:
-            return "Starred"
+            return String.localize("STARRED")
         case .all:
-            return "All Mail"
+            return String.localize("ALL_MAIL")
         }
     }
     

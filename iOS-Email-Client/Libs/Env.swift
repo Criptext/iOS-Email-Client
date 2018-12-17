@@ -66,6 +66,10 @@ struct Env {
         return "https://api.criptext.com"
     }
     
+    static var language: String {
+        return Locale.current.languageCode ?? "en"
+    }
+    
     static let databaseVersion: UInt64 = 12
     static let maxRetryAttempts: Int = 10
 }
