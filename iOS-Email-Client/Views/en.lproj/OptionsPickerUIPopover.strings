@@ -1,9 +1,3 @@
-
-/* Class = "UILabel"; text = "Auto-Lock"; ObjectID = "1UA-Xl-s0K"; */
 "1UA-Xl-s0K.text" = "Auto-Lock";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "X9L-Nt-UWG"; */
 "X9L-Nt-UWG.normalTitle" = "Cancel";
-
-/* Class = "UIButton"; normalTitle = "Ok"; ObjectID = "ZmD-WH-vLG"; */
 "ZmD-WH-vLG.normalTitle" = "Ok";

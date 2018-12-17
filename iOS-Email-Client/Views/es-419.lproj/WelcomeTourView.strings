@@ -1,21 +1,7 @@
-
-/* Class = "UILabel"; text = "Strong Privacy"; ObjectID = "9pe-hz-oms"; */
-"9pe-hz-oms.text" = "Strong Privacy";
-
-/* Class = "UILabel"; text = "Criptext doesn't collect email data. Your emails are only stored on your device."; ObjectID = "FKs-AO-IKy"; */
-"FKs-AO-IKy.text" = "Criptext doesn't collect email data. Your emails are only stored on your device.";
-
-/* Class = "UIButton"; normalTitle = "Continue to Inbox"; ObjectID = "JrO-Q9-Xey"; */
-"JrO-Q9-Xey.normalTitle" = "Continue to Inbox";
-
-/* Class = "UILabel"; text = "Strong Privacy"; ObjectID = "Z7y-wn-d97"; */
-"Z7y-wn-d97.text" = "Strong Privacy";
-
-/* Class = "UILabel"; text = "Your secure email experience starts now. Be ready for privacy without compromise."; ObjectID = "hic-uS-rxU"; */
-"hic-uS-rxU.text" = "Your secure email experience starts now. Be ready for privacy without compromise.";
-
-/* Class = "UILabel"; text = "Welcome!"; ObjectID = "u4G-wi-99D"; */
-"u4G-wi-99D.text" = "Welcome!";
-
-/* Class = "UILabel"; text = "You create information, \nwe believe you have a right \nto own it.  "; ObjectID = "z0u-R2-7dS"; */
-"z0u-R2-7dS.text" = "You create information, \nwe believe you have a right \nto own it.  ";
+"9pe-hz-oms.text" = "Privacidad Fuerte";
+"FKs-AO-IKy.text" = "Criptext no guarda tus correos en sus servidores. Tus correos únicamente se guardan en tu dispositivo.";
+"JrO-Q9-Xey.normalTitle" = "Continuar a la bandeja de entrada";
+"Z7y-wn-d97.text" = "Privacidad Fuerte";
+"hic-uS-rxU.text" = "Tu experiencia con el correo seguro comienza aquí. Prepárate para privacidad total.";
+"u4G-wi-99D.text" = "¡Bienviendo!";
+"z0u-R2-7dS.text" = "Tu creas la información, \nnosotros creemos que tienes derecho \na que sólo sea tuya.";
