@@ -116,12 +116,12 @@ class ComposeViewController: UIViewController {
         let disableImage = Icon.send.image?.tint(with: UIColor.white.withAlphaComponent(0.6))
         self.disableSendButton = UIBarButtonItem(image: disableImage, style: .plain, target: self, action: nil)
         
-        self.editorView.placeholder = String.localize("Message")
+        self.editorView.placeholder = String.localize("MESSAGE")
         self.editorView.delegate = self
         self.subjectField.delegate = self
         self.subjectField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         
-        self.toField.fieldName = String.localize("To")
+        self.toField.fieldName = String.localize("TO")
         self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
         
@@ -133,7 +133,7 @@ class ComposeViewController: UIViewController {
         self.toField.accessoryView = toFieldButton
         self.toField.accessoryView?.isHidden = true
         
-        self.bccField.fieldName = String.localize("Bcc")
+        self.bccField.fieldName = String.localize("BCC")
         self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         
@@ -145,7 +145,7 @@ class ComposeViewController: UIViewController {
         self.bccField.accessoryView = bccFieldButton
         self.bccField.accessoryView?.isHidden = true
         
-        self.ccField.fieldName = String.localize("Cc")
+        self.ccField.fieldName = String.localize("CC")
         self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
         

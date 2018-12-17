@@ -109,11 +109,11 @@ class Email: Object {
     }
         
     func getFormattedDate() -> String {
-        return DateUtils.conversationTime(date)
+        return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
     }
     
     func getFullDate() -> String {
-        return DateUtils.prettyDate(date)
+        return DateUtils.prettyDate(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
     }
     
     var completeDate: String {

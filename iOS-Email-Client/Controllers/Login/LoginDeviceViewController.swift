@@ -99,7 +99,7 @@ class LoginDeviceViewController: UIViewController{
     func onFailure(){
         failureDeviceView.isHidden = false
         waitingDeviceView.isHidden = true
-        titleLabel.text = "Sign In Rejected"
+        titleLabel.text = String.localize("SIGN_REJECTED")
     }
     
     func jumpToConnectDevice(data: LinkAccept){
@@ -158,8 +158,8 @@ extension LoginDeviceViewController: ScheduleWorkerDelegate {
     
     func dangled(){
         let retryPopup = GenericDualAnswerUIPopover()
-        retryPopup.initialMessage = String.localize("Something has happened that is delaying this process. Do you want to continue waiting?")
-        retryPopup.initialTitle = String.localize("Well, that’s odd…")
+        retryPopup.initialMessage = String.localize("DELAYED_PROCESS_RETRY")
+        retryPopup.initialTitle = String.localize("ODD")
         retryPopup.onResponse = { accept in
             guard accept else {
                 self.navigationController?.popViewController(animated: true)

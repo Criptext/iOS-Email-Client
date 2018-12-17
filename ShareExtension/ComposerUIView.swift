@@ -63,18 +63,18 @@ class ComposerUIView: UIView {
     func initialLoad() {
         navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationItem.detailLabel.tintColor = .white
-        self.editorView.placeholder = String.localize("Message")
+        self.editorView.placeholder = String.localize("MESSAGE")
         self.editorView.delegate = self
         self.editorView.isScrollEnabled = false
         self.editorHeightConstraint.constant = 150
         
-        self.toField.fieldName = String.localize("To")
+        self.toField.fieldName = String.localize("TO")
         self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
-        self.ccField.fieldName = String.localize("Cc")
+        self.ccField.fieldName = String.localize("CC")
         self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
-        self.bccField.fieldName = String.localize("Bcc")
+        self.bccField.fieldName = String.localize("BCC")
         self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         

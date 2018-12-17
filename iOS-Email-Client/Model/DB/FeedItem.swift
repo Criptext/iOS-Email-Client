@@ -29,7 +29,7 @@ class FeedItem: Object {
         return email.subject
     }
     var formattedDate: String {
-        return DateUtils.conversationTime(date)
+        return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
     }
     var header: String {
         return "\(contact.displayName) \(type == Action.open.rawValue ? "opened" : "downloaded"):"

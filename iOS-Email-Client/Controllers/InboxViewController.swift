@@ -135,6 +135,7 @@ class InboxViewController: UIViewController {
         self.setButtonItems(isEditing: false)
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+        self.titleBarButton.title = SystemLabel.inbox.description.uppercased()
         
         self.initFloatingButton()
         topToolbar.delegate = self
