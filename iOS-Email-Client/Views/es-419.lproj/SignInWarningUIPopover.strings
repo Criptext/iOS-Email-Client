@@ -1,12 +1,4 @@
-
-/* Class = "UILabel"; text = "Logging out will keep your data in this device until you log in with another account. All emails will remain intact in your other devices, if any. Do you want to Logout?"; ObjectID = "5ic-29-Nue"; */
-"5ic-29-Nue.text" = "Logging out will keep your data in this device until you log in with another account. All emails will remain intact in your other devices, if any. Do you want to Logout?";
-
-/* Class = "UIButton"; normalTitle = "Logout"; ObjectID = "6Fs-oh-bwh"; */
-"6Fs-oh-bwh.normalTitle" = "Logout";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "Yoa-Xs-DQG"; */
-"Yoa-Xs-DQG.normalTitle" = "Cancel";
-
-/* Class = "UILabel"; text = "Logout"; ObjectID = "cCY-jW-B0n"; */
-"cCY-jW-B0n.text" = "Logout";
+"5ic-29-Nue.text" = "El cierre de sesión mantendrá sus datos en este dispositivo hasta que inicie sesión con otra cuenta. Todos los correos electrónicos permanecerán intactos en sus otros dispositivos, si los hubiera. ¿Quieres cerrar sesión?";
+"6Fs-oh-bwh.normalTitle" = "Continue";
+"Yoa-Xs-DQG.normalTitle" = "Cancelar";
+"cCY-jW-B0n.text" = "Advertencia de Inicio de Sesión";

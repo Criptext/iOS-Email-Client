@@ -1,12 +1,4 @@
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "JWi-Fa-1cW"; */
-"JWi-Fa-1cW.normalTitle" = "Cancel";
-
-/* Class = "UITextField"; placeholder = "Enter Profile Name"; ObjectID = "WB5-Un-Tan"; */
-"WB5-Un-Tan.placeholder" = "Enter Profile Name";
-
-/* Class = "UILabel"; text = "Profile Name"; ObjectID = "nfM-2G-pON"; */
-"nfM-2G-pON.text" = "Profile Name";
-
-/* Class = "UIButton"; normalTitle = "Ok"; ObjectID = "wJg-AJ-UXv"; */
+"JWi-Fa-1cW.normalTitle" = "Cancelar";
+"WB5-Un-Tan.placeholder" = "Ingrese el nombre del perfil";
+"nfM-2G-pON.text" = "Nombre de Perfil";
 "wJg-AJ-UXv.normalTitle" = "Ok";

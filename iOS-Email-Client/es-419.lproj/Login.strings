@@ -1,87 +1,29 @@
-
-/* Class = "UILabel"; text = "Your request to access this account\nwas rejected by a verified device"; ObjectID = "2tE-YN-9zc"; */
-"2tE-YN-9zc.text" = "Your request to access this account\nwas rejected by a verified device";
-
-/* Class = "UILabel"; text = "Username does not exists"; ObjectID = "3eC-DY-ikl"; */
-"3eC-DY-ikl.text" = "Username does not exists";
-
-/* Class = "UITextField"; placeholder = "Password"; ObjectID = "7VS-F9-Zdf"; */
-"7VS-F9-Zdf.placeholder" = "Password";
-
-/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "8N5-Z7-gsp"; */
-"8N5-Z7-gsp.normalTitle" = "Sign In";
-
-/* Class = "UILabel"; text = "Sign In"; ObjectID = "AGe-4s-CNR"; */
-"AGe-4s-CNR.text" = "Sign In";
-
-/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "BJd-tc-Byi"; */
-"BJd-tc-Byi.placeholder" = "Confirm Password";
-
-/* Class = "UIButton"; normalTitle = "Forgot Password?"; ObjectID = "Ctn-3x-BiI"; */
-"Ctn-3x-BiI.normalTitle" = "Forgot Password?";
-
-/* Class = "UILabel"; text = "Check and approve on your existing Criptext device to continue"; ObjectID = "Ewk-Fo-ARJ"; */
-"Ewk-Fo-ARJ.text" = "Check and approve on your existing Criptext device to continue";
-
-/* Class = "UILabel"; text = "Create your Criptext account"; ObjectID = "HEX-Oc-wzA"; */
-"HEX-Oc-wzA.text" = "Create your Criptext account";
-
-/* Class = "UIButton"; normalTitle = "Sign in with password"; ObjectID = "Jek-k9-O5Z"; */
-"Jek-k9-O5Z.normalTitle" = "Sign in with password";
-
-/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "MIl-CE-AOA"; */
-"MIl-CE-AOA.normalTitle" = "Button";
-
-/* Class = "UILabel"; text = "Sign In"; ObjectID = "NT8-w1-8Xk"; */
-"NT8-w1-8Xk.text" = "Sign In";
-
-/* Class = "UILabel"; text = "Warning: Multiple rejections could\nlead your device to be blacklisted\nfrom Criptext"; ObjectID = "QBc-eE-Cy3"; */
-"QBc-eE-Cy3.text" = "Warning: Multiple rejections could\nlead your device to be blacklisted\nfrom Criptext";
-
-/* Class = "UILabel"; text = "Sign Up"; ObjectID = "S1o-cP-DdO"; */
-"S1o-cP-DdO.text" = "Sign Up";
-
-/* Class = "UIButton"; normalTitle = "Create Account"; ObjectID = "SwZ-3C-ekg"; */
-"SwZ-3C-ekg.normalTitle" = "Create Account";
-
-/* Class = "UILabel"; text = "Didn’t get the prompt?"; ObjectID = "UEg-nZ-3Qg"; */
-"UEg-nZ-3Qg.text" = "Didn’t get the prompt?";
-
-/* Class = "UILabel"; text = "Creating Keys"; ObjectID = "VeR-Uo-Ifp"; */
-"VeR-Uo-Ifp.text" = "Creating Keys";
-
-/* Class = "UITextField"; placeholder = "Full Name"; ObjectID = "WAM-eM-sVg"; */
-"WAM-eM-sVg.placeholder" = "Full Name";
-
-/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "Z38-EZ-ooJ"; */
-"Z38-EZ-ooJ.normalTitle" = "Sign In";
-
-/* Class = "UITextField"; placeholder = "Password"; ObjectID = "Z8F-vI-hLI"; */
-"Z8F-vI-hLI.placeholder" = "Password";
-
-/* Class = "UILabel"; text = "@criptext.com"; ObjectID = "dOO-af-B6t"; */
+"2tE-YN-9zc.text" = "Tu intento de acceder a esta cuenta \nfue negada por un dispositivo aprobado.";
+"3eC-DY-ikl.text" = "Nombre de Usuario no existe";
+"7VS-F9-Zdf.placeholder" = "Contraseña";
+"8N5-Z7-gsp.normalTitle" = "Acceder";
+"AGe-4s-CNR.text" = "Acceder";
+"BJd-tc-Byi.placeholder" = "Confirmar Contraseaña";
+"Ctn-3x-BiI.normalTitle" = "¿Olvidaste tu contraseña?";
+"Ewk-Fo-ARJ.text" = "Revisa y aprueba desde un dispositivo existente de Criptext para continuar.";
+"HEX-Oc-wzA.text" = "Crear tu cuenta Criptext";
+"Jek-k9-O5Z.normalTitle" = "Acceder con contraseña";
+"MIl-CE-AOA.normalTitle" = "Botón";
+"NT8-w1-8Xk.text" = "Acceder";
+"QBc-eE-Cy3.text" = "Advertencia: muchos rechazos consecutivos podría hacer que tu dispositivo bloqueado de Criptext por completo.";
+"S1o-cP-DdO.text" = "Registrarme";
+"SwZ-3C-ekg.normalTitle" = "Crear tu cuenta";
+"UEg-nZ-3Qg.text" = "¿No recibiste el aviso?";
+"VeR-Uo-Ifp.text" = "Creando Llaves";
+"WAM-eM-sVg.placeholder" = "Nombre ";
+"Z38-EZ-ooJ.normalTitle" = "Acceder";
+"Z8F-vI-hLI.placeholder" = "Contraseña";
 "dOO-af-B6t.text" = "@criptext.com";
-
-/* Class = "UILabel"; text = "0%"; ObjectID = "dVk-y1-1wB"; */
 "dVk-y1-1wB.text" = "0%";
-
-/* Class = "UILabel"; text = "@criptext.com"; ObjectID = "gbV-Fm-cgQ"; */
 "gbV-Fm-cgQ.text" = "@criptext.com";
-
-/* Class = "UILabel"; text = "david.grindstaff@criptext.com"; ObjectID = "hMf-wY-jdP"; */
 "hMf-wY-jdP.text" = "david.grindstaff@criptext.com";
-
-/* Class = "UIButton"; normalTitle = "Not registered? Sign up"; ObjectID = "hQN-zb-RQx"; */
-"hQN-zb-RQx.normalTitle" = "Not registered? Sign up";
-
-/* Class = "UITextField"; placeholder = "Recovery Email (Optional)"; ObjectID = "lKE-K8-r13"; */
-"lKE-K8-r13.placeholder" = "Recovery Email (Optional)";
-
-/* Class = "UILabel"; text = "Incorrect Password"; ObjectID = "mSJ-Yq-oKk"; */
-"mSJ-Yq-oKk.text" = "Incorrect Password";
-
-/* Class = "UIButton"; normalTitle = "Resend it"; ObjectID = "t2e-M6-6pu"; */
-"t2e-M6-6pu.normalTitle" = "Resend it";
-
-/* Class = "UILabel"; text = "Welcome to Criptext"; ObjectID = "uqv-px-110"; */
-"uqv-px-110.text" = "Welcome to Criptext";
+"hQN-zb-RQx.normalTitle" = "¿No registrado? Regístrate";
+"lKE-K8-r13.placeholder" = "Email de Confirmación (opcional)";
+"mSJ-Yq-oKk.text" = "Contraseña incorrecta";
+"t2e-M6-6pu.normalTitle" = "Reenviarlo";
+"uqv-px-110.text" = "¡Bienvenido a Criptext!";

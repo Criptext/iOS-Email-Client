@@ -1,6 +1,2 @@
-
-/* Class = "UIButton"; normalTitle = "Empty Trash"; ObjectID = "BGW-gI-om4"; */
-"BGW-gI-om4.normalTitle" = "Empty Trash";
-
-/* Class = "UILabel"; text = "Messages that have been in Trash more than 30 days will be automatically deleted. "; ObjectID = "x1S-nX-RZk"; */
-"x1S-nX-RZk.text" = "Messages that have been in Trash more than 30 days will be automatically deleted. ";
+"BGW-gI-om4.normalTitle" = "Vaciar Papelera";
+"x1S-nX-RZk.text" = "Los mensajes que estén en la papelera más de 30 días serán eliminados automáticamente.";
