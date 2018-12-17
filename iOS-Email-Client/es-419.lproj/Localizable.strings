@@ -138,13 +138,13 @@
 "GUIDE_UNSEND" = "Abre este menu para encontrar \nla opción de retractar este correo.";
 "HAVE_NEW_EMAIL" = "Tienes un nuevo email";
 "PROFILE" = "Perfil";
-"SYNC_PHONEBOOK" = "Syncronizar Contactos del Teléfono";
+"SYNC_PHONEBOOK" = "Sincronizar Contactos del Teléfono";
 "SIGNATURE" = "Firma";
 "CHANGE_PASS" = "Cambiar Contraseña";
 "TWO_FACTOR" = "Autenticación de Dos Factores";
 "RECOVERY_EMAIL" = "Correo de Recuperación";
 "POLICY" = "Política de Privacidad";
-"TERMS" = "Terms of Service";
+"TERMS" = "Términos del Servicio";
 "OPEN_LIBS" = "Librerías de Código Abierto";
 "SIGNOUT_ERROR" = "Error de cierre de sesión";
 "DELETE_ACCOUNT_FAILED" = "Error al eliminar la cuenta";
