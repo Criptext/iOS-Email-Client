@@ -23,7 +23,6 @@ class AttachmentTableCell: UITableViewCell{
     @IBOutlet weak var typeView: UIImageView!
     @IBOutlet weak var lockView: UIImageView!
     @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var markImageView: UIImageView!
     @IBOutlet weak var iconDownloadImageView: UIImageView!
     @IBOutlet weak var viewClose: UIView!
     @IBOutlet weak var buttonClose: UIButton!
@@ -34,6 +33,7 @@ class AttachmentTableCell: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        iconDownloadImageView.isHidden = true
         self.attachmentContainer.layer.borderColor = UIColor(red:216/255, green:216/255, blue:216/255, alpha: 0.45).cgColor
         self.attachmentContainer.layer.borderWidth = 1.5
         self.attachmentContainer.layer.cornerRadius = 6.0
@@ -74,9 +74,7 @@ class AttachmentTableCell: UITableViewCell{
         progressView.setProgress(Float(attachment.progress)/100.0, animated: false)
         progressView.isHidden = attachment.requestStatus != .processing && attachment.requestStatus != .pending
         if (attachment.requestStatus == .finish || attachment.requestStatus == .failed){
-            setMarkIcon(success: attachment.requestStatus == .finish)
-        } else {
-            markImageView.isHidden = true
+            setOnFinishView(success: attachment.requestStatus == .finish)
         }
     }
     
@@ -99,20 +97,21 @@ class AttachmentTableCell: UITableViewCell{
         let myName = NSMutableAttributedString(string: "Attachment Unsent", attributes: attrs)
         attachmentLabel.attributedText = myName
         progressView.isHidden = true
-        markImageView.isHidden = true
-        iconDownloadImageView.isHidden = true
         typeView.image = #imageLiteral(resourceName: "attachment_expired")
     }
     
-    func setMarkIcon(success: Bool){
-        markImageView.isHidden = false
+    func setOnProgressView(){
+        self.attachmentLabel.alpha = 0.4
+        self.typeView.alpha = 0.4
+    }
+    
+    func setOnFinishView(success: Bool){
         guard success else {
-            markImageView.image = #imageLiteral(resourceName: "mark-error")
-            markImageView.backgroundColor = .alert
+            self.setOnProgressView()
             return
         }
         progressView.isHidden = true
-        markImageView.image = #imageLiteral(resourceName: "mark-success")
-        markImageView.backgroundColor = .mainUI
+        self.attachmentLabel.alpha = 1.0
+        self.typeView.alpha = 1.0
     }
 }

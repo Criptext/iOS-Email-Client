@@ -29,7 +29,7 @@ class ShareViewController: UIViewController {
     lazy var passcodeLockViewController: LightPasscodeViewController = {
         let configuration = PasscodeConfig()
         let vc = LightPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
-        // vc.sharingViewController = self
+        vc.sharingViewController = self
         return vc
     }()
     
@@ -209,7 +209,7 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell
             cell.setFields(fileManager.registeredFiles[indexPath.row])
-            cell.iconDownloadImageView.isHidden = true
+            cell.delegate = self
             return cell
         }
     }
@@ -246,7 +246,7 @@ extension ShareViewController: CriptextFileDelegate {
         guard let attachmentCell = getCellForFile(file) else {
             return
         }
-        attachmentCell.markImageView.isHidden = true
+        attachmentCell.setOnProgressView()
         attachmentCell.progressView.isHidden = false
         attachmentCell.progressView.setProgress(Float(progress)/100.0, animated: true)
     }
@@ -255,7 +255,7 @@ extension ShareViewController: CriptextFileDelegate {
         guard let attachmentCell = getCellForFile(file) else {
             return
         }
-        attachmentCell.setMarkIcon(success: success)
+        attachmentCell.setOnFinishView(success: success)
     }
     
     func getCellForFile(_ file: File) -> AttachmentTableCell? {
@@ -422,3 +422,26 @@ extension ShareViewController: EmailSetPasswordDelegate {
         updateAndMail(secure: active, password: password)
     }
 }
+
+extension ShareViewController: AttachmentTableCellDelegate{
+    func tableVCellDidTapReadOnly(_ cell: AttachmentTableCell) {
+        return
+    }
+    
+    func tableCellDidTapPassword(_ cell: AttachmentTableCell) {
+        return
+    }
+    
+    func tableCellDidTapRemove(_ cell: AttachmentTableCell) {
+        guard let indexPath = composerUIView.attachmentsTableView.indexPath(for: cell) else {
+            return
+        }
+        fileManager.removeFile(filetoken: fileManager.registeredFiles[indexPath.row].token)
+        composerUIView.attachmentsTableView.deleteRows(at: [indexPath], with: .none)
+    }
+    
+    func tableCellDidTap(_ cell: AttachmentTableCell) {
+        return
+    }
+}
+
