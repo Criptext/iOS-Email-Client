@@ -317,6 +317,8 @@ extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
             cell.delegate = nil
         } else {
             cell.setFields(attachment)
+            cell.lockView.isHidden = true
+            cell.viewClose.isHidden = true
             cell.delegate = self
         }
         return cell
@@ -332,6 +334,10 @@ extension EmailTableViewCell: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension EmailTableViewCell: AttachmentTableCellDelegate {
+    func tableCellDidTapRemove(_ cell: AttachmentTableCell) {
+        return
+    }
+    
     func tableCellDidTap(_ cell: AttachmentTableCell) {
         guard let indexPath = attachmentsTableView.indexPath(for: cell) else {
             return

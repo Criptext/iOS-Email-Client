@@ -273,7 +273,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
                         weakSelf.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
                     }
                     if let attachmentCell = weakSelf.getCellFromFile(file) {
-                        attachmentCell.markImageView.isHidden = true
                         attachmentCell.progressView.isHidden = false
                         attachmentCell.progressView.setProgress(0, animated: false)
                     }
@@ -812,7 +811,7 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
         guard let attachmentCell = getCellFromFile(file) else {
             return
         }
-        attachmentCell.markImageView.isHidden = true
+        attachmentCell.setOnProgressView()
         attachmentCell.progressView.isHidden = false
         attachmentCell.progressView.setProgress(Float(progress)/100.0, animated: true)
     }
@@ -828,7 +827,7 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
         guard let attachmentCell = getCellFromFile(file) else {
             return
         }
-        attachmentCell.setMarkIcon(success: success)
+        attachmentCell.setOnFinishView(success: success)
     }
     
     func getCellFromFile(_ file: File) -> AttachmentTableCell? {

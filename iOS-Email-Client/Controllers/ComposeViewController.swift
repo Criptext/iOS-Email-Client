@@ -174,6 +174,8 @@ class ComposeViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideBlackBackground(_:)))
         self.blackBackground.addGestureRecognizer(tap)
         
+        let nib = UINib(nibName: "AttachmentTableViewCell", bundle: nil)
+        self.tableView.register(nib, forCellReuseIdentifier: "attachmentCell")
         self.tableView.separatorStyle = .none
         self.tableView.tableFooterView = UIView()
         self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
@@ -747,19 +749,17 @@ extension ComposeViewController: UITableViewDataSource {
         
         let attachment = fileManager.registeredFiles[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentTableViewCell", for: indexPath) as! AttachmentTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell
+        cell.attachmentLabel.text = attachment.name
+        cell.attachmentSizeLabel.text = attachment.prettyPrintSize()
+        cell.lockView.image = Icon.lock.image
         
-        cell.nameLabel.text = attachment.name
-        cell.sizeLabel.text = attachment.prettyPrintSize()
-        cell.lockImageView.image = Icon.lock.image
-        
-        cell.lockImageView.tintColor = Icon.enabled.color
-        cell.lockImageView.image = Icon.lock_open.image
+        cell.lockView.tintColor = Icon.enabled.color
+        cell.lockView.image = Icon.lock_open.image
         
         cell.progressView.isHidden = attachment.requestStatus == .finish
-        cell.successImageView.isHidden = attachment.requestStatus != .finish
         
-        cell.typeImageView.image = Utils.getImageByFileType(attachment.mimeType)
+        cell.typeView.image = Utils.getImageByFileType(attachment.mimeType)
         cell.delegate = self
         
         return cell
@@ -805,12 +805,8 @@ extension ComposeViewController: UITableViewDelegate {
     }
 }
 
-extension ComposeViewController: AttachmentTableViewCellDelegate{
-    func tableViewCellDidTapReadOnly(_ cell: AttachmentTableViewCell) {}
-    
-    func tableViewCellDidTapPassword(_ cell: AttachmentTableViewCell) {}
-    
-    func tableViewCellDidTapRemove(_ cell: AttachmentTableViewCell) {
+extension ComposeViewController: AttachmentTableCellDelegate{
+    func tableCellDidTapRemove(_ cell: AttachmentTableCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
@@ -818,7 +814,7 @@ extension ComposeViewController: AttachmentTableViewCellDelegate{
         tableView.deleteRows(at: [indexPath], with: .none)
     }
     
-    func tableViewCellDidTap(_ cell: AttachmentTableViewCell) {
+    func tableCellDidTap(_ cell: AttachmentTableCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
@@ -1053,7 +1049,7 @@ extension ComposeViewController: CriptextFileDelegate {
         guard let cell = getCellForFile(file) else {
             return
         }
-        cell.setMarkIcon(success: success)
+        cell.setOnFinishView(success: success)
     }
     
     func uploadProgressUpdate(file: File, progress: Int) {
@@ -1061,14 +1057,14 @@ extension ComposeViewController: CriptextFileDelegate {
             return
         }
         let percentage = Float(progress)/100.0
-        cell.successImageView.isHidden = true
+        cell.setOnProgressView()
         cell.progressView.isHidden = false
         cell.progressView.setProgress(percentage, animated: true)
     }
     
-    func getCellForFile(_ file: File) -> AttachmentTableViewCell? {
+    func getCellForFile(_ file: File) -> AttachmentTableCell? {
         guard let index = fileManager.registeredFiles.index(where: {$0.token == file.token}),
-            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
+            let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
                 return nil
         }
         return cell

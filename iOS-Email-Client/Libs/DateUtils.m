@@ -62,8 +62,9 @@ static NSString *completeDateFormat = @"E, d MMM yyyy 'at' h:mm a";
     
 + (NSString*)dateToCompleteString:(NSDate*)date {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    NSTimeZone *timeZone=[NSTimeZone localTimeZone];
     [dateFormat setDateFormat:completeDateFormat];
-    [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:timeZone.name]];
     NSString *theDate = [dateFormat stringFromDate:date];
     return theDate;
 }

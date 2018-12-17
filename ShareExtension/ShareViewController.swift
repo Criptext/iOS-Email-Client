@@ -210,6 +210,7 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell
             cell.setFields(fileManager.registeredFiles[indexPath.row])
             cell.iconDownloadImageView.isHidden = true
+            cell.viewClose.isHidden = true
             return cell
         }
     }
@@ -246,7 +247,7 @@ extension ShareViewController: CriptextFileDelegate {
         guard let attachmentCell = getCellForFile(file) else {
             return
         }
-        attachmentCell.markImageView.isHidden = true
+        attachmentCell.setOnProgressView()
         attachmentCell.progressView.isHidden = false
         attachmentCell.progressView.setProgress(Float(progress)/100.0, animated: true)
     }
@@ -255,7 +256,7 @@ extension ShareViewController: CriptextFileDelegate {
         guard let attachmentCell = getCellForFile(file) else {
             return
         }
-        attachmentCell.setMarkIcon(success: success)
+        attachmentCell.setOnFinishView(success: success)
     }
     
     func getCellForFile(_ file: File) -> AttachmentTableCell? {
