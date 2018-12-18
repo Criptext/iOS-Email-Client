@@ -39,7 +39,7 @@ class EmailDetailHeaderCell: UITableViewHeaderFooterView{
                 starredImage = #imageLiteral(resourceName: "starred_full")
                 continue
             }
-            let tag = labelsListView.addTag(label.text)
+            let tag = labelsListView.addTag(label.localized)
             tag.tagBackgroundColor = UIColor(hex: label.color)
         }
         labelsListView.invalidateIntrinsicContentSize()
@@ -51,7 +51,7 @@ class EmailDetailHeaderCell: UITableViewHeaderFooterView{
     }
     
     func setSubject(_ subject: String){
-        let mySubject = subject.isEmpty ? "(No Subject)" : subject
+        let mySubject = subject.isEmpty ? String.localize("NO_SUBJECT") : subject
         subjectLabel.text = mySubject
         subjectLabel.numberOfLines = 0
         let myHeight = Utils.getLabelHeight(mySubject, width: subjectLabel.frame.width, fontSize: 21.0)

@@ -17,6 +17,13 @@ class Label : Object {
     @objc dynamic var type : String = "custom"
     @objc dynamic var visible : Bool = true
     
+    var localized: String {
+        guard type == "custom" else {
+            return text
+        }
+        return String.localize(text)
+    }
+    
     init(_ labelText: String) {
         super.init()
         self.text = labelText

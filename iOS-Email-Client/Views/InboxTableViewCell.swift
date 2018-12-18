@@ -65,11 +65,11 @@ class InboxTableViewCell: UITableViewCell {
         
         let participants = thread.getContactsString(replaceWithMe: myEmail)
         let useTo = label == SystemLabel.sent.id || label == SystemLabel.draft.id
-        senderLabel.text = participants.isEmpty ? "<Empty Contact List>" : "\(useTo ? "To: " : "")\(participants)"
+        senderLabel.text = participants.isEmpty ? String.localize("EMPTY_CONTACTS") : "\(useTo ? String.localize("TO_SENT") : "")\(participants)"
         if(label == SystemLabel.draft.id){
-            senderLabel.attributedText = NSAttributedString(string: "Draft", attributes: [NSAttributedStringKey.foregroundColor: UIColor.alert])
+            senderLabel.attributedText = NSAttributedString(string: String.localize("SINGLE_DRAFT"), attributes: [NSAttributedStringKey.foregroundColor: UIColor.alert])
         }
-        subjectLabel.text = thread.subject == "" ? "(No Subject)" : thread.subject
+        subjectLabel.text = thread.subject == "" ? String.localize("NO_SUBJECT") : thread.subject
         dateLabel.text = thread.getFormattedDate()
         previewLabel.text = thread.preview
         if(thread.lastEmail.isUnsent){

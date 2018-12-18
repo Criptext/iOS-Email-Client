@@ -117,6 +117,7 @@
 "DONT_WRITE_BELOW" = "Do not write below this line.";
 "DELETE_THREADS" = "Delete Threads";
 "SELECTED_DELETE_PERMANENTLY" = "The selected threads will be PERMANENTLY deleted";
+"EMAIL_DELETE_PERMANENTLY" = "This email will be PERMANENTLY deleted";
 "SENDING_MAIL" = "Sending Email...";
 "EMAIL_FAILED" = "Email Failed. It will be resent in the future";
 "RESENT_FUTURE" = "It will be resent in the future";
@@ -166,6 +167,8 @@
 "2FA_ENABLED" = "2FA Enabled!";
 "NEXT_TIME_2FA" = "Next time you sign into your account on another device you'll have to enter your password and then validate the sign in from an existing device.";
 "ADD_LABEL" = "Add Label";
+"ADD_LABELS" = "Add Labels";
+"MOVE_TO" = "Move to";
 "REPEATED_LABEL" = "Repeated Label";
 "LABEL_EXISTS" = "Label '%@' already exist!";
 "UNABLE_REMOVE_DEVICE" = "Unable to remove device %@";
@@ -229,6 +232,9 @@
 "REJECT" = "Reject";
 "PRIVACY_SECURITY" = "Privacy and Security";
 "SIGN_REJECTED" = "Sign In Rejected";
+"NO_SUBJECT" = "(No Subject)";
+"OPENED" = "opened";
+"DOWNLOADED" = "downloaded";
 
 "INBOX" = "Inbox";
 "SENT" = "Sent";
@@ -241,6 +247,19 @@
 "MENU_SETTINGS" = "Settings";
 "INVITE_FRIEND" = "Invite a Friend";
 "SUPPORT" = "Support";
+
+"Inbox" = "Inbox";
+"Sent" = "Sent";
+"Draft" = "Draft";
+"Starred" = "Starred";
+"Spam" = "Spam";
+"Trash" = "Trash";
+"All Mail" = "All Mail";
+"ME" = "Me";
+"EMPTY_CONTACTS" = "<Empty Contact List>";
+"TO_SENT" = "To: ";
+"SINGLE_DRAFT" = "Draft";
+"UNSENT" = "Unsent";
 
 "PIN_SIGN_OUT" = "Sign Out";
 "PIN_CANCEL" = "Cancel";
@@ -258,6 +277,12 @@
 "CC" = "Cc";
 "BCC" = "Bcc";
 "MESSGAE" = "Message";
+"AT" = "at";
+"DATE" = "Date";
+"SUBJECT" = "Subject";
+"FROM" = "From";
+"FORWARD_MAIL" = "Forwarded email";
+"ON_REPLY" = "On";
 
 "Immediately" = "Immediately";
 "1 minute" = "1 minute";

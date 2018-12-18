@@ -162,7 +162,7 @@ class EmailTableViewCell: UITableViewCell{
         contactsLabel.text = allContacts.reduce("", { (result, contact) -> String in
             let displayName = parseContact(contact, myEmail: myEmail, contactsLength: allContacts.count)
             if(result.isEmpty){
-                return "To \(displayName)"
+                return "\(String.localize("TO")) \(displayName)"
             }
             return "\(result), \(displayName)"
         })
@@ -180,7 +180,7 @@ class EmailTableViewCell: UITableViewCell{
     
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
         guard contact.email != myEmail else {
-            return "me"
+            return String.localize("ME")
         }
         guard contactsLength > 1 else {
             return contact.displayName

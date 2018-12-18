@@ -63,10 +63,7 @@ class CreateCustomJSONFileAsyncTask {
             handleRow($0.toDictionary(emailId: emailId))
         }
         
-        
-        
         DispatchQueue.main.async {
-            print(try! String(contentsOf: self.fileURL))
             completion(nil, self.fileURL)
         }
     }
