@@ -94,7 +94,6 @@
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
 		7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */; };
 		7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */; };
-		7C34E607204A0F6A00E71906 /* EmailDetailTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C34E606204A0F6900E71906 /* EmailDetailTableCell.xib */; };
 		7C394E7E210BD5DB00AE3297 /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
@@ -227,6 +226,8 @@
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
+		A723253221C94B90003CF78D /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A723253421C94B90003CF78D /* PasscodeLockView.xib */; };
+		A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A723253B21C94E69003CF78D /* EmailDetailTableCell.xib */; };
 		A72B864821AC93EE00DCC601 /* RetrieveContactsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */; };
 		A72C185321AEEB1F00D899EE /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
 		A72C185521AF0EB800D899EE /* MailboxNewsHeaderUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72C185421AF0EB800D899EE /* MailboxNewsHeaderUIView.xib */; };
@@ -246,7 +247,6 @@
 		A77C30B121A5055A0031E219 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30B021A5055A0031E219 /* ShareViewController.swift */; };
 		A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A77C30B221A5055A0031E219 /* MainInterface.storyboard */; };
 		A77C30B821A5055A0031E219 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A77C30AE21A5055A0031E219 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A789B23C21B5E48800F89DF3 /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A789B23B21B5E48800F89DF3 /* PasscodeLockView.xib */; };
 		A789B23E21B5E49200F89DF3 /* LightPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789B23D21B5E49200F89DF3 /* LightPasscodeViewController.swift */; };
 		A789B23F21B5E4A700F89DF3 /* PasscodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30A621A4DE720031E219 /* PasscodeConfig.swift */; };
 		A789B24021B8228800F89DF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
@@ -542,7 +542,6 @@
 		7C34E5FA20470D2100E71906 /* EmailDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailData.swift; sourceTree = "<group>"; };
 		7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyDetailUIView.swift; sourceTree = "<group>"; };
 		7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailFooterCell.swift; sourceTree = "<group>"; };
-		7C34E606204A0F6900E71906 /* EmailDetailTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailDetailTableCell.xib; sourceTree = "<group>"; };
 		7C394E84210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+KeyPairOpenPrivate.m"; sourceTree = "<group>"; };
 		7C394E87210CC8E700AE3297 /* SendEmailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailData.swift; sourceTree = "<group>"; };
@@ -671,6 +670,12 @@
 		A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPickerUIPopover.swift; sourceTree = "<group>"; };
 		A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPasscodeViewController.swift; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
+		A723253321C94B90003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
+		A723253621C94B91003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		A723253821C94B92003CF78D /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLockView.strings"; sourceTree = "<group>"; };
+		A723253A21C94E69003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EmailDetailTableCell.xib; sourceTree = "<group>"; };
+		A723253D21C94E6B003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
+		A723253F21C94E6C003CF78D /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailDetailTableCell.strings"; sourceTree = "<group>"; };
 		A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveContactsTask.swift; sourceTree = "<group>"; };
 		A72C185221AEEB1F00D899EE /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		A72C185421AF0EB800D899EE /* MailboxNewsHeaderUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailboxNewsHeaderUIView.xib; sourceTree = "<group>"; };
@@ -691,7 +696,6 @@
 		A77C30B021A5055A0031E219 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		A77C30B321A5055A0031E219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A77C30B521A5055A0031E219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A789B23B21B5E48800F89DF3 /* PasscodeLockView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PasscodeLockView.xib; path = ../../../PasscodeLockView.xib; sourceTree = "<group>"; };
 		A789B23D21B5E49200F89DF3 /* LightPasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LightPasscodeViewController.swift; path = ../../../LightPasscodeViewController.swift; sourceTree = "<group>"; };
 		A7ADA11B21A507D70027FC1C /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerUIView.swift; sourceTree = "<group>"; };
@@ -1155,7 +1159,7 @@
 				7CF0CFD4204611D300781DE6 /* EmailTableViewCell.swift */,
 				7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */,
 				7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */,
-				7C34E606204A0F6900E71906 /* EmailDetailTableCell.xib */,
+				A723253B21C94E69003CF78D /* EmailDetailTableCell.xib */,
 				7CB198A12051DE4700AA4FF8 /* HistoryUIPopover.xib */,
 				7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */,
 				7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */,
@@ -1338,7 +1342,7 @@
 				A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */,
 				A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */,
 				A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */,
-				A789B23B21B5E48800F89DF3 /* PasscodeLockView.xib */,
+				A723253421C94B90003CF78D /* PasscodeLockView.xib */,
 				A789B23D21B5E49200F89DF3 /* LightPasscodeViewController.swift */,
 			);
 			path = ShareExtension;
@@ -1532,7 +1536,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C34E607204A0F6A00E71906 /* EmailDetailTableCell.xib in Resources */,
+				A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */,
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
@@ -1632,7 +1636,7 @@
 				A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */,
 				A7D2DEB421C85328002ED6F8 /* PasscodeLock.strings in Resources */,
 				A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */,
-				A789B23C21B5E48800F89DF3 /* PasscodeLockView.xib in Resources */,
+				A723253221C94B90003CF78D /* PasscodeLockView.xib in Resources */,
 				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
 				A7D2DEA721C83EEE002ED6F8 /* ComposerUIView.xib in Resources */,
 				A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */,
@@ -2052,6 +2056,27 @@
 				A7D2DEA021C4717D002ED6F8 /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A723253421C94B90003CF78D /* PasscodeLockView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A723253321C94B90003CF78D /* Base */,
+				A723253621C94B91003CF78D /* en */,
+				A723253821C94B92003CF78D /* es-419 */,
+			);
+			name = PasscodeLockView.xib;
+			path = ../../..;
+			sourceTree = "<group>";
+		};
+		A723253B21C94E69003CF78D /* EmailDetailTableCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A723253A21C94E69003CF78D /* Base */,
+				A723253D21C94E6B003CF78D /* en */,
+				A723253F21C94E6C003CF78D /* es-419 */,
+			);
+			name = EmailDetailTableCell.xib;
 			sourceTree = "<group>";
 		};
 		A77C30B221A5055A0031E219 /* MainInterface.storyboard */ = {

@@ -152,7 +152,7 @@ class NewEmailHandler {
     }
     
     func handleBodyByMessageType(_ messageType: MessageType, body: String, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
-        let recipient = isExternal ? "b" : recipientId
+        let recipient = isExternal ? "bob" : recipientId
         let senderDevice = isExternal ? 1 : senderDeviceId
         guard messageType != .none,
             let deviceId = senderDevice else {

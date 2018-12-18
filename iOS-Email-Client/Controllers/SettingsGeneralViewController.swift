@@ -127,6 +127,7 @@ class SettingsGeneralViewController: UITableViewController{
         switch(subsection){
         case .recovery:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+            cell.optionLabel.textColor = .lightText
             cell.optionLabel.text = subsection.name
             cell.messageLabel.text = generalData.recoveryEmailStatus.description
             cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
@@ -150,6 +151,7 @@ class SettingsGeneralViewController: UITableViewController{
             return cell
         case .syncContact:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+            cell.optionLabel.textColor = .lightText
             cell.optionLabel.text = subsection.name
             cell.messageLabel.text = ""
             switch(generalData.syncStatus){
@@ -171,6 +173,7 @@ class SettingsGeneralViewController: UITableViewController{
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+            cell.optionLabel.textColor = .lightText
             cell.optionLabel.text = subsection.name
             cell.goImageView.isHidden = false
             cell.messageLabel.text = ""

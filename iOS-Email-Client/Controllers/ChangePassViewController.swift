@@ -38,7 +38,7 @@ class ChangePassViewController: UIViewController {
         newPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         confirmPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         
-        navigationItem.title = "Change Password"
+        navigationItem.title = String.localize("CHANGE_PASS_TITLE")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
     }

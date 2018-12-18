@@ -21,7 +21,7 @@
 "LARGE_FILE" = "El archivo es muy grande.";
 "FILE_ERROR" = "Error de archivo";
 "IF_YOU_SIGN_IN" = "Si inicias sesión con tu contraseña";
-"MAILBOX_HISTORY" = "el historial de buzones de otros dispositivos no estará disponible";
+"MAILBOX_HISTORY" = " los correos de otros dispositivos no estará disponible ";
 "ON_THIS_DEVICE" = "en este dispositivo ¿Te gustaria continuar?";
 "HOURS" = "horas";
 "MINUTES" = "minutos";
@@ -80,7 +80,7 @@
 "WAITING_MAIL" = "Esperando el Buzón";
 "DOWNLOADING_MAIL" = "Descargando Buzón";
 "DECRYPTING_MAIL" = "Desencriptando Buzón";
-"MAIL_RESTORED" = "Buzón restaurado con éxito!";
+"MAIL_RESTORED" = "¡Buzón restaurado con éxito!";
 "SYNC_CONNECTION_ISSUES" = "Parece que tienes problemas de conexión. ¿Te gustaría volver a intentar Sincronización de Buzón?";
 "SYNC_INTERRUPTED" = "Sincronización Interrumpida";
 "DELAYED_PROCESS_RETRY" = "Algo ha sucedido que está retrasando este proceso. ¿Quieres seguir esperando?";
@@ -137,12 +137,15 @@
 "UNABLE_UNSEND" = "Fallo al retractar correo. Por favor, intenta más tarde.";
 "GUIDE_UNSEND" = "Abre este menu para encontrar \nla opción de retractar este correo.";
 "HAVE_NEW_EMAIL" = "Tienes un nuevo email";
-"PROFILE" = "Perfil";
+"PROFILE" = "Nombre de Perfil";
 "SYNC_PHONEBOOK" = "Sincronizar Contactos del Teléfono";
 "SIGNATURE" = "Firma";
+"SIGNATURE_TITLE" = "FIRMA";
 "CHANGE_PASS" = "Cambiar Contraseña";
+"CHANGE_PASS_TITLE" = "CAMBIAR CONTRASEÑA";
 "TWO_FACTOR" = "Autenticación de Dos Factores";
 "RECOVERY_EMAIL" = "Correo de Recuperación";
+"RECOVERY_EMAIL_TITLE" = "CORREO DE RECUPERACION";
 "POLICY" = "Política de Privacidad";
 "TERMS" = "Términos del Servicio";
 "OPEN_LIBS" = "Librerías de Código Abierto";
@@ -168,10 +171,10 @@
 "UNABLE_REMOVE_DEVICE" = "No se pudo eliminar el dispositivo %@";
 "ON" = "Activado";
 "OFF" = "Desactivado";
-"SAVE_RETURN" = "Guardar y volver";
-"RETURN_DONT_SAVE" = "Regresar sin guardar los cambios";
+"SAVE_RETURN" = "Guardar";
+"RETURN_DONT_SAVE" = "Descartar Cambios";
 "UNSAVED_CHANGES" = "Cambios no guardados";
-"CHANGES_WERE_MADE" = "Has hecho cambios que no fueron guardados. ¿Desea guardar y volver?";
+"CHANGES_WERE_MADE" = "Has hecho cambios que no han sido guardados.";
 "AT_LEAST_3_CHARS" = "Utilice al menos 3 caracteres";
 "UNABLE_RESEND_LINK" = "No se puede reenviar el enlace, inténtalo de nuevo.";
 "LINK_SENT" = "Enlace Enviado";
@@ -196,6 +199,7 @@
 "UPLOADING_MAIL" = "Subiendo Buzón";
 "MAIL_UPLOADED" = "¡Buzón Subido exitosamente!";
 "PIN_LOCK" = "Bloqueo PIN";
+"PIN_LOCK_TITLE" = "BLOQUEO PIN";
 "ENTER_PASSCODE" = "Ingresa tu código PIN para continuar";
 "INCORRECT_ATTEMPTS_LEFT" = "PIN incorrecto, te quedan %i intentos.";
 "WARNING_ATTEMPTS" = "ADVERTENCIA: quedan %i intentos fallidos para hacer un borrado seguro de los datos.";
@@ -224,7 +228,7 @@
 "APPROVE" = "Aprobar";
 "REJECT" = "Rechazar";
 "PRIVACY_SECURITY" = "Seguridad y Privacidad";
-"SIGN_REJECTED" = "Autorización rechazada";
+"SIGN_REJECTED" = "Sesión Rechazada";
 
 "INBOX" = "Recibidos";
 "SENT" = "Enviados";
@@ -238,12 +242,15 @@
 "INVITE_FRIEND" = "Invitar a un amigo";
 "SUPPORT" = "Soporte";
 
+"PIN_SIGN_OUT" = "Cerrar Sesión";
+"PIN_CANCEL" = "Cancelar";
 "USE_PIN" = "Usar PIN";
 "CHANGE_PIN" = "Cambiar Codigo PIN";
 "AUTO_LOCK" = "Auto-Bloqueo";
 "NOTIFICATION_PREVIEW" = "Vista Previa en Notificaciones";
-"READ_RECEIPTS" = "Confirmaciones de Leído";
+"READ_RECEIPTS" = "Confirmaciones de Lectura";
 
+"DONE" = "Listo";
 "YESTERDAY" = "Ayer";
 "NOT_CONFIRMED" = "Sin confirmar";
 "VERIFIED" = "Verificado";
@@ -251,3 +258,10 @@
 "CC" = "Cc";
 "BCC" = "Cco";
 "MESSAGE" = "Mensaje";
+
+"Immediately" = "Inmediatamente";
+"1 minute" = "1 minuto";
+"5 minutes" = "5 minutos";
+"15 minutes" = "15 minutos";
+"1 hour" = "1 hora";
+"24 hours" = "24 horas";

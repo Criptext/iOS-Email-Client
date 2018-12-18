@@ -140,9 +140,12 @@
 "PROFILE" = "Profile";
 "SYNC_PHONEBOOK" = "Sync Phonebook Contacts";
 "SIGNATURE" = "Signature";
+"SIGNATURE_TITLE" = "SIGNATURE";
 "CHANGE_PASS" = "Change Password";
+"CHANGE_PASS_TITLE" = "CHANGE PASSWORD";
 "TWO_FACTOR" = "Two-Factor Authentication";
 "RECOVERY_EMAIL" = "Recovery Email";
+"RECOVERY_EMAIL_TITLE" = "RECOVERY EMAIL";
 "POLICY" = "Privacy Policy";
 "TERMS" = "Terms of Service";
 "OPEN_LIBS" = "Open Source Libraries";
@@ -196,6 +199,7 @@
 "UPLOADING_MAIL" = "Uploading Mailbox";
 "MAIL_UPLOADED" = "Mailbox Uploaded Successfully";
 "PIN_LOCK" = "PIN Lock";
+"PIN_LOCK_TITLE" = "PIN LOCK";
 "ENTER_PASSCODE" = "Enter your passcode to proceed.";
 "INCORRECT_ATTEMPTS_LEFT" = "Incorrect PIN, %i attempts remaining";
 "WARNING_ATTEMPTS" = "WARNING: %i attempts until secure data wipe";
@@ -238,12 +242,15 @@
 "INVITE_FRIEND" = "Invite a Friend";
 "SUPPORT" = "Support";
 
+"PIN_SIGN_OUT" = "Sign Out";
+"PIN_CANCEL" = "Cancel";
 "USE_PIN" = "Use PIN Code";
 "CHANGE_PIN" = "Change PIN Code";
 "AUTO_LOCK" = "Auto-Lock";
 "NOTIFICATION_PREVIEW" = "Notification Preview";
 "READ_RECEIPTS" = "Read Receipts";
 
+"DONE" = "Done";
 "YESTERDAY" = "Yesterday";
 "NOT_CONFIRMED" = "Not Confirmed";
 "VERIFIED" = "Verified";
@@ -251,3 +258,10 @@
 "CC" = "Cc";
 "BCC" = "Bcc";
 "MESSGAE" = "Message";
+
+"Immediately" = "Immediately";
+"1 minute" = "1 minute";
+"5 minutes" = "5 minutes";
+"15 minutes" = "15 minutes";
+"1 hour" = "1 hour";
+"24 hours" = "24 hours";
