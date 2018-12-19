@@ -1,12 +1,4 @@
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "Kqx-1a-CB3"; */
-"Kqx-1a-CB3.normalTitle" = "Cancel";
-
-/* Class = "UIButton"; normalTitle = "Accept"; ObjectID = "MnZ-qO-enA"; */
-"MnZ-qO-enA.normalTitle" = "Accept";
-
-/* Class = "UILabel"; text = "Add Labels"; ObjectID = "XKo-3G-jcA"; */
-"XKo-3G-jcA.text" = "Add Labels";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "m1z-nB-rnK"; */
-"m1z-nB-rnK.normalTitle" = "Cancel";
+"Kqx-1a-CB3.normalTitle" = "Cancelar";
+"MnZ-qO-enA.normalTitle" = "Aceptar";
+"XKo-3G-jcA.text" = "Agregar etiquetas";
+"m1z-nB-rnK.normalTitle" = "Cancelar";

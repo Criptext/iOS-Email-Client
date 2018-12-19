@@ -26,7 +26,10 @@ class MenuItemUIView: UIButton {
             return itemLabel.text
         }
         set(text) {
-            itemLabel.text = text
+            guard let myText = text else {
+                return
+            }
+            itemLabel.text = String.localize(myText)
         }
     }
     @IBInspectable var labelId: Int = SystemLabel.all.id

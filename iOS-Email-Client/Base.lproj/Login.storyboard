@@ -98,7 +98,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-Fm-cgQ">
-                                <rect key="frame" x="202" y="393.5" width="119" height="23.5"/>
+                                <rect key="frame" x="202" y="395.5" width="119" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="kke-wn-nCO"/>
                                 </constraints>
@@ -705,10 +705,10 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gh-tT-mLY">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tE-YN-9zc">
-                                                        <rect key="frame" x="47" y="218.5" width="281" height="48"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tE-YN-9zc">
+                                                        <rect key="frame" x="47" y="207.5" width="281" height="70"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="48" id="K5s-Tz-Koz"/>
+                                                            <constraint firstAttribute="height" constant="70" id="K5s-Tz-Koz"/>
                                                         </constraints>
                                                         <string key="text">Your request to access this account
 was rejected by a verified device</string>
@@ -728,10 +728,10 @@ was rejected by a verified device</string>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBc-eE-Cy3">
-                                                        <rect key="frame" x="47" y="404.5" width="281" height="75"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBc-eE-Cy3">
+                                                        <rect key="frame" x="47" y="404.5" width="281" height="90"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="75" id="4zr-ZL-Axk"/>
+                                                            <constraint firstAttribute="height" constant="90" id="4zr-ZL-Axk"/>
                                                         </constraints>
                                                         <string key="text">Warning: Multiple rejections could
 lead your device to be blacklisted
@@ -743,7 +743,7 @@ from Criptext</string>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstItem="u04-Cm-YDi" firstAttribute="top" secondItem="2tE-YN-9zc" secondAttribute="bottom" constant="33" id="2YY-P3-Wq0"/>
+                                                    <constraint firstItem="u04-Cm-YDi" firstAttribute="top" secondItem="2tE-YN-9zc" secondAttribute="bottom" constant="22" id="2YY-P3-Wq0"/>
                                                     <constraint firstItem="QBc-eE-Cy3" firstAttribute="top" secondItem="u04-Cm-YDi" secondAttribute="bottom" constant="55" id="Kmp-8p-zeR"/>
                                                     <constraint firstAttribute="trailing" secondItem="QBc-eE-Cy3" secondAttribute="trailing" constant="47" id="Vke-Xh-CQa"/>
                                                     <constraint firstAttribute="trailing" secondItem="2tE-YN-9zc" secondAttribute="trailing" constant="47" id="Wa7-aw-FtI"/>
@@ -756,10 +756,10 @@ from Criptext</string>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oqf-Tb-I2x">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check and approve on your existing Criptext device to continue" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ewk-Fo-ARJ">
-                                                        <rect key="frame" x="47" y="218.5" width="281" height="48"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check and approve on your existing Criptext device to continue" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ewk-Fo-ARJ">
+                                                        <rect key="frame" x="47" y="207.5" width="281" height="70"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="48" id="JEa-mR-rMd"/>
+                                                            <constraint firstAttribute="height" constant="70" id="JEa-mR-rMd"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -820,7 +820,7 @@ from Criptext</string>
                                                     <bool key="isElement" value="YES"/>
                                                 </accessibility>
                                                 <constraints>
-                                                    <constraint firstItem="CQ6-X5-Uq5" firstAttribute="top" secondItem="Ewk-Fo-ARJ" secondAttribute="bottom" constant="45" id="0yI-v9-zmz"/>
+                                                    <constraint firstItem="CQ6-X5-Uq5" firstAttribute="top" secondItem="Ewk-Fo-ARJ" secondAttribute="bottom" constant="34" id="0yI-v9-zmz"/>
                                                     <constraint firstItem="CQ6-X5-Uq5" firstAttribute="centerX" secondItem="oqf-Tb-I2x" secondAttribute="centerX" id="47f-mJ-ycS"/>
                                                     <constraint firstItem="UEg-nZ-3Qg" firstAttribute="leading" secondItem="oqf-Tb-I2x" secondAttribute="leading" constant="57" id="49J-5W-Kzt"/>
                                                     <constraint firstAttribute="trailing" secondItem="Ewk-Fo-ARJ" secondAttribute="trailing" constant="47" id="599-ub-HY4"/>

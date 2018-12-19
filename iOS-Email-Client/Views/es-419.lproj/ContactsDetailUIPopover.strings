@@ -1,27 +1,9 @@
-
-/* Class = "UILabel"; text = "Date"; ObjectID = "3RR-uJ-Byk"; */
-"3RR-uJ-Byk.text" = "Date";
-
-/* Class = "UILabel"; text = "Gianni Carlo gianni@criptext.com"; ObjectID = "3jT-CD-mq9"; */
+"3RR-uJ-Byk.text" = "Fecha:";
 "3jT-CD-mq9.text" = "Gianni Carlo gianni@criptext.com";
-
-/* Class = "UILabel"; text = "Reply to:"; ObjectID = "81M-QW-Ymx"; */
-"81M-QW-Ymx.text" = "Reply to:";
-
-/* Class = "UILabel"; text = "Bcc:"; ObjectID = "Gpq-yW-4VM"; */
-"Gpq-yW-4VM.text" = "Bcc:";
-
-/* Class = "UILabel"; text = "Cc:"; ObjectID = "K6u-fW-bgL"; */
+"81M-QW-Ymx.text" = "Responder a:";
+"Gpq-yW-4VM.text" = "Cco:";
 "K6u-fW-bgL.text" = "Cc:";
-
-/* Class = "UILabel"; text = "10:58 AM"; ObjectID = "dWG-qe-VNX"; */
 "dWG-qe-VNX.text" = "10:58 AM";
-
-/* Class = "UILabel"; text = "From:"; ObjectID = "g12-WW-CEc"; */
-"g12-WW-CEc.text" = "From:";
-
-/* Class = "UILabel"; text = "To:"; ObjectID = "l3q-Py-Wbi"; */
-"l3q-Py-Wbi.text" = "To:";
-
-/* Class = "UILabel"; text = "Gianni Carlo gianni@criptext.com"; ObjectID = "wZE-Zu-ENE"; */
+"g12-WW-CEc.text" = "De:";
+"l3q-Py-Wbi.text" = "Para:";
 "wZE-Zu-ENE.text" = "Gianni Carlo gianni@criptext.com";

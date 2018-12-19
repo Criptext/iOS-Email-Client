@@ -1564,7 +1564,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BvX-7R-iIz">
-                                <rect key="frame" x="27" y="129.5" width="321" height="25"/>
+                                <rect key="frame" x="27" y="139.5" width="321" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="epL-ZQ-uoi"/>
                                 </constraints>
@@ -1644,7 +1644,7 @@
                             <constraint firstItem="oqA-cj-gSd" firstAttribute="leading" secondItem="HEd-ft-0sC" secondAttribute="leading" constant="27" id="33z-Q3-56q"/>
                             <constraint firstItem="rZV-KN-aKK" firstAttribute="top" secondItem="31I-bV-9Zu" secondAttribute="bottom" constant="20" id="3sx-uL-Rza"/>
                             <constraint firstItem="DXy-g2-T0G" firstAttribute="top" secondItem="yvP-A1-Uxd" secondAttribute="bottom" constant="28" id="5dG-3y-tW7"/>
-                            <constraint firstItem="BvX-7R-iIz" firstAttribute="top" secondItem="oqA-cj-gSd" secondAttribute="bottom" constant="10" id="5eG-Z9-3Yx"/>
+                            <constraint firstItem="BvX-7R-iIz" firstAttribute="top" secondItem="oqA-cj-gSd" secondAttribute="bottom" constant="20" id="5eG-Z9-3Yx"/>
                             <constraint firstItem="UuE-nw-jwa" firstAttribute="top" secondItem="XYi-Z2-7Mm" secondAttribute="bottom" constant="35" id="9oL-oe-UQq"/>
                             <constraint firstItem="XYi-Z2-7Mm" firstAttribute="trailing" secondItem="oqA-cj-gSd" secondAttribute="trailing" id="Jsv-uz-7hu"/>
                             <constraint firstItem="BvX-7R-iIz" firstAttribute="leading" secondItem="oqA-cj-gSd" secondAttribute="leading" id="LGx-0N-7BD"/>
@@ -2090,7 +2090,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-inbox"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Inbox"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="INBOX"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="labelId">
                                                         <integer key="value" value="1"/>
                                                     </userDefinedRuntimeAttribute>
@@ -2107,7 +2107,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="send"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Sent"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="SENT"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="labelId">
                                                         <integer key="value" value="3"/>
                                                     </userDefinedRuntimeAttribute>
@@ -2124,7 +2124,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-draft"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Draft"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="DRAFT"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="labelId">
                                                         <integer key="value" value="6"/>
                                                     </userDefinedRuntimeAttribute>
@@ -2141,7 +2141,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-starred"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Starred"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="STARRED"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="labelId">
                                                         <integer key="value" value="5"/>
                                                     </userDefinedRuntimeAttribute>
@@ -2158,7 +2158,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-spam"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Spam"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="SPAM"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="labelId">
                                                         <integer key="value" value="2"/>
                                                     </userDefinedRuntimeAttribute>
@@ -2175,7 +2175,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="delete-icon"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Trash"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="TRASH"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="labelId">
                                                         <integer key="value" value="7"/>
                                                     </userDefinedRuntimeAttribute>
@@ -2206,7 +2206,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-allmail"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="All Mail"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="ALL_MAIL"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="labelId">
                                                         <integer key="value" value="-1"/>
                                                     </userDefinedRuntimeAttribute>
@@ -2239,7 +2239,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-label"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Labels"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="MENU_LABELS"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onLabelsMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="sWB-xo-XbA"/>
@@ -2310,7 +2310,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-settings"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Settings"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="MENU_SETTINGS"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onSettingsMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="fs2-1r-q9Z"/>
@@ -2324,7 +2324,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-invite"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Invite a Friend"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="INVITE_FRIEND"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onInviteMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="f2G-JT-q5n"/>
@@ -2338,7 +2338,7 @@
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-support"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Support"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="SUPPORT"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onSupportMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="ejf-5J-Qg9"/>

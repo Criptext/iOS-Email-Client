@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,7 +30,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kt0-31-qbQ">
-                    <rect key="frame" x="83" y="46.5" width="215" height="23.5"/>
+                    <rect key="frame" x="83" y="46.5" width="235" height="23.5"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -74,7 +74,7 @@
                 <constraint firstItem="Kt0-31-qbQ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="9YP-eN-hcZ"/>
                 <constraint firstItem="C9i-WN-Z3z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="38" id="Aw1-Zh-Enf"/>
                 <constraint firstItem="MnM-Ih-2hN" firstAttribute="centerY" secondItem="C9i-WN-Z3z" secondAttribute="centerY" id="COE-wf-Ayn"/>
-                <constraint firstItem="MnM-Ih-2hN" firstAttribute="leading" secondItem="Kt0-31-qbQ" secondAttribute="trailing" constant="5" id="IDc-nX-TA4"/>
+                <constraint firstItem="MnM-Ih-2hN" firstAttribute="leading" secondItem="Kt0-31-qbQ" secondAttribute="trailing" constant="-15" id="IDc-nX-TA4"/>
                 <constraint firstItem="Kt0-31-qbQ" firstAttribute="leading" secondItem="C9i-WN-Z3z" secondAttribute="trailing" constant="28" id="IsH-Dc-Wqb"/>
                 <constraint firstItem="C9i-WN-Z3z" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="bWq-rU-qHN"/>
             </constraints>

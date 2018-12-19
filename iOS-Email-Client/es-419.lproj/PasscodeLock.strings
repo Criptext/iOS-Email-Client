@@ -1,0 +1,22 @@
+/* 
+  PasscodeLock.strings
+  iOS-Email-Client
+
+  Created by Allisson on 12/17/18.
+  Copyright © 2018 Criptext Inc. All rights reserved.
+*/
+
+"PasscodeLockEnterTitle" = "Ingrese Codigo PIN";
+"PasscodeLockEnterDescription" = "Ingrese su Codigo PIN para continuar";
+"PasscodeLockSetTitle" = "Ingrese Codigo PIN";
+"PasscodeLockSetDescription" = "Establezca un Codigo PIN";
+"PasscodeLockConfirmTitle" = "Confirme Codigo PIN";
+"PasscodeLockConfirmDescription" = "Ingrese el Codigo PIN de nuevo";
+"PasscodeLockChangeTitle" = "Ingrese el Codigo PIN anterior";
+"PasscodeLockChangeDescription" = "Ingrese el Codigo PIN anterior";
+"PasscodeLockMismatchTitle" = "Intente de nuevo";
+"PasscodeLockMismatchDescription" = "El Codigo PIN no coincide con el ingresado";
+"PasscodeLockCancelButtonTitle" = "Cancelar";
+"PasscodeLockDeleteButtonTitle" = "Borrar";
+"PasscodeLockTouchIDReason" = "Autenticación necesaria para continuar";
+"PasscodeLockTouchIDButton" = "Ingrese Codigo PIN";

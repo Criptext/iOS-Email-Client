@@ -185,6 +185,7 @@ class SettingsGeneralViewController: UITableViewController{
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
         cell.goImageView.isHidden = subsection == .deleteAccount || subsection == .logout
+        cell.optionLabel.textColor = subsection == .deleteAccount ? .alert : .lightText
         cell.optionLabel.text = subsection.name
         return cell
     }
@@ -224,11 +225,11 @@ class SettingsGeneralViewController: UITableViewController{
         case .signature:
             goToSignature()
         case .privacy:
-            goToUrl(url: "https://criptext.com/privacy")
+            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
         case .terms:
-            goToUrl(url: "https://criptext.com/terms")
+            goToUrl(url: "https://criptext.com/\(Env.language)/terms")
         case .openSource:
-            goToUrl(url: "https://criptext.com/open-source-ios")
+            goToUrl(url: "https://criptext.com/\(Env.language)/open-source-ios")
         case .logout:
             guard let customTabsVC = self.tabsController as? CustomTabsController,
                 customTabsVC.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
@@ -310,7 +311,7 @@ class SettingsGeneralViewController: UITableViewController{
                 if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
                     popover.dismiss(animated: false, completion: nil)
                 }
-                weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: "WRONG_PASS_RETRY", style: .alert)
+                weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("WRONG_PASS_RETRY"), style: .alert)
                 return
             }
             guard case .Success = responseData,
@@ -402,6 +403,7 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func goToUrl(url: String){
+        print(url)
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
     }

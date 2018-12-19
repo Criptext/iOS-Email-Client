@@ -34,7 +34,7 @@ class Thread {
     }
     
     func getFormattedDate() -> String {
-        return DateUtils.conversationTime(date)
+        return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
     }
     
     func getContactsString(replaceWithMe email: String) -> String{

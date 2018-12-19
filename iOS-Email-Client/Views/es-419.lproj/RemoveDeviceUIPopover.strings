@@ -1,18 +1,6 @@
-
-/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "EdO-lF-0Uj"; */
-"EdO-lF-0Uj.normalTitle" = "Confirm";
-
-/* Class = "UILabel"; text = "This will automatically sign you out of the account on the device "; ObjectID = "Fda-ty-K22"; */
-"Fda-ty-K22.text" = "This will automatically sign you out of the account on the device ";
-
-/* Class = "UILabel"; text = "Remove Device"; ObjectID = "Imi-Xj-i4d"; */
-"Imi-Xj-i4d.text" = "Remove Device";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "a8Y-Hp-xEf"; */
-"a8Y-Hp-xEf.normalTitle" = "Cancel";
-
-/* Class = "UILabel"; text = "Enter your password to continue"; ObjectID = "i86-cp-5B3"; */
-"i86-cp-5B3.text" = "Enter your password to continue";
-
-/* Class = "UITextField"; placeholder = "Password"; ObjectID = "mii-HU-CAX"; */
-"mii-HU-CAX.placeholder" = "Password";
+"EdO-lF-0Uj.normalTitle" = "Confirmar";
+"Fda-ty-K22.text" = "Se cerrará la sesión del dispositivo de forma remota.";
+"Imi-Xj-i4d.text" = "Remover Dispositivo";
+"a8Y-Hp-xEf.normalTitle" = "Cancelar";
+"i86-cp-5B3.text" = "Introduce tu contraseña\npara continuar";
+"mii-HU-CAX.placeholder" = "Contraseña";
