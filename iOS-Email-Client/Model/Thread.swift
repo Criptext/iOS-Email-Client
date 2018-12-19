@@ -40,7 +40,7 @@ class Thread {
     func getContactsString(replaceWithMe email: String) -> String{
         var contactsTitle = ""
         for contact in participants {
-            let contactName = contact.email == email ? "Me" : contact.displayName
+            let contactName = contact.email == email ? String.localize("ME") : contact.displayName
             guard !contact.displayName.contains("@") else {
                 contactsTitle += "\(contactName.split(separator: "@").first!), "
                 continue

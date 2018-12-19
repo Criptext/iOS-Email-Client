@@ -19,9 +19,9 @@ class SignatureEditorViewController: UIViewController {
     var keyboardManager: KeyboardManager!
     
     override func viewDidLoad() {
-        navigationItem.title = String.localize("SIGNATURE")
+        navigationItem.title = String.localize("SIGNATURE_TITLE")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(saveAndReturn))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: String.localize("DONE"), style: .plain, target: self, action: #selector(saveAndReturn))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         signatureEnableSwitch.isOn = myAccount.signatureEnabled
         richEditor.isEditingEnabled = signatureEnableSwitch.isOn

@@ -109,11 +109,11 @@ class Email: Object {
     }
         
     func getFormattedDate() -> String {
-        return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
+        return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY")).replacingOccurrences(of: "at", with: String.localize("AT"))
     }
     
     func getFullDate() -> String {
-        return DateUtils.prettyDate(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
+        return DateUtils.prettyDate(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY")).replacingOccurrences(of: "at", with: String.localize("AT"))
     }
     
     var completeDate: String {
@@ -137,14 +137,15 @@ class Email: Object {
     
     func getContent() -> String {
         guard !isUnsent else {
-            return "<span style=\"color:#eea3a3; font-style: italic;\">Unsent \(String(DateUtils.beautyDate(self.unsentDate ?? Date())))</span>"
+            return "<span style=\"color:#eea3a3; font-style: italic;\">\(self.getPreview())</span>"
         }
         return content
     }
     
     func getPreview() -> String {
         guard !isUnsent else {
-            return "Unsent \(String(DateUtils.beautyDate(self.unsentDate ?? Date())))"
+            let stringDate = DateUtils.beautyDate(self.unsentDate ?? Date()).replacingOccurrences(of: "at", with: String.localize("AT"))
+            return "\(String.localize("UNSENT")) \(stringDate)"
         }
         return preview
     }

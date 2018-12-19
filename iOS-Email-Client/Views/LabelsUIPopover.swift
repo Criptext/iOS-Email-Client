@@ -74,7 +74,7 @@ class LabelsUIPopover: BaseUIPopover {
     class func instantiate(type: ActionType, selectedLabel: Int) -> LabelsUIPopover {
         let labelsPopover = LabelsUIPopover()
         labelsPopover.type = type
-        labelsPopover.headerTitle = type == .moveTo ? "Move To" : "Add labels"
+        labelsPopover.headerTitle = type == .moveTo ? String.localize("MOVE_TO") : String.localize("ADD_LABELS")
         let labels = type == .moveTo ? DBManager.getMoveableLabels(label: selectedLabel) : DBManager.getSettableLabels()
         labelsPopover.labels.append(contentsOf: labels)
         return labelsPopover
@@ -90,7 +90,7 @@ extension LabelsUIPopover: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "labeltablecell", for: indexPath) as! LabelTableViewCell
         let label = labels[indexPath.row]
-        cell.setLabel(label.text, color: UIColor(hex: label.color))
+        cell.setLabel(label.localized, color: UIColor(hex: label.color))
         cell.selectionStyle = .none
         if(type == .moveTo){
             cell.checkMarkView?.isHidden = true

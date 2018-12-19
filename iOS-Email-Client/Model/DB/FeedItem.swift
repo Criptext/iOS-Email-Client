@@ -32,7 +32,7 @@ class FeedItem: Object {
         return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
     }
     var header: String {
-        return "\(contact.displayName) \(type == Action.open.rawValue ? "opened" : "downloaded"):"
+        return "\(contact.displayName) \(type == Action.open.rawValue ? String.localize("OPENED") : String.localize("DOWNLOADED"))"
     }
 
     override static func primaryKey() -> String? {

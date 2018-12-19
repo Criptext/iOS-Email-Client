@@ -36,7 +36,7 @@ class SettingsLabelsViewController: UITableViewController {
         let isDisabled = label.id == SystemLabel.starred.id
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsLabelCell") as! LabelsLabelTableViewCell
         
-        cell.labelLabel.text = label.text
+        cell.labelLabel.text = label.localized
         cell.checkMarkView.setChecked(label.visible, disabled: isDisabled)
         cell.colorDotsView.backgroundColor = UIColor(hex: label.color)
         return cell
