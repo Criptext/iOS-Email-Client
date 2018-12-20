@@ -135,7 +135,7 @@ class ChangePassViewController: UIViewController {
     
     func setValidField(_ field: TextField, valid: Bool, error: String = "") {
         field.detail = error
-        field.dividerActiveColor = valid ? .mainUI : .alertLight
+        field.dividerActiveColor = valid ? .mainUI : .alert
     }
     
     @IBAction func onSavePress(_ sender: Any) {

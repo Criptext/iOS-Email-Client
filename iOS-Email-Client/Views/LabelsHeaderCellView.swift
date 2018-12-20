@@ -1,27 +1,26 @@
 //
-//  GeneralVersionTableViewCell.swift
+//  LabelsHeaderCellView.swift
 //  iOS-Email-Client
 //
-//  Created by Pedro Aim on 9/12/18.
+//  Created by Allisson on 12/20/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 
 import Foundation
 
-class GeneralVersionTableViewCell: UITableViewCell {
-    @IBOutlet weak var versionLabel: UILabel!
+class LabelsHeaderCellView: UITableViewHeaderFooterView {
+    @IBOutlet weak var headerLabel: UILabel!
     
     override func awakeFromNib() {
-        super.awakeFromNib()
         applyTheme()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        applyTheme()
+        self.applyTheme()
     }
     
     func applyTheme() {
-        backgroundColor = ThemeManager.shared.theme.background
+        headerLabel.textColor = ThemeManager.shared.theme.mainText
     }
 }

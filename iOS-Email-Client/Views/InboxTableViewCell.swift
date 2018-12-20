@@ -34,6 +34,9 @@ class InboxTableViewCell: UITableViewCell {
     
     var holdGestureRecognizer:UILongPressGestureRecognizer!
     weak var delegate:InboxTableViewCellDelegate?
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -52,14 +55,16 @@ class InboxTableViewCell: UITableViewCell {
     }
     
     func setFields(thread: Thread, label: Int, myEmail: String){
+        subjectLabel.textColor = theme.mainText
+        senderLabel.textColor = theme.mainText
         secureAttachmentImageView.isHidden = true
         secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
         if !thread.unread {
-            backgroundColor = UIColor(red:244/255, green:244/255, blue:244/255, alpha:1.0)
+            backgroundColor = theme.cellOpaque
             senderLabel.font = Font.regular.size(15)
         }else{
-            backgroundColor = UIColor.white
+            backgroundColor = theme.background
             senderLabel.font = Font.bold.size(15)
         }
         
@@ -76,7 +81,7 @@ class InboxTableViewCell: UITableViewCell {
             previewLabel.textColor = .alertText
             previewLabel.font = Font.italic.size(15.0)!
         }else{
-            previewLabel.textColor = .charcoal
+            previewLabel.textColor = theme.secondText
             previewLabel.font = Font.regular.size(15.0)!
         }
         

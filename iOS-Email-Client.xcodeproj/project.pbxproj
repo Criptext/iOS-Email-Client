@@ -228,6 +228,9 @@
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
 		A723253221C94B90003CF78D /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A723253421C94B90003CF78D /* PasscodeLockView.xib */; };
 		A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A723253B21C94E69003CF78D /* EmailDetailTableCell.xib */; };
+		A723254321CAFE20003CF78D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
+		A723254521CBE257003CF78D /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
+		A723254721CBF901003CF78D /* LabelsHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254621CBF901003CF78D /* LabelsHeaderCellView.swift */; };
 		A72B864821AC93EE00DCC601 /* RetrieveContactsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */; };
 		A72C185321AEEB1F00D899EE /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
 		A72C185521AF0EB800D899EE /* MailboxNewsHeaderUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72C185421AF0EB800D899EE /* MailboxNewsHeaderUIView.xib */; };
@@ -676,6 +679,9 @@
 		A723253A21C94E69003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EmailDetailTableCell.xib; sourceTree = "<group>"; };
 		A723253D21C94E6B003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
 		A723253F21C94E6C003CF78D /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailDetailTableCell.strings"; sourceTree = "<group>"; };
+		A723254221CAFE20003CF78D /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A723254421CBE257003CF78D /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		A723254621CBF901003CF78D /* LabelsHeaderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsHeaderCellView.swift; sourceTree = "<group>"; };
 		A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveContactsTask.swift; sourceTree = "<group>"; };
 		A72C185221AEEB1F00D899EE /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		A72C185421AF0EB800D899EE /* MailboxNewsHeaderUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailboxNewsHeaderUIView.xib; sourceTree = "<group>"; };
@@ -939,6 +945,7 @@
 				41AAC544201AA01400809C4D /* DBManager.swift */,
 				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
 				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
+				A723254421CBE257003CF78D /* ThemeManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1135,6 +1142,7 @@
 				7CCD73E7212F2207002C8C7F /* ResponseData.swift */,
 				7C6DB46A2152B910001B3749 /* LinkData.swift */,
 				A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */,
+				A723254221CAFE20003CF78D /* Theme.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1225,6 +1233,7 @@
 				A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */,
 				D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */,
 				D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */,
+				A723254621CBF901003CF78D /* LabelsHeaderCellView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1799,6 +1808,7 @@
 				7C8C2F7020EAB87D00FC145E /* LabelsFooterViewCell.swift in Sources */,
 				7C4D33C7212C7B8400045B09 /* PasswordUIPopover.swift in Sources */,
 				7CF93F4D214329C700361837 /* ChangePassViewController.swift in Sources */,
+				A723254721CBF901003CF78D /* LabelsHeaderCellView.swift in Sources */,
 				7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */,
 				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,
 				A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */,
@@ -1825,6 +1835,7 @@
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,
 				7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */,
 				A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */,
+				A723254521CBE257003CF78D /* ThemeManager.swift in Sources */,
 				7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */,
 				7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */,
 				7C5E404020B706860027C61F /* CustomTabsController.swift in Sources */,
@@ -1839,6 +1850,7 @@
 				7C92104A210141380081C048 /* EventData.swift in Sources */,
 				7C92104820FFD5690081C048 /* AESCipher.swift in Sources */,
 				7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */,
+				A723254321CAFE20003CF78D /* Theme.swift in Sources */,
 				7C8D6C74203735E000AB96EF /* Constants.swift in Sources */,
 				7C7F2FEB20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift in Sources */,
 				7C7F2FF320B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift in Sources */,

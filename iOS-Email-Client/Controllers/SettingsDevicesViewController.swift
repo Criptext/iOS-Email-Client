@@ -14,12 +14,12 @@ class SettingsDevicesViewController: UITableViewController {
     var devices: [Device] {
         return deviceData.devices
     }
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     override func viewDidLoad() {
-        let attributedTitle = NSAttributedString(string: String.localize("DEVICES"), attributes: [.font: Font.semibold.size(16.0)!])
-        tabItem.setAttributedTitle(attributedTitle, for: .normal)
-        tabItem.setTabItemColor(.black, for: .normal)
-        tabItem.setTabItemColor(.mainUI, for: .selected)
+        self.applyTheme()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,10 +37,18 @@ class SettingsDevicesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 66.0
     }
+    
+    func applyTheme() {
+        let attributedTitle = NSAttributedString(string: String.localize("DEVICES"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
+        tabItem.setAttributedTitle(attributedTitle, for: .normal)
+        tableView.backgroundColor = theme.background
+        self.view.backgroundColor = theme.background
+    }
 }
 
 extension SettingsDevicesViewController: CustomTabsChildController {
     func reloadView() {
+        self.applyTheme()
         tableView.reloadData()
     }
 }

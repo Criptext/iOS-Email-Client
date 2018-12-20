@@ -35,12 +35,12 @@ class PrivacyUIViewCell: UITableViewCell {
         optionPickLabel.isHidden = option.pick == nil
         optionPickLabel.text = String.localize(option.pick ?? "")
         if option.isEnabled {
-            optionTextLabel.textColor = .lightText
+            optionTextLabel.textColor = .charcoal
             optionPickLabel.textColor = .mainUI
             optionSwitch.isEnabled = true
         } else {
-            optionTextLabel.textColor = .bright
-            optionPickLabel.textColor = .bright
+            optionTextLabel.textColor = .disable
+            optionPickLabel.textColor = .disable
             optionSwitch.isEnabled = false
         }
     }

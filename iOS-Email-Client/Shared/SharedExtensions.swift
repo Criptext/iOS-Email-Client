@@ -240,17 +240,15 @@ enum Icon {
 extension UIColor {
     
     static let mainUI = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1)
-    static let mainUILight = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 0.63)
-    static let neutral = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1)
     static let alert = UIColor(red: 221/255, green: 64/255, blue: 64/255, alpha: 1)
-    static let alertLight = UIColor(red: 227/255, green: 102/255, blue: 102/255, alpha: 1)
     static let alertText = UIColor(red: 238/255, green: 163/255, blue: 163/255, alpha: 1)
     static let itemSelected = UIColor(red: 242/255, green: 248/255, blue: 255/255, alpha: 1)
-    static let lightText = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 1)
-    static let bright = UIColor(red: 157/255, green: 157/255, blue: 157/255, alpha: 1)
-    static let charcoal = UIColor(red: 106/255, green: 112/255, blue: 127/255, alpha: 1)
+    static let charcoal = UIColor(red: 55/255, green: 58/255, blue: 69/255, alpha: 1)
+    static let disable = UIColor(red: 157/255, green: 157/255, blue: 157/255, alpha: 1)
+    static let bright = UIColor(red: 106/255, green: 112/255, blue: 127/255, alpha: 1)
     static let lightIcon = UIColor(red: 220/255, green: 221/255, blue: 224/255, alpha: 1)
-    
+    static let composeButton =  UIColor(red: 21/255, green: 33/255, blue: 46/255, alpha: 1)
+    static let opaque = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1)
 }
 
 enum Font {

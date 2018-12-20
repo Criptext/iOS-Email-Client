@@ -17,11 +17,14 @@ class SettingsGeneralViewController: UITableViewController{
         case account
         case about
         case version
+        case appearance
         
         var name: String {
             switch(self){
             case .account:
                 return String.localize("ACCOUNT")
+            case .appearance:
+                return String.localize("APPEARANCE")
             case .about:
                 return String.localize("ABOUT")
             case .version:
@@ -42,6 +45,8 @@ class SettingsGeneralViewController: UITableViewController{
             case terms
             case openSource
             case logout
+            
+            case night
             
             case privacySecurity
             
@@ -75,6 +80,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("PRIVACY_SECURITY")
                 case .version:
                     return String.localize("VERSION")
+                case .night:
+                    return String.localize("NIGHT_MODE")
                 }
             }
         }
@@ -82,20 +89,21 @@ class SettingsGeneralViewController: UITableViewController{
     
     let SECTION_VERSION = 3
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .about, .version] as [Section]
+    let sections = [.account, .appearance, .about, .version] as [Section]
     let menus = [
         .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .privacySecurity, .syncContact],
         .about: [.privacy, .terms, .openSource, .logout, .deleteAccount],
+        .appearance: [.night],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData: GeneralSettingsData!
     var myAccount : Account!
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     override func viewDidLoad() {
-        let attributedTitle = NSAttributedString(string: String.localize("GENERAL"), attributes: [.font: Font.semibold.size(16.0)!])
-        tabItem.setAttributedTitle(attributedTitle, for: .normal)
-        tabItem.setTabItemColor(.black, for: .normal)
-        tabItem.setTabItemColor(.mainUI, for: .selected)
+        self.applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -118,16 +126,25 @@ class SettingsGeneralViewController: UITableViewController{
             return renderAccountCells(subsection: subsection)
         case .about:
             return renderAboutCells(subsection: subsection)
+        case .appearance:
+            return renderAppearanceCells(subsection: subsection)
         default:
             return renderVersionCells()
         }
+    }
+    
+    func applyTheme(){
+        let attributedTitle = NSAttributedString(string: String.localize("GENERAL"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
+        tabItem.setAttributedTitle(attributedTitle, for: .normal)
+        tableView.backgroundColor = theme.background
+        self.view.backgroundColor = theme.background
     }
     
     func renderAccountCells(subsection: Section.SubSection) -> UITableViewCell {
         switch(subsection){
         case .recovery:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.optionLabel.textColor = .lightText
+            cell.optionLabel.textColor = theme.mainText
             cell.optionLabel.text = subsection.name
             cell.messageLabel.text = generalData.recoveryEmailStatus.description
             cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
@@ -151,7 +168,7 @@ class SettingsGeneralViewController: UITableViewController{
             return cell
         case .syncContact:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.optionLabel.textColor = .lightText
+            cell.optionLabel.textColor = theme.mainText
             cell.optionLabel.text = subsection.name
             cell.messageLabel.text = ""
             switch(generalData.syncStatus){
@@ -173,7 +190,7 @@ class SettingsGeneralViewController: UITableViewController{
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.optionLabel.textColor = .lightText
+            cell.optionLabel.textColor = theme.mainText
             cell.optionLabel.text = subsection.name
             cell.goImageView.isHidden = false
             cell.messageLabel.text = ""
@@ -183,12 +200,25 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
+    func renderAppearanceCells(subsection: Section.SubSection) -> UITableViewCell {
+        switch(subsection){
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = subsection.name
+            cell.availableSwitch.isOn = ThemeManager.shared.theme.name == "Night"
+            cell.switchToggle = { isOn in
+                ThemeManager.shared.swapTheme(theme: isOn ? Theme.dark() : Theme.init())
+            }
+            return cell
+        }
+    }
+    
     func renderAboutCells(subsection: Section.SubSection) -> GeneralTapTableCellView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
         cell.goImageView.isHidden = subsection == .deleteAccount || subsection == .logout
-        cell.optionLabel.textColor = subsection == .deleteAccount ? .alert : .lightText
+        cell.optionLabel.textColor = subsection == .deleteAccount ? theme.alert : theme.mainText
         cell.optionLabel.text = subsection.name
         return cell
     }
@@ -478,6 +508,7 @@ class SettingsGeneralViewController: UITableViewController{
 
 extension SettingsGeneralViewController: CustomTabsChildController {
     func reloadView() {
+        applyTheme()
         tableView.reloadData()
     }
 }

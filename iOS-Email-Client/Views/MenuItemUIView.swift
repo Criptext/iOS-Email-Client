@@ -55,7 +55,7 @@ class MenuItemUIView: UIButton {
     
     func showAsSelected(_ selected: Bool){
         backgroundColor = selected ? .itemSelected : .clear
-        itemLabel.textColor = selected ? .black : .lightText
+        itemLabel.textColor = selected ? .black : .charcoal
         iconView.tintColor = selected ? .black : .lightIcon
     }
 }

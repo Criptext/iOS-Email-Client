@@ -22,9 +22,25 @@ class SettingsDeviceTableViewCell: UITableViewCell {
     @IBOutlet weak var trashButton: UIButton!
     var delegate: DeviceTableViewCellDelegate?
     
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        trashButton.tintColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
+        applyTheme()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        trashButton.tintColor = theme.secondText
+        deviceNameLabel.textColor = theme.mainText
+        deviceLocationLabel.textColor = theme.mainText
+        backgroundColor = theme.background
     }
     
     func setContent(device: Device){

@@ -148,7 +148,7 @@ class EmailTableViewCell: UITableViewCell{
         if(email.isUnsent){
             previewLabel.textColor = .alertText
             previewLabel.font = Font.italic.size(15.0)!
-            borderBGView.layer.borderColor = UIColor.alertLight.cgColor
+            borderBGView.layer.borderColor = UIColor.alert.cgColor
         }
     }
     
