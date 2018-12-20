@@ -9,18 +9,35 @@
 import Foundation
 
 class ContactsDetailUIPopover: BaseUIPopover{
+    
+    @IBOutlet weak var bccView: UIView!
+    @IBOutlet weak var dateView: UIView!
+    @IBOutlet weak var fromView: UIView!
+    @IBOutlet weak var ccView: UIView!
+    @IBOutlet weak var toView: UIView!
+    @IBOutlet weak var fromTitleLabel: UILabel!
     @IBOutlet weak var fromEmailsLabel: UILabel!
     @IBOutlet weak var replyToEmailsLabel: UILabel!
+    @IBOutlet weak var replyTitleLabel: UILabel!
     @IBOutlet weak var replyToView: UIView!
+    @IBOutlet weak var toTitleLabel: UILabel!
     @IBOutlet weak var toEmailsTableView: UITableView!
+    @IBOutlet weak var ccTitleLabel: UILabel!
     @IBOutlet weak var ccEmailsTableView: UITableView!
+    @IBOutlet weak var bccTitleLabel: UILabel!
     @IBOutlet weak var bccEmailsTableView: UITableView!
+    @IBOutlet weak var dateTitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var toHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var toLabelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var ccViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bccViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var scrollView: UIScrollView!
     var email: Email!
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     init(){
         super.init("ContactsDetailUIPopover")
@@ -44,6 +61,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
         ccEmailsTableView.isScrollEnabled = false
         toEmailsTableView.isScrollEnabled = false;
         bccEmailsTableView.isScrollEnabled = false;
+        applyTheme()
     }
     
     func setFromContact(){
@@ -77,6 +95,8 @@ extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
         cell.contactTextView.attributedText = buildContactAttributedString(contact.displayName, contact.email)
         cell.contactLabel?.numberOfLines = 1
         cell.contactLabel?.attributedText = buildContactAttributedString(contact.displayName, contact.email)
+        cell.backgroundColor = theme.background
+        cell.contactLabel.textColor = theme.mainText
         return cell
     }
     
@@ -95,4 +115,29 @@ extension ContactsDetailUIPopover: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func applyTheme() {
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        fromView.backgroundColor = theme.background
+        replyToView.backgroundColor = theme.background
+        toView.backgroundColor = theme.background
+        ccView.backgroundColor = theme.background
+        bccView.backgroundColor = theme.background
+        dateView.backgroundColor = theme.background
+        
+        fromTitleLabel.textColor = theme.mainText
+        fromEmailsLabel.textColor = theme.mainText
+        replyTitleLabel.textColor = theme.mainText
+        replyToEmailsLabel.textColor = theme.mainText
+        toTitleLabel.textColor = theme.mainText
+        toEmailsTableView.backgroundColor = theme.background
+        ccTitleLabel.textColor = theme.mainText
+        ccEmailsTableView.backgroundColor = theme.background
+        bccTitleLabel.textColor = theme.mainText
+        bccEmailsTableView.backgroundColor = theme.background
+        dateTitleLabel.textColor = theme.mainText
+        dateLabel.textColor = theme.mainText
+        stackView.backgroundColor = theme.background
+        scrollView.backgroundColor = theme.background
+    }
 }

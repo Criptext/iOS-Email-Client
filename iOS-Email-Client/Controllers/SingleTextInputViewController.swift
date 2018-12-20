@@ -10,6 +10,8 @@ import Foundation
 import Material
 
 class SingleTextInputViewController: BaseUIPopover {
+    @IBOutlet weak var okButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var nameTextField: TextField!
     @IBOutlet weak var titleLabel: UILabel!
     var myTitle = ""
@@ -24,6 +26,7 @@ class SingleTextInputViewController: BaseUIPopover {
         titleLabel.text = myTitle
         nameTextField.text = initInputText
         nameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        applyTheme()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -33,6 +36,20 @@ class SingleTextInputViewController: BaseUIPopover {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        nameTextField.detailColor = theme.alert
+        nameTextField.textColor = theme.mainText
+        nameTextField.placeholderLabel.textColor = theme.mainText
+        titleLabel.textColor = theme.mainText
+        okButton.backgroundColor = theme.popoverButton
+        cancelButton.backgroundColor = theme.popoverButton
+        okButton.setTitleColor(theme.mainText, for: .normal)
+        cancelButton.setTitleColor(theme.mainText, for: .normal)
     }
     
     @objc func onDonePress(_ sender: Any){

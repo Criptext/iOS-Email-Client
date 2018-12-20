@@ -21,8 +21,11 @@ class Theme {
     let cellOpaque: UIColor
     let sectionHeader: UIColor
     let underSelector: UIColor
+    let placeholder: UIColor
+    let popoverButton: UIColor
+    let loader: UIColor
     
-    init(name: String = "Default", main: UIColor = .mainUI, toolbar: UIColor = .charcoal, background: UIColor = .white, popoupBackground: UIColor = .lightIcon, mainText: UIColor = .charcoal, secondText: UIColor = .bright, alert: UIColor = .alert, composeButton: UIColor = .mainUI, cellOpaque: UIColor = .opaque, sectionHeader: UIColor = .opaque, underSelector: UIColor = .mainUI) {
+    init(name: String = "Default", main: UIColor = .mainUI, toolbar: UIColor = .charcoal, background: UIColor = .white, popoupBackground: UIColor = .lightIcon, mainText: UIColor = .charcoal, secondText: UIColor = .bright, alert: UIColor = .alert, composeButton: UIColor = .mainUI, cellOpaque: UIColor = .opaque, sectionHeader: UIColor = .opaque, underSelector: UIColor = .mainUI, placeholder: UIColor = .placeholderLight, popoverButton: UIColor = .popoverButton, loader: UIColor = .gray) {
         self.name = name
         self.main = main
         self.toolbar = toolbar
@@ -35,9 +38,12 @@ class Theme {
         self.cellOpaque = cellOpaque
         self.sectionHeader = sectionHeader
         self.underSelector = underSelector
+        self.placeholder = placeholder
+        self.popoverButton = popoverButton
+        self.loader = loader
     }
     
     class func dark() -> Theme {
-        return Theme(name: "Night", main: .charcoal, toolbar: .black, background: .charcoal, popoupBackground: .charcoal, mainText: .white, secondText: .bright, alert: .alert, composeButton: .composeButton, cellOpaque: .composeButton, sectionHeader: .black, underSelector: .white)
+        return Theme(name: "Night", main: .charcoal, toolbar: .black, background: .charcoal, popoupBackground: .charcoal, mainText: .white, secondText: .bright, alert: .alert, composeButton: .composeButton, cellOpaque: .composeButton, sectionHeader: .black, underSelector: .white, placeholder: .placeholderDark, popoverButton: .composeButton, loader: .white)
     }
 }

@@ -11,6 +11,11 @@ import Foundation
 class SignInVerificationUIPopover: BaseUIPopover {
     
     @IBOutlet weak var deviceLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var approveButton: UIButton!
+    @IBOutlet weak var rejectButton: UIButton!
+    
     var deviceName: String = ""
     var deviceType: Device.Kind = .pc
     var deviceImage: UIImage {
@@ -42,6 +47,20 @@ class SignInVerificationUIPopover: BaseUIPopover {
         let myString = NSAttributedString(string: "   \(deviceName)")
         attachmentString.append(myString)
         deviceLabel.attributedText = attachmentString;
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        titleLabel.textColor = theme.mainText
+        subTitleLabel.textColor = theme.mainText
+        deviceLabel.textColor = theme.mainText
+        approveButton.backgroundColor = theme.popoverButton
+        rejectButton.backgroundColor = theme.popoverButton
+        rejectButton.setTitleColor(theme.mainText, for: .normal)
+        approveButton.setTitleColor(theme.mainText, for: .normal)
     }
     
     @IBAction func onOkPress(_ sender: Any) {

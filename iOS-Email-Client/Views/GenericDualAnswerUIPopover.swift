@@ -45,6 +45,19 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
         titleLabel.text = initialTitle
         rightButton.setTitle(rightOption, for: .normal)
         leftButton.setTitle(leftOption, for: .normal)
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        titleLabel.textColor = theme.mainText
+        messageLabel.textColor = theme.mainText
+        rightButton.backgroundColor = theme.composeButton
+        leftButton.backgroundColor = theme.composeButton
+        rightButton.setTitleColor(theme.mainText, for: .normal)
+        leftButton.setTitleColor(theme.mainText, for: .normal)
     }
     
     @IBAction func onOkPress(_ sender: Any) {

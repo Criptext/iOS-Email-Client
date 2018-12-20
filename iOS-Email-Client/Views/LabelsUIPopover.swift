@@ -25,6 +25,9 @@ class LabelsUIPopover: BaseUIPopover {
     var selectedLabels = [Int: Label]()
     var type : ActionType = .addLabels
     weak var delegate : LabelsUIPopoverDelegate?
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     init(){
         super.init("LabelsUIPopover")
@@ -46,6 +49,20 @@ class LabelsUIPopover: BaseUIPopover {
         }else{
             bigCancelButton.isHidden = true
         }
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        titleLabel.textColor = theme.mainText
+        cancelButton.backgroundColor = theme.popoverButton
+        cancelButton.setTitleColor(theme.mainText, for: .normal)
+        acceptButton.backgroundColor = theme.popoverButton
+        acceptButton.setTitleColor(theme.mainText, for: .normal)
+        bigCancelButton.backgroundColor = theme.popoverButton
+        bigCancelButton.setTitleColor(theme.mainText, for: .normal)
+        tableView.backgroundColor = theme.background
     }
     
     @IBAction func onAcceptPress(_ sender: Any) {
@@ -91,6 +108,8 @@ extension LabelsUIPopover: UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "labeltablecell", for: indexPath) as! LabelTableViewCell
         let label = labels[indexPath.row]
         cell.setLabel(label.localized, color: UIColor(hex: label.color))
+        cell.descTextLabel.textColor = theme.mainText
+        cell.backgroundColor = theme.background
         cell.selectionStyle = .none
         if(type == .moveTo){
             cell.checkMarkView?.isHidden = true

@@ -402,6 +402,8 @@
 		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
 		A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
 		A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */; };
+		D63EE2DA21CC247E001125B3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
+		D63EE2DB21CC248E001125B3 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
 		D652A07421C03671005EC3E1 /* ContactShareTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */; };
 		D652A07621C0369C005EC3E1 /* ContactShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */; };
 		D652A07721C036A9005EC3E1 /* ContactShareTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */; };
@@ -1974,12 +1976,14 @@
 				A7ADA14421A5F4100027FC1C /* SignalHandler.swift in Sources */,
 				A7ADA14521A5F4340027FC1C /* DateUtils.m in Sources */,
 				A70609F921A74C0A0066BFA4 /* EmailSetPasswordViewController.swift in Sources */,
+				D63EE2DA21CC247E001125B3 /* Theme.swift in Sources */,
 				A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */,
 				A70609F621A72F470066BFA4 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				A7ADA13F21A5F2100027FC1C /* DBAxolotl.swift in Sources */,
 				A7ADA13E21A5F2100027FC1C /* CriptextAxolotlStore.swift in Sources */,
 				A7ADA12F21A5F1DD0027FC1C /* EmailContact.swift in Sources */,
 				A7ADA13321A5F1F10027FC1C /* DummySession.swift in Sources */,
+				D63EE2DB21CC248E001125B3 /* ThemeManager.swift in Sources */,
 				A7ADA13421A5F1FA0027FC1C /* NewEmailHandler.swift in Sources */,
 				A7ADA14821A60B8D0027FC1C /* AESCipher.swift in Sources */,
 				A7ADA12E21A5F1DA0027FC1C /* CRTrustedDevice.swift in Sources */,
