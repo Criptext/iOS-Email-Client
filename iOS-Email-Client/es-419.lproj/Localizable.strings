@@ -292,3 +292,7 @@
 "15 minutes" = "15 minutos";
 "1 hour" = "1 hora";
 "24 hours" = "24 horas";
+
+"PASSWORD_CHANGE" = "Tu contraseña ha cambiado. Confirma tu nueva contraseña, si cancelas, todos tus datos serán eliminados.";
+"PASSWORD_CONTINUE" = "Ingresa tu contraseña para continuar";
+"Passphrase" = "Clave";

@@ -33,6 +33,10 @@ class EmailDetailViewController: UIViewController {
     
     var message: ControllerMessage?
     
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -323,7 +327,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         popover.popoverPresentationController?.sourceView = sender
         popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width/1.0001, height: sender.frame.size.height)
         popover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        popover.popoverPresentationController?.backgroundColor = UIColor.white
+        popover.popoverPresentationController?.backgroundColor = theme.background
         self.present(popover, animated: true, completion: nil)
     }
     

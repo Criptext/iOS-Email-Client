@@ -249,6 +249,9 @@ extension UIColor {
     static let lightIcon = UIColor(red: 220/255, green: 221/255, blue: 224/255, alpha: 1)
     static let composeButton =  UIColor(red: 21/255, green: 33/255, blue: 46/255, alpha: 1)
     static let opaque = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1)
+    static let placeholderLight = UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)
+    static let placeholderDark = UIColor(red:1.00, green:1.00, blue:1.00, alpha: 0.22)
+    static let popoverButton = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
 }
 
 enum Font {

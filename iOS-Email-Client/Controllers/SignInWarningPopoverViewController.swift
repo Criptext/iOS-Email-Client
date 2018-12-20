@@ -13,8 +13,10 @@ class SignInWarningPopoverViewController: BaseUIPopover {
     var timer: Timer?
     var secondsLeft = 10
     var initialMessage: NSAttributedString?
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     
     init(){
         super.init("SignInWarningUIPopover")
@@ -28,6 +30,7 @@ class SignInWarningPopoverViewController: BaseUIPopover {
         super.viewDidLoad()
         messageLabel.attributedText = initialMessage
         startTimer()
+        applyTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -35,6 +38,18 @@ class SignInWarningPopoverViewController: BaseUIPopover {
         if let myTimer = timer {
             myTimer.invalidate()
         }
+    }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        titleLabel.textColor = theme.mainText
+        messageLabel.textColor = theme.mainText
+        logoutButton.backgroundColor = theme.popoverButton
+        cancelButton.backgroundColor = theme.popoverButton
+        logoutButton.setTitleColor(theme.mainText, for: .normal)
+        cancelButton.setTitleColor(theme.mainText, for: .normal)
     }
     
     @IBAction func onLogoutPress(_ sender: Any) {

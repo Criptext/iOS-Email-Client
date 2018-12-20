@@ -9,6 +9,7 @@
 import Foundation
 
 class UnsentUIPopover: BaseUIPopover{
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     var date: String?
     
@@ -23,5 +24,14 @@ class UnsentUIPopover: BaseUIPopover{
     override func viewDidLoad() {
         super.viewDidLoad()
         dateLabel.text = date
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        titleLabel.textColor = theme.mainText
+        dateLabel.textColor = theme.mainText
     }
 }

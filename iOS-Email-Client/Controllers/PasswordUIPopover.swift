@@ -40,9 +40,8 @@ class PasswordUIPopover: BaseUIPopover {
         super.viewDidLoad()
         passwordTextField.isVisibilityIconButtonEnabled = true
         passwordTextField.becomeFirstResponder()
-        passwordTextField.detailColor = .alert
         shouldDismiss = !remotelyCheckPassword
-        passwordTitleLabel.text = remotelyCheckPassword ? "Your password has changed. Confirm your new password, if you Cancel, all local data will be erased." : "Enter your password to continue"
+        passwordTitleLabel.text = remotelyCheckPassword ? String.localize("PASSWORD_CHANGE") : String.localize("PASSWORD_CONTINUE")
         if let title = initialTitle {
             passwordTitleLabel.text = title
         }
@@ -60,7 +59,27 @@ class PasswordUIPopover: BaseUIPopover {
         }
         
         showLoader(false)
+        applyTheme()
     }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        passwordTitleLabel.textColor = theme.mainText
+        passwordMessageLabel.textColor = theme.mainText
+        passwordTextField.detailColor = theme.alert
+        passwordTextField.textColor = theme.mainText
+        passwordTextField.visibilityIconButton?.tintColor = theme.mainText
+        passwordTextField.placeholderLabel.textColor = theme.mainText
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
+        okButton.backgroundColor = theme.popoverButton
+        cancelButton.backgroundColor = theme.popoverButton
+        okButton.setTitleColor(theme.mainText, for: .normal)
+        cancelButton.setTitleColor(theme.mainText, for: .normal)
+        loader.color = theme.loader
+    }
+    
     
     @IBAction func okPress(_ sender: Any) {
         guard let password = passwordTextField.text else {
