@@ -17,6 +17,8 @@ class ChangePassViewController: UIViewController {
     @IBOutlet weak var newPassTextField: TextField!
     @IBOutlet weak var confirmPassTextField: TextField!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var currentLabel: UILabel!
+    @IBOutlet weak var newLabel: UILabel!
     @IBOutlet weak var saveLoader: UIActivityIndicatorView!
     
     override func viewDidLoad() {
@@ -41,12 +43,30 @@ class ChangePassViewController: UIViewController {
         navigationItem.title = String.localize("CHANGE_PASS_TITLE")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        applyTheme()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         oldPassTextField.becomeFirstResponder()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.background
+        oldPassTextField.textColor = theme.mainText
+        newPassTextField.textColor = theme.mainText
+        confirmPassTextField.textColor = theme.mainText
+        currentLabel.textColor = theme.mainText
+        newLabel.textColor = theme.mainText
+        
+        oldPassTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_OLD_PASS"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(oldPassTextField.minimumFontSize)!])
+        oldPassTextField.visibilityIconButton?.tintColor = theme.placeholder
+        newPassTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_NEW_PASS"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(newPassTextField.minimumFontSize)!])
+        newPassTextField.visibilityIconButton?.tintColor = theme.placeholder
+        confirmPassTextField.attributedPlaceholder = NSAttributedString(string: String.localize("CONFIRM_NEW_PASS"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(confirmPassTextField.minimumFontSize)!])
+        confirmPassTextField.visibilityIconButton?.tintColor = theme.placeholder
     }
     
     @objc func goBack(){

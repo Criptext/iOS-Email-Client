@@ -34,7 +34,7 @@ class CustomTabsController: TabsController {
     
     func applyTheme() {
         tabBar.setLineColor(theme.underSelector, for: .selected)
-        tabBar.backgroundColor = theme.background
+        tabBar.contentView.backgroundColor = theme.background
     }
     
     func loadData(){
