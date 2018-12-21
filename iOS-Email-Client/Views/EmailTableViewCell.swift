@@ -55,6 +55,9 @@ class EmailTableViewCell: UITableViewCell{
         return email.files
     }
     weak var delegate: EmailTableViewCellDelegate?
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
     let RECIPIENTS_MAX_WIDTH: CGFloat = 190.0
     let READ_STATUS_MARGIN: CGFloat = 5.0
@@ -62,6 +65,7 @@ class EmailTableViewCell: UITableViewCell{
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
+        applyTheme()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
         attachmentsTableView.delegate = self
@@ -75,12 +79,21 @@ class EmailTableViewCell: UITableViewCell{
     func setupView(){
         backgroundColor = .clear
         borderBGView.layer.borderWidth = 1
-        borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
         
         webView.scrollView.bounces = false
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
         webView.configuration.userContentController.add(self, name: "iosListener")
+    }
+    
+    func applyTheme() {
+        borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
+        borderBGView.backgroundColor = theme.cellOpaque
+        previewLabel.textColor = theme.secondText
+        contactsLabel.textColor = theme.secondText
+        dateLabel.textColor = theme.secondText
+        contactsCollapseLabel.textColor = theme.mainText
+        backgroundColor = theme.background
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -111,7 +124,7 @@ class EmailTableViewCell: UITableViewCell{
         dateLabel.text = email.getFormattedDate()
         let fromContactName = email.isDraft ? String.localize("Draft") : email.fromContact.displayName
         contactsCollapseLabel.text = fromContactName
-        contactsCollapseLabel.textColor = email.isDraft ? .alert : .black
+        contactsCollapseLabel.textColor = email.isDraft ? theme.alert : theme.mainText
         initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
         let size = dateLabel.sizeThatFits(CGSize(width: 100.0, height: 19))
         dateWidthConstraint.constant = size.width
@@ -136,7 +149,7 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         if(state.isUnsending){
-            circleLoaderUIView.loaderColor = UIColor.red.cgColor
+            circleLoaderUIView.loaderColor = theme.alert.cgColor
             circleLoaderUIView.layoutSubviews()
             circleLoaderUIView.animate()
             circleLoaderUIView.isHidden = false
@@ -146,9 +159,9 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         if(email.isUnsent){
-            previewLabel.textColor = .alertText
+            previewLabel.textColor = theme.alert
             previewLabel.font = Font.italic.size(15.0)!
-            borderBGView.layer.borderColor = UIColor.alert.cgColor
+            borderBGView.layer.borderColor = theme.alert.cgColor
         }
     }
     
@@ -171,9 +184,10 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func loadWebview(email: Email){
+        let theme = ThemeManager.shared.theme
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-        let content = "\(Constants.htmlTopWrapper)\(email.getContent())\(Constants.htmlBottomWrapper)"
+        let content = "\(Constants.htmlTopWrapper(bgColor: theme.cellOpaque.toHexString(), color: theme.mainText.toHexString()))\(email.getContent())\(Constants.htmlBottomWrapper)"
         webView.scrollView.maximumZoomScale = 2.0
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }
@@ -198,10 +212,10 @@ class EmailTableViewCell: UITableViewCell{
             break
         case .sent:
             miniReadIconView.image = #imageLiteral(resourceName: "single-check-icon")
-            miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+            miniReadIconView.tintColor = theme.icon
         case .delivered:
             miniReadIconView.image = #imageLiteral(resourceName: "double-check")
-            miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+            miniReadIconView.tintColor = theme.icon
         case .opened:
             miniReadIconView.image = #imageLiteral(resourceName: "double-check")
             miniReadIconView.tintColor = .mainUI
@@ -212,7 +226,7 @@ class EmailTableViewCell: UITableViewCell{
             miniReadIconView.isHidden = true
         case .sending, .fail:
             miniReadIconView.image = #imageLiteral(resourceName: "waiting-icon")
-            miniReadIconView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+            miniReadIconView.tintColor = theme.icon
         }
     }
     

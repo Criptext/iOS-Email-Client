@@ -90,6 +90,7 @@ class EmailDetailViewController: UIViewController {
                 myself.navigationController?.popViewController(animated: true)
             }
         }
+        applyTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -112,6 +113,13 @@ class EmailDetailViewController: UIViewController {
         }
         
         handleControllerMessage(message)
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.background
+        self.emailsTableView.backgroundColor = theme.background
+        self.emailsTableView.reloadData()
     }
     
     func handleControllerMessage(_ message: ControllerMessage?) {

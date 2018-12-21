@@ -16,4 +16,20 @@ class CustomLabelTableViewCell: UITableViewCell{
         myTextLabel.text = text
         dotView.backgroundColor = color
     }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        applyTheme()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        backgroundColor = theme.background
+        myTextLabel.textColor = theme.mainText
+    }
 }

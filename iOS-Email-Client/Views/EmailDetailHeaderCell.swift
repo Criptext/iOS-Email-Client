@@ -26,6 +26,13 @@ class EmailDetailHeaderCell: UITableViewHeaderFooterView{
         labelsListView.paddingX = 10.0
         labelsListView.paddingY = 3.0
         labelsListView.cornerRadius = 8
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        subjectLabel.textColor = theme.mainText
+        contentView.backgroundColor = .clear
     }
     
     func addLabels(_ labels: [Label]){
