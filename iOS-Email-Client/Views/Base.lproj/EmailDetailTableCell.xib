@@ -23,6 +23,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="402.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x8R-Mr-qce">
+                        <rect key="frame" x="0.0" y="4" width="375" height="394.5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KaE-PD-svL">
                         <rect key="frame" x="0.0" y="5" width="375" height="392.5"/>
                         <subviews>
@@ -129,7 +133,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="R7V-uF-kkB"/>
                                             <constraint firstAttribute="width" constant="40" id="Zqg-Tf-vPJ"/>
@@ -138,7 +142,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="LGD-VD-w1C" firstAttribute="leading" secondItem="YbZ-Ti-AdL" secondAttribute="trailing" constant="10" id="2ct-lZ-JzJ"/>
                                     <constraint firstItem="9UB-5Z-Iw6" firstAttribute="top" secondItem="oYk-NZ-Ec1" secondAttribute="top" constant="19" id="4Z7-gF-k6m"/>
@@ -172,7 +176,7 @@
                                 <rect key="frame" x="0.0" y="75" width="375" height="97.5"/>
                                 <subviews>
                                     <wkWebView autoresizesSubviews="NO" contentMode="scaleAspectFit" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
-                                        <rect key="frame" x="18" y="0.0" width="333" height="97.5"/>
+                                        <rect key="frame" x="1" y="0.0" width="373" height="97.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <wkWebViewConfiguration key="configuration">
                                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -180,32 +184,32 @@
                                         </wkWebViewConfiguration>
                                     </wkWebView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="bUF-LT-65F" firstAttribute="leading" secondItem="tm2-e0-IDa" secondAttribute="leading" constant="18" id="0Oc-DR-asd"/>
+                                    <constraint firstItem="bUF-LT-65F" firstAttribute="leading" secondItem="tm2-e0-IDa" secondAttribute="leading" constant="1" id="0Oc-DR-asd"/>
                                     <constraint firstItem="bUF-LT-65F" firstAttribute="centerY" secondItem="tm2-e0-IDa" secondAttribute="centerY" id="9sJ-hc-khW"/>
                                     <constraint firstAttribute="height" priority="250" id="nMQ-Id-iGW"/>
-                                    <constraint firstAttribute="trailing" secondItem="bUF-LT-65F" secondAttribute="trailing" constant="24" id="sEb-js-5e4"/>
+                                    <constraint firstAttribute="trailing" secondItem="bUF-LT-65F" secondAttribute="trailing" constant="1" id="sEb-js-5e4"/>
                                     <constraint firstItem="bUF-LT-65F" firstAttribute="height" secondItem="tm2-e0-IDa" secondAttribute="height" id="zdj-CM-wg5"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BUE-hX-7IB">
                                 <rect key="frame" x="0.0" y="172.5" width="375" height="5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="wqg-m8-6a7"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gto-qF-XbD">
                                 <rect key="frame" x="0.0" y="177.5" width="375" height="200"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="200" id="USB-5e-poq"/>
                                 </constraints>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Spu-tg-Ust">
                                 <rect key="frame" x="0.0" y="377.5" width="375" height="15"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="eYk-iM-SgF"/>
                                 </constraints>
@@ -226,10 +230,6 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="5" id="n42-ki-5wr"/>
                         </constraints>
-                    </view>
-                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x8R-Mr-qce">
-                        <rect key="frame" x="0.0" y="4" width="375" height="394.5"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

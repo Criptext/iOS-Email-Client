@@ -134,18 +134,20 @@ struct Constants {
         "                     " +
     "</script><style type='text/css'>body{ font-family: 'Helvetica Neue', Helvetica, Arial; margin:0; padding:30px;} hr {border: 0; height: 1px; background-color: #bdc3c7;}.show { display: block;}.hide:target + .show { display: inline;} .hide:target { display: block;} .content { display:block;} .hide:target ~ .content { display:inline;} </style></head><body></body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'></iframe><script>var replybody = document.getElementsByTagName(\"blockquote\")[0].parentElement;var newNode = document.createElement(\"img\");newNode.src = \"file:///var/containers/Bundle/Application/B6B86B64-73F7-4B6F-9563-571BC2623208/Criptext Secure Email.app/showmore.png\";newNode.width = 30;newNode.style.paddingTop = \"10px\";newNode.style.paddingBottom = \"10px\";replybody.style.display = \"none\";replybody.parentElement.insertBefore(newNode, replybody);newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ replybody.style.display = \"none\";} else {replybody.style.display = \"block\";} window.location.href = \"inapp://heightUpdate\";});</script></html>"
     
-    static let htmlTopWrapper = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
-    "<html xmlns=\"http://www.w3.org/1999/xhtml\" style=\"height: auto !important\">" +
-    " <head>" +
-    "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" +
-    "  <meta name=\"viewport\" content=\"width=device-width\">" +
-    "    <style type='text/css'>html, body { margin: 0px; padding: 0px; }</style>" +
-    "    <style type='text/css'>" +
-    "      @font-face { font-family: 'NunitoSans'; src: url('Fonts/NunitoSans-Regular.ttf')}" +
-    "      body { font-family: 'NunitoSans', sans-serif}" +
-    "    </style>" +
-    " </head>" +
-    " <body style=\"height: auto !important\">"
+    static func htmlTopWrapper(bgColor: String, color: String) -> String {
+        return "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
+            "<html xmlns=\"http://www.w3.org/1999/xhtml\" style=\"height: auto !important\">" +
+            " <head>" +
+            "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" +
+            "  <meta name=\"viewport\" content=\"width=device-width\">" +
+            "    <style type='text/css'>html { background: #\(bgColor) !important; color: #\(color) !important; margin: 0px 24px 0px 18px; padding: 0px; }</style>" +
+            "    <style type='text/css'>" +
+            "      @font-face { font-family: 'NunitoSans'; src: url('Fonts/NunitoSans-Regular.ttf')}" +
+            "      body { background: #\(bgColor) !important; color: #\(color) !important; margin: 0px; padding: 0px; font-family: 'NunitoSans', sans-serif}" +
+            "    </style>" +
+            " </head>" +
+            " <body style=\"height: auto !important\">"
+    }
     
     static let htmlBottomWrapper = "</body><script>\(quoteHideScript)</script></html>"
     

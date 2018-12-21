@@ -35,6 +35,7 @@ class GeneralMoreOptionsUIView : UIView {
     @IBOutlet weak var restoreButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var archiveTopMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var archiveButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var optionButtons: [UIButton]?
     
     var neededHeight: CGFloat = -196.0
     weak var delegate : GeneralMoreOptionsViewDelegate?
@@ -54,6 +55,17 @@ class GeneralMoreOptionsUIView : UIView {
         
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onDismiss))
         backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        optionsContainerView.backgroundColor = theme.background
+        if let optionButtons = optionButtons {
+            for optionButton in optionButtons {
+                optionButton.setTitleColor(theme.mainText, for: .normal)
+            }
+        }
     }
     
     func handleCurrentLabel(currentLabel: Int){

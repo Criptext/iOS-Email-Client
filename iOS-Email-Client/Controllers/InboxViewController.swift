@@ -158,6 +158,14 @@ class InboxViewController: UIViewController {
         buttonCompose.backgroundColor = theme.composeButton
         initFloatingButton(color: theme.composeButton)
         view.backgroundColor = theme.background
+        
+        if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
+            menuViewController.applyTheme()
+        }
+        
+        if let feedViewController = navigationDrawerController?.rightViewController as? FeedViewController {
+            feedViewController.applyTheme()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

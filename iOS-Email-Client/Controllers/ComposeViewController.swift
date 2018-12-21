@@ -43,6 +43,8 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var bccField: CLTokenInputView!
     @IBOutlet weak var subjectField: UITextField!
     @IBOutlet weak var editorView: RichEditorView!
+    @IBOutlet weak var topSeparator: UIView!
+    @IBOutlet weak var bottomSeparator: UIView!
     
     @IBOutlet weak var toolbarView: UIView!
     @IBOutlet weak var toolbarBottomConstraint: NSLayoutConstraint!
@@ -218,10 +220,31 @@ class ComposeViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
+        
+        applyTheme()
     }
     
-    func toggleSendButton(){
-        
+    func applyTheme(){
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.background
+        toField.fieldColor = theme.mainText
+        ccField.fieldColor = theme.mainText
+        bccField.fieldColor = theme.mainText
+        toField.backgroundColor = theme.background
+        subjectField.textColor = theme.mainText
+        subjectField.textColor = theme.mainText
+        subjectField.backgroundColor = theme.background
+        subjectField.textColor = theme.mainText
+        scrollView.backgroundColor = theme.background
+        tableView.backgroundColor = theme.background
+        self.view.backgroundColor = theme.background
+        topSeparator.backgroundColor = theme.separator
+        bottomSeparator.backgroundColor = theme.separator
+        attachmentButtonContainerView.backgroundColor = theme.attachment
+        attachmentBarButton.imageView?.tintColor = theme.mainText
+        editorView.webView.backgroundColor = theme.background
+        editorView.webView.isOpaque = false
+        contactTableView.backgroundColor = theme.background
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -1127,6 +1150,9 @@ extension ComposeViewController: RichEditorDelegate {
         } else {
             subjectField.becomeFirstResponder()
         }
+        let theme = ThemeManager.shared.theme
+        editorView.setEditorFontColor(theme.mainText)
+        editorView.setEditorBackgroundColor(theme.background)
     }
     
     func richEditorTookFocus(_ editor: RichEditorView) {
@@ -1170,9 +1196,10 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
         for asset in withTLPHAssets {
             switch(asset.type) {
             case .photo, .livePhoto:
-                asset.tempCopyMediaFile { (url, mimeType) in
+                asset.tempCopyMediaFile(videoRequestOptions: nil, imageRequestOptions: nil, exportPreset: AVAssetExportPresetMediumQuality, convertLivePhotosToJPG: true, progressBlock: nil) { (url, mimeType) in
                     DispatchQueue.main.async {
-                        self.handleAssetResult(name: asset.originalFileName ?? "Unknown", url: url, mimeType: mimeType)
+                        let filename = url.absoluteString.split(separator: "/").last?.description ?? asset.originalFileName ?? "Unknown"
+                        self.handleAssetResult(name: filename, url: url, mimeType: mimeType)
                     }
                 }
             case .video:
