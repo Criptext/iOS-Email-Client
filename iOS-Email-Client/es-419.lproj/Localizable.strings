@@ -177,7 +177,7 @@
 "ON" = "Activado";
 "OFF" = "Desactivado";
 "SAVE_RETURN" = "Guardar";
-"RETURN_DONT_SAVE" = "Descartar Cambios";
+"RETURN_DONT_SAVE" = "Descartar";
 "UNSAVED_CHANGES" = "Cambios no guardados";
 "CHANGES_WERE_MADE" = "Has hecho cambios que no han sido guardados.";
 "AT_LEAST_3_CHARS" = "Utilice al menos 3 caracteres";

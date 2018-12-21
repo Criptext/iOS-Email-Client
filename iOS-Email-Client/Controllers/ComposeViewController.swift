@@ -477,14 +477,21 @@ class ComposeViewController: UIViewController {
             return
         }
         
-        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel, handler: nil)
-        let sendAction = UIAlertAction(title: String.localize("YES"), style: .default, handler: { (_) in
-            self.fileManager.registeredFiles = self.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
-            self.tableView.reloadData()
-            self.handleExit()
-        })
-        self.showAlert(String.localize("PENDING_ATTACH"), message: String.localize("ATTACH_UPLOADING_DISCARD"), style: .alert, actions: [cancelAction, sendAction])
-        return
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("PENDING_ATTACH")
+        popover.initialMessage = String.localize("ATTACH_UPLOADING_DISCARD")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.fileManager.registeredFiles = weakSelf.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
+            weakSelf.tableView.reloadData()
+            weakSelf.handleExit()
+        }
+        self.presentPopover(popover: popover, height: 200)
     }
     
     func handleExit(){

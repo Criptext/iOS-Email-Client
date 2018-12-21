@@ -29,7 +29,7 @@ class ShareViewController: UIViewController {
     lazy var passcodeLockViewController: LightPasscodeViewController = {
         let configuration = PasscodeConfig()
         let vc = LightPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
-        vc.sharingViewController = self
+        // vc.sharingViewController = self
         return vc
     }()
     
@@ -180,8 +180,8 @@ extension ShareViewController: ComposerDelegate {
     }
     
     func badRecipient() {
-        let alert = UIAlertController(title: "Invalid Email", message: "\nPlease add a valid email", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Got it!", style: .cancel, handler: nil))
+        let alert = UIAlertController(title: String.localize("INVALID_EMAIL"), message: String.localize("VALID_EMAIL"), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: String.localize("GOT_IT"), style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
 }
@@ -274,7 +274,7 @@ extension ShareViewController {
         
         guard !self.composerUIView.toField.allTokens.isEmpty || !self.composerUIView.ccField.allTokens.isEmpty || !self.composerUIView.bccField.allTokens.isEmpty else {
             let alert = UIAlertController(title: "Invalid Recipients", message: "\nPlease add at least one recipient before sending this email", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Got it!", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: String.localize("GOT_IT"), style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
         }

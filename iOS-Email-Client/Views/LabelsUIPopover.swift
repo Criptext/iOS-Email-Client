@@ -85,7 +85,7 @@ class LabelsUIPopover: BaseUIPopover {
         self.popoverPresentationController?.sourceView = rootView.view
         self.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: rootView.view.frame.size.width, height: rootView.view.frame.size.height)
         self.popoverPresentationController?.permittedArrowDirections = []
-        self.popoverPresentationController?.backgroundColor = UIColor.white
+        self.popoverPresentationController?.backgroundColor = theme.popoverButton
     }
     
     class func instantiate(type: ActionType, selectedLabel: Int) -> LabelsUIPopover {

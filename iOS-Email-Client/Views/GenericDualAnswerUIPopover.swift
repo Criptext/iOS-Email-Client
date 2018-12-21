@@ -54,8 +54,8 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
         view.backgroundColor = theme.background
         titleLabel.textColor = theme.mainText
         messageLabel.textColor = theme.mainText
-        rightButton.backgroundColor = theme.composeButton
-        leftButton.backgroundColor = theme.composeButton
+        rightButton.backgroundColor = theme.popoverButton
+        leftButton.backgroundColor = theme.popoverButton
         rightButton.setTitleColor(theme.mainText, for: .normal)
         leftButton.setTitleColor(theme.mainText, for: .normal)
     }

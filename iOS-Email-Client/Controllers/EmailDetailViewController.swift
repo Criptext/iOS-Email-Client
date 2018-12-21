@@ -465,9 +465,15 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
-        let deleteAction = UIAlertAction(title: "OK", style: .destructive){ [weak self] (alert) in
-            guard let weakSelf = self else {
-                return
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("DELETE_THREADS")
+        popover.initialMessage = String.localize("THESE_DELETED_PERMANENTLY")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("OK")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
             }
             DBManager.delete(Array(weakSelf.emailData.emails))
             weakSelf.mailboxData.removeSelectedRow = true
@@ -476,8 +482,7 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
             let eventData = EventData.Peer.ThreadDeleted(threadIds: [weakSelf.emailData.threadId])
             DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
         }
-        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel)
-        showAlert("DELETE_THREADS", message: String.localize("THESE_DELETED_PERMANENTLY"), style: .alert, actions: [deleteAction, cancelAction])
+        self.presentPopover(popover: popover, height: 200)
     }
     
     func onMarkThreads() {
@@ -569,11 +574,18 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.moveSingleEmailToTrash(email, indexPath: indexPath)
             return
         }
-        let deleteAction = UIAlertAction(title: "Ok", style: .destructive){ [weak self] (alert) in
-            self?.deleteSingleEmail(email, indexPath: indexPath)
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("DELETE_EMAIL")
+        popover.initialMessage = String.localize("EMAIL_DELETE_PERMANENTLY")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("Ok")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.deleteSingleEmail(email, indexPath: indexPath)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        showAlert(String.localize("DELETE_EMAIL"), message: String.localize("EMAIL_DELETE_PERMANENTLY"), style: .alert, actions: [deleteAction, cancelAction])
     }
     
     func deleteSingleEmail(_ email: Email, indexPath: IndexPath){

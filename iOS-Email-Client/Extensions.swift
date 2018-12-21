@@ -140,7 +140,10 @@ func systemIdentifier() -> String {
 
 extension UIViewController {
     func showAlert(_ title: String?, message: String?, style: UIAlertControllerStyle) {
-        self.showAlert(title, message: message, style: style, actions: nil)
+        let popover = GenericAlertUIPopover()
+        popover.myTitle = title
+        popover.myMessage = message
+        self.presentPopover(popover: popover, height: 200)
     }
     
     func showAlert(_ title: String?, message: String?, style: UIAlertControllerStyle, actions:[UIAlertAction]?) {

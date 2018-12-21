@@ -754,11 +754,19 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func showEmptyTrashWarning() {
-        let emptyAction = UIAlertAction(title: String.localize("YES"), style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.emptyTrash()
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("EMPTY_TRASH")
+        popover.initialMessage = String.localize("ALL_TRASH_DELETE")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.emptyTrash()
         }
-        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel)
-        showAlert(String.localize("EMPTY_TRASH"), message: String.localize("ALL_TRASH_DELETE"), style: .alert, actions: [emptyAction, cancelAction])
+        self.presentPopover(popover: popover, height: 210)
     }
     
     func emptyTrash(from date: Date = Date()){
@@ -1349,11 +1357,19 @@ extension InboxViewController: NavigationToolbarDelegate {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
-        let archiveAction = UIAlertAction(title: "OK", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.deleteThreads()
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("DELETE_THREADS")
+        popover.initialMessage = String.localize("SELECTED_DELETE_PERMANENTLY")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("OK")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.deleteThreads()
         }
-        let cancelAction = UIAlertAction(title: "CANCEL", style: .cancel)
-        showAlert(String.localize("DELETE_THREADS"), message: String.localize("SELECTED_DELETE_PERMANENTLY"), style: .alert, actions: [archiveAction, cancelAction])
+        self.presentPopover(popover: popover, height: 200)
     }
     
     func onMarkThreads() {
