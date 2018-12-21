@@ -17,12 +17,22 @@ class PrivacyUIViewCell: UITableViewCell {
     @IBOutlet weak var optionNextImage: UIImageView!
     @IBOutlet weak var optionTextLabel: UILabel!
     @IBOutlet weak var optionPickLabel: UILabel!
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         optionSwitch.transform = CGAffineTransform(scaleX: 0.67, y: 0.67)
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        backgroundColor = .clear
+        detailContainerView.backgroundColor = theme.cellOpaque
+        detailLabel.textColor = theme.secondText
     }
     
     func fillFields(option: SecurityPrivacyViewController.PrivacyOption) {
@@ -35,12 +45,12 @@ class PrivacyUIViewCell: UITableViewCell {
         optionPickLabel.isHidden = option.pick == nil
         optionPickLabel.text = String.localize(option.pick ?? "")
         if option.isEnabled {
-            optionTextLabel.textColor = .charcoal
-            optionPickLabel.textColor = .mainUI
+            optionTextLabel.textColor = theme.mainText
+            optionPickLabel.textColor = theme.underSelector
             optionSwitch.isEnabled = true
         } else {
-            optionTextLabel.textColor = .disable
-            optionPickLabel.textColor = .disable
+            optionTextLabel.textColor = theme.placeholder
+            optionPickLabel.textColor = theme.placeholder
             optionSwitch.isEnabled = false
         }
     }

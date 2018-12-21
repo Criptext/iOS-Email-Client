@@ -59,11 +59,19 @@ class SecurityPrivacyViewController: UITableViewController {
         
         tableView.estimatedRowHeight = UITableViewAutomaticDimension
         initializeOptions()
+        applyTheme()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.toggleOptions()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        tableView.backgroundColor = .clear
+        self.view.backgroundColor = theme.background
     }
     
     @objc func goBack(){
