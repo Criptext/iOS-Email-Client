@@ -198,19 +198,24 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let theme: Theme = ThemeManager.shared.theme
         switch(tableView){
         case self.composerUIView.contactsTableView:
             let contact = contacts[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactShareTableViewCell", for: indexPath) as! ContactShareTableViewCell
-            cell.nameLabel?.text = contact.displayName
-            cell.emailLabel?.text = contact.email
+            cell.nameLabel?.text = contact.email
+            cell.emailLabel?.text = contact.displayName
             let color = UIColor.init().colorByName(name: contact.displayName)
             cell.avatarImageView.setImageWith(contact.displayName, color: color, circular: true, fontName: "NunitoSans-Regular")
+            cell.backgroundColor = theme.background
+            cell.emailLabel.textColor = theme.mainText
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell
             cell.setFields(fileManager.registeredFiles[indexPath.row])
             cell.iconDownloadImageView.isHidden = true
+            cell.backgroundColor = theme.background
+            cell.attachmentContainer.backgroundColor = theme.background
             return cell
         }
     }

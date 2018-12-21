@@ -94,6 +94,8 @@ class EmailTableViewCell: UITableViewCell{
         dateLabel.textColor = theme.secondText
         contactsCollapseLabel.textColor = theme.mainText
         backgroundColor = theme.background
+        circleLoaderUIView.backgroundColor = .clear
+        initialsImageView.backgroundColor = .clear
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
