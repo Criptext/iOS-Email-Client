@@ -208,6 +208,8 @@ class SettingsGeneralViewController: UITableViewController{
             cell.availableSwitch.isOn = ThemeManager.shared.theme.name == "Night"
             cell.switchToggle = { isOn in
                 ThemeManager.shared.swapTheme(theme: isOn ? Theme.dark() : Theme.init())
+                let defaults = CriptextDefaults()
+                defaults.themeMode = ThemeManager.shared.theme.name
             }
             return cell
         }

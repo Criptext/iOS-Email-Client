@@ -18,6 +18,12 @@ final class ThemeManager: NSObject {
     private var delegates = [String: ThemeDelegate]()
     
     private override init() {
+        let defaults = CriptextDefaults()
+        guard defaults.themeMode == "Night" else {
+            self.theme = Theme.init()
+            super.init()
+            return
+        }
         self.theme = Theme.dark()
         super.init()
     }

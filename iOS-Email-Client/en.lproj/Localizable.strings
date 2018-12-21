@@ -177,7 +177,7 @@
 "ON" = "On";
 "OFF" = "Off";
 "SAVE_RETURN" = "Save and return";
-"RETURN_DONT_SAVE" = "Return without saving";
+"RETURN_DONT_SAVE" = "Discard";
 "UNSAVED_CHANGES" = "Unsaved Changes";
 "CHANGES_WERE_MADE" = "You have made changes that were not saved. Do you wish to save and return?";
 "AT_LEAST_3_CHARS" = "Use at least 3 characters";
@@ -296,7 +296,12 @@
 "PASSWORD_CHANGE" = "Your password has changed. Confirm your new password, if you Cancel, all local data will be erased.";
 "PASSWORD_CONTINUE" = "Enter your password to continue";
 "Passphrase" = "Passphrase";
-
+"INVALID_EMAIL" = "Invalid Email";
+"VALID_EMAIL" = "Please add a valid email";
+"INVALID_RECIPIENTS" = "Invalid Recipients";
+"VALID_RECIPIENTS" = "Please add at least one recipient before sending this email";
+"UNABLE_SEND_EMAIL" = "Unable to send email";
+"CHECK_CONNECTION" = "Please check your internet connection and try again";
 "ENTER_OLD_PASS" = "Enter old password";
 "ENTER_NEW_PASS" = "Enter new password";
 "CONFIRM_NEW_PASS" = "Repeat new password";

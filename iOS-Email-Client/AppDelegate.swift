@@ -308,6 +308,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
+        ThemeManager.shared.swapTheme(theme: Theme.init())
         self.clearDefaults()
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController

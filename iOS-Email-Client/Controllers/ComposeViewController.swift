@@ -500,17 +500,25 @@ class ComposeViewController: UIViewController {
             return
         }
         
-        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel, handler: nil)
-        let sendAction = UIAlertAction(title: String.localize("YES"), style: .default, handler: { (_) in
-            self.fileManager.registeredFiles = self.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
-            self.tableView.reloadData()
-            self.handleExit()
-        })
-        self.showAlert(String.localize("PENDING_ATTACH"), message: String.localize("ATTACH_UPLOADING_DISCARD"), style: .alert, actions: [cancelAction, sendAction])
-        return
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("PENDING_ATTACH")
+        popover.initialMessage = String.localize("ATTACH_UPLOADING_DISCARD")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.fileManager.registeredFiles = weakSelf.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
+            weakSelf.tableView.reloadData()
+            weakSelf.handleExit()
+        }
+        self.presentPopover(popover: popover, height: 200)
     }
     
     func handleExit(){
+        let theme = ThemeManager.shared.theme
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: String.localize("DISCARD"), style: .destructive) { action in
             APIManager.cancelAllUploads()
@@ -526,8 +534,9 @@ class ComposeViewController: UIViewController {
             self.delegate?.newDraft(draft: draft)
             self.dismiss(animated: true, completion: nil)
         })
-        sheet.addAction(UIAlertAction(title: String.localize("CANCEL"), style: .cancel))
-        
+        sheet.addAction(UIAlertAction(title: String.localize("CANCEL"), style: .default))
+        sheet.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = theme.background
+        sheet.view.tintColor = theme.mainText
         self.present(sheet, animated: true, completion:nil)
     }
     

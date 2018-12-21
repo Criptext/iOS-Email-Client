@@ -75,13 +75,20 @@ class SignatureEditorViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             return
         }
-        let saveAction = UIAlertAction(title: String.localize("SAVE_RETURN"), style: .default){ (alert : UIAlertAction!) -> Void in
-            self.saveAndReturn()
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("UNSAVED_CHANGES")
+        popover.initialMessage = String.localize("CHANGES_WERE_MADE")
+        popover.leftOption = String.localize("RETURN_DONT_SAVE")
+        popover.rightOption = String.localize("SAVE_RETURN")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    self?.navigationController?.popViewController(animated: true)
+                    return
+            }
+            weakSelf.saveAndReturn()
         }
-        let discardAction = UIAlertAction(title: String.localize("RETURN_DONT_SAVE"), style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.navigationController?.popViewController(animated: true)
-        }
-        showAlert(String.localize("UNSAVED_CHANGES"), message: String.localize("CHANGES_WERE_MADE"), style: .alert, actions: [saveAction, discardAction])
+        self.presentPopover(popover: popover, height: 200)
     }
     
     @objc func saveAndReturn(){

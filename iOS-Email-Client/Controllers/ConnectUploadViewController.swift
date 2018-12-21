@@ -204,10 +204,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func showErrorAlert(message: String){
-        let okAction = UIAlertAction(title: String.localize("OK"), style: .default, handler: { (_) in
-            self.dismiss(animated: true)
-        })
-        self.showAlert(String.localize("ERROR_LINK"), message: message, style: .alert, actions: [okAction])
+        self.showAlert(String.localize("ERROR_LINK"), message: message, style: .alert)
     }
 }
 

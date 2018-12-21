@@ -77,6 +77,7 @@ class SettingsLabelsViewController: UITableViewController {
     }
     
     func presentPopover(){
+        let theme: Theme = ThemeManager.shared.theme
         let parentView = (tabsController?.view ?? self.view)!
         let changeNamePopover = SingleTextInputViewController()
         changeNamePopover.myTitle = String.localize("ADD_LABEL")
@@ -87,7 +88,7 @@ class SettingsLabelsViewController: UITableViewController {
         changeNamePopover.popoverPresentationController?.sourceView = parentView
         changeNamePopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: parentView.frame.size.width, height: parentView.frame.size.height)
         changeNamePopover.popoverPresentationController?.permittedArrowDirections = []
-        changeNamePopover.popoverPresentationController?.backgroundColor = UIColor.white
+        changeNamePopover.popoverPresentationController?.backgroundColor = theme.popoverButton
         self.present(changeNamePopover, animated: true)
     }
     
