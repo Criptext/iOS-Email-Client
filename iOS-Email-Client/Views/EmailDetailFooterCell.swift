@@ -18,6 +18,11 @@ class EmailDetailFooterCell: UITableViewHeaderFooterView{
     
     weak var delegate : EmailDetailFooterDelegate?
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.backgroundColor = ThemeManager.shared.theme.background
+    }
+    
     @IBAction func onPressReply(_ sender: Any) {
         delegate?.onFooterReplyPress()
     }

@@ -26,7 +26,7 @@ class AttachmentTableCell: UITableViewCell{
         super.awakeFromNib()
         attachmentContainer.layer.borderWidth = 1
         attachmentContainer.layer.borderColor = UIColor(red:216/255, green:216/255, blue:216/255, alpha: 0.45).cgColor
-        
+        backgroundColor = .clear
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
     }

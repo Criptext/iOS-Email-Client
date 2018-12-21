@@ -223,6 +223,8 @@
 		A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
 		A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */; };
 		A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */; };
+		A7065E5D21CC1A4200F8292A /* FeedHeaderTitleUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7065E5C21CC1A4200F8292A /* FeedHeaderTitleUIView.swift */; };
+		A7065E6121CC62E200F8292A /* AttachmentOptionsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
@@ -674,6 +676,8 @@
 		A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPickerUIPopover.swift; sourceTree = "<group>"; };
 		A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPasscodeViewController.swift; sourceTree = "<group>"; };
+		A7065E5C21CC1A4200F8292A /* FeedHeaderTitleUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderTitleUIView.swift; sourceTree = "<group>"; };
+		A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentOptionsContainerView.swift; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
 		A723253321C94B90003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
 		A723253621C94B91003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
@@ -1236,6 +1240,8 @@
 				D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */,
 				D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */,
 				A723254621CBF901003CF78D /* LabelsHeaderCellView.swift */,
+				A7065E5C21CC1A4200F8292A /* FeedHeaderTitleUIView.swift */,
+				A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1831,6 +1837,8 @@
 				7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */,
 				41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */,
 				7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */,
+				A7065E6121CC62E200F8292A /* AttachmentOptionsContainerView.swift in Sources */,
+				A7065E5D21CC1A4200F8292A /* FeedHeaderTitleUIView.swift in Sources */,
 				A7F30280216F9DCF00676DD2 /* SignInVerificationUIPopover.swift in Sources */,
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,

@@ -17,7 +17,12 @@ class ReplyDetailUIView: UIButton{
             self.type = DirectionBorder(rawValue: typeValue) ?? .none
         }
     }
+    @IBOutlet weak var actionLabel: UILabel!
+    @IBOutlet weak var iconImageView: UIImageView!
     var type : DirectionBorder = .none
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
@@ -35,6 +40,13 @@ class ReplyDetailUIView: UIButton{
         borderLayer.fillColor   = UIColor.clear.cgColor
         
         layer.addSublayer(borderLayer)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        actionLabel.textColor = theme.mainText
+        iconImageView.tintColor = theme.mainText
+        backgroundColor = theme.cellOpaque
     }
     
     func getCornersByType() -> UIRectCorner{

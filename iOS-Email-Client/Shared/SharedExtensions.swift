@@ -252,6 +252,7 @@ extension UIColor {
     static let placeholderLight = UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)
     static let placeholderDark = UIColor(red:1.00, green:1.00, blue:1.00, alpha: 0.22)
     static let popoverButton = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
+    static let separator = UIColor(red: 231/255, green: 231/255, blue: 231/255, alpha: 1)
 }
 
 enum Font {

@@ -34,6 +34,9 @@ class MenuItemUIView: UIButton {
     }
     @IBInspectable var labelId: Int = SystemLabel.all.id
     @IBOutlet var view: UIView!
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -42,6 +45,13 @@ class MenuItemUIView: UIButton {
         view.frame = self.bounds
         showBadge(0)
         showAsSelected(false)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        backgroundColor = .clear
+        itemLabel.textColor = theme.mainText
+        iconView.tintColor = theme.icon
     }
     
     func showBadge(_ count: Int){
@@ -55,7 +65,7 @@ class MenuItemUIView: UIButton {
     
     func showAsSelected(_ selected: Bool){
         backgroundColor = selected ? .itemSelected : .clear
-        itemLabel.textColor = selected ? .black : .charcoal
-        iconView.tintColor = selected ? .black : .lightIcon
+        itemLabel.textColor = selected ? .black : theme.mainText
+        iconView.tintColor = selected ? .black : theme.icon
     }
 }
