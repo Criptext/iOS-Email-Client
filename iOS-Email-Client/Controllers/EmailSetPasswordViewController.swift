@@ -55,6 +55,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
         passwordTextField.detailColor = theme.alert
         passwordTextField.textColor = theme.mainText
         passwordTextField.placeholderLabel.textColor = theme.mainText
+        passwordTextField.visibilityIconButton?.tintColor = theme.mainText
         passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("Passphrase"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
         titleLabel.textColor = theme.mainText
         passphraseLabel.textColor = theme.mainText

@@ -299,3 +299,10 @@
 "INVALID_EMAIL" = "Invalid Email";
 "VALID_EMAIL" = "Please add a valid email";
 "INVALID_RECIPIENTS" = "Invalid Recipients";
+"VALID_RECIPIENTS" = "Please add at least one recipient before sending this email";
+"UNABLE_SEND_EMAIL" = "Unable to send email";
+"CHECK_CONNECTION" = "Please check your internet connection and try again";
+"ENTER_OLD_PASS" = "Enter old password";
+"ENTER_NEW_PASS" = "Enter new password";
+"CONFIRM_NEW_PASS" = "Repeat new password";
+"ENTER_NEW_RECOVERY" = "Enter new recovery email";

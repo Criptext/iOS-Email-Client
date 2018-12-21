@@ -518,6 +518,7 @@ class ComposeViewController: UIViewController {
     }
     
     func handleExit(){
+        let theme = ThemeManager.shared.theme
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: String.localize("DISCARD"), style: .destructive) { action in
             APIManager.cancelAllUploads()
@@ -533,8 +534,9 @@ class ComposeViewController: UIViewController {
             self.delegate?.newDraft(draft: draft)
             self.dismiss(animated: true, completion: nil)
         })
-        sheet.addAction(UIAlertAction(title: String.localize("CANCEL"), style: .cancel))
-        
+        sheet.addAction(UIAlertAction(title: String.localize("CANCEL"), style: .default))
+        sheet.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = theme.background
+        sheet.view.tintColor = theme.mainText
         self.present(sheet, animated: true, completion:nil)
     }
     

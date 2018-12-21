@@ -296,3 +296,13 @@
 "PASSWORD_CHANGE" = "Tu contraseña ha cambiado. Confirma tu nueva contraseña, si cancelas, todos tus datos serán eliminados.";
 "PASSWORD_CONTINUE" = "Ingresa tu contraseña para continuar";
 "Passphrase" = "Clave";
+"INVALID_EMAIL" = "Correo inválido";
+"VALID_EMAIL" = "Ingrese un correo válido";
+"INVALID_RECIPIENTS" = "Destinatarios inválidos";
+"VALID_RECIPIENTS" = "Por favor agregue al menos un destinatario antes de enviar este correo";
+"UNABLE_SEND_EMAIL" = "No se pudo enviar el correo";
+"CHECK_CONNECTION" = "Por favor, compruebe su conexión a Internet y vuelva a intentarlo";
+"ENTER_OLD_PASS" = "Introduce la contraseña anterior";
+"ENTER_NEW_PASS" = "Introduce la nueva contraseña";
+"CONFIRM_NEW_PASS" = "Repite la nueva contraseña";
+"ENTER_NEW_RECOVERY" = "Introduce nuevo correo de recuperación";

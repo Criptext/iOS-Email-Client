@@ -13,6 +13,7 @@ class SignatureEditorViewController: UIViewController {
     
     @IBOutlet weak var richEditor: RichEditorView!
     @IBOutlet weak var signatureEnableSwitch: UISwitch!
+    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var OnOffLabel: UILabel!
     var isEdited = false
     var myAccount: Account!
@@ -33,6 +34,16 @@ class SignatureEditorViewController: UIViewController {
         richEditor.setTextColor(.green)
         keyboardManager = KeyboardManager(view: self.view)
         keyboardManager.toolbar.editor = richEditor
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.background
+        richEditor.webView.backgroundColor = theme.background
+        richEditor.webView.isOpaque = false
+        separatorView.backgroundColor = theme.separator
+        OnOffLabel.textColor = theme.mainText
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,6 +98,12 @@ class SignatureEditorViewController: UIViewController {
 }
 
 extension SignatureEditorViewController: RichEditorDelegate {
+    func richEditorDidLoad(_ editor: RichEditorView) {
+        let theme = ThemeManager.shared.theme
+        editor.setEditorFontColor(theme.mainText)
+        editor.setEditorBackgroundColor(theme.background)
+    }
+    
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
         if(myAccount.signature != content){
             isEdited = true

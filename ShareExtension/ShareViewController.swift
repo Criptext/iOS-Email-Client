@@ -29,7 +29,7 @@ class ShareViewController: UIViewController {
     lazy var passcodeLockViewController: LightPasscodeViewController = {
         let configuration = PasscodeConfig()
         let vc = LightPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
-        // vc.sharingViewController = self
+        vc.sharingViewController = self
         return vc
     }()
     
@@ -180,9 +180,10 @@ extension ShareViewController: ComposerDelegate {
     }
     
     func badRecipient() {
-        let alert = UIAlertController(title: String.localize("INVALID_EMAIL"), message: String.localize("VALID_EMAIL"), preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: String.localize("GOT_IT"), style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        let popover = GenericAlertUIPopover()
+        popover.myTitle = String.localize("INVALID_EMAIL")
+        popover.myMessage = String.localize("VALID_EMAIL")
+        self.presentPopover(popover: popover, height: 150)
     }
 }
 
@@ -273,9 +274,10 @@ extension ShareViewController {
     func prepareMail(){
         
         guard !self.composerUIView.toField.allTokens.isEmpty || !self.composerUIView.ccField.allTokens.isEmpty || !self.composerUIView.bccField.allTokens.isEmpty else {
-            let alert = UIAlertController(title: "Invalid Recipients", message: "\nPlease add at least one recipient before sending this email", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: String.localize("GOT_IT"), style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            let popover = GenericAlertUIPopover()
+            popover.myTitle = String.localize("INVALID_RECIPIENTS")
+            popover.myMessage = String.localize("VALID_RECIPIENTS")
+            self.presentPopover(popover: popover, height: 200)
             return
         }
         
@@ -388,13 +390,16 @@ extension ShareViewController {
     }
     
     func sendMail(email: Email, password: String?) {
-        let alert = UIAlertController(title: nil, message: "Sending Email...", preferredStyle: .alert)
-        
+        let theme: Theme = ThemeManager.shared.theme
+        let alert = UIAlertController(title: nil, message: String.localize("SENDING_MAIL"), preferredStyle: .alert)
+        alert.setValue(NSAttributedString(string: String.localize("SENDING_MAIL"), attributes: [NSAttributedString.Key.foregroundColor : theme.mainText]), forKey: "attributedMessage")
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.style = UIActivityIndicatorView.Style.gray
+        loadingIndicator.color = theme.loader
         loadingIndicator.startAnimating();
-        
+        alert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = theme.background
+        alert.view.tintColor = theme.mainText
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: nil)
         
@@ -406,9 +411,10 @@ extension ShareViewController {
             }
             guard case .SuccessInt = responseData else {
                 alert.dismiss(animated: true, completion: { [weak self] in
-                    let alert = UIAlertController(title: "Unable to send email", message: "\nPlease check your internet connection and try again", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Got it!", style: .cancel, handler: nil))
-                    self?.present(alert, animated: true, completion: nil)
+                    let popover = GenericAlertUIPopover()
+                    popover.myTitle = String.localize("UNABLE_SEND_EMAIL")
+                    popover.myMessage = String.localize("CHECK_CONNECTION")
+                    self?.presentPopover(popover: popover, height: 200)
                 })
                 return
             }
