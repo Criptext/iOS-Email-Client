@@ -30,6 +30,8 @@ class ComposerUIView: UIView {
     let ATTACHMENT_ROW_HEIGHT = 65
     let MARGIN_TOP = 20
     
+    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var arrowButton: UIButton!
     @IBOutlet var view: UIView!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var editorView: RichEditorView!
@@ -51,7 +53,10 @@ class ComposerUIView: UIView {
     var initialText: String?
     var previousCcHeight: CGFloat = 45
     var previousBccHeight: CGFloat = 45
-    var collapsed = true
+    var collapsed = false
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -87,6 +92,30 @@ class ComposerUIView: UIView {
         }
         
         toField.becomeFirstResponder()
+        applyTheme()
+    }
+    
+    func applyTheme(){
+        self.view.backgroundColor = theme.background
+        toField.fieldColor = theme.mainText
+        toField.backgroundColor = theme.background
+        ccField.fieldColor = theme.mainText
+        ccField.backgroundColor = theme.background
+        bccField.backgroundColor = theme.background
+        bccField.fieldColor = theme.mainText
+        arrowButton.backgroundColor = theme.background
+        toField.backgroundColor = theme.background
+        separatorView.backgroundColor = theme.separator
+        subjectTextField.textColor = theme.mainText
+        subjectTextField.textColor = theme.mainText
+        subjectTextField.backgroundColor = theme.background
+        subjectTextField.textColor = theme.mainText
+        subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
+        scrollView.backgroundColor = theme.background
+        attachmentsTableView.backgroundColor = theme.background
+        contactsTableView.backgroundColor = theme.background
+        editorView.webView.backgroundColor = theme.background
+        editorView.webView.isOpaque = false
     }
     
     @IBAction func onClosePress(_ sender: Any) {
@@ -104,6 +133,7 @@ class ComposerUIView: UIView {
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
+        self.arrowButton.setImage(collapsed ? Icon.new_arrow.up.image : Icon.new_arrow.down.image, for: .normal)
     }
     
     func getPlainEditorContent () -> String {
@@ -146,7 +176,8 @@ class ComposerUIView: UIView {
 
 extension ComposerUIView: RichEditorDelegate {
     func richEditorDidLoad(_ editor: RichEditorView) {
-        
+        editorView.setEditorFontColor(theme.mainText)
+        editorView.setEditorBackgroundColor(theme.background)
     }
     
     func addToContent(text: String) {
