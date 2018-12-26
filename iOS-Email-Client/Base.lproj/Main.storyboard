@@ -343,7 +343,7 @@
                                         <rect key="frame" x="0.0" y="46" width="375" height="502"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ContactTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactTableViewCell" rowHeight="60" id="AwB-cg-X36" customClass="ContactTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ContactTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="ContactTableViewCell" rowHeight="60" id="AwB-cg-X36" customClass="ContactTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AwB-cg-X36" id="nBs-2D-R12">
@@ -1328,7 +1328,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="settingsGeneralTap" id="vHo-kt-dDX" customClass="GeneralTapTableCellView" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralTap" id="vHo-kt-dDX" customClass="GeneralTapTableCellView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vHo-kt-dDX" id="D4Q-yp-CYi">
@@ -1389,7 +1389,7 @@
                                     <outlet property="optionLabel" destination="ddn-zH-dU7" id="ofS-F5-ETF"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="settingsGeneralSwitch" id="ZzE-Yh-VbX" customClass="GeneralSwitchTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralSwitch" id="ZzE-Yh-VbX" customClass="GeneralSwitchTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZzE-Yh-VbX" id="qcQ-Xq-Q2b">
@@ -1429,7 +1429,7 @@
                                     <outlet property="optionLabel" destination="5wZ-K9-zuW" id="niO-4k-IcX"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="settingsGeneralVersion" id="DBz-dT-bsS" customClass="GeneralVersionTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralVersion" id="DBz-dT-bsS" customClass="GeneralVersionTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="116" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DBz-dT-bsS" id="nEb-8s-tqI">
@@ -1468,7 +1468,7 @@
                                     <outlet property="versionLabel" destination="uL3-iZ-JEX" id="Nlo-Af-wKc"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="settingsGeneralHeader" id="4Kr-x8-e5o" customClass="GeneralHeaderTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralHeader" id="4Kr-x8-e5o" customClass="GeneralHeaderTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="160" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4Kr-x8-e5o" id="mGi-1S-kQb">

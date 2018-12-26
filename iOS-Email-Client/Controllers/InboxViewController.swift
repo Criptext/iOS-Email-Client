@@ -157,7 +157,7 @@ class InboxViewController: UIViewController {
         buttonCompose.backgroundColor = theme.criptextBlue
         initFloatingButton(color: theme.criptextBlue)
         view.backgroundColor = theme.background
-        
+        generalOptionsContainerView.applyTheme()
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.applyTheme()
         }

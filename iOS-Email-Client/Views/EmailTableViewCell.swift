@@ -87,7 +87,7 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func applyTheme() {
-        borderBGView.layer.borderColor = UIColor(red:212/255, green:204/255, blue:204/255, alpha: 1).cgColor
+        borderBGView.layer.borderColor = theme.emailBorder.cgColor
         borderBGView.backgroundColor = theme.secondBackground
         previewLabel.textColor = theme.secondText
         contactsLabel.textColor = theme.secondText
@@ -187,7 +187,7 @@ class EmailTableViewCell: UITableViewCell{
         let theme = ThemeManager.shared.theme
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString()))\(email.getContent())\(Constants.htmlBottomWrapper)"
+        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString()))\(email.getContent())\(theme.name != "Night" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
         webView.scrollView.maximumZoomScale = 2.0
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }

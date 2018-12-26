@@ -22,8 +22,11 @@ class APIManager: SharedAPI {
     
     class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
-        let headers = ["Authorization": "Bearer \(token)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             let responseData = handleResponse(response)
             completion(responseData)
@@ -32,8 +35,11 @@ class APIManager: SharedAPI {
     
     class func getKeybundle(deviceId: Int32, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle/\(deviceId)"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
@@ -48,8 +54,11 @@ class APIManager: SharedAPI {
     
     class func getKeysRequest(_ params: [String : Any], account: Account, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle/find"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
@@ -74,8 +83,11 @@ class APIManager: SharedAPI {
     
     class func postMailRequest(_ params: [String : Any], account: Account, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
@@ -100,8 +112,11 @@ class APIManager: SharedAPI {
     
     class func postPeerEvent(_ params: [String : Any], account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event/peers"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
             let responseData = handleResponse(response, satisfy: .success)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
@@ -117,15 +132,21 @@ class APIManager: SharedAPI {
     class func acknowledgeEvents(eventIds: [Int32], token: String){
         let parameters = ["ids": eventIds] as [String : Any]
         let url = "\(self.baseUrl)/event/ack"
-        let headers = ["Authorization": "Bearer \(token)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
     
     class func notifyOpen(keys: [Int], account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event/open"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "metadataKeys": keys
         ] as [String: Any]
@@ -143,8 +164,11 @@ class APIManager: SharedAPI {
     
     class func unsendEmail(key: Int, recipients: [String], account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/unsend"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "metadataKey": key,
             "recipients": recipients
@@ -166,8 +190,11 @@ class APIManager: SharedAPI {
         let params = [
             "devicePushToken": fcmToken
         ]
-        let headers = ["Authorization": "Bearer \(token)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
     }
     
@@ -176,8 +203,11 @@ class APIManager: SharedAPI {
         let params = [
             "name": name
         ]
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
             let responseData = handleResponse(response, satisfy: .success)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
@@ -192,8 +222,11 @@ class APIManager: SharedAPI {
 
     class func getSettings(account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/settings"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
             (response) in
             let responseData = handleResponse(response)
@@ -209,8 +242,11 @@ class APIManager: SharedAPI {
     
     class func removeDevice(deviceId: Int, password: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/device"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "deviceId": deviceId,
             "password": password
@@ -229,8 +265,11 @@ class APIManager: SharedAPI {
     
     class func changeRecoveryEmail(email: String, password: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/recovery/change"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "email": email,
             "password": password
@@ -249,8 +288,11 @@ class APIManager: SharedAPI {
     
     class func resendConfirmationEmail(account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/recovery/resend"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString {
             (response) in
             let responseData = handleResponse(response, satisfy: .success)
@@ -266,8 +308,11 @@ class APIManager: SharedAPI {
     
     class func setTwoFactor(isOn: Bool, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/2fa"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "enable": isOn
             ] as [String: Any]
@@ -285,8 +330,11 @@ class APIManager: SharedAPI {
     
     class func setReadReceipts(enable: Bool, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/readtracking"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "enable": enable
             ] as [String: Any]
@@ -304,8 +352,11 @@ class APIManager: SharedAPI {
 
     class func changePassword(oldPassword: String, newPassword: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/password/change"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "oldPassword": oldPassword,
             "newPassword": newPassword
@@ -324,8 +375,11 @@ class APIManager: SharedAPI {
     
     class func unlockDevice(password: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/device/unlock"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "password": password
             ] as [String: Any]
@@ -343,8 +397,11 @@ class APIManager: SharedAPI {
     
     class func logout(account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/logout"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             let responseData = handleResponse(response, satisfy: .success)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
@@ -359,8 +416,11 @@ class APIManager: SharedAPI {
     
     class func deleteAccount(password: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let params = [
             "password": password
             ] as [String: Any]

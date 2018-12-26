@@ -29,12 +29,6 @@ class ChangePassViewController: UIViewController {
         oldPassTextField.rightViewMode = .always
         newPassTextField.rightViewMode = .always
         confirmPassTextField.rightViewMode = .always
-        oldPassTextField.dividerActiveColor = .mainUI
-        newPassTextField.dividerActiveColor = .mainUI
-        confirmPassTextField.dividerActiveColor = .mainUI
-        oldPassTextField.detailColor = .alert
-        newPassTextField.detailColor = .alert
-        confirmPassTextField.detailColor = .alert
         oldPassTextField.rightView?.contentScaleFactor = 0.8
         oldPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         newPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
@@ -70,9 +64,12 @@ class ChangePassViewController: UIViewController {
         
         saveButton.backgroundColor = theme.criptextBlue
         forgotButton.setTitleColor(theme.criptextBlue, for: .normal)
-        oldPassTextField.detailColor = theme.criptextBlue
-        newPassTextField.detailColor = theme.criptextBlue
-        confirmPassTextField.detailColor = theme.criptextBlue
+        oldPassTextField.dividerActiveColor = theme.criptextBlue
+        newPassTextField.dividerActiveColor = theme.criptextBlue
+        confirmPassTextField.dividerActiveColor = theme.criptextBlue
+        oldPassTextField.detailColor = theme.alert
+        newPassTextField.detailColor = theme.alert
+        confirmPassTextField.detailColor = theme.alert
     }
     
     @objc func goBack(){

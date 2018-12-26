@@ -17,6 +17,7 @@ class SharedAPI {
     static let baseUrl = Env.apiURL
     static let apiVersion = "4.0.0"
     static let versionHeader = "criptext-api-version"
+    static let language = "accept-language"
     
     enum code: Int {
         case none = 0
@@ -111,8 +112,12 @@ class SharedAPI {
             return
         }
         let url = "\(self.baseUrl)/user/refreshtoken"
-        let headers = ["Authorization": "Bearer \(refreshToken)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(refreshToken)",
+            language: Env.language,
+            versionHeader: apiVersion
+        ]
+        
         let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
             guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
@@ -131,8 +136,11 @@ class SharedAPI {
     
     class func updgrateToRefreshToken(responseData: ResponseData, account: Account, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?) -> Void)) {
         let url = "\(self.baseUrl)/user/refreshtoken/upgrade"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
             guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
@@ -151,8 +159,11 @@ class SharedAPI {
     
     class func getEvents(account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event"
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
@@ -167,8 +178,11 @@ class SharedAPI {
     
     class func getEmailBody(metadataKey: Int, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let headers = ["Authorization": "Bearer \(account.jwt)",
-            versionHeader: apiVersion]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in

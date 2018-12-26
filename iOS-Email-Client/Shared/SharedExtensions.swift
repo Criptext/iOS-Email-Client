@@ -269,6 +269,8 @@ extension UIColor {
     static let strongText = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
     static let threadBadge = UIColor(red: 206/255, green: 206/255, blue: 206/255, alpha: 1)
     static let darkDetail = UIColor(red: 19/255, green: 24/255, blue: 30/255, alpha: 1)
+    static let emailBorder = UIColor(red: 212/255, green: 204/255, blue: 204/255, alpha: 1)
+    static let darkEmailBorder = UIColor(red: 69/255, green: 70/255, blue: 72/255, alpha: 1)
 }
 
 enum Font {

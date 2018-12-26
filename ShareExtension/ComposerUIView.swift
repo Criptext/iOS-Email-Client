@@ -74,13 +74,10 @@ class ComposerUIView: UIView {
         self.editorHeightConstraint.constant = 150
         
         self.toField.fieldName = String.localize("TO")
-        self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
         self.ccField.fieldName = String.localize("CC")
-        self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
         self.bccField.fieldName = String.localize("BCC")
-        self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         
         contactsTableView.isHidden = true
@@ -98,10 +95,13 @@ class ComposerUIView: UIView {
     func applyTheme(){
         self.view.backgroundColor = theme.background
         toField.fieldColor = theme.mainText
+        toField.setTextColor(theme.mainText)
         toField.backgroundColor = theme.background
         ccField.fieldColor = theme.mainText
+        ccField.setTextColor(theme.mainText)
         ccField.backgroundColor = theme.background
         bccField.backgroundColor = theme.background
+        bccField.setTextColor(theme.mainText)
         bccField.fieldColor = theme.mainText
         arrowButton.backgroundColor = theme.background
         toField.backgroundColor = theme.background
@@ -110,7 +110,7 @@ class ComposerUIView: UIView {
         subjectTextField.textColor = theme.mainText
         subjectTextField.backgroundColor = theme.background
         subjectTextField.textColor = theme.mainText
-        subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
+        subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [NSAttributedString.Key.foregroundColor: theme.mainText])
         scrollView.backgroundColor = theme.background
         attachmentsTableView.backgroundColor = theme.background
         contactsTableView.backgroundColor = theme.background
