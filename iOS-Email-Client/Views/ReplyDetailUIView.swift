@@ -46,7 +46,7 @@ class ReplyDetailUIView: UIButton{
         super.awakeFromNib()
         actionLabel.textColor = theme.mainText
         iconImageView.tintColor = theme.mainText
-        backgroundColor = theme.cellOpaque
+        backgroundColor = theme.secondBackground
     }
     
     func getCornersByType() -> UIRectCorner{

@@ -151,7 +151,11 @@ struct Constants {
     
     static let htmlBottomWrapper = "</body><script>\(quoteHideScript)</script></html>"
     
+    static let darkBottomWrapper = "</body><script>\(darkQuoteScript)</script></html>"
+    
     static let imagePath = Bundle.main.path(forResource: "showmore.png", ofType: nil) ?? ""
+    
+    static let darkPath = Bundle.main.path(forResource: "dark-showmore.png", ofType: nil) ?? ""
     
     static let quoteHideScript = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
         "var newNode = document.createElement(\"img\");" +
@@ -165,8 +169,17 @@ struct Constants {
         "replybody.style.display = \"none\";} else {" +
         "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
     
-    static let fullScript = "<html><head><style type='text/css'>body{ font-family: 'Helvetica Neue', Helvetica, Arial; margin:0; padding: 0px 30px;} hr {border: 0; height: 1px; background-color: #bdc3c7;}.show { display: block;}.hide:target + .show { display: inline;} .hide:target { display: block;} .content { display:block;} .hide:target ~ .content { display:inline;} </style></head><body></body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'></iframe><script>\(quoteHideScript)</script></html>"
-
+    static let darkQuoteScript = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
+        "var newNode = document.createElement(\"img\");" +
+        "newNode.src = \"file://\(darkPath)\";" +
+        "newNode.width = 30;" +
+        "newNode.style.paddingTop = \"10px\";" +
+        "newNode.style.paddingBottom = \"10px\";" +
+        "replybody.style.display = \"none\";" +
+        "replybody.parentElement.insertBefore(newNode, replybody);" +
+        "newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ " +
+        "replybody.style.display = \"none\";} else {" +
+        "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
 
     static let popoverWidth = 270
     static let singleTextPopoverHeight = 178

@@ -13,6 +13,8 @@ class MenuViewController: UIViewController{
     let MENU_CONTENT_HEIGHT : CGFloat = 860.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
+    @IBOutlet weak var topSeparatorView: UIView!
+    @IBOutlet weak var bottomSeparatorView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var accountContainerView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -68,11 +70,13 @@ class MenuViewController: UIViewController{
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        scrollView.backgroundColor = theme.background
-        self.view.backgroundColor = theme.background
+        scrollView.backgroundColor = theme.menuBackground
+        self.view.backgroundColor = theme.menuBackground
         nameLabel.textColor = theme.mainText
         usernameLabel.textColor = theme.secondText
-        accountContainerView.backgroundColor = theme.cellOpaque
+        accountContainerView.backgroundColor = theme.menuHeader
+        topSeparatorView.backgroundColor = theme.separator
+        bottomSeparatorView.backgroundColor = theme.separator
         labelsTableView.reloadData()
         if let menuViews = menuItemsViews {
             for menuView in menuViews {

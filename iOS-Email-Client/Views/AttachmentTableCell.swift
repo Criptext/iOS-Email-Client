@@ -21,11 +21,15 @@ class AttachmentTableCell: UITableViewCell{
     @IBOutlet weak var markImageView: UIImageView!
     @IBOutlet weak var iconDownloadImageView: UIImageView!
     var delegate: AttachmentTableCellDelegate?
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         attachmentContainer.layer.borderWidth = 1
-        attachmentContainer.layer.borderColor = UIColor(red:216/255, green:216/255, blue:216/255, alpha: 0.45).cgColor
+        attachmentContainer.layer.borderColor = theme.attachmentBorder.cgColor
+        attachmentContainer.backgroundColor = theme.attachmentCell
         backgroundColor = .clear
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tap)
@@ -48,10 +52,10 @@ class AttachmentTableCell: UITableViewCell{
     }
     
     func setNameAndSize(_ name: String, _ size: String){
-        let nameAttrs = [NSAttributedString.Key.foregroundColor : UIColor.black]
+        let nameAttrs = [NSAttributedString.Key.foregroundColor : theme.markedText]
         let myName = NSMutableAttributedString(string: name + " ", attributes: nameAttrs)
         
-        let sizeAttrs = [NSAttributedString.Key.foregroundColor : UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)]
+        let sizeAttrs = [NSAttributedString.Key.foregroundColor : theme.secondText]
         let mySize = NSMutableAttributedString(string: "  \(size)", attributes: sizeAttrs)
         
         myName.append(mySize)
@@ -63,7 +67,7 @@ class AttachmentTableCell: UITableViewCell{
     }
     
     func setAsUnsend(){
-        let attrs = [NSAttributedString.Key.font : Font.bold.size(15.0)!, NSAttributedString.Key.foregroundColor : UIColor.black]
+        let attrs = [NSAttributedString.Key.font : Font.bold.size(15.0)!, NSAttributedString.Key.foregroundColor : theme.markedText]
         let myName = NSMutableAttributedString(string: "Attachment Unsent", attributes: attrs)
         attachmentLabel.attributedText = myName
         progressView.isHidden = true
@@ -76,11 +80,11 @@ class AttachmentTableCell: UITableViewCell{
         markImageView.isHidden = false
         guard success else {
             markImageView.image = #imageLiteral(resourceName: "mark-error")
-            markImageView.backgroundColor = .alert
+            markImageView.backgroundColor = theme.alert
             return
         }
         progressView.isHidden = true
         markImageView.image = #imageLiteral(resourceName: "mark-success")
-        markImageView.backgroundColor = .mainUI
+        markImageView.backgroundColor = theme.main
     }
 }

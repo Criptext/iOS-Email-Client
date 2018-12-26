@@ -28,6 +28,6 @@ class GeneralTapTableCellView : UITableViewCell {
         let theme = ThemeManager.shared.theme
         optionLabel.textColor = theme.mainText
         messageLabel.textColor = theme.secondText
-        backgroundColor = theme.background
+        backgroundColor = .clear
     }
 }

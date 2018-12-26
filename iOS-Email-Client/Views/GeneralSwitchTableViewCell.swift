@@ -33,6 +33,6 @@ class GeneralSwitchTableViewCell: UITableViewCell {
     
     func applyTheme() {
         optionLabel.textColor = theme.mainText
-        backgroundColor = theme.background
+        backgroundColor = .clear
     }
 }

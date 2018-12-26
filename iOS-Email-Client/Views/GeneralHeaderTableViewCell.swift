@@ -18,6 +18,6 @@ class GeneralHeaderTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.textColor = theme.mainText
-        contentView.backgroundColor = theme.sectionHeader
+        contentView.backgroundColor = theme.settingsDetail
     }
 }

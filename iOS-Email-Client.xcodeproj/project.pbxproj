@@ -215,6 +215,9 @@
 		954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */; };
 		95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
 		9568329020753FBE007F8489 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
+		A700F59521D3E28800792B4A /* SettingsGeneralHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A700F59421D3E28800792B4A /* SettingsGeneralHeaderView.xib */; };
+		A700F59721D3E59900792B4A /* SettingsGeneralHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */; };
+		A700F59921D41B3F00792B4A /* dark-showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = A700F59821D41B3A00792B4A /* dark-showmore.png */; };
 		A70609F521A72E7C0066BFA4 /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
 		A70609F621A72F470066BFA4 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF2F217A910100FFFDFF /* EmailSetPasswordUIPopover.xib */; };
@@ -673,6 +676,9 @@
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
 		9568328F20753FBE007F8489 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		A700F59421D3E28800792B4A /* SettingsGeneralHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsGeneralHeaderView.xib; sourceTree = "<group>"; };
+		A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralHeaderView.swift; sourceTree = "<group>"; };
+		A700F59821D41B3A00792B4A /* dark-showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-showmore.png"; sourceTree = "<group>"; };
 		A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPickerUIPopover.swift; sourceTree = "<group>"; };
 		A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPasscodeViewController.swift; sourceTree = "<group>"; };
@@ -1102,6 +1108,7 @@
 				41AAC54E201AA05E00809C4D /* mark_read.png */,
 				41AAC550201AA06500809C4D /* mark_unread.png */,
 				7C1E987920C9B969003205F8 /* showmore.png */,
+				A700F59821D41B3A00792B4A /* dark-showmore.png */,
 				A7FFCF1D217A8FE300FFFDFF /* Login.storyboard */,
 				7C8D6C73203735E000AB96EF /* Constants.swift */,
 				A7FFCF65217A93E600FFFDFF /* Localizable.strings */,
@@ -1242,6 +1249,8 @@
 				A723254621CBF901003CF78D /* LabelsHeaderCellView.swift */,
 				A7065E5C21CC1A4200F8292A /* FeedHeaderTitleUIView.swift */,
 				A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */,
+				A700F59421D3E28800792B4A /* SettingsGeneralHeaderView.xib */,
+				A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1561,6 +1570,7 @@
 				A7FFCF36217A911B00FFFDFF /* LabelsHeaderTableViewCell.xib in Resources */,
 				A7FFCF2A217A90FA00FFFDFF /* SingleTextInputUIPopover.xib in Resources */,
 				412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */,
+				A700F59521D3E28800792B4A /* SettingsGeneralHeaderView.xib in Resources */,
 				7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */,
 				7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */,
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
@@ -1599,6 +1609,7 @@
 				7C6DB468215173D0001B3749 /* GenericDualAnswerUIPopover.xib in Resources */,
 				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
 				412CB03B2037402D005D1B3F /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
+				A700F59921D41B3F00792B4A /* dark-showmore.png in Resources */,
 				412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */,
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
 				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
@@ -1766,6 +1777,7 @@
 				7C049F8920879CD5007A6213 /* LabelsUIPopover.swift in Sources */,
 				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */,
+				A700F59721D3E59900792B4A /* SettingsGeneralHeaderView.swift in Sources */,
 				A7CC38892194979A00C8355A /* SharedExtensions.swift in Sources */,
 				7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */,
 				7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */,

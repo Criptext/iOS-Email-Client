@@ -126,7 +126,7 @@
 "EMAIL_SENT" = "Email Sent";
 "GUIDE_TAP_COMPOSE" = "Tap to compose\na secure email";
 "GUIDE_FEEDS" = "See who's reading\nyour emails";
-"EMAIL_OPENED" = "Your email was opened";
+"EMAIL_OPENED" = "Someone opened";
 "NEW" = "NEW";
 "OLDER" = "OLDER";
 "UNMUTE" = "Unmute";

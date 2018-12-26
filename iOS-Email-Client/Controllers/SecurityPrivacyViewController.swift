@@ -71,7 +71,7 @@ class SecurityPrivacyViewController: UITableViewController {
     func applyTheme() {
         let theme = ThemeManager.shared.theme
         tableView.backgroundColor = .clear
-        self.view.backgroundColor = theme.background
+        self.view.backgroundColor = theme.overallBackground
     }
     
     @objc func goBack(){

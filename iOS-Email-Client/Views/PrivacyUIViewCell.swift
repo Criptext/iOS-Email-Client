@@ -31,7 +31,7 @@ class PrivacyUIViewCell: UITableViewCell {
     
     func applyTheme() {
         backgroundColor = .clear
-        detailContainerView.backgroundColor = theme.cellOpaque
+        detailContainerView.backgroundColor = theme.secondBackground
         detailLabel.textColor = theme.secondText
     }
     

@@ -30,7 +30,7 @@ class LabelsLabelTableViewCell: UITableViewCell{
     
     func applyTheme() {
         labelLabel.textColor = theme.mainText
-        backgroundColor = theme.background
+        backgroundColor = .clear
     }
     
     func fillFields(label: Label) {

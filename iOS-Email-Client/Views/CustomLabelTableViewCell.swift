@@ -29,7 +29,7 @@ class CustomLabelTableViewCell: UITableViewCell{
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        backgroundColor = theme.background
+        backgroundColor = .clear
         myTextLabel.textColor = theme.mainText
     }
 }

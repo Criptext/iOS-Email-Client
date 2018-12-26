@@ -124,7 +124,6 @@ class ComposeViewController: UIViewController {
         self.subjectField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         
         self.toField.fieldName = String.localize("TO")
-        self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
         
         let toFieldButton = UIButton(type: .custom)
@@ -136,7 +135,6 @@ class ComposeViewController: UIViewController {
         self.toField.accessoryView?.isHidden = true
         
         self.bccField.fieldName = String.localize("BCC")
-        self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         
         let bccFieldButton = UIButton(type: .custom)
@@ -148,7 +146,6 @@ class ComposeViewController: UIViewController {
         self.bccField.accessoryView?.isHidden = true
         
         self.ccField.fieldName = String.localize("CC")
-        self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
         
         let ccFieldButton = UIButton(type: .custom)
@@ -188,7 +185,6 @@ class ComposeViewController: UIViewController {
         activityButton.tintColor = Icon.enabled.color
         activityButton.isUserInteractionEnabled = false
         self.attachmentBarButton = activityButton
-        self.attachmentButtonContainerView.layer.borderColor = UIColor.white.cgColor
         self.attachmentButtonContainerView.layer.borderWidth = 2.0
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressAttachment(_:)))
@@ -226,25 +222,33 @@ class ComposeViewController: UIViewController {
     
     func applyTheme(){
         let theme = ThemeManager.shared.theme
-        self.view.backgroundColor = theme.background
+        self.view.backgroundColor = theme.overallBackground
+        toField.setTextColor(theme.mainText)
+        toField.tintColor = theme.mainText
+        ccField.tintColor = theme.mainText
+        ccField.setTextColor(theme.mainText)
+        bccField.tintColor = theme.mainText
+        bccField.setTextColor(theme.mainText)
         toField.fieldColor = theme.mainText
         ccField.fieldColor = theme.mainText
         bccField.fieldColor = theme.mainText
-        toField.backgroundColor = theme.background
+        toField.backgroundColor = theme.overallBackground
         subjectField.textColor = theme.mainText
         subjectField.textColor = theme.mainText
-        subjectField.backgroundColor = theme.background
+        subjectField.backgroundColor = theme.overallBackground
         subjectField.textColor = theme.mainText
-        scrollView.backgroundColor = theme.background
-        tableView.backgroundColor = theme.background
-        self.view.backgroundColor = theme.background
+        scrollView.backgroundColor = theme.overallBackground
+        tableView.backgroundColor = theme.overallBackground
+        self.view.backgroundColor = theme.overallBackground
         topSeparator.backgroundColor = theme.separator
         bottomSeparator.backgroundColor = theme.separator
         attachmentButtonContainerView.backgroundColor = theme.attachment
         attachmentBarButton.imageView?.tintColor = theme.mainText
-        editorView.webView.backgroundColor = theme.background
+        editorView.webView.backgroundColor = theme.overallBackground
         editorView.webView.isOpaque = false
-        contactTableView.backgroundColor = theme.background
+        contactTableView.backgroundColor = theme.overallBackground
+        subjectField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(subjectField.minimumFontSize)!])
+        self.attachmentButtonContainerView.layer.borderColor = theme.overallBackground.cgColor
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -910,15 +914,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
             guard name.contains("@") else {
-                let valueObject = NSString(string: "\(name)\(Constants.domain)")
-                let token = CLToken(displayText: "\(name)\(Constants.domain)", context: valueObject)
-                view.add(token)
+                addToken("\(name)\(Constants.domain)", value: "\(name)\(Constants.domain)", to: view)
                 return
             }
             if Utils.validateEmail(name) {
-                let valueObject = NSString(string: name)
-                let token = CLToken(displayText: name, context: valueObject)
-                view.add(token)
+                addToken(name, value: name, to: view)
             } else {
                 self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             }
@@ -969,15 +969,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         guard text.contains("@") else {
-            let valueObject = NSString(string: "\(text)\(Constants.domain)")
-            let token = CLToken(displayText: "\(text)\(Constants.domain)", context: valueObject)
-            view.add(token)
+            addToken("\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)", to: view)
             return
         }
         if Utils.validateEmail(text) {
-            let valueObject = NSString(string: text)
-            let token = CLToken(displayText: text, context: valueObject)
-            view.add(token)
+            addToken(text, value: text, to: view)
         } else {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
         }
@@ -1053,18 +1049,22 @@ extension ComposeViewController: CNContactPickerDelegate {
             return
         }
         guard value.contains("@") else {
+            let textColor = UIColor(red: 0, green:0.23, blue: 0.41, alpha: 1.0)
+            let bgColor = UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0)
             let valueObject = NSString(string: "\(value)\(Constants.domain)")
             let token = CLToken(displayText: "\(value)\(Constants.domain)", context: valueObject)
-            view.add(token)
+            view.add(token, highlight: textColor, background: bgColor)
             return
         }
         guard Utils.validateEmail(value) else {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             return
         }
+        let textColor = value.contains(Constants.domain) ? .mainUI : UIColor(red: 0.13, green:0.13, blue: 0.13, alpha: 1.0)
+        let bgColor = value.contains(Constants.domain) ? UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0) : UIColor(red: 0.94, green:0.94, blue: 0.94, alpha: 1.0)
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
-        view.add(token)
+        view.add(token, highlight: textColor, background: bgColor)
     }
 }
 
@@ -1161,7 +1161,7 @@ extension ComposeViewController: RichEditorDelegate {
         }
         let theme = ThemeManager.shared.theme
         editorView.setEditorFontColor(theme.mainText)
-        editorView.setEditorBackgroundColor(theme.background)
+        editorView.setEditorBackgroundColor(theme.overallBackground)
     }
     
     func richEditorTookFocus(_ editor: RichEditorView) {

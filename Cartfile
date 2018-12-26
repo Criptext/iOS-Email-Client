@@ -3,7 +3,7 @@ github "ElaWorkshop/TagListView" ~> 1.0
 github "Alamofire/Alamofire" ~> 4.7
 github "SwiftyJSON/SwiftyJSON"
 github "realm/realm-cocoa"
-github "danieltigse/CLTokenInputView" ~> 2.7.0
+github "Hirobreak/CLTokenInputView" == 3.0.3
 github "CosmicMind/Material"
 github "Hirobreak/CICropPicker" == 1.1.2
 github "rs/SDWebImage"
