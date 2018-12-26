@@ -32,6 +32,7 @@ class FeedViewController: UIViewController{
         super.viewDidLoad()
         feedsTableView.separatorStyle = .none
         feedsTableView.register(UINib(nibName: "TableEndViewCell", bundle: nil), forCellReuseIdentifier: "EndCell")
+        feedsTableView.register(UINib(nibName: "SettingsGeneralHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderCell")
         loadFeeds()
     }
     
@@ -101,8 +102,8 @@ class FeedViewController: UIViewController{
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        self.view.backgroundColor = theme.background
-        self.feedsTableView.backgroundColor = theme.background
+        self.view.backgroundColor = theme.menuBackground
+        self.feedsTableView.backgroundColor = theme.menuBackground
         feedsTableView.reloadData()
         headerView.applyTheme()
     }
@@ -132,8 +133,10 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         return 2
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? String.localize("NEW") : String.localize("OLDER")
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderCell") as! SettingsGeneralHeaderView
+        cell.titleLabel.text = section == 0 ? String.localize("NEW") : String.localize("OLDER")
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

@@ -49,9 +49,9 @@ class EmailSetPasswordViewController: BaseUIPopover {
     func applyTheme() {
         let theme: Theme = ThemeManager.shared.theme
         navigationController?.navigationBar.barTintColor = theme.toolbar
-        view.backgroundColor = theme.background
-        popoverView.backgroundColor = theme.background
-        passwordContainerView.backgroundColor = theme.background
+        view.backgroundColor = theme.overallBackground
+        popoverView.backgroundColor = theme.overallBackground
+        passwordContainerView.backgroundColor = theme.overallBackground
         passwordTextField.detailColor = theme.alert
         passwordTextField.textColor = theme.mainText
         passwordTextField.placeholderLabel.textColor = theme.mainText

@@ -152,11 +152,10 @@ class InboxViewController: UIViewController {
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        navigationController?.navigationBar.barTintColor = theme.toolbar
         envelopeTitleView.textColor = theme.mainText
         envelopeSubtitleView.textColor = theme.secondText
-        buttonCompose.backgroundColor = theme.composeButton
-        initFloatingButton(color: theme.composeButton)
+        buttonCompose.backgroundColor = theme.criptextBlue
+        initFloatingButton(color: theme.criptextBlue)
         view.backgroundColor = theme.background
         
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {

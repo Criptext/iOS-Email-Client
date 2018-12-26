@@ -126,7 +126,7 @@
 "EMAIL_SENT" = "Correo Enviado";
 "GUIDE_TAP_COMPOSE" = "Presiona aquí para \nescribir un correo.";
 "GUIDE_FEEDS" = "Puedes ver quien \nha leído tus correos.";
-"EMAIL_OPENED" = "Tu email fue abierto";
+"EMAIL_OPENED" = "Alguien abrió";
 "NEW" = "NUEVO";
 "OLDER" = "ANTIGUO";
 "UNMUTE" = "Desilenciar";

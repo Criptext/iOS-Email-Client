@@ -40,7 +40,7 @@ class SettingsDeviceTableViewCell: UITableViewCell {
         trashButton.tintColor = theme.secondText
         deviceNameLabel.textColor = theme.mainText
         deviceLocationLabel.textColor = theme.mainText
-        backgroundColor = theme.background
+        backgroundColor = .clear
     }
     
     func setContent(device: Device){

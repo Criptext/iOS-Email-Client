@@ -51,7 +51,7 @@ class RecoveryEmailViewController: UIViewController {
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        self.view.backgroundColor = theme.background
+        self.view.backgroundColor = theme.overallBackground
         newLabel.textColor = theme.mainText
         currentLabel.textColor = theme.mainText
         noteLabel.textColor = theme.secondText
@@ -59,6 +59,10 @@ class RecoveryEmailViewController: UIViewController {
         emailTextField.textColor = theme.mainText
         emailTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_NEW_RECOVERY"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(emailTextField.minimumFontSize)!])
         emailTextField.visibilityIconButton?.tintColor = theme.placeholder
+        
+        emailTextField.detailColor = theme.criptextBlue
+        doneButton.backgroundColor = theme.criptextBlue
+        resendButton.backgroundColor = theme.criptextBlue
     }
     
     func prepareView(){

@@ -39,8 +39,8 @@ class SignatureEditorViewController: UIViewController {
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        self.view.backgroundColor = theme.background
-        richEditor.webView.backgroundColor = theme.background
+        self.view.backgroundColor = theme.overallBackground
+        richEditor.webView.backgroundColor = theme.overallBackground
         richEditor.webView.isOpaque = false
         separatorView.backgroundColor = theme.separator
         OnOffLabel.textColor = theme.mainText
@@ -101,7 +101,7 @@ extension SignatureEditorViewController: RichEditorDelegate {
     func richEditorDidLoad(_ editor: RichEditorView) {
         let theme = ThemeManager.shared.theme
         editor.setEditorFontColor(theme.mainText)
-        editor.setEditorBackgroundColor(theme.background)
+        editor.setEditorBackgroundColor(theme.overallBackground)
     }
     
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {

@@ -168,9 +168,7 @@ class ComposerUIView: UIView {
             focusInput = self.bccField
         }
         
-        let valueObject = NSString(string: email)
-        let token = CLToken(displayText: name, context: valueObject)
-        focusInput.add(token)
+        addToken(display: name, value: email, view: focusInput)
     }
 }
 
@@ -218,22 +216,26 @@ extension ComposerUIView: CLTokenInputViewDelegate {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
             guard name.contains("@") else {
-                let valueObject = NSString(string: "\(name)\(Env.domain)")
-                let token = CLToken(displayText: "\(name)\(Env.domain)", context: valueObject)
-                view.add(token)
+                addToken(display: "\(name)\(Env.domain)", value: "\(name)\(Env.domain)", view: view)
                 return
             }
             
             if Utils.validateEmail(name) {
-                let valueObject = NSString(string: name)
-                let token = CLToken(displayText: name, context: valueObject)
-                view.add(token)
+                
             } else {
                 self.delegate?.badRecipient()
             }
         }
         
         self.delegate?.typingRecipient(text: input)
+    }
+    
+    func addToken(display: String, value: String, view: CLTokenInputView) {
+        let textColor = value.contains(Constants.domain) ? UIColor(red: 0, green:0.23, blue: 0.41, alpha: 1.0) : UIColor(red: 0.13, green:0.13, blue: 0.13, alpha: 1.0)
+        let bgColor = value.contains(Constants.domain) ? UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0) : UIColor(red: 0.94, green:0.94, blue: 0.94, alpha: 1.0)
+        let valueObject = NSString(string: value)
+        let token = CLToken(displayText: display, context: valueObject)
+        view.add(token, highlight: textColor, background: bgColor)
     }
     
     func tokenInputView(_ view: CLTokenInputView, didChangeHeightTo height: CGFloat) {
@@ -260,15 +262,11 @@ extension ComposerUIView: CLTokenInputViewDelegate {
         }
         
         guard text.contains("@") else {
-            let valueObject = NSString(string: "\(text)\(Constants.domain)")
-            let token = CLToken(displayText: "\(text)\(Constants.domain)", context: valueObject)
-            view.add(token)
+            addToken(display: "\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)", view: view)
             return
         }
         if Utils.validateEmail(text) {
-            let valueObject = NSString(string: text)
-            let token = CLToken(displayText: text, context: valueObject)
-            view.add(token)
+            addToken(display: text, value: text, view: view)
         } else {
             self.delegate?.badRecipient()
         }

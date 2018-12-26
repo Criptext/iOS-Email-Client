@@ -22,6 +22,6 @@ class GeneralVersionTableViewCell: UITableViewCell {
     }
     
     func applyTheme() {
-        backgroundColor = ThemeManager.shared.theme.background
+        backgroundColor = .clear
     }
 }

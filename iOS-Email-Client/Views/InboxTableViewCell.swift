@@ -55,16 +55,18 @@ class InboxTableViewCell: UITableViewCell {
     }
     
     func setFields(thread: Thread, label: Int, myEmail: String){
+        containerBadge.backgroundColor = theme.threadBadge
         subjectLabel.textColor = theme.mainText
         senderLabel.textColor = theme.mainText
+        dateLabel.textColor = theme.secondText
         secureAttachmentImageView.isHidden = true
         secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
         if !thread.unread {
-            backgroundColor = theme.cellOpaque
+            backgroundColor = theme.background
             senderLabel.font = Font.regular.size(15)
         }else{
-            backgroundColor = theme.background
+            backgroundColor = theme.secondBackground
             senderLabel.font = Font.bold.size(15)
         }
         
@@ -122,19 +124,19 @@ class InboxTableViewCell: UITableViewCell {
     }
     
     func setAsSelected(){
-        backgroundColor = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
+        backgroundColor = theme.cellHighlight
         avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
         avatarImageView.image = #imageLiteral(resourceName: "check")
         avatarImageView.tintColor = UIColor.white
-        avatarImageView.layer.borderWidth = 1.0
+        avatarImageView.layer.borderWidth = 2.0
         avatarImageView.layer.borderColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
     }
     
     func setAsNotSelected(){
         avatarImageView.image = nil
-        avatarImageView.layer.borderWidth = 1.0
-        avatarImageView.layer.borderColor = UIColor.lightGray.cgColor
-        avatarImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+        avatarImageView.layer.borderWidth = 2.0
+        avatarImageView.layer.borderColor = theme.separator.cgColor
+        avatarImageView.layer.backgroundColor = UIColor.clear.cgColor
     }
     
     func setBadge(_ value: Int){

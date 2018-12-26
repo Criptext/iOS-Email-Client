@@ -46,20 +46,20 @@ class FeedTableViewCell: UITableViewCell{
     
     func handleViewed(isNew: Bool){
         headerLabel.textColor = theme.mainText
-        dateLabel.textColor = theme.mainText
+        dateLabel.textColor = theme.secondText
         subjectLabel.textColor = theme.secondText
-        if(!isNew){
+        guard !isNew else {
             let regularFont = Font.regular.size(FontSize.feed.rawValue)
             headerLabel.font = regularFont
             subjectLabel.font = regularFont
             dateLabel.font = Font.regular.size(FontSize.feedDate.rawValue)
-            backgroundColor = theme.background
+            backgroundColor = theme.highlight
             return
         }
         let boldFont = Font.bold.size(FontSize.feed.rawValue)
         headerLabel.font = boldFont
         subjectLabel.font = boldFont
         dateLabel.font = Font.bold.size(FontSize.feedDate.rawValue)
-        backgroundColor = theme.highlight
+        backgroundColor = .clear
     }
 }

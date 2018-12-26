@@ -72,8 +72,11 @@ class SettingsLabelsViewController: UITableViewController {
     func applyTheme() {
         let attributedTitle = NSAttributedString(string: String.localize("LABELS"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)
-        tableView.backgroundColor = theme.background
-        self.view.backgroundColor = theme.background
+        let attributed2Title = NSAttributedString(string: String.localize("LABELS"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.criptextBlue])
+        tabItem.setAttributedTitle(attributed2Title, for: .selected)
+        tableView.backgroundColor = theme.overallBackground
+        self.view.backgroundColor = theme.overallBackground
+        tableView.separatorColor = theme.separator
     }
     
     func presentPopover(){

@@ -54,7 +54,7 @@ class ChangePassViewController: UIViewController {
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        self.view.backgroundColor = theme.background
+        self.view.backgroundColor = theme.overallBackground
         oldPassTextField.textColor = theme.mainText
         newPassTextField.textColor = theme.mainText
         confirmPassTextField.textColor = theme.mainText
@@ -67,6 +67,12 @@ class ChangePassViewController: UIViewController {
         newPassTextField.visibilityIconButton?.tintColor = theme.placeholder
         confirmPassTextField.attributedPlaceholder = NSAttributedString(string: String.localize("CONFIRM_NEW_PASS"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(confirmPassTextField.minimumFontSize)!])
         confirmPassTextField.visibilityIconButton?.tintColor = theme.placeholder
+        
+        saveButton.backgroundColor = theme.criptextBlue
+        forgotButton.setTitleColor(theme.criptextBlue, for: .normal)
+        oldPassTextField.detailColor = theme.criptextBlue
+        newPassTextField.detailColor = theme.criptextBlue
+        confirmPassTextField.detailColor = theme.criptextBlue
     }
     
     @objc func goBack(){
