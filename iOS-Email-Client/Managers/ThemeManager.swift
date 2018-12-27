@@ -19,7 +19,7 @@ final class ThemeManager: NSObject {
     
     private override init() {
         let defaults = CriptextDefaults()
-        guard defaults.themeMode == "Night" else {
+        guard defaults.themeMode == "Dark" else {
             self.theme = Theme.init()
             super.init()
             return

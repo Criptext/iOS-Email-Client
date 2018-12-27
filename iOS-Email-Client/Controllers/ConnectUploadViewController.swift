@@ -51,6 +51,7 @@ class ConnectUploadViewController: UIViewController{
         mailboxDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = self
         connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
+        connectUIView.applyTheme()
         scheduleWorker.delegate = self
         self.connectUIView.goBackButton.isHidden = true
         self.connectUIView.setDeviceIcons(leftType: Device.Kind.current, rightType: Device.Kind(rawValue: linkData.deviceType)!)

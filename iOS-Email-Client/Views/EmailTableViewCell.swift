@@ -94,6 +94,7 @@ class EmailTableViewCell: UITableViewCell{
         dateLabel.textColor = theme.secondText
         contactsCollapseLabel.textColor = theme.mainText
         backgroundColor = .clear
+        circleLoaderUIView.backgroundColor = .clear
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -187,7 +188,7 @@ class EmailTableViewCell: UITableViewCell{
         let theme = ThemeManager.shared.theme
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString()))\(email.getContent())\(theme.name != "Night" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
+        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString()))\(email.getContent())\(theme.name != "Dark" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
         webView.scrollView.maximumZoomScale = 2.0
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }

@@ -20,6 +20,7 @@ class SignatureEditorViewController: UIViewController {
     var keyboardManager: KeyboardManager!
     
     override func viewDidLoad() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("SIGNATURE_TITLE")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: String.localize("DONE"), style: .plain, target: self, action: #selector(saveAndReturn))
@@ -121,5 +122,17 @@ extension SignatureEditorViewController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+    }
+}
+
+extension SignatureEditorViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let nav = self.navigationController else {
+            return false
+        }
+        if(nav.viewControllers.count > 1){
+            return true
+        }
+        return false
     }
 }
