@@ -117,7 +117,7 @@ class Email: Object {
     }
     
     var completeDate: String {
-        return DateUtils.date(toCompleteString: self.date)
+        return DateUtils.date(toCompleteString: self.date).replacingOccurrences(of: "at", with: String.localize("AT"))
     }
     
     func getFiles() -> [File] {

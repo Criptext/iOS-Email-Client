@@ -284,7 +284,7 @@
 "SUBJECT" = "Asunto";
 "FROM" = "De";
 "FORWARD_MAIL" = "Correo reenviado";
-"ON_REPLY" = "En";
+"ON_REPLY" = "El";
 
 "Immediately" = "Inmediatamente";
 "1 minute" = "1 minuto";

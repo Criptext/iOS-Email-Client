@@ -49,21 +49,21 @@ struct Env {
         guard !Env.isProduction else {
             return "wss://socket.criptext.com:3002"
         }
-        return "wss://socket.criptext.com:3002"
+        return "wss://stagesocket.criptext.com:3002"
     }
     
     static var domain: String {
         guard !Env.isProduction else {
             return "@criptext.com"
         }
-        return "@criptext.com"
+        return "@jigl.com"
     }
     
     static var apiURL: String {
         guard !Env.isProduction else {
             return "https://api.criptext.com"
         }
-        return "https://api.criptext.com"
+        return "https://stage.mail.criptext.com"
     }
     
     static var language: String {

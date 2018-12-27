@@ -56,7 +56,7 @@ class SecurityPrivacyViewController: UITableViewController {
         navigationItem.title = String.localize("PRIVACY_AND_SECURITY")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
-        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         tableView.estimatedRowHeight = UITableViewAutomaticDimension
         initializeOptions()
         applyTheme()
@@ -279,3 +279,14 @@ class SecurityPrivacyViewController: UITableViewController {
     }
 }
 
+extension SecurityPrivacyViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let nav = self.navigationController else {
+            return false
+        }
+        if(nav.viewControllers.count > 1){
+            return true
+        }
+        return false
+    }
+}
