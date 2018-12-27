@@ -72,6 +72,6 @@ class Theme {
     }
     
     class func dark() -> Theme {
-        return Theme(name: "Night", main: .charcoal, toolbar: .black, background: .darkBG, popoupBackground: .charcoal, mainText: .strongText, secondText: .darkSecondary, alert: .alert, criptextBlue: .darkUI, secondBackground: .darkOpaque, sectionHeader: .darkOpaque, underSelector: .white, placeholder: .placeholderDark, popoverButton: .charcoal, loader: .white, icon: .lightIcon, highlight: .darkSelected, separator: .darkSeparator, attachment: .darkBadge, cellHighlight: .darkCellHighlight, menuBackground: .darkOpaque, menuHeader: .darkBG, markedText: .white, overallBackground: .darkBG, attachmentCell: .darkBadge, attachmentBorder: .darkBadge, emailBorder: .darkEmailBorder, threadBadge: .darkBadge, settingsDetail: .darkDetail)
+        return Theme(name: "Dark", main: .charcoal, toolbar: .black, background: .darkBG, popoupBackground: .charcoal, mainText: .strongText, secondText: .darkSecondary, alert: .alert, criptextBlue: .darkUI, secondBackground: .darkOpaque, sectionHeader: .darkOpaque, underSelector: .white, placeholder: .placeholderDark, popoverButton: .charcoal, loader: .white, icon: .lightIcon, highlight: .darkSelected, separator: .darkSeparator, attachment: .darkBadge, cellHighlight: .darkCellHighlight, menuBackground: .darkOpaque, menuHeader: .darkBG, markedText: .white, overallBackground: .darkBG, attachmentCell: .darkBadge, attachmentBorder: .darkBadge, emailBorder: .darkEmailBorder, threadBadge: .darkBadge, settingsDetail: .darkDetail)
     }
 }

@@ -208,7 +208,7 @@ class SettingsGeneralViewController: UITableViewController{
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
             cell.optionLabel.text = subsection.name
-            cell.availableSwitch.isOn = ThemeManager.shared.theme.name == "Night"
+            cell.availableSwitch.isOn = ThemeManager.shared.theme.name == "Dark"
             cell.switchToggle = { isOn in
                 ThemeManager.shared.swapTheme(theme: isOn ? Theme.dark() : Theme.init())
                 let defaults = CriptextDefaults()
