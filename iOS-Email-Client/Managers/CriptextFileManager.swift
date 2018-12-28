@@ -17,6 +17,7 @@ protocol CriptextFileDelegate {
 class CriptextFileManager {
     let COMPLETE = 100
     let PENDING = -1
+    let MAX_SIZE = 25000000
     
     var token : String!
     var chunkSize = 512000
@@ -29,12 +30,22 @@ class CriptextFileManager {
         return keyPairs.count > 0
     }
 
+    func availableSize(addedSize: Int) -> Bool {
+        let overallSize = registeredFiles.reduce(0) { (sum, file) -> Int in
+            return sum + file.size
+        }
+        return overallSize + addedSize <= MAX_SIZE
+    }
     
     @discardableResult func registerFile(filepath: String, name: String, mimeType: String) -> Bool {
         guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: filepath) else {
             return false
         }
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
+        guard self.availableSize(addedSize: fileSize) else {
+            self.delegate?.fileError(message: String.localize("EXCEEDS_MAX_SIZE", arguments: File.prettyPrintSize(size: MAX_SIZE)))
+            return false
+        }
         let totalChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
         let fileRegistry = self.createRegistry(name: name, size: fileSize, mimeType: mimeType)
         fileRegistry.filepath = filepath

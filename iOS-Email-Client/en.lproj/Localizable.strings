@@ -229,6 +229,7 @@
 "NO_INTERNET" = "No internet connection";
 "UNREF_ACCOUNT" = "Unable to obtain account from reference";
 "THE_FILE_EXCEEDS" = "The file %@ exceeds %@";
+"EXCEEDS_MAX_SIZE" = "The email has surpassed the attachment limit of %@";
 "MARK_READ" = "Mark as Read";
 "APPROVE" = "Approve";
 "REJECT" = "Reject";
