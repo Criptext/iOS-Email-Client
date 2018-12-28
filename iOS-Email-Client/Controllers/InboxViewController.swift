@@ -610,13 +610,14 @@ extension InboxViewController{
 extension InboxViewController{
     func loadMails(since date:Date, clear: Bool = false, limit: Int = 0){
         let threads : [Thread]
+        let fetchedThreads = clear ? [] : mailboxData.threads.map({$0.threadId})
         if (mailboxData.searchMode) {
             guard let searchParam = self.searchController.searchBar.text else {
                 return
             }
-            threads = DBManager.getThreads(since: date, searchParam: searchParam)
+            threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads)
         } else {
-            threads = DBManager.getThreads(from: mailboxData.selectedLabel, since: date, limit: limit)
+            threads = DBManager.getThreads(from: mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
         }
         if(clear){
             mailboxData.threads = threads

@@ -188,7 +188,8 @@ class EmailTableViewCell: UITableViewCell{
         let theme = ThemeManager.shared.theme
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString()))\(email.getContent())\(theme.name != "Dark" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
+        let anchorColor = theme.name != "Dark" ? "" : "48a3ff"
+        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(email.getContent())\(theme.name != "Dark" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
         webView.scrollView.maximumZoomScale = 2.0
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }

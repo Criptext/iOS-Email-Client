@@ -1044,6 +1044,7 @@ extension ComposeViewController: CNContactPickerDelegate {
     }
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
+        let theme = ThemeManager.shared.theme
         guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
             self.showAlert(String.localize("RECIPIENTS_CAP"), message: String.localize("RECIPIENTS_CAP_SIZE"), style: .alert)
             return
@@ -1060,8 +1061,8 @@ extension ComposeViewController: CNContactPickerDelegate {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             return
         }
-        let textColor = value.contains(Constants.domain) ? .mainUI : UIColor(red: 0.13, green:0.13, blue: 0.13, alpha: 1.0)
-        let bgColor = value.contains(Constants.domain) ? UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0) : UIColor(red: 0.94, green:0.94, blue: 0.94, alpha: 1.0)
+        let textColor = value.contains(Constants.domain) ? theme.emailBubbleCriptext : theme.emailBubble
+        let bgColor = value.contains(Constants.domain) ? theme.bgBubbleCriptext : theme.bgBubble
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
         view.add(token, highlight: textColor, background: bgColor)

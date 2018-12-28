@@ -255,11 +255,11 @@ class DBManager: SharedDB {
         return realm.objects(Email.self).count
     }
     
-    class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE) -> [Thread] {
+    class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = []) -> [Thread] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
-        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@)", rejectedLabels)
+        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@) AND NOT (threadId IN %@)", rejectedLabels, threadIds)
         let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
         let threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
             guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
@@ -270,7 +270,7 @@ class DBManager: SharedDB {
         return threads
     }
     
-    class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE) -> [Thread] {
+    class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE, threadIds: [String] = []) -> [Thread] {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.all.rejectedLabelIds
         let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@)", rejectedLabels, searchParam, searchParam, searchParam).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)

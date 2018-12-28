@@ -232,11 +232,14 @@
 "MARK_READ" = "Marcar como Leído";
 "APPROVE" = "Aprobar";
 "REJECT" = "Rechazar";
+"REPLY" = "Responder";
+"DELETE" = "Eliminar";
 "PRIVACY_SECURITY" = "Seguridad y Privacidad";
 "SIGN_REJECTED" = "Sesión Rechazada";
 "NO_SUBJECT" = "(Sin Asunto)";
 "OPENED" = "abrió";
 "DOWNLOADED" = "descargó";
+"SIGNED_OUT" = "Sesión Terminada";
 
 "INBOX" = "Recibidos";
 "SENT" = "Enviados";
