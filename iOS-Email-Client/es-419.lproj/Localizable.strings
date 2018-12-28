@@ -20,7 +20,7 @@
 "LABELS" = "ETIQUETAS";
 "DEVICES" = "DISPOSITIVOS";
 "SETTINGS" = "CONFIGURACIÓN";
-"LARGE_FILE" = "El archivo es muy grande.";
+"LARGE_FILE" = "Archivo muy grande.";
 "FILE_ERROR" = "Error de archivo";
 "IF_YOU_SIGN_IN" = "Si inicias sesión con tu contraseña";
 "MAILBOX_HISTORY" = " los correos de otros dispositivos no estará disponible ";
@@ -229,6 +229,7 @@
 "NO_INTERNET" = "Sin conexión a internet";
 "UNREF_ACCOUNT" = "No se pudo recuperar la cuenta";
 "THE_FILE_EXCEEDS" = "El archivo %@ excede %@";
+"EXCEEDS_MAX_SIZE" = "El correo ha excedido el limite de %@ por archivos";
 "MARK_READ" = "Marcar como Leído";
 "APPROVE" = "Aprobar";
 "REJECT" = "Rechazar";

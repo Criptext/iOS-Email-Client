@@ -1224,6 +1224,7 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
     
     func handleAssetResult(name: String, url: URL, mimeType: String) {
         guard self.fileManager.registerFile(filepath: url.path, name: name, mimeType: mimeType) else {
+            self.toggleAttachmentTable()
             return
         }
         self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
