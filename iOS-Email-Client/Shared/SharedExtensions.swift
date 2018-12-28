@@ -250,6 +250,7 @@ extension UIColor {
     static let defaultSecondary = UIColor(red: 106/255, green: 112/255, blue: 126/255, alpha: 1)
     static let darkSecondary = UIColor(red: 120/255, green: 128/255, blue: 148/255, alpha: 1)
     static let lightIcon = UIColor(red: 220/255, green: 221/255, blue: 224/255, alpha: 1)
+    static let disableIcon = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
     static let attachmentCell = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
     static let attachmentBorder = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1)
     static let composeButton =  UIColor(red: 21/255, green: 33/255, blue: 46/255, alpha: 1)
@@ -271,6 +272,13 @@ extension UIColor {
     static let darkDetail = UIColor(red: 19/255, green: 24/255, blue: 30/255, alpha: 1)
     static let emailBorder = UIColor(red: 212/255, green: 204/255, blue: 204/255, alpha: 1)
     static let darkEmailBorder = UIColor(red: 69/255, green: 70/255, blue: 72/255, alpha: 1)
+    static let bgBubble = UIColor(red: 0.94, green:0.94, blue: 0.94, alpha: 1.0)
+    static let bgBubbleCriptext = UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0)
+    static let emailBubble = UIColor(red: 0.13, green:0.13, blue: 0.13, alpha: 1.0)
+    static let darkBgBubble = UIColor(red: 52/255, green:54/255, blue:60/255, alpha: 1.0)
+    static let darkBgBubbleCriptext = UIColor(red: 0, green: 52/255, blue: 111/255, alpha: 1.0)
+    static let darkEmailBubble = UIColor(red: 102/255, green:187/255, blue: 1, alpha: 1.0)
+    static let darkMenuText = UIColor(red: 180/255, green:181/255, blue: 190/255, alpha: 1.0)
 }
 
 enum Font {

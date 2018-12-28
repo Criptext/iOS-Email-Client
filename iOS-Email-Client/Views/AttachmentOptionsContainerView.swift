@@ -19,12 +19,12 @@ class AttachmentOptionsContainerView: UIView {
         
         let theme = ThemeManager.shared.theme
         backgroundColor = theme.background
-        cameraButton.setTitleColor(theme.mainText, for: .normal)
-        docsButton.setTitleColor(theme.mainText, for: .normal)
-        galleryButton.setTitleColor(theme.mainText, for: .normal)
-        cameraButton.imageView?.tintColor = theme.mainText
-        docsButton.imageView?.tintColor = theme.mainText
-        galleryButton.imageView?.tintColor = theme.mainText
+        cameraButton.setTitleColor(theme.composerMenu, for: .normal)
+        docsButton.setTitleColor(theme.composerMenu, for: .normal)
+        galleryButton.setTitleColor(theme.composerMenu, for: .normal)
+        cameraButton.imageView?.tintColor = theme.composerMenu
+        docsButton.imageView?.tintColor = theme.composerMenu
+        galleryButton.imageView?.tintColor = theme.composerMenu
         separatorView.backgroundColor = theme.separator
     }
 }
