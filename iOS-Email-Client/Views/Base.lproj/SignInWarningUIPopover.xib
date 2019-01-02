@@ -23,8 +23,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LogoutPopoverViewController" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
+                <outlet property="cancelButton" destination="Yoa-Xs-DQG" id="0tO-z6-9Gz"/>
                 <outlet property="logoutButton" destination="6Fs-oh-bwh" id="XcK-YC-ka9"/>
                 <outlet property="messageLabel" destination="5ic-29-Nue" id="0Qe-u2-SmC"/>
+                <outlet property="titleLabel" destination="cCY-jW-B0n" id="K2L-2p-dcV"/>
                 <outlet property="view" destination="iN0-l3-epB" id="B2V-ym-4gI"/>
             </connections>
         </placeholder>

@@ -13,12 +13,14 @@ class SignatureEditorViewController: UIViewController {
     
     @IBOutlet weak var richEditor: RichEditorView!
     @IBOutlet weak var signatureEnableSwitch: UISwitch!
+    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var OnOffLabel: UILabel!
     var isEdited = false
     var myAccount: Account!
     var keyboardManager: KeyboardManager!
     
     override func viewDidLoad() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("SIGNATURE_TITLE")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: String.localize("DONE"), style: .plain, target: self, action: #selector(saveAndReturn))
@@ -33,6 +35,16 @@ class SignatureEditorViewController: UIViewController {
         richEditor.setTextColor(.green)
         keyboardManager = KeyboardManager(view: self.view)
         keyboardManager.toolbar.editor = richEditor
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.overallBackground
+        richEditor.webView.backgroundColor = theme.overallBackground
+        richEditor.webView.isOpaque = false
+        separatorView.backgroundColor = theme.separator
+        OnOffLabel.textColor = theme.mainText
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,13 +76,20 @@ class SignatureEditorViewController: UIViewController {
             navigationController?.popViewController(animated: true)
             return
         }
-        let saveAction = UIAlertAction(title: String.localize("SAVE_RETURN"), style: .default){ (alert : UIAlertAction!) -> Void in
-            self.saveAndReturn()
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("UNSAVED_CHANGES")
+        popover.initialMessage = String.localize("CHANGES_WERE_MADE")
+        popover.leftOption = String.localize("RETURN_DONT_SAVE")
+        popover.rightOption = String.localize("SAVE_RETURN")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    self?.navigationController?.popViewController(animated: true)
+                    return
+            }
+            weakSelf.saveAndReturn()
         }
-        let discardAction = UIAlertAction(title: String.localize("RETURN_DONT_SAVE"), style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.navigationController?.popViewController(animated: true)
-        }
-        showAlert(String.localize("UNSAVED_CHANGES"), message: String.localize("CHANGES_WERE_MADE"), style: .alert, actions: [saveAction, discardAction])
+        self.presentPopover(popover: popover, height: 200)
     }
     
     @objc func saveAndReturn(){
@@ -80,6 +99,12 @@ class SignatureEditorViewController: UIViewController {
 }
 
 extension SignatureEditorViewController: RichEditorDelegate {
+    func richEditorDidLoad(_ editor: RichEditorView) {
+        let theme = ThemeManager.shared.theme
+        editor.setEditorFontColor(theme.mainText)
+        editor.setEditorBackgroundColor(theme.overallBackground)
+    }
+    
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
         if(myAccount.signature != content){
             isEdited = true
@@ -97,5 +122,17 @@ extension SignatureEditorViewController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+    }
+}
+
+extension SignatureEditorViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let nav = self.navigationController else {
+            return false
+        }
+        if(nav.viewControllers.count > 1){
+            return true
+        }
+        return false
     }
 }

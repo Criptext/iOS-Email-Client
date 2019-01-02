@@ -68,6 +68,8 @@
                         </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="onPressForward:" destination="H6v-UP-cYR" eventType="touchUpInside" id="bdj-rg-8Wi"/>
+                            <outlet property="actionLabel" destination="KXF-BR-HdN" id="yVW-bP-M9I"/>
+                            <outlet property="iconImageView" destination="TYl-dP-AmE" id="XNI-j0-ocT"/>
                         </connections>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wt7-cl-QpC" customClass="ReplyDetailUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -115,6 +117,8 @@
                         </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="onPressReplyAll:" destination="H6v-UP-cYR" eventType="touchUpInside" id="Ne5-ex-w4T"/>
+                            <outlet property="actionLabel" destination="VWD-t9-qon" id="fXY-ly-glB"/>
+                            <outlet property="iconImageView" destination="WIo-i2-LcO" id="nhl-sF-PGB"/>
                         </connections>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NNS-TZ-qz2" customClass="ReplyDetailUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -162,6 +166,8 @@
                         </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="onPressReply:" destination="H6v-UP-cYR" eventType="touchUpInside" id="rV6-qX-0M8"/>
+                            <outlet property="actionLabel" destination="lm0-l8-dmF" id="GeL-62-gPo"/>
+                            <outlet property="iconImageView" destination="vo4-ED-6vM" id="S3U-1W-rUL"/>
                         </connections>
                     </view>
                 </subviews>

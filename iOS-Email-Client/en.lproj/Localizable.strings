@@ -8,6 +8,8 @@
 "ACCOUNT" = "ACCOUNT";
 "NOTIFICATIONS" = "NOTIFICATIONS";
 "ABOUT" = "ABOUT";
+"APPEARANCE" = "APPEARANCE";
+"NIGHT_MODE" = "Dark Mode";
 "VERSION" = "VERSION";
 "GENERAL" = "GENERAL";
 "DELETE_ACCOUNT" = "Delete Account";
@@ -124,7 +126,7 @@
 "EMAIL_SENT" = "Email Sent";
 "GUIDE_TAP_COMPOSE" = "Tap to compose\na secure email";
 "GUIDE_FEEDS" = "See who's reading\nyour emails";
-"EMAIL_OPENED" = "Your email was opened";
+"EMAIL_OPENED" = "Someone opened";
 "NEW" = "NEW";
 "OLDER" = "OLDER";
 "UNMUTE" = "Unmute";
@@ -175,7 +177,7 @@
 "ON" = "On";
 "OFF" = "Off";
 "SAVE_RETURN" = "Save and return";
-"RETURN_DONT_SAVE" = "Return without saving";
+"RETURN_DONT_SAVE" = "Discard";
 "UNSAVED_CHANGES" = "Unsaved Changes";
 "CHANGES_WERE_MADE" = "You have made changes that were not saved. Do you wish to save and return?";
 "AT_LEAST_3_CHARS" = "Use at least 3 characters";
@@ -227,14 +229,18 @@
 "NO_INTERNET" = "No internet connection";
 "UNREF_ACCOUNT" = "Unable to obtain account from reference";
 "THE_FILE_EXCEEDS" = "The file %@ exceeds %@";
+"EXCEEDS_MAX_SIZE" = "The email has surpassed the attachment limit of %@";
 "MARK_READ" = "Mark as Read";
 "APPROVE" = "Approve";
 "REJECT" = "Reject";
+"REPLY" = "Reply";
+"DELETE" = "Delete";
 "PRIVACY_SECURITY" = "Privacy and Security";
 "SIGN_REJECTED" = "Sign In Rejected";
 "NO_SUBJECT" = "(No Subject)";
 "OPENED" = "opened";
 "DOWNLOADED" = "downloaded";
+"SIGNED_OUT" = "Signed out!";
 
 "INBOX" = "Inbox";
 "SENT" = "Sent";
@@ -290,3 +296,17 @@
 "15 minutes" = "15 minutes";
 "1 hour" = "1 hour";
 "24 hours" = "24 hours";
+
+"PASSWORD_CHANGE" = "Your password has changed. Confirm your new password, if you Cancel, all local data will be erased.";
+"PASSWORD_CONTINUE" = "Enter your password to continue";
+"Passphrase" = "Passphrase";
+"INVALID_EMAIL" = "Invalid Email";
+"VALID_EMAIL" = "Please add a valid email";
+"INVALID_RECIPIENTS" = "Invalid Recipients";
+"VALID_RECIPIENTS" = "Please add at least one recipient before sending this email";
+"UNABLE_SEND_EMAIL" = "Unable to send email";
+"CHECK_CONNECTION" = "Please check your internet connection and try again";
+"ENTER_OLD_PASS" = "Enter old password";
+"ENTER_NEW_PASS" = "Enter new password";
+"CONFIRM_NEW_PASS" = "Repeat new password";
+"ENTER_NEW_RECOVERY" = "Enter new recovery email";

@@ -16,4 +16,23 @@ class GeneralSwitchTableViewCell: UITableViewCell {
     @IBAction func onSwitchToggle(_ sender: Any) {
         switchToggle?(availableSwitch.isOn)
     }
+    
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        applyTheme()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        optionLabel.textColor = theme.mainText
+        backgroundColor = .clear
+    }
 }

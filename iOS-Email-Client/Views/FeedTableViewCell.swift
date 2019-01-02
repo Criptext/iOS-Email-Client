@@ -15,6 +15,17 @@ class FeedTableViewCell: UITableViewCell{
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var mutedIconImage: UIImageView!
 
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
+    
+    func fillFields(feed: FeedItem, account: Account, lastSeen: Date) {
+        let headline = feed.contact.email == "\(account.username)\(Constants.domain)" ? String.localize("EMAIL_OPENED") : feed.header
+        setLabels(headline, feed.subject, feed.formattedDate)
+        setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
+        handleViewed(isNew: feed.date > lastSeen)
+    }
+    
     func setLabels(_ header: String, _ subject: String, _ myDate: String){
         headerLabel.text = header
         subjectLabel.text = subject.isEmpty ? "(No Subject)" : subject
@@ -34,19 +45,21 @@ class FeedTableViewCell: UITableViewCell{
     }
     
     func handleViewed(isNew: Bool){
-        if(!isNew){
+        headerLabel.textColor = theme.mainText
+        dateLabel.textColor = theme.secondText
+        subjectLabel.textColor = theme.secondText
+        guard !isNew else {
             let regularFont = Font.regular.size(FontSize.feed.rawValue)
             headerLabel.font = regularFont
             subjectLabel.font = regularFont
             dateLabel.font = Font.regular.size(FontSize.feedDate.rawValue)
-            backgroundColor = .white
+            backgroundColor = theme.highlight
             return
         }
         let boldFont = Font.bold.size(FontSize.feed.rawValue)
         headerLabel.font = boldFont
         subjectLabel.font = boldFont
         dateLabel.font = Font.bold.size(FontSize.feedDate.rawValue)
-        backgroundColor = UIColor(red: 242/255, green: 248/255, blue: 1, alpha: 1)
-        
+        backgroundColor = .clear
     }
 }

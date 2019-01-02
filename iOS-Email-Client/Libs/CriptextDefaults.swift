@@ -156,6 +156,15 @@ class CriptextDefaults {
         }
     }
     
+    var themeMode: String {
+        get {
+            return groupDefaults.string(forKey: ThemeMode.themeMode.rawValue) ?? "Default"
+        }
+        set (value) {
+            groupDefaults.set(value, forKey: ThemeMode.themeMode.rawValue)
+        }
+    }
+    
     enum Guide: String {
         case welcomeTour = "welcomeTour"
         case attachments = "guideAttachments"
@@ -191,6 +200,7 @@ extension CriptextDefaults {
         groupDefaults.removeObject(forKey: PIN.faceid.rawValue)
         groupDefaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
         groupDefaults.removeObject(forKey: PIN.lockTimer.rawValue)
+        groupDefaults.removeObject(forKey: ThemeMode.themeMode.rawValue)
     }
     
     func removeQuickGuideFlags(){
@@ -226,6 +236,9 @@ extension CriptextDefaults {
     
 }
 
+enum ThemeMode: String {
+    case themeMode = "Default"
+}
 
 enum PIN: String {
     case lock = "lock"

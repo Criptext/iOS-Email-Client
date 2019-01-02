@@ -28,6 +28,7 @@ class DetailMoreOptionsUIView: UIView {
     weak var delegate: DetailMoreOptionsViewDelegate?
     @IBOutlet weak var spamButton: UIButton!
     @IBOutlet weak var unsendButton: UIButton!
+    @IBOutlet var optionButtons: [UIButton]?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -46,8 +47,23 @@ class DetailMoreOptionsUIView: UIView {
         backgroundOverlayView.addGestureRecognizer(self.tapGestureRecognizer)
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        applyTheme()
+    }
+    
     func showUnsend(_ show: Bool){
         self.unsendButton.isHidden = !show
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        optionsContainerView.backgroundColor = theme.background
+        if let optionButtons = optionButtons {
+            for optionButton in optionButtons {
+                optionButton.setTitleColor(theme.mainText, for: .normal)
+            }
+        }
     }
     
     func showMoreOptions(){

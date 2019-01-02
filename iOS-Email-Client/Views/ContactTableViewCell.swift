@@ -14,4 +14,12 @@ class ContactTableViewCell: UITableViewCell{
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var avatarImageView: UIImageView!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let theme = ThemeManager.shared.theme
+        nameLabel.textColor = theme.mainText
+        emailLabel.textColor = theme.secondText
+        backgroundColor = .clear
+    }
+    
 }

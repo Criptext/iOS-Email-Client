@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,6 +34,7 @@
                 <outlet property="progressAnimatedView" destination="BRJ-lk-cCl" id="5Xg-Qo-hSU"/>
                 <outlet property="rightDeviceImage" destination="DRm-qL-uYQ" id="2dt-ZU-aqr"/>
                 <outlet property="successImage" destination="4rh-2l-H05" id="Gc2-WX-CEK"/>
+                <outlet property="titleLabel" destination="Zn2-S4-zxr" id="nsm-Ag-BpT"/>
                 <outlet property="view" destination="BjD-Bq-glM" id="g5Q-h8-GG4"/>
             </connections>
         </placeholder>
@@ -136,7 +137,7 @@
                     </userDefinedRuntimeAttributes>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Arr-wh-3Qv">
-                    <rect key="frame" x="147.5" y="604" width="80" height="33"/>
+                    <rect key="frame" x="146" y="607" width="83" height="30"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <state key="normal" title="Cancel sync">
                         <color key="titleColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -146,7 +147,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mailbox Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zn2-S4-zxr">
-                    <rect key="frame" x="87.5" y="157" width="200" height="37"/>
+                    <rect key="frame" x="87.5" y="162.5" width="200" height="31.5"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="vEs-NX-GYh"/>
                     </constraints>

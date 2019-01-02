@@ -12,13 +12,14 @@ class ConnectUIView: UIView {
     
     @IBOutlet var view: UIView!
     
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var dotsProgressView: DotsProgressUIView!
     @IBOutlet weak var successImage: UIImageView!
     @IBOutlet weak var backgroundCircle: UIView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var goBackButton: UIButton!
-    @IBOutlet weak var percentageView: UIView!
+    @IBOutlet weak var percentageView: TipUIView!
     @IBOutlet weak var leftDeviceImage: UIImageView!
     @IBOutlet weak var rightDeviceImage: UIImageView!
     @IBOutlet weak var counterLabel: CounterLabelUIView!
@@ -79,6 +80,21 @@ class ConnectUIView: UIView {
         case .ios, .android:
             rightDeviceImage.image = UIImage(named: "device-mobile")!
         }
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        view.backgroundColor = theme.overallBackground
+        emailLabel.textColor = theme.secondText
+        messageLabel.textColor = theme.mainText
+        goBackButton.setTitleColor(theme.criptextBlue, for: .normal)
+        percentageView.backgroundColor = .clear
+        counterLabel.textColor = theme.overallBackground
+        counterLabel.backgroundColor = theme.mainText
+        titleLabel.textColor = theme.markedText
+        progressAnimatedView.backgroundColor = .clear
+        percentageView.tipColor = theme.mainText
+        percentageView.layoutIfNeeded()
     }
 
     @IBAction func goBack(_ sender: Any) {

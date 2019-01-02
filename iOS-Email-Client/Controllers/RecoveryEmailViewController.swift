@@ -31,18 +31,39 @@ class RecoveryEmailViewController: UIViewController {
     @IBOutlet weak var resendLoader: UIActivityIndicatorView!
     @IBOutlet weak var emailTextField: TextField!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var currentLabel: UILabel!
+    @IBOutlet weak var newLabel: UILabel!
+    @IBOutlet weak var noteLabel: UILabel!
     @IBOutlet weak var buttonLoader: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("RECOVERY_EMAIL_TITLE")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         prepareView()
+        applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.overallBackground
+        newLabel.textColor = theme.mainText
+        currentLabel.textColor = theme.mainText
+        noteLabel.textColor = theme.secondText
+        recoveryEmailLabel.textColor = theme.mainText
+        emailTextField.textColor = theme.mainText
+        emailTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_NEW_RECOVERY"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(emailTextField.minimumFontSize)!])
+        emailTextField.visibilityIconButton?.tintColor = theme.placeholder
+        
+        emailTextField.detailColor = theme.criptextBlue
+        doneButton.backgroundColor = theme.criptextBlue
+        resendButton.backgroundColor = theme.criptextBlue
     }
     
     func prepareView(){
@@ -276,5 +297,17 @@ extension RecoveryEmailViewController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+    }
+}
+
+extension RecoveryEmailViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let nav = self.navigationController else {
+            return false
+        }
+        if(nav.viewControllers.count > 1){
+            return true
+        }
+        return false
     }
 }

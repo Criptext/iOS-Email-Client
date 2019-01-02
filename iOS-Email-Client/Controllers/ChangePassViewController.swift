@@ -17,6 +17,8 @@ class ChangePassViewController: UIViewController {
     @IBOutlet weak var newPassTextField: TextField!
     @IBOutlet weak var confirmPassTextField: TextField!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var currentLabel: UILabel!
+    @IBOutlet weak var newLabel: UILabel!
     @IBOutlet weak var saveLoader: UIActivityIndicatorView!
     
     override func viewDidLoad() {
@@ -27,26 +29,46 @@ class ChangePassViewController: UIViewController {
         oldPassTextField.rightViewMode = .always
         newPassTextField.rightViewMode = .always
         confirmPassTextField.rightViewMode = .always
-        oldPassTextField.dividerActiveColor = .mainUI
-        newPassTextField.dividerActiveColor = .mainUI
-        confirmPassTextField.dividerActiveColor = .mainUI
-        oldPassTextField.detailColor = .alert
-        newPassTextField.detailColor = .alert
-        confirmPassTextField.detailColor = .alert
         oldPassTextField.rightView?.contentScaleFactor = 0.8
         oldPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         newPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         confirmPassTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
-        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("CHANGE_PASS_TITLE")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        applyTheme()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         oldPassTextField.becomeFirstResponder()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.overallBackground
+        oldPassTextField.textColor = theme.mainText
+        newPassTextField.textColor = theme.mainText
+        confirmPassTextField.textColor = theme.mainText
+        currentLabel.textColor = theme.mainText
+        newLabel.textColor = theme.mainText
+        
+        oldPassTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_OLD_PASS"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(oldPassTextField.minimumFontSize)!])
+        oldPassTextField.visibilityIconButton?.tintColor = theme.placeholder
+        newPassTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_NEW_PASS"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(newPassTextField.minimumFontSize)!])
+        newPassTextField.visibilityIconButton?.tintColor = theme.placeholder
+        confirmPassTextField.attributedPlaceholder = NSAttributedString(string: String.localize("CONFIRM_NEW_PASS"), attributes: [.foregroundColor: theme.placeholder, .font: Font.regular.size(confirmPassTextField.minimumFontSize)!])
+        confirmPassTextField.visibilityIconButton?.tintColor = theme.placeholder
+        
+        saveButton.backgroundColor = theme.criptextBlue
+        forgotButton.setTitleColor(theme.criptextBlue, for: .normal)
+        oldPassTextField.dividerActiveColor = theme.criptextBlue
+        newPassTextField.dividerActiveColor = theme.criptextBlue
+        confirmPassTextField.dividerActiveColor = theme.criptextBlue
+        oldPassTextField.detailColor = theme.alert
+        newPassTextField.detailColor = theme.alert
+        confirmPassTextField.detailColor = theme.alert
     }
     
     @objc func goBack(){
@@ -135,7 +157,7 @@ class ChangePassViewController: UIViewController {
     
     func setValidField(_ field: TextField, valid: Bool, error: String = "") {
         field.detail = error
-        field.dividerActiveColor = valid ? .mainUI : .alertLight
+        field.dividerActiveColor = valid ? .mainUI : .alert
     }
     
     @IBAction func onSavePress(_ sender: Any) {
@@ -190,5 +212,17 @@ extension ChangePassViewController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+    }
+}
+
+extension ChangePassViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let nav = self.navigationController else {
+            return false
+        }
+        if(nav.viewControllers.count > 1){
+            return true
+        }
+        return false
     }
 }

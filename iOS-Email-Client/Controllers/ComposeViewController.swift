@@ -43,6 +43,8 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var bccField: CLTokenInputView!
     @IBOutlet weak var subjectField: UITextField!
     @IBOutlet weak var editorView: RichEditorView!
+    @IBOutlet weak var topSeparator: UIView!
+    @IBOutlet weak var bottomSeparator: UIView!
     
     @IBOutlet weak var toolbarView: UIView!
     @IBOutlet weak var toolbarBottomConstraint: NSLayoutConstraint!
@@ -122,7 +124,6 @@ class ComposeViewController: UIViewController {
         self.subjectField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         
         self.toField.fieldName = String.localize("TO")
-        self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
         
         let toFieldButton = UIButton(type: .custom)
@@ -134,7 +135,6 @@ class ComposeViewController: UIViewController {
         self.toField.accessoryView?.isHidden = true
         
         self.bccField.fieldName = String.localize("BCC")
-        self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         
         let bccFieldButton = UIButton(type: .custom)
@@ -146,7 +146,6 @@ class ComposeViewController: UIViewController {
         self.bccField.accessoryView?.isHidden = true
         
         self.ccField.fieldName = String.localize("CC")
-        self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
         
         let ccFieldButton = UIButton(type: .custom)
@@ -186,7 +185,6 @@ class ComposeViewController: UIViewController {
         activityButton.tintColor = Icon.enabled.color
         activityButton.isUserInteractionEnabled = false
         self.attachmentBarButton = activityButton
-        self.attachmentButtonContainerView.layer.borderColor = UIColor.white.cgColor
         self.attachmentButtonContainerView.layer.borderWidth = 2.0
         self.attachmentButtonContainerView.addSubview(self.attachmentBarButton)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressAttachment(_:)))
@@ -218,10 +216,39 @@ class ComposeViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
+        
+        applyTheme()
     }
     
-    func toggleSendButton(){
-        
+    func applyTheme(){
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.overallBackground
+        toField.setTextColor(theme.mainText)
+        toField.tintColor = theme.mainText
+        ccField.tintColor = theme.mainText
+        ccField.setTextColor(theme.mainText)
+        bccField.tintColor = theme.mainText
+        bccField.setTextColor(theme.mainText)
+        toField.fieldColor = theme.mainText
+        ccField.fieldColor = theme.mainText
+        bccField.fieldColor = theme.mainText
+        toField.backgroundColor = theme.overallBackground
+        subjectField.textColor = theme.mainText
+        subjectField.textColor = theme.mainText
+        subjectField.backgroundColor = theme.overallBackground
+        subjectField.textColor = theme.mainText
+        scrollView.backgroundColor = theme.overallBackground
+        tableView.backgroundColor = theme.overallBackground
+        self.view.backgroundColor = theme.overallBackground
+        topSeparator.backgroundColor = theme.separator
+        bottomSeparator.backgroundColor = theme.separator
+        attachmentButtonContainerView.backgroundColor = theme.attachment
+        attachmentBarButton.imageView?.tintColor = theme.mainText
+        editorView.webView.backgroundColor = theme.overallBackground
+        editorView.webView.isOpaque = false
+        contactTableView.backgroundColor = theme.overallBackground
+        subjectField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(subjectField.minimumFontSize)!])
+        self.attachmentButtonContainerView.layer.borderColor = theme.overallBackground.cgColor
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -477,17 +504,25 @@ class ComposeViewController: UIViewController {
             return
         }
         
-        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel, handler: nil)
-        let sendAction = UIAlertAction(title: String.localize("YES"), style: .default, handler: { (_) in
-            self.fileManager.registeredFiles = self.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
-            self.tableView.reloadData()
-            self.handleExit()
-        })
-        self.showAlert(String.localize("PENDING_ATTACH"), message: String.localize("ATTACH_UPLOADING_DISCARD"), style: .alert, actions: [cancelAction, sendAction])
-        return
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("PENDING_ATTACH")
+        popover.initialMessage = String.localize("ATTACH_UPLOADING_DISCARD")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.fileManager.registeredFiles = weakSelf.fileManager.registeredFiles.filter({$0.requestStatus == .finish})
+            weakSelf.tableView.reloadData()
+            weakSelf.handleExit()
+        }
+        self.presentPopover(popover: popover, height: 200)
     }
     
     func handleExit(){
+        let theme = ThemeManager.shared.theme
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: String.localize("DISCARD"), style: .destructive) { action in
             APIManager.cancelAllUploads()
@@ -503,8 +538,9 @@ class ComposeViewController: UIViewController {
             self.delegate?.newDraft(draft: draft)
             self.dismiss(animated: true, completion: nil)
         })
-        sheet.addAction(UIAlertAction(title: String.localize("CANCEL"), style: .cancel))
-        
+        sheet.addAction(UIAlertAction(title: String.localize("CANCEL"), style: .default))
+        sheet.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = theme.background
+        sheet.view.tintColor = theme.mainText
         self.present(sheet, animated: true, completion:nil)
     }
     
@@ -878,15 +914,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
             guard name.contains("@") else {
-                let valueObject = NSString(string: "\(name)\(Constants.domain)")
-                let token = CLToken(displayText: "\(name)\(Constants.domain)", context: valueObject)
-                view.add(token)
+                addToken("\(name)\(Constants.domain)", value: "\(name)\(Constants.domain)", to: view)
                 return
             }
             if Utils.validateEmail(name) {
-                let valueObject = NSString(string: name)
-                let token = CLToken(displayText: name, context: valueObject)
-                view.add(token)
+                addToken(name, value: name, to: view)
             } else {
                 self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             }
@@ -937,15 +969,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         guard text.contains("@") else {
-            let valueObject = NSString(string: "\(text)\(Constants.domain)")
-            let token = CLToken(displayText: "\(text)\(Constants.domain)", context: valueObject)
-            view.add(token)
+            addToken("\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)", to: view)
             return
         }
         if Utils.validateEmail(text) {
-            let valueObject = NSString(string: text)
-            let token = CLToken(displayText: text, context: valueObject)
-            view.add(token)
+            addToken(text, value: text, to: view)
         } else {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
         }
@@ -1016,23 +1044,28 @@ extension ComposeViewController: CNContactPickerDelegate {
     }
     
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
+        let theme = ThemeManager.shared.theme
         guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
             self.showAlert(String.localize("RECIPIENTS_CAP"), message: String.localize("RECIPIENTS_CAP_SIZE"), style: .alert)
             return
         }
         guard value.contains("@") else {
+            let textColor = UIColor(red: 0, green:0.23, blue: 0.41, alpha: 1.0)
+            let bgColor = UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0)
             let valueObject = NSString(string: "\(value)\(Constants.domain)")
             let token = CLToken(displayText: "\(value)\(Constants.domain)", context: valueObject)
-            view.add(token)
+            view.add(token, highlight: textColor, background: bgColor)
             return
         }
         guard Utils.validateEmail(value) else {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             return
         }
+        let textColor = value.contains(Constants.domain) ? theme.emailBubbleCriptext : theme.emailBubble
+        let bgColor = value.contains(Constants.domain) ? theme.bgBubbleCriptext : theme.bgBubble
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
-        view.add(token)
+        view.add(token, highlight: textColor, background: bgColor)
     }
 }
 
@@ -1127,6 +1160,9 @@ extension ComposeViewController: RichEditorDelegate {
         } else {
             subjectField.becomeFirstResponder()
         }
+        let theme = ThemeManager.shared.theme
+        editorView.setEditorFontColor(theme.mainText)
+        editorView.setEditorBackgroundColor(theme.overallBackground)
     }
     
     func richEditorTookFocus(_ editor: RichEditorView) {
@@ -1170,9 +1206,10 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
         for asset in withTLPHAssets {
             switch(asset.type) {
             case .photo, .livePhoto:
-                asset.tempCopyMediaFile { (url, mimeType) in
+                asset.tempCopyMediaFile(videoRequestOptions: nil, imageRequestOptions: nil, exportPreset: AVAssetExportPresetMediumQuality, convertLivePhotosToJPG: true, progressBlock: nil) { (url, mimeType) in
                     DispatchQueue.main.async {
-                        self.handleAssetResult(name: asset.originalFileName ?? "Unknown", url: url, mimeType: mimeType)
+                        let filename = url.absoluteString.split(separator: "/").last?.description ?? asset.originalFileName ?? "Unknown"
+                        self.handleAssetResult(name: filename, url: url, mimeType: mimeType)
                     }
                 }
             case .video:
@@ -1187,6 +1224,7 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
     
     func handleAssetResult(name: String, url: URL, mimeType: String) {
         guard self.fileManager.registerFile(filepath: url.path, name: name, mimeType: mimeType) else {
+            self.toggleAttachmentTable()
             return
         }
         self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)

@@ -18,6 +18,9 @@ class HistoryUIPopover: BaseUIPopover{
     var emptyMessage: String!
     var historyImage: UIImage!
     var cellHeight: CGFloat = 0
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     init(){
         super.init("HistoryUIPopover")
@@ -33,8 +36,16 @@ class HistoryUIPopover: BaseUIPopover{
         historyTitleImage.image = historyImage
         emptyMessageLabel.text = emptyMessage
         tableView.isHidden = true
+        applyTheme()
     }
     
+    func applyTheme() {
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        historyTitleLabel.textColor = theme.mainText
+        emptyMessageLabel.textColor = theme.mainText
+        tableView.backgroundColor = theme.background
+    }
 }
 
 extension HistoryUIPopover: UITableViewDelegate, UITableViewDataSource{
@@ -44,6 +55,8 @@ extension HistoryUIPopover: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath)
+        cell.backgroundColor = theme.background
+        cell.textLabel?.textColor = theme.mainText
         return cell
     }
     

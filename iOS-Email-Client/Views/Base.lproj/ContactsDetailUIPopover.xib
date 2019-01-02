@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,15 +21,28 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactsDetailUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="bccEmailsTableView" destination="m1x-yc-HEe" id="j6v-A3-hF9"/>
+                <outlet property="bccTitleLabel" destination="Gpq-yW-4VM" id="8OA-AF-XaO"/>
+                <outlet property="bccView" destination="Qua-Ma-leN" id="2F0-Mh-he4"/>
                 <outlet property="bccViewHeightConstraint" destination="PcR-OM-jTZ" id="LpZ-KY-JIv"/>
                 <outlet property="ccEmailsTableView" destination="iGu-em-TB3" id="dcV-jf-KFo"/>
+                <outlet property="ccTitleLabel" destination="K6u-fW-bgL" id="6RD-ym-bQN"/>
+                <outlet property="ccView" destination="hgv-dp-zAu" id="nsW-Je-nR0"/>
                 <outlet property="ccViewHeightConstraint" destination="PsO-v1-Ana" id="CZo-Zv-w3D"/>
                 <outlet property="dateLabel" destination="dWG-qe-VNX" id="rjw-um-Umh"/>
+                <outlet property="dateTitleLabel" destination="3RR-uJ-Byk" id="phK-DL-Qwy"/>
+                <outlet property="dateView" destination="W5Z-k1-Tjq" id="880-dm-QS6"/>
                 <outlet property="fromEmailsLabel" destination="3jT-CD-mq9" id="hcN-mg-fXS"/>
+                <outlet property="fromTitleLabel" destination="g12-WW-CEc" id="jJ2-Ew-93g"/>
+                <outlet property="fromView" destination="rCT-ZV-mZa" id="Xrt-98-IU9"/>
+                <outlet property="replyTitleLabel" destination="81M-QW-Ymx" id="gCt-5U-E82"/>
                 <outlet property="replyToEmailsLabel" destination="wZE-Zu-ENE" id="3Ia-EX-ZBL"/>
                 <outlet property="replyToView" destination="OjR-Gy-YFW" id="hau-lg-9Ic"/>
+                <outlet property="scrollView" destination="eVy-LW-bpw" id="jb1-2k-1K0"/>
+                <outlet property="stackView" destination="nPT-Dn-Uoj" id="hgK-C1-nWw"/>
                 <outlet property="toEmailsTableView" destination="Dk3-Av-dMY" id="m01-De-Q2L"/>
                 <outlet property="toHeightConstraint" destination="7u3-eL-Ny6" id="ETT-4W-LI9"/>
+                <outlet property="toTitleLabel" destination="l3q-Py-Wbi" id="zhv-7i-kCc"/>
+                <outlet property="toView" destination="v1O-df-fPN" id="HUs-NJ-kV2"/>
                 <outlet property="view" destination="iN0-l3-epB" id="dWv-2L-x75"/>
             </connections>
         </placeholder>
@@ -86,7 +99,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gianni Carlo gianni@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wZE-Zu-ENE">
-                                            <rect key="frame" x="68" y="9.5" width="305" height="18"/>
+                                            <rect key="frame" x="68" y="9" width="305" height="18"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -205,7 +218,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:58 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWG-qe-VNX">
-                                            <rect key="frame" x="68" y="9.5" width="305" height="18"/>
+                                            <rect key="frame" x="68" y="9" width="305" height="18"/>
                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="13"/>
                                             <color key="textColor" red="0.49019607843137253" green="0.49019607843137253" blue="0.49019607843137253" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>

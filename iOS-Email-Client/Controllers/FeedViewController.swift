@@ -14,6 +14,7 @@ class FeedViewController: UIViewController{
     let HEADER_HEIGHT : CGFloat = 42.0
     var feedsData = FeedsData()
     @IBOutlet weak var noFeedsView: UIView!
+    @IBOutlet weak var headerView: FeedHeaderTitleUIView!
     @IBOutlet weak var feedsTableView: UITableView!
     var newFeedsToken: NotificationToken?
     var oldFeedsToken: NotificationToken?
@@ -31,6 +32,7 @@ class FeedViewController: UIViewController{
         super.viewDidLoad()
         feedsTableView.separatorStyle = .none
         feedsTableView.register(UINib(nibName: "TableEndViewCell", bundle: nil), forCellReuseIdentifier: "EndCell")
+        feedsTableView.register(UINib(nibName: "SettingsGeneralHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderCell")
         loadFeeds()
     }
     
@@ -97,6 +99,14 @@ class FeedViewController: UIViewController{
     func viewClosed() {
         loadFeeds()
     }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.menuBackground
+        self.feedsTableView.backgroundColor = theme.menuBackground
+        feedsTableView.reloadData()
+        headerView.applyTheme()
+    }
 }
 
 extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
@@ -104,10 +114,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "feedTableCellView", for: indexPath) as! FeedTableViewCell
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        let headline = feed.contact.email == "\(mailboxVC.myAccount.username)\(Constants.domain)" ? String.localize("EMAIL_OPENED") : feed.header
-        cell.setLabels(headline, feed.subject, feed.formattedDate)
-        cell.setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
-        cell.handleViewed(isNew: feed.date > lastSeen)
+        cell.fillFields(feed: feed, account: mailboxVC.myAccount, lastSeen: lastSeen)
         return cell
     }
     
@@ -126,8 +133,10 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         return 2
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? String.localize("NEW") : String.localize("OLDER")
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderCell") as! SettingsGeneralHeaderView
+        cell.titleLabel.text = section == 0 ? String.localize("NEW") : String.localize("OLDER")
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

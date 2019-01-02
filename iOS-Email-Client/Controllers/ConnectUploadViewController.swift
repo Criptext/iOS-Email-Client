@@ -51,6 +51,7 @@ class ConnectUploadViewController: UIViewController{
         mailboxDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = self
         connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
+        connectUIView.applyTheme()
         scheduleWorker.delegate = self
         self.connectUIView.goBackButton.isHidden = true
         self.connectUIView.setDeviceIcons(leftType: Device.Kind.current, rightType: Device.Kind(rawValue: linkData.deviceType)!)
@@ -204,10 +205,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func showErrorAlert(message: String){
-        let okAction = UIAlertAction(title: String.localize("OK"), style: .default, handler: { (_) in
-            self.dismiss(animated: true)
-        })
-        self.showAlert(String.localize("ERROR_LINK"), message: message, style: .alert, actions: [okAction])
+        self.showAlert(String.localize("ERROR_LINK"), message: message, style: .alert)
     }
 }
 

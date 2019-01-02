@@ -21,6 +21,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UnsentUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="dateLabel" destination="VuQ-mn-eT1" id="UeD-fJ-Ohm"/>
+                <outlet property="titleLabel" destination="gE8-Lj-QaF" id="qgD-MB-6si"/>
                 <outlet property="view" destination="iN0-l3-epB" id="fQr-3L-Gga"/>
             </connections>
         </placeholder>

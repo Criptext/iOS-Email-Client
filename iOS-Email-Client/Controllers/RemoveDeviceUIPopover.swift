@@ -13,6 +13,9 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     
     var device: Device!
     var myAccount: Account!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var continueTitleLabel: UILabel!
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
@@ -29,14 +32,33 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        passwordTextField.detailColor = .alert
         passwordTextField.isVisibilityIconButtonEnabled = true
         showLoader(false)
+        applyTheme()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         passwordTextField.becomeFirstResponder()
+    }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        titleLabel.textColor = theme.mainText
+        subTitleLabel.textColor = theme.mainText
+        continueTitleLabel.textColor = theme.mainText
+        passwordTextField.detailColor = theme.alert
+        passwordTextField.textColor = theme.mainText
+        passwordTextField.placeholderLabel.textColor = theme.mainText
+        passwordTextField.visibilityIconButton?.tintColor = theme.mainText
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [NSAttributedStringKey.foregroundColor: theme.placeholder])
+        confirmButton.backgroundColor = theme.popoverButton
+        cancelButton.backgroundColor = theme.popoverButton
+        confirmButton.setTitleColor(theme.mainText, for: .normal)
+        cancelButton.setTitleColor(theme.mainText, for: .normal)
+        loader.color = theme.loader
     }
     
     @IBAction func onCancelPress(_ sender: Any) {

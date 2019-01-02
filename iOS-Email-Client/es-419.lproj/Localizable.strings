@@ -8,6 +8,8 @@
 "ACCOUNT" = "CUENTA";
 "NOTIFICATIONS" = "NOTIFICACIONES";
 "ABOUT" = "ACERCA DE";
+"APPEARANCE" = "PRESENTACION";
+"NIGHT_MODE" = "Modo Oscuro";
 "VERSION" = "VERSIÓN";
 "GENERAL" = "GENERAL";
 "DELETE_ACCOUNT" = "Eliminar Cuenta";
@@ -18,7 +20,7 @@
 "LABELS" = "ETIQUETAS";
 "DEVICES" = "DISPOSITIVOS";
 "SETTINGS" = "CONFIGURACIÓN";
-"LARGE_FILE" = "El archivo es muy grande.";
+"LARGE_FILE" = "Archivo muy grande.";
 "FILE_ERROR" = "Error de archivo";
 "IF_YOU_SIGN_IN" = "Si inicias sesión con tu contraseña";
 "MAILBOX_HISTORY" = " los correos de otros dispositivos no estará disponible ";
@@ -124,7 +126,7 @@
 "EMAIL_SENT" = "Correo Enviado";
 "GUIDE_TAP_COMPOSE" = "Presiona aquí para \nescribir un correo.";
 "GUIDE_FEEDS" = "Puedes ver quien \nha leído tus correos.";
-"EMAIL_OPENED" = "Tu email fue abierto";
+"EMAIL_OPENED" = "Alguien abrió";
 "NEW" = "NUEVO";
 "OLDER" = "ANTIGUO";
 "UNMUTE" = "Desilenciar";
@@ -175,7 +177,7 @@
 "ON" = "Activado";
 "OFF" = "Desactivado";
 "SAVE_RETURN" = "Guardar";
-"RETURN_DONT_SAVE" = "Descartar Cambios";
+"RETURN_DONT_SAVE" = "Descartar";
 "UNSAVED_CHANGES" = "Cambios no guardados";
 "CHANGES_WERE_MADE" = "Has hecho cambios que no han sido guardados.";
 "AT_LEAST_3_CHARS" = "Utilice al menos 3 caracteres";
@@ -227,14 +229,18 @@
 "NO_INTERNET" = "Sin conexión a internet";
 "UNREF_ACCOUNT" = "No se pudo recuperar la cuenta";
 "THE_FILE_EXCEEDS" = "El archivo %@ excede %@";
+"EXCEEDS_MAX_SIZE" = "El correo ha excedido el limite de %@ por archivos";
 "MARK_READ" = "Marcar como Leído";
 "APPROVE" = "Aprobar";
 "REJECT" = "Rechazar";
+"REPLY" = "Responder";
+"DELETE" = "Eliminar";
 "PRIVACY_SECURITY" = "Seguridad y Privacidad";
 "SIGN_REJECTED" = "Sesión Rechazada";
 "NO_SUBJECT" = "(Sin Asunto)";
 "OPENED" = "abrió";
 "DOWNLOADED" = "descargó";
+"SIGNED_OUT" = "Sesión Terminada";
 
 "INBOX" = "Recibidos";
 "SENT" = "Enviados";
@@ -282,7 +288,7 @@
 "SUBJECT" = "Asunto";
 "FROM" = "De";
 "FORWARD_MAIL" = "Correo reenviado";
-"ON_REPLY" = "En";
+"ON_REPLY" = "El";
 
 "Immediately" = "Inmediatamente";
 "1 minute" = "1 minuto";
@@ -290,3 +296,17 @@
 "15 minutes" = "15 minutos";
 "1 hour" = "1 hora";
 "24 hours" = "24 horas";
+
+"PASSWORD_CHANGE" = "Tu contraseña ha cambiado. Confirma tu nueva contraseña, si cancelas, todos tus datos serán eliminados.";
+"PASSWORD_CONTINUE" = "Ingresa tu contraseña para continuar";
+"Passphrase" = "Clave";
+"INVALID_EMAIL" = "Correo inválido";
+"VALID_EMAIL" = "Ingrese un correo válido";
+"INVALID_RECIPIENTS" = "Destinatarios inválidos";
+"VALID_RECIPIENTS" = "Por favor agregue al menos un destinatario antes de enviar este correo";
+"UNABLE_SEND_EMAIL" = "No se pudo enviar el correo";
+"CHECK_CONNECTION" = "Por favor, compruebe su conexión a Internet y vuelva a intentarlo";
+"ENTER_OLD_PASS" = "Introduce la contraseña anterior";
+"ENTER_NEW_PASS" = "Introduce la nueva contraseña";
+"CONFIRM_NEW_PASS" = "Repite la nueva contraseña";
+"ENTER_NEW_RECOVERY" = "Introduce nuevo correo de recuperación";

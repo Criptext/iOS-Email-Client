@@ -13,7 +13,10 @@ class MenuViewController: UIViewController{
     let MENU_CONTENT_HEIGHT : CGFloat = 860.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
+    @IBOutlet weak var topSeparatorView: UIView!
+    @IBOutlet weak var bottomSeparatorView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var accountContainerView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var avatarImage: UIImageView!
@@ -29,6 +32,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var labelsTableHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var scrollInnerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var settingsMenuItem: MenuItemUIView!
+    @IBOutlet var menuItemsViews: [MenuItemUIView]?
     var selectedMenuItem : MenuItemUIView?
     var mailboxVC : InboxViewController! {
         get {
@@ -43,6 +47,7 @@ class MenuViewController: UIViewController{
         inboxMenuItem.showAsSelected(true)
         selectedMenuItem = inboxMenuItem
         labelsTableHeightContraint.constant = 0.0
+        applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +66,23 @@ class MenuViewController: UIViewController{
         menuData.reloadLabels()
         hideCustomLabels()
         labelsTableView.reloadData()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        scrollView.backgroundColor = theme.menuBackground
+        self.view.backgroundColor = theme.menuBackground
+        nameLabel.textColor = theme.mainText
+        usernameLabel.textColor = theme.secondText
+        accountContainerView.backgroundColor = theme.menuHeader
+        topSeparatorView.backgroundColor = theme.separator
+        bottomSeparatorView.backgroundColor = theme.separator
+        labelsTableView.reloadData()
+        if let menuViews = menuItemsViews {
+            for menuView in menuViews {
+                menuView.showAsSelected(menuView == selectedMenuItem)
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

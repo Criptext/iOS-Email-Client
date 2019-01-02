@@ -72,6 +72,7 @@ class InboxViewController: UIViewController {
         super.viewDidLoad()
         viewSetup()
         WebSocketManager.sharedInstance.delegate = self
+        ThemeManager.shared.addListener(id: "mailbox", delegate: self)
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
@@ -88,6 +89,7 @@ class InboxViewController: UIViewController {
             }
             self?.dequeueEvents()
         })
+        applyTheme()
     }
     
     func viewSetupNews() {
@@ -136,8 +138,7 @@ class InboxViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         self.titleBarButton.title = SystemLabel.inbox.description.uppercased()
-        
-        self.initFloatingButton()
+
         topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
@@ -147,6 +148,23 @@ class InboxViewController: UIViewController {
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        envelopeTitleView.textColor = theme.mainText
+        envelopeSubtitleView.textColor = theme.secondText
+        buttonCompose.backgroundColor = theme.criptextBlue
+        initFloatingButton(color: theme.criptextBlue)
+        view.backgroundColor = theme.background
+        generalOptionsContainerView.applyTheme()
+        if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
+            menuViewController.applyTheme()
+        }
+        
+        if let feedViewController = navigationDrawerController?.rightViewController as? FeedViewController {
+            feedViewController.applyTheme()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -270,9 +288,9 @@ class InboxViewController: UIViewController {
         self.statusBarButton.tintColor = UIColor.darkGray
     }
     
-    func initFloatingButton(){
+    func initFloatingButton(color: UIColor){
         let shadowPath = UIBezierPath(rect: CGRect(x: 15, y: 15, width: 30, height: 30))
-        buttonCompose.layer.shadowColor = UIColor(red: 0, green: 145/255, blue: 255/255, alpha: 1).cgColor
+        buttonCompose.layer.shadowColor = color.cgColor
         buttonCompose.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)  //Here you control x and y
         buttonCompose.layer.shadowOpacity = 1
         buttonCompose.layer.shadowRadius = 15 //Here your control your blur
@@ -592,13 +610,14 @@ extension InboxViewController{
 extension InboxViewController{
     func loadMails(since date:Date, clear: Bool = false, limit: Int = 0){
         let threads : [Thread]
+        let fetchedThreads = clear ? [] : mailboxData.threads.map({$0.threadId})
         if (mailboxData.searchMode) {
             guard let searchParam = self.searchController.searchBar.text else {
                 return
             }
-            threads = DBManager.getThreads(since: date, searchParam: searchParam)
+            threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads)
         } else {
-            threads = DBManager.getThreads(from: mailboxData.selectedLabel, since: date, limit: limit)
+            threads = DBManager.getThreads(from: mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
         }
         if(clear){
             mailboxData.threads = threads
@@ -743,11 +762,19 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func showEmptyTrashWarning() {
-        let emptyAction = UIAlertAction(title: String.localize("YES"), style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.emptyTrash()
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("EMPTY_TRASH")
+        popover.initialMessage = String.localize("ALL_TRASH_DELETE")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.emptyTrash()
         }
-        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel)
-        showAlert(String.localize("EMPTY_TRASH"), message: String.localize("ALL_TRASH_DELETE"), style: .alert, actions: [emptyAction, cancelAction])
+        self.presentPopover(popover: popover, height: 210)
     }
     
     func emptyTrash(from date: Date = Date()){
@@ -819,7 +846,6 @@ extension InboxViewController: UITableViewDataSource{
         tabsVC.edgesForExtendedLayout = []
         tabsVC.tabBarAlignment = .top
         let tabBar = tabsVC.tabBar
-        tabBar.setLineColor(.mainUI, for: .selected)
         tabBar.layer.masksToBounds = false
         
         generalVC.myAccount = self.myAccount
@@ -846,7 +872,7 @@ extension InboxViewController: UITableViewDataSource{
         
         let navSettingsVC = UINavigationController(rootViewController: tabsVC)
         navSettingsVC.navigationBar.barStyle = .blackTranslucent
-        navSettingsVC.navigationBar.barTintColor = .lightText
+        navSettingsVC.navigationBar.barTintColor = .charcoal
         let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         
@@ -1339,11 +1365,19 @@ extension InboxViewController: NavigationToolbarDelegate {
             self.setLabels(added: [SystemLabel.trash.id], removed: [], forceRemove: true)
             return
         }
-        let archiveAction = UIAlertAction(title: "OK", style: .destructive){ (alert : UIAlertAction!) -> Void in
-            self.deleteThreads()
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("DELETE_THREADS")
+        popover.initialMessage = String.localize("SELECTED_DELETE_PERMANENTLY")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("OK")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.deleteThreads()
         }
-        let cancelAction = UIAlertAction(title: "CANCEL", style: .cancel)
-        showAlert(String.localize("DELETE_THREADS"), message: String.localize("SELECTED_DELETE_PERMANENTLY"), style: .alert, actions: [archiveAction, cancelAction])
+        self.presentPopover(popover: popover, height: 200)
     }
     
     func onMarkThreads() {
@@ -1613,5 +1647,11 @@ extension InboxViewController {
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
         DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
         completion()
+    }
+}
+
+extension InboxViewController: ThemeDelegate {
+    func swapTheme(_ theme: Theme) {
+        applyTheme()
     }
 }

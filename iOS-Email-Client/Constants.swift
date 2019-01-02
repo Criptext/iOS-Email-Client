@@ -134,22 +134,28 @@ struct Constants {
         "                     " +
     "</script><style type='text/css'>body{ font-family: 'Helvetica Neue', Helvetica, Arial; margin:0; padding:30px;} hr {border: 0; height: 1px; background-color: #bdc3c7;}.show { display: block;}.hide:target + .show { display: inline;} .hide:target { display: block;} .content { display:block;} .hide:target ~ .content { display:inline;} </style></head><body></body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'></iframe><script>var replybody = document.getElementsByTagName(\"blockquote\")[0].parentElement;var newNode = document.createElement(\"img\");newNode.src = \"file:///var/containers/Bundle/Application/B6B86B64-73F7-4B6F-9563-571BC2623208/Criptext Secure Email.app/showmore.png\";newNode.width = 30;newNode.style.paddingTop = \"10px\";newNode.style.paddingBottom = \"10px\";replybody.style.display = \"none\";replybody.parentElement.insertBefore(newNode, replybody);newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ replybody.style.display = \"none\";} else {replybody.style.display = \"block\";} window.location.href = \"inapp://heightUpdate\";});</script></html>"
     
-    static let htmlTopWrapper = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
-    "<html xmlns=\"http://www.w3.org/1999/xhtml\" style=\"height: auto !important\">" +
-    " <head>" +
-    "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" +
-    "  <meta name=\"viewport\" content=\"width=device-width\">" +
-    "    <style type='text/css'>html, body { margin: 0px; padding: 0px; }</style>" +
-    "    <style type='text/css'>" +
-    "      @font-face { font-family: 'NunitoSans'; src: url('Fonts/NunitoSans-Regular.ttf')}" +
-    "      body { font-family: 'NunitoSans', sans-serif}" +
-    "    </style>" +
-    " </head>" +
-    " <body style=\"height: auto !important\">"
+    static func htmlTopWrapper(bgColor: String, color: String, anchorColor: String) -> String {
+        return "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
+            "<html xmlns=\"http://www.w3.org/1999/xhtml\" style=\"height: auto !important\">" +
+            " <head>" +
+            "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" +
+            "  <meta name=\"viewport\" content=\"width=device-width\">" +
+            "    <style type='text/css'>html { background: #\(bgColor) !important; color: #\(color) !important; margin: 0px 24px 0px 18px; padding: 0px; }</style>" +
+            "    <style type='text/css'>" +
+            "      @font-face { font-family: 'NunitoSans'; src: url('Fonts/NunitoSans-Regular.ttf')}" +
+            "      body { background: #\(bgColor) !important; color: #\(color) !important; margin: 0px; padding: 0px; font-family: 'NunitoSans', sans-serif} a { color: #\(anchorColor) }" +
+            "    </style>" +
+            " </head>" +
+            " <body style=\"height: auto !important\">"
+    }
     
     static let htmlBottomWrapper = "</body><script>\(quoteHideScript)</script></html>"
     
+    static let darkBottomWrapper = "</body><script>\(darkQuoteScript)</script></html>"
+    
     static let imagePath = Bundle.main.path(forResource: "showmore.png", ofType: nil) ?? ""
+    
+    static let darkPath = Bundle.main.path(forResource: "dark-showmore.png", ofType: nil) ?? ""
     
     static let quoteHideScript = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
         "var newNode = document.createElement(\"img\");" +
@@ -163,8 +169,17 @@ struct Constants {
         "replybody.style.display = \"none\";} else {" +
         "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
     
-    static let fullScript = "<html><head><style type='text/css'>body{ font-family: 'Helvetica Neue', Helvetica, Arial; margin:0; padding: 0px 30px;} hr {border: 0; height: 1px; background-color: #bdc3c7;}.show { display: block;}.hide:target + .show { display: inline;} .hide:target { display: block;} .content { display:block;} .hide:target ~ .content { display:inline;} </style></head><body></body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'></iframe><script>\(quoteHideScript)</script></html>"
-
+    static let darkQuoteScript = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
+        "var newNode = document.createElement(\"img\");" +
+        "newNode.src = \"file://\(darkPath)\";" +
+        "newNode.width = 30;" +
+        "newNode.style.paddingTop = \"10px\";" +
+        "newNode.style.paddingBottom = \"10px\";" +
+        "replybody.style.display = \"none\";" +
+        "replybody.parentElement.insertBefore(newNode, replybody);" +
+        "newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ " +
+        "replybody.style.display = \"none\";} else {" +
+        "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
 
     static let popoverWidth = 270
     static let singleTextPopoverHeight = 178

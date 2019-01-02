@@ -30,6 +30,8 @@ class ComposerUIView: UIView {
     let ATTACHMENT_ROW_HEIGHT = 65
     let MARGIN_TOP = 20
     
+    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var arrowButton: UIButton!
     @IBOutlet var view: UIView!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var editorView: RichEditorView!
@@ -51,7 +53,10 @@ class ComposerUIView: UIView {
     var initialText: String?
     var previousCcHeight: CGFloat = 45
     var previousBccHeight: CGFloat = 45
-    var collapsed = true
+    var collapsed = false
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -69,13 +74,10 @@ class ComposerUIView: UIView {
         self.editorHeightConstraint.constant = 150
         
         self.toField.fieldName = String.localize("TO")
-        self.toField.tintColor = Icon.system.color
         self.toField.delegate = self
         self.ccField.fieldName = String.localize("CC")
-        self.ccField.tintColor = Icon.system.color
         self.ccField.delegate = self
         self.bccField.fieldName = String.localize("BCC")
-        self.bccField.tintColor = Icon.system.color
         self.bccField.delegate = self
         
         contactsTableView.isHidden = true
@@ -87,6 +89,33 @@ class ComposerUIView: UIView {
         }
         
         toField.becomeFirstResponder()
+        applyTheme()
+    }
+    
+    func applyTheme(){
+        self.view.backgroundColor = theme.background
+        toField.fieldColor = theme.mainText
+        toField.setTextColor(theme.mainText)
+        toField.backgroundColor = theme.background
+        ccField.fieldColor = theme.mainText
+        ccField.setTextColor(theme.mainText)
+        ccField.backgroundColor = theme.background
+        bccField.backgroundColor = theme.background
+        bccField.setTextColor(theme.mainText)
+        bccField.fieldColor = theme.mainText
+        arrowButton.backgroundColor = theme.background
+        toField.backgroundColor = theme.background
+        separatorView.backgroundColor = theme.separator
+        subjectTextField.textColor = theme.mainText
+        subjectTextField.textColor = theme.mainText
+        subjectTextField.backgroundColor = theme.background
+        subjectTextField.textColor = theme.mainText
+        subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [NSAttributedString.Key.foregroundColor: theme.mainText])
+        scrollView.backgroundColor = theme.background
+        attachmentsTableView.backgroundColor = theme.background
+        contactsTableView.backgroundColor = theme.background
+        editorView.webView.backgroundColor = theme.background
+        editorView.webView.isOpaque = false
     }
     
     @IBAction func onClosePress(_ sender: Any) {
@@ -104,6 +133,7 @@ class ComposerUIView: UIView {
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
+        self.arrowButton.setImage(collapsed ? Icon.new_arrow.up.image : Icon.new_arrow.down.image, for: .normal)
     }
     
     func getPlainEditorContent () -> String {
@@ -138,15 +168,14 @@ class ComposerUIView: UIView {
             focusInput = self.bccField
         }
         
-        let valueObject = NSString(string: email)
-        let token = CLToken(displayText: name, context: valueObject)
-        focusInput.add(token)
+        addToken(display: name, value: email, view: focusInput)
     }
 }
 
 extension ComposerUIView: RichEditorDelegate {
     func richEditorDidLoad(_ editor: RichEditorView) {
-        
+        editorView.setEditorFontColor(theme.mainText)
+        editorView.setEditorBackgroundColor(theme.background)
     }
     
     func addToContent(text: String) {
@@ -187,22 +216,26 @@ extension ComposerUIView: CLTokenInputViewDelegate {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
             guard name.contains("@") else {
-                let valueObject = NSString(string: "\(name)\(Env.domain)")
-                let token = CLToken(displayText: "\(name)\(Env.domain)", context: valueObject)
-                view.add(token)
+                addToken(display: "\(name)\(Env.domain)", value: "\(name)\(Env.domain)", view: view)
                 return
             }
             
             if Utils.validateEmail(name) {
-                let valueObject = NSString(string: name)
-                let token = CLToken(displayText: name, context: valueObject)
-                view.add(token)
+                
             } else {
                 self.delegate?.badRecipient()
             }
         }
         
         self.delegate?.typingRecipient(text: input)
+    }
+    
+    func addToken(display: String, value: String, view: CLTokenInputView) {
+        let textColor = value.contains(Constants.domain) ? UIColor(red: 0, green:0.23, blue: 0.41, alpha: 1.0) : UIColor(red: 0.13, green:0.13, blue: 0.13, alpha: 1.0)
+        let bgColor = value.contains(Constants.domain) ? UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0) : UIColor(red: 0.94, green:0.94, blue: 0.94, alpha: 1.0)
+        let valueObject = NSString(string: value)
+        let token = CLToken(displayText: display, context: valueObject)
+        view.add(token, highlight: textColor, background: bgColor)
     }
     
     func tokenInputView(_ view: CLTokenInputView, didChangeHeightTo height: CGFloat) {
@@ -229,15 +262,11 @@ extension ComposerUIView: CLTokenInputViewDelegate {
         }
         
         guard text.contains("@") else {
-            let valueObject = NSString(string: "\(text)\(Constants.domain)")
-            let token = CLToken(displayText: "\(text)\(Constants.domain)", context: valueObject)
-            view.add(token)
+            addToken(display: "\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)", view: view)
             return
         }
         if Utils.validateEmail(text) {
-            let valueObject = NSString(string: text)
-            let token = CLToken(displayText: text, context: valueObject)
-            view.add(token)
+            addToken(display: text, value: text, view: view)
         } else {
             self.delegate?.badRecipient()
         }

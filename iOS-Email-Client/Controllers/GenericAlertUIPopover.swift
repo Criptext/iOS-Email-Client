@@ -37,6 +37,17 @@ class GenericAlertUIPopover: BaseUIPopover {
         } else {
             messageLabel.text = myMessage
         }
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme: Theme = ThemeManager.shared.theme
+        navigationController?.navigationBar.barTintColor = theme.toolbar
+        view.backgroundColor = theme.background
+        titleLabel.textColor = theme.mainText
+        messageLabel.textColor = theme.mainText
+        okButton.backgroundColor = theme.popoverButton
+        okButton.setTitleColor(theme.mainText, for: .normal)
     }
     
     @IBAction func okPress(_ sender: Any) {

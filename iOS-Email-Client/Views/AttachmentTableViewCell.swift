@@ -36,7 +36,6 @@ class AttachmentTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.contentContainerView.layer.borderColor = UIColor(hex:"f6f6f6").cgColor
         self.contentContainerView.layer.borderWidth = 1.5
         self.contentContainerView.layer.cornerRadius = 6.0
         
@@ -48,8 +47,20 @@ class AttachmentTableViewCell: UITableViewCell {
         self.addGestureRecognizer(hold)
         self.holdGestureRecognizer = hold
         
-        self.viewClose.layer.borderColor = UIColor(hex:"e2e2e2").cgColor
         self.buttonClose.addTarget(self, action: #selector(didPressCloseButton(_:)), for: .touchUpInside)
+        applyTheme()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        backgroundColor = .clear
+        contentContainerView.backgroundColor = theme.attachmentCell
+        contentContainerView.layer.borderColor = theme.attachmentBorder.cgColor
+        viewClose.backgroundColor = theme.attachmentCell
+        viewClose.layer.borderColor = theme.mainText.cgColor
+        nameLabel.textColor = theme.markedText
+        sizeLabel.textColor = theme.secondText
+        buttonClose.imageView?.tintColor = theme.mainText
     }
     
     @objc func didPressCloseButton(_ view: UIButton){

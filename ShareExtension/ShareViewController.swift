@@ -180,9 +180,10 @@ extension ShareViewController: ComposerDelegate {
     }
     
     func badRecipient() {
-        let alert = UIAlertController(title: "Invalid Email", message: "\nPlease add a valid email", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Got it!", style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        let popover = GenericAlertUIPopover()
+        popover.myTitle = String.localize("INVALID_EMAIL")
+        popover.myMessage = String.localize("VALID_EMAIL")
+        self.presentPopover(popover: popover, height: 150)
     }
 }
 
@@ -197,19 +198,24 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let theme: Theme = ThemeManager.shared.theme
         switch(tableView){
         case self.composerUIView.contactsTableView:
             let contact = contacts[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactShareTableViewCell", for: indexPath) as! ContactShareTableViewCell
-            cell.nameLabel?.text = contact.displayName
-            cell.emailLabel?.text = contact.email
+            cell.nameLabel?.text = contact.email
+            cell.emailLabel?.text = contact.displayName
             let color = UIColor.init().colorByName(name: contact.displayName)
             cell.avatarImageView.setImageWith(contact.displayName, color: color, circular: true, fontName: "NunitoSans-Regular")
+            cell.backgroundColor = theme.background
+            cell.emailLabel.textColor = theme.mainText
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell
             cell.setFields(fileManager.registeredFiles[indexPath.row])
             cell.iconDownloadImageView.isHidden = true
+            cell.backgroundColor = theme.background
+            cell.attachmentContainer.backgroundColor = theme.background
             return cell
         }
     }
@@ -273,9 +279,10 @@ extension ShareViewController {
     func prepareMail(){
         
         guard !self.composerUIView.toField.allTokens.isEmpty || !self.composerUIView.ccField.allTokens.isEmpty || !self.composerUIView.bccField.allTokens.isEmpty else {
-            let alert = UIAlertController(title: "Invalid Recipients", message: "\nPlease add at least one recipient before sending this email", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Got it!", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            let popover = GenericAlertUIPopover()
+            popover.myTitle = String.localize("INVALID_RECIPIENTS")
+            popover.myMessage = String.localize("VALID_RECIPIENTS")
+            self.presentPopover(popover: popover, height: 200)
             return
         }
         
@@ -388,13 +395,16 @@ extension ShareViewController {
     }
     
     func sendMail(email: Email, password: String?) {
-        let alert = UIAlertController(title: nil, message: "Sending Email...", preferredStyle: .alert)
-        
+        let theme: Theme = ThemeManager.shared.theme
+        let alert = UIAlertController(title: nil, message: String.localize("SENDING_MAIL"), preferredStyle: .alert)
+        alert.setValue(NSAttributedString(string: String.localize("SENDING_MAIL"), attributes: [NSAttributedString.Key.foregroundColor : theme.mainText]), forKey: "attributedMessage")
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.style = UIActivityIndicatorView.Style.gray
+        loadingIndicator.color = theme.loader
         loadingIndicator.startAnimating();
-        
+        alert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = theme.background
+        alert.view.tintColor = theme.mainText
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: nil)
         
@@ -406,9 +416,10 @@ extension ShareViewController {
             }
             guard case .SuccessInt = responseData else {
                 alert.dismiss(animated: true, completion: { [weak self] in
-                    let alert = UIAlertController(title: "Unable to send email", message: "\nPlease check your internet connection and try again", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Got it!", style: .cancel, handler: nil))
-                    self?.present(alert, animated: true, completion: nil)
+                    let popover = GenericAlertUIPopover()
+                    popover.myTitle = String.localize("UNABLE_SEND_EMAIL")
+                    popover.myMessage = String.localize("CHECK_CONNECTION")
+                    self?.presentPopover(popover: popover, height: 200)
                 })
                 return
             }

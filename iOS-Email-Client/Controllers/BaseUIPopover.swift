@@ -88,11 +88,12 @@ extension BaseUIPopover: UIPopoverPresentationControllerDelegate{
 
 extension UIViewController {
     func presentPopover(popover: UIViewController, height: Int, arrowDirections: UIPopoverArrowDirection = []){
+        let theme: Theme = ThemeManager.shared.theme
         popover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: height)
         popover.popoverPresentationController?.sourceView = self.view
         popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         popover.popoverPresentationController?.permittedArrowDirections = arrowDirections
-        popover.popoverPresentationController?.backgroundColor = UIColor.white
+        popover.popoverPresentationController?.backgroundColor = theme.popoverButton
         
         if let activePopover = self.presentedViewController as? BaseUIPopover {
             activePopover.dismiss(animated: false, completion: nil)
