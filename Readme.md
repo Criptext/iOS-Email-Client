@@ -16,6 +16,12 @@ Currently available on the App store.
 
 We use GitHub for bug tracking. Please search the existing issues for your bug and create a new one if the issue is not yet tracked!
 
+## Contributing Translations
+
+<a href="https://lokalise.co/" target="_blank"><img src="https://lokalise.co/img/lokalise_logo_black.png" width="120px"/></a>
+
+We use Lokalise for translations. If you are interested in helping please write us at <a href="mailto:support@criptext.com">support@criptext.com</a>
+
 ## Contributing Code
 
 Firebase dependencies are not included within the repo. you should be able to add them manually downloading the [SDK](https://cdn.criptext.com/ios/Firebase-5.4.1.zip) and reading the instructions in the Readme. Or you can follow this steps:
