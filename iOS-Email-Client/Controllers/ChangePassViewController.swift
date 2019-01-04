@@ -204,6 +204,13 @@ class ChangePassViewController: UIViewController {
 
 extension ChangePassViewController: LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData) {
+        guard linkData.version == Env.linkVersion else {
+            let popover = GenericAlertUIPopover()
+            popover.myTitle = String.localize("VERSION_TITLE")
+            popover.myMessage = String.localize("VERSION_MISMATCH")
+            self.presentPopover(popover: popover, height: 220)
+            return
+        }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData

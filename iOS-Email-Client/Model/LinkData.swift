@@ -39,13 +39,16 @@ class LinkData {
             linkData.version = version
             return linkData
         }
-        guard let deviceInfo = params["newDeviceInfo"] as? [String: Any],
+        guard let version = params["version"] as? Int,
+            let deviceInfo = params["newDeviceInfo"] as? [String: Any],
             let deviceName = deviceInfo["deviceFriendlyName"] as? String,
             let deviceType = deviceInfo["deviceType"] as? Int,
             let randomId = (deviceInfo["session"] as? [String: Any])?["randomId"] as? String else {
                 return nil
         }
-        return LinkData(deviceName: deviceName, deviceType: deviceType, randomId: randomId, kind: kind)
+        let linkData = LinkData(deviceName: deviceName, deviceType: deviceType, randomId: randomId, kind: kind)
+        linkData.version = version
+        return linkData
     }
     
     enum Kind {

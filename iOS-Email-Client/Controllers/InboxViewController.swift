@@ -1577,6 +1577,13 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
 
 extension InboxViewController: LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData) {
+        guard linkData.version == Env.linkVersion else {
+            let popover = GenericAlertUIPopover()
+            popover.myTitle = String.localize("VERSION_TITLE")
+            popover.myMessage = String.localize("VERSION_MISMATCH")
+            self.presentPopover(popover: popover, height: 220)
+            return
+        }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
@@ -1594,6 +1601,13 @@ extension InboxViewController: LinkDeviceDelegate {
     }
     
     func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+        guard linkData.version == Env.linkVersion else {
+            let popover = GenericAlertUIPopover()
+            popover.myTitle = String.localize("VERSION_TITLE")
+            popover.myMessage = String.localize("VERSION_MISMATCH")
+            self.presentPopover(popover: popover, height: 220)
+            return
+        }
         guard let delegate = UIApplication.shared.delegate as? AppDelegate,
             !delegate.passcodeLockPresenter.isPasscodePresented else {
                 controllerMessage = ControllerMessage.LinkDevice(linkData)

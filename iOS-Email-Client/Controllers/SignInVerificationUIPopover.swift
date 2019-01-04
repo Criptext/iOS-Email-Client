@@ -16,8 +16,8 @@ class SignInVerificationUIPopover: BaseUIPopover {
     @IBOutlet weak var approveButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
     
-    var deviceName: String = ""
     var deviceType: Device.Kind = .pc
+    var linkData: LinkData!
     var deviceImage: UIImage {
         switch(deviceType){
         case .pc:
@@ -44,9 +44,10 @@ class SignInVerificationUIPopover: BaseUIPopover {
         attachment.bounds = CGRect(x: 0.0, y: deviceLabel.font.descender - 2.0, width: attachment.image!.size.width, height: attachment.image!.size.height)
         
         let attachmentString = NSMutableAttributedString(attachment: attachment)
-        let myString = NSAttributedString(string: "   \(deviceName)")
+        let myString = NSAttributedString(string: "   \(linkData.deviceName)")
         attachmentString.append(myString)
         deviceLabel.attributedText = attachmentString;
+        titleLabel.text = linkData.kind == .link ? String.localize("SYNC_LINK") : String.localize("SYNC_MAIL")
         applyTheme()
     }
     

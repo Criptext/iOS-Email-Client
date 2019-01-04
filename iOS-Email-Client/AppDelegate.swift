@@ -447,10 +447,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         DBManager.refresh()
         switch response.actionIdentifier {
         case "LINK_ACCEPT":
-            guard let randomId = userInfo["randomId"] as? String else {
+            guard let randomId = userInfo["randomId"] as? String,
+                let version = userInfo["version"] as? String else {
                 break
             }
-            inboxVC.onAcceptLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)) {
+            let linkData = LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)
+            linkData.version = Int(version)!
+            inboxVC.onAcceptLinkDevice(linkData: linkData) {
                 completionHandler()
             }
         case "LINK_DENY":

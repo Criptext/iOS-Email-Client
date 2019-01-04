@@ -319,3 +319,8 @@
 "SYNC_REJECTED" = "Sync Rejected";
 "SYNC_REQUEST" = "Sync Request";
 "SYNC_COMPLETED" = "Mailbox Sync Completed!";
+"VERSION_TITLE" = "Version Mismatch";
+"VERSION_MISMATCH" = "You can't sync your mailbox from this device, make sure that both devices are up to date";
+
+"SYNC_LINK" = "Sign In Verification";
+"SYNC_MAIL" = "Sync Request";

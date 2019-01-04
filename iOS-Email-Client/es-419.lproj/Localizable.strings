@@ -319,3 +319,8 @@
 "SYNC_REJECTED" = "Sincronización Rechazada";
 "SYNC_REQUEST" = "Sincronización de Buzón";
 "SYNC_COMPLETED" = "Sincronización de Buzón Completa!";
+"VERSION_TITLE" = "Versiones no coinciden";
+"VERSION_MISMATCH" = "No puedes sincronizar tu buzón desde este dispositivo, asegurate que ambos dispositivos esten actualizados";
+
+"SYNC_LINK" = "Autenticación de dispositivo";
+"SYNC_MAIL" = "Sincronización de Buzón";
