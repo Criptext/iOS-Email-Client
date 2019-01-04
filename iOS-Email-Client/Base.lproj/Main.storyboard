@@ -50,6 +50,39 @@
             </objects>
             <point key="canvasLocation" x="-1715" y="1985"/>
         </scene>
+        <!--Manual Sync View Controller-->
+        <scene sceneID="fb1-yl-Irg">
+            <objects>
+                <viewController storyboardIdentifier="manualSyncViewController" id="uOa-u7-o8J" customClass="ManualSyncViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rjD-By-3u6"/>
+                        <viewControllerLayoutGuide type="bottom" id="rPp-cS-Edd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ei6-jl-Nrc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XJH-Cc-WNM" customClass="ConnectUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="XJH-Cc-WNM" firstAttribute="top" secondItem="rjD-By-3u6" secondAttribute="bottom" id="3YU-cf-S5y"/>
+                            <constraint firstItem="XJH-Cc-WNM" firstAttribute="leading" secondItem="Ei6-jl-Nrc" secondAttribute="leading" id="hu2-W2-q6n"/>
+                            <constraint firstAttribute="trailing" secondItem="XJH-Cc-WNM" secondAttribute="trailing" id="hz1-sj-ef3"/>
+                            <constraint firstItem="rPp-cS-Edd" firstAttribute="top" secondItem="XJH-Cc-WNM" secondAttribute="bottom" id="xwC-HG-cYL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="connectUIView" destination="XJH-Cc-WNM" id="bVZ-2Q-QDE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qny-u2-8Tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1712.8" y="2656.8215892053977"/>
+        </scene>
         <!--New Secure Email-->
         <scene sceneID="YB0-E0-3PV">
             <objects>

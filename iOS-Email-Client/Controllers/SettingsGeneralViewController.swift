@@ -40,6 +40,7 @@ class SettingsGeneralViewController: UITableViewController{
             case recovery
             case syncContact
             case deleteAccount
+            case manualSync
             
             case privacy
             case terms
@@ -82,6 +83,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("VERSION")
                 case .night:
                     return String.localize("NIGHT_MODE")
+                case .manualSync:
+                    return String.localize("MANUAL_SYNC")
                 }
             }
         }
@@ -91,7 +94,7 @@ class SettingsGeneralViewController: UITableViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = [.account, .appearance, .about, .version] as [Section]
     let menus = [
-        .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .privacySecurity, .syncContact],
+        .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .privacySecurity, .syncContact, .manualSync],
         .about: [.privacy, .terms, .openSource, .logout, .deleteAccount],
         .appearance: [.night],
         .version : [.version]] as [Section: [Section.SubSection]
@@ -191,6 +194,15 @@ class SettingsGeneralViewController: UITableViewController{
                 cell.loader.startAnimating()
             }
             return cell
+        case .manualSync:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+            cell.optionLabel.textColor = theme.mainText
+            cell.optionLabel.text = subsection.name
+            cell.goImageView.isHidden = true
+            cell.messageLabel.text = ""
+            cell.loader.stopAnimating()
+            cell.loader.isHidden = true
+            return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
             cell.optionLabel.textColor = theme.mainText
@@ -281,6 +293,8 @@ class SettingsGeneralViewController: UITableViewController{
             goToRecoveryEmail()
         case .privacySecurity:
             goToPrivacyAndSecurity()
+        case .manualSync:
+            showManualSyncWarning()
         case .syncContact:
             guard generalData.syncStatus != .syncing else {
                 break
@@ -290,6 +304,41 @@ class SettingsGeneralViewController: UITableViewController{
             break
         }
         
+    }
+    
+    func showManualSyncWarning() {
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("SYNC_WARNING")
+        let attributedText = NSMutableAttributedString(string: String.localize("SYNC_WARNING_1"), attributes: [.font: Font.regular.size(15)!])
+        attributedText.append(NSAttributedString(string: String.localize("SYNC_WARNING_2"), attributes: [.font: Font.bold.size(15)!]))
+        popover.attributedMessage = attributedText
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("CONTINUE")
+        popover.onResponse = { [weak self] accept in
+            guard accept else {
+                return
+            }
+            self?.showManualSyncPopup()
+        }
+        self.presentPopover(popover: popover, height: 270)
+    }
+    
+    func showManualSyncPopup() {
+        let popover = ManualSyncUIPopover()
+        popover.myAccount = self.myAccount
+        popover.onAccept = { [weak self] acceptData in
+            self?.goToManualSync(acceptData: acceptData)
+        }
+        self.presentPopover(popover: popover, height: 350)
+    }
+    
+    func goToManualSync(acceptData: AcceptData) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "manualSyncViewController") as! ManualSyncViewController
+        linkDeviceVC.acceptData = acceptData
+        linkDeviceVC.myAccount = myAccount
+        self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
+        self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }
     
     func syncContacts(indexPath: IndexPath){
@@ -441,7 +490,6 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func goToUrl(url: String){
-        print(url)
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
     }

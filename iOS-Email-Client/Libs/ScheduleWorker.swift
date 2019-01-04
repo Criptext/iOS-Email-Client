@@ -10,7 +10,7 @@ import Foundation
 
 typealias WorkCompletion = ((Bool) -> Void)
 
-protocol ScheduleWorkerDelegate {
+protocol ScheduleWorkerDelegate: class {
     func work(completion: @escaping (Bool) -> Void)
     func dangled()
 }
@@ -20,7 +20,7 @@ class ScheduleWorker {
     let interval: Double
     let maxRetries: Int
     var worker: DispatchWorkItem?
-    var delegate: ScheduleWorkerDelegate?
+    weak var delegate: ScheduleWorkerDelegate?
     var isRunning = false
     var retries: Int = 0
     

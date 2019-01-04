@@ -93,7 +93,7 @@ extension UIViewController {
         popover.popoverPresentationController?.sourceView = self.view
         popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         popover.popoverPresentationController?.permittedArrowDirections = arrowDirections
-        popover.popoverPresentationController?.backgroundColor = theme.popoverButton
+        popover.popoverPresentationController?.backgroundColor = theme.overallBackground
         
         if let activePopover = self.presentedViewController as? BaseUIPopover {
             activePopover.dismiss(animated: false, completion: nil)

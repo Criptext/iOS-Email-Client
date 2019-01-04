@@ -101,7 +101,11 @@ extension CustomTabsController: LinkDeviceDelegate {
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
-        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        if case .sync = linkData.kind {
+            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        } else {
+            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        }
     }
 }
 

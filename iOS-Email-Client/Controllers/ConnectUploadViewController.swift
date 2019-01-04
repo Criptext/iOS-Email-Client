@@ -51,11 +51,20 @@ class ConnectUploadViewController: UIViewController{
         mailboxDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = self
         connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
-        connectUIView.applyTheme()
+        self.applyTheme()
         scheduleWorker.delegate = self
         self.connectUIView.goBackButton.isHidden = true
         self.connectUIView.setDeviceIcons(leftType: Device.Kind.current, rightType: Device.Kind(rawValue: linkData.deviceType)!)
+        connectUIView.goBack = { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
         handleState()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        connectUIView.applyTheme()
+        self.view.backgroundColor = theme.overallBackground
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
@@ -67,7 +76,7 @@ class ConnectUploadViewController: UIViewController{
     func handleState(){
         switch(state){
         case .link:
-            linkAccept()
+            linkData.kind == .link ? linkAccept() : syncAccept()
         case .creatingDB(let deviceId):
             createDBFile(deviceId: deviceId)
         case .waiting:
@@ -100,8 +109,28 @@ class ConnectUploadViewController: UIViewController{
             self.handleState()
             self.scheduleWorker.start()
         }
-        connectUIView.goBack = {
-            self.dismiss(animated: true, completion: nil)
+    }
+    
+    func syncAccept() {
+        APIManager.syncAccept(randomId: linkData.randomId, account: myAccount) { (responseData) in
+            if case .Missing = responseData {
+                self.showErrorAlert(message: String.localize("DEVICE_REJECTED"))
+                return
+            }
+            if case .BadRequest = responseData {
+                self.showErrorAlert(message: String.localize("DEVICE_AUTHORIZED"))
+                return
+            }
+            guard case .Success = responseData,
+                let deviceId = self.linkData.deviceId else {
+                    self.presentProcessInterrupted()
+                    return
+            }
+            self.connectUIView.progressChange(value: self.PROGRESS_PREPARING_MAILBOX, message: String.localize("PREPARING_MAIL"), completion: {})
+            self.linkData.deviceId = deviceId
+            self.state = .creatingDB(deviceId)
+            self.handleState()
+            self.scheduleWorker.start()
         }
     }
     

@@ -18,7 +18,6 @@ protocol ProgressDelegate {
 
 class APIManager: SharedAPI {
     static let fileServiceUrl = "https://services.criptext.com"
-    static let linkUrl = "https://transfer.criptext.com"
     
     class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
@@ -436,6 +435,88 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func syncBegin(account: Account, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/sync/begin"
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = ["version": Env.linkVersion.description] as [String : Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.syncBegin(account: account, completion: completion)
+            }
+        }
+    }
+    
+    class func syncStatus(account: Account, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/sync/status"
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            let responseData = handleResponse(response)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.syncStatus(account: account, completion: completion)
+            }
+        }
+    }
+    
+    class func syncAccept(randomId: String, account: Account, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/sync/accept"
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = [
+            "randomId": randomId,
+            "version": Env.linkVersion.description
+        ] as [String : Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.syncAccept(randomId: randomId, account: account, completion: completion)
+            }
+        }
+    }
+    
+    class func syncDeny(randomId: String, account: Account, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/sync/deny"
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = ["randomId": randomId] as [String : Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.linkDeny(randomId: randomId, account: account, completion: completion)
+            }
+        }
+    }
+    
     class func getNews(code: Int32, completion: @escaping ((ResponseData) -> Void)) {
         let url = "https://news.criptext.com/news/\(NSLocale.preferredLanguages.first!)/\(code)"
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
@@ -687,7 +768,7 @@ extension APIManager {
 
 extension APIManager {
     class func uploadLinkDBFile(dbFile: InputStream, randomId: String, size: Int, token: String, progressCallback: @escaping ((Double) -> Void), completion: @escaping ((ResponseData) -> Void)){
-        let url = "\(self.linkUrl)/userdata"
+        let url = "\(Env.transferURL)/userdata"
         let headers = [
             "Authorization": "Bearer \(token)",
             "Content-Length": size.description,
@@ -702,7 +783,7 @@ extension APIManager {
     }
     
     class func downloadLinkDBFile(address: String, token: String, progressCallback: @escaping ((Double) -> Void), completion: @escaping ((ResponseData) -> Void)) {
-        let url = "\(self.linkUrl)/userdata?id=\(address)"
+        let url = "\(Env.transferURL)/userdata?id=\(address)"
         let headers = ["Authorization": "Bearer \(token)"]
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileURL = documentsURL.appendingPathComponent("\(address).db")

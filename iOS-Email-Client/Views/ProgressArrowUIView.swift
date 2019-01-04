@@ -9,6 +9,7 @@
 import Foundation
 
 class ProgressArrowUIView: UIView{
+    var progressColor: CGColor = UIColor.white.cgColor
     let fps = 0.01
     let radius = 5.0
     let width = 7.0
@@ -96,7 +97,7 @@ class ProgressArrowUIView: UIView{
         path.close()
         
         let shape = CAShapeLayer()
-        shape.fillColor = UIColor.white.cgColor
+        shape.fillColor = progressColor
         shape.path = path.cgPath
         clipsToBounds = false
         layer.addSublayer(shape)
@@ -105,7 +106,7 @@ class ProgressArrowUIView: UIView{
     func drawArc(){
         let path = UIBezierPath(arcCenter: CGPoint(x: centerPositionX, y: centerPositionY), radius: self.frame.width / 2 + CGFloat(width - 2), startAngle: CGFloat(angle - Double.pi * 1.25), endAngle:CGFloat(angle), clockwise: true)
         let shape = CAShapeLayer()
-        shape.strokeColor = UIColor.white.cgColor
+        shape.strokeColor = progressColor
         shape.fillColor = UIColor.clear.cgColor
         shape.lineWidth = 4.0
         shape.path = path.cgPath
@@ -119,7 +120,7 @@ class ProgressArrowUIView: UIView{
         let path = UIBezierPath(arcCenter: CGPoint(x: posX + centerPositionX, y: posY + centerPositionY), radius: CGFloat(2), startAngle: CGFloat(0), endAngle:CGFloat(DoublePi), clockwise: true)
         let shape = CAShapeLayer()
         shape.strokeColor = UIColor.clear.cgColor
-        shape.fillColor = UIColor.white.cgColor
+        shape.fillColor = progressColor
         shape.path = path.cgPath
         clipsToBounds = false
         layer.addSublayer(shape)
@@ -131,7 +132,7 @@ class ProgressArrowUIView: UIView{
         let path = UIBezierPath(arcCenter: CGPoint(x: posX + centerPositionX, y: posY + centerPositionY), radius: CGFloat(2 * getDotSizeFactor(offset)), startAngle: CGFloat(0), endAngle:CGFloat(DoublePi), clockwise: true)
         let shape = CAShapeLayer()
         shape.strokeColor = UIColor.clear.cgColor
-        shape.fillColor = UIColor.white.cgColor
+        shape.fillColor = progressColor
         shape.path = path.cgPath
         clipsToBounds = false
         layer.addSublayer(shape)

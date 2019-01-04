@@ -9,7 +9,8 @@
 "NOTIFICATIONS" = "NOTIFICATIONS";
 "ABOUT" = "ABOUT";
 "APPEARANCE" = "APPEARANCE";
-"NIGHT_MODE" = "Dark Mode";
+"NIGHT_MODE" = "Dark Theme";
+"MANUAL_SYNC" = "Mailbox Sync";
 "VERSION" = "VERSION";
 "GENERAL" = "GENERAL";
 "DELETE_ACCOUNT" = "Delete Account";
@@ -310,3 +311,11 @@
 "ENTER_NEW_PASS" = "Enter new password";
 "CONFIRM_NEW_PASS" = "Repeat new password";
 "ENTER_NEW_RECOVERY" = "Enter new recovery email";
+
+"SYNC_WARNING" = "Sync Warning";
+"SYNC_WARNING_1" = "Your entire mailbox data will be erased and replaced with the mailbox data from your other device.\n\n";
+"SYNC_WARNING_2" = "Are you sure you want to continue?";
+"SYNC_FAIL" = "Your request to access this account was rejected by a verified device";
+"SYNC_REJECTED" = "Sync Rejected";
+"SYNC_REQUEST" = "Sync Request";
+"SYNC_COMPLETED" = "Mailbox Sync Completed!";

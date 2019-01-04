@@ -345,8 +345,8 @@ class InboxViewController: UIViewController {
 extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
-        case .LinkStart(let data):
-            self.handleLinkStart(data: data)
+        case .LinkData(let data):
+            self.handleLinkStart(linkData: data)
         case .NewEvent:
             self.getPendingEvents(nil)
         case .PasswordChange:
@@ -377,10 +377,7 @@ extension InboxViewController: WebSocketManagerDelegate {
         }
     }
     
-    func handleLinkStart(data: [String: Any]){
-        guard let linkData = LinkData.fromDictionary(data) else {
-            return
-        }
+    func handleLinkStart(linkData: LinkData){
         self.presentLinkDevicePopover(linkData: linkData)
     }
 }
@@ -451,8 +448,8 @@ extension InboxViewController {
             viewSetupNews()
         }
         
-        if !result.linkStartData.isEmpty {
-            handleLinkStart(data: result.linkStartData)
+        if let linkData = result.linkStartData {
+            handleLinkStart(linkData: linkData)
         }
         
         if result.updateSideMenu {
@@ -462,12 +459,12 @@ extension InboxViewController {
             menuViewController.reloadView()
         }
         
-        if result.emails.contains(where: {!$0.isInvalidated && $0.status != .unsent && !$0.isSent}) {
+        if result.emailLabels.contains(where: {$0 == SystemLabel.inbox.description}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
         
         let pathsToUpdate = result.opens.reduce([IndexPath]()) { (result, open) -> [IndexPath] in
-            guard let index = mailboxData.threads.index(where: {$0.threadId == open.email.threadId}) else {
+            guard let index = mailboxData.threads.index(where: {$0.threadId == open}) else {
                 return result
             }
             return result + [IndexPath(row: index, section: 0)]
@@ -491,7 +488,7 @@ extension InboxViewController {
         if(result.modifiedEmailKeys.count > 0 || result.modifiedThreadIds.count > 0){
             return true
         }
-        guard !mailboxData.searchMode && result.emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) else {
+        guard !mailboxData.searchMode && result.emailLabels.contains(where: {$0 == SystemLabel(rawValue: mailboxData.selectedLabel)?.description}) else {
             return false
         }
         return true
@@ -1587,8 +1584,13 @@ extension InboxViewController: LinkDeviceDelegate {
         self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
         self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }
+    
     func onCancelLinkDevice(linkData: LinkData) {
-        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        if case .sync = linkData.kind {
+            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        } else {
+            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        }
     }
     
     func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
@@ -1607,9 +1609,15 @@ extension InboxViewController: LinkDeviceDelegate {
         }
     }
     func onCancelLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
-        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
-            completion()
-        })
+        if case .sync = linkData.kind {
+            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
+                completion()
+            })
+        } else {
+            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
+                completion()
+            })
+        }
     }
 }
 

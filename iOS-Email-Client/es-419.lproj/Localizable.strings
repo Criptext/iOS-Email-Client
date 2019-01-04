@@ -8,8 +8,9 @@
 "ACCOUNT" = "CUENTA";
 "NOTIFICATIONS" = "NOTIFICACIONES";
 "ABOUT" = "ACERCA DE";
-"APPEARANCE" = "PRESENTACION";
-"NIGHT_MODE" = "Modo Oscuro";
+"APPEARANCE" = "APARIENCIA";
+"NIGHT_MODE" = "Tema Oscuro";
+"MANUAL_SYNC" = "Sincronización de Buzón";
 "VERSION" = "VERSIÓN";
 "GENERAL" = "GENERAL";
 "DELETE_ACCOUNT" = "Eliminar Cuenta";
@@ -310,3 +311,11 @@
 "ENTER_NEW_PASS" = "Introduce la nueva contraseña";
 "CONFIRM_NEW_PASS" = "Repite la nueva contraseña";
 "ENTER_NEW_RECOVERY" = "Introduce nuevo correo de recuperación";
+
+"SYNC_WARNING" = "Advertencia";
+"SYNC_WARNING_1" = "Todos los datos de tu bandeja de correos será borrada y reemplazada con los datos de tu otro dispositivo.\n\n";
+"SYNC_WARNING_2" = "¿Estás seguro que deseas continuar?";
+"SYNC_FAIL" = "Tu intento de acceder a esta cuenta fue negada por un dispositivo aprobado.";
+"SYNC_REJECTED" = "Sincronización Rechazada";
+"SYNC_REQUEST" = "Sincronización de Buzón";
+"SYNC_COMPLETED" = "Sincronización de Buzón Completa!";
