@@ -71,6 +71,15 @@ class SharedDB {
         }
     }
     
+    class func clone(_ email: Email) -> Email {
+        let realm = try! Realm()
+        var email: Email!
+        try! realm.write {
+            email = realm.create(Email.self, value: email, update: true)
+        }
+        return email
+    }
+    
     class func getUnreadMailsCounter(from label: Int) -> Int {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []

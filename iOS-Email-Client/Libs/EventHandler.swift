@@ -10,68 +10,75 @@ import Foundation
 import SwiftSoup
 
 class EventHandler {
-    let myAccount : Account
+    let username : String
+    let jwt: String
     var apiManager : APIManager.Type = APIManager.self
     var signalHandler: SignalHandler.Type = SignalHandler.self
+    let queue = DispatchQueue.global(qos: .default)
     
     init(account: Account){
-        myAccount = account
+        username = account.username
+        jwt = account.jwt
     }
 
     func handleEvents(events: [[String: Any]], completion: @escaping (_ result: EventData.Result) -> Void){
         var result = EventData.Result()
         var successfulEvents = [Int32]()
-        handleEventsRecursive(events: events, index: 0, eventCallback: { (successfulEventId, eventResult) in
-            guard let eventId = successfulEventId else {
-                return
+        let dispatchQueue = DispatchQueue(label: "taskQueue")
+        let dispatchSemaphore = DispatchSemaphore(value: 0)
+        
+        dispatchQueue.async {
+            for (index, event) in events.enumerated() {
+                self.handleEvent(event, finishCallback: { (successfulEventId, eventResult) in
+                    self.handleEventResult(result: &result, successfulEvents: &successfulEvents , successfulEventId, eventResult)
+                    dispatchSemaphore.signal()
+                    guard index == events.count - 1 else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        if(!successfulEvents.isEmpty && !result.removed){
+                            self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.jwt)
+                        }
+                        completion(result)
+                    }
+                })
+                dispatchSemaphore.wait()
             }
-            successfulEvents.append(eventId)
-            switch(eventResult){
-            case .Email(let email):
-                result.emails.append(email)
-            case .Feed(let open):
-                result.opens.append(open)
-            case .ModifiedThreads(let threads):
-                result.modifiedThreadIds.append(contentsOf: threads)
-            case .ModifiedEmails(let emails):
-                result.modifiedEmailKeys.append(contentsOf: emails)
-            case .NameChanged, .LabelCreated:
-                result.updateSideMenu = true
-            case .LinkStart(let params):
-                result.linkStartData = params
-            case .News(let feature):
-                result.feature = feature
-            default:
-                break
-            }
-        }) {
-            if(!successfulEvents.isEmpty && !result.removed){
-                self.apiManager.acknowledgeEvents(eventIds: successfulEvents, token: self.myAccount.jwt)
-            }
-            completion(result)
         }
     }
     
-    func handleEventsRecursive(events: [[String: Any]], index: Int, eventCallback: @escaping (_ successfulEventId : Int32?, _ data: Event.EventResult) -> Void , finishCallback: @escaping () -> Void){
-        if(events.count == index){
-            finishCallback()
+    func handleEventResult(result: inout EventData.Result, successfulEvents: inout [Int32], _ successfulEventId : Int32?, _ eventResult: Event.EventResult) {
+        guard let eventId = successfulEventId else {
             return
         }
-        let event = events[index]
-        handleEvent(event) { (successfulEventId, result) in
-            eventCallback(successfulEventId, result)
-            self.handleEventsRecursive(events: events, index: index + 1, eventCallback: eventCallback, finishCallback: finishCallback)
+        successfulEvents.append(eventId)
+        switch(eventResult){
+        case .Email(let email):
+            result.emailLabels.append(contentsOf: Array(email.labels.map({$0.text})))
+        case .Feed(let open):
+            result.opens.append(open.email.threadId)
+        case .ModifiedThreads(let threads):
+            result.modifiedThreadIds.append(contentsOf: threads)
+        case .ModifiedEmails(let emails):
+            result.modifiedEmailKeys.append(contentsOf: emails)
+        case .NameChanged, .LabelCreated:
+            result.updateSideMenu = true
+        case .LinkData(let linkData):
+            result.linkStartData = linkData
+        case .News(let feature):
+            result.feature = feature
+        default:
+            break
         }
     }
     
-    func handleEvent(_ event: Dictionary<String, Any>, finishCallback: @escaping (_ successfulEventId : Int32?, _ data: Event.EventResult) -> Void){
+    func handleEvent(_ event: [String: Any], finishCallback: @escaping (_ successfulEventId : Int32?, _ data: Event.EventResult) -> Void){
         let cmd = event["cmd"] as! Int32
         let rowId = event["rowid"] as? Int32 ?? -1
         guard let params = event["params"] as? [String : Any] ?? Utils.convertToDictionary(text: (event["params"] as! String)) else {
             finishCallback(nil, .Empty)
             return
         }
-        
         func handleEventResponse(successfulEvent: Bool, result: Event.EventResult){
             guard successfulEvent else {
                     finishCallback(nil, .Empty)
@@ -83,17 +90,14 @@ class EventHandler {
         switch(cmd){
         case Event.newEmail.rawValue:
             self.handleNewEmailCommand(params: params, finishCallback: handleEventResponse)
-            break
         case Event.emailStatus.rawValue:
             self.handleEmailStatusCommand(params: params, finishCallback: handleEventResponse)
-            break
         case Event.Peer.unsent.rawValue:
             var fakeParams = params
-            fakeParams["from"] = myAccount.username
+            fakeParams["from"] = self.username
             fakeParams["type"] = Email.Status.unsent.rawValue
             fakeParams["date"] = Date().description
             self.handlePeerUnsentCommand(params: fakeParams, finishCallback: handleEventResponse)
-            break
         case Event.Peer.emailsUnread.rawValue:
             handleEmailUnreadCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.threadsUnread.rawValue:
@@ -115,7 +119,19 @@ class EventHandler {
         case Event.serverError.rawValue:
             handleEventResponse(successfulEvent: true, result: .Empty)
         case Event.Link.start.rawValue:
-            handleEventResponse(successfulEvent: true, result: .LinkStart(params))
+            guard let linkData = LinkData.fromDictionary(params, kind: .link) else {
+                handleEventResponse(successfulEvent: true, result: .Empty)
+                break
+            }
+            handleEventResponse(successfulEvent: true, result: .LinkData(linkData))
+        case Event.Sync.start.rawValue:
+            guard let linkData = LinkData.fromDictionary(params, kind: .sync) else {
+                handleEventResponse(successfulEvent: true, result: .Empty)
+                break
+            }
+            handleEventResponse(successfulEvent: true, result: .LinkData(linkData))
+        case Event.Link.success.rawValue:
+            finishCallback(rowId, .Empty)
         default:
             finishCallback(nil, .Empty)
             break
@@ -123,7 +139,7 @@ class EventHandler {
     }
     
     func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Event.EventResult) -> Void){
-        let handler = NewEmailHandler(username: myAccount.username)
+        let handler = NewEmailHandler(username: self.username, queue: self.queue)
         handler.command(params: params) { (result) in
             guard let email = result.email else {
                 finishCallback(result.success, .Empty)
@@ -163,45 +179,32 @@ class EventHandler {
         finishCallback(true, .Feed(open))
     }
     
-    func handleAttachment(_ attachment: [String: Any], email: Email) -> File {
-        let file = File()
-        file.token = attachment["token"] as! String
-        file.size = attachment["size"] as! Int
-        file.name = attachment["name"] as! String
-        file.mimeType = File.mimeTypeForPath(path: file.name)
-        file.date = email.date
-        file.readOnly = attachment["read_only"] as? Int ?? 0
-        file.emailId = email.key
-        DBManager.store(file)
-        return file
-    }
-    
-    func isMeARecipient(email: Email) -> Bool {
-        let accountEmail = "\(myAccount.username)\(Constants.domain)"
-        let bccContacts = Array(email.getContacts(type: .bcc))
-        let ccContacts = Array(email.getContacts(type: .cc))
-        let toContacts = Array(email.getContacts(type: .to))
-        return bccContacts.contains(where: {$0.email == accountEmail})
-            || ccContacts.contains(where: {$0.email == accountEmail})
-            || toContacts.contains(where: {$0.email == accountEmail})
-    }
-    
-    func isFromMe(email: Email) -> Bool {
-        let accountEmail = "\(myAccount.username)\(Constants.domain)"
-        return accountEmail == email.fromContact.email
-    }
-    
     func handleSocketEvent(event: [String: Any]) -> EventData.Socket {
         guard let cmd = event["cmd"] as? Int32 else {
             return .Unhandled
         }
         
         switch(cmd){
-        case Event.Link.start.rawValue:
-            guard let params = event["params"] as? [String: Any] else {
+        case Event.Sync.start.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let linkData = LinkData.fromDictionary(params, kind: .sync) else {
+                return .Error
+            }
+            return .LinkData(linkData)
+        case Event.Sync.accept.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let syncData = AcceptData.fromDictionary(params) else {
                     return .Error
             }
-            return .LinkStart(params)
+            return .SyncAccept(syncData)
+        case Event.Sync.deny.rawValue:
+            return .SyncDeny
+        case Event.Link.start.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let linkData = LinkData.fromDictionary(params, kind: .link) else {
+                    return .Error
+            }
+            return .LinkData(linkData)
         case Event.Peer.passwordChange.rawValue:
             return .PasswordChange
         case Event.Link.removed.rawValue:
@@ -284,6 +287,10 @@ extension EventHandler {
     }
     
     func handleChangeNameCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            finishCallback(false, .Empty)
+            return
+        }
         let event = EventData.Peer.NameChanged.init(params: params)
         DBManager.update(account: myAccount, name: event.name)
         finishCallback(true, .NameChanged)
@@ -320,6 +327,12 @@ enum Event: Int32 {
         case deny = 206
     }
     
+    enum Sync: Int32 {
+        case start = 211
+        case accept = 212
+        case deny = 216
+    }
+    
     enum Peer: Int32 {
         case emailsUnread = 301
         case threadsUnread = 302
@@ -344,7 +357,7 @@ enum Event: Int32 {
     }
     
     enum EventResult {
-        case LinkStart([String: Any])
+        case LinkData(LinkData)
         case Email(Email)
         case Feed(FeedItem)
         case ModifiedThreads([String])

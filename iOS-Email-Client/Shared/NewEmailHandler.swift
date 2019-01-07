@@ -15,9 +15,11 @@ class NewEmailHandler {
     var api: SharedAPI.Type = SharedAPI.self
     let username: String
     let PREVIEW_SIZE = 300
+    let queue: DispatchQueue?
     
-    init(username: String){
+    init(username: String, queue: DispatchQueue? = nil){
         self.username = username
+        self.queue = queue
     }
     
     struct Result {
@@ -52,23 +54,7 @@ class NewEmailHandler {
             return
         }
         
-        let email = Email()
-        email.threadId = event.threadId
-        email.subject = event.subject
-        email.key = event.metadataKey
-        email.messageId = event.messageId
-        email.date = event.date
-        email.unread = true
-        
-        if let attachments = event.files {
-            for attachment in attachments {
-                let file = self.handleAttachment(attachment, email: email)
-                email.files.append(file)
-            }
-        }
-        
-        api.getEmailBody(metadataKey: email.key, account: myAccount) { (responseData) in
-            
+        api.getEmailBody(metadataKey: event.metadataKey, account: myAccount, queue: self.queue) { (responseData) in
             var error: CriptextError?
             var unsent = false
             if case let .Error(err) = responseData {
@@ -91,12 +77,26 @@ class NewEmailHandler {
             }
             
             let contentPreview = self.getContentPreview(content: content)
+            let email = Email()
+            email.threadId = event.threadId
+            email.subject = event.subject
+            email.key = event.metadataKey
+            email.messageId = event.messageId
+            email.date = event.date
+            email.unread = true
             email.content = contentPreview.1
             email.preview = contentPreview.0
             
             if(unsent){
                 email.unsentDate = email.date
                 email.status = .unsent
+            }
+            
+            if let attachments = event.files {
+                for attachment in attachments {
+                    let file = self.handleAttachment(attachment, email: email)
+                    email.files.append(file)
+                }
             }
             
             if self.isFromMe(email: email, account: myAccount, event: event),

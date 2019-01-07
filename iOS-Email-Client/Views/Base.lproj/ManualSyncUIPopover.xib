@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Bold.ttf">
+            <string>NunitoSans-Bold</string>
+        </array>
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+        <array key="NunitoSans-SemiBold.ttf">
+            <string>NunitoSans-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualSyncUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="alertImage" destination="Tty-n4-MuN" id="VNX-PV-1TE"/>
+                <outlet property="bottomLabel" destination="VWn-kk-PDH" id="8fh-Gx-kCz"/>
+                <outlet property="bottomView" destination="Pu9-8b-5kQ" id="K63-Pq-yCQ"/>
+                <outlet property="cancelButton" destination="PNQ-16-Pa4" id="Ncp-bo-Hj9"/>
+                <outlet property="hourglassImage" destination="Zmr-Pz-M5x" id="HE8-FP-pDO"/>
+                <outlet property="progressArrowView" destination="d9s-7h-qhD" id="o3o-N8-9t5"/>
+                <outlet property="promptLabel" destination="emM-j0-ngB" id="iW1-jZ-xmc"/>
+                <outlet property="resendButton" destination="Qde-jj-NHE" id="SwF-b8-SqJ"/>
+                <outlet property="titleLabel" destination="fur-Fh-cfM" id="bP6-08-m4p"/>
+                <outlet property="topLabel" destination="eGr-Ft-an2" id="O01-CH-EZp"/>
+                <outlet property="view" destination="iN0-l3-epB" id="S1s-oL-wsQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="270" height="350"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PNQ-16-Pa4">
+                    <rect key="frame" x="0.0" y="304" width="270" height="46"/>
+                    <color key="backgroundColor" red="0.82745098039999998" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="E5W-7X-IeI"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="15"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="onCancelPress:" destination="-1" eventType="touchUpInside" id="zk3-RS-TGp"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d9s-7h-qhD" customClass="ProgressArrowUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                    <rect key="frame" x="114" y="154" width="42" height="42"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="42" id="91u-CL-EmC"/>
+                        <constraint firstAttribute="height" constant="42" id="GFg-2z-PkX"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading-hourglass" translatesAutoresizingMaskIntoConstraints="NO" id="Zmr-Pz-M5x">
+                    <rect key="frame" x="122.5" y="162.5" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="7n9-2R-eE7"/>
+                        <constraint firstAttribute="width" constant="25" id="G1Y-MY-r1S"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manual Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fur-Fh-cfM">
+                    <rect key="frame" x="30" y="24" width="210" height="23.5"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check and approve this sync from your existing Criptext devices." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eGr-Ft-an2">
+                    <rect key="frame" x="25" y="67.5" width="220" height="61.5"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pu9-8b-5kQ">
+                    <rect key="frame" x="25" y="221" width="220" height="61.5"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Didn’t get the prompt?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emM-j0-ngB">
+                            <rect key="frame" x="0.0" y="0.0" width="220" height="31"/>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qde-jj-NHE">
+                            <rect key="frame" x="0.0" y="31" width="220" height="30.5"/>
+                            <state key="normal" title="Resend it"/>
+                            <connections>
+                                <action selector="onResend:" destination="-1" eventType="touchUpInside" id="DT4-Qv-0mG"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="emM-j0-ngB" secondAttribute="trailing" id="2oj-bg-Ark"/>
+                        <constraint firstItem="emM-j0-ngB" firstAttribute="leading" secondItem="Pu9-8b-5kQ" secondAttribute="leading" id="Jx3-fy-h2j"/>
+                        <constraint firstItem="emM-j0-ngB" firstAttribute="top" secondItem="Pu9-8b-5kQ" secondAttribute="top" id="T5A-Pp-X7v"/>
+                        <constraint firstAttribute="bottom" secondItem="Qde-jj-NHE" secondAttribute="bottom" id="VFY-k4-cmh"/>
+                        <constraint firstItem="Qde-jj-NHE" firstAttribute="top" secondItem="emM-j0-ngB" secondAttribute="bottom" id="YYh-xZ-5zH"/>
+                        <constraint firstItem="Qde-jj-NHE" firstAttribute="leading" secondItem="Pu9-8b-5kQ" secondAttribute="leading" id="lsH-yQ-7H7"/>
+                        <constraint firstAttribute="trailing" secondItem="Qde-jj-NHE" secondAttribute="trailing" id="vt8-c8-wXT"/>
+                        <constraint firstItem="emM-j0-ngB" firstAttribute="height" secondItem="Pu9-8b-5kQ" secondAttribute="height" multiplier="0.5" id="wee-vc-CT0"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Warning: Multiple rejections could lead your device to be blacklisted from Criptext" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWn-kk-PDH">
+                    <rect key="frame" x="25" y="221" width="220" height="61.5"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-alert" translatesAutoresizingMaskIntoConstraints="NO" id="Tty-n4-MuN">
+                    <rect key="frame" x="114" y="154" width="42" height="42"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Tty-n4-MuN" firstAttribute="centerY" secondItem="d9s-7h-qhD" secondAttribute="centerY" id="0eN-Hv-aba"/>
+                <constraint firstItem="eGr-Ft-an2" firstAttribute="top" secondItem="fur-Fh-cfM" secondAttribute="bottom" constant="20" id="29i-E6-TIK"/>
+                <constraint firstItem="d9s-7h-qhD" firstAttribute="centerX" secondItem="Zmr-Pz-M5x" secondAttribute="centerX" id="6wZ-Rx-t2k"/>
+                <constraint firstAttribute="trailing" secondItem="eGr-Ft-an2" secondAttribute="trailing" constant="25" id="8Gt-Su-k1y"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Pu9-8b-5kQ" secondAttribute="trailing" constant="25" id="8zy-7f-Urj"/>
+                <constraint firstItem="PNQ-16-Pa4" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="AQA-4d-QNK"/>
+                <constraint firstItem="Tty-n4-MuN" firstAttribute="height" secondItem="d9s-7h-qhD" secondAttribute="height" id="Ala-c7-k34"/>
+                <constraint firstItem="VWn-kk-PDH" firstAttribute="centerX" secondItem="Pu9-8b-5kQ" secondAttribute="centerX" id="Bya-wM-F0e"/>
+                <constraint firstItem="VWn-kk-PDH" firstAttribute="centerY" secondItem="Pu9-8b-5kQ" secondAttribute="centerY" id="DzJ-IE-2ge"/>
+                <constraint firstItem="d9s-7h-qhD" firstAttribute="centerY" secondItem="Zmr-Pz-M5x" secondAttribute="centerY" id="EtG-IH-2Iq"/>
+                <constraint firstItem="PNQ-16-Pa4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="R1d-O5-4M0"/>
+                <constraint firstItem="Pu9-8b-5kQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="RHO-aT-WuR"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fur-Fh-cfM" secondAttribute="trailing" constant="30" id="VCB-Zp-PGf"/>
+                <constraint firstItem="eGr-Ft-an2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="YNt-VS-hap"/>
+                <constraint firstItem="Pu9-8b-5kQ" firstAttribute="top" secondItem="d9s-7h-qhD" secondAttribute="bottom" constant="25" id="bsu-kO-UEW"/>
+                <constraint firstItem="VWn-kk-PDH" firstAttribute="height" secondItem="Pu9-8b-5kQ" secondAttribute="height" id="f1I-na-fc0"/>
+                <constraint firstItem="Zmr-Pz-M5x" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="haJ-It-itL"/>
+                <constraint firstItem="d9s-7h-qhD" firstAttribute="top" secondItem="eGr-Ft-an2" secondAttribute="bottom" constant="25" id="mvo-me-qCF"/>
+                <constraint firstItem="Zmr-Pz-M5x" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="ndI-SM-klt"/>
+                <constraint firstItem="VWn-kk-PDH" firstAttribute="width" secondItem="Pu9-8b-5kQ" secondAttribute="width" id="qta-dh-5BS"/>
+                <constraint firstItem="fur-Fh-cfM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="rqh-JT-LwP"/>
+                <constraint firstItem="Tty-n4-MuN" firstAttribute="centerX" secondItem="d9s-7h-qhD" secondAttribute="centerX" id="taO-gi-6l5"/>
+                <constraint firstItem="Tty-n4-MuN" firstAttribute="width" secondItem="d9s-7h-qhD" secondAttribute="width" id="x4Z-Rm-veU"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="PNQ-16-Pa4" secondAttribute="trailing" id="xtu-M7-OTi"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="94.400000000000006" y="510.94452773613199"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="device-alert" width="49" height="42"/>
+        <image name="loading-hourglass" width="38" height="53"/>
+    </resources>
+</document>

@@ -284,13 +284,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         UIApplication.shared.registerForRemoteNotifications()
-        UNUserNotificationCenter.current().setNotificationCategories([setupLinkDeviceNotification(), setupNewEmailNotification()])
+        UNUserNotificationCenter.current().setNotificationCategories([setupLinkDeviceNotification(), setupNewEmailNotification(), setupSyncDeviceNotification()])
     }
     
     func setupLinkDeviceNotification() -> UNNotificationCategory {
         let linkAccept = UNNotificationAction(identifier: "LINK_ACCEPT", title: String.localize("APPROVE"), options: .foreground)
         let linkDeny = UNNotificationAction(identifier: "LINK_DENY", title: String.localize("REJECT"), options: .destructive)
         return UNNotificationCategory(identifier: "LINK_DEVICE", actions: [linkAccept, linkDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+    }
+    
+    func setupSyncDeviceNotification() -> UNNotificationCategory {
+        let syncAccept = UNNotificationAction(identifier: "SYNC_ACCEPT", title: String.localize("APPROVE"), options: .foreground)
+        let syncDeny = UNNotificationAction(identifier: "SYNC_DENY", title: String.localize("REJECT"), options: .destructive)
+        return UNNotificationCategory(identifier: "SYNC_DEVICE", actions: [syncAccept, syncDeny], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
     func setupNewEmailNotification() -> UNNotificationCategory {
@@ -441,17 +447,41 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         DBManager.refresh()
         switch response.actionIdentifier {
         case "LINK_ACCEPT":
-            guard let randomId = userInfo["randomId"] as? String else {
+            guard let randomId = userInfo["randomId"] as? String,
+                let version = userInfo["version"] as? String else {
                 break
             }
-            inboxVC.onAcceptLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId)) {
+            let linkData = LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)
+            linkData.version = Int(version)!
+            inboxVC.onAcceptLinkDevice(linkData: linkData) {
                 completionHandler()
             }
         case "LINK_DENY":
             guard let randomId = userInfo["randomId"] as? String else {
                 break
             }
-            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId)) {
+            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)) {
+                completionHandler()
+            }
+        case "SYNC_ACCEPT":
+            guard let randomId = userInfo["randomId"] as? String,
+                let deviceType = userInfo["deviceType"] as? String,
+                let deviceName = userInfo["deviceName"] as? String,
+                let deviceId = userInfo["deviceId"] as? String,
+                let version = userInfo["version"] as? String else {
+                break
+            }
+            let linkData = LinkData(deviceName: deviceName, deviceType: Int(deviceType)!, randomId: randomId, kind: .sync)
+            linkData.version = Int(version)!
+            linkData.deviceId = Int32(deviceId)!
+            inboxVC.onAcceptLinkDevice(linkData: linkData) {
+                completionHandler()
+            }
+        case "SYNC_DENY":
+            guard let randomId = userInfo["randomId"] as? String else {
+                break
+            }
+            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .sync)) {
                 completionHandler()
             }
         case "EMAIL_MARK":

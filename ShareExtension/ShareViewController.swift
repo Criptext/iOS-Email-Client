@@ -305,7 +305,7 @@ extension ShareViewController {
         setPassPopover.popoverPresentationController?.sourceView = self.view
         setPassPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         setPassPopover.popoverPresentationController?.permittedArrowDirections = []
-        setPassPopover.popoverPresentationController?.backgroundColor = UIColor.white
+        setPassPopover.popoverPresentationController?.backgroundColor = ThemeManager.shared.theme.overallBackground
         self.present(setPassPopover, animated: true)
     }
     

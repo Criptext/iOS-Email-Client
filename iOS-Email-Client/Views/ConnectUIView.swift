@@ -84,7 +84,8 @@ class ConnectUIView: UIView {
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        view.backgroundColor = theme.overallBackground
+        backgroundColor = .clear
+        view.backgroundColor = .clear
         emailLabel.textColor = theme.secondText
         messageLabel.textColor = theme.mainText
         goBackButton.setTitleColor(theme.criptextBlue, for: .normal)

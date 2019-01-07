@@ -91,7 +91,7 @@ class SettingsLabelsViewController: UITableViewController {
         changeNamePopover.popoverPresentationController?.sourceView = parentView
         changeNamePopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: parentView.frame.size.width, height: parentView.frame.size.height)
         changeNamePopover.popoverPresentationController?.permittedArrowDirections = []
-        changeNamePopover.popoverPresentationController?.backgroundColor = theme.popoverButton
+        changeNamePopover.popoverPresentationController?.backgroundColor = theme.overallBackground
         self.present(changeNamePopover, animated: true)
     }
     

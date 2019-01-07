@@ -23,17 +23,19 @@ class EventData {
         case RecoveryChanged(String)
         case KeyBundle(Int32)
         case RecoveryVerified
-        case LinkStart([String: Any])
+        case LinkData(LinkData)
+        case SyncDeny
+        case SyncAccept(AcceptData)
     }
     
     struct Result {
-        var emails = [Email]()
-        var opens = [FeedItem]()
+        var emailLabels = [String]()
+        var opens = [String]()
         var modifiedThreadIds = [String]()
         var modifiedEmailKeys = [Int]()
         var removed = false
         var updateSideMenu = false
-        var linkStartData = [String: Any]()
+        var linkStartData: LinkData? = nil
         var feature: MailboxData.Feature? = nil
     }
     

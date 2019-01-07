@@ -176,14 +176,14 @@ class SharedAPI {
         }
     }
     
-    class func getEmailBody(metadataKey: Int, account: Account, completion: @escaping ((ResponseData) -> Void)){
+    class func getEmailBody(metadataKey: Int, account: Account, queue: DispatchQueue? = .main, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let headers = [
             "Authorization": "Bearer \(account.jwt)",
             versionHeader: apiVersion,
             language: Env.language
         ]
-        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { response in
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
                 if let refreshData = refreshResponseData {

@@ -335,7 +335,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         popover.popoverPresentationController?.sourceView = sender
         popover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width/1.0001, height: sender.frame.size.height)
         popover.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        popover.popoverPresentationController?.backgroundColor = theme.background
+        popover.popoverPresentationController?.backgroundColor = theme.overallBackground
         self.present(popover, animated: true, completion: nil)
     }
     
@@ -918,6 +918,13 @@ extension EmailDetailViewController: CoachMarksControllerDataSource, CoachMarksC
 
 extension EmailDetailViewController: LinkDeviceDelegate {
     func onAcceptLinkDevice(linkData: LinkData) {
+        guard linkData.version == Env.linkVersion else {
+            let popover = GenericAlertUIPopover()
+            popover.myTitle = String.localize("VERSION_TITLE")
+            popover.myMessage = String.localize("VERSION_MISMATCH")
+            self.presentPopover(popover: popover, height: 220)
+            return
+        }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
@@ -925,6 +932,10 @@ extension EmailDetailViewController: LinkDeviceDelegate {
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
     func onCancelLinkDevice(linkData: LinkData) {
-        APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        if case .sync = linkData.kind {
+            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        } else {
+            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+        }
     }
 }

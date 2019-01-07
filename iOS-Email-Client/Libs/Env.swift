@@ -66,10 +66,18 @@ struct Env {
         return "https://api.criptext.com"
     }
     
+    static var transferURL: String {
+        guard !Env.isProduction else {
+            return "https://transfer.criptext.com"
+        }
+        return "https://transfer.criptext.com"
+    }
+    
     static var language: String {
         return Locale.current.languageCode ?? "en"
     }
     
     static let databaseVersion: UInt64 = 12
     static let maxRetryAttempts: Int = 10
+    static let linkVersion = 1
 }

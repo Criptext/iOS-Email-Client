@@ -228,6 +228,9 @@
 		A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */; };
 		A7065E5D21CC1A4200F8292A /* FeedHeaderTitleUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7065E5C21CC1A4200F8292A /* FeedHeaderTitleUIView.swift */; };
 		A7065E6121CC62E200F8292A /* AttachmentOptionsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */; };
+		A70EAE5221DE54C300FE6055 /* ManualSyncUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70EAE5121DE54C300FE6055 /* ManualSyncUIPopover.swift */; };
+		A70EAE5421DE6A9700FE6055 /* AcceptData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70EAE5321DE6A9700FE6055 /* AcceptData.swift */; };
+		A70EAE5521E000A000FE6055 /* ManualSyncUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70EAE5721E000A000FE6055 /* ManualSyncUIPopover.xib */; };
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
@@ -242,6 +245,7 @@
 		A72C185721AF165700D899EE /* MailboxNewsHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185621AF165700D899EE /* MailboxNewsHeaderUIView.swift */; };
 		A73151C321B9F2FA00D20B72 /* PrivacyUIViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */; };
 		A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */; };
+		A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */; };
 		A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
@@ -684,6 +688,11 @@
 		A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPasscodeViewController.swift; sourceTree = "<group>"; };
 		A7065E5C21CC1A4200F8292A /* FeedHeaderTitleUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderTitleUIView.swift; sourceTree = "<group>"; };
 		A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentOptionsContainerView.swift; sourceTree = "<group>"; };
+		A70EAE5121DE54C300FE6055 /* ManualSyncUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncUIPopover.swift; sourceTree = "<group>"; };
+		A70EAE5321DE6A9700FE6055 /* AcceptData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptData.swift; sourceTree = "<group>"; };
+		A70EAE5621E000A000FE6055 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ManualSyncUIPopover.xib; sourceTree = "<group>"; };
+		A70EAE5921E000A700FE6055 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ManualSyncUIPopover.strings; sourceTree = "<group>"; };
+		A70EAE5B21E000AC00FE6055 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/ManualSyncUIPopover.strings"; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
 		A723253321C94B90003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
 		A723253621C94B91003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
@@ -703,6 +712,7 @@
 		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
 		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
 		A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBarFramework.framework; path = Carthage/Build/iOS/ITProgressBarFramework.framework; sourceTree = "<group>"; };
+		A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncViewController.swift; sourceTree = "<group>"; };
 		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
@@ -1014,6 +1024,8 @@
 				A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */,
 				A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */,
 				A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */,
+				A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */,
+				A70EAE5121DE54C300FE6055 /* ManualSyncUIPopover.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1156,6 +1168,7 @@
 				7C6DB46A2152B910001B3749 /* LinkData.swift */,
 				A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */,
 				A723254221CAFE20003CF78D /* Theme.swift */,
+				A70EAE5321DE6A9700FE6055 /* AcceptData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1251,6 +1264,7 @@
 				A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */,
 				A700F59421D3E28800792B4A /* SettingsGeneralHeaderView.xib */,
 				A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */,
+				A70EAE5721E000A000FE6055 /* ManualSyncUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1607,6 +1621,7 @@
 				7C5FD822205C2FBB000E5F14 /* AttachmentTableViewCell.xib in Resources */,
 				A7FFCF24217A90E000FFFDFF /* DetailMoreOptionsUIView.xib in Resources */,
 				7C6DB468215173D0001B3749 /* GenericDualAnswerUIPopover.xib in Resources */,
+				A70EAE5521E000A000FE6055 /* ManualSyncUIPopover.xib in Resources */,
 				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
 				412CB03B2037402D005D1B3F /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
 				A700F59921D41B3F00792B4A /* dark-showmore.png in Resources */,
@@ -1830,6 +1845,7 @@
 				7CF93F4D214329C700361837 /* ChangePassViewController.swift in Sources */,
 				A723254721CBF901003CF78D /* LabelsHeaderCellView.swift in Sources */,
 				7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */,
+				A70EAE5221DE54C300FE6055 /* ManualSyncUIPopover.swift in Sources */,
 				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,
 				A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
@@ -1902,8 +1918,10 @@
 				41B6AAB02017987500D428B7 /* AppDelegate.swift in Sources */,
 				95661FCB205C2B9A006DF852 /* EmailContact.swift in Sources */,
 				7CCD73E8212F2207002C8C7F /* ResponseData.swift in Sources */,
+				A70EAE5421DE6A9700FE6055 /* AcceptData.swift in Sources */,
 				A7CC387521939B2600C8355A /* NewEmailHandler.swift in Sources */,
 				7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */,
+				A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
@@ -2092,6 +2110,16 @@
 				A7D2DEA021C4717D002ED6F8 /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A70EAE5721E000A000FE6055 /* ManualSyncUIPopover.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A70EAE5621E000A000FE6055 /* Base */,
+				A70EAE5921E000A700FE6055 /* en */,
+				A70EAE5B21E000AC00FE6055 /* es-419 */,
+			);
+			name = ManualSyncUIPopover.xib;
 			sourceTree = "<group>";
 		};
 		A723253421C94B90003CF78D /* PasscodeLockView.xib */ = {
