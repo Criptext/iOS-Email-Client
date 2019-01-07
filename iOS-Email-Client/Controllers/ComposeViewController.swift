@@ -201,18 +201,7 @@ class ComposeViewController: UIViewController {
         editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
         
         fileManager.delegate = self
-        if let draft = self.composerData.emailDraft,
-            let fileKey = DBManager.getFileKey(emailId: draft.key)
-            {
-            let keys = fileKey.getKeyAndIv()
-                fileManager.setEncryption(id: 0, key: keys.0, iv: keys.1)
-        } else if let fileKey = composerData.initialFileKey {
-            let keys = fileKey.getKeyAndIv()
-            fileManager.setEncryption(id: 0, key: keys.0, iv: keys.1)
-        } else {
-            fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
-        }
-        
+        fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
@@ -357,12 +346,6 @@ class ComposeViewController: UIViewController {
         if !fileManager.registeredFiles.isEmpty,
             let keys = fileManager.keyPairs[0] {
             let allDuplicates = fileManager.registeredFiles.filter({$0.shouldDuplicate}).count == fileManager.registeredFiles.count
-            if (!allDuplicates || composerData.initialFileKey != nil) {
-                let fileKey = FileKey()
-                fileKey.key = FileKey.getKeyCodedString(key: keys.0, iv: keys.1)
-                fileKey.emailId = draft.key
-                DBManager.store([fileKey])
-            }
         }
         
         //create email contacts

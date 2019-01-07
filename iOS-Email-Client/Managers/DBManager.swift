@@ -36,7 +36,6 @@ class DBManager: SharedDB {
             realm.delete(realm.objects(EmailContact.self))
             realm.delete(realm.objects(Label.self))
             realm.delete(realm.objects(File.self))
-            realm.delete(realm.objects(FileKey.self))
             realm.delete(realm.objects(QueueItem.self))
             realm.delete(realm.objects(DummySession.self))
         }
@@ -68,9 +67,7 @@ class DBManager: SharedDB {
         let emails = realm.objects(Email.self).filter("messageId != ''")
         let files = realm.objects(File.self)
         let emailContacts = realm.objects(EmailContact.self).filter("email.delivered != \(Email.Status.sending.rawValue) AND email.delivered != \(Email.Status.fail.rawValue) AND NOT (ANY email.labels.id == \(SystemLabel.draft.id))")
-        let fileKeys = realm.objects(FileKey.self)
-        
-        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, files: files, fileKeys: fileKeys)
+        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, files: files)
     }
     
     struct LinkDBSource {
@@ -79,7 +76,6 @@ class DBManager: SharedDB {
         let emails: Results<Email>
         let emailContacts: Results<EmailContact>
         let files: Results<File>
-        let fileKeys: Results<FileKey>
     }
     
     struct LinkDBMaps {
@@ -176,21 +172,12 @@ class DBManager: SharedDB {
             file.readOnly = (object["readOnly"] as! Bool) ? 1 : 0
             file.size = object["size"] as! Int
             file.mimeType = object["mimeType"] as! String
+            if let fileKey = object["fileKey"]{
+                file.fileKey = fileKey as! String
+            }
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
             realm.add(file, update: true)
             email.files.append(file)
-        case "filekey":
-            let key = object["key"] as? String
-            let iv = object["iv"] as? String
-            let emailId = object["emailId"] as! Int
-            guard let emailKey = maps.emails[emailId] else {
-                return
-            }
-            let fileKey = FileKey()
-            fileKey.id = object["id"] as! Int
-            fileKey.key = key != nil && iv != nil ? "\(key!):\(iv!)" : ""
-            fileKey.emailId = emailKey
-            realm.add(fileKey, update: true)
         default:
             return
         }
@@ -497,6 +484,7 @@ class DBManager: SharedDB {
                 file.size = 0
                 file.mimeType = ""
                 file.status = 0
+                file.fileKey = ""
             })
         }
     }
@@ -740,9 +728,6 @@ class DBManager: SharedDB {
             realm.delete(email.files)
             realm.delete(email.emailContacts)
             realm.delete(realm.objects(FeedItem.self).filter("email.key == \(email.key)"))
-            if let fileKey = self.getFileKey(emailId: email.key){
-                realm.delete(fileKey)
-            }
         })
         realm.delete(emails)
     }

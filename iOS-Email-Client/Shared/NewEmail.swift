@@ -22,6 +22,7 @@ struct NewEmail {
     let messageType: MessageType
     let files: [[String: Any]]?
     let fileKey: String?
+    let fileKeys:[String]?
     let labels: [String]
     let isExternal: Bool
     
@@ -34,6 +35,7 @@ struct NewEmail {
         messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? MessageType.none.rawValue))!
         files = params["files"] as? [[String: Any]]
         fileKey = params["fileKey"] as? String
+        fileKeys = params["fileKeys"] as? [String]
         isExternal = params["external"] as? Bool ?? false
         
         let dateString = params["date"] as! String
