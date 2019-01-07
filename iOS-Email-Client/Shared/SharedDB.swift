@@ -215,7 +215,8 @@ class SharedDB {
                 let fileparam = ["token": newFile.token,
                                  "name": newFile.name,
                                  "size": newFile.size,
-                                 "mimeType": newFile.mimeType] as [String : Any]
+                                 "mimeType": newFile.mimeType,
+                                 "fileKey": newFile.fileKey] as [String : Any]
                 fileParams.append(fileparam)
             }
         }

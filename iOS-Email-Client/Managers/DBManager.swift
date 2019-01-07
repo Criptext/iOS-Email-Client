@@ -176,6 +176,9 @@ class DBManager: SharedDB {
             file.readOnly = (object["readOnly"] as! Bool) ? 1 : 0
             file.size = object["size"] as! Int
             file.mimeType = object["mimeType"] as! String
+            if let fileKey = object["fileKey"]{
+                file.fileKey = fileKey as! String
+            }
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
             realm.add(file, update: true)
             email.files.append(file)
@@ -497,6 +500,7 @@ class DBManager: SharedDB {
                 file.size = 0
                 file.mimeType = ""
                 file.status = 0
+                file.fileKey = ""
             })
         }
     }

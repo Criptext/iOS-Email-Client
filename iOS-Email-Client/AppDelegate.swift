@@ -204,6 +204,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         migration.delete(newFeed)
                     })
                 }
+                if (oldSchemaVersion < 13) {
+                    migration.enumerateObjects(ofType: File.className()){ (oldObject, newObject) in
+                        guard let _ = oldObject,
+                            let newFile = newObject else{
+                                return
+                        }
+                        newFile["fileKey"] = ""
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm

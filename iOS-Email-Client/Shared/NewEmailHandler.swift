@@ -170,6 +170,9 @@ class NewEmailHandler {
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
+        if let fileKey = attachment["fileKey"] {
+            file.fileKey = fileKey as! String
+        }
         file.mimeType = File.mimeTypeForPath(path: file.name)
         file.date = email.date
         file.readOnly = attachment["read_only"] as? Int ?? 0

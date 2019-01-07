@@ -280,7 +280,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
                 }
                 switch status {
                 case .authorized:
-                    if let fileKey = DBManager.getFileKey(emailId: file.emailId) {
+                    if(!file.fileKey.isEmpty){
+                        let keys = FileKey.getKeyAndIv(key: file.fileKey)
+                        weakSelf.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
+                    }else if let fileKey = DBManager.getFileKey(emailId: file.emailId) {
                         let keys = fileKey.getKeyAndIv()
                         weakSelf.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
                     }

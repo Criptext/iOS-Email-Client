@@ -22,6 +22,7 @@ class File : Object {
     @objc dynamic var mimeType = ""
     @objc dynamic var shouldDuplicate = false
     @objc dynamic var originalToken: String?
+    @objc dynamic var fileKey:String = ""
     var filePath = ""
     var progress = -1
     var filepath = ""
@@ -74,7 +75,8 @@ extension File{
                 "date": dateString,
                 "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId,
-                "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType
+                "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType,
+                "fileKey": fileKey
             ]
         ]
     }
@@ -101,6 +103,7 @@ extension File{
         newFile.mimeType = self.mimeType
         newFile.shouldDuplicate = true
         newFile.originalToken = self.token
+        newFile.fileKey = self.fileKey
         return newFile
     }
 }
