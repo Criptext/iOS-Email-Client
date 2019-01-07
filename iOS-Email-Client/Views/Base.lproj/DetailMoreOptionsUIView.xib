@@ -37,7 +37,7 @@
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.3033694401840491" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bO2-Ar-nLq">
-                    <rect key="frame" x="0.0" y="377" width="375" height="290"/>
+                    <rect key="frame" x="0.0" y="334" width="375" height="333"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6Z-y6-wWR">
                             <rect key="frame" x="15" y="15" width="345" height="25"/>
@@ -123,15 +123,26 @@
                                 <action selector="onPrintPress:" destination="-1" eventType="touchUpInside" id="dsb-Pq-n1u"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N05-Kc-xSj">
+                            <rect key="frame" x="15" y="288" width="345" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="7rb-wO-u8a"/>
+                            </constraints>
+                            <state key="normal" title="Print">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="J6Q-6A-qL7" firstAttribute="top" secondItem="L6Z-y6-wWR" secondAttribute="bottom" constant="15" id="0qc-66-uCy"/>
                         <constraint firstItem="WAE-Yn-KsO" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="1O9-cY-he1"/>
                         <constraint firstAttribute="trailing" secondItem="L6Z-y6-wWR" secondAttribute="trailing" constant="15" id="3Du-4p-Ffq"/>
+                        <constraint firstItem="N05-Kc-xSj" firstAttribute="leading" secondItem="tTf-Hb-35Y" secondAttribute="leading" id="9hl-93-j8K"/>
                         <constraint firstAttribute="trailing" secondItem="Za1-6Y-W6N" secondAttribute="trailing" constant="15" id="CBr-rq-2Pm"/>
                         <constraint firstItem="hBy-Yi-wAI" firstAttribute="top" secondItem="J6Q-6A-qL7" secondAttribute="bottom" constant="15" id="GeW-9L-faS"/>
                         <constraint firstAttribute="trailing" secondItem="J6Q-6A-qL7" secondAttribute="trailing" constant="15" id="ITB-YU-kxd"/>
+                        <constraint firstItem="N05-Kc-xSj" firstAttribute="top" secondItem="tTf-Hb-35Y" secondAttribute="bottom" constant="8" symbolic="YES" id="Ivc-PG-7AZ"/>
                         <constraint firstItem="hBy-Yi-wAI" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="KGq-LI-acl"/>
                         <constraint firstAttribute="trailing" secondItem="GJm-V9-TCb" secondAttribute="trailing" constant="15" id="L8r-61-Dnd"/>
                         <constraint firstItem="L6Z-y6-wWR" firstAttribute="top" secondItem="bO2-Ar-nLq" secondAttribute="top" constant="15" id="Ou9-zm-SDE"/>
@@ -140,11 +151,12 @@
                         <constraint firstItem="GJm-V9-TCb" firstAttribute="top" secondItem="hBy-Yi-wAI" secondAttribute="bottom" constant="15" id="QS6-Yk-bhR"/>
                         <constraint firstItem="GJm-V9-TCb" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="Zs2-RH-PNh"/>
                         <constraint firstAttribute="trailing" secondItem="hBy-Yi-wAI" secondAttribute="trailing" constant="15" id="f7F-UL-l0a"/>
+                        <constraint firstItem="N05-Kc-xSj" firstAttribute="trailing" secondItem="tTf-Hb-35Y" secondAttribute="trailing" id="hbE-v4-zaR"/>
                         <constraint firstItem="Za1-6Y-W6N" firstAttribute="top" secondItem="WAE-Yn-KsO" secondAttribute="bottom" constant="15" id="jvN-r0-uvp"/>
                         <constraint firstItem="WAE-Yn-KsO" firstAttribute="top" secondItem="GJm-V9-TCb" secondAttribute="bottom" constant="15" id="kkm-iZ-9Gq"/>
                         <constraint firstItem="J6Q-6A-qL7" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="noT-df-GrC"/>
                         <constraint firstItem="tTf-Hb-35Y" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="sgl-2P-FMn"/>
-                        <constraint firstAttribute="height" constant="290" id="ujL-zn-4h0"/>
+                        <constraint firstAttribute="height" constant="333" id="ujL-zn-4h0"/>
                         <constraint firstItem="Za1-6Y-W6N" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="usL-Pf-M0a"/>
                         <constraint firstAttribute="trailing" secondItem="tTf-Hb-35Y" secondAttribute="trailing" constant="15" id="xRy-mS-Zkm"/>
                         <constraint firstItem="L6Z-y6-wWR" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="xkP-PO-f15"/>
@@ -163,6 +175,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="138.40000000000001" y="152.47376311844079"/>
         </view>
     </objects>
 </document>

@@ -29,7 +29,7 @@ class ShareViewController: UIViewController {
     lazy var passcodeLockViewController: LightPasscodeViewController = {
         let configuration = PasscodeConfig()
         let vc = LightPasscodeViewController(state: PasscodeLockViewController.LockState.enter, configuration: configuration)
-        vc.sharingViewController = self
+        // vc.sharingViewController = self
         return vc
     }()
     
