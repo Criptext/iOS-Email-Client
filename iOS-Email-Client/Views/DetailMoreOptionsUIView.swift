@@ -17,6 +17,7 @@ protocol DetailMoreOptionsViewDelegate: class{
     func onSpamPress()
     func onUnsendPress()
     func onOverlayPress()
+    func onPrintPress()
 }
 
 class DetailMoreOptionsUIView: UIView {
@@ -29,6 +30,7 @@ class DetailMoreOptionsUIView: UIView {
     @IBOutlet weak var spamButton: UIButton!
     @IBOutlet weak var unsendButton: UIButton!
     @IBOutlet var optionButtons: [UIButton]?
+    @IBOutlet var printButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -124,8 +126,11 @@ class DetailMoreOptionsUIView: UIView {
         delegate?.onSpamPress()
     }
     
-    @IBAction func onPrintPress(_ sender: Any) {
+    @IBAction func onUnsendPress(_ sender: Any) {
         delegate?.onUnsendPress()
     }
     
+    @IBAction func onPrintPress(_ sender: Any) {
+        delegate?.onPrintPress()
+    }
 }

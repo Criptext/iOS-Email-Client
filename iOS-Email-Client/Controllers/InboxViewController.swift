@@ -144,7 +144,7 @@ class InboxViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
-        
+        self.generalOptionsContainerView.printallButton.isHidden = true
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
@@ -806,26 +806,29 @@ extension InboxViewController: UITableViewDataSource{
             return
         }
         guard !mailboxData.searchMode else {
-            setEnvelopeMessages(title: String.localize("NO_RESULTS"), subtitle: String.localize("NOR_TRASH_SPAM"))
+            setEnvelopeMessages(image: "search_sad", title: String.localize("NO_RESULTS"), subtitle: String.localize("NOR_TRASH_SPAM"))
             return
         }
         switch(mailboxData.selectedLabel){
         case SystemLabel.inbox.id:
-            setEnvelopeMessages(title: String.localize("NO_INBOXES"), subtitle: String.localize("SHARE_EMAIL"))
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "inbox_dark" : "inbox_light", title: String.localize("NO_INBOXES"), subtitle: String.localize("SHARE_EMAIL"))
         case SystemLabel.sent.id:
-            setEnvelopeMessages(title: String.localize("NO_SENTS"), subtitle: String.localize("LETS_SEND"))
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "sent_dark" : "sent_light", title: String.localize("NO_SENTS"), subtitle: String.localize("LETS_SEND"))
         case SystemLabel.draft.id:
-            setEnvelopeMessages(title: String.localize("NO_DRAFTS"), subtitle: String.localize("THATS_OK"))
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "draft_dark" : "draft_light", title: String.localize("NO_DRAFTS"), subtitle: String.localize("NO_DRAFTS_TEXT"))
         case SystemLabel.spam.id:
-            setEnvelopeMessages(title: String.localize("NO_SPAM"), subtitle: String.localize("COOL"))
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "spam_dark" : "spam_light", title: String.localize("NO_SPAM"), subtitle: String.localize("COOL"))
         case SystemLabel.trash.id:
-            setEnvelopeMessages(title: String.localize("NO_TRASHES"), subtitle: String.localize("CLEAN_PLACE"))
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "trash_dark" : "trash_light", title: String.localize("NO_TRASHES"), subtitle: String.localize("CLEAN_PLACE"))
+        case SystemLabel.starred.id:
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "starred_dark" : "starred_light", title: String.localize("NO_STARRED"), subtitle: String.localize("NO_STARRED_TEXT"))
         default:
-            setEnvelopeMessages(title: String.localize("NO_INBOXES"), subtitle: String.localize("MATTER_OF_TIME"))
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "inbox_dark" : "inbox_light", title: String.localize("NO_ALL_EMAILS"), subtitle: String.localize("NO_ALL_EMAILS_TEXT"))
         }
     }
     
-    func setEnvelopeMessages(title: String, subtitle: String){
+    func setEnvelopeMessages(image: String, title: String, subtitle: String){
+        envelopeImageView.image = UIImage(named: image)
         envelopeTitleView.text = title
         envelopeSubtitleView.text = subtitle
     }
@@ -1510,6 +1513,10 @@ extension InboxViewController: GeneralMoreOptionsViewDelegate{
     
     func onRestorePress() {
         self.restoreThreads()
+    }
+    
+    func onPrintAllPress() {
+        return
     }
 }
 

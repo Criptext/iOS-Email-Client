@@ -15,6 +15,7 @@
                 <outlet property="backgroundOverlayView" destination="cRL-Mk-Yl4" id="UnZ-1B-Hmr"/>
                 <outlet property="optionsContainerOffsetConstraint" destination="hiL-bi-nks" id="0CQ-YN-g9E"/>
                 <outlet property="optionsContainerView" destination="bO2-Ar-nLq" id="Vdm-8V-mEm"/>
+                <outlet property="printButton" destination="N05-Kc-xSj" id="jd4-gL-XjB"/>
                 <outlet property="spamButton" destination="Za1-6Y-W6N" id="uF9-6y-bFv"/>
                 <outlet property="unsendButton" destination="tTf-Hb-35Y" id="S1F-TL-P7Z"/>
                 <outlet property="view" destination="iN0-l3-epB" id="IiM-bf-qiP"/>
@@ -25,6 +26,7 @@
                 <outletCollection property="optionButtons" destination="WAE-Yn-KsO" collectionClass="NSMutableArray" id="SxW-Lv-FNz"/>
                 <outletCollection property="optionButtons" destination="Za1-6Y-W6N" collectionClass="NSMutableArray" id="1Zj-Eq-qsF"/>
                 <outletCollection property="optionButtons" destination="tTf-Hb-35Y" collectionClass="NSMutableArray" id="V02-B0-i6J"/>
+                <outletCollection property="optionButtons" destination="N05-Kc-xSj" collectionClass="NSMutableArray" id="EXb-nz-2vZ"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -102,7 +104,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Za1-6Y-W6N">
                             <rect key="frame" x="15" y="215" width="345" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="25" id="fBC-D6-hnW"/>
+                                <constraint firstAttribute="height" constant="25" id="6xt-pB-tpM"/>
                             </constraints>
                             <state key="normal" title="Mark as Spam">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -112,7 +114,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTf-Hb-35Y">
-                            <rect key="frame" x="15" y="255" width="345" height="25"/>
+                            <rect key="frame" x="15" y="295" width="345" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="Hsc-f0-3Nu"/>
                             </constraints>
@@ -120,44 +122,47 @@
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
-                                <action selector="onPrintPress:" destination="-1" eventType="touchUpInside" id="dsb-Pq-n1u"/>
+                                <action selector="onUnsendPress:" destination="-1" eventType="touchUpInside" id="X2W-uM-4km"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N05-Kc-xSj">
-                            <rect key="frame" x="15" y="288" width="345" height="25"/>
+                            <rect key="frame" x="15" y="255" width="345" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="25" id="7rb-wO-u8a"/>
+                                <constraint firstAttribute="height" constant="25" id="e9e-Ah-nkC"/>
                             </constraints>
                             <state key="normal" title="Print">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onPrintPress:" destination="-1" eventType="touchUpInside" id="O24-f4-MzO"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="N05-Kc-xSj" firstAttribute="leading" secondItem="Za1-6Y-W6N" secondAttribute="leading" id="0fq-63-S6X"/>
                         <constraint firstItem="J6Q-6A-qL7" firstAttribute="top" secondItem="L6Z-y6-wWR" secondAttribute="bottom" constant="15" id="0qc-66-uCy"/>
                         <constraint firstItem="WAE-Yn-KsO" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="1O9-cY-he1"/>
                         <constraint firstAttribute="trailing" secondItem="L6Z-y6-wWR" secondAttribute="trailing" constant="15" id="3Du-4p-Ffq"/>
-                        <constraint firstItem="N05-Kc-xSj" firstAttribute="leading" secondItem="tTf-Hb-35Y" secondAttribute="leading" id="9hl-93-j8K"/>
-                        <constraint firstAttribute="trailing" secondItem="Za1-6Y-W6N" secondAttribute="trailing" constant="15" id="CBr-rq-2Pm"/>
+                        <constraint firstItem="Za1-6Y-W6N" firstAttribute="top" secondItem="WAE-Yn-KsO" secondAttribute="bottom" constant="15" id="9sa-YQ-OoO"/>
                         <constraint firstItem="hBy-Yi-wAI" firstAttribute="top" secondItem="J6Q-6A-qL7" secondAttribute="bottom" constant="15" id="GeW-9L-faS"/>
                         <constraint firstAttribute="trailing" secondItem="J6Q-6A-qL7" secondAttribute="trailing" constant="15" id="ITB-YU-kxd"/>
-                        <constraint firstItem="N05-Kc-xSj" firstAttribute="top" secondItem="tTf-Hb-35Y" secondAttribute="bottom" constant="8" symbolic="YES" id="Ivc-PG-7AZ"/>
                         <constraint firstItem="hBy-Yi-wAI" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="KGq-LI-acl"/>
                         <constraint firstAttribute="trailing" secondItem="GJm-V9-TCb" secondAttribute="trailing" constant="15" id="L8r-61-Dnd"/>
+                        <constraint firstItem="tTf-Hb-35Y" firstAttribute="top" secondItem="N05-Kc-xSj" secondAttribute="bottom" constant="15" id="OE9-qQ-eUK"/>
                         <constraint firstItem="L6Z-y6-wWR" firstAttribute="top" secondItem="bO2-Ar-nLq" secondAttribute="top" constant="15" id="Ou9-zm-SDE"/>
                         <constraint firstAttribute="trailing" secondItem="WAE-Yn-KsO" secondAttribute="trailing" constant="15" id="P6V-Zu-myC"/>
-                        <constraint firstItem="tTf-Hb-35Y" firstAttribute="top" secondItem="Za1-6Y-W6N" secondAttribute="bottom" constant="15" id="PsG-Qv-Pwa"/>
                         <constraint firstItem="GJm-V9-TCb" firstAttribute="top" secondItem="hBy-Yi-wAI" secondAttribute="bottom" constant="15" id="QS6-Yk-bhR"/>
+                        <constraint firstItem="Za1-6Y-W6N" firstAttribute="leading" secondItem="WAE-Yn-KsO" secondAttribute="leading" id="Z2v-F6-Pxp"/>
                         <constraint firstItem="GJm-V9-TCb" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="Zs2-RH-PNh"/>
                         <constraint firstAttribute="trailing" secondItem="hBy-Yi-wAI" secondAttribute="trailing" constant="15" id="f7F-UL-l0a"/>
-                        <constraint firstItem="N05-Kc-xSj" firstAttribute="trailing" secondItem="tTf-Hb-35Y" secondAttribute="trailing" id="hbE-v4-zaR"/>
-                        <constraint firstItem="Za1-6Y-W6N" firstAttribute="top" secondItem="WAE-Yn-KsO" secondAttribute="bottom" constant="15" id="jvN-r0-uvp"/>
                         <constraint firstItem="WAE-Yn-KsO" firstAttribute="top" secondItem="GJm-V9-TCb" secondAttribute="bottom" constant="15" id="kkm-iZ-9Gq"/>
+                        <constraint firstItem="N05-Kc-xSj" firstAttribute="trailing" secondItem="Za1-6Y-W6N" secondAttribute="trailing" id="mch-cY-8aO"/>
                         <constraint firstItem="J6Q-6A-qL7" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="noT-df-GrC"/>
                         <constraint firstItem="tTf-Hb-35Y" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="sgl-2P-FMn"/>
+                        <constraint firstItem="N05-Kc-xSj" firstAttribute="top" secondItem="Za1-6Y-W6N" secondAttribute="bottom" constant="15" id="u1H-Xu-71g"/>
                         <constraint firstAttribute="height" constant="333" id="ujL-zn-4h0"/>
-                        <constraint firstItem="Za1-6Y-W6N" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="usL-Pf-M0a"/>
+                        <constraint firstItem="Za1-6Y-W6N" firstAttribute="trailing" secondItem="WAE-Yn-KsO" secondAttribute="trailing" id="whx-oa-PUH"/>
                         <constraint firstAttribute="trailing" secondItem="tTf-Hb-35Y" secondAttribute="trailing" constant="15" id="xRy-mS-Zkm"/>
                         <constraint firstItem="L6Z-y6-wWR" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="xkP-PO-f15"/>
                     </constraints>

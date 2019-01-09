@@ -1024,12 +1024,12 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ymx-uC-iwF">
                                 <rect key="frame" x="0.0" y="63" width="375" height="604"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="M89-ba-zr9">
                                 <rect key="frame" x="0.0" y="63" width="375" height="604"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="feedTableCellView" rowHeight="63" id="gNg-2z-CrL" customClass="FeedTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="63"/>
@@ -1232,6 +1232,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <webView hidden="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wXO-Xa-Eh9">
+                                <rect key="frame" x="16" y="0.0" width="343" height="559"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="wXO-Xa-Eh9" secondAttribute="height" multiplier="343:559" id="WF9-ws-qme"/>
+                                </constraints>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1240,10 +1247,14 @@
                             <constraint firstAttribute="trailing" secondItem="ffn-LR-DMI" secondAttribute="trailing" id="5uI-A7-d3B"/>
                             <constraint firstItem="fO0-l9-ymc" firstAttribute="top" secondItem="1su-18-smw" secondAttribute="bottom" id="5uW-lU-hmM"/>
                             <constraint firstItem="ffn-LR-DMI" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="75f-7q-mV4"/>
+                            <constraint firstItem="wXO-Xa-Eh9" firstAttribute="trailing" secondItem="1IY-4b-rl0" secondAttribute="trailingMargin" id="88J-g2-wIw"/>
                             <constraint firstAttribute="trailing" secondItem="1su-18-smw" secondAttribute="trailing" id="Bdi-g2-4n8"/>
                             <constraint firstItem="pwm-FM-Cnc" firstAttribute="top" secondItem="VSO-Q5-KSa" secondAttribute="bottom" id="M6O-0g-bIu"/>
+                            <constraint firstItem="wXO-Xa-Eh9" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leadingMargin" id="PZK-Tr-rvp"/>
+                            <constraint firstItem="wXO-Xa-Eh9" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="topMargin" id="S6N-m6-H3d"/>
                             <constraint firstItem="fO0-l9-ymc" firstAttribute="top" secondItem="H88-ZN-H4B" secondAttribute="bottom" id="T7d-MC-ycK"/>
                             <constraint firstAttribute="bottom" secondItem="ffn-LR-DMI" secondAttribute="bottom" id="a5u-AK-jAH"/>
+                            <constraint firstItem="wXO-Xa-Eh9" firstAttribute="bottom" secondItem="1IY-4b-rl0" secondAttribute="bottomMargin" id="elS-Om-IPD"/>
                             <constraint firstItem="H88-ZN-H4B" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="ksC-OI-i28"/>
                             <constraint firstItem="1su-18-smw" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="sqT-eC-RNj"/>
                             <constraint firstAttribute="trailing" secondItem="H88-ZN-H4B" secondAttribute="trailing" id="t1V-pA-6iO"/>
@@ -1259,6 +1270,7 @@
                         <outlet property="generalOptionsContainerView" destination="ffn-LR-DMI" id="B4L-yX-5ZG"/>
                         <outlet property="moreOptionsContainerView" destination="1su-18-smw" id="2GV-Cz-5pz"/>
                         <outlet property="topToolbar" destination="pwm-FM-Cnc" id="gzS-4q-XjA"/>
+                        <outlet property="webView" destination="wXO-Xa-Eh9" id="Jbs-nr-4zV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Wl-gk-N8t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2666,11 +2678,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="activity" width="16" height="20"/>
+        <image name="activity" width="16" height="20.5"/>
         <image name="arrow-next" width="8" height="12"/>
         <image name="attachment" width="20" height="36"/>
         <image name="attachment_camera" width="28" height="21"/>
-        <image name="attachment_docproviders" width="33" height="20"/>
+        <image name="attachment_docproviders" width="66" height="40"/>
         <image name="attachment_inbox" width="36" height="20"/>
         <image name="attachment_pdf" width="80" height="80"/>
         <image name="attachment_photolibrary" width="27" height="27"/>
@@ -2678,11 +2690,11 @@
         <image name="close-rounded" width="14" height="14"/>
         <image name="color-bell" width="45" height="50"/>
         <image name="composer" width="32" height="30"/>
-        <image name="delete-icon" width="16" height="18"/>
+        <image name="delete-icon" width="16.5" height="18"/>
         <image name="device-desktop" width="52" height="45"/>
-        <image name="double-check" width="18" height="10"/>
+        <image name="double-check" width="37" height="21"/>
         <image name="envelope" width="112" height="112"/>
-        <image name="formatting" width="15" height="18"/>
+        <image name="formatting" width="15" height="18.5"/>
         <image name="icon-allmail" width="48" height="37"/>
         <image name="icon-draft" width="30" height="30"/>
         <image name="icon-inbox" width="18" height="17"/>
@@ -2697,6 +2709,6 @@
         <image name="new-arrow-down" width="12" height="7"/>
         <image name="new-arrow-up" width="12" height="7"/>
         <image name="send" width="23" height="20"/>
-        <image name="switch_locked_on" width="10" height="12"/>
+        <image name="switch_locked_on" width="10.5" height="12.5"/>
     </resources>
 </document>
