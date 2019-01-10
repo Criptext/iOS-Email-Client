@@ -36,7 +36,6 @@ class ComposeViewController: UIViewController {
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
     let PASSWORD_POPUP_HEIGHT = 295
-    let MAX_ATTACHMENTS = 5
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
@@ -201,7 +200,19 @@ class ComposeViewController: UIViewController {
         editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
         
         fileManager.delegate = self
-        fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
+        if fileManager.registeredFiles.count > 0{
+            for file in fileManager.registeredFiles{
+                let fileKey = file.fileKey
+                guard !fileKey.isEmpty else {
+                    continue
+                }
+                let keys = File.getKeyAndIv(key: fileKey)
+                fileManager.setEncryption(id: 0, key: keys.0, iv: keys.1)
+                return
+            }
+        } else {
+            fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
+        }
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
@@ -600,7 +611,6 @@ class ComposeViewController: UIViewController {
                     let picker = TLPhotosPickerViewController()
                     picker.delegate = self
                     var configure = TLPhotosPickerConfigure()
-                    configure.maxSelectedAssets = self.MAX_ATTACHMENTS - self.fileManager.registeredFiles.count
                     configure.allowedVideoRecording = false
                     picker.configure = configure
                     self.present(picker, animated: true, completion: nil)

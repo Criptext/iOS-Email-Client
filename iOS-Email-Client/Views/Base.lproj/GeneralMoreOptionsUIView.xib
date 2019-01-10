@@ -17,22 +17,26 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GeneralMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
-                <outlet property="archiveButtonHeightConstraint" destination="ypr-3r-5cI" id="9tY-8V-1Ht"/>
-                <outlet property="archiveTopMarginConstraint" destination="ZlA-ds-udh" id="uzV-KX-OM8"/>
+                <outlet property="archiveButtonHeightConstraint" destination="sUw-T9-Mrf" id="C9f-Vd-ZbF"/>
+                <outlet property="archiveTopMarginConstraint" destination="gSN-FN-2bW" id="XmD-6B-qNx"/>
                 <outlet property="backgroundOverlayView" destination="RKg-ih-58I" id="gNY-9F-Nsn"/>
                 <outlet property="moveButtonHeightConstraint" destination="7dh-sQ-zvP" id="JLD-wW-Jur"/>
                 <outlet property="moveTopMarginConstraint" destination="pl7-1A-3UR" id="epx-Fw-4GL"/>
                 <outlet property="optionsContainerOffsetConstraint" destination="sMS-K2-DHF" id="eBQ-Lx-72W"/>
                 <outlet property="optionsContainerView" destination="VAv-gl-3zw" id="3oh-Uu-YIf"/>
                 <outlet property="optionsHeightConstraint" destination="vou-gD-IIJ" id="G6X-Bb-R6g"/>
+                <outlet property="printButtonHeightConstraint" destination="kax-V6-kI5" id="c5G-2u-kKw"/>
+                <outlet property="printTopMarginConstraint" destination="Cvs-25-GH7" id="2kR-BS-LGS"/>
+                <outlet property="printallButton" destination="wRA-B7-Zbe" id="kgz-TI-5wT"/>
                 <outlet property="restoreButton" destination="7qk-DY-Kui" id="mvh-t0-sfA"/>
-                <outlet property="restoreButtonHeightConstraint" destination="efe-tg-RB4" id="dVF-zb-h7R"/>
-                <outlet property="restoreTopMarginConstraint" destination="9Xb-MJ-vOi" id="dPT-Ww-VmD"/>
+                <outlet property="restoreButtonHeightConstraint" destination="2gu-lp-qQk" id="ZxU-cs-pfa"/>
+                <outlet property="restoreTopMarginConstraint" destination="edB-aH-cHP" id="rT2-tj-zJs"/>
                 <outlet property="view" destination="iN0-l3-epB" id="cfM-oT-q34"/>
                 <outletCollection property="optionButtons" destination="nKZ-wq-bH5" collectionClass="NSMutableArray" id="u3t-RC-ZUT"/>
                 <outletCollection property="optionButtons" destination="C61-BJ-sbc" collectionClass="NSMutableArray" id="jNI-Go-RAy"/>
                 <outletCollection property="optionButtons" destination="vBp-c7-A3X" collectionClass="NSMutableArray" id="VoW-ZE-SLP"/>
                 <outletCollection property="optionButtons" destination="7qk-DY-Kui" collectionClass="NSMutableArray" id="V1o-wm-nla"/>
+                <outletCollection property="optionButtons" destination="wRA-B7-Zbe" collectionClass="NSMutableArray" id="rpr-qc-C4w"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -45,7 +49,7 @@
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29572469325153372" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAv-gl-3zw">
-                    <rect key="frame" x="0.0" y="471" width="375" height="196"/>
+                    <rect key="frame" x="0.0" y="454" width="375" height="213"/>
                     <subviews>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKZ-wq-bH5">
                             <rect key="frame" x="15" y="15" width="345" height="25"/>
@@ -76,7 +80,7 @@
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vBp-c7-A3X">
                             <rect key="frame" x="15" y="95" width="345" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="25" id="ypr-3r-5cI"/>
+                                <constraint firstAttribute="height" constant="25" id="sUw-T9-Mrf"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                             <state key="normal" title="Archive">
@@ -87,9 +91,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7qk-DY-Kui">
-                            <rect key="frame" x="15" y="135" width="345" height="25"/>
+                            <rect key="frame" x="15" y="168" width="345" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="25" id="efe-tg-RB4"/>
+                                <constraint firstAttribute="height" constant="25" id="2gu-lp-qQk"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                             <state key="normal" title="Restore">
@@ -99,21 +103,38 @@
                                 <action selector="onRestorePress:" destination="-1" eventType="touchUpInside" id="sAV-T7-Guf"/>
                             </connections>
                         </button>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wRA-B7-Zbe">
+                            <rect key="frame" x="15" y="135" width="345" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="kax-V6-kI5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                            <state key="normal" title="Print All">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onPrintAllPress:" destination="-1" eventType="touchUpInside" id="sOo-Rx-9q2"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="7qk-DY-Kui" firstAttribute="top" secondItem="vBp-c7-A3X" secondAttribute="bottom" constant="15" id="9Xb-MJ-vOi"/>
-                        <constraint firstAttribute="trailing" secondItem="vBp-c7-A3X" secondAttribute="trailing" constant="15" id="9fY-5J-sOo"/>
+                        <constraint firstAttribute="bottom" secondItem="7qk-DY-Kui" secondAttribute="bottom" constant="20" id="3KX-oo-kkO"/>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="trailing" secondItem="vBp-c7-A3X" secondAttribute="trailing" id="56K-Yb-ApP"/>
+                        <constraint firstItem="vBp-c7-A3X" firstAttribute="trailing" secondItem="C61-BJ-sbc" secondAttribute="trailing" id="9nh-Vs-SY1"/>
+                        <constraint firstItem="wRA-B7-Zbe" firstAttribute="top" secondItem="vBp-c7-A3X" secondAttribute="bottom" constant="15" id="Cvs-25-GH7"/>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="leading" secondItem="vBp-c7-A3X" secondAttribute="leading" id="I4p-TG-zw0"/>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="leading" secondItem="wRA-B7-Zbe" secondAttribute="leading" id="LrB-ZW-Brx"/>
                         <constraint firstItem="C61-BJ-sbc" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="NNr-PP-Jvk"/>
-                        <constraint firstItem="vBp-c7-A3X" firstAttribute="top" secondItem="C61-BJ-sbc" secondAttribute="bottom" constant="15" id="ZlA-ds-udh"/>
+                        <constraint firstItem="vBp-c7-A3X" firstAttribute="leading" secondItem="C61-BJ-sbc" secondAttribute="leading" id="Njg-mT-6LM"/>
                         <constraint firstItem="C61-BJ-sbc" firstAttribute="top" secondItem="nKZ-wq-bH5" secondAttribute="bottom" constant="15" id="dzB-y2-Caz"/>
-                        <constraint firstItem="7qk-DY-Kui" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="fs2-nt-rpx"/>
-                        <constraint firstAttribute="trailing" secondItem="7qk-DY-Kui" secondAttribute="trailing" constant="15" id="nnU-A7-8Qr"/>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="top" secondItem="wRA-B7-Zbe" secondAttribute="bottom" constant="8" symbolic="YES" id="edB-aH-cHP"/>
+                        <constraint firstItem="vBp-c7-A3X" firstAttribute="top" secondItem="C61-BJ-sbc" secondAttribute="bottom" constant="15" id="gSN-FN-2bW"/>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="trailing" secondItem="wRA-B7-Zbe" secondAttribute="trailing" id="nFo-Wf-u0y"/>
                         <constraint firstAttribute="trailing" secondItem="nKZ-wq-bH5" secondAttribute="trailing" constant="15" id="nwN-fe-InC"/>
                         <constraint firstItem="nKZ-wq-bH5" firstAttribute="top" secondItem="VAv-gl-3zw" secondAttribute="top" constant="15" id="pl7-1A-3UR"/>
                         <constraint firstItem="nKZ-wq-bH5" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="skF-zN-eVS"/>
-                        <constraint firstItem="vBp-c7-A3X" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="vIq-NE-4dq"/>
-                        <constraint firstAttribute="height" constant="196" id="vou-gD-IIJ"/>
+                        <constraint firstAttribute="height" constant="213" id="vou-gD-IIJ"/>
                         <constraint firstAttribute="trailing" secondItem="C61-BJ-sbc" secondAttribute="trailing" constant="15" id="wWK-rl-Dkc"/>
                     </constraints>
                 </view>
@@ -129,6 +150,7 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="VAv-gl-3zw" secondAttribute="bottom" id="sMS-K2-DHF"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="138.40000000000001" y="152.47376311844079"/>
         </view>
     </objects>
 </document>

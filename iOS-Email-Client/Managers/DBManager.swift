@@ -178,6 +178,18 @@ class DBManager: SharedDB {
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
             realm.add(file, update: true)
             email.files.append(file)
+        case "filekey":
+            let key = object["key"] as? String
+            let iv = object["iv"] as? String
+            let emailId = object["emailId"] as! Int
+            let fileKey = key != nil && iv != nil ? "\(key!):\(iv!)" : ""
+            guard let emailKey = maps.emails[emailId],
+                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
+                    return
+            }
+            for file in email.files{
+                file.fileKey = fileKey
+            }
         default:
             return
         }

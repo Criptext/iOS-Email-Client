@@ -135,6 +135,18 @@ class Email: Object {
         return contacts
     }
     
+    func getFullContacts() -> String {
+        var contacts = String()
+        self.emailContacts.forEach { (emailContact) in
+            guard let contact = emailContact.contact else {
+                return
+            }
+            
+            contacts = contacts.isEmpty ? "\(contact.displayName) &lt;\(contact.email)&gt;" : "\(contacts), \(contact.displayName) &lt;\(contact.email)&gt;"
+        }
+        return contacts
+    }
+    
     func getContent() -> String {
         guard !isUnsent else {
             return "<span style=\"color:#eea3a3; font-style: italic;\">\(self.getPreview())</span>"

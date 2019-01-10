@@ -168,8 +168,6 @@ class SharedAPI {
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
                 if let refreshData = refreshResponseData {
-                    print(response.response?.allHeaderFields.description)
-                    print(refreshData)
                     completion(refreshData)
                     return
                 }

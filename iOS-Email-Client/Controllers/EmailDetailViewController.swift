@@ -21,6 +21,7 @@ class EmailDetailViewController: UIViewController {
     var emailData : EmailDetailData!
     weak var mailboxData : MailboxData!
     weak var myAccount: Account!
+    @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var topToolbar: TopbarUIView!
     @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
@@ -39,7 +40,7 @@ class EmailDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.webView.delegate = self
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         self.setupToolbar()
         self.setupMoreOptionsViews()
@@ -373,6 +374,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             return
         }
         generalOptionsContainerView.showMoreOptions()
+        let title = (emailData.emails.count) > 1 ? String.localize("PRINT_ALL") : String.localize("PRINT")
+        generalOptionsContainerView.printallButton.setTitle(title, for: .normal)
     }
 }
 
@@ -705,6 +708,19 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             DBManager.unsendEmail(email)
         }
     }
+
+    func onPrintPress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
+        let image = UIImage(named: "AppIcon")
+        let imageData:Data =  UIImagePNGRepresentation(image!)!
+        let html = Constants.singleEmail(image: imageData.base64EncodedString(), subject: subject, displayName: email.fromContact.displayName, email: email.fromContact.email, completeDate: email.completeDate, contacts: email.getFullContacts(), content: email.content)
+        webView.frame = self.view.bounds
+        webView.loadHTMLString(html, baseURL: nil)
+    }
     
     func getEmailRecipients(contacts: [Contact]) -> [String]{
         return contacts.reduce([String](), { (result, contact) -> [String] in
@@ -717,6 +733,28 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onOverlayPress() {
         self.toggleMoreOptionsView()
+    }
+}
+
+extension EmailDetailViewController: UIWebViewDelegate {
+    func webViewDidStartLoad(_ webView: UIWebView) {
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        let printer = UIPrintInteractionController.shared
+        let printInfo = UIPrintInfo(dictionary:nil)
+        
+        printInfo.outputType = UIPrintInfoOutputType.general
+        printInfo.jobName = emailData.subject
+        
+        printer.showsPaperSelectionForLoadedPapers = true
+        printer.printInfo = printInfo
+        printer.printFormatter = webView.viewPrintFormatter()
+        
+        printer.present(animated: true, completionHandler: nil)
+    }
+    
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
     }
 }
 
@@ -739,6 +777,24 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
     
     func onArchivePress() {
         self.archiveThreads()
+    }
+
+    func onPrintAllPress() {
+        let emails = self.emailData.emails
+        guard let email = emails?.first else{
+            return
+        }
+        let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
+        var body = String()
+        for mail in emails!{
+            body = "\(body) \(Constants.bodyEmail(displayName: mail.fromContact.displayName, email: mail.fromContact.email, completeDate: mail.completeDate, contacts: mail.getFullContacts(), content: mail.content))"
+        }
+        let image = UIImage(named: "AppIcon")
+        let imageData:Data =  UIImagePNGRepresentation(image!)!
+        let message = (emailData.emails.count) > 1 ? "\((emails?.count)!) \(String.localize("MESSAGES"))" : ""
+        let html = Constants.threadEmail(image: imageData.base64EncodedString(), subject: subject, body: body, messages: message)
+        webView.frame = self.view.bounds
+        webView.loadHTMLString(html, baseURL: nil)
     }
 }
 
