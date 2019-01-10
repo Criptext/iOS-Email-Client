@@ -36,7 +36,6 @@ class ComposeViewController: UIViewController {
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
     let PASSWORD_POPUP_HEIGHT = 295
-    let MAX_ATTACHMENTS = 5
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
@@ -617,7 +616,6 @@ class ComposeViewController: UIViewController {
                     let picker = TLPhotosPickerViewController()
                     picker.delegate = self
                     var configure = TLPhotosPickerConfigure()
-                    configure.maxSelectedAssets = self.MAX_ATTACHMENTS - self.fileManager.registeredFiles.count
                     configure.allowedVideoRecording = false
                     picker.configure = configure
                     self.present(picker, animated: true, completion: nil)

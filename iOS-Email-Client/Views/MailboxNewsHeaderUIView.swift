@@ -33,4 +33,9 @@ class MailboxNewsHeaderUIView: UIView {
         subtitleLabel.text = feature.subtitle
         newsImageView.sd_setImage(with: URL(string: feature.imageUrl), completed: nil)
     }
+    
+    func fillFieldsUpdate(title:String, subTitle: String){
+        titleLabel.text = title
+        subtitleLabel.text = subTitle
+    }
 }

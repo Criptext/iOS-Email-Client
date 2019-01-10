@@ -106,13 +106,17 @@
 "NO_RESULTS" = "Sin resultados de búsqueda";
 "NOR_TRASH_SPAM" = "Correos en Papelera & Spam no mostrados";
 "NO_INBOXES" = "No hay emails";
+"NO_STARRED" = "No hay correos destacados";
+"NO_STARRED_TEXT" = "Nada está resaltado todavía";
 "SHARE_EMAIL" = "¡Comparte tu dirección de correo!";
 "NO_SENTS" = "No tienes emails enviados";
 "LETS_SEND" = "¡enviemos uno!";
 "NO_DRAFTS" = "No hay borradores";
-"THATS_OK" = "Eso está bien";
+"NO_DRAFTS_TEXT" = "Nada que hacer aquí";
 "NO_SPAM" = "No tienes spam";
 "COOL" = "Enhorabuena!";
+"NO_ALL_EMAILS" = "No hay correos";
+"NO_ALL_EMAILS_TEXT" = "En absoluto!";
 "NO_TRASHES" = "Papelera Vacía";
 "CLEAN_PLACE" = "¡Qué lugar tan limpio!";
 "MATTER_OF_TIME" = "Es cuestión de tiempo";
@@ -284,6 +288,7 @@
 "CC" = "Cc";
 "BCC" = "Cco";
 "MESSAGE" = "Mensaje";
+"MESSGAES" = "Mensajes";
 "AT" = "a las";
 "DATE" = "Fecha";
 "SUBJECT" = "Asunto";
@@ -324,3 +329,7 @@
 
 "SYNC_LINK" = "Autenticación de dispositivo";
 "SYNC_MAIL" = "Sincronización de Buzón";
+"PRINT" = "Imprimir";
+"PRINT_ALL" = "Imprimir Todo";
+"update_now_title" = "¡Actualiza Ahora!";
+"update_now_message" = "Presiona aquí para actualizar Criptext a su última versión y disfrutar de  sus nuevas características.";

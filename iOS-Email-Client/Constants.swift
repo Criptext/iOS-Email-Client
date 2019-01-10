@@ -181,6 +181,44 @@ struct Constants {
         "replybody.style.display = \"none\";} else {" +
         "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
 
+    
+    static func singleEmail (image: String, subject: String, displayName: String, email: String, completeDate: String,
+                             contacts: String, content: String) -> String{
+        return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/></head>" +
+            "<body>" +
+            " <div><img src=\"data:image/png;base64, \(image)\"  alt=\"Criptext Logo\" style=\" width=3% !important; height=1% !important \"></div>" +
+            "<hr>" +
+            "<div><p><b>\(subject)</b></br></p></div>" +
+            "<div><p>1 \(String.localize("MESSAGE"))</br></p></div>" +
+            "<hr>" +
+            "\(Constants.bodyEmail(displayName: displayName, email: email, completeDate: completeDate, contacts: contacts, content: content))" +
+        "</body></html>"
+    }
+    
+    static func bodyEmail(displayName: String, email: String, completeDate: String,
+                          contacts: String, content: String) -> String {
+        return "<table style=\"width:100%\">\n" +
+            "  <td><b>\(displayName)</b> &lt;\(email)&gt;</td>\n" +
+            "    <td style=\"text-align:right\">\(completeDate)</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "    <td>\(String.localize("TO")): \(contacts)</td>\n" +
+            "  </tr>\n </table> <br>" +
+        " \(content)"
+    }
+    
+    static func threadEmail (image: String, subject: String, body: String, messages: String) -> String{
+        return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/></head>" +
+            "<body>" +
+            " <div><img src=\"data:image/png;base64, \(image)\" alt=\"Criptext Logo\" style=\" width=3% !important; height=1% !important \"></div>" +
+            "<hr>" +
+            "<div><p><b>\(subject)</b></br></p></div>" +
+            "<div><p>\(messages)</br></p></div>" +
+            "<hr>" +
+            " \(body) " +
+        "</body></html>"
+    }
+    
     static let popoverWidth = 270
     static let singleTextPopoverHeight = 178
 }

@@ -117,6 +117,6 @@ to add a new layer of security</string>
     </objects>
     <resources>
         <image name="close" width="28" height="28"/>
-        <image name="lock" width="9" height="10"/>
+        <image name="lock" width="19" height="21"/>
     </resources>
 </document>

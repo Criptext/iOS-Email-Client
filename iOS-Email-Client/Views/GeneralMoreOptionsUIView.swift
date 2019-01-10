@@ -14,6 +14,7 @@ protocol GeneralMoreOptionsViewDelegate: class {
     func onAddLabesPress()
     func onArchivePress()
     func onRestorePress()
+    func onPrintAllPress()
 }
 
 class GeneralMoreOptionsUIView : UIView {
@@ -22,6 +23,7 @@ class GeneralMoreOptionsUIView : UIView {
     let OPTION_HEIGHT : CGFloat = 25.0
     let OPTION_MARGIN : CGFloat = 15.0
     let OPTION_VERTICAL_SPACE : CGFloat = 49.0
+    @IBOutlet weak var printallButton: UIButton!
     @IBOutlet weak var backgroundOverlayView: UIView!
     @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
@@ -35,6 +37,8 @@ class GeneralMoreOptionsUIView : UIView {
     @IBOutlet weak var restoreButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var archiveTopMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var archiveButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var printButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var printTopMarginConstraint: NSLayoutConstraint!
     @IBOutlet var optionButtons: [UIButton]?
     
     var neededHeight: CGFloat = -196.0
@@ -109,7 +113,7 @@ class GeneralMoreOptionsUIView : UIView {
         default:
             restoreTopMarginConstraint.constant = COLLAPSED_MARGIN
             restoreButtonHeightConstraint.constant = COLLAPSED_HEIGHT
-            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 3
+            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 4
             neededHeight = -(OPTION_VERTICAL_SPACE * 3)
         }
         self.view.layoutIfNeeded()
@@ -157,6 +161,10 @@ class GeneralMoreOptionsUIView : UIView {
     
     @IBAction func onRestorePress(_ sender: Any) {
         delegate?.onRestorePress()
+    }
+    
+    @IBAction func onPrintAllPress(_ sender: Any) {
+        delegate?.onPrintAllPress()
     }
     
 }
