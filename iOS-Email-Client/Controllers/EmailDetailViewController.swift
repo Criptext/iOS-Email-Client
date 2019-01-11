@@ -791,7 +791,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
         }
         let image = UIImage(named: "AppIcon")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
-        let message = (emailData.emails.count) > 1 ? "\((emails?.count)!) \(String.localize("MESSAGES"))" : ""
+        let message = (emailData.emails.count) > 1 ? "\((emails?.count)!) \(String.localize("MESSAGES"))" : "1 \(String.localize("MESSAGE"))"
         let html = Constants.threadEmail(image: imageData.base64EncodedString(), subject: subject, body: body, messages: message)
         webView.frame = self.view.bounds
         webView.loadHTMLString(html, baseURL: nil)

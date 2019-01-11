@@ -93,9 +93,68 @@ class InboxViewController: UIViewController {
     }
     
     func viewSetupNews() {
+        let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
+        let version = mailboxData.feature?.version
+        switch(mailboxData.feature?.symbol){
+        case 1: // <
+            if(appVersion!.compare(version!, options: .numeric) == .orderedAscending){
+                openNewsBanner()
+            }
+            break
+        case 2: // <=
+            if(appVersion!.compare(version!, options: .numeric) == .orderedAscending || appVersion!.compare(version!, options: .numeric) == .orderedSame){
+                openNewsBanner()
+            }
+            break
+        case 3: //  ==
+            if(appVersion!.compare(version!, options: .numeric) == .orderedSame){
+                openNewsBanner()
+            }
+            break
+        case 4: // >=
+            if(appVersion!.compare(version!, options: .numeric) == .orderedDescending || appVersion!.compare(version!, options: .numeric) == .orderedSame){
+                openNewsBanner()
+            }else{
+                openUpdateBanner()
+            }
+            break
+        case 5: // >
+            if(appVersion!.compare(version!, options: .numeric) == .orderedDescending){
+                openNewsBanner()
+            }else{
+                openUpdateBanner()
+            }
+            break
+        default:
+            openNewsBanner()
+            break
+        }
+    }
+    
+    func openNewsBanner(){
         if mailboxData.selectedLabel == SystemLabel.inbox.id,
             let feature = mailboxData.feature {
             newsHeaderView.fillFields(feature: feature)
+            openNewsHeader()
+        } else {
+            closeNewsHeader()
+        }
+    }
+    
+    @objc func openAppStore(_ recognizer: UITapGestureRecognizer) {
+        if let url = URL(string: "itms-apps://itunes.apple.com/app/id1377890297"),
+            UIApplication.shared.canOpenURL(url){
+            UIApplication.shared.open(url, options: [:]) { (opened) in }
+        }
+    }
+    
+    func openUpdateBanner(){
+        if mailboxData.selectedLabel == SystemLabel.inbox.id {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.openAppStore(_:)))
+            tap.numberOfTapsRequired = 1
+            newsHeaderView.subtitleLabel.isUserInteractionEnabled = true
+            newsHeaderView.subtitleLabel.addGestureRecognizer(tap)
+            newsHeaderView.fillFieldsUpdate(title: String.localize("update_now_title"), subTitle: String.localize("update_now_message"))
             openNewsHeader()
         } else {
             closeNewsHeader()
