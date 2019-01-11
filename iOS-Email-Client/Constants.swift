@@ -184,7 +184,24 @@ struct Constants {
     
     static func singleEmail (image: String, subject: String, displayName: String, email: String, completeDate: String,
                              contacts: String, content: String) -> String{
-        return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/></head>" +
+        return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/><style> " +
+        " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Heavy.otf) format(\"opentype\");font-weight:900;font-style:normal} " +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Heavy+Italic.otf) format();font-weight:900;font-style:italic} " +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Bold.otf) format(\"opentype\");font-weight:800;font-style:normal}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Bold+Italic.otf) format(\"opentype\");font-weight:800;font-style:italic}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Demi+Bold.otf) format(\"opentype\");font-weight:700;font-style:normal}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Demi+Bold+Italic.otf) format(\"opentype\");font-weight:700;font-style:italic}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Medium.otf) format(\"opentype\");font-weight:600;font-style:normal}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Medium+Italic.otf) format(\"opentype\");font-weight:600;font-style:italic}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Regular.otf) format(\"opentype\");font-weight:400;font-style:normal}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Italic.otf) format(\"opentype\");font-weight:400;font-style:italic}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Ultra+Light.otf) format(\"opentype\");font-weight:300;font-style:normal}" +
+           " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Ultra+Light+Italic.otf) format(\"opentype\");font-weight:300;font-style:italic}" +
+            "* {" +
+            "font-family: 'Avenir Next';" +
+            "font-size: 11px;" +
+            "};" +
+            "</style></head>" +
             "<body>" +
             " <div><img src=\"data:image/png;base64, \(image)\"  alt=\"Criptext Logo\" style=\" width=3% !important; height=1% !important \"></div>" +
             "<hr>" +
@@ -208,7 +225,24 @@ struct Constants {
     }
     
     static func threadEmail (image: String, subject: String, body: String, messages: String) -> String{
-        return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/></head>" +
+        return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/><style> " +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Heavy.otf) format(\"opentype\");font-weight:900;font-style:normal} " +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Heavy+Italic.otf) format();font-weight:900;font-style:italic} " +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Bold.otf) format(\"opentype\");font-weight:800;font-style:normal}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Bold+Italic.otf) format(\"opentype\");font-weight:800;font-style:italic}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Demi+Bold.otf) format(\"opentype\");font-weight:700;font-style:normal}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Demi+Bold+Italic.otf) format(\"opentype\");font-weight:700;font-style:italic}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Medium.otf) format(\"opentype\");font-weight:600;font-style:normal}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Medium+Italic.otf) format(\"opentype\");font-weight:600;font-style:italic}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Regular.otf) format(\"opentype\");font-weight:400;font-style:normal}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Italic.otf) format(\"opentype\");font-weight:400;font-style:italic}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Ultra+Light.otf) format(\"opentype\");font-weight:300;font-style:normal}" +
+            " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Ultra+Light+Italic.otf) format(\"opentype\");font-weight:300;font-style:italic}" +
+            "* {" +
+            "font-family: 'Avenir Next';" +
+            "font-size: 11px;" +
+            "};" +
+            "</style></head>" +
             "<body>" +
             " <div><img src=\"data:image/png;base64, \(image)\" alt=\"Criptext Logo\" style=\" width=3% !important; height=1% !important \"></div>" +
             "<hr>" +
