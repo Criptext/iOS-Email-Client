@@ -22,6 +22,7 @@ class File : Object {
     @objc dynamic var mimeType = ""
     @objc dynamic var shouldDuplicate = false
     @objc dynamic var originalToken: String?
+    @objc dynamic var fileKey:String = ""
     var filePath = ""
     var progress = -1
     var filepath = ""
@@ -58,6 +59,15 @@ class File : Object {
         case upload
         case download
     }
+    
+    class func getKeyAndIv(key: String) -> (Data, Data){
+        let keys = key.split(separator: ":")
+        return (Data(base64Encoded: String(keys[0]), options: .ignoreUnknownCharacters)!, Data(base64Encoded: String(keys[1]), options: .ignoreUnknownCharacters)!)
+    }
+    
+    class func getKeyCodedString(key: Data, iv: Data) -> String{
+        return "\(key.base64EncodedString()):\(iv.base64EncodedString())"
+    }
 }
 
 extension File{
@@ -74,7 +84,8 @@ extension File{
                 "date": dateString,
                 "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId,
-                "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType
+                "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType,
+                "fileKey": fileKey
             ]
         ]
     }
@@ -101,6 +112,7 @@ extension File{
         newFile.mimeType = self.mimeType
         newFile.shouldDuplicate = true
         newFile.originalToken = self.token
+        newFile.fileKey = self.fileKey
         return newFile
     }
 }

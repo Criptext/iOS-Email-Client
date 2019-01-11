@@ -139,6 +139,7 @@ class CriptextFileManager {
         attachment.size = size
         attachment.mimeType = mimeType
         attachment.requestStatus = .pending
+        attachment.fileKey = File.getKeyCodedString(key:  keyPairs[0]!.0, iv:  keyPairs[0]!.1)
         return attachment
     }
     
@@ -315,7 +316,8 @@ class CriptextFileManager {
             return ["token": file.token,
                     "name": file.name,
                     "size": file.size,
-                    "mimeType": file.mimeType]
+                    "mimeType": file.mimeType,
+                    "fileKey": file.fileKey]
         })
     }
     

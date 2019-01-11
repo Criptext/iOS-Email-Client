@@ -281,8 +281,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
                 }
                 switch status {
                 case .authorized:
-                    if let fileKey = DBManager.getFileKey(emailId: file.emailId) {
-                        let keys = fileKey.getKeyAndIv()
+                    if(!file.fileKey.isEmpty){
+                        let keys = File.getKeyAndIv(key: file.fileKey)
                         weakSelf.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
                     }
                     if let attachmentCell = weakSelf.getCellFromFile(file) {
@@ -416,7 +416,6 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
                 newFile.requestStatus = .finish
                 composerVC.fileManager.registeredFiles.append(newFile)
             }
-            composerData.initialFileKey = DBManager.getFileKey(emailId: email.key)
         }
         composerVC.delegate = self
         composerVC.composerData = composerData

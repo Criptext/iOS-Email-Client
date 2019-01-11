@@ -329,15 +329,6 @@ extension ShareViewController {
         draft.labels.append(SharedDB.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
         SharedDB.store(draft)
-        
-        if fileManager.encryption && !fileManager.registeredFiles.isEmpty,
-            let keys = fileManager.keyPairs[0] {
-            let fileKey = FileKey()
-            fileKey.key = FileKey.getKeyCodedString(key: keys.0, iv: keys.1)
-            fileKey.emailId = draft.key
-            SharedDB.store([fileKey])
-        }
-        
         //create email contacts
         var emailContacts = [EmailContact]()
         self.composerUIView.toField.allTokens.forEach { (token) in

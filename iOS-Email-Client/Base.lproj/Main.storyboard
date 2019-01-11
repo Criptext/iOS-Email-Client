@@ -1180,6 +1180,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="feedSubtitle" destination="OR1-M8-liz" id="Cfd-nA-WtD"/>
+                        <outlet property="feedTitle" destination="8TJ-12-61l" id="7DK-bP-b4J"/>
                         <outlet property="feedsTableView" destination="M89-ba-zr9" id="Q9o-1O-z8W"/>
                         <outlet property="headerView" destination="Ca0-zf-uom" id="7PZ-VG-21a"/>
                         <outlet property="noFeedsView" destination="rqy-hR-4tH" id="vFi-i8-DVX"/>
