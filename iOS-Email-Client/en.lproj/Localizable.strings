@@ -331,5 +331,5 @@
 "SYNC_MAIL" = "Sync Request";
 "PRINT" = "Print";
 "PRINT_ALL" = "Print All";
-"update_now_title" = "Update Now!";
-"update_now_message" = "Click here to update Criptext to it\'s latest version and enjoy it\'s new features.";
+"update_now_title" = "Update Available!";
+"update_now_message" = "Tap here to update Criptext to it\'s latest version and enjoy it\'s new features.";
