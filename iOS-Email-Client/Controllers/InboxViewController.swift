@@ -114,6 +114,8 @@ class InboxViewController: UIViewController {
         case 4: // >=
             if(appVersion!.compare(version!, options: .numeric) == .orderedDescending || appVersion!.compare(version!, options: .numeric) == .orderedSame){
                 openNewsBanner()
+            }else{
+                openUpdateBanner()
             }
             break
         case 5: // >
@@ -124,7 +126,7 @@ class InboxViewController: UIViewController {
             }
             break
         default:
-            openUpdateBanner()
+            openNewsBanner()
             break
         }
     }
