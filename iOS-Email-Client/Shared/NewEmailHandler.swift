@@ -128,15 +128,6 @@ class NewEmailHandler {
                 return
             }
             
-            if !unsent,
-                let keyString = event.fileKey,
-                let fileKeyString = self.handleBodyByMessageType(event.messageType, body: keyString, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) {
-                let fKey = FileKey()
-                fKey.emailId = email.key
-                fKey.key = fileKeyString
-                self.database.store([fKey])
-            }
-            
             ContactUtils.parseEmailContacts([event.from], email: email, type: .from)
             ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
             ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
@@ -170,6 +161,9 @@ class NewEmailHandler {
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
+        if let fileKey = attachment["fileKey"] {
+            file.fileKey = fileKey as! String
+        }
         file.mimeType = File.mimeTypeForPath(path: file.name)
         file.date = email.date
         file.readOnly = attachment["read_only"] as? Int ?? 0

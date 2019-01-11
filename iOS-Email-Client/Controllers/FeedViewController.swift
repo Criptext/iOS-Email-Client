@@ -13,6 +13,8 @@ import RealmSwift
 class FeedViewController: UIViewController{
     let HEADER_HEIGHT : CGFloat = 42.0
     var feedsData = FeedsData()
+    @IBOutlet weak var feedTitle: UILabel!
+    @IBOutlet weak var feedSubtitle: UILabel!
     @IBOutlet weak var noFeedsView: UIView!
     @IBOutlet weak var headerView: FeedHeaderTitleUIView!
     @IBOutlet weak var feedsTableView: UITableView!
@@ -106,6 +108,8 @@ class FeedViewController: UIViewController{
         self.view.backgroundColor = theme.menuBackground
         self.feedsTableView.backgroundColor = theme.menuBackground
         self.bellImage.image = theme.name == "Dark" ? UIImage(named: "belldark") : UIImage(named: "color-bell")
+        self.feedTitle.textColor = theme.mainText
+        self.feedSubtitle.textColor = theme.placeholder
         feedsTableView.reloadData()
         headerView.applyTheme()
     }

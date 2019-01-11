@@ -15,7 +15,6 @@ class ComposerData {
     var initCcContacts = [Contact]()
     var initSubject = ""
     var initContent = ""
-    var initialFileKey: FileKey?
     var emailDraft: Email?
     var threadId: String?
 }

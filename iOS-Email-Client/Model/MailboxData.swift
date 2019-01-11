@@ -60,5 +60,7 @@ class MailboxData {
         var imageUrl: String
         var title: String
         var subtitle: String
+        var version: String
+        var symbol: Int
     }
 }

@@ -173,23 +173,6 @@ class SharedDB {
         }
     }
     
-    class func store(_ fileKeys: [FileKey]){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            for fileKey in fileKeys {
-                fileKey.incrementID()
-                realm.add(fileKey, update: true)
-            }
-        }
-    }
-    
-    class func getFileKey(emailId: Int) -> FileKey? {
-        let realm = try! Realm()
-        
-        return realm.objects(FileKey.self).filter("emailId == %@", emailId).first
-    }
-    
     class func duplicateFiles(key: Int, duplicates: [String: Any]) -> [[String: Any]]? {
         let realm = try! Realm()
         
@@ -215,7 +198,8 @@ class SharedDB {
                 let fileparam = ["token": newFile.token,
                                  "name": newFile.name,
                                  "size": newFile.size,
-                                 "mimeType": newFile.mimeType] as [String : Any]
+                                 "mimeType": newFile.mimeType,
+                                 "fileKey": newFile.fileKey] as [String : Any]
                 fileParams.append(fileparam)
             }
         }
@@ -233,10 +217,6 @@ class SharedDB {
     class func updateEmail(_ email: Email, key: Int, messageId: String, threadId: String) {
         let realm = try! Realm()
         try! realm.write() {
-            if let fileKey = getFileKey(emailId: email.key) {
-                fileKey.emailId = key
-            }
-            
             let newEmail = Email()
             newEmail.key = key
             newEmail.messageId = messageId
@@ -301,9 +281,6 @@ class SharedDB {
         
         try! realm.write {
             realm.delete(draft.emailContacts)
-            if let fileKey = self.getFileKey(emailId: draft.key){
-                realm.delete(fileKey)
-            }
             realm.delete(draft)
         }
     }

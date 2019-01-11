@@ -303,10 +303,10 @@ extension EventHandler {
                 let title = news["title"] as? String,
                 let body = news["body"] as? String,
                 let imageUrl = news["imageUrl"] as? String else {
-                finishCallback(false, .Empty)
+                    finishCallback(false, .Empty)
                 return
             }
-            let feature = MailboxData.Feature(imageUrl: imageUrl, title: title, subtitle: body)
+            let feature = MailboxData.Feature(imageUrl: imageUrl, title: title, subtitle: body, version: event.version, symbol: Int(event.symbol))
             finishCallback(true, .News(feature))
         }
     }

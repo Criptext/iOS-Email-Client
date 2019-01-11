@@ -281,8 +281,8 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
                 }
                 switch status {
                 case .authorized:
-                    if let fileKey = DBManager.getFileKey(emailId: file.emailId) {
-                        let keys = fileKey.getKeyAndIv()
+                    if(!file.fileKey.isEmpty){
+                        let keys = File.getKeyAndIv(key: file.fileKey)
                         weakSelf.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
                     }
                     if let attachmentCell = weakSelf.getCellFromFile(file) {
@@ -416,7 +416,6 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
                 newFile.requestStatus = .finish
                 composerVC.fileManager.registeredFiles.append(newFile)
             }
-            composerData.initialFileKey = DBManager.getFileKey(emailId: email.key)
         }
         composerVC.delegate = self
         composerVC.composerData = composerData
@@ -792,7 +791,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
         }
         let image = UIImage(named: "AppIcon")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
-        let message = (emailData.emails.count) > 1 ? "\((emails?.count)!) \(String.localize("MESSAGES"))" : ""
+        let message = (emailData.emails.count) > 1 ? "\((emails?.count)!) \(String.localize("MESSAGES"))" : "1 \(String.localize("MESSAGE"))"
         let html = Constants.threadEmail(image: imageData.base64EncodedString(), subject: subject, body: body, messages: message)
         webView.frame = self.view.bounds
         webView.loadHTMLString(html, baseURL: nil)

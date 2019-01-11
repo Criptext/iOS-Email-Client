@@ -189,6 +189,7 @@ struct Constants {
             " <div><img src=\"data:image/png;base64, \(image)\"  alt=\"Criptext Logo\" style=\" width=3% !important; height=1% !important \"></div>" +
             "<hr>" +
             "<div><p><b>\(subject)</b></br></p></div>" +
+            "<div><p>1 \(String.localize("MESSAGE"))</br></p></div>" +
             "<hr>" +
             "\(Constants.bodyEmail(displayName: displayName, email: email, completeDate: completeDate, contacts: contacts, content: content))" +
         "</body></html>"
@@ -207,13 +208,12 @@ struct Constants {
     }
     
     static func threadEmail (image: String, subject: String, body: String, messages: String) -> String{
-        let message = messages.isEmpty ? "" : "<div><p>\(messages)</br></p></div>"
         return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/></head>" +
             "<body>" +
             " <div><img src=\"data:image/png;base64, \(image)\" alt=\"Criptext Logo\" style=\" width=3% !important; height=1% !important \"></div>" +
             "<hr>" +
             "<div><p><b>\(subject)</b></br></p></div>" +
-            "\(message)" +
+            "<div><p>\(messages)</br></p></div>" +
             "<hr>" +
             " \(body) " +
         "</body></html>"

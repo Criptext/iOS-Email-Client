@@ -13,6 +13,7 @@ import RealmSwift
 class SendMailAsyncTask {
     
     let fileKey: String?
+    let fileKeys: [String]?
     let threadId: String?
     let subject: String
     let body: String
@@ -30,9 +31,14 @@ class SendMailAsyncTask {
         let fileParams = SendMailAsyncTask.getFilesRequestData(email: email)
         let files = fileParams.0
         let duplicates = fileParams.1
-        let fileKey = SharedDB.getFileKey(emailId: email.key)?.key
-        let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, files: files, fileKey: fileKey)
-        
+        let fileKey: String? = !(files.isEmpty) ? files[0]["fileKey"] as? String : nil
+        self.fileKeys = [String]()
+        for file in files {
+            if let key = file["fileKey"] as? String, !key.isEmpty {
+                self.fileKeys?.append(key)
+            }
+        }
+        let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, files: files, fileKey: fileKey, fileKeys: fileKeys)
         self.username = account.username
         self.emailKey = email.key
         self.subject = email.subject
@@ -45,7 +51,6 @@ class SendMailAsyncTask {
         self.duplicates = duplicates
         self.emailRef = SharedDB.getReference(email)
         self.fileKey = fileKey
-        
         self.password = password
     }
     
@@ -62,14 +67,15 @@ class SendMailAsyncTask {
                 let fileparams = ["token": file.token,
                                   "name": file.name,
                                   "size": file.size,
-                                  "mimeType": file.mimeType] as [String : Any]
+                                  "mimeType": file.mimeType,
+                                  "fileKey": file.fileKey] as [String : Any]
                 files.append(fileparams)
             }
         }
         return (files, duplicates)
     }
     
-    private class func getRecipientEmails(username: String, email: Email, files: [[String: Any]], fileKey: String?) -> ([String: Any], [String: Any]) {
+    private class func getRecipientEmails(username: String, email: Email, files: [[String: Any]], fileKey: String?, fileKeys: [String]?) -> ([String: Any], [String: Any]) {
         var criptextEmails = [username: "peer"] as [String: String]
         var toArray = [String]()
         var ccArray = [String]()
@@ -111,6 +117,7 @@ class SendMailAsyncTask {
             if !email.secure,
                 let fKey = fileKey {
                 guestEmails["fileKey"] = fKey
+                guestEmails["fileKeys"] = fileKeys
             }
         }
         return (guestEmails, criptextEmails)
@@ -239,6 +246,13 @@ class SendMailAsyncTask {
         if !self.files.isEmpty,
             let fileKey = self.fileKey {
             criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
+            if let fileKeys = self.fileKeys {
+                var criptextFileKeys:[String]? = [String]()
+                for key in fileKeys{
+                    criptextFileKeys?.append(SignalHandler.encryptMessage(body: key, deviceId: deviceId, recipientId: recipientId, account: myAccount).0)
+                }
+                criptextEmail["fileKeys"] = criptextFileKeys
+            }
         }
         return criptextEmail
     }
@@ -250,6 +264,9 @@ class SendMailAsyncTask {
         var session = dummy.getSessionBundle()
         if let fileKey = self.fileKey {
             session["fileKey"] = fileKey
+        }
+        if let fileKeys = self.fileKeys {
+            session["fileKeys"] = fileKeys
         }
         let aesSalt = AESCipher.generateRandomBytes(length: 8)
         let aesKey = AESCipher.generateKey(password: password, saltData: aesSalt)!
