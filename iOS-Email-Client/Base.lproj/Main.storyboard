@@ -1180,6 +1180,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bellImage" destination="UfR-YP-G4B" id="dPF-ec-Yiu"/>
                         <outlet property="feedsTableView" destination="M89-ba-zr9" id="Q9o-1O-z8W"/>
                         <outlet property="headerView" destination="Ca0-zf-uom" id="7PZ-VG-21a"/>
                         <outlet property="noFeedsView" destination="rqy-hR-4tH" id="vFi-i8-DVX"/>

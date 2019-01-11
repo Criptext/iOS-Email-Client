@@ -11,6 +11,7 @@ import Foundation
 enum ResponseData {
     case Error(CriptextError)
     case Success
+    case SuccessAndRepeat([[String: Any]])
     case SuccessInt(Int)
     case SuccessArray([[String: Any]])
     case SuccessDictionary([String: Any])

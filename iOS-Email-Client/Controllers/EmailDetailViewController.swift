@@ -788,7 +788,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         var body = String()
         for mail in emails!{
-            body = "\(body) \(Constants.bodyEmail(displayName: mail.fromContact.displayName, email: mail.fromContact.email, completeDate: mail.completeDate, contacts: mail.getFullContacts(), content: mail.content))"
+            body = "\(body) \(Constants.bodyEmail(displayName: mail.fromContact.displayName, email: mail.fromContact.email, completeDate: mail.completeDate, contacts: mail.getFullContacts(), content: mail.content)) <hr>"
         }
         let image = UIImage(named: "AppIcon")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
