@@ -715,7 +715,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         let email = emailData.emails[indexPath.row]
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
-        let image = UIImage(named: "AppIcon")
+        let image = UIImage(named: "footer_beta")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
         let html = Constants.singleEmail(image: imageData.base64EncodedString(), subject: subject, displayName: email.fromContact.displayName, email: email.fromContact.email, completeDate: email.completeDate, contacts: email.getFullContacts(), content: email.content)
         webView.frame = self.view.bounds
@@ -789,7 +789,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
         for mail in emails!{
             body = "\(body) \(Constants.bodyEmail(displayName: mail.fromContact.displayName, email: mail.fromContact.email, completeDate: mail.completeDate, contacts: mail.getFullContacts(), content: mail.content)) <hr>"
         }
-        let image = UIImage(named: "AppIcon")
+        let image = UIImage(named: "footer_beta")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
         let message = (emailData.emails.count) > 1 ? "\((emails?.count)!) \(String.localize("MESSAGES"))" : "1 \(String.localize("MESSAGE"))"
         let html = Constants.threadEmail(image: imageData.base64EncodedString(), subject: subject, body: body, messages: message)

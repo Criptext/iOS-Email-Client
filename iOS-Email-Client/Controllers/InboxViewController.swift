@@ -477,29 +477,28 @@ extension InboxViewController {
                 return
             }
             
-            if case let .SuccessArray(events) = responseData {
-                let eventHandler = EventHandler(account: weakSelf.myAccount)
-                eventHandler.handleEvents(events: events){ [weak self] result in
-                    self?.didReceiveEvents(result: result)
-                    self?.mailboxData.updating = false
-                    refreshControl?.endRefreshing()
-                    completion?(true)
-                }
-            }else{
-                if case let .SuccessAndRepeat(events) = responseData {
-                    let eventHandler = EventHandler(account: weakSelf.myAccount)
-                    eventHandler.handleEvents(events: events){ [weak self] result in
-                        self?.didReceiveEvents(result: result)
-                        self!.mailboxData.updating = true
-                        completion?(false)
-                        self?.getPendingEvents(refreshControl)
-                    }
-                }else{
+            guard case let .SuccessArray(events) = responseData else {
+                guard case let .SuccessAndRepeat(events) = responseData else {
                     weakSelf.mailboxData.updating = false
                     refreshControl?.endRefreshing()
                     completion?(false)
                     return
                 }
+                let eventHandler = EventHandler(account: weakSelf.myAccount)
+                eventHandler.handleEvents(events: events){ [weak self] result in
+                    self?.didReceiveEvents(result: result)
+                    self!.mailboxData.updating = true
+                    completion?(false)
+                    self?.getPendingEvents(refreshControl)
+                }
+                return
+            }
+            let eventHandler = EventHandler(account: weakSelf.myAccount)
+            eventHandler.handleEvents(events: events){ [weak self] result in
+                self?.didReceiveEvents(result: result)
+                self?.mailboxData.updating = false
+                refreshControl?.endRefreshing()
+                completion?(true)
             }
         }
     }
