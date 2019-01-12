@@ -18,6 +18,7 @@ class FeedViewController: UIViewController{
     @IBOutlet weak var noFeedsView: UIView!
     @IBOutlet weak var headerView: FeedHeaderTitleUIView!
     @IBOutlet weak var feedsTableView: UITableView!
+    @IBOutlet weak var bellImage: UIImageView!
     var newFeedsToken: NotificationToken?
     var oldFeedsToken: NotificationToken?
     
@@ -106,6 +107,7 @@ class FeedViewController: UIViewController{
         let theme = ThemeManager.shared.theme
         self.view.backgroundColor = theme.menuBackground
         self.feedsTableView.backgroundColor = theme.menuBackground
+        self.bellImage.image = theme.name == "Dark" ? UIImage(named: "belldark") : UIImage(named: "color-bell")
         self.feedTitle.textColor = theme.mainText
         self.feedSubtitle.textColor = theme.placeholder
         feedsTableView.reloadData()

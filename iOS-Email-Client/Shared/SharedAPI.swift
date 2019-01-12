@@ -22,6 +22,7 @@ class SharedAPI {
     enum code: Int {
         case none = 0
         case success = 200
+        case successAndRepeat = 201
         case successNoContent = 204
         case successAccepted = 202
         case notModified = 304
@@ -57,6 +58,8 @@ class SharedAPI {
         switch(code.init(rawValue: status) ?? .none){
         case satisfy:
             return .Success
+        case .successAndRepeat:
+            return .SuccessAndRepeat(responseRequest.result.value as! [[String : Any]])
         case .unauthorized:
             return .Unauthorized
         case .forbidden:

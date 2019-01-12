@@ -478,9 +478,19 @@ extension InboxViewController {
             }
             
             guard case let .SuccessArray(events) = responseData else {
-                weakSelf.mailboxData.updating = false
-                refreshControl?.endRefreshing()
-                completion?(false)
+                guard case let .SuccessAndRepeat(events) = responseData else {
+                    weakSelf.mailboxData.updating = false
+                    refreshControl?.endRefreshing()
+                    completion?(false)
+                    return
+                }
+                let eventHandler = EventHandler(account: weakSelf.myAccount)
+                eventHandler.handleEvents(events: events){ [weak self] result in
+                    self?.didReceiveEvents(result: result)
+                    self!.mailboxData.updating = true
+                    completion?(false)
+                    self?.getPendingEvents(refreshControl)
+                }
                 return
             }
             let eventHandler = EventHandler(account: weakSelf.myAccount)
@@ -865,7 +875,7 @@ extension InboxViewController: UITableViewDataSource{
             return
         }
         guard !mailboxData.searchMode else {
-            setEnvelopeMessages(image: "search_sad", title: String.localize("NO_RESULTS"), subtitle: String.localize("NOR_TRASH_SPAM"))
+            setEnvelopeMessages(image: ThemeManager.shared.theme.name == "Dark" ? "searchSadDark" : "search_sad", title: String.localize("NO_RESULTS"), subtitle: String.localize("NOR_TRASH_SPAM"))
             return
         }
         switch(mailboxData.selectedLabel){
