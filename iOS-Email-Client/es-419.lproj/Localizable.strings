@@ -333,3 +333,5 @@
 "PRINT_ALL" = "Imprimir Todo";
 "update_now_title" = "¡Actualiza Ahora!";
 "update_now_message" = "Presiona aquí para actualizar Criptext a su última versión y disfrutar de  sus nuevas características.";
+"SHOW_UNREAD" = "Mostrar no leídos";
+"SHOW_ALL" = "Mostrar todo";
