@@ -16,6 +16,7 @@ class ManualSyncViewController: UIViewController{
     @IBOutlet var connectUIView: ConnectUIView!
     var acceptData: AcceptData!
     var socket : SingleWebSocket?
+    weak var previousWebsocketDelegate: WebSocketManagerDelegate?
     var scheduleWorker = ScheduleWorker(interval: 10.0, maxRetries: 18)
     weak var myAccount: Account!
     var state: ConnectionState = .waiting
@@ -38,6 +39,8 @@ class ManualSyncViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.previousWebsocketDelegate = WebSocketManager.sharedInstance.delegate
+        WebSocketManager.sharedInstance.delegate = nil
         socket = SingleWebSocket()
         socket?.delegate = self
         connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
@@ -77,6 +80,8 @@ class ManualSyncViewController: UIViewController{
     func goBack(){
         socket?.close()
         scheduleWorker.cancel()
+        WebSocketManager.sharedInstance.delegate = previousWebsocketDelegate
+        previousWebsocketDelegate = nil
         presentingViewController?.navigationController?.popToRootViewController(animated: false)
         dismiss(animated: true, completion: nil)
     }
@@ -148,6 +153,8 @@ class ManualSyncViewController: UIViewController{
     }
     
     func dismissToRoot() {
+        WebSocketManager.sharedInstance.delegate = previousWebsocketDelegate
+        previousWebsocketDelegate = nil
         guard let inboxVC = (UIApplication.shared.delegate as? AppDelegate)?.getInboxVC() else {
             return
         }
