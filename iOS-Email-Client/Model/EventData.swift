@@ -225,15 +225,22 @@ extension EventData {
         struct NewLabel: Dictionarify {
             let text: String
             let color: String
-            
+            let uuid: String
+
             init(params: [String: Any]){
                 text = params["text"] as! String
                 color = params["color"] as! String
+                guard let uuid_string = params["uuid"] else{
+                    uuid = UUID().uuidString
+                    return
+                }
+                uuid = uuid_string as! String
             }
             
-            init(text: String, color: String){
+            init(text: String, color: String, uuid: String){
                 self.text = text
                 self.color = color
+                self.uuid = uuid
             }
         }
         

@@ -25,6 +25,7 @@ struct NewEmail {
     let fileKeys:[String]?
     let labels: [String]
     let isExternal: Bool
+    let replyTo: String?
     
     init(params: [String: Any]){
         threadId = params["threadId"] as! String
@@ -46,6 +47,7 @@ struct NewEmail {
         cc = (params["cc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
         bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
         labels = (params["labels"] as? [String]) ?? [String]()
+        replyTo = params["replyTo"] as? String
     }
     
     static func convertToDate(dateString: String) -> Date {

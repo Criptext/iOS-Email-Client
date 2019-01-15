@@ -103,6 +103,9 @@ class DBManager: SharedDB {
             let contactId = object["id"] as! Int
             contact.email = object["email"] as! String
             contact.displayName = object["name"] as? String ?? String(contact.email.split(separator: "@").first!)
+            if let isTrusted = object["isTrusted"]{
+                contact.isTrusted = isTrusted as! Bool
+            }
             realm.add(contact, update: true)
             maps.contacts[contactId] = contact.email
         case "label":
@@ -111,6 +114,9 @@ class DBManager: SharedDB {
             label.visible = object["visible"] as! Bool
             label.color = object["color"] as! String
             label.text = object["text"] as! String
+            if let uuid = object["uuid"]{
+                label.uuid = uuid as! String
+            }
             realm.add(label, update: true)
         case "email":
             let id = object["id"] as! Int
@@ -124,6 +130,12 @@ class DBManager: SharedDB {
             email.preview = object["preview"] as! String
             email.delivered = object["status"] as! Int
             email.key = object["key"] as! Int
+            if let from = object["from"]{
+                email.from = from as! String
+            }
+            if let replyTo = object["replyTo"]{
+                email.replyTo = replyTo as! String
+            }
             email.subject = object["subject"] as? String ?? ""
             email.date = EventData.convertToDate(dateString: object["date"] as! String)
             if let unsentDate = object["unsentDate"] as? String {
@@ -131,6 +143,12 @@ class DBManager: SharedDB {
             }
             if let trashDate = object["trashDate"] as? String {
                 email.trashDate = EventData.convertToDate(dateString: trashDate)
+            }
+            if let from = object["from"]{
+                email.from = from as! String
+            }
+            if let replyTo = object["replyTo"]{
+                email.replyTo = replyTo as! String
             }
             realm.add(email, update: true)
             maps.emails[id] = email.key

@@ -105,7 +105,7 @@ class SettingsLabelsViewController: UITableViewController {
         DBManager.store(label, incrementId: true)
         self.labels.append(label)
         self.tableView.insertRows(at: [IndexPath(row: self.labels.count - 1, section: 0)], with: .automatic)
-        let params = EventData.Peer.NewLabel(text: label.text, color: label.color)
+        let params = EventData.Peer.NewLabel(text: label.text, color: label.color, uuid: label.uuid)
         DBManager.createQueueItem(params: ["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()])
     }
 }

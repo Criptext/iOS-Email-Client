@@ -232,6 +232,8 @@ class SharedDB {
             newEmail.isMuted = email.isMuted
             newEmail.labels.append(objectsIn: email.labels)
             newEmail.files.append(objectsIn: email.files)
+            newEmail.from = email.from
+            newEmail.replyTo = email.replyTo
             
             realm.add(newEmail)
             

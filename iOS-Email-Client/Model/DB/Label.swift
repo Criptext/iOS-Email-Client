@@ -16,6 +16,7 @@ class Label : Object {
     @objc dynamic var color : String = "dddddd"
     @objc dynamic var type : String = "custom"
     @objc dynamic var visible : Bool = true
+    @objc dynamic var uuid: String = UUID().uuidString
     
     var localized: String {
         guard type == "custom" else {
@@ -61,7 +62,8 @@ extension Label {
                 "color": color,
                 "text": text,
                 "type": type,
-                "visible": visible
+                "visible": visible,
+                "uuid": uuid
             ]
         ]
     }
