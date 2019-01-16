@@ -333,3 +333,5 @@
 "PRINT_ALL" = "Print All";
 "update_now_title" = "Update Available!";
 "update_now_message" = "Tap here to update Criptext to it\'s latest version and enjoy it\'s new features.";
+"REPLY_TO" = "Change Reply To Address";
+"UNABLE_UPDATE_REPLYTO" = "Unable to update Reply To. Please try again";
