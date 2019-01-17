@@ -313,6 +313,21 @@ class DBManager: SharedDB {
         })
     }
     
+    class func getUnreadThreads(from label:Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = []) -> [Thread] {
+        let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
+        let realm = try! Realm()
+        let rejectedLabels = SystemLabel.all.rejectedLabelIds
+        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@)", rejectedLabels)
+        let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
+        let threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
+            guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
+                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND unread = true", label, email.threadId)
+            }
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND unread = true", email.threadId, rejectedLabels)
+        })
+        return threads
+    }
+    
     private class func customDistinctEmailThreads(emails: Results<Email>, label: Int, limit: Int, date: Date, emailFilter: (Email) -> NSPredicate) -> [Thread] {
         let realm = try! Realm()
         var threads = [Thread]()

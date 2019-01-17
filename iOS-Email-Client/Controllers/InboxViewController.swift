@@ -32,6 +32,7 @@ class InboxViewController: UIViewController {
     
     var searchController = UISearchController(searchResultsController: nil)
     var spaceBarButton:UIBarButtonItem!
+    var filterBarButton:UIBarButtonItem!
     var fixedSpaceBarButton:UIBarButtonItem!
     var flexibleSpaceBarButton:UIBarButtonItem!
     var searchBarButton:UIBarButtonItem!
@@ -62,6 +63,7 @@ class InboxViewController: UIViewController {
     let coachMarksController = CoachMarksController()
     var currentGuide = "guideComposer"
     var controllerMessage: ControllerMessage?
+    var selectLabel = String.localize("SHOW_ALL")
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -154,6 +156,7 @@ class InboxViewController: UIViewController {
             tap.numberOfTapsRequired = 1
             newsHeaderView.subtitleLabel.isUserInteractionEnabled = true
             newsHeaderView.subtitleLabel.addGestureRecognizer(tap)
+            newsHeaderView.newsImageView.image = UIImage(named: "sync")!
             newsHeaderView.fillFieldsUpdate(title: String.localize("update_now_title"), subTitle: String.localize("update_now_message"))
             openNewsHeader()
         } else {
@@ -324,9 +327,11 @@ class InboxViewController: UIViewController {
         self.countBarButton.isEnabled = false
         
         let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
+        let filterICon = #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         let searchImage = #imageLiteral(resourceName: "search").tint(with: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0))
         self.menuButton = UIBarButtonItem(image: menuImage, style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
         self.searchBarButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didPressSearch(_:)))
+        self.filterBarButton = UIBarButtonItem(image: filterICon, style: .plain, target: self, action: #selector(didPressFilter(_:)))
         
         // Set batButtonItems
         let activityButton = MIBadgeButton(type: .custom)
@@ -608,6 +613,8 @@ extension InboxViewController{
             didPressEdit(reload: true)
         }
         mailboxData.selectedLabel = labelId
+        self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
+        selectLabel = String.localize("SHOW_ALL")
         mailboxData.cancelFetchWorker()
         loadMails(since: Date(), clear: true)
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
@@ -655,6 +662,31 @@ extension InboxViewController {
     @IBAction func didPressSearch(_ sender: UIBarButtonItem) {
         self.searchController.searchBar.becomeFirstResponder()
     }
+    
+    @IBAction func didPressFilter(_ sender: UIBarButtonItem) {
+        let filterPopover = FilterUIPopover.instantiate(initLabel: selectLabel)
+        filterPopover.delegate = self
+        self.presentPopover(popover: filterPopover, height: Constants.basePopoverHeight + filterPopover.labels.count * Constants.labelPopoverHeight)
+    }
+    
+    func getUnreadThreads(clear: Bool, since: Date){
+        let threads : [Thread]
+        let fetchedThreads = mailboxData.threads.map({$0.threadId})
+        threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: since, threadIds: fetchedThreads)
+        if(clear){
+            mailboxData.threads = threads
+        } else {
+            mailboxData.threads.append(contentsOf: threads)
+        }
+        mailboxData.reachedEnd = threads.isEmpty
+        mailboxData.fetchWorker = nil
+        self.tableView.reloadData()
+        updateBadges()
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+        if(!threads.isEmpty){
+            self.getUnreadThreads(clear: false, since: self.mailboxData.threads.last?.date ?? Date())
+        }
+    }
 }
 
 //MARK: - UIBarButton layout
@@ -662,7 +694,7 @@ extension InboxViewController{
     func setButtonItems(isEditing: Bool){
         
         guard isEditing else {
-            self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.searchBarButton, self.spaceBarButton]
+            self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.filterBarButton, self.spaceBarButton]
             self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
             return
         }
@@ -712,6 +744,20 @@ extension InboxViewController{
             return
         }
         feedVC.invalidateObservers()
+    }
+}
+
+extension InboxViewController: FilterUIPopoverDelegate {
+
+    func didAcceptPressed(label: String) {
+        selectLabel = label
+        if(selectLabel == String.localize("SHOW_ALL")){
+            self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
+            self.loadMails(since: Date(), clear: true, limit: 0)
+        }else if (selectLabel == String.localize("SHOW_UNREAD")){
+            self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .white)
+            self.getUnreadThreads(clear: true, since: Date())
+        }
     }
 }
 

@@ -236,7 +236,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             let email = oldEmailContact["email"] as? MigrationObject else {
                                 return
                         }
-                        contacts[email["key"] as! Int] = "\(contact["displayName"]!) <\(contact["email"]!)>"
+                        contacts[email["key"] as! Int] = "\(contact["displayName"]!) &lt;\(contact["email"]!)&gt;"
                     }
                     migration.enumerateObjects(ofType: Email.className()){ (oldObject, newObject) in
                         guard let oldEmail = oldObject,
@@ -277,7 +277,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             break
                         default:
                             let name = oldLabel["text"] as! String
-                            let hashName = name.sha256()?.prefix(4)
+                            let hashName = name.sha256()?.prefix(4).lowercased()
                             newLabel["uuid"] = "00000000-0000-0000-0000-0000000\(hashName!)"
                             break
                         }
