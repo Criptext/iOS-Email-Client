@@ -13,6 +13,7 @@ class GeneralSettingsData {
     var recoveryEmailStatus: RecoveryStatus = .none
     var isTwoFactor = false
     var hasEmailReceipts = false
+    var replyTo : String?
     var password: String?
     var syncStatus: SyncStatus = .none
     
