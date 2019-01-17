@@ -335,3 +335,5 @@
 "update_now_message" = "Presiona aquí para actualizar Criptext a su última versión y disfrutar de  sus nuevas características.";
 "REPLY_TO" = "Introduce un nuevo correo de respuesta";
 "UNABLE_UPDATE_REPLYTO" = "No se pudo actualizar el correo de respuesta. Inténtalo de nuevo";
+"SHOW_UNREAD" = "Mostrar no leídos";
+"SHOW_ALL" = "Mostrar todo";

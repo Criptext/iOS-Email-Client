@@ -93,8 +93,12 @@ class NewEmailHandler {
             }
             
             if let attachments = event.files {
+                var fileKey = event.fileKey ?? ""
+                tryBlock {
+                    fileKey = SignalHandler.decryptMessage(fileKey, messageType: event.messageType, account: myAccount, recipientId: event.to.first!, deviceId: Int32(myAccount.deviceId))
+                }
                 for attachment in attachments {
-                    let file = self.handleAttachment(attachment, email: email)
+                    let file = self.handleAttachment(attachment, email: email, fileKey: fileKey)
                     email.files.append(file)
                 }
             }
@@ -156,13 +160,17 @@ class NewEmailHandler {
         return trueBody
     }
     
-    func handleAttachment(_ attachment: [String: Any], email: Email) -> File {
+    func handleAttachment(_ attachment: [String: Any], email: Email, fileKey: String) -> File {
         let file = File()
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
-        if let fileKey = attachment["fileKey"] {
-            file.fileKey = fileKey as! String
+        if let fKey = attachment["fileKey"] {
+            file.fileKey = fKey as! String
+        }else if !fileKey.isEmpty {
+            file.fileKey = fileKey
+        }else{
+            file.fileKey = ""
         }
         file.mimeType = File.mimeTypeForPath(path: file.name)
         file.date = email.date

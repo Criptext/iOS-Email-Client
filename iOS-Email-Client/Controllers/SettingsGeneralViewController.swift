@@ -488,6 +488,8 @@ class SettingsGeneralViewController: UITableViewController{
         let replyToPopover = SingleTextInputViewController()
         replyToPopover.myTitle = String.localize("REPLY_TO")
         replyToPopover.initInputText = self.generalData.replyTo ?? ""
+        replyToPopover.keyboardType = UIKeyboardType.emailAddress
+        replyToPopover.capitalize = .none
         replyToPopover.onOk = { text in
             self.changeReplyTo(email: text)
         }
@@ -508,6 +510,7 @@ class SettingsGeneralViewController: UITableViewController{
                 self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_UPDATE_REPLYTO"), style: .alert)
                 return
             }
+            self.generalData.replyTo = email
         }
     }
     
