@@ -361,7 +361,6 @@
 		A7CC38832193A1C600C8355A /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
 		A7CC38842193A1DE00C8355A /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A7CC3886219496E600C8355A /* SharedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3885219496E600C8355A /* SharedUtils.swift */; };
-		A7CC3887219496E600C8355A /* SharedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3885219496E600C8355A /* SharedUtils.swift */; };
 		A7CC38892194979A00C8355A /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
 		A7CC388A2194979A00C8355A /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
 		A7D2DE5A21C2AD14002ED6F8 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D2DE5321C2AD11002ED6F8 /* GoogleToolboxForMac.framework */; };
@@ -417,6 +416,7 @@
 		D652A07821C036A9005EC3E1 /* ContactShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */; };
 		D652A07921C036B0005EC3E1 /* UIImageView_Letters.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */; };
 		D661A23C21EFDB95002A6BDD /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D661A23B21EFDB95002A6BDD /* DLRadioButton.m */; };
+		D661A22D21EFA447002A6BDD /* SharedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3885219496E600C8355A /* SharedUtils.swift */; };
 		D6E1E63D21E5156400FA968A /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E1E63C21E5156400FA968A /* FileKey.swift */; };
 		D6E1E64121E5332500FA968A /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		D6E1E64321E5347A00FA968A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
@@ -2047,7 +2047,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7CC3887219496E600C8355A /* SharedUtils.swift in Sources */,
 				A7CC386521934FF400C8355A /* CRSignedPreKeyRecord.swift in Sources */,
 				A7CC388A2194979A00C8355A /* SharedExtensions.swift in Sources */,
 				A7CC387B21939C3D00C8355A /* SharedDB.swift in Sources */,
@@ -2071,6 +2070,7 @@
 				A7CC385B21934DC600C8355A /* Account.swift in Sources */,
 				A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */,
 				A7CC387621939B2600C8355A /* NewEmailHandler.swift in Sources */,
+				D661A22D21EFA447002A6BDD /* SharedUtils.swift in Sources */,
 				A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */,
 				A7CC386621934FF400C8355A /* CRPreKeyRecord.swift in Sources */,
 				A7CC386C21936A6000C8355A /* SignalHandler.swift in Sources */,

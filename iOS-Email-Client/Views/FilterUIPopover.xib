@@ -57,7 +57,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iir-AC-eQx" customClass="DLRadioButton">
-                            <rect key="frame" x="8" y="34" width="216" height="25"/>
+                            <rect key="frame" x="32" y="34" width="192" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="kic-QT-6o7"/>
                             </constraints>
@@ -70,7 +70,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfP-Tl-WNh" customClass="DLRadioButton">
-                            <rect key="frame" x="8" y="76" width="216" height="25"/>
+                            <rect key="frame" x="32" y="76" width="192" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="AGF-Ek-hUa"/>
                             </constraints>
@@ -94,7 +94,7 @@
                         <constraint firstAttribute="bottom" secondItem="4NQ-VB-m6Q" secondAttribute="bottom" id="OdH-v1-5Lw"/>
                         <constraint firstItem="iir-AC-eQx" firstAttribute="leading" secondItem="hfP-Tl-WNh" secondAttribute="leading" id="Oiu-PI-huo"/>
                         <constraint firstItem="iir-AC-eQx" firstAttribute="trailing" secondItem="lRd-2Y-CO7" secondAttribute="trailingMargin" constant="-37" id="Wub-0j-DaW"/>
-                        <constraint firstItem="iir-AC-eQx" firstAttribute="leading" secondItem="lRd-2Y-CO7" secondAttribute="leadingMargin" id="h6r-Qs-U5D"/>
+                        <constraint firstItem="iir-AC-eQx" firstAttribute="leading" secondItem="lRd-2Y-CO7" secondAttribute="leadingMargin" constant="24" id="h6r-Qs-U5D"/>
                         <constraint firstItem="hfP-Tl-WNh" firstAttribute="top" secondItem="iir-AC-eQx" secondAttribute="bottom" constant="17" id="y27-kt-J5v"/>
                     </constraints>
                 </view>

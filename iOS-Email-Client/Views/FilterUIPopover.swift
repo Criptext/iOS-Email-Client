@@ -62,6 +62,7 @@ class FilterUIPopover : BaseUIPopover {
         showAllButton.iconColor = theme.mainText;
         showAllButton.indicatorColor = theme.mainText;
         showAllButton.isIconOnRight = true
+        showAllButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         showAllButton.addTarget(self, action: #selector(logSelectedButton), for: UIControl.Event.touchUpInside);
         
         showUnreadButton.setTitle(String.localize("SHOW_UNREAD"), for: []);
@@ -69,6 +70,7 @@ class FilterUIPopover : BaseUIPopover {
         showUnreadButton.iconColor = theme.mainText;
         showUnreadButton.indicatorColor = theme.mainText;
         showUnreadButton.isIconOnRight = true
+        showUnreadButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         showUnreadButton.addTarget(self, action: #selector(logSelectedButton), for: UIControl.Event.touchUpInside);
         
         navigationController?.navigationBar.barTintColor = theme.toolbar
