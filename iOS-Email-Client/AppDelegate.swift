@@ -236,20 +236,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             let email = oldEmailContact["email"] as? MigrationObject else {
                                 return
                         }
-                        contacts[email["key"] as! Int] = "\(contact["displayName"]!) &lt;\(contact["email"]!)&gt;"
+                        if(oldEmailContact["type"] as! String == "from"){
+                            contacts[email["key"] as! Int] = "\(contact["displayName"]!) <\(contact["email"]!)>"
+                        }
                     }
                     migration.enumerateObjects(ofType: Email.className()){ (oldObject, newObject) in
                         guard let oldEmail = oldObject,
                             let newEmail = newObject else{
                                 return
                         }
-                        var from = String()
-                        for contact in contacts{
-                            if contact.key == oldEmail["key"] as! Int{
-                                from = from.isEmpty ? contact.value : "\(from), \(contact.value)"
-                            }
-                        }
-                        newEmail["from"] = from
+                        newEmail["from"] = contacts[oldEmail["key"] as! Int]
                     }
                     migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
                         guard let oldLabel = oldObject,

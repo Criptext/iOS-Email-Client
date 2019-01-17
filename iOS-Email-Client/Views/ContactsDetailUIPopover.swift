@@ -65,7 +65,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
     }
     
     func setFromContact(){
-        let contact = email.from.isEmpty ? "\(email.fromContact.displayName) \(email.fromContact.email)" : email.from
+        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) \(email.fromContact.email)"
         fromEmailsLabel.attributedText = buildContactAttributedString(contact)
     }
     

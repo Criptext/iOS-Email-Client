@@ -93,7 +93,7 @@ class NewEmailHandler {
             }
             
             if let attachments = event.files {
-                var fileKey = event.fileKey ?? ""
+                var fileKey = event.fileKeys?.first ?? ""
                 tryBlock {
                     fileKey = SignalHandler.decryptMessage(fileKey, messageType: event.messageType, account: myAccount, recipientId: event.to.first!, deviceId: Int32(myAccount.deviceId))
                 }
@@ -126,7 +126,12 @@ class NewEmailHandler {
                 })
                 email.labels.append(objectsIn: labels)
             }
-            
+            let contacts = [event.from]
+            var from = String()
+            contacts.forEach{
+                from = (from.isEmpty ? ContactUtils.parseFromContact(contact: $0) : "\(from), \(ContactUtils.parseFromContact(contact: $0))")
+            }
+            email.fromAddress = from
             guard self.database.store(email) else {
                 completion(Result(success: true))
                 return
@@ -165,13 +170,10 @@ class NewEmailHandler {
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
-        if let fKey = attachment["fileKey"] {
-            file.fileKey = fKey as! String
-        }else if !fileKey.isEmpty {
-            file.fileKey = fileKey
-        }else{
-            file.fileKey = ""
-        }
+        let key = attachment["key"] as? String
+        let iv = attachment["iv"] as? String
+        let fileKeyIv = key != nil && iv != nil ? "\(key!):\(iv!)" : fileKey
+        file.fileKey = fileKeyIv
         file.mimeType = File.mimeTypeForPath(path: file.name)
         file.date = email.date
         file.readOnly = attachment["read_only"] as? Int ?? 0
@@ -192,7 +194,7 @@ class NewEmailHandler {
     
     func isFromMe(email: Email, account: Account) -> Bool {
         let accountEmail = "\(account.username)\(Env.domain)"
-        return accountEmail == (email.from.isEmpty ? email.fromContact.email : email.from)
+        return accountEmail == email.fromContact.email
     }
     
     func isMeARecipient(email: Email, account: Account, event: NewEmail) -> Bool {

@@ -35,6 +35,7 @@ class SettingsGeneralViewController: UITableViewController{
         enum SubSection {
             case profile
             case signature
+            case replyTo
             case changePassword
             case twoFactor
             case recovery
@@ -61,6 +62,8 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("PROFILE")
                 case .signature:
                     return String.localize("SIGNATURE")
+                case .replyTo:
+                    return String.localize("REPLY_TO")
                 case .changePassword:
                     return String.localize("CHANGE_PASS")
                 case .deleteAccount:
@@ -94,7 +97,7 @@ class SettingsGeneralViewController: UITableViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = [.account, .appearance, .about, .version] as [Section]
     let menus = [
-        .account: [.profile, .signature, .changePassword, .recovery, .twoFactor, .privacySecurity, .syncContact, .manualSync],
+        .account: [.profile, .signature, .replyTo, .changePassword, .recovery, .twoFactor, .privacySecurity, .syncContact, .manualSync],
         .about: [.privacy, .terms, .openSource, .logout, .deleteAccount],
         .appearance: [.night],
         .version : [.version]] as [Section: [Section.SubSection]
@@ -274,6 +277,8 @@ class SettingsGeneralViewController: UITableViewController{
             goToChangePassword()
         case .signature:
             goToSignature()
+        case .replyTo:
+            replyTo()
         case .privacy:
             goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
         case .terms:
@@ -477,6 +482,36 @@ class SettingsGeneralViewController: UITableViewController{
         let signatureVC = storyboard.instantiateViewController(withIdentifier: "signatureEditorViewController") as! SignatureEditorViewController
         signatureVC.myAccount = myAccount
         self.navigationController?.pushViewController(signatureVC, animated: true)
+    }
+    
+    func replyTo(){
+        let replyToPopover = SingleTextInputViewController()
+        replyToPopover.myTitle = String.localize("REPLY_TO")
+        replyToPopover.initInputText = self.generalData.replyTo ?? ""
+        replyToPopover.keyboardType = UIKeyboardType.emailAddress
+        replyToPopover.capitalize = .none
+        replyToPopover.onOk = { text in
+            self.changeReplyTo(email: text)
+        }
+        self.presentPopover(popover: replyToPopover, height: Constants.singleTextPopoverHeight)
+    }
+    
+    func changeReplyTo(email: String){
+        APIManager.updateReplyTo(email: email, account: myAccount) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout()
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_UPDATE_REPLYTO"), style: .alert)
+                return
+            }
+            self.generalData.replyTo = email
+        }
     }
     
     func presentNamePopover(){

@@ -14,6 +14,8 @@ class SingleTextInputViewController: BaseUIPopover {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var nameTextField: TextField!
     @IBOutlet weak var titleLabel: UILabel!
+    var keyboardType =  UIKeyboardType.default
+    var capitalize:UITextAutocapitalizationType = .sentences
     var myTitle = ""
     var initInputText = ""
     var onOk: ((String) -> Void)?
@@ -25,6 +27,8 @@ class SingleTextInputViewController: BaseUIPopover {
     override func viewDidLoad() {
         titleLabel.text = myTitle
         nameTextField.text = initInputText
+        nameTextField.keyboardType = keyboardType
+        nameTextField.autocapitalizationType = capitalize
         nameTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         applyTheme()
     }

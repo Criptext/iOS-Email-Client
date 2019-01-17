@@ -218,6 +218,29 @@ class APIManager: SharedAPI {
             }
         }
     }
+    
+    class func updateReplyTo(email: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/replyto"
+        let params = [
+            "address": email,
+            "enable": true
+        ] as [String : Any]
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.updateReplyTo(email: email, account: account, completion: completion)
+            }
+        }
+    }
 
     class func getSettings(account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/settings"

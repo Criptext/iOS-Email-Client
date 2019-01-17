@@ -537,7 +537,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let fromContact = email.fromContact
         let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
-        let contact = email.from.isEmpty ? "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;" : email.from
+        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subject: subject, content: content)
     }
@@ -557,7 +557,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
         contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
-        let contact = email.from.isEmpty ? "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;" : email.from
+        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: subject, content: content)
     }
@@ -571,7 +571,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         deselectSelectedRow()
         let email = emailData.emails[indexPath.row]
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
-        let contact = (email.from.isEmpty ? "<b>\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;" : email.from)
+        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "<b>\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\"><span>---------- \(String.localize("FORWARD_MAIL")) ---------</span><br><span>\(String.localize("FROM")): ]\(contact)</span><br><span>\(String.localize("DATE")): \(email.completeDate)</span><br><span>\(String.localize("SUBJECT")): \(email.subject)</span><br><br>" + email.content + "</div>")
         presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content, attachments: email.getFiles())
     }
@@ -720,8 +720,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         let image = UIImage(named: "footer_beta")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
-        let contact = email.from.isEmpty ? "\(email.fromContact.displayName) &lt;\(email.fromContact.email)&gt;" : email.from
-        let html = Constants.singleEmail(image: imageData.base64EncodedString(), subject: subject, contact: contact, completeDate: email.completeDate, contacts: email.getFullContacts(), content: email.content)
+        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
+        let html = Constants.singleEmail(image: imageData.base64EncodedString(), subject: subject, contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: email.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: email.getFullContacts()), content: email.content)
         webView.frame = self.view.bounds
         webView.loadHTMLString(html, baseURL: nil)
     }
@@ -791,8 +791,8 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         var body = String()
         for mail in emails!{
-             let contact = mail.from.isEmpty ? "\(mail.fromContact.displayName)</b> &lt;\(mail.fromContact.email)&gt;" : mail.from
-            body = "\(body) \(Constants.bodyEmail(contact: contact, completeDate: mail.completeDate, contacts: mail.getFullContacts(), content: mail.content)) <hr>"
+            let contact = mail.fromAddress.isEmpty ? "\(mail.fromContact.displayName)</b> &lt;\(mail.fromContact.email)&gt;" : mail.fromAddress
+            body = "\(body) \(Constants.bodyEmail(contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: mail.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: mail.getFullContacts()), content: mail.content)) <hr>"
         }
         let image = UIImage(named: "footer_beta")
         let imageData:Data =  UIImagePNGRepresentation(image!)!

@@ -18,6 +18,11 @@ class SharedUtils {
         return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
     }
     
+    class func replaceContactToStringChar(text: String) -> String {
+        let newText = text.replacingOccurrences(of: "<", with: "&lt;")
+        return newText.replacingOccurrences(of: ">", with: "&gt;")
+    }
+    
     class func convertToDictionary(text: String) -> [String: Any]? {
         guard let data = text.data(using: .utf8) else {
             return nil

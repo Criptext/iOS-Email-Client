@@ -23,6 +23,15 @@ class ContactUtils {
         return existingContact
     }
     
+    class func checkIfFromHasName(_ contact: String) -> Bool {
+        let cleanContact = contact.replacingOccurrences(of: "\"", with: "")
+        let myContact = NSString(string: cleanContact)
+        let pattern = "<(.*?)>"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let matches = regex.matches(in: cleanContact, options: [], range: NSRange(location: 0, length: myContact.length))
+        return matches.last != nil && cleanContact.split(separator: "<").count > 1 ? true : false
+    }
+    
     class func parseEmailContacts(_ contacts: [String], email: Email, type: ContactType){
         contacts.forEach { (contactString) in
             let contact = parseContact(contactString)
@@ -33,6 +42,11 @@ class ContactUtils {
             emailContact.compoundKey = "\(email.key):\(contact.email):\(type.rawValue)"
             SharedDB.store([emailContact])
         }
+    }
+    
+    class func parseFromContact(contact: String) -> String{
+        let from = parseContact(contact)
+        return "\(from.displayName) <\(from.email)>"
     }
     
     class func prepareContactsStringArray(contactsString: String?) -> [String]{

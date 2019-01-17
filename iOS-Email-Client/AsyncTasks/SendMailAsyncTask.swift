@@ -54,7 +54,7 @@ class SendMailAsyncTask {
         self.emailRef = SharedDB.getReference(email)
         self.fileKey = fileKey
         self.password = password
-        self.from = email.from
+        self.from = email.fromAddress
         self.replyTo = email.replyTo
     }
     
@@ -72,7 +72,8 @@ class SendMailAsyncTask {
                                   "name": file.name,
                                   "size": file.size,
                                   "mimeType": file.mimeType,
-                                  "fileKey": file.fileKey] as [String : Any]
+                                  "key": String(file.fileKey.split(separator: ":").first!),
+                                  "iv": String(file.fileKey.split(separator: ":").last!)] as [String : Any]
                 files.append(fileparams)
             }
         }

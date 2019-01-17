@@ -12,6 +12,7 @@ struct NewEmail {
     let threadId: String
     let subject: String
     let from: String
+    let fromAddress: String
     let to: [String]
     let cc: [String]
     let bcc: [String]
@@ -43,6 +44,7 @@ struct NewEmail {
         date = NewEmail.convertToDate(dateString: dateString)
         
         from = params["from"] as! String
+        fromAddress = params["fromAddress"] as! String
         to = (params["to"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
         cc = (params["cc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
         bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
