@@ -485,33 +485,11 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func replyTo(){
-        let replyToPopover = SingleTextInputViewController()
-        replyToPopover.myTitle = String.localize("REPLY_TO")
-        replyToPopover.initInputText = self.generalData.replyTo ?? ""
-        replyToPopover.keyboardType = UIKeyboardType.emailAddress
-        replyToPopover.capitalize = .none
-        replyToPopover.onOk = { text in
-            self.changeReplyTo(email: text)
-        }
-        self.presentPopover(popover: replyToPopover, height: Constants.singleTextPopoverHeight)
-    }
-    
-    func changeReplyTo(email: String){
-        APIManager.updateReplyTo(email: email, account: myAccount) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout()
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_UPDATE_REPLYTO"), style: .alert)
-                return
-            }
-            self.generalData.replyTo = email
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let replyToVC = storyboard.instantiateViewController(withIdentifier: "replyToEditorViewController") as! ReplyToEditorViewController
+        replyToVC.generalData = self.generalData
+        replyToVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(replyToVC, animated: true)
     }
     
     func presentNamePopover(){

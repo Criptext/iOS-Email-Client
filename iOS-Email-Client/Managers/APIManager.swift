@@ -219,12 +219,15 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func updateReplyTo(email: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
+    class func updateReplyTo(email: String, enable: Bool, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/replyto"
-        let params = [
+        var params: [String:Any] = [
             "address": email,
-            "enable": true
-        ] as [String : Any]
+            "enable": enable
+            ]
+        if (!enable){
+            params.removeValue(forKey: "address")
+        }
         let headers = [
             "Authorization": "Bearer \(account.jwt)",
             versionHeader: apiVersion,
@@ -237,7 +240,7 @@ class APIManager: SharedAPI {
                     completion(refreshData)
                     return
                 }
-                self.updateReplyTo(email: email, account: account, completion: completion)
+                self.updateReplyTo(email: email, enable: enable, account: account, completion: completion)
             }
         }
     }

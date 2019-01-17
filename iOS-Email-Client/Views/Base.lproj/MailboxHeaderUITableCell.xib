@@ -28,9 +28,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="95"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BGW-gI-om4">
-                            <rect key="frame" x="286" y="55" width="81" height="32"/>
+                            <rect key="frame" x="226" y="55" width="141" height="32"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="BGW-gI-om4" secondAttribute="height" multiplier="81:32" id="HaL-R0-wEY"/>
+                                <constraint firstAttribute="width" secondItem="BGW-gI-om4" secondAttribute="height" multiplier="81:32" constant="60" id="HaL-R0-wEY"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="14"/>
                             <state key="normal" title="Empty Trash">
