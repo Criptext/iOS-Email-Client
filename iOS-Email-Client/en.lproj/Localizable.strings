@@ -333,3 +333,5 @@
 "PRINT_ALL" = "Print All";
 "update_now_title" = "Update Available!";
 "update_now_message" = "Tap here to update Criptext to it\'s latest version and enjoy it\'s new features.";
+"SHOW_UNREAD" = "Show Unread";
+"SHOW_ALL" = "Show All";

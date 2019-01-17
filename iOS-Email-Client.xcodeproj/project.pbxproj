@@ -406,6 +406,8 @@
 		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
 		A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
 		A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */; };
+		D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */; };
+		D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */; };
 		D63EE2DA21CC247E001125B3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
 		D63EE2DB21CC248E001125B3 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
 		D652A07421C03671005EC3E1 /* ContactShareTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */; };
@@ -413,6 +415,7 @@
 		D652A07721C036A9005EC3E1 /* ContactShareTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */; };
 		D652A07821C036A9005EC3E1 /* ContactShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */; };
 		D652A07921C036B0005EC3E1 /* UIImageView_Letters.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */; };
+		D661A23C21EFDB95002A6BDD /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D661A23B21EFDB95002A6BDD /* DLRadioButton.m */; };
 		D661A22D21EFA447002A6BDD /* SharedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3885219496E600C8355A /* SharedUtils.swift */; };
 		D6E1E63D21E5156400FA968A /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E1E63C21E5156400FA968A /* FileKey.swift */; };
 		D6E1E64121E5332500FA968A /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
@@ -832,8 +835,12 @@
 		A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerMessage.swift; sourceTree = "<group>"; };
 		A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueItem.swift; sourceTree = "<group>"; };
 		A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TLPhotoPicker.framework; path = Carthage/Build/iOS/TLPhotoPicker.framework; sourceTree = "<group>"; };
+		D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterUIPopover.swift; sourceTree = "<group>"; };
+		D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterUIPopover.xib; sourceTree = "<group>"; };
 		D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactShareTableViewCell.xib; sourceTree = "<group>"; };
 		D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactShareTableViewCell.swift; sourceTree = "<group>"; };
+		D661A23A21EFDB18002A6BDD /* DLRadioButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLRadioButton.h; sourceTree = "<group>"; };
+		D661A23B21EFDB95002A6BDD /* DLRadioButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DLRadioButton.m; sourceTree = "<group>"; };
 		D6E1E63C21E5156400FA968A /* FileKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1051,6 +1058,8 @@
 				A77C30A621A4DE720031E219 /* PasscodeConfig.swift */,
 				A72C185221AEEB1F00D899EE /* Time.swift */,
 				A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */,
+				D661A23A21EFDB18002A6BDD /* DLRadioButton.h */,
+				D661A23B21EFDB95002A6BDD /* DLRadioButton.m */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1264,6 +1273,8 @@
 				A700F59421D3E28800792B4A /* SettingsGeneralHeaderView.xib */,
 				A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */,
 				A70EAE5721E000A000FE6055 /* ManualSyncUIPopover.xib */,
+				D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */,
+				D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1612,6 +1623,7 @@
 				A7FFCF3F217A914000FFFDFF /* RemoveDeviceUIPopover.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */,
+				D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */,
 				412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */,
 				7C1E82C22116BD43007CA853 /* HintUIView.xib in Resources */,
 				41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */,
@@ -1815,11 +1827,13 @@
 				7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */,
 				7CB3B940208A57EF00EDD427 /* DetailMoreOptionsUIView.swift in Sources */,
 				A7CC387D21939D6500C8355A /* SharedAPI.swift in Sources */,
+				D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */,
 				7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */,
 				7C1E82C42116BDF2007CA853 /* HintUIView.swift in Sources */,
 				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */,
 				7C4D33CD212CA23100045B09 /* GeneralSettingsData.swift in Sources */,
+				D661A23C21EFDB95002A6BDD /* DLRadioButton.m in Sources */,
 				7C5FD826205C857C000E5F14 /* Utils.swift in Sources */,
 				7CB60A7B20F81A5600C9090C /* PlainContactTableViewCell.swift in Sources */,
 				41AAC557201AA08500809C4D /* DateUtils.m in Sources */,
@@ -2477,7 +2491,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2653,7 +2668,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_PRODUCT = NO;
 			};
 			name = Support;
