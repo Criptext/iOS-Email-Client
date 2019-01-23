@@ -218,6 +218,7 @@
 		A700F59721D3E59900792B4A /* SettingsGeneralHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */; };
 		A700F59921D41B3F00792B4A /* dark-showmore.png in Resources */ = {isa = PBXBuildFile; fileRef = A700F59821D41B3A00792B4A /* dark-showmore.png */; };
 		A703FAE221F90E260080769A /* LightPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A703FAE121F90E260080769A /* LightPasscodeViewController.swift */; };
+		A703FAF321F925760080769A /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A703FAF121F925760080769A /* PasscodeLockView.xib */; };
 		A70609F521A72E7C0066BFA4 /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
 		A70609F621A72F470066BFA4 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF2F217A910100FFFDFF /* EmailSetPasswordUIPopover.xib */; };
@@ -234,7 +235,6 @@
 		A713109E2159762100534F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
-		A723253221C94B90003CF78D /* PasscodeLockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A723253421C94B90003CF78D /* PasscodeLockView.xib */; };
 		A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A723253B21C94E69003CF78D /* EmailDetailTableCell.xib */; };
 		A723254321CAFE20003CF78D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
 		A723254521CBE257003CF78D /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
@@ -686,6 +686,9 @@
 		A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralHeaderView.swift; sourceTree = "<group>"; };
 		A700F59821D41B3A00792B4A /* dark-showmore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dark-showmore.png"; sourceTree = "<group>"; };
 		A703FAE121F90E260080769A /* LightPasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightPasscodeViewController.swift; sourceTree = "<group>"; };
+		A703FAF221F925760080769A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
+		A703FAF421F925900080769A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		A703FAF521F9259D0080769A /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLockView.strings"; sourceTree = "<group>"; };
 		A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPickerUIPopover.swift; sourceTree = "<group>"; };
 		A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPasscodeViewController.swift; sourceTree = "<group>"; };
@@ -697,9 +700,6 @@
 		A70EAE5921E000A700FE6055 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ManualSyncUIPopover.strings; sourceTree = "<group>"; };
 		A70EAE5B21E000AC00FE6055 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/ManualSyncUIPopover.strings"; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
-		A723253321C94B90003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
-		A723253621C94B91003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
-		A723253821C94B92003CF78D /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLockView.strings"; sourceTree = "<group>"; };
 		A723253A21C94E69003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EmailDetailTableCell.xib; sourceTree = "<group>"; };
 		A723253D21C94E6B003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
 		A723253F21C94E6C003CF78D /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailDetailTableCell.strings"; sourceTree = "<group>"; };
@@ -1395,7 +1395,7 @@
 				A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */,
 				A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */,
 				A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */,
-				A723253421C94B90003CF78D /* PasscodeLockView.xib */,
+				A703FAF121F925760080769A /* PasscodeLockView.xib */,
 				A703FAE121F90E260080769A /* LightPasscodeViewController.swift */,
 			);
 			path = ShareExtension;
@@ -1679,6 +1679,7 @@
 				A7ADA14A21A60E190027FC1C /* AttachmentTableViewCell.xib in Resources */,
 				A7ADA15421A61A1B0027FC1C /* NunitoSans-Italic.ttf in Resources */,
 				A7ADA15021A61A1B0027FC1C /* NunitoSans-ExtraBold.ttf in Resources */,
+				A703FAF321F925760080769A /* PasscodeLockView.xib in Resources */,
 				A7ADA15721A61A1B0027FC1C /* NunitoSans-Regular.ttf in Resources */,
 				A7ADA15121A61A1B0027FC1C /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
 				A7ADA15621A61A1B0027FC1C /* NunitoSans-LightItalic.ttf in Resources */,
@@ -1693,7 +1694,6 @@
 				A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */,
 				A7D2DEB421C85328002ED6F8 /* PasscodeLock.strings in Resources */,
 				A7ADA15521A61A1B0027FC1C /* NunitoSans-Light.ttf in Resources */,
-				A723253221C94B90003CF78D /* PasscodeLockView.xib in Resources */,
 				A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */,
 				A7D2DEA721C83EEE002ED6F8 /* ComposerUIView.xib in Resources */,
 				A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */,
@@ -2128,6 +2128,16 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		A703FAF121F925760080769A /* PasscodeLockView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A703FAF221F925760080769A /* Base */,
+				A703FAF421F925900080769A /* en */,
+				A703FAF521F9259D0080769A /* es-419 */,
+			);
+			name = PasscodeLockView.xib;
+			sourceTree = "<group>";
+		};
 		A70EAE5721E000A000FE6055 /* ManualSyncUIPopover.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2136,17 +2146,6 @@
 				A70EAE5B21E000AC00FE6055 /* es-419 */,
 			);
 			name = ManualSyncUIPopover.xib;
-			sourceTree = "<group>";
-		};
-		A723253421C94B90003CF78D /* PasscodeLockView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A723253321C94B90003CF78D /* Base */,
-				A723253621C94B91003CF78D /* en */,
-				A723253821C94B92003CF78D /* es-419 */,
-			);
-			name = PasscodeLockView.xib;
-			path = ../../..;
 			sourceTree = "<group>";
 		};
 		A723253B21C94E69003CF78D /* EmailDetailTableCell.xib */ = {
