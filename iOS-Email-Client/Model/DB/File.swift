@@ -85,7 +85,8 @@ extension File{
                 "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId,
                 "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType,
-                "fileKey": fileKey
+                "key": String(fileKey.split(separator: ":").first!),
+                "iv": String(fileKey.split(separator: ":").last!),
             ]
         ]
     }

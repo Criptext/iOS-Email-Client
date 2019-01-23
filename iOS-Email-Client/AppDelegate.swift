@@ -225,6 +225,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                     migration.deleteData(forType: FileKey.className())
                 }
+                if (oldSchemaVersion < 14) {
+                    var contacts = [Int:String]()
+                    migration.enumerateObjects(ofType: EmailContact.className()){ (oldObject, newObject) in
+                        guard let oldEmailContact = oldObject,
+                            let _ = newObject else{
+                                return
+                        }
+                        guard let contact = oldEmailContact["contact"] as? MigrationObject,
+                            let email = oldEmailContact["email"] as? MigrationObject else {
+                                return
+                        }
+                        if(oldEmailContact["type"] as! String == "from"){
+                            contacts[email["key"] as! Int] = "\(contact["displayName"]!) <\(contact["email"]!)>"
+                        }
+                    }
+                    migration.enumerateObjects(ofType: Email.className()){ (oldObject, newObject) in
+                        guard let oldEmail = oldObject,
+                            let newEmail = newObject else{
+                                return
+                        }
+                        newEmail["from"] = contacts[oldEmail["key"] as! Int]
+                    }
+                    migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
+                        guard let oldLabel = oldObject,
+                            let newLabel = newObject else{
+                                return
+                        }
+                        switch(oldLabel["id"] as! Int){
+                        case 1:
+                            newLabel["uuid"] = "00000000-0000-0000-0000-00000000001"
+                            break
+                        case 2:
+                            newLabel["uuid"] = "00000000-0000-0000-0000-00000000002"
+                            break
+                        case 3:
+                            newLabel["uuid"] = "00000000-0000-0000-0000-00000000003"
+                            break
+                        case 5:
+                            newLabel["uuid"] = "00000000-0000-0000-0000-00000000005"
+                            break
+                        case 6:
+                            newLabel["uuid"] = "00000000-0000-0000-0000-00000000006"
+                            break
+                        case 7:
+                            newLabel["uuid"] = "00000000-0000-0000-0000-00000000007"
+                            break
+                        default:
+                            let name = oldLabel["text"] as! String
+                            let hashName = name.sha256()?.prefix(4).lowercased()
+                            newLabel["uuid"] = "00000000-0000-0000-0000-0000000\(hashName!)"
+                            break
+                        }
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm

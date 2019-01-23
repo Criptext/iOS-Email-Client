@@ -65,8 +65,14 @@ class ContactsDetailUIPopover: BaseUIPopover{
     }
     
     func setFromContact(){
-        let contact = email.fromContact
-        fromEmailsLabel.attributedText = buildContactAttributedString(contact.displayName, contact.email)
+        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) \(email.fromContact.email)"
+        fromEmailsLabel.attributedText = buildContactAttributedString(contact)
+    }
+    
+    func buildContactAttributedString(_ contact: String) -> NSMutableAttributedString{
+        let attrs = [NSAttributedStringKey.font : Font.regular.size(13.0)!, NSAttributedStringKey.foregroundColor : UIColor(red: 125/255, green: 125/255, blue: 125/255, alpha: 1)]
+        let stringPart1 = NSMutableAttributedString(string:contact, attributes:attrs)
+        return stringPart1
     }
     
     func buildContactAttributedString(_ name: String, _ email: String) -> NSMutableAttributedString{

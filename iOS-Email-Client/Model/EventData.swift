@@ -43,6 +43,8 @@ class EventData {
         let threadId: String
         let subject: String
         let from: String
+        let replyTo: String
+        let fromAddress: String
         let to: [String]
         let cc: [String]
         let bcc: [String]
@@ -69,6 +71,8 @@ class EventData {
             date = EventData.convertToDate(dateString: dateString)
             
             from = params["from"] as! String
+            replyTo = params["replyTo"] as! String
+            fromAddress = params["fromAddress"] as! String
             to = (params["to"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
             cc = (params["cc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
             bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
@@ -225,15 +229,22 @@ extension EventData {
         struct NewLabel: Dictionarify {
             let text: String
             let color: String
-            
+            let uuid: String
+
             init(params: [String: Any]){
                 text = params["text"] as! String
                 color = params["color"] as! String
+                guard let uuid_string = params["uuid"] else{
+                    uuid = UUID().uuidString
+                    return
+                }
+                uuid = uuid_string as! String
             }
             
-            init(text: String, color: String){
+            init(text: String, color: String, uuid: String){
                 self.text = text
                 self.color = color
+                self.uuid = uuid
             }
         }
         

@@ -12,6 +12,7 @@ import Foundation
 class Contact: Object {
     @objc dynamic var displayName = "" //name
     @objc dynamic var email = ""
+    @objc dynamic var isTrusted = false
     
     override static func primaryKey() -> String? {
         return "email"
@@ -25,7 +26,8 @@ extension Contact {
             "object": [
                 "id": id,
                 "email": email,
-                "name": displayName
+                "name": displayName,
+                "isTrusted": isTrusted
             ]
         ]
     }
