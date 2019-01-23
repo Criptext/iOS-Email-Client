@@ -1492,7 +1492,7 @@ extension InboxViewController: NavigationToolbarDelegate {
             }
             weakSelf.deleteThreads()
         }
-        self.presentPopover(popover: popover, height: 200)
+        self.presentPopover(popover: popover, height: 220)
     }
     
     func onMarkThreads() {

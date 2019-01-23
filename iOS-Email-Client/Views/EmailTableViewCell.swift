@@ -19,9 +19,14 @@ protocol EmailTableViewCellDelegate: class {
     func tableViewCellDidTapAttachment(file: File)
     func tableViewCellDidTapLink(url: String)
     func tableViewCellDidTapEmail(email: String)
+    func tableViewExpandViews()
 }
 
 class EmailTableViewCell: UITableViewCell{
+    @IBOutlet weak var counterLabelDown: UILabel!
+    @IBOutlet weak var counterLabelUp: UILabel!
+    @IBOutlet weak var upView: UIView!
+    @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var infoViewContainer: UIView!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var previewLabel: UILabel!
@@ -74,6 +79,13 @@ class EmailTableViewCell: UITableViewCell{
         attachmentsTableView.register(nib, forCellReuseIdentifier: "attachmentTableCell")
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.scrollView.contentSize), options: .new, context: nil)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(expandView(sender:)))
+        upView.addGestureRecognizer(tapGesture)
+        bottomView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func expandView(sender: UITapGestureRecognizer) {
+        delegate?.tableViewExpandViews()
     }
     
     func setupView(){
@@ -87,6 +99,21 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func applyTheme() {
+        upView.layer.borderColor = theme.emailBorder.cgColor
+        upView.backgroundColor = theme.secondBackground
+        bottomView.layer.borderColor = theme.emailBorder.cgColor
+        bottomView.backgroundColor = theme.secondBackground
+        counterLabelDown.textColor = theme.secondText
+        counterLabelUp.textColor = theme.secondText
+        
+        upView.layer.cornerRadius = upView.frame.size.width/2
+        upView.clipsToBounds = true
+        upView.layer.borderWidth = 1
+        
+        bottomView.layer.cornerRadius = bottomView.frame.size.width/2
+        bottomView.clipsToBounds = true
+        bottomView.layer.borderWidth = 1
+        
         borderBGView.layer.borderColor = theme.emailBorder.cgColor
         borderBGView.backgroundColor = theme.secondBackground
         previewLabel.textColor = theme.secondText

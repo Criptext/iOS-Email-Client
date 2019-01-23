@@ -415,8 +415,9 @@
 		D652A07721C036A9005EC3E1 /* ContactShareTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */; };
 		D652A07821C036A9005EC3E1 /* ContactShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */; };
 		D652A07921C036B0005EC3E1 /* UIImageView_Letters.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */; };
-		D661A23C21EFDB95002A6BDD /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D661A23B21EFDB95002A6BDD /* DLRadioButton.m */; };
 		D661A22D21EFA447002A6BDD /* SharedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC3885219496E600C8355A /* SharedUtils.swift */; };
+		D661A23C21EFDB95002A6BDD /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D661A23B21EFDB95002A6BDD /* DLRadioButton.m */; };
+		D6BD1B0421F62B3F00BED5AE /* ReplyToEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD1B0321F62B3F00BED5AE /* ReplyToEditorViewController.swift */; };
 		D6E1E63D21E5156400FA968A /* FileKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E1E63C21E5156400FA968A /* FileKey.swift */; };
 		D6E1E64121E5332500FA968A /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		D6E1E64321E5347A00FA968A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
@@ -841,6 +842,7 @@
 		D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactShareTableViewCell.swift; sourceTree = "<group>"; };
 		D661A23A21EFDB18002A6BDD /* DLRadioButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLRadioButton.h; sourceTree = "<group>"; };
 		D661A23B21EFDB95002A6BDD /* DLRadioButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DLRadioButton.m; sourceTree = "<group>"; };
+		D6BD1B0321F62B3F00BED5AE /* ReplyToEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToEditorViewController.swift; sourceTree = "<group>"; };
 		D6E1E63C21E5156400FA968A /* FileKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1032,6 +1034,7 @@
 				A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */,
 				A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */,
 				A70EAE5121DE54C300FE6055 /* ManualSyncUIPopover.swift */,
+				D6BD1B0321F62B3F00BED5AE /* ReplyToEditorViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1807,6 +1810,7 @@
 				A7CC38892194979A00C8355A /* SharedExtensions.swift in Sources */,
 				7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */,
 				7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */,
+				D6BD1B0421F62B3F00BED5AE /* ReplyToEditorViewController.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,

@@ -334,6 +334,8 @@
 "update_now_title" = "Update Available!";
 "update_now_message" = "Tap here to update Criptext to it\'s latest version and enjoy it\'s new features.";
 "REPLY_TO" = "Change Reply To Address";
+"REPLY_TO_TITLE" = "Reply To Address";
+"REPLY_TO_SUCCESS" = "Reply To email changed successfully";
 "UNABLE_UPDATE_REPLYTO" = "Unable to update Reply To. Please try again";
 "SHOW_UNREAD" = "Show Unread";
 "SHOW_ALL" = "Show All";

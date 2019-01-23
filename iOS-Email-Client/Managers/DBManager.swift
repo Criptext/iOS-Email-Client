@@ -493,10 +493,12 @@ class DBManager: SharedDB {
     }
     
     class func getEmailFailed() -> Email? {
+        var dateComponents = DateComponents()
+        dateComponents.setValue(-3, for: .day)
+        let yesterday = Calendar.current.date(byAdding: dateComponents, to: Date())
         let realm = try! Realm()
-        let hasFailed = NSPredicate(format: "delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@)", [SystemLabel.trash.id])
+        let hasFailed = NSPredicate(format: "date <= %@ AND delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@)", yesterday! as CVarArg, [SystemLabel.trash.id])
         let results = realm.objects(Email.self).filter(hasFailed)
-        
         return results.first
     }
     

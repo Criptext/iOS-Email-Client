@@ -203,12 +203,12 @@ class ComposeViewController: UIViewController {
         if fileManager.registeredFiles.count > 0{
             for file in fileManager.registeredFiles{
                 let fileKey = file.fileKey
-                guard !fileKey.isEmpty else {
+                guard !fileKey.isEmpty, fileKey.contains(":") else {
                     continue
                 }
                 let keys = File.getKeyAndIv(key: fileKey)
                 fileManager.setEncryption(id: 0, key: keys.0, iv: keys.1)
-                return
+                break
             }
         } else {
             fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())

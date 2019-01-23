@@ -18,6 +18,7 @@ class EmailDetailViewController: UIViewController {
     let CONTACTS_MAX_HEIGHT: CGFloat = 300.0
     let CONTACTS_ROW_HEIGHT = 28
     
+    var isExpanded = false
     var emailData : EmailDetailData!
     weak var mailboxData : MailboxData!
     weak var myAccount: Account!
@@ -123,6 +124,11 @@ class EmailDetailViewController: UIViewController {
         self.emailsTableView.reloadData()
     }
     
+    func isGroupable() -> Bool {
+        let emails = emailData.emails.filter(NSPredicate(format: "unread == true"))
+        return (emailData.emails.count >= 4 && emails.count == 0 && !isExpanded)
+    }
+    
     func handleControllerMessage(_ message: ControllerMessage?) {
         guard let controllerMessage = message else {
             return
@@ -187,14 +193,40 @@ class EmailDetailViewController: UIViewController {
 }
 
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
         cell.setContent(email, state: emailData.getState(email.key), myEmail: emailData.accountEmail)
         cell.delegate = self
         target = cell.moreOptionsContainerView
-        return cell
+        if(isGroupable()){
+            DispatchQueue.main.async {
+                cell.counterLabelUp.text = "\(self.emailData.emails.count - 2)"
+                cell.counterLabelDown.text = "\(self.emailData.emails.count - 2)"
+            }
+            if(email == emailData.emails.first){
+                cell.upView.isHidden = true
+                cell.bottomView.isHidden = false
+                cell.isHidden = false
+                return cell
+            }else if(email == emailData.emails.last){
+                cell.upView.isHidden = false
+                cell.bottomView.isHidden = true
+                cell.isHidden = false
+                return cell
+            }else{
+                cell.isHidden = true
+                return self.tableView(tableView, cellForRowAt: IndexPath(row: indexPath.row + 1, section: 0))
+            }
+        }else{
+            cell.upView.isHidden = true
+            cell.bottomView.isHidden = true
+            cell.counterLabelUp.isHidden = true
+            cell.counterLabelDown.isHidden = true
+            cell.isHidden = false
+            return cell
+        }
     }
     
     func reuseOrCreateCell(identifier: String) -> UITableViewCell {
@@ -207,7 +239,11 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return emailData.emails.count
+        if(isGroupable()){
+            return 2
+        }else{
+            return emailData.emails.count
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -236,6 +272,11 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
+    
+    func tableViewExpandViews() {
+        isExpanded = true
+        emailsTableView.reloadData()
+    }
     
     func tableViewCellDidTapEmail(email: String) {
         var contact: Contact

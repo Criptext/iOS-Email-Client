@@ -56,7 +56,10 @@ class Email: Object {
     var fromContact : Contact {
         get {
             let predicate = NSPredicate(format: "type == '\(ContactType.from.rawValue)'")
-            return emailContacts.filter(predicate).first!.contact
+            if let contact = emailContacts.filter(predicate).first {
+                return contact.contact
+            }
+            return Contact()
         }
     }
     var status: Status{

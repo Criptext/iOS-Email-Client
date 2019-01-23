@@ -245,7 +245,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             let newEmail = newObject else{
                                 return
                         }
-                        newEmail["from"] = contacts[oldEmail["key"] as! Int]
+                        newEmail["fromAddress"] = contacts[oldEmail["key"] as! Int]
                     }
                     migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
                         guard let oldLabel = oldObject,
