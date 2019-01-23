@@ -492,7 +492,7 @@ extension InboxViewController {
                 let eventHandler = EventHandler(account: weakSelf.myAccount)
                 eventHandler.handleEvents(events: events){ [weak self] result in
                     self?.didReceiveEvents(result: result)
-                    self!.mailboxData.updating = true
+                    self!.mailboxData.updating = false
                     completion?(false)
                     self?.getPendingEvents(refreshControl)
                 }
