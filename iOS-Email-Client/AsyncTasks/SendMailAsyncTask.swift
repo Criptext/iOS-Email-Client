@@ -25,6 +25,8 @@ class SendMailAsyncTask {
     let isSecure: Bool
     let username: String
     let emailKey: Int
+    let from: String
+    let replyTo: String?
     let emailRef: ThreadSafeReference<Object>
     
     init(account: Account, email: Email, password: String?){
@@ -52,6 +54,8 @@ class SendMailAsyncTask {
         self.emailRef = SharedDB.getReference(email)
         self.fileKey = fileKey
         self.password = password
+        self.from = email.fromAddress
+        self.replyTo = email.replyTo
     }
     
     private class func getFilesRequestData(email: Email) -> ([[String: Any]], [String]){
@@ -68,7 +72,8 @@ class SendMailAsyncTask {
                                   "name": file.name,
                                   "size": file.size,
                                   "mimeType": file.mimeType,
-                                  "fileKey": file.fileKey] as [String : Any]
+                                  "key": String(file.fileKey.split(separator: ":").first!),
+                                  "iv": String(file.fileKey.split(separator: ":").last!)] as [String : Any]
                 files.append(fileparams)
             }
         }

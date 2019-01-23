@@ -103,6 +103,9 @@ class DBManager: SharedDB {
             let contactId = object["id"] as! Int
             contact.email = object["email"] as! String
             contact.displayName = object["name"] as? String ?? String(contact.email.split(separator: "@").first!)
+            if let isTrusted = object["isTrusted"]{
+                contact.isTrusted = isTrusted as! Bool
+            }
             realm.add(contact, update: true)
             maps.contacts[contactId] = contact.email
         case "label":
@@ -111,6 +114,9 @@ class DBManager: SharedDB {
             label.visible = object["visible"] as! Bool
             label.color = object["color"] as! String
             label.text = object["text"] as! String
+            if let uuid = object["uuid"]{
+                label.uuid = uuid as! String
+            }
             realm.add(label, update: true)
         case "email":
             let id = object["id"] as! Int
@@ -131,6 +137,14 @@ class DBManager: SharedDB {
             }
             if let trashDate = object["trashDate"] as? String {
                 email.trashDate = EventData.convertToDate(dateString: trashDate)
+            }
+            if let from = object["fromAddress"]{
+                email.fromAddress = from as! String
+            }else{
+                email.fromAddress = "\(email.fromContact.displayName) <\(email.fromContact.email)>"
+            }
+            if let replyTo = object["replyTo"]{
+                email.replyTo = replyTo as! String
             }
             realm.add(email, update: true)
             maps.emails[id] = email.key
@@ -172,24 +186,13 @@ class DBManager: SharedDB {
             file.readOnly = (object["readOnly"] as! Bool) ? 1 : 0
             file.size = object["size"] as! Int
             file.mimeType = object["mimeType"] as! String
-            if let fileKey = object["fileKey"]{
-                file.fileKey = fileKey as! String
-            }
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
-            realm.add(file, update: true)
-            email.files.append(file)
-        case "filekey":
             let key = object["key"] as? String
             let iv = object["iv"] as? String
-            let emailId = object["emailId"] as! Int
             let fileKey = key != nil && iv != nil ? "\(key!):\(iv!)" : ""
-            guard let emailKey = maps.emails[emailId],
-                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
-                    return
-            }
-            for file in email.files{
-                file.fileKey = fileKey
-            }
+            file.fileKey = fileKey
+            realm.add(file, update: true)
+            email.files.append(file)
         default:
             return
         }

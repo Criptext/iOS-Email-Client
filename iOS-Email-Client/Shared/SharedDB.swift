@@ -199,7 +199,8 @@ class SharedDB {
                                  "name": newFile.name,
                                  "size": newFile.size,
                                  "mimeType": newFile.mimeType,
-                                 "fileKey": newFile.fileKey] as [String : Any]
+                                 "key": String(newFile.fileKey.split(separator: ":").first!),
+                                 "iv": String(newFile.fileKey.split(separator: ":").last!)] as [String : Any]
                 fileParams.append(fileparam)
             }
         }
@@ -232,6 +233,8 @@ class SharedDB {
             newEmail.isMuted = email.isMuted
             newEmail.labels.append(objectsIn: email.labels)
             newEmail.files.append(objectsIn: email.files)
+            newEmail.fromAddress = email.fromAddress
+            newEmail.replyTo = email.replyTo
             
             realm.add(newEmail)
             

@@ -47,6 +47,8 @@ class Email: Object {
     @objc dynamic var unsentDate: Date?
     @objc dynamic var trashDate: Date?
     @objc dynamic var isMuted = false
+    @objc dynamic var fromAddress = ""
+    @objc dynamic var replyTo = ""
     
     let labels = List<Label>()
     let files = List<File>()
@@ -145,7 +147,7 @@ class Email: Object {
                 return
             }
             
-            contacts = contacts.isEmpty ? "\(contact.displayName) &lt;\(contact.email)&gt;" : "\(contacts), \(contact.displayName) &lt;\(contact.email)&gt;"
+            contacts = contacts.isEmpty ? "\(contact.displayName) <\(contact.email)>" : "\(contacts), \(contact.displayName) <\(contact.email)>"
         }
         return contacts
     }
@@ -181,7 +183,9 @@ extension Email {
             "status": delivered,
             "date": dateString,
             "key": key,
-            "isMuted": isMuted
+            "isMuted": isMuted,
+            "fromAddress": fromAddress,
+            "replyTo": replyTo
         ] as [String: Any]
         if let trashDate = self.trashDate {
             object["trashDate"] = DateUtils().date(toServerString: trashDate)!

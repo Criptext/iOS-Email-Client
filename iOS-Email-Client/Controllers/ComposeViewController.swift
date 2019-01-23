@@ -352,6 +352,7 @@ class ComposeViewController: UIViewController {
         draft.threadId = composerData.threadId ?? "\(draft.key)"
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
+        draft.fromAddress = "\(activeAccount.name) <\(activeAccount.username)\(Constants.domain)>"
         DBManager.store(draft)
         
         if !fileManager.registeredFiles.isEmpty,

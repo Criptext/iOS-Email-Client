@@ -103,8 +103,8 @@ class EmailTableViewCell: UITableViewCell{
         upView.backgroundColor = theme.secondBackground
         bottomView.layer.borderColor = theme.emailBorder.cgColor
         bottomView.backgroundColor = theme.secondBackground
-        counterLabelDown.textColor = theme.mainText
-        counterLabelUp.textColor = theme.mainText
+        counterLabelDown.textColor = theme.secondText
+        counterLabelUp.textColor = theme.secondText
         
         upView.layer.cornerRadius = upView.frame.size.width/2
         upView.clipsToBounds = true

@@ -182,7 +182,7 @@ struct Constants {
         "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
 
     
-    static func singleEmail (image: String, subject: String, displayName: String, email: String, completeDate: String,
+    static func singleEmail (image: String, subject: String, contact: String, completeDate: String,
                              contacts: String, content: String) -> String{
         return "<html><head><meta name=\"viewport\"  content=\"width=device-width, initial-scale=1, maximum-scale=1\"/><style> " +
         " @font-face{font-family:Avenir Next;src:url(https://cdn.criptext.com/Criptext-Email-Website/fonts/Avenir+Next+Heavy.otf) format(\"opentype\");font-weight:900;font-style:normal} " +
@@ -208,14 +208,14 @@ struct Constants {
             "<div><p><b>\(subject)</b></br></p></div>" +
             "<div><p>1 \(String.localize("MESSAGE"))</br></p></div>" +
             "<hr>" +
-            "\(Constants.bodyEmail(displayName: displayName, email: email, completeDate: completeDate, contacts: contacts, content: content))" +
+            "\(Constants.bodyEmail(contact: contact, completeDate: completeDate, contacts: contacts, content: content))" +
         "</body></html>"
     }
     
-    static func bodyEmail(displayName: String, email: String, completeDate: String,
+    static func bodyEmail(contact: String, completeDate: String,
                           contacts: String, content: String) -> String {
         return "<table style=\"width:100%\">\n" +
-            "  <td><b>\(displayName)</b> &lt;\(email)&gt;</td>\n" +
+            "  <td><b>\(contact)</b></td>\n" +
             "    <td style=\"text-align:right\">\(completeDate)</td>\n" +
             "  </tr>\n" +
             "  <tr>\n" +
