@@ -263,6 +263,8 @@ extension UIColor {
     static let darkSeparator = UIColor(red: 64/255, green: 65/255, blue: 68/255, alpha: 1)
     static let darkBG = UIColor(red: 30/255, green: 34/255, blue: 40/255, alpha: 1)
     static let darkOpaque = UIColor(red: 41/255, green: 45/255, blue: 51/255, alpha: 1)
+    static let darkGroupBorder = UIColor(red: 135/255, green: 136/255, blue: 143/255, alpha: 1)
+    static let darkGroupTxt = UIColor(red: 213/255, green: 213/255, blue: 213/255, alpha: 1)
     static let cellHighlight = UIColor(red:253/255, green:251/255, blue:235/255, alpha:1.0)
     static let darkCellHighlight = UIColor(red: 33/255, green: 52/255, blue: 66/255, alpha: 1)
     static let darkBadge = UIColor(red: 89/255, green: 91/255, blue: 103/255, alpha: 1)

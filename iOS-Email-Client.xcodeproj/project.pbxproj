@@ -712,9 +712,6 @@
 		A72C185621AF165700D899EE /* MailboxNewsHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxNewsHeaderUIView.swift; sourceTree = "<group>"; };
 		A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyUIViewCell.swift; sourceTree = "<group>"; };
 		A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityPrivacyViewController.swift; sourceTree = "<group>"; };
-		A748871421765CF8004D0BD8 /* ITProgressBar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar.framework; path = Carthage/Build/iOS/ITProgressBar.framework; sourceTree = "<group>"; };
-		A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBar_Framework.framework; path = Carthage/Build/iOS/ITProgressBar_Framework.framework; sourceTree = "<group>"; };
-		A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ITProgressBarFramework.framework; path = Carthage/Build/iOS/ITProgressBarFramework.framework; sourceTree = "<group>"; };
 		A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncViewController.swift; sourceTree = "<group>"; };
 		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
@@ -932,9 +929,6 @@
 			children = (
 				A77C30A821A4EC240031E219 /* PasscodeLock.framework */,
 				A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */,
-				A748873C217676E2004D0BD8 /* ITProgressBarFramework.framework */,
-				A748872821767365004D0BD8 /* ITProgressBar_Framework.framework */,
-				A748871421765CF8004D0BD8 /* ITProgressBar.framework */,
 				A7F3027B216EBABC00676DD2 /* Gzip.framework */,
 				7CF93F592146EDC300361837 /* Lottie.framework */,
 				7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */,

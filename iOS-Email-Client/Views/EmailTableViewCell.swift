@@ -99,12 +99,12 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func applyTheme() {
-        upView.layer.borderColor = theme.emailBorder.cgColor
+        upView.layer.borderColor = theme.groupEmailBorder.cgColor
         upView.backgroundColor = theme.secondBackground
-        bottomView.layer.borderColor = theme.emailBorder.cgColor
+        bottomView.layer.borderColor = theme.groupEmailBorder.cgColor
         bottomView.backgroundColor = theme.secondBackground
-        counterLabelDown.textColor = theme.secondText
-        counterLabelUp.textColor = theme.secondText
+        counterLabelDown.textColor = theme.groupEmailText
+        counterLabelUp.textColor = theme.groupEmailText
         
         upView.layer.cornerRadius = upView.frame.size.width/2
         upView.clipsToBounds = true
