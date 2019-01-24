@@ -56,6 +56,7 @@ class EventData {
         let files: [[String: Any]]?
         let fileKey: String?
         let labels: [String]
+        let boundary: String?
         
         init(params: [String: Any]){
             threadId = params["threadId"] as! String
@@ -77,6 +78,7 @@ class EventData {
             cc = (params["cc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
             bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
             labels = (params["labels"] as? [String]) ?? [String]()
+            boundary = params["boundary"] as? String
         }
     }
     

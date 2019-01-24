@@ -389,6 +389,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = emailData.emails[indexPath.row]
         moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none)
+        moreOptionsContainerView.showSourceButton(email.boundary != nil)
         toggleMoreOptionsView()
     }
     
@@ -778,6 +779,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onOverlayPress() {
         self.toggleMoreOptionsView()
+    }
+    
+    func onShowSourcePress() {
+        
     }
 }
 

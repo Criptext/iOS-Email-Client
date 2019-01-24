@@ -170,6 +170,7 @@ class NewEmailHandler {
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
+        file.cid = attachment["cid"] as? String
         let key = attachment["key"] as? String
         let iv = attachment["iv"] as? String
         let fileKeyIv = key != nil && iv != nil ? "\(key!):\(iv!)" : fileKey
