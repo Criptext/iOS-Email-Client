@@ -146,6 +146,9 @@ class DBManager: SharedDB {
             if let replyTo = object["replyTo"]{
                 email.replyTo = replyTo as! String
             }
+            if let boundary = object["boundary"]{
+                email.boundary = boundary as! String
+            }
             realm.add(email, update: true)
             maps.emails[id] = email.key
         case "email_label":
@@ -187,6 +190,7 @@ class DBManager: SharedDB {
             file.size = object["size"] as! Int
             file.mimeType = object["mimeType"] as! String
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
+            file.cid = object["cid"] as? String
             let key = object["key"] as? String
             let iv = object["iv"] as? String
             let fileKey = key != nil && iv != nil ? "\(key!):\(iv!)" : ""
@@ -517,6 +521,7 @@ class DBManager: SharedDB {
                 file.mimeType = ""
                 file.status = 0
                 file.fileKey = ""
+                file.cid = nil
             })
         }
     }

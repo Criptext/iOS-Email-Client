@@ -18,6 +18,7 @@ protocol DetailMoreOptionsViewDelegate: class{
     func onUnsendPress()
     func onOverlayPress()
     func onPrintPress()
+    func onShowSourcePress()
 }
 
 class DetailMoreOptionsUIView: UIView {
@@ -31,6 +32,7 @@ class DetailMoreOptionsUIView: UIView {
     @IBOutlet weak var unsendButton: UIButton!
     @IBOutlet var optionButtons: [UIButton]?
     @IBOutlet var printButton: UIButton!
+    @IBOutlet var showSourceButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -56,6 +58,10 @@ class DetailMoreOptionsUIView: UIView {
     
     func showUnsend(_ show: Bool){
         self.unsendButton.isHidden = !show
+    }
+    
+    func showSourceButton(_ show: Bool){
+        self.showSourceButton.isHidden = !show
     }
     
     func applyTheme() {
@@ -132,5 +138,9 @@ class DetailMoreOptionsUIView: UIView {
     
     @IBAction func onPrintPress(_ sender: Any) {
         delegate?.onPrintPress()
+    }
+    
+    @IBAction func onShourSorucePress(_ sender: Any) {
+        delegate?.onShowSourcePress()
     }
 }

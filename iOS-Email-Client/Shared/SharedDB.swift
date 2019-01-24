@@ -235,6 +235,7 @@ class SharedDB {
             newEmail.files.append(objectsIn: email.files)
             newEmail.fromAddress = email.fromAddress
             newEmail.replyTo = email.replyTo
+            newEmail.boundary = email.boundary
             
             realm.add(newEmail)
             

@@ -49,6 +49,7 @@ class Email: Object {
     @objc dynamic var isMuted = false
     @objc dynamic var fromAddress = ""
     @objc dynamic var replyTo = ""
+    @objc dynamic var boundary = ""
     
     let labels = List<Label>()
     let files = List<File>()
@@ -185,7 +186,8 @@ extension Email {
             "key": key,
             "isMuted": isMuted,
             "fromAddress": fromAddress,
-            "replyTo": replyTo
+            "replyTo": replyTo,
+            "boundary": boundary
         ] as [String: Any]
         if let trashDate = self.trashDate {
             object["trashDate"] = DateUtils().date(toServerString: trashDate)!

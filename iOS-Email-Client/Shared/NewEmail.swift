@@ -26,6 +26,7 @@ struct NewEmail {
     let labels: [String]
     let isExternal: Bool
     let replyTo: String?
+    let boundary: String?
     
     init(params: [String: Any]){
         threadId = params["threadId"] as! String
@@ -48,6 +49,7 @@ struct NewEmail {
         bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)
         labels = (params["labels"] as? [String]) ?? [String]()
         replyTo = params["replyTo"] as? String
+        boundary = params["boundary"] as? String
     }
     
     static func convertToDate(dateString: String) -> Date {
