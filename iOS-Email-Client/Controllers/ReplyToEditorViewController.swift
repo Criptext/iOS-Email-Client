@@ -18,7 +18,6 @@ class ReplyToEditorViewController: UIViewController {
     @IBOutlet weak var OnOffLabel: UILabel!
     var generalData: GeneralSettingsData!
     var myAccount: Account!
-    var keyboardManager: KeyboardManager!
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
@@ -27,7 +26,6 @@ class ReplyToEditorViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
 [NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         replyToEnableSwitch.isOn = self.generalData.replyTo == "" ? false : true
-        keyboardManager = KeyboardManager(view: self.view)
         setSwitchAttributes()
         applyTheme()
     }
@@ -47,12 +45,10 @@ class ReplyToEditorViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        keyboardManager.beginMonitoring()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        keyboardManager.stopMonitoring()
     }
     
     @IBAction func onSave(_ sender: Any) {
@@ -74,7 +70,12 @@ class ReplyToEditorViewController: UIViewController {
                 self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_UPDATE_REPLYTO"), style: .alert)
                 return
             }
-            self.showSnackbar(String.localize("REPLY_TO_SUCCESS"), attributedText: nil, buttons: "", permanent: false)
+            if(enable){
+                self.showAlert(String.localize("REPLY_TO_TITLE"), message: String.localize("REPLY_TO_SUCCESS"), style: .alert)
+            }
+            else{
+                self.showAlert(String.localize("REPLY_TO_TITLE"), message: String.localize("REPLY_TO_REMOVED"), style: .alert)
+            }
             self.generalData.replyTo = email
         }
     }

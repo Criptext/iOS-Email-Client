@@ -683,9 +683,6 @@ extension InboxViewController {
         self.tableView.reloadData()
         updateBadges()
         showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
-        if(!threads.isEmpty){
-            self.getUnreadThreads(clear: false, since: self.mailboxData.threads.last?.date ?? Date())
-        }
     }
 }
 
@@ -715,7 +712,12 @@ extension InboxViewController{
             }
             threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads)
         } else {
-            threads = DBManager.getThreads(from: mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
+            if(selectLabel == String.localize("SHOW_ALL")){
+                threads = DBManager.getThreads(from: mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
+            }
+            else{
+                threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: date, threadIds: fetchedThreads)
+            }
         }
         if(clear){
             mailboxData.threads = threads

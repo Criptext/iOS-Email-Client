@@ -19,6 +19,8 @@ class Theme {
     let alert: UIColor
     let criptextBlue: UIColor
     let secondBackground: UIColor
+    let groupEmailBorder: UIColor
+    let groupEmailText: UIColor
     let sectionHeader: UIColor
     let underSelector: UIColor
     let placeholder: UIColor
@@ -46,7 +48,7 @@ class Theme {
     let bgBubbleCriptext: UIColor
     let composerMenu: UIColor
     
-    init(name: String = "Default", main: UIColor = .mainUI, toolbar: UIColor = .charcoal, background: UIColor = .strongOpaque, popoupBackground: UIColor = .lightIcon, mainText: UIColor = .charcoal, secondText: UIColor = .defaultSecondary, alert: UIColor = .alert, criptextBlue: UIColor = .mainUI, secondBackground: UIColor = .white, sectionHeader: UIColor = .opaque, underSelector: UIColor = .mainUI, placeholder: UIColor = .placeholderLight, popoverButton: UIColor = .popoverButton, loader: UIColor = .gray, icon: UIColor = .lightIcon, highlight: UIColor = .itemSelected, separator: UIColor = .separator, attachment: UIColor = .opaque, cellHighlight: UIColor = .cellHighlight, menuBackground: UIColor = .white, menuItem: UIColor = .disableIcon, menuHeader: UIColor = .strongOpaque, markedText: UIColor = .black, overallBackground: UIColor = .white, attachmentCell: UIColor = .attachmentCell, attachmentBorder: UIColor = .attachmentBorder, emailBorder: UIColor = .emailBorder, threadBadge: UIColor = .threadBadge, settingsDetail: UIColor = .opaque, emailBubble: UIColor = .emailBubble, emailBubbleCriptext: UIColor = .mainUI, bgBubble: UIColor = .bgBubble, bgBubbleCriptext: UIColor = .bgBubbleCriptext, composerMenu: UIColor = .mainUI, menuText: UIColor = .charcoal) {
+    init(name: String = "Default", main: UIColor = .mainUI, toolbar: UIColor = .charcoal, background: UIColor = .strongOpaque, popoupBackground: UIColor = .lightIcon, mainText: UIColor = .charcoal, secondText: UIColor = .defaultSecondary, groupEmailText: UIColor = .defaultSecondary, alert: UIColor = .alert, criptextBlue: UIColor = .mainUI, secondBackground: UIColor = .white, groupEmailBorder: UIColor = .emailBorder, sectionHeader: UIColor = .opaque, underSelector: UIColor = .mainUI, placeholder: UIColor = .placeholderLight, popoverButton: UIColor = .popoverButton, loader: UIColor = .gray, icon: UIColor = .lightIcon, highlight: UIColor = .itemSelected, separator: UIColor = .separator, attachment: UIColor = .opaque, cellHighlight: UIColor = .cellHighlight, menuBackground: UIColor = .white, menuItem: UIColor = .disableIcon, menuHeader: UIColor = .strongOpaque, markedText: UIColor = .black, overallBackground: UIColor = .white, attachmentCell: UIColor = .attachmentCell, attachmentBorder: UIColor = .attachmentBorder, emailBorder: UIColor = .emailBorder, threadBadge: UIColor = .threadBadge, settingsDetail: UIColor = .opaque, emailBubble: UIColor = .emailBubble, emailBubbleCriptext: UIColor = .mainUI, bgBubble: UIColor = .bgBubble, bgBubbleCriptext: UIColor = .bgBubbleCriptext, composerMenu: UIColor = .mainUI, menuText: UIColor = .charcoal) {
         self.name = name
         self.main = main
         self.toolbar = toolbar
@@ -57,6 +59,8 @@ class Theme {
         self.alert = alert
         self.criptextBlue = criptextBlue
         self.secondBackground = secondBackground
+        self.groupEmailBorder = groupEmailBorder
+        self.groupEmailText = groupEmailText
         self.sectionHeader = sectionHeader
         self.underSelector = underSelector
         self.placeholder = placeholder
@@ -86,6 +90,6 @@ class Theme {
     }
     
     class func dark() -> Theme {
-        return Theme(name: "Dark", main: .charcoal, toolbar: .black, background: .darkBG, popoupBackground: .charcoal, mainText: .strongText, secondText: .darkSecondary, alert: .alert, criptextBlue: .darkUI, secondBackground: .darkOpaque, sectionHeader: .darkOpaque, underSelector: .white, placeholder: .placeholderDark, popoverButton: .charcoal, loader: .white, icon: .lightIcon, highlight: .darkSelected, separator: .darkSeparator, attachment: .darkBadge, cellHighlight: .darkCellHighlight, menuBackground: .darkOpaque, menuItem: .darkMenuText, menuHeader: .darkBG, markedText: .white, overallBackground: .darkBG, attachmentCell: .darkBadge, attachmentBorder: .darkBadge, emailBorder: .darkEmailBorder, threadBadge: .darkBadge, settingsDetail: .darkDetail, emailBubble: .white, emailBubbleCriptext: .darkEmailBubble, bgBubble: .darkBgBubble, bgBubbleCriptext: .darkBgBubbleCriptext, composerMenu: .white, menuText: .darkMenuText)
+        return Theme(name: "Dark", main: .charcoal, toolbar: .black, background: .darkBG, popoupBackground: .charcoal, mainText: .strongText, secondText: .darkSecondary, groupEmailText: .darkGroupTxt, alert: .alert, criptextBlue: .darkUI, secondBackground: .darkOpaque, groupEmailBorder: .darkGroupBorder ,sectionHeader: .darkOpaque, underSelector: .white, placeholder: .placeholderDark, popoverButton: .charcoal, loader: .white, icon: .lightIcon, highlight: .darkSelected, separator: .darkSeparator, attachment: .darkBadge, cellHighlight: .darkCellHighlight, menuBackground: .darkOpaque, menuItem: .darkMenuText, menuHeader: .darkBG, markedText: .white, overallBackground: .darkBG, attachmentCell: .darkBadge, attachmentBorder: .darkBadge, emailBorder: .darkEmailBorder, threadBadge: .darkBadge, settingsDetail: .darkDetail, emailBubble: .white, emailBubbleCriptext: .darkEmailBubble, bgBubble: .darkBgBubble, bgBubbleCriptext: .darkBgBubbleCriptext, composerMenu: .white, menuText: .darkMenuText)
     }
 }

@@ -658,7 +658,10 @@ extension APIManager {
     class func linkBegin(username: String, completion: @escaping ((ResponseData) -> Void)) {
         let url = "\(self.baseUrl)/link/begin"
         let headers = [versionHeader: apiVersion]
-        let params = ["targetUsername": username] as [String : Any]
+        let params = [
+            "targetUsername": username,
+            "version": Env.linkVersion.description
+        ] as [String : Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response)
             completion(responseData)
