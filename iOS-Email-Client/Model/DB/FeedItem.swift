@@ -23,10 +23,16 @@ class FeedItem: Object {
     //seen: Bool
     
     var isMuted: Bool {
-        return email.isMuted
+        guard let muted = email?.isMuted else {
+            return false
+        }
+        return muted
     }
     var subject: String {
-        return email.subject
+        guard let subject = email?.subject else {
+            return ""
+        }
+        return subject
     }
     var formattedDate: String {
         return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))

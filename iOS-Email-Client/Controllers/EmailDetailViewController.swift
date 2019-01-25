@@ -388,6 +388,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? String.localize("REMOVE_SPAM") : String.localize("MARK_SPAM"), for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = emailData.emails[indexPath.row]
+        moreOptionsContainerView.retryButton.isHidden = (email.status == .fail || email.status == .sending) ? false : true
         moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none)
         moreOptionsContainerView.showSourceButton(email.boundary != nil)
         toggleMoreOptionsView()
@@ -568,6 +569,17 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
 }
 
 extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
+    func onRetryPress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
+        DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
+        sendMail(email: email, password: nil)
+    }
+    
     func onReplyPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
             moreOptionsContainerView.closeMoreOptions()

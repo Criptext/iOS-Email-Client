@@ -16,6 +16,7 @@
                 <outlet property="optionsContainerOffsetConstraint" destination="hiL-bi-nks" id="0CQ-YN-g9E"/>
                 <outlet property="optionsContainerView" destination="bO2-Ar-nLq" id="Vdm-8V-mEm"/>
                 <outlet property="printButton" destination="N05-Kc-xSj" id="jd4-gL-XjB"/>
+                <outlet property="retryButton" destination="YNY-Kc-Qch" id="fiq-SG-t6B"/>
                 <outlet property="showSourceButton" destination="Ytg-f7-yBA" id="qSf-s9-HgQ"/>
                 <outlet property="spamButton" destination="Za1-6Y-W6N" id="uF9-6y-bFv"/>
                 <outlet property="unsendButton" destination="tTf-Hb-35Y" id="S1F-TL-P7Z"/>
@@ -28,6 +29,8 @@
                 <outletCollection property="optionButtons" destination="Za1-6Y-W6N" collectionClass="NSMutableArray" id="1Zj-Eq-qsF"/>
                 <outletCollection property="optionButtons" destination="tTf-Hb-35Y" collectionClass="NSMutableArray" id="V02-B0-i6J"/>
                 <outletCollection property="optionButtons" destination="N05-Kc-xSj" collectionClass="NSMutableArray" id="EXb-nz-2vZ"/>
+                <outletCollection property="optionButtons" destination="YNY-Kc-Qch" collectionClass="NSMutableArray" id="VQm-NY-iBV"/>
+                <outletCollection property="optionButtons" destination="Ytg-f7-yBA" collectionClass="NSMutableArray" id="NZu-3G-qRc"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -40,7 +43,7 @@
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.3033694401840491" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bO2-Ar-nLq">
-                    <rect key="frame" x="0.0" y="334" width="375" height="333"/>
+                    <rect key="frame" x="0.0" y="305" width="375" height="362"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6Z-y6-wWR">
                             <rect key="frame" x="15" y="15" width="345" height="25"/>
@@ -151,15 +154,26 @@
                                 <action selector="onUnsendPress:" destination="-1" eventType="touchUpInside" id="X2W-uM-4km"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNY-Kc-Qch">
+                            <rect key="frame" x="15" y="328" width="345" height="25"/>
+                            <state key="normal" title="Retry Send">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="onRetrySendPress:" destination="-1" eventType="touchUpInside" id="sen-lY-NE0"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="Ytg-f7-yBA" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="05B-hS-aQF"/>
+                        <constraint firstItem="YNY-Kc-Qch" firstAttribute="trailing" secondItem="tTf-Hb-35Y" secondAttribute="trailing" id="0ZY-WM-ehQ"/>
                         <constraint firstItem="N05-Kc-xSj" firstAttribute="leading" secondItem="Za1-6Y-W6N" secondAttribute="leading" id="0fq-63-S6X"/>
                         <constraint firstItem="J6Q-6A-qL7" firstAttribute="top" secondItem="L6Z-y6-wWR" secondAttribute="bottom" constant="15" id="0qc-66-uCy"/>
                         <constraint firstItem="WAE-Yn-KsO" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="1O9-cY-he1"/>
                         <constraint firstAttribute="trailing" secondItem="L6Z-y6-wWR" secondAttribute="trailing" constant="15" id="3Du-4p-Ffq"/>
                         <constraint firstItem="Za1-6Y-W6N" firstAttribute="top" secondItem="WAE-Yn-KsO" secondAttribute="bottom" constant="15" id="9sa-YQ-OoO"/>
+                        <constraint firstItem="Ytg-f7-yBA" firstAttribute="top" secondItem="YNY-Kc-Qch" secondAttribute="bottom" constant="-58" id="A0t-aq-iPC"/>
                         <constraint firstItem="hBy-Yi-wAI" firstAttribute="top" secondItem="J6Q-6A-qL7" secondAttribute="bottom" constant="15" id="GeW-9L-faS"/>
                         <constraint firstItem="Ytg-f7-yBA" firstAttribute="top" secondItem="N05-Kc-xSj" secondAttribute="bottom" constant="15" id="I9W-yu-f1d"/>
                         <constraint firstAttribute="trailing" secondItem="J6Q-6A-qL7" secondAttribute="trailing" constant="15" id="ITB-YU-kxd"/>
@@ -171,13 +185,15 @@
                         <constraint firstItem="GJm-V9-TCb" firstAttribute="top" secondItem="hBy-Yi-wAI" secondAttribute="bottom" constant="15" id="QS6-Yk-bhR"/>
                         <constraint firstItem="Za1-6Y-W6N" firstAttribute="leading" secondItem="WAE-Yn-KsO" secondAttribute="leading" id="Z2v-F6-Pxp"/>
                         <constraint firstItem="GJm-V9-TCb" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="Zs2-RH-PNh"/>
+                        <constraint firstItem="YNY-Kc-Qch" firstAttribute="leading" secondItem="tTf-Hb-35Y" secondAttribute="leading" id="ctb-xW-Sfu"/>
                         <constraint firstAttribute="trailing" secondItem="hBy-Yi-wAI" secondAttribute="trailing" constant="15" id="f7F-UL-l0a"/>
+                        <constraint firstItem="YNY-Kc-Qch" firstAttribute="top" secondItem="N05-Kc-xSj" secondAttribute="bottom" constant="48" id="kbk-ef-Rs1"/>
                         <constraint firstItem="WAE-Yn-KsO" firstAttribute="top" secondItem="GJm-V9-TCb" secondAttribute="bottom" constant="15" id="kkm-iZ-9Gq"/>
                         <constraint firstItem="N05-Kc-xSj" firstAttribute="trailing" secondItem="Za1-6Y-W6N" secondAttribute="trailing" id="mch-cY-8aO"/>
                         <constraint firstItem="J6Q-6A-qL7" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="noT-df-GrC"/>
                         <constraint firstItem="tTf-Hb-35Y" firstAttribute="leading" secondItem="bO2-Ar-nLq" secondAttribute="leading" constant="15" id="sgl-2P-FMn"/>
                         <constraint firstItem="N05-Kc-xSj" firstAttribute="top" secondItem="Za1-6Y-W6N" secondAttribute="bottom" constant="15" id="u1H-Xu-71g"/>
-                        <constraint firstAttribute="height" constant="333" id="ujL-zn-4h0"/>
+                        <constraint firstAttribute="height" constant="362" id="ujL-zn-4h0"/>
                         <constraint firstAttribute="trailing" secondItem="Ytg-f7-yBA" secondAttribute="trailing" constant="15" id="wRc-x1-he8"/>
                         <constraint firstItem="Za1-6Y-W6N" firstAttribute="trailing" secondItem="WAE-Yn-KsO" secondAttribute="trailing" id="whx-oa-PUH"/>
                         <constraint firstAttribute="trailing" secondItem="tTf-Hb-35Y" secondAttribute="trailing" constant="15" id="xRy-mS-Zkm"/>

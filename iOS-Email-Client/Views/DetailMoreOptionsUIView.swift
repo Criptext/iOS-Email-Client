@@ -18,6 +18,7 @@ protocol DetailMoreOptionsViewDelegate: class{
     func onUnsendPress()
     func onOverlayPress()
     func onPrintPress()
+    func onRetryPress()
     func onShowSourcePress()
 }
 
@@ -32,6 +33,7 @@ class DetailMoreOptionsUIView: UIView {
     @IBOutlet weak var unsendButton: UIButton!
     @IBOutlet var optionButtons: [UIButton]?
     @IBOutlet var printButton: UIButton!
+    @IBOutlet weak var retryButton: UIButton!
     @IBOutlet var showSourceButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
@@ -138,6 +140,10 @@ class DetailMoreOptionsUIView: UIView {
     
     @IBAction func onPrintPress(_ sender: Any) {
         delegate?.onPrintPress()
+    }
+    
+    @IBAction func onRetrySendPress(_ sender: Any) {
+        delegate?.onRetryPress()
     }
     
     @IBAction func onShourSorucePress(_ sender: Any) {
