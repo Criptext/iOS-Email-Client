@@ -10,6 +10,7 @@ import Foundation
 import WebKit
 import RealmSwift
 import SwiftSoup
+import Photos
 
 protocol EmailTableViewCellDelegate: class {
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email)
@@ -95,7 +96,10 @@ class EmailTableViewCell: UITableViewCell{
         webView.scrollView.bounces = false
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
+        
         webView.configuration.userContentController.add(self, name: "iosListener")
+        webView.configuration.setURLSchemeHandler(CIDSchemeHandler(attachments: nil), forURLScheme: "cid")
+        
     }
     
     func applyTheme() {
@@ -142,6 +146,7 @@ class EmailTableViewCell: UITableViewCell{
         
         self.emailState = state
         self.email = email
+        print(self.email.content)
         let isExpanded = state.isExpanded
         
         heightConstraint.constant = state.cellHeight
@@ -218,7 +223,10 @@ class EmailTableViewCell: UITableViewCell{
         let anchorColor = theme.name != "Dark" ? "" : "48a3ff"
         let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(theme.name != "Dark" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
         webView.scrollView.maximumZoomScale = 2.0
-        webView.loadHTMLString(content, baseURL: bundleUrl)
+        let newContent = content.replacingOccurrences(of: "cid:", with: "cid://www.google.com/")
+        print("\n\n====================")
+        print(newContent)
+        webView.loadHTMLString(newContent, baseURL: bundleUrl)
     }
     
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
