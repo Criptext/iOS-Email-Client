@@ -608,6 +608,12 @@ class DBManager: SharedDB {
             realm.delete(files)
         }
     }
+    
+    class func getFile(cid: String) -> File? {
+        let realm = try! Realm()
+        
+        return realm.objects(File.self).filter("cid = %@", cid).first
+    }
 
     //MARK: - Feed
     

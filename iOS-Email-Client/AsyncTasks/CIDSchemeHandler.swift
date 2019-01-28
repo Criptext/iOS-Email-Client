@@ -30,42 +30,19 @@ class CIDSchemeHandler : NSObject,WKURLSchemeHandler {
     
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         print("AUIDA!!!!!!!!!")
-        DispatchQueue.global().async {
-            if let url = urlSchemeTask.request.url, url.scheme == "cid" {
-                if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems {
-                    for queryParams in queryItems {
-                        //example : custom-scheme:// path ? type=remote & url=http://placehold.it/120x120&text=image1
-                        if queryParams.name == "type" && queryParams.value == "remote" {
-                            let queryItem = queryItems.filter({ $0.name == "src" })
-                            let file = self.attachments!.filter( {($0.cid == queryItem[0].value)} ).first
-                            if let myFile = file,
-                                let cid = myFile.cid {
-                                self.taskMap[cid] = urlSchemeTask
-                                PHPhotoLibrary.requestAuthorization({ (status) in
-                                    DispatchQueue.main.async { [weak self] in
-                                        guard let weakSelf = self else {
-                                            return
-                                        }
-                                        switch status {
-                                        case .authorized:
-                                            if(!myFile.fileKey.isEmpty){
-                                                let keys = File.getKeyAndIv(key: myFile.fileKey)
-                                                weakSelf.fileManager.setEncryption(id: myFile.emailId, key: keys.0, iv: keys.1)
-                                            }
-                                            weakSelf.fileManager.registerFile(file: myFile)
-                                            break
-                                        default:
-                                            urlSchemeTask.didFailWithError(CriptextError(message: String.localize("ACCESS_DENIED")))
-                                            break
-                                        }
-                                    }
-                                })
-                            }
-                        }
-                    }
-                }
-            }
+        guard let url = urlSchemeTask.request.url, url.scheme == "cid" else {
+            return
         }
+        let cid = url.absoluteString.replacingOccurrences(of: "cid:", with: "")
+        self.taskMap[cid] = urlSchemeTask
+        guard let file = DBManager.getFile(cid: cid) else {
+                return
+        }
+        if(!file.fileKey.isEmpty){
+            let keys = File.getKeyAndIv(key: file.fileKey)
+            self.fileManager.setEncryption(id: file.emailId, key: keys.0, iv: keys.1)
+        }
+        self.fileManager.registerFile(file: file)
     }
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
@@ -75,7 +52,7 @@ class CIDSchemeHandler : NSObject,WKURLSchemeHandler {
 
 extension CIDSchemeHandler : CriptextFileDelegate, UIDocumentInteractionControllerDelegate {
     func uploadProgressUpdate(file: File, progress: Int) {
-        
+        print("descargando")
     }
     
     func fileError(message: String) {
@@ -86,13 +63,16 @@ extension CIDSchemeHandler : CriptextFileDelegate, UIDocumentInteractionControll
     
     func finishRequest(file: File, success: Bool) {
         if(success){
+            guard let cid = file.cid,
+                let task = self.taskMap[cid] else {
+                    return
+            }
             let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             let fileURL = documentsURL.appendingPathComponent(file.name)
-            let viewer = UIDocumentInteractionController(url: fileURL)
-            viewer.delegate = self
-            viewer.presentPreview(animated: true)
-            self.taskMap[file.cid!]?.didReceive(try! Data(contentsOf: fileURL))
-            self.taskMap[file.cid!]?.didFinish()
+            
+            task.didReceive(URLResponse(url: documentsURL, mimeType: file.mimeType, expectedContentLength: file.size, textEncodingName: file.name))
+            task.didReceive(try! Data(contentsOf: fileURL))
+            task.didFinish()
         }
     }
 }
