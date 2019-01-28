@@ -11,6 +11,7 @@ import RealmSwift
 
 class EmailDetailData{
     var emails: Results<Email>!
+    var bodies = [Int: String]()
     var observerToken: NotificationToken?
     var emailStates = [Int: Email.State]()
     var labels = [Label]()

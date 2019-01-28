@@ -84,7 +84,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
         let passwordEnabled = passwordTextField.isEnabled
         let password = passwordTextField.text!
         guard (!passwordEnabled || password.count >= MIN_PASS_LENGTH) else {
-            passwordTextField.detail = "AT_LEAST_3_CHARS"
+            passwordTextField.detail = String.localize("AT_LEAST_3_CHARS")
             return
         }
         self.dismiss(animated: true, completion: nil)

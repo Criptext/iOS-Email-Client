@@ -76,7 +76,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         showLoader(true)
         APIManager.removeDevice(deviceId: deviceId, password: password.sha256()!, account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout()
+                self.logout(account: self.myAccount)
                 return
             }
             if case .Missing = responseData {

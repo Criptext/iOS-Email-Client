@@ -59,7 +59,7 @@ class ReplyToEditorViewController: UIViewController {
         let email = emailText.text ?? ""
         APIManager.updateReplyTo(email: email, enable: enable, account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout()
+                self.logout(account: self.myAccount)
                 return
             }
             if case .Forbidden = responseData {

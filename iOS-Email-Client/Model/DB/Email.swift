@@ -153,13 +153,6 @@ class Email: Object {
         return contacts
     }
     
-    func getContent() -> String {
-        guard !isUnsent else {
-            return "<span style=\"color:#eea3a3; font-style: italic;\">\(self.getPreview())</span>"
-        }
-        return content
-    }
-    
     func getPreview() -> String {
         guard !isUnsent else {
             let stringDate = DateUtils.beautyDate(self.unsentDate ?? Date()).replacingOccurrences(of: "at", with: String.localize("AT"))
@@ -170,7 +163,7 @@ class Email: Object {
 }
 
 extension Email {
-    func toDictionary(id: Int) -> [String: Any] {
+    func toDictionary(id: Int, emailBody: String, headers: String) -> [String: Any] {
         let dateString = DateUtils().date(toServerString: date)!
         var object = [
             "id": id,
@@ -178,7 +171,7 @@ extension Email {
             "threadId": threadId,
             "unread": unread,
             "secure": secure,
-            "content": content,
+            "content": emailBody.isEmpty ? content : emailBody.isEmpty,
             "preview": preview,
             "subject": subject,
             "status": delivered,
@@ -187,7 +180,8 @@ extension Email {
             "isMuted": isMuted,
             "fromAddress": fromAddress,
             "replyTo": replyTo,
-            "boundary": boundary
+            "boundary": boundary,
+            "headers": headers
         ] as [String: Any]
         if let trashDate = self.trashDate {
             object["trashDate"] = DateUtils().date(toServerString: trashDate)!

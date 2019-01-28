@@ -138,7 +138,7 @@ class EmailTableViewCell: UITableViewCell{
         }
     }
     
-    func setContent(_ email: Email, state: Email.State, myEmail: String){
+    func setContent(_ email: Email, emailBody: String, state: Email.State, myEmail: String){
         
         self.emailState = state
         self.email = email
@@ -173,7 +173,7 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         if(state.isExpanded && !isLoaded){
-            loadWebview(email: email)
+            loadWebview(email: email, emailBody: emailBody)
         }
         
         if(state.isUnsending){
@@ -211,12 +211,12 @@ class EmailTableViewCell: UITableViewCell{
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
     }
     
-    func loadWebview(email: Email){
+    func loadWebview(email: Email, emailBody: String){
         let theme = ThemeManager.shared.theme
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
         let anchorColor = theme.name != "Dark" ? "" : "48a3ff"
-        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(email.getContent())\(theme.name != "Dark" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
+        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(theme.name != "Dark" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
         webView.scrollView.maximumZoomScale = 2.0
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }

@@ -197,14 +197,12 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = emailData.emails[indexPath.row]
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
-        cell.setContent(email, state: emailData.getState(email.key), myEmail: emailData.accountEmail)
+        cell.setContent(email, emailBody: self.emailData.bodies[email.key] ?? "", state: emailData.getState(email.key), myEmail: emailData.accountEmail)
         cell.delegate = self
         target = cell.moreOptionsContainerView
         if(isGroupable()){
-            DispatchQueue.main.async {
-                cell.counterLabelUp.text = "\(self.emailData.emails.count - 2)"
-                cell.counterLabelDown.text = "\(self.emailData.emails.count - 2)"
-            }
+            cell.counterLabelUp.text = "\(self.emailData.emails.count - 2)"
+            cell.counterLabelDown.text = "\(self.emailData.emails.count - 2)"
             if(email == emailData.emails.first){
                 cell.upView.isHidden = true
                 cell.bottomView.isHidden = false
@@ -359,7 +357,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let email = emailData.emails[indexPath.row]
         let contactsTo = Array(email.getContacts(type: .to))
         let contactsCc = Array(email.getContacts(type: .cc))
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: email.subject, content: email.content)
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: email.subject, content: self.emailData.bodies[email.key] ?? "")
     }
     
     func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
@@ -388,8 +386,9 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? String.localize("REMOVE_SPAM") : String.localize("MARK_SPAM"), for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = emailData.emails[indexPath.row]
+        moreOptionsContainerView.showRetry((email.status == .fail || email.status == .sending) ? true : false)
         moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none)
-        moreOptionsContainerView.showSourceButton(email.boundary != nil)
+        moreOptionsContainerView.showSourceButton(!email.boundary.isEmpty)
         toggleMoreOptionsView()
     }
     
@@ -568,6 +567,17 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
 }
 
 extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
+    func onRetryPress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleMoreOptionsView()
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
+        DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
+        sendMail(email: email, emailBody: self.emailData.bodies[email.key] ?? "", password: nil)
+    }
+    
     func onReplyPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
             moreOptionsContainerView.closeMoreOptions()
@@ -580,7 +590,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
-        let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
+        let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subject: subject, content: content)
     }
     
@@ -600,7 +610,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
-        let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + email.content + "</blockquote></div>")
+        let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: subject, content: content)
     }
     
@@ -614,7 +624,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let email = emailData.emails[indexPath.row]
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "<b>\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
-        let content = ("<br><br><div class=\"criptext_quote\"><span>---------- \(String.localize("FORWARD_MAIL")) ---------</span><br><span>\(String.localize("FROM")): ]\(contact)</span><br><span>\(String.localize("DATE")): \(email.completeDate)</span><br><span>\(String.localize("SUBJECT")): \(email.subject)</span><br><br>" + email.content + "</div>")
+        let content = ("<br><br><div class=\"criptext_quote\"><span>---------- \(String.localize("FORWARD_MAIL")) ---------</span><br><span>\(String.localize("FROM")): ]\(contact)</span><br><span>\(String.localize("DATE")): \(email.completeDate)</span><br><span>\(String.localize("SUBJECT")): \(email.subject)</span><br><br>\(self.emailData.bodies[email.key] ?? "")</div>")
         presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content, attachments: email.getFiles())
     }
     
@@ -732,7 +742,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             }
             weakSelf.emailData.setState(email.key, isUnsending: false)
             if case .Unauthorized = responseData {
-                weakSelf.logout()
+                weakSelf.logout(account: weakSelf.myAccount)
                 return
             }
             if case .Forbidden = responseData {
@@ -763,7 +773,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let image = UIImage(named: "footer_beta")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
-        let html = Constants.singleEmail(image: imageData.base64EncodedString(), subject: subject, contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: email.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: email.getFullContacts()), content: email.content)
+        let html = Constants.singleEmail(image: imageData.base64EncodedString(), subject: subject, contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: email.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: email.getFullContacts()), content: self.emailData.bodies[email.key] ?? "")
         webView.frame = self.view.bounds
         webView.loadHTMLString(html, baseURL: nil)
     }
@@ -782,7 +792,18 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     }
     
     func onShowSourcePress() {
-        
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            moreOptionsContainerView.closeMoreOptions()
+            return
+        }
+        moreOptionsContainerView.closeMoreOptions()
+        deselectSelectedRow()
+        let email = emailData.emails[indexPath.row]
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "EmailSourceViewController") as! EmailSourceViewController
+        viewController.email = email
+        viewController.myAccount = self.myAccount
+        self.present(viewController, animated: true, completion: nil)
     }
 }
 
@@ -838,7 +859,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
         var body = String()
         for mail in emails!{
             let contact = mail.fromAddress.isEmpty ? "\(mail.fromContact.displayName)</b> &lt;\(mail.fromContact.email)&gt;" : mail.fromAddress
-            body = "\(body) \(Constants.bodyEmail(contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: mail.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: mail.getFullContacts()), content: mail.content)) <hr>"
+            body = "\(body) \(Constants.bodyEmail(contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: mail.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: mail.getFullContacts()), content: self.emailData.bodies[mail.key] ?? "")) <hr>"
         }
         let image = UIImage(named: "footer_beta")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
@@ -981,11 +1002,11 @@ extension EmailDetailViewController: ComposerSendMailDelegate {
     func deleteDraft(draftId: Int) {
     }
     
-    func sendMail(email: Email, password: String?) {
+    func sendMail(email: Email, emailBody: String, password: String?) {
         guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController else {
             return
         }
-        inboxViewController.sendMail(email: email, password: password)
+        inboxViewController.sendMail(email: email, emailBody: emailBody, password: password)
     }
 }
 

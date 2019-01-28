@@ -414,7 +414,7 @@ class SettingsGeneralViewController: UITableViewController{
                     weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("UNABLE_DELETE_ACCOUNT"), style: .alert)
                 return
             }
-            delegate.logout(manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
+            delegate.logout(account: weakSelf.myAccount, manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
         })
     }
     
@@ -436,7 +436,7 @@ class SettingsGeneralViewController: UITableViewController{
     func confirmLogout(){
         APIManager.logout(account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout()
+                self.logout(account: self.myAccount)
                 return
             }
             if case .Forbidden = responseData {
@@ -447,7 +447,7 @@ class SettingsGeneralViewController: UITableViewController{
                 self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("UNABLE_SIGNOUT"), style: .alert)
                 return
             }
-            self.logout(manually: true)
+            self.logout(account: self.myAccount, manually: true)
         }
     }
     
@@ -511,7 +511,7 @@ class SettingsGeneralViewController: UITableViewController{
         let params = EventData.Peer.NameChanged(name: name)
         APIManager.updateName(name: name, account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout()
+                self.logout(account: self.myAccount)
                 return
             }
             if case .Forbidden = responseData {
