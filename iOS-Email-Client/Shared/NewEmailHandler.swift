@@ -66,12 +66,19 @@ class NewEmailHandler {
             
             guard (unsent || error == nil),
                 let myAccount = self.database.getAccountByUsername(self.username),
-                case let .SuccessString(body) = responseData,
+                case let .SuccessDictionary(data) = responseData,
+                let body = data["body"] as? String,
+                let headers = data["headers"] as? String,
                 let username = ContactUtils.getUsernameFromEmailFormat(event.from) else {
                     completion(Result(success: false))
                     return
             }
-            guard let content = unsent ? "" : self.handleBodyByMessageType(event.messageType, body: body, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) else {
+            guard let content = unsent ? "" : self.handleBodyByMessageType(
+                    event.messageType, body: body, account: myAccount,
+                    recipientId: username, senderDeviceId: event.senderDeviceId,
+                    isExternal: event.isExternal),
+                let contentHeader = self.handleHeaderByMessageType(event.messageType, header: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                else {
                     completion(Result(success: true))
                     return
             }
@@ -82,10 +89,12 @@ class NewEmailHandler {
             email.subject = event.subject
             email.key = event.metadataKey
             email.messageId = event.messageId
+            email.boundary = event.boundary ?? ""
             email.date = event.date
             email.unread = true
-            email.content = contentPreview.1
             email.preview = contentPreview.0
+            
+            FileUtils.saveEmailToFile(account: myAccount, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
             
             if(unsent){
                 email.unsentDate = email.date
@@ -163,6 +172,20 @@ class NewEmailHandler {
             trueBody = SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
         return trueBody
+    }
+    
+    func handleHeaderByMessageType(_ messageType: MessageType, header: String, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
+        let recipient = isExternal ? "bob" : recipientId
+        let senderDevice = isExternal ? 1 : senderDeviceId
+        guard messageType != .none,
+            let deviceId = senderDevice else {
+                return header
+        }
+        var trueHeader : String?
+        tryBlock {
+            trueHeader = SignalHandler.decryptMessage(header, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
+        }
+        return trueHeader
     }
     
     func handleAttachment(_ attachment: [String: Any], email: Email, fileKey: String) -> File {

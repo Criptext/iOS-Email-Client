@@ -15,7 +15,7 @@ import RealmSwift
 
 class SharedAPI {
     static let baseUrl = Env.apiURL
-    static let apiVersion = "4.0.0"
+    static let apiVersion = "6.0.0"
     static let versionHeader = "criptext-api-version"
     static let language = "accept-language"
     
@@ -186,7 +186,7 @@ class SharedAPI {
             versionHeader: apiVersion,
             language: Env.language
         ]
-        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { response in
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
                 if let refreshData = refreshResponseData {

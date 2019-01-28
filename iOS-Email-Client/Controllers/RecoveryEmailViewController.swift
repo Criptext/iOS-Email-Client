@@ -89,7 +89,7 @@ class RecoveryEmailViewController: UIViewController {
         self.showLoaderTimer(true)
         APIManager.resendConfirmationEmail(account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout()
+                self.logout(account: self.myAccount)
                 return
             }
             self.showLoaderTimer(false)
@@ -162,7 +162,7 @@ class RecoveryEmailViewController: UIViewController {
         showLoader(true)
         APIManager.changeRecoveryEmail(email: email, password: password, account: myAccount) { responseData in
             if case .Unauthorized = responseData {
-                self.logout()
+                self.logout(account: self.myAccount)
                 return
             }
             self.showLoader(false)

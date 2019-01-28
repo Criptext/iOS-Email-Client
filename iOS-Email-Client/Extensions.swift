@@ -52,9 +52,9 @@ extension UIViewController {
         return self
     }
     
-    func logout(manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
+    func logout(account: Account, manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            delegate.logout(manually: manually, message: message)
+            delegate.logout(account: account, manually: manually, message: message)
         }
     }
     
@@ -63,7 +63,7 @@ extension UIViewController {
         passwordVC.myAccount = myAccount
         passwordVC.remotelyCheckPassword = true
         passwordVC.onLogoutPress = {
-            self.logout(manually: false)
+            self.logout(account: myAccount, manually: false)
         }
         self.presentPopover(popover: passwordVC, height: 225)
     }

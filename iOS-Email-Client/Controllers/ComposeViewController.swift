@@ -21,7 +21,7 @@ import SignalProtocolFramework
 import Instructions
 
 protocol ComposerSendMailDelegate: class {
-    func sendMail(email: Email, password: String?)
+    func sendMail(email: Email, emailBody: String, password: String?)
     func newDraft(draft: Email)
     func deleteDraft(draftId: Int)
 }
@@ -334,6 +334,7 @@ class ComposeViewController: UIViewController {
         if let draft = composerData.emailDraft {
             delegate?.deleteDraft(draftId: draft.key)
             DBManager.deleteDraftInComposer(draft)
+            FileUtils.deleteDirectoryFromEmail(account: activeAccount, metadataKey: "\(draft.key)")
         }
         
         self.resignKeyboard()
@@ -342,7 +343,6 @@ class ComposeViewController: UIViewController {
         DBManager.store(fileManager.registeredFiles)
         let draft = Email()
         draft.status = .none
-        draft.content = self.editorView.html
         let bodyWithoutHtml = self.editorView.text.replaceNewLineCharater(separator: " ")
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
@@ -354,6 +354,8 @@ class ComposeViewController: UIViewController {
         draft.files.append(objectsIn: fileManager.registeredFiles)
         draft.fromAddress = "\(activeAccount.name) <\(activeAccount.username)\(Constants.domain)>"
         DBManager.store(draft)
+        
+        FileUtils.saveEmailToFile(account: activeAccount, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
         
         if !fileManager.registeredFiles.isEmpty,
             let keys = fileManager.keyPairs[0] {
@@ -556,7 +558,7 @@ class ComposeViewController: UIViewController {
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
         DBManager.updateEmail(email, secure: secure)
         self.dismiss(animated: true){
-            self.delegate?.sendMail(email: email, password: password)
+            self.delegate?.sendMail(email: email, emailBody: self.editorView.html, password: password)
         }
     }
     

@@ -29,7 +29,7 @@ class SendMailAsyncTask {
     let replyTo: String?
     let emailRef: ThreadSafeReference<Object>
     
-    init(account: Account, email: Email, password: String?){
+    init(account: Account, email: Email, emailBody: String, password: String?){
         let fileParams = SendMailAsyncTask.getFilesRequestData(email: email)
         let files = fileParams.0
         let duplicates = fileParams.1
@@ -40,11 +40,11 @@ class SendMailAsyncTask {
                 self.fileKeys?.append(key)
             }
         }
-        let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, files: files, fileKey: fileKey, fileKeys: fileKeys)
+        let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, emailBody: emailBody, files: files, fileKey: fileKey, fileKeys: fileKeys)
         self.username = account.username
         self.emailKey = email.key
         self.subject = email.subject
-        self.body = email.content
+        self.body = emailBody
         self.isSecure = email.secure
         self.threadId = email.threadId.isEmpty || email.threadId == email.key.description ? nil : email.threadId
         self.guestEmails = recipients.0
@@ -80,7 +80,7 @@ class SendMailAsyncTask {
         return (files, duplicates)
     }
     
-    private class func getRecipientEmails(username: String, email: Email, files: [[String: Any]], fileKey: String?, fileKeys: [String]?) -> ([String: Any], [String: Any]) {
+    private class func getRecipientEmails(username: String, email: Email, emailBody: String, files: [[String: Any]], fileKey: String?, fileKeys: [String]?) -> ([String: Any], [String: Any]) {
         var criptextEmails = [username: "peer"] as [String: String]
         var toArray = [String]()
         var ccArray = [String]()
@@ -118,7 +118,7 @@ class SendMailAsyncTask {
             guestEmails["to"] = toArray
             guestEmails["cc"] = ccArray
             guestEmails["bcc"] = bccArray
-            guestEmails["body"] = "\(email.content)\(email.secure ? "" : Constants.footer)"
+            guestEmails["body"] = "\(emailBody)\(email.secure ? "" : Constants.footer)"
             if !email.secure,
                 let fKey = fileKey {
                 guestEmails["fileKey"] = fKey
@@ -212,7 +212,8 @@ class SendMailAsyncTask {
             guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
                 return
             }
-            guard case let .SuccessArray(keysArray) = responseData else {
+            guard case let .SuccessDictionary(data) = responseData,
+            let keysArray = data["keyBundles"] as? [[String:Any]] else {
                 self.setEmailAsFailed()
                 DispatchQueue.main.async {
                     completion(responseData)
@@ -331,6 +332,10 @@ class SendMailAsyncTask {
                 }
                 return
             }
+            
+            FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(self.emailKey)")
+            FileUtils.saveEmailToFile(account: myAccount, metadataKey: "\(key)", body: self.body, headers: "")
+            
             DispatchQueue.main.async {
                 SharedDB.refresh()
                 completion(ResponseData.SuccessInt(key))

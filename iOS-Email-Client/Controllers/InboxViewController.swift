@@ -419,7 +419,7 @@ extension InboxViewController: WebSocketManagerDelegate {
             guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
                 return
             }
-            delegate.logout()
+            delegate.logout(account: myAccount)
         case .RecoveryChanged(let address):
             guard let nav = self.presentedViewController as? UINavigationController,
                 let settings = nav.childViewControllers.first as? CustomTabsController else {
@@ -462,7 +462,7 @@ extension InboxViewController {
             }
             if case .Unauthorized = responseData {
                 refreshControl?.endRefreshing()
-                weakSelf.logout()
+                weakSelf.logout(account: weakSelf.myAccount)
                 return
             }
             if case let .Error(error) = responseData,
@@ -513,7 +513,7 @@ extension InboxViewController {
             guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
                 return
             }
-            delegate.logout()
+            delegate.logout(account: self.myAccount)
             return
         }
         
@@ -736,7 +736,7 @@ extension InboxViewController{
 extension InboxViewController{
     
     func signout(){
-        self.logout(manually: true)
+        self.logout(account: self.myAccount, manually: true)
     }
     
     func invalidateObservers(){
@@ -1082,7 +1082,10 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         var labelsSet = Set<Label>()
         var openKeys = [Int]()
         var peerKeys = [Int]()
+        var bodies = [Int: String]()
         for email in emails {
+            let bodyFromFile = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+            bodies[email.key] = bodyFromFile.isEmpty ? email.content : bodyFromFile
             var emailState = Email.State()
             emailState.isExpanded = email.unread
             emailDetailData.emailStates[email.key] = emailState
@@ -1096,6 +1099,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             }
         }
         emailDetailData.emails = emails
+        emailDetailData.bodies = bodies
         emailDetailData.selectedLabel = selectedLabel
         emailDetailData.labels = Array(labelsSet)
         emailDetailData.subject = subject
@@ -1156,7 +1160,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         composerData.initToContacts = Array(draft.getContacts(type: .to))
         composerData.initCcContacts = Array(draft.getContacts(type: .cc))
         composerData.initSubject = draft.subject
-        composerData.initContent = draft.content
+        let bodyFromFile = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(draft.key)")
+        composerData.initContent = bodyFromFile.isEmpty ? draft.content : bodyFromFile
         composerData.emailDraft = draft
         if(!draft.threadId.isEmpty){
             composerData.threadId = draft.threadId
@@ -1288,7 +1293,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             switch(responseData) {
             case .Unauthorized:
                 completion?()
-                weakSelf.logout()
+                weakSelf.logout(account: weakSelf.myAccount)
             case .Forbidden:
                 completion?()
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
@@ -1551,19 +1556,22 @@ extension InboxViewController: ComposerSendMailDelegate {
             return
         }
         DBManager.updateEmail(email, status: .sending)
-        sendMail(email: email, password: nil)
+        let bodyFromFile = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+        sendMail(email: email,
+                 emailBody: bodyFromFile.isEmpty ? email.content : bodyFromFile,
+                 password: nil)
     }
     
-    func sendMail(email: Email, password: String?) {
+    func sendMail(email: Email, emailBody: String, password: String?) {
         showSendingSnackBar(message: String.localize("SENDING_MAIL"), permanent: true)
         reloadIfSentMailbox(email: email)
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, emailBody: emailBody, password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.logout()
+                weakSelf.logout(account: weakSelf.myAccount)
                 return
             }
             if case .Forbidden = responseData {

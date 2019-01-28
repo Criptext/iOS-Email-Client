@@ -318,7 +318,6 @@ extension ShareViewController {
         SharedDB.store(fileManager.registeredFiles)
         let draft = Email()
         draft.status = .none
-        draft.content = self.composerUIView.editorView.html
         let bodyWithoutHtml = self.composerUIView.getPlainEditorContent()
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
@@ -343,6 +342,8 @@ extension ShareViewController {
         self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(myAccount.username)\(Env.domain)", context: nil), emailDetail: draft, type: ContactType.from)
         
         SharedDB.store(emailContacts)
+        
+        FileUtils.saveEmailToFile(account: myAccount, metadataKey: "\(draft.key)", body: self.composerUIView.editorView.html, headers: "")
         
         return draft
     }
@@ -399,7 +400,7 @@ extension ShareViewController {
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: nil)
         
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, emailBody: self.composerUIView.editorView.html ,password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 alert.dismiss(animated: true, completion: nil)

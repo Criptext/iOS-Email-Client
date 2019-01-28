@@ -79,5 +79,5 @@ struct Env {
     
     static let databaseVersion: UInt64 = 15
     static let maxRetryAttempts: Int = 10
-    static let linkVersion = 2
+    static let linkVersion = 3
 }
