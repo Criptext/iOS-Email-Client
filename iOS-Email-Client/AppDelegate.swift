@@ -282,6 +282,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
                 }
+                if (oldSchemaVersion < 16) {
+                    migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
+                        guard let oldLabel = oldObject,
+                            let newLabel = newObject,
+                            let id = oldLabel["id"] as? Int,
+                            let systemLabel = SystemLabel.init(rawValue: id) else{
+                                return
+                        }
+                        newLabel["text"] = systemLabel.nameId
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm
@@ -475,6 +486,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if showBiometrics {
             passcodeLockPresenter.present()
         }
+        
     }
     
     func triggerRefresh(){
@@ -482,6 +494,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         inboxVC.getPendingEvents(nil)
+        inboxVC.dequeueEvents()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

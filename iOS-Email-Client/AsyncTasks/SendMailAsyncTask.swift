@@ -13,7 +13,7 @@ import RealmSwift
 class SendMailAsyncTask {
     
     let fileKey: String?
-    let fileKeys: [String]?
+    var fileKeys: [String]?
     let threadId: String?
     let subject: String
     let body: String
@@ -33,14 +33,9 @@ class SendMailAsyncTask {
         let fileParams = SendMailAsyncTask.getFilesRequestData(email: email)
         let files = fileParams.0
         let duplicates = fileParams.1
-        let fileKey: String? = !(files.isEmpty) ? files[0]["fileKey"] as? String : nil
-        self.fileKeys = [String]()
-        for file in files {
-            if let key = file["fileKey"] as? String, !key.isEmpty {
-                self.fileKeys?.append(key)
-            }
-        }
+        let fileKey: String? = email.files.first(where: {!$0.fileKey.isEmpty})?.fileKey
         let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, emailBody: emailBody, files: files, fileKey: fileKey, fileKeys: fileKeys)
+        self.fileKeys = !fileParams.2.isEmpty ? fileParams.2 : nil
         self.username = account.username
         self.emailKey = email.key
         self.subject = email.subject
@@ -58,26 +53,28 @@ class SendMailAsyncTask {
         self.replyTo = email.replyTo
     }
     
-    private class func getFilesRequestData(email: Email) -> ([[String: Any]], [String]){
+    private class func getFilesRequestData(email: Email) -> ([[String: Any]], [String], [String]){
         var files = [[String: Any]]()
         var duplicates = [String]()
+        var fileKeys = [String]()
+        var duplicatedFileKeys = [String]()
         for file in email.files {
             if (file.shouldDuplicate) {
                 guard let token = file.originalToken else {
                     continue
                 }
                 duplicates.append(token)
+                duplicatedFileKeys.append(file.fileKey)
             } else {
                 let fileparams = ["token": file.token,
                                   "name": file.name,
                                   "size": file.size,
-                                  "mimeType": file.mimeType,
-                                  "key": String(file.fileKey.split(separator: ":").first!),
-                                  "iv": String(file.fileKey.split(separator: ":").last!)] as [String : Any]
+                                  "mimeType": file.mimeType] as [String : Any]
                 files.append(fileparams)
+                fileKeys.append(file.fileKey)
             }
         }
-        return (files, duplicates)
+        return (files, duplicates, fileKeys + duplicatedFileKeys)
     }
     
     private class func getRecipientEmails(username: String, email: Email, emailBody: String, files: [[String: Any]], fileKey: String?, fileKeys: [String]?) -> ([String: Any], [String: Any]) {

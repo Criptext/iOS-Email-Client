@@ -52,7 +52,7 @@ class DBManager: SharedDB {
     
     class func createSystemLabels(){
         for systemLabel in SystemLabel.array {
-            let newLabel = Label(systemLabel.description)
+            let newLabel = Label(systemLabel.nameId)
             newLabel.id = systemLabel.id
             newLabel.color = systemLabel.hexColor
             newLabel.type = "system"
@@ -607,6 +607,12 @@ class DBManager: SharedDB {
         try! realm.write {
             realm.delete(files)
         }
+    }
+    
+    class func getFile(cid: String) -> File? {
+        let realm = try! Realm()
+        
+        return realm.objects(File.self).filter("cid = %@", cid).first
     }
 
     //MARK: - Feed

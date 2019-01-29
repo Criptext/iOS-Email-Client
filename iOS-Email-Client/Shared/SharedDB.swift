@@ -195,12 +195,13 @@ class SharedDB {
                 email.files.remove(at: fileIndex)
                 realm.delete(file)
                 email.files.append(newFile)
-                let fileparam = ["token": newFile.token,
+                var fileparam = ["token": newFile.token,
                                  "name": newFile.name,
                                  "size": newFile.size,
-                                 "mimeType": newFile.mimeType,
-                                 "key": String(newFile.fileKey.split(separator: ":").first!),
-                                 "iv": String(newFile.fileKey.split(separator: ":").last!)] as [String : Any]
+                                 "mimeType": newFile.mimeType] as [String : Any]
+                if let cid = newFile.cid {
+                    fileparam["cid"] = cid
+                }
                 fileParams.append(fileparam)
             }
         }
