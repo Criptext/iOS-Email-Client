@@ -45,6 +45,7 @@ class ConnectDeviceViewController: UIViewController{
         socket = SingleWebSocket()
         socket?.delegate = self
         connectUIView.initialLoad(email: "\(signupData.username)\(Constants.domain)")
+        self.clearFiles()
         DBManager.destroy()
         scheduleWorker.delegate = self
         connectUIView.goBack = {
@@ -89,7 +90,14 @@ class ConnectDeviceViewController: UIViewController{
             return
         }
         defaults.removeActiveAccount()
+        self.clearFiles()
         DBManager.destroy()
+    }
+    
+    func clearFiles(){
+        if let account = DBManager.getFirstAccount(){
+            FileUtils.deleteAccountDirectory(account: account)
+        }
     }
     
     func sendKeysRequest(){

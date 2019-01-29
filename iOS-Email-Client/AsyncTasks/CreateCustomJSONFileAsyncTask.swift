@@ -12,9 +12,14 @@ import RealmSwift
 
 class CreateCustomJSONFileAsyncTask {
     
+    init(username: String) {
+        self.username = username
+    }
+    
     let fileURL = StaticFile.emailDB.url
     var contacts = [String: Int]()
     var emails = [Int: Int]()
+    var username: String
     
     func start(completion: @escaping ((Error?, URL?) -> Void)){
         try? FileManager.default.removeItem(at: fileURL)
@@ -24,6 +29,7 @@ class CreateCustomJSONFileAsyncTask {
     }
     
     private func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
+        let account = DBManager.getAccountByUsername(self.username)
         let results = DBManager.retrieveWholeDB()
         results.contacts.enumerated().forEach {
             contacts[$1.email] = $0 + 1
@@ -33,7 +39,10 @@ class CreateCustomJSONFileAsyncTask {
         results.labels.forEach {handleRow($0.toDictionary())}
         results.emails.enumerated().forEach {
             emails[$1.key] = $0 + 1
-            let dictionary = $1.toDictionary(id: $0 + 1)
+            let dictionary = $1.toDictionary(
+                id: $0 + 1,
+                emailBody: FileUtils.getBodyFromFile(account: account!, metadataKey: "\($1.key)"),
+                headers: FileUtils.getHeaderFromFile(account: account!, metadataKey: "\($1.key)"))
             handleRow(dictionary)
         }
         results.emails.forEach { (email) in

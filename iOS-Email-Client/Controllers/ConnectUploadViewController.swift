@@ -135,7 +135,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func createDBFile(deviceId: Int32){
-        CreateCustomJSONFileAsyncTask().start { (error, url) in
+        CreateCustomJSONFileAsyncTask(username: myAccount.username).start { (error, url) in
             guard let myUrl = url else {
                 self.presentProcessInterrupted()
                 return

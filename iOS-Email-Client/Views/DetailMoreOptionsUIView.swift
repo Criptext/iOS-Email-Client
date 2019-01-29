@@ -23,6 +23,10 @@ protocol DetailMoreOptionsViewDelegate: class{
 }
 
 class DetailMoreOptionsUIView: UIView {
+    
+    let OPTIONS_HEIGHT_DEFAULT : CGFloat = 333.0
+    let TOP_DEFAULT : CGFloat = 15
+    
     @IBOutlet weak var backgroundOverlayView: UIView!
     @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet weak var optionsContainerOffsetConstraint: NSLayoutConstraint!
@@ -35,6 +39,10 @@ class DetailMoreOptionsUIView: UIView {
     @IBOutlet var printButton: UIButton!
     @IBOutlet weak var retryButton: UIButton!
     @IBOutlet var showSourceButton: UIButton!
+    @IBOutlet weak var optionsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sourceTopMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var unsendTopMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var retryTopMarginConstraint: NSLayoutConstraint!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -58,11 +66,22 @@ class DetailMoreOptionsUIView: UIView {
         applyTheme()
     }
     
+    func showRetry(_ show: Bool){
+        optionsHeightConstraint.constant = OPTIONS_HEIGHT_DEFAULT
+        retryTopMarginConstraint.constant = TOP_DEFAULT
+        self.view.layoutIfNeeded()
+        self.retryButton.isHidden = !show
+    }
+    
     func showUnsend(_ show: Bool){
+        optionsHeightConstraint.constant = OPTIONS_HEIGHT_DEFAULT
+        unsendTopMarginConstraint.constant = TOP_DEFAULT
         self.unsendButton.isHidden = !show
     }
     
     func showSourceButton(_ show: Bool){
+        optionsHeightConstraint.constant = OPTIONS_HEIGHT_DEFAULT
+        sourceTopMarginConstraint.constant = TOP_DEFAULT
         self.showSourceButton.isHidden = !show
     }
     

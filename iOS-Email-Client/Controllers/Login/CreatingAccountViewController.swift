@@ -54,6 +54,7 @@ class CreatingAccountViewController: UIViewController{
         self.state = .signupRequest
         if let account = DBManager.getFirstAccount(),
             account.username != self.signupData.username {
+            FileUtils.deleteAccountDirectory(account: account)
             DBManager.destroy()
             removeQuickGuideFlags()
         }

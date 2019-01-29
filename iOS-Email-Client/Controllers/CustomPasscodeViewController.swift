@@ -57,7 +57,12 @@ class CustomPasscodeViewController: PasscodeLockViewController {
         guard attemptsLeft <= 0 else {
             return
         }
-        forceOut(manually: false, message: String.localize("MAX_PIN_ACCOUNT_DELETE"))
+        let defaults = CriptextDefaults()
+        guard let username = defaults.activeAccount,
+            let account = SharedDB.getAccountByUsername(username) else {
+                return
+        }
+        forceOut(account: account, manually: false, message: String.localize("MAX_PIN_ACCOUNT_DELETE"))
     }
     
     @objc func goBack(){
@@ -100,7 +105,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.forceOut()
+                weakSelf.forceOut(account: account)
                 return
             }
             if case .Forbidden = responseData {
@@ -111,12 +116,12 @@ class CustomPasscodeViewController: PasscodeLockViewController {
                 weakSelf.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("UNABLE_SIGNOUT"), style: .alert)
                 return
             }
-            weakSelf.forceOut(manually: true)
+            weakSelf.forceOut(account: account, manually: true)
         }
     }
     
-    func forceOut(manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
-        self.logout(manually: manually, message: message)
+    func forceOut(account: Account, manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
+        self.logout(account: account, manually: manually, message: message)
         self.cancelButtonTap(self.cancelButton!)
     }
     

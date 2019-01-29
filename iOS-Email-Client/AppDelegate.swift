@@ -381,7 +381,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
-    func logout(manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
+    func logout(account: Account, manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
         if let mailboxVC = getInboxVC() {
             mailboxVC.invalidateObservers()
         }
@@ -405,6 +405,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (!manually) {
             DBManager.destroy()
+            FileUtils.deleteAccountDirectory(account: account)
         } else {
             DBManager.signout()
         }

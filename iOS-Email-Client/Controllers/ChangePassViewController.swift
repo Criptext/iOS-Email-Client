@@ -168,7 +168,7 @@ class ChangePassViewController: UIViewController {
         showLoader(true)
         APIManager.changePassword(oldPassword: oldPass.sha256()!, newPassword: newPass.sha256()!, account: myAccount) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout()
+                self.logout(account: self.myAccount)
                 return
             }
             if case let .Error(error) = responseData,
