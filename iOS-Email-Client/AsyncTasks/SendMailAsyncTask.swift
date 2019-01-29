@@ -333,6 +333,9 @@ class SendMailAsyncTask {
                 return
             }
             
+            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+                return
+            }
             FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(self.emailKey)")
             FileUtils.saveEmailToFile(account: myAccount, metadataKey: "\(key)", body: self.body, headers: "")
             
