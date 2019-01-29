@@ -265,13 +265,13 @@ extension EventData {
     
     class Server {
         struct News: Dictionarify {
-            let code: Int32
+            let code: String
             let version: String
             let symbol: Int32
             init(params: [String: Any]){
-                code = (params["code"] as! NSString).intValue
-                version = ((params["version"] as! NSString) as String)
-                symbol = (params["operator"] as! NSString).intValue
+                code = params["code"] as! String
+                version = params["version"] as! String
+                symbol = Int32(params["operator"] as! String) ?? 1
             }
         }
     }

@@ -543,7 +543,7 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func getNews(code: Int32, completion: @escaping ((ResponseData) -> Void)) {
+    class func getNews(code: String, completion: @escaping ((ResponseData) -> Void)) {
         let url = "https://news.criptext.com/news/\(NSLocale.preferredLanguages.first!)/\(code)"
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
             let responseData = handleResponse(response)

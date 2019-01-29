@@ -201,10 +201,8 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
         cell.delegate = self
         target = cell.moreOptionsContainerView
         if(isGroupable()){
-            DispatchQueue.main.async {
-                cell.counterLabelUp.text = "\(self.emailData.emails.count - 2)"
-                cell.counterLabelDown.text = "\(self.emailData.emails.count - 2)"
-            }
+            cell.counterLabelUp.text = "\(self.emailData.emails.count - 2)"
+            cell.counterLabelDown.text = "\(self.emailData.emails.count - 2)"
             if(email == emailData.emails.first){
                 cell.upView.isHidden = true
                 cell.bottomView.isHidden = false

@@ -47,6 +47,7 @@ class InboxViewController: UIViewController {
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
+    var selectedCells:[Int:Bool] = [:]
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
@@ -589,6 +590,7 @@ extension InboxViewController{
             refreshControl.isEnabled = true
             mailboxData.unreadMails = 0
             updateBadges()
+            selectedCells.removeAll()
         }
         
         self.setButtonItems(isEditing: mailboxData.isCustomEditing)
@@ -805,12 +807,14 @@ extension InboxViewController: UITableViewDataSource{
         let thread = mailboxData.threads[indexPath.row]
         
         cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
-        
         if mailboxData.isCustomEditing {
-            if(cell.isSelected){
+            if(selectedCells[indexPath.row] ?? false){
                 cell.setAsSelected()
+                cell.isSelected = true
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
             } else {
                 cell.setAsNotSelected()
+                cell.isSelected = false
             }
         } else {
             let initials = thread.lastEmail.fromContact.displayName
@@ -1045,7 +1049,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if mailboxData.isCustomEditing {
-            guard let indexPaths = tableView.indexPathsForSelectedRows else {
+            guard tableView.indexPathsForSelectedRows != nil else {
                 return
             }
             let thread = mailboxData.threads[indexPath.row]
@@ -1055,7 +1059,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             swapMarkIcon()
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
             cell.setAsSelected()
-            self.topToolbar.counterLabel.text = "\(indexPaths.count)"
+            selectedCells[indexPath.row] = true
+            self.topToolbar.counterLabel.text = "\(selectedCells.count)"
             return
         }
         
@@ -1224,6 +1229,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 mailboxData.unreadMails -= 1
             }
             swapMarkIcon()
+            selectedCells.removeValue(forKey: indexPath.row)
             self.topToolbar.counterLabel.text = "\(tableView.indexPathsForSelectedRows!.count)"
             tableView.reloadRows(at: [indexPath], with: .none)
             return

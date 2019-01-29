@@ -209,15 +209,26 @@ class SendMailAsyncTask {
             guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
                 return
             }
-            guard case let .SuccessDictionary(data) = responseData,
-            let keysArray = data["keyBundles"] as? [[String:Any]] else {
+            guard case let .SuccessDictionary(keysArray) = responseData else {
                 self.setEmailAsFailed()
                 DispatchQueue.main.async {
                     completion(responseData)
                 }
                 return
             }
-            for keys in keysArray {
+            let keyBundles = keysArray["keyBundles"] as! [[String:Any]]
+            let blackListedDevices = keysArray["blacklistedKnownDevices"] as! [[String:Any]]
+            let store: CriptextSessionStore = CriptextSessionStore()
+            for blackDevice in blackListedDevices {
+                let devices = blackDevice["devices"] as! [Int32]
+                devices.forEach{
+                    store.deleteSession(
+                        forContact: blackDevice["name"] as? String ?? "",
+                        deviceId: $0
+                    )
+                }
+            }
+            for keys in keyBundles {
                 let recipientId = keys["recipientId"] as! String
                 let deviceId = keys["deviceId"] as! Int32
                 let type = self.criptextEmails[recipientId] as! String
@@ -329,7 +340,6 @@ class SendMailAsyncTask {
                 }
                 return
             }
-            
             guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
                 return
             }
