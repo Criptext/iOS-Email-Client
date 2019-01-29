@@ -1258,7 +1258,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
         self.removeThreads(threadIds: [threadId])
         
-        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
         DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
     
@@ -1271,6 +1271,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         guard !mailboxData.isDequeueing,
             let queueItems = mailboxData.queueItems,
             queueItems.count > 0 else {
+                completion?()
                 return
         }
         mailboxData.isDequeueing = true
@@ -1777,7 +1778,9 @@ extension InboxViewController {
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailUnreadRaw(metadataKeys: [emailKey], unread: 0)
         DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()])
-        completion()
+        dequeueEvents {
+            completion()
+        }
     }
     
     func reply(emailKey: Int, completion: @escaping (() -> Void)){
@@ -1798,9 +1801,11 @@ extension InboxViewController {
         }
         DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
         self.refreshThreadRows()
-        let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.description], labelsRemoved: [])
+        let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
         DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
-        completion()
+        dequeueEvents {
+            completion()
+        }
     }
 }
 

@@ -74,7 +74,7 @@ class File : Object {
 extension File{
     func toDictionary(id: Int, emailId: Int) -> [String: Any] {
         let dateString = DateUtils().date(toServerString: date)!
-        return [
+        var data = [
             "table": "file",
             "object": [
                 "id": id,
@@ -86,11 +86,14 @@ extension File{
                 "readOnly": readOnly == 0 ? false : true,
                 "emailId": emailId,
                 "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType,
-                "key": String(fileKey.split(separator: ":").first!),
-                "iv": String(fileKey.split(separator: ":").last!),
                 "cid": cid != nil ? cid! : "",
             ]
-        ]
+        ] as [String: Any]
+        if (!fileKey.isEmpty) {
+            data["key"] = String(fileKey.split(separator: ":").first!)
+            data["iv"] = String(fileKey.split(separator: ":").last!)
+        }
+        return data
     }
     
     class func mimeTypeForPath(path: String) -> String {

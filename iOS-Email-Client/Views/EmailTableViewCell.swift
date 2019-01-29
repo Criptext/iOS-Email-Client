@@ -10,6 +10,7 @@ import Foundation
 import WebKit
 import RealmSwift
 import SwiftSoup
+import Photos
 
 protocol EmailTableViewCellDelegate: class {
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email)
@@ -28,7 +29,6 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var upView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var infoViewContainer: UIView!
-    @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var previewLabel: UILabel!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var webViewWrapperView: UIView!
@@ -52,12 +52,13 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var readStatusContentMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var circleLoaderUIView: CircleLoaderUIView!
     @IBOutlet weak var moreOptionsIcon: UIImageView!
+    let webView: WKWebView
     
     var email: Email!
     var emailState: Email.State!
     var isLoaded = false
-    var attachments : List<File> {
-        return email.files
+    var attachments : Results<File> {
+        return email.files.filter("cid == nil OR cid == ''")
     }
     weak var delegate: EmailTableViewCellDelegate?
     var theme: Theme {
@@ -66,6 +67,22 @@ class EmailTableViewCell: UITableViewCell{
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
     let RECIPIENTS_MAX_WIDTH: CGFloat = 190.0
     let READ_STATUS_MARGIN: CGFloat = 5.0
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
+        let config = WKWebViewConfiguration()
+        config.setURLSchemeHandler(CIDSchemeHandler(), forURLScheme: "cid")
+        webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), configuration: config)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        let config = WKWebViewConfiguration()
+        config.setURLSchemeHandler(CIDSchemeHandler(), forURLScheme: "cid")
+        webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), configuration: config)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        super.init(coder: aDecoder)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -92,10 +109,19 @@ class EmailTableViewCell: UITableViewCell{
         backgroundColor = .clear
         borderBGView.layer.borderWidth = 1
         
+        webViewWrapperView.addSubview(webView)
+        
+        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal, toItem: webViewWrapperView, attribute: .top, multiplier: 1.0, constant: 0.0))
+        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .bottom, relatedBy: .equal, toItem: webViewWrapperView, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .leading, relatedBy: .equal, toItem: webViewWrapperView, attribute: .leading, multiplier: 1.0, constant: 0.0))
+        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .trailing, relatedBy: .equal, toItem: webViewWrapperView, attribute: .trailing, multiplier: 1.0, constant: 0.0))
+        
         webView.scrollView.bounces = false
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
         webView.configuration.userContentController.add(self, name: "iosListener")
+        webView.frame = webViewWrapperView.frame
+        webView.layoutIfNeeded()
     }
     
     func applyTheme() {

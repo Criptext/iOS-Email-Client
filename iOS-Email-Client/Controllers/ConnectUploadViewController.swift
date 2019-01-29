@@ -89,7 +89,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func linkAccept() {
-        APIManager.linkAccept(randomId: linkData.randomId, account: myAccount) { (responseData) in
+        APIManager.linkAccept(randomId: linkData.randomId,account: myAccount) { (responseData) in
             if case .Missing = responseData {
                 self.showErrorAlert(message: String.localize("DEVICE_REJECTED"))
                 return

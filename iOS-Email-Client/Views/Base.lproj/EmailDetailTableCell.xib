@@ -174,23 +174,9 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
                                 <rect key="frame" x="0.0" y="75" width="375" height="97.5"/>
-                                <subviews>
-                                    <wkWebView autoresizesSubviews="NO" contentMode="scaleAspectFit" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUF-LT-65F">
-                                        <rect key="frame" x="1" y="0.0" width="373" height="97.5"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <wkWebViewConfiguration key="configuration">
-                                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                            <wkPreferences key="preferences" minimumFontSize="16"/>
-                                        </wkWebViewConfiguration>
-                                    </wkWebView>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="bUF-LT-65F" firstAttribute="leading" secondItem="tm2-e0-IDa" secondAttribute="leading" constant="1" id="0Oc-DR-asd"/>
-                                    <constraint firstItem="bUF-LT-65F" firstAttribute="centerY" secondItem="tm2-e0-IDa" secondAttribute="centerY" id="9sJ-hc-khW"/>
                                     <constraint firstAttribute="height" priority="250" id="nMQ-Id-iGW"/>
-                                    <constraint firstAttribute="trailing" secondItem="bUF-LT-65F" secondAttribute="trailing" constant="1" id="sEb-js-5e4"/>
-                                    <constraint firstItem="bUF-LT-65F" firstAttribute="height" secondItem="tm2-e0-IDa" secondAttribute="height" id="zdj-CM-wg5"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BUE-hX-7IB">
@@ -322,7 +308,6 @@
                 <outlet property="readStatusContentMarginConstraint" destination="CW4-gg-yXO" id="HHf-n5-zt0"/>
                 <outlet property="readStatusMarginConstraint" destination="WQR-Th-pVs" id="eS2-QD-aTN"/>
                 <outlet property="upView" destination="F1U-WC-rl8" id="4dx-IV-Uzv"/>
-                <outlet property="webView" destination="bUF-LT-65F" id="0Wn-sq-XD4"/>
                 <outlet property="webViewWrapperView" destination="tm2-e0-IDa" id="BGn-II-V8l"/>
             </connections>
             <point key="canvasLocation" x="63.200000000000003" y="183.05847076461771"/>
@@ -330,7 +315,7 @@
     </objects>
     <resources>
         <image name="attachment_inbox" width="36" height="20"/>
-        <image name="check" width="15" height="11.5"/>
+        <image name="check" width="15" height="11"/>
         <image name="dots-options" width="24" height="6"/>
     </resources>
 </document>
