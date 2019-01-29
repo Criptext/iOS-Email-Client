@@ -102,13 +102,24 @@ class NewEmailHandler {
             }
             
             if let attachments = event.files {
-                var fileKey = event.fileKeys?.first ?? ""
-                tryBlock {
-                    fileKey = SignalHandler.decryptMessage(fileKey, messageType: event.messageType, account: myAccount, recipientId: event.to.first!, deviceId: Int32(myAccount.deviceId))
-                }
-                for attachment in attachments {
-                    let file = self.handleAttachment(attachment, email: email, fileKey: fileKey)
-                    email.files.append(file)
+                if let fileKeys = event.fileKeys {
+                    for (index, attachment) in attachments.enumerated() {
+                        var fileKey = fileKeys[index]
+                        tryBlock {
+                            fileKey = SignalHandler.decryptMessage(fileKey, messageType: event.messageType, account: myAccount, recipientId: event.to.first!, deviceId: Int32(myAccount.deviceId))
+                        }
+                        let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: contentPreview.1)
+                        email.files.append(file)
+                    }
+                } else  {
+                    var fileKey = event.fileKey ?? ""
+                    tryBlock {
+                        fileKey = SignalHandler.decryptMessage(fileKey, messageType: event.messageType, account: myAccount, recipientId: event.to.first!, deviceId: Int32(myAccount.deviceId))
+                    }
+                    for attachment in attachments {
+                        let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: contentPreview.1)
+                        email.files.append(file)
+                    }
                 }
             }
             
@@ -188,12 +199,12 @@ class NewEmailHandler {
         return trueHeader
     }
     
-    func handleAttachment(_ attachment: [String: Any], email: Email, fileKey: String) -> File {
+    func handleAttachment(_ attachment: [String: Any], email: Email, fileKey: String, body: String) -> File {
+        let cid = attachment["cid"] as? String
         let file = File()
         file.token = attachment["token"] as! String
         file.size = attachment["size"] as! Int
         file.name = attachment["name"] as! String
-        file.cid = attachment["cid"] as? String
         let key = attachment["key"] as? String
         let iv = attachment["iv"] as? String
         let fileKeyIv = key != nil && iv != nil ? "\(key!):\(iv!)" : fileKey
@@ -202,6 +213,10 @@ class NewEmailHandler {
         file.date = email.date
         file.readOnly = attachment["read_only"] as? Int ?? 0
         file.emailId = email.key
+        if let fileCid = cid,
+            body.contains("cid:\(fileCid)") {
+            file.cid = cid != nil && body.contains("cid:\(fileCid)") ? cid : nil
+        }
         database.store(file)
         return file
     }
