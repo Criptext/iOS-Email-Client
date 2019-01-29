@@ -52,7 +52,7 @@ class DBManager: SharedDB {
     
     class func createSystemLabels(){
         for systemLabel in SystemLabel.array {
-            let newLabel = Label(systemLabel.description)
+            let newLabel = Label(systemLabel.nameId)
             newLabel.id = systemLabel.id
             newLabel.color = systemLabel.hexColor
             newLabel.type = "system"

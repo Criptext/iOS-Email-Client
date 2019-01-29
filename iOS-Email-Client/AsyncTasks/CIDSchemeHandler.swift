@@ -14,14 +14,12 @@ import Photos
 
 class CIDSchemeHandler : NSObject,WKURLSchemeHandler {
     
-    var attachments : List<File>?
     var taskMap = [String: WKURLSchemeTask]()
     let fileManager = CriptextFileManager()
     let defaults = CriptextDefaults()
     var activeAccount:Account!
     
-    init(attachments: List<File>?) {
-        self.attachments = attachments
+    override init() {
         super.init()
         fileManager.delegate = self
         activeAccount = DBManager.getAccountByUsername(defaults.activeAccount!)
@@ -29,7 +27,6 @@ class CIDSchemeHandler : NSObject,WKURLSchemeHandler {
     }
     
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        print("AUIDA!!!!!!!!!")
         guard let url = urlSchemeTask.request.url, url.scheme == "cid" else {
             return
         }
@@ -46,13 +43,12 @@ class CIDSchemeHandler : NSObject,WKURLSchemeHandler {
     }
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        urlSchemeTask.didFailWithError(CriptextError(message: "ya valio"))
+        urlSchemeTask.didFailWithError(CriptextError(code: .noValidResponse))
     }
 }
 
 extension CIDSchemeHandler : CriptextFileDelegate, UIDocumentInteractionControllerDelegate {
     func uploadProgressUpdate(file: File, progress: Int) {
-        print("descargando")
     }
     
     func fileError(message: String) {

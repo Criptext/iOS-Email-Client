@@ -692,7 +692,9 @@ extension APIManager {
         let url = "\(self.baseUrl)/link/accept"
         let headers = ["Authorization": "Bearer \(account.jwt)",
             versionHeader: apiVersion]
-        let params = ["randomId": randomId] as [String : Any]
+        let params = [
+            "randomId": randomId,
+            "version": Env.linkVersion] as [String : Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in

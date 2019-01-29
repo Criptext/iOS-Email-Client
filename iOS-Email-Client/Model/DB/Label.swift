@@ -101,6 +101,25 @@ enum SystemLabel: Int {
         }
     }
     
+    var nameId: String {
+        switch self {
+        case .inbox:
+            return "Inbox"
+        case .draft:
+            return "Draft"
+        case .sent:
+            return "Sent"
+        case .spam:
+            return "Spam"
+        case .trash:
+            return "Trash"
+        case .starred:
+            return "Starred"
+        case .all:
+            return "All Mail"
+        }
+    }
+    
     var hexColor: String {
         switch self {
         case .inbox:
@@ -144,17 +163,17 @@ enum SystemLabel: Int {
     
     static func fromText(text: String) -> Int {
         switch text {
-        case SystemLabel.inbox.description:
+        case SystemLabel.inbox.nameId:
             return SystemLabel.inbox.id
-        case SystemLabel.draft.description:
+        case SystemLabel.draft.nameId:
             return SystemLabel.draft.id
-        case SystemLabel.sent.description:
+        case SystemLabel.sent.nameId:
             return SystemLabel.sent.id
-        case SystemLabel.spam.description:
+        case SystemLabel.spam.nameId:
             return SystemLabel.spam.id
-        case SystemLabel.trash.description:
+        case SystemLabel.trash.nameId:
             return SystemLabel.trash.id
-        case SystemLabel.starred.description:
+        case SystemLabel.starred.nameId:
             return SystemLabel.starred.id
         default:
             return SystemLabel.all.id
