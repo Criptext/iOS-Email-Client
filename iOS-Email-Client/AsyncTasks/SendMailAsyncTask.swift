@@ -344,7 +344,7 @@ class SendMailAsyncTask {
                 return
             }
             FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(self.emailKey)")
-            FileUtils.saveEmailToFile(account: myAccount, metadataKey: "\(key)", body: self.body, headers: "")
+            FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(key)", body: self.body, headers: "")
             
             DispatchQueue.main.async {
                 SharedDB.refresh()

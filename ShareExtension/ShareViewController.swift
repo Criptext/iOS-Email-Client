@@ -343,7 +343,7 @@ extension ShareViewController {
         
         SharedDB.store(emailContacts)
         
-        FileUtils.saveEmailToFile(account: myAccount, metadataKey: "\(draft.key)", body: self.composerUIView.editorView.html, headers: "")
+        FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(draft.key)", body: self.composerUIView.editorView.html, headers: "")
         
         return draft
     }

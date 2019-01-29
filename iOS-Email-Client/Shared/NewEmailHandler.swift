@@ -94,7 +94,7 @@ class NewEmailHandler {
             email.unread = true
             email.preview = contentPreview.0
             
-            FileUtils.saveEmailToFile(account: myAccount, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
+            FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
             
             if(unsent){
                 email.unsentDate = email.date

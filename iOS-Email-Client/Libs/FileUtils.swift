@@ -10,12 +10,14 @@ import Foundation
 
 class FileUtils{
     
-    static func saveEmailToFile(account: Account, metadataKey: String, body: String, headers: String){
-        let fileBodyUrl = FileUtils.getURLForBody(email: "\(account.username)\(Env.domain)", metadataKey: metadataKey)
-        let fileHeaderUrl = FileUtils.getURLForHeader(email: "\(account.username)\(Env.domain)", metadataKey: metadataKey)
-        let directoryUrl = FileUtils.getDirectoryURLForEmail(email: "\(account.username)\(Env.domain)", metadataKey: metadataKey)
+    static func saveEmailToFile(username: String, metadataKey: String, body: String, headers: String?){
+        let fileBodyUrl = FileUtils.getURLForBody(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
+        let fileHeaderUrl = FileUtils.getURLForHeader(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
+        let directoryUrl = FileUtils.getDirectoryURLForEmail(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
         FileUtils.saveToFile(fileUrl: fileBodyUrl, directoryUrl: directoryUrl, text: body)
-        FileUtils.saveToFile(fileUrl: fileHeaderUrl, directoryUrl: directoryUrl, text: headers)
+        if let myHeaders = headers {
+            FileUtils.saveToFile(fileUrl: fileHeaderUrl, directoryUrl: directoryUrl, text: myHeaders)
+        }        
     }
     
     static func saveToFile(fileUrl: URL, directoryUrl: URL, text: String){

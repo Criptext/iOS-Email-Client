@@ -83,16 +83,16 @@ class DBManager: SharedDB {
         var contacts: [Int: String]
     }
     
-    class func insertBatchRows(rows: [[String: Any]], maps: inout LinkDBMaps){
+    class func insertBatchRows(rows: [[String: Any]], maps: inout LinkDBMaps, username: String){
         let realm = try! Realm()
         try! realm.write {
             for row in rows {
-                self.insertRow(realm: realm, row: row, maps: &maps)
+                self.insertRow(realm: realm, row: row, maps: &maps, username: username)
             }
         }
     }
     
-    class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps){
+    class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps, username: String){
         guard let table = row["table"] as? String,
             let object = row["object"] as? [String: Any] else {
                 return
@@ -121,7 +121,8 @@ class DBManager: SharedDB {
         case "email":
             let id = object["id"] as! Int
             let email = Email()
-            email.content = object["content"] as! String
+            let key = object["key"] as! Int
+            FileUtils.saveEmailToFile(username: username, metadataKey: "\(key)", body: object["content"] as! String, headers: object["headers"] as? String)
             email.messageId = (object["messageId"] as? Int)?.description ?? object["messageId"] as! String
             email.isMuted = object["isMuted"] as! Bool
             email.threadId = object["threadId"] as! String
@@ -129,7 +130,7 @@ class DBManager: SharedDB {
             email.secure = object["secure"] as! Bool
             email.preview = object["preview"] as! String
             email.delivered = object["status"] as! Int
-            email.key = object["key"] as! Int
+            email.key = key
             email.subject = object["subject"] as? String ?? ""
             email.date = EventData.convertToDate(dateString: object["date"] as! String)
             if let unsentDate = object["unsentDate"] as? String {
