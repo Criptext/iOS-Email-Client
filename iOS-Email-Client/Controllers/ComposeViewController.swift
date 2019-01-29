@@ -355,7 +355,7 @@ class ComposeViewController: UIViewController {
         draft.fromAddress = "\(activeAccount.name) <\(activeAccount.username)\(Constants.domain)>"
         DBManager.store(draft)
         
-        FileUtils.saveEmailToFile(account: activeAccount, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
+        FileUtils.saveEmailToFile(username: activeAccount.username, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
         
         if !fileManager.registeredFiles.isEmpty,
             let keys = fileManager.keyPairs[0] {

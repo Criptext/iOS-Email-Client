@@ -155,6 +155,7 @@ class ConnectDeviceViewController: UIViewController{
     
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
+        let username = myAccount.username
         queue.async {
             let streamReader = StreamReader(url: URL(fileURLWithPath: path), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
             var dbRows = [[String: Any]]()
@@ -166,7 +167,7 @@ class ConnectDeviceViewController: UIViewController{
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
                     dbRows.removeAll()
                     if progress < 99 {
                         progress += 1
@@ -176,7 +177,7 @@ class ConnectDeviceViewController: UIViewController{
                     }
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {

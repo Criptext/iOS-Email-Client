@@ -171,7 +171,7 @@ extension Email {
             "threadId": threadId,
             "unread": unread,
             "secure": secure,
-            "content": emailBody.isEmpty ? content : emailBody.isEmpty,
+            "content": emailBody.isEmpty ? content : emailBody,
             "preview": preview,
             "subject": subject,
             "status": delivered,

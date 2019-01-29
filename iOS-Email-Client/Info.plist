@@ -94,5 +94,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>This will allow Criptext to save images to your Photo Library</string>
 </dict>
 </plist>
