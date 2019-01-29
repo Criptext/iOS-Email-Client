@@ -68,16 +68,16 @@ class NewEmailHandler {
                 let myAccount = self.database.getAccountByUsername(self.username),
                 case let .SuccessDictionary(data) = responseData,
                 let body = data["body"] as? String,
-                let headers = data["headers"] as? String,
                 let username = ContactUtils.getUsernameFromEmailFormat(event.from) else {
                     completion(Result(success: false))
                     return
             }
+            let headers = data["headers"] as? String
+            let contentHeader = self.handleHeaderByMessageType(event.messageType, header: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
             guard let content = unsent ? "" : self.handleBodyByMessageType(
                     event.messageType, body: body, account: myAccount,
                     recipientId: username, senderDeviceId: event.senderDeviceId,
-                    isExternal: event.isExternal),
-                let contentHeader = self.handleHeaderByMessageType(event.messageType, header: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                    isExternal: event.isExternal)
                 else {
                     completion(Result(success: true))
                     return
@@ -185,16 +185,20 @@ class NewEmailHandler {
         return trueBody
     }
     
-    func handleHeaderByMessageType(_ messageType: MessageType, header: String, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
+    func handleHeaderByMessageType(_ messageType: MessageType, header: String?, account: Account, recipientId:
+        String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
+        guard let myheader = header else{
+            return nil
+        }
         let recipient = isExternal ? "bob" : recipientId
         let senderDevice = isExternal ? 1 : senderDeviceId
         guard messageType != .none,
             let deviceId = senderDevice else {
-                return header
+                return myheader
         }
         var trueHeader : String?
         tryBlock {
-            trueHeader = SignalHandler.decryptMessage(header, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
+            trueHeader = SignalHandler.decryptMessage(myheader, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
         return trueHeader
     }
