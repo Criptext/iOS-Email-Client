@@ -334,17 +334,19 @@ class SendMailAsyncTask {
                 }
                 return
             }
+            
+            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+                return
+            }
+            FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(self.emailKey)")
+            FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(updateData["metadataKey"] as! Int)", body: self.body, headers: "")
+            
             guard let key = self.updateEmailData(updateData) else {
                 DispatchQueue.main.async {
                     completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                 }
                 return
             }
-            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
-                return
-            }
-            FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(self.emailKey)")
-            FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(key)", body: self.body, headers: "")
             
             DispatchQueue.main.async {
                 SharedDB.refresh()
