@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -58,6 +58,8 @@
 	<string>This will allow Criptext to suggest email addresses that are stored in your contacts when composing emails. Would you like to enable Phonebook Contacts?</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Criptext would like to use FaceID to unlock the app</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This will allow Criptext to save images to your Photo Library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Add photos to your emails</string>
 	<key>UIAppFonts</key>
@@ -94,7 +96,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>This will allow Criptext to save images to your Photo Library</string>
 </dict>
 </plist>
