@@ -272,7 +272,7 @@ class SettingsGeneralViewController: UITableViewController{
         tableView.deselectRow(at: indexPath, animated: true)
         switch(subsection){
         case .profile:
-            presentNamePopover()
+            goToProfile()
         case .changePassword:
             goToChangePassword()
         case .signature:
@@ -492,39 +492,17 @@ class SettingsGeneralViewController: UITableViewController{
         self.navigationController?.pushViewController(replyToVC, animated: true)
     }
     
-    func presentNamePopover(){
-        let changeNamePopover = SingleTextInputViewController()
-        changeNamePopover.myTitle = String.localize("CHANGE_NAME")
-        changeNamePopover.initInputText = self.myAccount.name
-        changeNamePopover.onOk = { text in
-            self.changeProfileName(name: text)
-        }
-        self.presentPopover(popover: changeNamePopover, height: Constants.singleTextPopoverHeight)
+    func goToProfile(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let profileVC = storyboard.instantiateViewController(withIdentifier: "profileEditorView") as! ProfileEditorViewController
+        profileVC.generalData = self.generalData
+        profileVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(profileVC, animated: true)
     }
     
     func goToUrl(url: String){
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
-    }
-    
-    func changeProfileName(name: String){
-        let params = EventData.Peer.NameChanged(name: name)
-        APIManager.updateName(name: name, account: myAccount) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_UPDATE_PROFILE"), style: .alert)
-                return
-            }
-            DBManager.update(account: self.myAccount, name: name)
-            DBManager.createQueueItem(params: ["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()])
-        }
     }
     
     func setTwoFactor(enable: Bool){

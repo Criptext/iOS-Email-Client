@@ -415,6 +415,7 @@
 		D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */; };
 		D63EE2DA21CC247E001125B3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
 		D63EE2DB21CC248E001125B3 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
+		D643395022013C4C00B74C1D /* ProfileEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D643394F22013C4C00B74C1D /* ProfileEditorViewController.swift */; };
 		D652A07421C03671005EC3E1 /* ContactShareTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */; };
 		D652A07621C0369C005EC3E1 /* ContactShareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */; };
 		D652A07721C036A9005EC3E1 /* ContactShareTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */; };
@@ -843,6 +844,7 @@
 		CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIDSchemeHandler.swift; sourceTree = "<group>"; };
 		D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterUIPopover.swift; sourceTree = "<group>"; };
 		D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterUIPopover.xib; sourceTree = "<group>"; };
+		D643394F22013C4C00B74C1D /* ProfileEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorViewController.swift; sourceTree = "<group>"; };
 		D652A07321C03671005EC3E1 /* ContactShareTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactShareTableViewCell.xib; sourceTree = "<group>"; };
 		D652A07521C0369C005EC3E1 /* ContactShareTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactShareTableViewCell.swift; sourceTree = "<group>"; };
 		D661A23A21EFDB18002A6BDD /* DLRadioButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLRadioButton.h; sourceTree = "<group>"; };
@@ -1282,6 +1284,7 @@
 				7C63AB5F205816470053219F /* UnsentUIPopover.swift */,
 				7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */,
 				A7FFCF44217A91C300FFFDFF /* WelcomeTourView.xib */,
+				D643394F22013C4C00B74C1D /* ProfileEditorViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1945,6 +1948,7 @@
 				A70EAE5421DE6A9700FE6055 /* AcceptData.swift in Sources */,
 				A7CC387521939B2600C8355A /* NewEmailHandler.swift in Sources */,
 				7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */,
+				D643395022013C4C00B74C1D /* ProfileEditorViewController.swift in Sources */,
 				A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,

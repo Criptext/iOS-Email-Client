@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SDWebImage
 
 class MenuViewController: UIViewController{
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
@@ -58,6 +59,14 @@ class MenuViewController: UIViewController{
     func setupAccountInfo(_ myAccount: Account){
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.username + Constants.domain
+        avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority, SDWebImageOptions.refreshCached, SDWebImageOptions.handleCookies, SDWebImageOptions.retryFailed]) { (image, error, cacheType, url) in
+            if error != nil {
+                self.resetProfileImage(myAccount)
+            }
+        }
+    }
+    
+    func resetProfileImage(_ myAccount: Account){
         avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
     }
     

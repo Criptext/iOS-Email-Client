@@ -47,9 +47,9 @@ struct Env {
     
     static var socketURL: String {
         guard !Env.isProduction else {
-            return "wss://socket.criptext.com:3002"
+            return "wss://socket.criptext.com"
         }
-        return "wss://socket.criptext.com:3002"
+        return "wss://socket.criptext.com"
     }
     
     static var domain: String {
