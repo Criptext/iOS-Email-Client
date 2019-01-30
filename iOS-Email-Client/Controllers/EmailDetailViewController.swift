@@ -67,6 +67,14 @@ class EmailDetailViewController: UIViewController {
             case .initial:
                 tableView.reloadData()
             case .update(_, _, let insertions, _):
+                insertions.forEach({ (position) in
+                    guard let email = self?.emailData.emails[position],
+                        self?.emailData.bodies[email.key] == nil,
+                        let myAccount = self?.myAccount else {
+                            return
+                    }
+                    self?.emailData.bodies[email.key] = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+                })
                 tableView.reloadData()
                 self?.emailData.rebuildLabels()
                 let hasNewInboxEmail = insertions.contains(where: { (position) -> Bool in

@@ -71,28 +71,28 @@ class FileUtils{
     }
     
     static func getDirectoryForAccount(email: String) -> URL {
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentsURL.appendingPathComponent(email)
+        let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Env.groupApp)
+        return appGroupURL!.appendingPathComponent(email)
     }
     
     static func getDirectoryURLForEmail(email: String, metadataKey: String) -> URL {
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentsURL.appendingPathComponent(email)
+        let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Env.groupApp)
+        return appGroupURL!.appendingPathComponent(email)
             .appendingPathComponent("emails")
             .appendingPathComponent(metadataKey)
     }
     
     static func getURLForBody(email: String, metadataKey: String) -> URL {
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentsURL.appendingPathComponent(email)
+        let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Env.groupApp)
+        return appGroupURL!.appendingPathComponent(email)
             .appendingPathComponent("emails")
             .appendingPathComponent(metadataKey)
             .appendingPathComponent("body.txt")
     }
     
     static func getURLForHeader(email: String, metadataKey: String) -> URL {
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentsURL.appendingPathComponent(email)
+        let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Env.groupApp)
+        return appGroupURL!.appendingPathComponent(email)
             .appendingPathComponent("emails")
             .appendingPathComponent(metadataKey)
             .appendingPathComponent("header.txt")
