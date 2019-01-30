@@ -413,6 +413,7 @@
 		CF96000221FA7D65001FD5A3 /* CIDSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */; };
 		D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */; };
 		D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */; };
+		D627CE2522035ED300FFB7A4 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8620781C4600B8994F /* SDWebImage.framework */; };
 		D63EE2DA21CC247E001125B3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
 		D63EE2DB21CC248E001125B3 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
 		D643395022013C4C00B74C1D /* ProfileEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D643394F22013C4C00B74C1D /* ProfileEditorViewController.swift */; };
@@ -915,6 +916,7 @@
 				A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */,
 				D652A07921C036B0005EC3E1 /* UIImageView_Letters.framework in Frameworks */,
 				A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */,
+				D627CE2522035ED300FFB7A4 /* SDWebImage.framework in Frameworks */,
 				A7ADA15A21A725460027FC1C /* Material.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

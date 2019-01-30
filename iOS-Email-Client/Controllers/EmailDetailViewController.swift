@@ -67,6 +67,14 @@ class EmailDetailViewController: UIViewController {
             case .initial:
                 tableView.reloadData()
             case .update(_, _, let insertions, _):
+                insertions.forEach({ (position) in
+                    guard let email = self?.emailData.emails[position],
+                        self?.emailData.bodies[email.key] == nil,
+                        let myAccount = self?.myAccount else {
+                            return
+                    }
+                    self?.emailData.bodies[email.key] = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+                })
                 tableView.reloadData()
                 self?.emailData.rebuildLabels()
                 let hasNewInboxEmail = insertions.contains(where: { (position) -> Bool in
@@ -387,7 +395,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = emailData.emails[indexPath.row]
         moreOptionsContainerView.showRetry((email.status == .fail || email.status == .sending) ? true : false)
-        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none)
+        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none && email.status != .sending)
         moreOptionsContainerView.showSourceButton(!email.boundary.isEmpty)
         toggleMoreOptionsView()
     }
@@ -760,6 +768,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                 return
             }
             cell.isLoaded = false
+            FileUtils.deleteDirectoryFromEmail(account: weakSelf.myAccount, metadataKey: "\(email.key)")
             DBManager.unsendEmail(email)
         }
     }

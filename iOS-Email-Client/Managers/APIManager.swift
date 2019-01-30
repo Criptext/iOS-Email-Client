@@ -553,6 +553,46 @@ class APIManager: SharedAPI {
 }
 
 extension APIManager {
+    class func uploadProfilePicture(inputStream: InputStream, params: [String: Any], account:Account, progressCallback: @escaping ((Double) -> Void), completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(Env.apiURL)/user/avatar/"
+        let mimeType = params["mimeType"] as! String
+        let size = params["size"] as! Int
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            "Content-Type": "\(mimeType)",
+            "Content-Length": "\(size)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        Alamofire.upload(inputStream, to: url, method: .put, headers: headers).uploadProgress { (progress) in
+            progressCallback(progress.fractionCompleted)
+            }.responseString { (responseString) in
+                let responseData = handleResponse(responseString, satisfy: .success)
+                completion(responseData)
+        }
+    }
+    
+    class func deleteProfilePicture(account:Account, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(Env.apiURL)/user/avatar/"
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.deleteProfilePicture(account: account, completion: completion)
+            }
+        }
+    }
+}
+
+extension APIManager {
     class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
         let headers = ["Authorization": "Bearer \(token)"]

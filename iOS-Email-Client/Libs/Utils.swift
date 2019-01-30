@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import UIImageView_Letters
+import SDWebImage
 
 class Utils: SharedUtils {
     
@@ -38,6 +40,11 @@ class Utils: SharedUtils {
         
         label.sizeToFit()
         return label.frame.height
+    }
+    
+    class func deleteSDWebImageCache(){
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     class func getNumberOfLines(_ text: String, width: CGFloat, fontSize: CGFloat) -> CGFloat {
@@ -114,6 +121,39 @@ class Utils: SharedUtils {
             return "filezip"
         default:
             return "filedefault"
+        }
+    }
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+    
+    class func setProfilePictureImage(imageView: UIImageView, contact: Contact) {
+        let color = UIColor.init().colorByName(name: contact.displayName)
+        imageView.setImageWith(contact.displayName, color: color, circular: true, fontName: "NunitoSans-Regular")
+        imageView.layer.borderWidth = 0.0
+        let username = ContactUtils.getUsernameFromEmailFormat(contact.email)!
+        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(username)"), placeholderImage: imageView.image, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
+            if error == nil {
+                imageView.contentMode = .scaleAspectFill
+                imageView.layer.masksToBounds = false
+                imageView.layer.cornerRadius = imageView.frame.size.width / 2
+                imageView.clipsToBounds = true
+            }
         }
     }
     

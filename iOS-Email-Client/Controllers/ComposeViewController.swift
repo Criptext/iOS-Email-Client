@@ -333,8 +333,8 @@ class ComposeViewController: UIViewController {
     func saveDraft() -> Email {
         if let draft = composerData.emailDraft {
             delegate?.deleteDraft(draftId: draft.key)
-            DBManager.deleteDraftInComposer(draft)
             FileUtils.deleteDirectoryFromEmail(account: activeAccount, metadataKey: "\(draft.key)")
+            DBManager.deleteDraftInComposer(draft)
         }
         
         self.resignKeyboard()
@@ -772,8 +772,7 @@ extension ComposeViewController: UITableViewDataSource {
             
             cell.nameLabel?.text = contact.displayName
             cell.emailLabel?.text = contact.email
-            cell.avatarImageView.setImageWith(contact.displayName, color: colorByName(name: contact.displayName), circular: true, fontName: "NunitoSans-Regular")
-            
+            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: contact)
             return cell
         }
         

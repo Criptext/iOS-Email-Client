@@ -12,15 +12,17 @@ import CICropPicker
 
 class ProfileEditorViewController: UIViewController {
     
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     @IBOutlet weak var blackBackground: UIView!
     @IBOutlet weak var saveProfile: UIButton!
-    @IBOutlet weak var profileName: UITextField!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var attachmentController: AttachmentOptionsContainerView!
     @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
     var imagePicker = UIImagePickerController()
-    var attachmentOptionsHeight: CGFloat = 90
+    var attachmentOptionsHeight: CGFloat = 0
     var generalData: GeneralSettingsData!
     var myAccount: Account!
     
@@ -33,7 +35,10 @@ class ProfileEditorViewController: UIViewController {
         imagePicker.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideBlackBackground(_:)))
         self.blackBackground.addGestureRecognizer(tap)
-        self.attachmentContainerBottomConstraint.constant = 50
+        self.attachmentContainerBottomConstraint.constant = -100
+        nameLabel.text = myAccount.name
+        emailLabel.text = "\(myAccount.username)\(Constants.domain)"
+        Utils.deleteSDWebImageCache()
         setProfileImage()
         applyTheme()
     }
@@ -51,33 +56,36 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func setProfileImage(){
-        print("\(Env.apiURL)/user/avatar/\(myAccount.username)")
-        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority, SDWebImageOptions.refreshCached, SDWebImageOptions.handleCookies, SDWebImageOptions.retryFailed]) { (image, error, cacheType, url) in
+        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
             if error != nil {
                 self.resetProfileImage()
+            }else{
+                self.makeCircleImage()
             }
+            self.indicatorView.isHidden = true
         }
+    }
+    
+    func makeCircleImage(){
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = false
+        imageView.layer.cornerRadius = imageView.frame.size.width / 2
+        imageView.clipsToBounds = true
     }
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
         self.view.backgroundColor = theme.overallBackground
-        profileName.backgroundColor = theme.overallBackground
-        profileName.textColor = theme.mainText
-        profileName.attributedPlaceholder = NSAttributedString(
-            string: String.localize("CHANGE_NAME"),
-            attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder]
-        )
-        profileName.text = myAccount.name
+        nameLabel.textColor = theme.mainText
+        emailLabel.textColor = theme.mainText
+        attachmentController.docsButton.setTitle(String.localize("remove_picture"), for: .normal)
+        saveProfile.setTitle(String.localize("EDIT_NAME"), for: .normal)
         initFloatingButton(color: theme.criptextBlue)
     }
     
     func initFloatingButton(color: UIColor){
         let shadowPath = UIBezierPath(rect: CGRect(x: 15, y: 15, width: 30, height: 30))
-        editButton.layer.shadowColor = color.cgColor
-        editButton.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)  //Here you control x and y
-        editButton.layer.shadowOpacity = 1
-        editButton.layer.shadowRadius = 10//Here your control your blur
+        editButton.backgroundColor = color
         editButton.layer.masksToBounds =  false
         editButton.layer.shadowPath = shadowPath.cgPath
     }
@@ -96,7 +104,7 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func showAttachmentDrawer(_ flag:Bool = false){
-        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? -attachmentOptionsHeight : 50)
+        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? -attachmentOptionsHeight : -100)
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
             self.blackBackground.alpha = flag ? 0.5 : 0
@@ -107,7 +115,28 @@ class ProfileEditorViewController: UIViewController {
         showAttachmentDrawer(true)
     }
     
-    func openCamera(){
+    @IBAction func didPressedGallery(_ sender: Any) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func disPressedRemove(_ sender: Any) {
+        self.showAttachmentDrawer(false)
+        APIManager.deleteProfilePicture(account: myAccount) { [weak self] (responseData) in
+            guard case .Success = responseData else {
+                self!.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("profile_picture_delete_failed"), style: .alert)
+                return
+            }
+            self!.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_deleted"), style: .alert)
+            Utils.deleteSDWebImageCache()
+            self!.resetProfileImage()
+        }
+    }
+    
+    @IBAction func didPressedCamera(_ sender: Any) {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             imagePicker.sourceType = UIImagePickerControllerSourceType.camera
             imagePicker.allowsEditing = false
@@ -115,28 +144,34 @@ class ProfileEditorViewController: UIViewController {
         }
     }
     
-    func openGallery(){
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
-            imagePicker.allowsEditing = true
-            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-            self.present(imagePicker, animated: true, completion: nil)
-        }
-    }
-    
-    @IBAction func didPressedGallery(_ sender: Any) {
-        self.openGallery()
-    }
-    
-    @IBAction func disPressedRemove(_ sender: Any) {
-        self.resetProfileImage()
-    }
-    
-    @IBAction func didPressedCamera(_ sender: Any) {
-        self.openCamera()
-    }
-    
     @IBAction func saveProfilePressed(_ sender: Any) {
-        changeProfileName(name: profileName.text ?? "")
+        let changeNamePopover = SingleTextInputViewController()
+        changeNamePopover.myTitle = String.localize("CHANGE_NAME")
+        changeNamePopover.initInputText = self.myAccount.name
+        changeNamePopover.onOk = { text in
+            self.changeProfileName(name: text)
+        }
+        self.presentPopover(popover: changeNamePopover, height: Constants.singleTextPopoverHeight)
+    }
+    
+    func changeProfilePicture(image: UIImage, imageName: String){
+        let image = Utils().resizeImage(image: image, targetSize: CGSize(width: 250, height: 250))
+        let data = UIImagePNGRepresentation(image)
+        let inputStream = InputStream.init(data: data!)
+        let params = [
+            "mimeType": File.mimeTypeForPath(path: imageName),
+            "size": data!.count
+            ] as [String: Any]
+        APIManager.uploadProfilePicture(inputStream: inputStream, params: params, account: myAccount, progressCallback: { (progress) in
+        }) { (responseData) in
+            guard case .Success = responseData else {
+                self.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_update_failed"), style: .alert)
+                self.resetProfileImage()
+                return
+            }
+            self.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_updated"), style: .alert)
+            Utils.deleteSDWebImageCache()
+        }
     }
     
     func changeProfileName(name: String){
@@ -154,7 +189,8 @@ class ProfileEditorViewController: UIViewController {
                 self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_UPDATE_PROFILE"), style: .alert)
                 return
             }
-            self.showAlert(String.localize("REPLY_TO_TITLE"), message: String.localize("REPLY_TO_SUCCESS"), style: .alert)
+            self.nameLabel.text = name
+            self.showAlert(String.localize("PROFILE"), message: String.localize("PROFILE_SUCCESS"), style: .alert)
             DBManager.update(account: self.myAccount, name: name)
             DBManager.createQueueItem(params: ["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()])
         }
@@ -164,13 +200,28 @@ class ProfileEditorViewController: UIViewController {
 
 extension ProfileEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            imageView.image = pickedImage
-            imageView.layer.masksToBounds = false
-            imageView.layer.cornerRadius = imageView.frame.size.width / 2
-            imageView.clipsToBounds = true
-        }
         picker.dismiss(animated: true, completion: nil)
+        self.showAttachmentDrawer(false)
+        if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+            let imageName = imgUrl.lastPathComponent
+            let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+            imageView.image = image
+            self.makeCircleImage()
+            changeProfilePicture(image: image, imageName: imageName)
+            return
+        }
+
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            let imageName = "\(String.random()).png"
+            imageView.image = pickedImage
+            self.makeCircleImage()
+            let fileManager = FileManager.default
+            let path = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(imageName)
+            let data = UIImagePNGRepresentation(pickedImage)
+            fileManager.createFile(atPath: path as String, contents: data, attributes: nil)
+            changeProfilePicture(image: pickedImage, imageName: imageName)
+            return
+        }
     }
 }
 

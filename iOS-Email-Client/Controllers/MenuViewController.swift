@@ -59,15 +59,16 @@ class MenuViewController: UIViewController{
     func setupAccountInfo(_ myAccount: Account){
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.username + Constants.domain
-        avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority, SDWebImageOptions.refreshCached, SDWebImageOptions.handleCookies, SDWebImageOptions.retryFailed]) { (image, error, cacheType, url) in
+        avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
             if error != nil {
-                self.resetProfileImage(myAccount)
+                self.avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
+            }else{
+                self.avatarImage.contentMode = .scaleAspectFill
+                self.avatarImage.layer.masksToBounds = false
+                self.avatarImage.layer.cornerRadius = self.avatarImage.frame.size.width / 2
+                self.avatarImage.clipsToBounds = true
             }
         }
-    }
-    
-    func resetProfileImage(_ myAccount: Account){
-        avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
     }
     
     func reloadView() {
