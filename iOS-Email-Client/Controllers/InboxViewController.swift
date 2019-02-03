@@ -817,9 +817,7 @@ extension InboxViewController: UITableViewDataSource{
                 cell.isSelected = false
             }
         } else {
-            let initials = thread.lastEmail.fromContact.displayName
-            cell.avatarImageView.setImageForName(string: initials, circular: true, textAttributes: nil)
-            cell.avatarImageView.layer.borderWidth = 0.0
+            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastEmail.fromContact)
         }
         return cell
     }

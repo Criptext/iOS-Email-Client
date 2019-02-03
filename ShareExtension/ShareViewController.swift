@@ -13,7 +13,6 @@ import CLTokenInputView
 import RealmSwift
 import MobileCoreServices
 import PasscodeLock
-import UIImageView_Letters
 
 class ShareViewController: UIViewController {
     
@@ -205,10 +204,9 @@ extension ShareViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactShareTableViewCell", for: indexPath) as! ContactShareTableViewCell
             cell.nameLabel?.text = contact.email
             cell.emailLabel?.text = contact.displayName
-            let color = UIColor.init().colorByName(name: contact.displayName)
-            cell.avatarImageView.setImageWith(contact.displayName, color: color, circular: true, fontName: "NunitoSans-Regular")
             cell.backgroundColor = theme.background
             cell.emailLabel.textColor = theme.mainText
+            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: contact)
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "attachmentCell", for: indexPath) as! AttachmentTableCell

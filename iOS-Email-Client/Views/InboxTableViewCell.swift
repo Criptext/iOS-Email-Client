@@ -127,6 +127,7 @@ class InboxTableViewCell: UITableViewCell {
         backgroundColor = theme.cellHighlight
         avatarImageView.layer.backgroundColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
         avatarImageView.image = #imageLiteral(resourceName: "check")
+        avatarImageView.contentMode = .center
         avatarImageView.tintColor = UIColor.white
         avatarImageView.layer.borderWidth = 2.0
         avatarImageView.layer.borderColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor

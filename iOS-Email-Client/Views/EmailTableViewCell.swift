@@ -179,7 +179,12 @@ class EmailTableViewCell: UITableViewCell{
         let fromContactName = email.isDraft ? String.localize("Draft") : email.fromContact.displayName
         contactsCollapseLabel.text = fromContactName
         contactsCollapseLabel.textColor = email.isDraft ? theme.alert : theme.mainText
-        initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
+        let emailContact = email.isDraft ? "" : email.fromContact.email
+        self.initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
+        self.initialsImageView.layer.borderWidth = 0.0
+        if(!emailContact.isEmpty){
+            Utils.setProfilePictureImage(imageView: self.initialsImageView, contact: email.fromContact)
+        }
         let size = dateLabel.sizeThatFits(CGSize(width: 100.0, height: 19))
         dateWidthConstraint.constant = size.width
         

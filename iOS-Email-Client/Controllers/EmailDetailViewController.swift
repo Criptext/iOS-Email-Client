@@ -395,7 +395,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = emailData.emails[indexPath.row]
         moreOptionsContainerView.showRetry((email.status == .fail || email.status == .sending) ? true : false)
-        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none)
+        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none && email.status != .sending)
         moreOptionsContainerView.showSourceButton(!email.boundary.isEmpty)
         toggleMoreOptionsView()
     }
@@ -768,6 +768,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
                 return
             }
             cell.isLoaded = false
+            FileUtils.deleteDirectoryFromEmail(account: weakSelf.myAccount, metadataKey: "\(email.key)")
             DBManager.unsendEmail(email)
         }
     }

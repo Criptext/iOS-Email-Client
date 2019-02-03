@@ -86,7 +86,6 @@ class EventHandler {
             }
             finishCallback(rowId, result)
         }
-        
         switch(cmd){
         case Event.newEmail.rawValue:
             self.handleNewEmailCommand(params: params, finishCallback: handleEventResponse)
@@ -114,6 +113,8 @@ class EventHandler {
             handleCreateLabelCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.changeName.rawValue:
             handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.updateProfilePic.rawValue:
+            handleUpdateProfilePic(params: params, finishCallback: handleEventResponse)
         case Event.Server.news.rawValue:
             handleNewsCommand(params: params, finishCallback: handleEventResponse)
         case Event.serverError.rawValue:
@@ -153,6 +154,11 @@ class EventHandler {
         let event = EventData.EmailStatus.init(params: params)
         if event.type == Email.Status.unsent.rawValue,
             let email = DBManager.getMail(key: event.emailId) {
+            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+                finishCallback(false, .Empty)
+                return
+            }
+            FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(email.key)")
             DBManager.unsendEmail(email, date: event.date)
             finishCallback(true, .Email(email))
             return
@@ -296,6 +302,11 @@ extension EventHandler {
         finishCallback(true, .NameChanged)
     }
     
+    func handleUpdateProfilePic(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        Utils.deleteSDWebImageCache()
+        finishCallback(true, .UpdateProfilePic)
+    }
+    
     func handleNewsCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         let event = EventData.Server.News(params: params)
         APIManager.getNews(code: event.code) { (responseData) in
@@ -346,6 +357,7 @@ enum Event: Int32 {
         case passwordChange = 310
         case recoveryChange = 311
         case recoveryVerify = 312
+        case updateProfilePic = 313
     }
     
     enum Server: Int32 {
@@ -366,5 +378,6 @@ enum Event: Int32 {
         case LabelCreated
         case Empty
         case News(MailboxData.Feature)
+        case UpdateProfilePic
     }
 }

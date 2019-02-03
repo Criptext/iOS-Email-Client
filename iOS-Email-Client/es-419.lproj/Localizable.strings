@@ -53,7 +53,7 @@
 "TOO_MANY_DEVICES" = "Demasiados dispositivos autorizados.";
 "FALLBACK_ERROR" = "No se puede validar al usuario. Inténtalo de nuevo";
 "RECOVERY_OPT" = "Email de Confirmación (opcional)";
-"VALID_EMAIL_CONDITION" = "min 3 letras, inicio/final con a-z, válido 0-9, . _ -";
+"VALID_EMAIL_CONDITION" = "Al menos 3 caracteres. Debe comenzar con las letras A-Z.";
 "USERNAME_EXISTS" = "Usuario ya existente";
 "ENTER_NAME" = "Introduce tu nombre";
 "PASSWORD_LENGTH" = "La contraseña debe contener al menos 8 caracteres.";
@@ -336,7 +336,14 @@
 "REPLY_TO" = "Cambiar Correo de respuesta";
 "REPLY_TO_TITLE" = "Correo de respuesta";
 "REPLY_TO_SUCCESS" = "Correo de respuesta modificado exitosamente";
+"PROFILE_SUCCESS" = "Nombre de perfil modificado exitosamente";
 "REPLY_TO_REMOVED" = "Correo de respuesta removido exitosamente";
 "UNABLE_UPDATE_REPLYTO" = "No se pudo actualizar el correo de respuesta. Inténtalo de nuevo";
 "SHOW_UNREAD" = "Mostrar no leídos";
 "SHOW_ALL" = "Mostrar todo";
+"remove_picture" = "Remover Imagen";
+"profile_picture_updated" = "Imagen de perfil actualizada correctamente";
+"profile_picture_update_failed" = "Imagen de perfil no se pudo actualizar";
+"profile_picture_deleted" = "Tu imagen de perfil ha sido borrada";
+"profile_picture_delete_failed" = "Imagen de perfil no se pudo borrar";
+"EDIT_NAME" = "Editar Nombre";
