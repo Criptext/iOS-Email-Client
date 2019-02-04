@@ -176,6 +176,9 @@ class EmailDetailViewController: UIViewController {
     func setupMoreOptionsViews(){
         emailsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
         emailsTableView.estimatedSectionHeaderHeight = ESTIMATED_SECTION_HEADER_HEIGHT;
+        if emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.spam.id {
+            moreOptionsContainerView.deleteButton.setTitle(String.localize("DELETE_PERMANENTLY"), for: .normal)
+        }
         moreOptionsContainerView.delegate = self
     }
     
@@ -659,6 +662,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             }
             weakSelf.deleteSingleEmail(email, indexPath: indexPath)
         }
+        self.presentPopover(popover: popover, height: 170)
     }
     
     func deleteSingleEmail(_ email: Email, indexPath: IndexPath){

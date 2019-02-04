@@ -34,6 +34,7 @@ class DetailMoreOptionsUIView: UIView {
     @IBOutlet var view: UIView!
     weak var delegate: DetailMoreOptionsViewDelegate?
     @IBOutlet weak var spamButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var unsendButton: UIButton!
     @IBOutlet var optionButtons: [UIButton]?
     @IBOutlet var printButton: UIButton!

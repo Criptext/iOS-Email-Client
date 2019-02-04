@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundOverlayView" destination="cRL-Mk-Yl4" id="UnZ-1B-Hmr"/>
+                <outlet property="deleteButton" destination="GJm-V9-TCb" id="5oo-3A-ek5"/>
                 <outlet property="optionsContainerOffsetConstraint" destination="hiL-bi-nks" id="0CQ-YN-g9E"/>
                 <outlet property="optionsContainerView" destination="bO2-Ar-nLq" id="Vdm-8V-mEm"/>
                 <outlet property="optionsHeightConstraint" destination="ujL-zn-4h0" id="QeL-Be-guu"/>
