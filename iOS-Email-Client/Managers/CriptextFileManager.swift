@@ -99,7 +99,6 @@ class CriptextFileManager {
         guard !uploading else {
             return
         }
-        file.requestStatus = .pending
         file.requestType = .download
         registeredFiles.append(file)
         apiManager.getFileMetadata(filetoken: file.token, token: self.token) { [weak self] (requestError, responseData) in
@@ -117,6 +116,7 @@ class CriptextFileManager {
                 return
             }
             let totalChunks = metadata["chunks"] as! Int
+            file.requestStatus = .pending
             file.chunksProgress = Array(repeating: weakSelf.PENDING, count: totalChunks)
             weakSelf.handleFileTurn()
         }

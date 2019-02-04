@@ -240,6 +240,7 @@
 "REJECT" = "Rechazar";
 "REPLY" = "Responder";
 "DELETE" = "Eliminar";
+"DELETE_PERMANENTLY" = "Eliminar Permanentemente";
 "PRIVACY_SECURITY" = "Seguridad y Privacidad";
 "SIGN_REJECTED" = "Sesión Rechazada";
 "NO_SUBJECT" = "(Sin Asunto)";

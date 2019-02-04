@@ -1781,8 +1781,14 @@ extension InboxViewController {
         DBManager.markAsUnread(emailKeys: [emailKey], unread: false)
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailUnreadRaw(metadataKeys: [emailKey], unread: 0)
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()])
-        dequeueEvents {
+        let eventParams = ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()] as [String : Any]
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: myAccount) { (responseData) in
+            if case .Success = responseData {
+                self.refreshThreadRows()
+                completion()
+                return
+            }
+            DBManager.createQueueItem(params: eventParams)
             completion()
         }
     }
@@ -1806,8 +1812,14 @@ extension InboxViewController {
         DBManager.setLabelsForEmail(email, labels: [SystemLabel.trash.id])
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()])
-        dequeueEvents {
+        let eventParams = ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()] as [String : Any]
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: myAccount) { (responseData) in
+            if case .Success = responseData {
+                self.refreshThreadRows()
+                completion()
+                return
+            }
+            DBManager.createQueueItem(params: eventParams)
             completion()
         }
     }

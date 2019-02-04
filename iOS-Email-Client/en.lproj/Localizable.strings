@@ -240,6 +240,7 @@
 "REJECT" = "Reject";
 "REPLY" = "Reply";
 "DELETE" = "Delete";
+"DELETE_PERMANENTLY" = "Delete Permanently";
 "PRIVACY_SECURITY" = "Privacy and Security";
 "SIGN_REJECTED" = "Sign In Rejected";
 "NO_SUBJECT" = "(No Subject)";
