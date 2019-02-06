@@ -348,3 +348,5 @@
 "profile_picture_deleted" = "Tu imagen de perfil ha sido borrada";
 "profile_picture_delete_failed" = "Imagen de perfil no se pudo borrar";
 "EDIT_NAME" = "Editar Nombre";
+
+"NO_AVAILABLE_RECIPIENTS" = "Recipientes no disponibles";
