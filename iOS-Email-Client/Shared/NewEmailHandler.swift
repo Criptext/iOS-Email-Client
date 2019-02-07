@@ -73,9 +73,9 @@ class NewEmailHandler {
                     return
             }
             let headers = data["headers"] as? String
-            let contentHeader = self.handleHeaderByMessageType(event.messageType, header: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
-            guard let content = unsent ? "" : self.handleBodyByMessageType(
-                    event.messageType, body: body, account: myAccount,
+            let contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+            guard let content = unsent ? "" : self.handleContentByMessageType(
+                    event.messageType, content: body, account: myAccount,
                     recipientId: username, senderDeviceId: event.senderDeviceId,
                     isExternal: event.isExternal)
                 else {
@@ -101,27 +101,7 @@ class NewEmailHandler {
                 email.status = .unsent
             }
             
-            if let attachments = event.files {
-                if let fileKeys = event.fileKeys {
-                    for (index, attachment) in attachments.enumerated() {
-                        var fileKey = fileKeys[index]
-                        tryBlock {
-                            fileKey = SignalHandler.decryptMessage(fileKey, messageType: event.messageType, account: myAccount, recipientId: event.to.first!, deviceId: Int32(myAccount.deviceId))
-                        }
-                        let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: contentPreview.1)
-                        email.files.append(file)
-                    }
-                } else  {
-                    var fileKey = event.fileKey ?? ""
-                    tryBlock {
-                        fileKey = SignalHandler.decryptMessage(fileKey, messageType: event.messageType, account: myAccount, recipientId: event.to.first!, deviceId: Int32(myAccount.deviceId))
-                    }
-                    for attachment in attachments {
-                        let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: contentPreview.1)
-                        email.files.append(file)
-                    }
-                }
-            }
+            self.handleAttachments(recipientId: username, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
             
             if self.isFromMe(email: email, account: myAccount, event: event),
                 let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
@@ -171,36 +151,41 @@ class NewEmailHandler {
         }
     }
     
-    func handleBodyByMessageType(_ messageType: MessageType, body: String, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
-        let recipient = isExternal ? "bob" : recipientId
-        let senderDevice = isExternal ? 1 : senderDeviceId
-        guard messageType != .none,
-            let deviceId = senderDevice else {
-                return body
+    func handleContentByMessageType(_ messageType: MessageType, content: String?, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
+        guard let myContent = content else {
+            return nil
         }
-        var trueBody : String?
+        let recipient = isExternal ? "bob" : recipientId
+        guard messageType != .none,
+            let deviceId = senderDeviceId else {
+            return content
+        }
+        var trueBody = content
         tryBlock {
-            trueBody = SignalHandler.decryptMessage(body, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
+            trueBody = SignalHandler.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
         return trueBody
     }
     
-    func handleHeaderByMessageType(_ messageType: MessageType, header: String?, account: Account, recipientId:
-        String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
-        guard let myheader = header else{
-            return nil
+    func handleAttachments(recipientId: String, event: NewEmail, email: Email, myAccount: Account, body: String) {
+        if let attachments = event.files,
+            attachments.count > 0 {
+            if let fileKeys = event.fileKeys {
+                for (index, attachment) in attachments.enumerated() {
+                    var fileKey = fileKeys[index]
+                    fileKey = handleContentByMessageType(event.messageType, content: fileKey, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) ?? fileKey
+                    let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: body)
+                    email.files.append(file)
+                }
+            } else  {
+                var fileKey = event.fileKey ?? ""
+                fileKey = handleContentByMessageType(event.messageType, content: fileKey, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) ?? fileKey
+                for attachment in attachments {
+                    let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: body)
+                    email.files.append(file)
+                }
+            }
         }
-        let recipient = isExternal ? "bob" : recipientId
-        let senderDevice = isExternal ? 1 : senderDeviceId
-        guard messageType != .none,
-            let deviceId = senderDevice else {
-                return myheader
-        }
-        var trueHeader : String?
-        tryBlock {
-            trueHeader = SignalHandler.decryptMessage(myheader, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
-        }
-        return trueHeader
     }
     
     func handleAttachment(_ attachment: [String: Any], email: Email, fileKey: String, body: String) -> File {

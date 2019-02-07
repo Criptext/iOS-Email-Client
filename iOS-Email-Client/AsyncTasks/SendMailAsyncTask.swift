@@ -302,22 +302,46 @@ class SendMailAsyncTask {
         return message.0
     }
     
+    private func existCriptextRecipients(criptextEmails: [Any]) -> Bool {
+        for criptextEmail in criptextEmails {
+            guard let myCriptextEmail = criptextEmail as? [String: Any],
+                let type = myCriptextEmail["type"] as? String else {
+                continue
+            }
+            if type != "peer" {
+                return true
+            }
+        }
+        return false
+    }
+    
     private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
             return
         }
+        var shouldSend = false
         var requestParams = ["subject": subject] as [String : Any]
-        if(!criptextEmails.isEmpty){
+        if !criptextEmails.isEmpty,
+            existCriptextRecipients(criptextEmails: criptextEmails) {
             requestParams["criptextEmails"] = criptextEmails
+            shouldSend = true
         }
         if(!guestEmails.isEmpty){
             requestParams["guestEmail"] = guestEmails
+            shouldSend = false
         }
         if (!files.isEmpty) {
             requestParams["files"] = files
         }
         if let thread = self.threadId {
             requestParams["threadId"] = thread
+        }
+        if !shouldSend {
+            DispatchQueue.main.async {
+                self.setEmailAsFailed()
+                completion(ResponseData.Error(CriptextError(message: String.localize("NO_AVAILABLE_RECIPIENTS"))))
+            }
+            return
         }
         APIManager.postMailRequest(requestParams, account: myAccount, queue: queue) { responseData in
             if case .TooManyRequests = responseData {
