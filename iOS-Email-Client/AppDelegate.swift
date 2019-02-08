@@ -292,6 +292,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                         newLabel["text"] = systemLabel.nameId
                     }
+                    migration.enumerateObjects(ofType: Contact.className()){ (oldObject, newObject) in
+                        guard let newContact = newObject else{
+                            return
+                        }
+                        newContact["score"] = 0
+                    }
                 }
             })
         

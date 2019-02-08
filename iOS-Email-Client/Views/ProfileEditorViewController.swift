@@ -32,6 +32,14 @@ class ProfileEditorViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
             [NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        if UIDevice().userInterfaceIdiom == .phone {
+            switch UIScreen.main.nativeBounds.height {
+            case 2436, 2688, 1792:
+                attachmentOptionsHeight = -20
+            default:
+                attachmentOptionsHeight = 0
+            }
+        }
         imagePicker.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideBlackBackground(_:)))
         self.blackBackground.addGestureRecognizer(tap)
@@ -118,7 +126,7 @@ class ProfileEditorViewController: UIViewController {
     @IBAction func didPressedGallery(_ sender: Any) {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
             imagePicker.allowsEditing = false
-            imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
             self.present(imagePicker, animated: true, completion: nil)
         }
     }

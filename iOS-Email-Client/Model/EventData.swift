@@ -269,9 +269,9 @@ extension EventData {
             let version: String
             let symbol: Int32
             init(params: [String: Any]){
-                code = params["code"] as! String
-                version = params["version"] as! String
-                symbol = Int32(params["operator"] as! String) ?? 1
+                code = params["code"] as? String ?? ""
+                version = params["version"] as? String ?? ""
+                symbol = Int32(params["operator"] as? String ?? "1") ?? 1
             }
         }
     }

@@ -103,6 +103,9 @@ class DetailMoreOptionsUIView: UIView {
         self.isHidden = false
         self.optionsContainerView.isHidden = false
         self.backgroundOverlayView.isHidden = false
+        if(unsendButton.isHidden && showSourceButton.isHidden && retryButton.isHidden){
+            optionsHeightConstraint.constant = 290
+        }
         UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseIn, animations: {
             self.optionsContainerOffsetConstraint.constant = 0.0
             self.backgroundOverlayView.alpha = 1.0

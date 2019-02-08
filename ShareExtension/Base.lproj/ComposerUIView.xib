@@ -108,7 +108,7 @@
                                 <constraint firstAttribute="height" constant="1" id="t4W-df-sCP"/>
                             </constraints>
                         </view>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="KxY-Rb-6fc">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KxY-Rb-6fc">
                             <rect key="frame" x="13" y="136" width="347" height="46"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -116,7 +116,7 @@
                             </constraints>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="19"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6r-pP-m3L" customClass="RichEditorView" customModule="RichEditorView">
                             <rect key="frame" x="13" y="182" width="347" height="150"/>

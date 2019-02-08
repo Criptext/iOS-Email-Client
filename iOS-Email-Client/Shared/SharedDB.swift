@@ -92,7 +92,7 @@ class SharedDB {
         let realm = try! Realm()
         
         let predicate = NSPredicate(format: "email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
-        let results = realm.objects(Contact.self).filter(predicate)
+        let results = realm.objects(Contact.self).filter(predicate).sorted(byKeyPath: "score", ascending: false)
         
         return Array(results)
     }
@@ -111,6 +111,13 @@ class SharedDB {
         let realm = try! Realm()
         try! realm.write {
             contact.displayName = name
+        }
+    }
+    
+    class func updateScore(contact: Contact){
+        let realm = try! Realm()
+        try! realm.write {
+            contact.score = contact.score + 1
         }
     }
     

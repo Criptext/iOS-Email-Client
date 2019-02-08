@@ -354,9 +354,13 @@ extension ShareViewController {
         emailContact.compoundKey = "\(emailDetail.key):\(email):\(type.rawValue)"
         if let contact = SharedDB.getContact(email) {
             emailContact.contact = contact
+            if(contact.email != "\(myAccount.username)\(Env.domain)"){
+                SharedDB.updateScore(contact: contact)
+            }
         } else {
             let newContact = Contact()
             newContact.email = email
+            newContact.score = 1
             newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
             SharedDB.store([newContact]);
             emailContact.contact = newContact

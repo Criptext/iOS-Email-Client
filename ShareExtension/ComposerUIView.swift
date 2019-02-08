@@ -108,9 +108,9 @@ class ComposerUIView: UIView {
         separatorView.backgroundColor = theme.separator
         subjectTextField.textColor = theme.mainText
         subjectTextField.textColor = theme.mainText
-        subjectTextField.backgroundColor = theme.background
+        subjectTextField.backgroundColor = theme.overallBackground
         subjectTextField.textColor = theme.mainText
-        subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [NSAttributedString.Key.foregroundColor: theme.mainText])
+        subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(subjectTextField.minimumFontSize)!])
         scrollView.backgroundColor = theme.background
         attachmentsTableView.backgroundColor = theme.background
         contactsTableView.backgroundColor = theme.background

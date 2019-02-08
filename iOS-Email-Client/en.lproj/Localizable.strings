@@ -348,5 +348,5 @@
 "profile_picture_deleted" = "Profile picture deleted successfully";
 "profile_picture_delete_failed" = "Error on deleting profile picture";
 "EDIT_NAME" = "Edit Name";
-
+"EMAIL_FILTER" = "Email Filter";
 "NO_AVAILABLE_RECIPIENTS" = "No available recipients";

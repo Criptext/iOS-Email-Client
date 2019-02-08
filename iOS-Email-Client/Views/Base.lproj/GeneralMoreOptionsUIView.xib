@@ -104,7 +104,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wRA-B7-Zbe">
-                            <rect key="frame" x="15" y="135" width="345" height="25"/>
+                            <rect key="frame" x="15" y="133" width="345" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="kax-V6-kI5"/>
                             </constraints>
@@ -122,13 +122,13 @@
                         <constraint firstAttribute="bottom" secondItem="7qk-DY-Kui" secondAttribute="bottom" constant="20" id="3KX-oo-kkO"/>
                         <constraint firstItem="7qk-DY-Kui" firstAttribute="trailing" secondItem="vBp-c7-A3X" secondAttribute="trailing" id="56K-Yb-ApP"/>
                         <constraint firstItem="vBp-c7-A3X" firstAttribute="trailing" secondItem="C61-BJ-sbc" secondAttribute="trailing" id="9nh-Vs-SY1"/>
-                        <constraint firstItem="wRA-B7-Zbe" firstAttribute="top" secondItem="vBp-c7-A3X" secondAttribute="bottom" constant="15" id="Cvs-25-GH7"/>
+                        <constraint firstItem="wRA-B7-Zbe" firstAttribute="top" secondItem="vBp-c7-A3X" secondAttribute="bottom" constant="13" id="Cvs-25-GH7"/>
                         <constraint firstItem="7qk-DY-Kui" firstAttribute="leading" secondItem="vBp-c7-A3X" secondAttribute="leading" id="I4p-TG-zw0"/>
                         <constraint firstItem="7qk-DY-Kui" firstAttribute="leading" secondItem="wRA-B7-Zbe" secondAttribute="leading" id="LrB-ZW-Brx"/>
                         <constraint firstItem="C61-BJ-sbc" firstAttribute="leading" secondItem="VAv-gl-3zw" secondAttribute="leading" constant="15" id="NNr-PP-Jvk"/>
                         <constraint firstItem="vBp-c7-A3X" firstAttribute="leading" secondItem="C61-BJ-sbc" secondAttribute="leading" id="Njg-mT-6LM"/>
                         <constraint firstItem="C61-BJ-sbc" firstAttribute="top" secondItem="nKZ-wq-bH5" secondAttribute="bottom" constant="15" id="dzB-y2-Caz"/>
-                        <constraint firstItem="7qk-DY-Kui" firstAttribute="top" secondItem="wRA-B7-Zbe" secondAttribute="bottom" constant="8" symbolic="YES" id="edB-aH-cHP"/>
+                        <constraint firstItem="7qk-DY-Kui" firstAttribute="top" secondItem="wRA-B7-Zbe" secondAttribute="bottom" constant="10" id="edB-aH-cHP"/>
                         <constraint firstItem="vBp-c7-A3X" firstAttribute="top" secondItem="C61-BJ-sbc" secondAttribute="bottom" constant="15" id="gSN-FN-2bW"/>
                         <constraint firstItem="7qk-DY-Kui" firstAttribute="trailing" secondItem="wRA-B7-Zbe" secondAttribute="trailing" id="nFo-Wf-u0y"/>
                         <constraint firstAttribute="trailing" secondItem="nKZ-wq-bH5" secondAttribute="trailing" constant="15" id="nwN-fe-InC"/>
