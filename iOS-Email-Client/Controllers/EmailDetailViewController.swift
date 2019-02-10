@@ -583,6 +583,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.toggleMoreOptionsView()
             return
         }
+        moreOptionsContainerView.closeMoreOptions()
         let email = emailData.emails[indexPath.row]
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)

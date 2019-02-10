@@ -98,6 +98,9 @@ class InboxViewController: UIViewController {
     func viewSetupNews() {
         let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
         let version = mailboxData.feature?.version
+        guard version != "" else {
+            return
+        }
         switch(mailboxData.feature?.symbol){
         case 1: // <
             if(appVersion!.compare(version!, options: .numeric) == .orderedAscending){

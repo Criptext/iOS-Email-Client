@@ -13,6 +13,7 @@ protocol FilterUIPopoverDelegate: class{
 }
 
 class FilterUIPopover : BaseUIPopover {
+    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var showAllButton: DLRadioButton!
@@ -57,6 +58,8 @@ class FilterUIPopover : BaseUIPopover {
     }
     
     func applyTheme() {
+        emailLabel.textColor = theme.mainText
+        emailLabel.text = String.localize("EMAIL_FILTER")
         showAllButton.setTitle(String.localize("SHOW_ALL"), for: []);
         showAllButton.setTitleColor(theme.mainText, for: []);
         showAllButton.iconColor = theme.mainText;

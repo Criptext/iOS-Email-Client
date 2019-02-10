@@ -13,6 +13,7 @@ class Contact: Object {
     @objc dynamic var displayName = "" //name
     @objc dynamic var email = ""
     @objc dynamic var isTrusted = false
+    @objc dynamic var score = 0
     
     override static func primaryKey() -> String? {
         return "email"

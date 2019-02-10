@@ -157,9 +157,9 @@ class SecurityPrivacyViewController: UITableViewController {
                 case .none:
                     break
                 case .touchID:
-                    weakSelf.defaults.faceUnlock = isOn
-                case .faceID:
                     weakSelf.defaults.fingerprintUnlock = isOn
+                case .faceID:
+                    weakSelf.defaults.faceUnlock = isOn
                 }
                 weakSelf.toggleOptions()
             }

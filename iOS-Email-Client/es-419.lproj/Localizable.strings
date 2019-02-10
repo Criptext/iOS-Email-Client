@@ -145,7 +145,7 @@
 "UNABLE_UNSEND" = "Fallo al retractar correo. Por favor, intenta más tarde.";
 "GUIDE_UNSEND" = "Abre este menu para encontrar \nla opción de retractar este correo.";
 "HAVE_NEW_EMAIL" = "Tienes un nuevo email";
-"PROFILE" = "Nombre de Perfil";
+"PROFILE" = "Perfil";
 "SYNC_PHONEBOOK" = "Sincronizar Contactos del Teléfono";
 "SIGNATURE" = "Firma";
 "SIGNATURE_TITLE" = "FIRMA";
@@ -348,5 +348,5 @@
 "profile_picture_deleted" = "Tu imagen de perfil ha sido borrada";
 "profile_picture_delete_failed" = "Imagen de perfil no se pudo borrar";
 "EDIT_NAME" = "Editar Nombre";
-
+"EMAIL_FILTER" = "Filtrado de correo";
 "NO_AVAILABLE_RECIPIENTS" = "Recipientes no disponibles";

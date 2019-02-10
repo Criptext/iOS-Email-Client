@@ -108,7 +108,7 @@ class GeneralMoreOptionsUIView : UIView {
             archiveButtonHeightConstraint.constant = COLLAPSED_HEIGHT
             restoreTopMarginConstraint.constant = COLLAPSED_MARGIN
             restoreButtonHeightConstraint.constant = COLLAPSED_HEIGHT
-            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 2
+            optionsHeightConstraint.constant = OPTION_VERTICAL_SPACE * 2.5
             neededHeight = -(OPTION_VERTICAL_SPACE * 2)
         default:
             restoreTopMarginConstraint.constant = COLLAPSED_MARGIN

@@ -398,9 +398,13 @@ class ComposeViewController: UIViewController {
         emailContact.compoundKey = "\(emailDetail.key):\(email):\(type.rawValue)"
         if let contact = DBManager.getContact(email) {
             emailContact.contact = contact
+            if(contact.email != "\(activeAccount.username)\(Env.domain)"){
+                DBManager.updateScore(contact: contact)
+            }
         } else {
             let newContact = Contact()
             newContact.email = email
+            newContact.score = 1
             newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
             DBManager.store([newContact]);
             emailContact.contact = newContact
