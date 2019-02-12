@@ -34,9 +34,9 @@ class SharedDB {
     }
     
     class func getAccountByUsername(_ username: String) -> Account? {
-        let realm = try! Realm()
+        let realm = try? Realm()
         
-        return realm.object(ofType: Account.self, forPrimaryKey: username)
+        return realm?.object(ofType: Account.self, forPrimaryKey: username)
     }
     
     class func update(_ account: Account, jwt: String) {

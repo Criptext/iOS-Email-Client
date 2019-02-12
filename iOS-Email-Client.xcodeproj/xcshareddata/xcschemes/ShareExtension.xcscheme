@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7CC38032190D9D900C8355A"
-               BuildableName = "NotificationExtension.appex"
-               BlueprintName = "NotificationExtension"
+               BlueprintIdentifier = "A77C30AD21A5055A0031E219"
+               BuildableName = "ShareExtension.appex"
+               BlueprintName = "ShareExtension"
                ReferencedContainer = "container:iOS-Email-Client.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7CC38032190D9D900C8355A"
-            BuildableName = "NotificationExtension.appex"
-            BlueprintName = "NotificationExtension"
+            BlueprintIdentifier = "A77C30AD21A5055A0031E219"
+            BuildableName = "ShareExtension.appex"
+            BlueprintName = "ShareExtension"
             ReferencedContainer = "container:iOS-Email-Client.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -67,12 +67,8 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <RemoteRunnable
-         runnableDebuggingMode = "1"
-         BundleIdentifier = "com.criptext.mail"
-         RemotePath = "/var/containers/Bundle/Application/BE66CDA9-DA8A-4E50-9D81-13D6FC2C79DB/iOS-Email-Client.app">
-      </RemoteRunnable>
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "41B6AAAB2017987500D428B7"
@@ -80,7 +76,7 @@
             BlueprintName = "iOS-Email-Client"
             ReferencedContainer = "container:iOS-Email-Client.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

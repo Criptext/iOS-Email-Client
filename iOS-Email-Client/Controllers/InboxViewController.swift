@@ -509,6 +509,7 @@ extension InboxViewController {
                 refreshControl?.endRefreshing()
                 completion?(true)
             }
+            self?.loadMails(since: Date(), clear: true)
         }
     }
     
