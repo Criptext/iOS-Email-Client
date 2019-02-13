@@ -20,6 +20,11 @@ class FileUtils{
         }        
     }
     
+    static func existBodyFile(username: String, metadataKey: String) -> Bool{
+        let fileBodyUrl = FileUtils.getURLForBody(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
+        return FileManager.default.fileExists(atPath: fileBodyUrl.path)
+    }
+    
     static func saveToFile(fileUrl: URL, directoryUrl: URL, text: String){
         guard let data = text.data(using: .utf8) else {
             return
@@ -28,11 +33,6 @@ class FileUtils{
             try! FileManager.default.createDirectory(atPath: directoryUrl.path, withIntermediateDirectories: true, attributes: nil)
             try! data.write(to: fileUrl, options: .atomic)
             return
-        }
-        if let fileHandle = try? FileHandle(forUpdating: fileUrl) {
-            fileHandle.seekToEndOfFile()
-            fileHandle.write(data)
-            fileHandle.closeFile()
         }
     }
     

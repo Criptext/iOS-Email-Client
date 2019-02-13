@@ -82,6 +82,15 @@ class NewEmailHandler {
                     return
             }
             
+            guard !FileUtils.existBodyFile(username: myAccount.username, metadataKey: "\(event.metadataKey)") else{
+                if let email = self.database.getMailByKey(key: event.metadataKey) {
+                    completion(Result(email: email))
+                    return
+                }
+                completion(Result(success: true))
+                return
+            }
+            
             let contentPreview = self.getContentPreview(content: content)
             let email = Email()
             email.threadId = event.threadId
