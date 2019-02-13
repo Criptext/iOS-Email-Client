@@ -568,8 +568,9 @@ class DBManager: SharedDB {
     }
     
     class func getLabels(notIn ids: [Int]) -> [Label]{
-        let realm = try! Realm()
-        
+        guard let realm = try? Realm() else{
+            return [Label()]
+        }
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "NOT (id IN %@)", ids)))
     }
     

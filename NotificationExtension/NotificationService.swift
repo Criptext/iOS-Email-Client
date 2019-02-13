@@ -8,6 +8,7 @@
 
 import UserNotifications
 import RealmSwift
+import UIKit
 
 class NotificationService: UNNotificationServiceExtension {
 
@@ -24,44 +25,47 @@ class NotificationService: UNNotificationServiceExtension {
     }
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        self.contentHandler = contentHandler
-        let defaults = CriptextDefaults()
-        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        guard let bestAttemptContent = bestAttemptContent,
-            let username = defaults.activeAccount,
-            let account = SharedDB.getAccountByUsername(username) else {
-                contentHandler(request.content)
-                return
-        }
-        SharedAPI.getEvents(account: account) { (responseData) in
-            let userInfo = request.content.userInfo
-            guard case let .SuccessArray(events) = responseData,
-                let keyString = userInfo["metadataKey"] as? String,
-                let key = Int(keyString) else {
-                bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
-                bestAttemptContent.title = "\(username)\(Env.domain)"
-                bestAttemptContent.body = String.localize("You may have new emails")
-                contentHandler(bestAttemptContent)
-                return
-            }
-            self.handleEvents(events, username: username, for: key) { responseEmail in
-                guard let email = responseEmail else {
-                    bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
-                    bestAttemptContent.title = "\(username)\(Env.domain)"
-                    bestAttemptContent.body = String.localize("You may have new emails")
-                    contentHandler(bestAttemptContent)
+        let state: UIApplication.State = UIApplication.shared.applicationState
+        if state == .background  || state == .inactive{
+            self.contentHandler = contentHandler
+            let defaults = CriptextDefaults()
+            bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+            guard let bestAttemptContent = bestAttemptContent,
+                let username = defaults.activeAccount,
+                let account = SharedDB.getAccountByUsername(username) else {
+                    contentHandler(request.content)
                     return
+            }
+            SharedAPI.getEvents(account: account) { (responseData) in
+                let userInfo = request.content.userInfo
+                guard case let .SuccessArray(events) = responseData,
+                    let keyString = userInfo["metadataKey"] as? String,
+                    let key = Int(keyString) else {
+                        bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
+                        bestAttemptContent.title = "\(username)\(Env.domain)"
+                        bestAttemptContent.body = String.localize("You may have new emails")
+                        contentHandler(bestAttemptContent)
+                        return
                 }
-                if defaults.previewDisable {
-                    bestAttemptContent.title = email.fromContact.displayName
-                    bestAttemptContent.body = email.subject
-                } else {
-                    bestAttemptContent.title = email.fromContact.displayName
-                    bestAttemptContent.subtitle = email.subject
-                    bestAttemptContent.body = email.preview
+                self.handleEvents(events, username: username, for: key) { responseEmail in
+                    guard let email = responseEmail else {
+                        bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
+                        bestAttemptContent.title = "\(username)\(Env.domain)"
+                        bestAttemptContent.body = String.localize("You may have new emails")
+                        contentHandler(bestAttemptContent)
+                        return
+                    }
+                    if defaults.previewDisable {
+                        bestAttemptContent.title = email.fromContact.displayName
+                        bestAttemptContent.body = email.subject
+                    } else {
+                        bestAttemptContent.title = email.fromContact.displayName
+                        bestAttemptContent.subtitle = email.subject
+                        bestAttemptContent.body = email.preview
+                    }
+                    bestAttemptContent.badge = NSNumber(integerLiteral: SharedDB.getUnreadMailsCounter(from: SystemLabel.inbox.id))
+                    contentHandler(bestAttemptContent)
                 }
-                bestAttemptContent.badge = NSNumber(integerLiteral: SharedDB.getUnreadMailsCounter(from: SystemLabel.inbox.id))
-                contentHandler(bestAttemptContent)
             }
         }
     }

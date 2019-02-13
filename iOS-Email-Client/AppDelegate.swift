@@ -622,31 +622,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Messaging.messaging().appDidReceiveMessage(userInfo)
-        let defaults = CriptextDefaults()
-        let state = UIApplication.shared.applicationState
-        guard let action = userInfo["action"] as? String else {
-            completionHandler(.noData)
-            return
-        }
-        switch(action){
-        case "link_device":
-            completionHandler(.noData)
-        default:
-            guard defaults.hasActiveAccount,
-                state == .background,
-                let snackVC = self.window?.rootViewController?.snackbarController,
-                let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-                let navVC = rootVC.childViewControllers.first as? UINavigationController,
-                let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
-                    completionHandler(.noData)
-                    return
-            }
-            inboxVC.getPendingEvents(nil) { success in
-                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
-                completionHandler(.newData)
-            }
-        }
+        completionHandler(.noData)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

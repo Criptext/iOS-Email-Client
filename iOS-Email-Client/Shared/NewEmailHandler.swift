@@ -63,7 +63,6 @@ class NewEmailHandler {
             if case .Missing = responseData {
                 unsent = true
             }
-            
             guard (unsent || error == nil),
                 let myAccount = self.database.getAccountByUsername(self.username),
                 case let .SuccessDictionary(data) = responseData,
