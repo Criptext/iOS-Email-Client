@@ -452,6 +452,19 @@ extension InboxViewController: WebSocketManagerDelegate {
 
 extension InboxViewController {
     
+    func beginRefreshing(){
+        // Start the refresh animation
+        refreshControl.beginRefreshing()
+        
+        // Make the refresh control send action to all targets as if a user executed
+        // a pull to refresh manually
+        refreshControl.sendActions(for: .valueChanged)
+        
+        // Apply some offset so that the refresh control can actually be seen
+        let contentOffset = CGPoint(x: 0, y: -refreshControl.frame.height)
+        self.tableView.setContentOffset(contentOffset, animated: true)
+    }
+    
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: ((Bool) -> Void)? = nil) {
         guard !mailboxData.updating else {
             completion?(false)
@@ -537,7 +550,7 @@ extension InboxViewController {
             menuViewController.reloadView()
         }
         
-        if result.emailLabels.contains(where: {$0 == SystemLabel.inbox.description}) {
+        if result.emailLabels.contains(where: {$0 == SystemLabel.inbox.nameId}) {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
         
@@ -566,7 +579,7 @@ extension InboxViewController {
         if(result.modifiedEmailKeys.count > 0 || result.modifiedThreadIds.count > 0){
             return true
         }
-        guard !mailboxData.searchMode && result.emailLabels.contains(where: {$0 == SystemLabel(rawValue: mailboxData.selectedLabel)?.description}) else {
+        guard !mailboxData.searchMode && result.emailLabels.contains(where: {$0 == SystemLabel(rawValue: mailboxData.selectedLabel)?.nameId}) else {
             return false
         }
         return true

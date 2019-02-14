@@ -122,10 +122,19 @@ class CriptextDefaults {
     
     var faceUnlock: Bool {
         get {
-            return groupDefaults.bool(forKey: Config.goneTimestamp.rawValue)
+            return groupDefaults.bool(forKey: Config.faceid.rawValue)
         }
         set (value) {
-            groupDefaults.set(value, forKey: Config.goneTimestamp.rawValue)
+            groupDefaults.set(value, forKey: Config.faceid.rawValue)
+        }
+    }
+    
+    var appStateActive: Bool {
+        get {
+            return groupDefaults.bool(forKey: Config.appStateActive.rawValue)
+        }
+        set (value) {
+            groupDefaults.set(value, forKey: Config.appStateActive.rawValue)
         }
     }
     
@@ -180,6 +189,7 @@ class CriptextDefaults {
         case lockTimer = "lockTimer"
         case goneTimestamp = "goneTimestamp"
         case pinAttempts = "pinAttempts"
+        case appStateActive = "appActive"
     }
     
 }
