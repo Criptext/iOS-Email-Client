@@ -100,6 +100,7 @@ class NewEmailHandler {
             email.boundary = event.boundary ?? ""
             email.date = event.date
             email.unread = true
+            email.secure = event.guestEncryption == 1 || event.guestEncryption == 3 ? true : false
             email.preview = contentPreview.0
             
             FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)

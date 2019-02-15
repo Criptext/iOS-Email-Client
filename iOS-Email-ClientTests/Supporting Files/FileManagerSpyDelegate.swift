@@ -11,6 +11,12 @@ import Foundation
 @testable import iOS_Email_Client
 
 class FileManagerSpyDelegate: CriptextFileDelegate {
+    
+    func fileError(message: String) {
+        XCTFail(message)
+        return
+    }
+    
     var expectation: XCTestExpectation?
     var file: File?
     var success: Bool?

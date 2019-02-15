@@ -16,23 +16,22 @@ class CreateCustomJSONFileTests: XCTestCase {
     let ivData      = AESCipher.generateRandomBytes()
     
     let desiredDBText = """
-    {"table":"contact","object":{"id":1,"name":"Test 1","email":"test1@criptext.com"}}
-    {"table":"contact","object":{"id":2,"name":"Test 2","email":"test2@criptext.com"}}
-    {"table":"label","object":{"visible":true,"id":1,"text":"Test 1","type":"custom","color":"fff000"}}
-    {"table":"label","object":{"visible":true,"id":2,"text":"Test 2","type":"custom","color":"ff00ff"}}
-    {"table":"email","object":{"content":"test 1","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","isMuted":false,"threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"secure":true,"preview":"test 1","status":3,"date":"2018-07-17 15:09:36","key":123,"subject":"","id":1}}
-    {"table":"email_label","object":{"labelId":1,"emailId":1}}
-    {"table":"email_contact","object":{"type":"from","contactId":2,"emailId":1,"id":1}}
-    {"table":"email_contact","object":{"type":"to","contactId":1,"emailId":1,"id":2}}
-    {"table":"file","object":{"name":"test.pdf","status":1,"emailId":123,"id":1,"token":"","readOnly":false,"size":0,"date":"2018-07-17 15:09:36","mimeType":"application\\/pdf"}}
-    {"table":"filekey","object":{"id":1,"key":"fgsfgfgsfdafa","iv":afdsfsagdfgsdf","emailId":1}}
+    {"object":{"email":"test1@criptext.com","isTrusted":false,"id":1,"name":"Test 1"},"table":"contact"}
+    {"object":{"email":"test2@criptext.com","isTrusted":false,"id":2,"name":"Test 2"},"table":"contact"}
+    {"object":{"type":"custom","uuid":"00000000-0000-0000-0000-00000000001","visible":true,"color":"fff000","id":1,"text":"Test 1"},"table":"label"}
+    {"object":{"type":"custom","uuid":"00000000-0000-0000-0000-00000000002","visible":true,"color":"ff00ff","id":2,"text":"Test 2"},"table":"label"}
+    {"object":{"fromAddress":"","headers":"","date":"2018-07-17 15:09:36","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"id":1,"status":3,"key":123,"secure":true,"isMuted":false,"content":"test 1","subject":"","replyTo":"","preview":"test 1","boundary":""},"table":"email"}
+    {"object":{"emailId":1,"labelId":1},"table":"email_label"}
+    {"object":{"emailId":1,"contactId":2,"id":1,"type":"from"},"table":"email_contact"}
+    {"object":{"emailId":1,"contactId":1,"id":2,"type":"to"},"table":"email_contact"}
+    {"object":{"date":"2018-07-17 15:09:36","id":1,"name":"test.pdf","cid":"","size":0,"emailId":1,"mimeType":"application/pdf","status":"1","readOnly":"false","token":""},"table":"file","iv":"afdsfsagdfgsdf","key":"fgsfgfgsfdafa"}
     """
     
     override func setUp() {
         super.setUp()
         
         let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        defaults.removeObject(forKey: "activeAccount")
+        groupDefaults.removeObject(forKey: "activeAccount")
         
         DBManager.destroy()
         let newLabel = Label("Test 1")
@@ -78,16 +77,16 @@ class CreateCustomJSONFileTests: XCTestCase {
         DBManager.store([emailContact, emailContact2])
         
         let file = File()
+        file.fileKey = "fgsfgfgsfdafa:afdsfsagdfgsdf"
         file.name = "test.pdf"
         file.emailId = 123
         file.date = Date(timeIntervalSince1970: 1531840176)
         DBManager.store(file)
         
-        let fileKey = FileKey()
-        fileKey.id = 1
-        fileKey.emailId = 123
-        fileKey.key = "fgsfgfgsfdafa:afdsfsagdfgsdf"
-        DBManager.store([fileKey])
+        let account = Account()
+        account.username = "myself"
+        account.deviceId = 1
+        DBManager.store(account)
     }
     
     func testSuccessfullyParseDate(){
@@ -102,8 +101,8 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     func testSuccessfullyCreateEncryptDecryptDBFile(){
         let expect = expectation(description: "Callback runs after generating db file")
-
-        CreateCustomJSONFileAsyncTask().start { (error, url) in
+        let account = DBManager.getFirstAccount()
+        CreateCustomJSONFileAsyncTask(username: account?.username ?? "myself").start { (error, url) in
             guard let myUrl = url else {
                 XCTFail("unable to process db with error: \(String(describing: error))")
                 return
@@ -138,8 +137,8 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     func testSuccessfullyCreateDBFromFile(){
         let expect = expectation(description: "Callback runs after generating db file")
-        
-        CreateCustomJSONFileAsyncTask().start { (error, url) in
+        let account = DBManager.getFirstAccount()
+        CreateCustomJSONFileAsyncTask(username: account?.username ?? "myself").start { (error, url) in
             guard let myUrl = url else {
                 XCTFail("unable to process db with error: \(String(describing: error))")
                 return
@@ -158,11 +157,13 @@ class CreateCustomJSONFileTests: XCTestCase {
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps)
+                    let account = DBManager.getFirstAccount()
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account?.username ?? "myself")
                     dbRows.removeAll()
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps)
+            let account = DBManager.getFirstAccount()
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account?.username ?? "myself")
             
             let email = DBManager.getMail(key: 123)
             XCTAssert(email != nil)
