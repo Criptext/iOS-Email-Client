@@ -550,9 +550,7 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
-}
 
-extension APIManager {
     class func uploadProfilePicture(inputStream: InputStream, params: [String: Any], account:Account, progressCallback: @escaping ((Double) -> Void), completion: @escaping ((ResponseData) -> Void)){
         let url = "\(Env.apiURL)/user/avatar/"
         let mimeType = params["mimeType"] as! String
@@ -590,9 +588,7 @@ extension APIManager {
             }
         }
     }
-}
 
-extension APIManager {
     class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
         let headers = ["Authorization": "Bearer \(token)"]
@@ -692,9 +688,7 @@ extension APIManager {
             completion(response.error)
         }
     }
-}
 
-extension APIManager {
     class func linkBegin(username: String, completion: @escaping ((ResponseData) -> Void)) {
         let url = "\(self.baseUrl)/link/begin"
         let headers = [versionHeader: apiVersion]
@@ -789,10 +783,7 @@ extension APIManager {
             completion(responseData)
         }
     }
-}
 
-extension APIManager {
-    
     @discardableResult class func checkAvailableUsername(_ username: String, completion: @escaping ((ResponseData) -> Void)) -> DataRequest{
         let url = "\(self.baseUrl)/user/available?username=\(username)"
         let headers = [versionHeader: apiVersion]
@@ -835,9 +826,7 @@ extension APIManager {
             completion(responseData)
         }
     }
-}
 
-extension APIManager {
     class func uploadLinkDBFile(dbFile: InputStream, randomId: String, size: Int, token: String, progressCallback: @escaping ((Double) -> Void), completion: @escaping ((ResponseData) -> Void)){
         let url = "\(Env.transferURL)/userdata"
         let headers = [

@@ -27,6 +27,7 @@ struct NewEmail {
     let isExternal: Bool
     let replyTo: String?
     let boundary: String?
+    let guestEncryption: Int
     
     init(params: [String: Any]){
         threadId = params["threadId"] as! String
@@ -39,6 +40,7 @@ struct NewEmail {
         fileKey = params["fileKey"] as? String
         fileKeys = params["fileKeys"] as? [String]
         isExternal = params["external"] as? Bool ?? false
+        guestEncryption = params["guestEncryption"] as! Int
         
         let dateString = params["date"] as! String
         date = NewEmail.convertToDate(dateString: dateString)

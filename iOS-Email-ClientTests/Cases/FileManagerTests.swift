@@ -28,6 +28,7 @@ class FileManagerTests: XCTestCase {
         fileManager.token = token
         fileManager.delegate = delegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
+        fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         fileManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
         waitForExpectations(timeout: 15) { (testError) in
@@ -52,6 +53,7 @@ class FileManagerTests: XCTestCase {
         uploadManager.token = self.token
         uploadManager.delegate = uploadDelegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
+        uploadManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         uploadManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
         waitForExpectations(timeout: 40) { (testError) in
@@ -73,7 +75,8 @@ class FileManagerTests: XCTestCase {
             downloadManager.apiManager = MockAPIManager.self
             downloadManager.delegate = downloadDelegate
             downloadManager.token = self.token
-            APIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in
+            downloadManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
+            MockAPIManager.commitFile(filetoken: filetoken, token: uploadManager.token! ){ error in
                 guard error == nil else {
                     XCTFail("Unable to commit file")
                     return
@@ -112,6 +115,7 @@ class FileManagerTests: XCTestCase {
         fileManager.setEncryption(id: 0, key: keyData, iv: ivData)
         fileManager.delegate = delegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
+        fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         fileManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
         waitForExpectations(timeout: 15) { (testError) in
@@ -162,7 +166,7 @@ class FileManagerTests: XCTestCase {
             downloadManager.token = self.token
             downloadManager.setEncryption(id: 1, key: keyData, iv: ivData)
             downloadManager.delegate = downloadDelegate
-            APIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in
+            MockAPIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in
                 guard error == nil else {
                     XCTFail("Unable to commit file")
                     return
