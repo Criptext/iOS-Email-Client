@@ -14,11 +14,11 @@ class EventHandlerTests: XCTestCase {
     
     let myAccount = Account()
     let eventsString = """
-        {"events":[{"rowid":1213,"cmd":101,"params":{\"messageType\":3,\"threadId\":\"<1528214090491.099438@jigl.com>\",\"senderDeviceId\":4,\"subject\":\"This is a big email\",\"from\":\"The Velvet <velvet@jigl.com>\",\"to\":\"velvet@jigl.com\",\"cc\":\"\",\"bcc\":\"\",\"messageId\":\"<1528214090491.099438@jigl.com>\",\"date\":\"2018-06-05 15:54:50\",\"metadataKey\":243,\"files\":[{\"timestamp\":\"2018-06-05T15:54:50.749Z\",\"token\":\"9eicctmj1xfji1v7bfp6w5fem0vii7\",\"read_only\":0,\"type\":\"image\",\"url\":\"https://services.criptext.com/viewer/9eicctmj1xfji1v7bfp6w5fem0vii7\",\"ephemeral\":0,\"status\":1,\"name\":\"Criptext_Image_2018_06_05.png\",\"size\":1318156},{\"timestamp\":\"2018-06-05T15:54:50.751Z\",\"token\":\"wzxathnpxg8ji1v74wzbczf5gvrbxt\",\"read_only\":0,\"type\":\"image\",\"url\":\"https://services.criptext.com/viewer/wzxathnpxg8ji1v74wzbczf5gvrbxt\",\"ephemeral\":0,\"status\":1,\"name\":\"Criptext_Image_2018_06_05.png\",\"size\":1180191}]}}]}
+        {"events":[{"rowid":1213,"cmd":101,"params":{"messageType":3,"threadId":"<1528214090491.099438@jigl.com>","senderDeviceId":4,"subject":"This is a big email","from":"The Velvet <velvet@jigl.com>","to":"velvet@jigl.com","cc":"","bcc":"","messageId":"<1528214090491.099438@jigl.com>","date":"2018-06-05 15:54:50","metadataKey":243,"files":[{"timestamp":"2018-06-05T15:54:50.749Z","token":"9eicctmj1xfji1v7bfp6w5fem0vii7","read_only":0,"type":"image","url":"https://services.criptext.com/viewer/9eicctmj1xfji1v7bfp6w5fem0vii7","ephemeral":0,"status":1,"name":"Criptext_Image_2018_06_05.png","size":1318156},{"timestamp":"2018-06-05T15:54:50.751Z","token":"wzxathnpxg8ji1v74wzbczf5gvrbxt","read_only":0,"type":"image","url":"https://services.criptext.com/viewer/wzxathnpxg8ji1v74wzbczf5gvrbxt","ephemeral":0,"status":1,"name":"Criptext_Image_2018_06_05.png","size":1180191}]}}]}
         """
     
     let opensString = """
-        {"events":[{"rowid":43554,"cmd":102,"params":{\"type\":7,\"metadataKey\":243,\"from\":\"velvet\",\"date\":\"2018-06-05 15:54:50\"}}]}
+        {"events":[{"rowid":43554,"cmd":102,"params":{"type":7,"metadataKey":243,"from":"velvet","date":"2018-06-05 15:54:50"}}]}
         """
     
     override func setUp() {
@@ -48,7 +48,6 @@ class EventHandlerTests: XCTestCase {
             XCTAssert(emails.count == 1)
             XCTAssert(emails[0].key == 243)
             XCTAssert(emails[0].getFiles().count == 2)
-            
             expect.fulfill()
         }
         waitForExpectations(timeout: 10) { (error) in
@@ -70,7 +69,6 @@ class EventHandlerTests: XCTestCase {
             let opens = result.opens
             XCTAssert(opens.count == 1)
             XCTAssert(opens[0].contact.email == "velvet\(Constants.domain)")
-            
             expect.fulfill()
         }
         waitForExpectations(timeout: 10) { (error) in
