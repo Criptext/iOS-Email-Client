@@ -1,0 +1,19 @@
+os: osx
+osx_image: xcode10
+language: swift
+
+cache:
+  directories:
+  - Carthage
+
+before_install:
+  - brew install carthage || true
+  - brew outdated carthage || brew upgrade carthage
+
+before_script:
+  - sh ./scripts/intelligent-bootstrap.sh
+
+script: xcodebuild clean build test -project iOS-Email-Client.xcodeproj -scheme iOS-Email-Client -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+
+notifications:
+  email: false
