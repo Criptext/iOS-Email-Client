@@ -1,6 +1,7 @@
 os: osx
 osx_image: xcode10.1
 language: swift
+warnings_are_errors: false
 
 cache:
   directories:
