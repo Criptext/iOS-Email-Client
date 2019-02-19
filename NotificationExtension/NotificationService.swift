@@ -47,7 +47,7 @@ class NotificationService: UNNotificationServiceExtension {
                     return
             }
             self.handleEvents(events, username: username, for: key) { responseEmail in
-                guard let email = responseEmail else {
+                guard let email = responseEmail ?? SharedDB.getMailByKey(key: key)  else {
                     bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
                     bestAttemptContent.title = "\(username)\(Env.domain)"
                     bestAttemptContent.body = String.localize("You may have new emails")
