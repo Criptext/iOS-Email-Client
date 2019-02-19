@@ -310,6 +310,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let defaults = CriptextDefaults()
         defaults.migrate()
+        defaults.appStateActive = true
         
         if let activeAccount = defaults.activeAccount {
             //Go to inbox
@@ -478,6 +479,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !self.passcodeLockPresenter.isPasscodePresented {
             goneTimestamp = Date().timeIntervalSince1970
         }
+        let defaults = CriptextDefaults()
+        defaults.appStateActive = false
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -487,6 +490,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WebSocketManager.sharedInstance.reconnect()
         let defaults = CriptextDefaults()
         let showBiometrics = shouldShowPinLock()
+        defaults.appStateActive = true
         passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.isTouchIDAllowed = defaults.hasPIN && (defaults.hasFingerPrint || defaults.hasFaceID)
         passcodeLockPresenter.passcodeLockVC.passcodeConfiguration.shouldRequestTouchIDImmediately = showBiometrics
         if showBiometrics {
@@ -499,6 +503,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let inboxVC = getInboxVC() else {
             return
         }
+        inboxVC.beginRefreshing()
         inboxVC.getPendingEvents(nil)
         inboxVC.dequeueEvents()
     }

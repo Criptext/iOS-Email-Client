@@ -30,7 +30,8 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         guard let bestAttemptContent = bestAttemptContent,
             let username = defaults.activeAccount,
-            let account = SharedDB.getAccountByUsername(username) else {
+            let account = SharedDB.getAccountByUsername(username),
+            !defaults.appStateActive else {
                 contentHandler(request.content)
                 return
         }

@@ -31,7 +31,7 @@
 "CONFIRM" = "Confirmar";
 "RETRY" = "Reintentar";
 "USERNAME" = "Usuario";
-"FULLNAME" = "Nombre ";
+"FULLNAME" = "Nombre Completo";
 "PASSWORD" = "Contraseña";
 "CONFIRM_PASSWORD" = "Confirmar Contraseaña";
 "DISCARD" = "Descartar";
