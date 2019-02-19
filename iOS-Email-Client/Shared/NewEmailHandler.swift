@@ -169,7 +169,7 @@ class NewEmailHandler {
             let deviceId = senderDeviceId else {
             return content
         }
-        var trueBody = content
+        var trueBody: String? = nil
         tryBlock {
             trueBody = SignalHandler.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
