@@ -5,6 +5,7 @@ language: swift
 cache:
   directories:
   - Carthage
+  - Firebase
 
 before_install:
   - brew install carthage || true
@@ -12,6 +13,7 @@ before_install:
 
 before_script:
   - sh ./scripts/intelligent-bootstrap.sh
+  - sh ./scripts/firebase.sh
 
 script: xcodebuild clean build test -project iOS-Email-Client.xcodeproj -scheme iOS-Email-Client -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 
