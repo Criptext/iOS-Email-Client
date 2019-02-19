@@ -2,7 +2,7 @@ github "Criptext/SignalProtocolSwift" == 0.8
 github "ElaWorkshop/TagListView" ~> 1.0
 github "Alamofire/Alamofire" ~> 4.7
 github "SwiftyJSON/SwiftyJSON"
-github "realm/realm-cocoa"
+binary "./realm-cocoa.json"
 github "Hirobreak/CLTokenInputView" == 3.0.3
 github "CosmicMind/Material"
 github "Hirobreak/CICropPicker" == 1.1.2
