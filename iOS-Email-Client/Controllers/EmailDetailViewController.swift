@@ -14,7 +14,7 @@ import Instructions
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
     let ESTIMATED_SECTION_HEADER_HEIGHT : CGFloat = 50
-    let CONTACTS_BASE_HEIGHT = 70
+    let CONTACTS_BASE_HEIGHT = 56
     let CONTACTS_MAX_HEIGHT: CGFloat = 300.0
     let CONTACTS_ROW_HEIGHT = 28
     
@@ -376,9 +376,51 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             return
         }
         let email = emailData.emails[indexPath.row]
+        let data = calculateContactsHeight(email: email)
+        
         let contactsPopover = ContactsDetailUIPopover()
+        contactsPopover.contactHeights = data.0
+        contactsPopover.initialFromHeight = data.1
+        contactsPopover.initialToHeight = data.2
+        contactsPopover.initialCcHeight = data.3
+        contactsPopover.initialBccHeight = data.4
         contactsPopover.email = email
-        presentPopover(contactsPopover, sender, height: min(CGFloat(CONTACTS_BASE_HEIGHT + email.emailContacts.count * CONTACTS_ROW_HEIGHT), CONTACTS_MAX_HEIGHT))
+        presentPopover(contactsPopover, sender, height: min(CGFloat(CONTACTS_BASE_HEIGHT + Int(data.5)), CONTACTS_MAX_HEIGHT))
+    }
+    
+    func calculateContactsHeight(email: Email) -> ([String: CGFloat], CGFloat, CGFloat, CGFloat, CGFloat, CGFloat) {
+        var contactsHeight = [String: CGFloat]()
+        var toHeigth: CGFloat = 0.0
+        var ccHeigth: CGFloat = 0.0
+        var bccHeigth: CGFloat = 0.0
+        var sumHeights: CGFloat = 0
+        let width = self.view.frame.size.width - 90
+        for contact in email.getContacts(type: .to) {
+            let height = Utils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
+            contactsHeight[contact.email] = height
+            toHeigth += height
+            sumHeights += height
+        }
+        for contact in email.getContacts(type: .cc) {
+            let height = Utils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
+            contactsHeight[contact.email] = height
+            ccHeigth += height
+            sumHeights += height
+        }
+        for contact in email.getContacts(type: .bcc) {
+            let height = Utils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
+            contactsHeight[contact.email] = height
+            bccHeigth += height
+            sumHeights += height
+        }
+        
+        let myContact = ContactUtils.getStringEmailName(contact: email.fromAddress)
+        let name = ContactUtils.checkIfFromHasName(email.fromAddress) ? myContact.1 : email.fromContact.displayName
+        let emailString = ContactUtils.checkIfFromHasName(email.fromAddress) ? myContact.0 : email.fromContact.email
+        let fromHeight = Utils.getLabelHeight("\(name) \(emailString)", width: width, fontSize: 13.0) + 8
+        sumHeights += fromHeight
+        
+        return (contactsHeight, fromHeight, toHeigth, ccHeigth, bccHeigth, sumHeights)
     }
     
     func presentPopover(_ popover: UIViewController, _ sender: UIView, height: CGFloat){
