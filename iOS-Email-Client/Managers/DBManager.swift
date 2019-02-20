@@ -323,10 +323,6 @@ class DBManager: SharedDB {
         var threads = [Thread]()
         var threadIds = Set<String>()
         for email in emails {
-            let thread = Thread()
-            thread.date = email.date
-            thread.threadId = email.threadId
-            thread.lastEmail = email
             guard threads.count < limit else {
                 break
             }
@@ -338,22 +334,8 @@ class DBManager: SharedDB {
                 label == SystemLabel.all.id || !threadEmails.filter(NSPredicate(format: "ANY labels.id = %d", label)).isEmpty else {
                 continue
             }
-            thread.unread = threadEmails.contains(where: {$0.unread})
-            thread.counter = threadEmails.count
-            thread.subject = threadEmails.first!.subject
-            for threadEmail in threadEmails {
-                if(label == SystemLabel.sent.id){
-                    if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
-                        thread.participants.formUnion(threadEmail.getContacts(type: .to))
-                        thread.participants.formUnion(threadEmail.getContacts(type: .cc))
-                    }
-                }else{
-                    thread.participants.formUnion(threadEmail.getContacts(type: .from))
-                }
-                if(!thread.hasAttachments && threadEmail.files.count > 0){
-                    thread.hasAttachments = true
-                }
-            }
+            let thread = Thread()
+            thread.fromLastEmail(lastEmail: email, threadEmails: threadEmails, label: label)
             threadIds.insert(thread.threadId)
             threads.append(thread)
         }
@@ -364,33 +346,16 @@ class DBManager: SharedDB {
         let thread = Thread()
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
-        let threadsPredicate = NSPredicate(format: "threadId == %@ AND ANY labels.id = %d AND NOT (ANY labels.id IN %@)", threadId, label, rejectedLabels)
-        guard let email = realm.objects(Email.self).filter(threadsPredicate).sorted(byKeyPath: "date", ascending: false).first else {
-            return nil
-        }
+        
         let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
         let mailsPredicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
         let threadEmails = realm.objects(Email.self).filter(mailsPredicate).sorted(byKeyPath: "date", ascending: true)
-        for threadEmail in threadEmails {
-            if(label == SystemLabel.sent.id){
-                if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
-                    thread.participants.formUnion(threadEmail.getContacts(type: .to))
-                    thread.participants.formUnion(threadEmail.getContacts(type: .cc))
-                }
-            }else{
-                thread.participants.formUnion(threadEmail.getContacts(type: .from))
-            }
-            if(!thread.hasAttachments && threadEmail.files.count > 0){
-                thread.hasAttachments = true
-            }
+        guard !threadEmails.isEmpty,
+            label == SystemLabel.all.id || !threadEmails.filter(NSPredicate(format: "ANY labels.id = %d", label)).isEmpty else {
+            return nil
         }
-        thread.lastEmail = threadEmails.last ?? email
-        thread.date = thread.lastEmail.date
-        thread.threadId = thread.lastEmail.threadId
-        thread.unread = threadEmails.contains(where: {$0.unread})
-        thread.subject = threadEmails.first!.subject
-        thread.counter = threadEmails.count
+        thread.fromLastEmail(lastEmail: threadEmails.last!, threadEmails: threadEmails, label: label)
         return thread
     }
     

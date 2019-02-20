@@ -301,9 +301,8 @@ class InboxViewController: UIViewController {
             return
         }
         let thread = mailboxData.threads[indexPath.row]
-        guard !thread.lastEmail.isInvalidated,
-            let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
-            thread.lastEmail.key == refreshedRowThread.lastEmail.key else {
+        guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
+            thread.date == refreshedRowThread.date else {
             refreshThreadRows()
             return
         }
@@ -833,7 +832,7 @@ extension InboxViewController: UITableViewDataSource{
                 cell.isSelected = false
             }
         } else {
-            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastEmail.fromContact)
+            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastContact)
         }
         return cell
     }
@@ -1086,7 +1085,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.navigationDrawerController?.closeRightView()
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
-            continueDraft(selectedThread.lastEmail)
+            if let lastEmail = SharedDB.getMailByKey(key: selectedThread.lastEmailKey) {
+                continueDraft(lastEmail)
+            }
             return
         }
         
@@ -1356,7 +1357,10 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel)
         if let indexPaths = tableView.indexPathsForSelectedRows{
             for indexPath in indexPaths {
-                let email = mailboxData.threads[indexPath.row].lastEmail!
+                let thread = mailboxData.threads[indexPath.row]
+                guard let email = DBManager.getMail(key: thread.lastEmailKey) else {
+                    continue
+                }
                 for label in email.labels {
                     guard labelsPopover.labels.contains(where: {$0.id == label.id}) else {
                         continue
@@ -1609,9 +1613,6 @@ extension InboxViewController: ComposerSendMailDelegate {
                 weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
                 return
             }
-            if let index = weakSelf.mailboxData.threads.index(where: {!$0.lastEmail.isInvalidated && $0.threadId == newEmail.threadId}) {
-                weakSelf.mailboxData.threads[index].lastEmail = newEmail
-            }
             weakSelf.refreshThreadRows()
             weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
             weakSelf.sendFailEmail()
@@ -1632,7 +1633,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func deleteDraft(draftId: Int) {
-        guard let draftIndex = mailboxData.threads.index(where: {$0.lastEmail.key == draftId}) else {
+        guard let draftIndex = mailboxData.threads.index(where: {$0.lastEmailKey == draftId}) else {
                 return
         }
         mailboxData.threads.remove(at: draftIndex)
