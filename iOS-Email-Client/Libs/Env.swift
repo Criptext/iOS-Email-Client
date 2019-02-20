@@ -29,7 +29,7 @@ struct Env {
         #if SUPPORT
         return "GoogleService-Info-Support.plist"
         #else
-        return "GoogleService-Info-Support.plist"
+        return "GoogleService-Info.plist"
         #endif
     }()
     
@@ -37,7 +37,7 @@ struct Env {
         #if SUPPORT
         return "group.criptext.support"
         #else
-        return "group.criptext.support"
+        return "group.criptext.team"
         #endif
     }()
     
