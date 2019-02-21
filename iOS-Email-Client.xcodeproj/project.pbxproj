@@ -254,6 +254,8 @@
 		A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31E21B5BD0800559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
+		A758E2E7221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */; };
+		A758E2E9221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758E2E8221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
@@ -723,6 +725,8 @@
 		A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityPrivacyViewController.swift; sourceTree = "<group>"; };
 		A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncViewController.swift; sourceTree = "<group>"; };
 		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
+		A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBadgeCounterAsyncTask.swift; sourceTree = "<group>"; };
+		A758E2E8221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBadgeCountersAsyncTask.swift; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
 		A774DAC12196215100C411BD /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
@@ -1343,6 +1347,8 @@
 				7CB60A8420FD306200C9090C /* CreateCustomJSONFileAsyncTask.swift */,
 				A72B864721AC93EE00DCC601 /* RetrieveContactsTask.swift */,
 				CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */,
+				A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */,
+				A758E2E8221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift */,
 			);
 			path = AsyncTasks;
 			sourceTree = "<group>";
@@ -1882,6 +1888,7 @@
 				A7CC387A21939C3D00C8355A /* SharedDB.swift in Sources */,
 				7CAC1CF020F6AF58004A50C6 /* CriptextSnackbarController.swift in Sources */,
 				7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */,
+				A758E2E9221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */,
 				7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
@@ -1970,6 +1977,7 @@
 				7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */,
 				7CF93F512146DB0600361837 /* WelcomeTourViewController.swift in Sources */,
 				7CDAD26C2040BAF40080A32C /* CriptextSignedPreKeyStore.swift in Sources */,
+				A758E2E7221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift in Sources */,
 				7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */,
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				A7CC388021939E8800C8355A /* ContactUtils.swift in Sources */,

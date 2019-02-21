@@ -141,13 +141,15 @@ class MenuViewController: UIViewController{
     }
     
     func refreshBadges(){
-        let inboxCounter = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
-        let draftCounter = DBManager.getThreads(from: SystemLabel.draft.id, since: Date(), limit: 100).count
-        let spamCounter = DBManager.getUnreadMailsCounter(from: SystemLabel.spam.id)
-        
-        inboxMenuItem.showBadge(inboxCounter)
-        draftMenuItem.showBadge(draftCounter)
-        spamMenuItem.showBadge(spamCounter)
+        let badgesGetterAsyncTask = GetBadgeCountersAsyncTask()
+        badgesGetterAsyncTask.start { [weak self] (counters) in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.inboxMenuItem.showBadge(counters.inbox)
+            weakSelf.draftMenuItem.showBadge(counters.draft)
+            weakSelf.spamMenuItem.showBadge(counters.spam)
+        }
     }
     
     @IBAction func onSettingsMenuItemPress(_ sender: Any) {

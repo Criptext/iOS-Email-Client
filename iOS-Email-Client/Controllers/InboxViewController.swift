@@ -284,11 +284,11 @@ class InboxViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateBadges()
         
         guard let indexPath = self.tableView.indexPathForSelectedRow, !mailboxData.isCustomEditing else {
             mailboxData.removeSelectedRow = false
-            refreshThreadRows()
+            updateBadges()
+            //refreshThreadRows()
             return
         }
         
@@ -302,8 +302,9 @@ class InboxViewController: UIViewController {
         }
         let thread = mailboxData.threads[indexPath.row]
         guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
-            thread.date == refreshedRowThread.date else {
-            refreshThreadRows()
+            thread.lastEmailKey == refreshedRowThread.lastEmailKey else {
+            updateBadges()
+            //refreshThreadRows()
             return
         }
         mailboxData.threads[indexPath.row] = refreshedRowThread
@@ -629,15 +630,24 @@ extension InboxViewController{
         if mailboxData.isCustomEditing {
             didPressEdit(reload: true)
         }
+        guard labelId != mailboxData.selectedLabel else {
+            self.navigationDrawerController?.closeLeftView()
+            self.getPendingEvents(nil)
+            return
+        }
         mailboxData.selectedLabel = labelId
-        self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         selectLabel = String.localize("SHOW_ALL")
         mailboxData.cancelFetchWorker()
-        loadMails(since: Date(), clear: true)
+        mailboxData.reachedEnd = false
+        mailboxData.threads.removeAll()
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
         topToolbar.swapTrashIcon(labelId: labelId)
+        
+        self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.viewSetupNews()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+        self.showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+        self.tableView.reloadData()
         self.navigationDrawerController?.closeLeftView()
     }
     
@@ -646,15 +656,19 @@ extension InboxViewController{
     }
     
     func updateBadges(){
-        guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
+        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(label: mailboxData.selectedLabel)
+        badgeGetterAsyncTask.start { [weak self] (label, counter) in
+            guard let weakSelf = self,
+                weakSelf.mailboxData.selectedLabel == label else {
                 return
+            }
+            weakSelf.countBarButton.title = counter
+        }
+        
+        guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
+            return
         }
         menuViewController.refreshBadges()
-        let label =  SystemLabel(rawValue: mailboxData.selectedLabel) ?? .all
-        let mailboxCounter = label == .draft
-            ? DBManager.getThreads(from: mailboxData.selectedLabel, since: Date(), limit: 100).count
-            : DBManager.getUnreadMailsCounter(from: mailboxData.selectedLabel)
-        countBarButton.title = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
     }
     
     func updateFeedsBadge(counter: Int){
@@ -1254,6 +1268,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(mailboxData.threads.count == indexPath.row && mailboxData.threads.count == 0){
+            return tableView.frame.height
+        }
         return 79.0
     }
     
