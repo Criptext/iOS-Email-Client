@@ -17,7 +17,7 @@ class GetBadgeCountersAsyncTask {
     }
     
     func start(completionHandler: @escaping ((Counter) -> Void)){
-        let queue = DispatchQueue(label: "com.criptext.mail.badges", qos: .background, attributes: .concurrent)
+        let queue = DispatchQueue(label: "com.criptext.mail.badges", qos: .userInitiated, attributes: .concurrent)
         queue.async {
             var counter = Counter()
             counter.inbox = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)

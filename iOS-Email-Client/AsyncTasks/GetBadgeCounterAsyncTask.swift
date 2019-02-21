@@ -17,7 +17,7 @@ class GetBadgeCounterAsyncTask {
     }
     
     func start(completionHandler: @escaping ((Int, String) -> Void)){
-        let queue = DispatchQueue(label: "com.criptext.mail.badge", qos: .background, attributes: .concurrent)
+        let queue = DispatchQueue(label: "com.criptext.mail.badge", qos: .userInitiated, attributes: .concurrent)
         queue.async {
             let label =  SystemLabel(rawValue: self.label) ?? .all
             let mailboxCounter = label == .draft

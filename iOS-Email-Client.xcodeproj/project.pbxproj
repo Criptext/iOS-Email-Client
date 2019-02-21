@@ -256,6 +256,9 @@
 		A74CF31E21B5BD0800559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A758E2E7221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */; };
 		A758E2E9221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758E2E8221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift */; };
+		A758E2EB221F48E4007ECC21 /* MarkThreadsAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758E2EA221F48E4007ECC21 /* MarkThreadsAsyncTask.swift */; };
+		A758E2ED221F4B24007ECC21 /* ThreadsLabelsAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758E2EC221F4B24007ECC21 /* ThreadsLabelsAsyncTask.swift */; };
+		A758E2EF221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A758E2EE221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift */; };
 		A7621DEC2163D58900ADCD2C /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
@@ -727,6 +730,9 @@
 		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
 		A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBadgeCounterAsyncTask.swift; sourceTree = "<group>"; };
 		A758E2E8221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBadgeCountersAsyncTask.swift; sourceTree = "<group>"; };
+		A758E2EA221F48E4007ECC21 /* MarkThreadsAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkThreadsAsyncTask.swift; sourceTree = "<group>"; };
+		A758E2EC221F4B24007ECC21 /* ThreadsLabelsAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadsLabelsAsyncTask.swift; sourceTree = "<group>"; };
+		A758E2EE221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteThreadsAsyncTask.swift; sourceTree = "<group>"; };
 		A7621DEB2163D58900ADCD2C /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
 		A774DAC12196215100C411BD /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
@@ -1349,6 +1355,9 @@
 				CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */,
 				A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */,
 				A758E2E8221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift */,
+				A758E2EA221F48E4007ECC21 /* MarkThreadsAsyncTask.swift */,
+				A758E2EC221F4B24007ECC21 /* ThreadsLabelsAsyncTask.swift */,
+				A758E2EE221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift */,
 			);
 			path = AsyncTasks;
 			sourceTree = "<group>";
@@ -1938,6 +1947,7 @@
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C7F2FF120B4D2C400A2CB32 /* SettingsDevicesViewController.swift in Sources */,
+				A758E2EF221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift in Sources */,
 				7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */,
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
 				7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */,
@@ -1948,6 +1958,7 @@
 				7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */,
 				A77C30A721A4DE720031E219 /* PasscodeConfig.swift in Sources */,
 				7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */,
+				A758E2EB221F48E4007ECC21 /* MarkThreadsAsyncTask.swift in Sources */,
 				7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */,
 				7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */,
 				7CB60A8520FD306300C9090C /* CreateCustomJSONFileAsyncTask.swift in Sources */,
@@ -1964,6 +1975,7 @@
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
 				7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */,
+				A758E2ED221F4B24007ECC21 /* ThreadsLabelsAsyncTask.swift in Sources */,
 				7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */,
 				A72B864821AC93EE00DCC601 /* RetrieveContactsTask.swift in Sources */,
 				7CB44949207BBE0C009430EB /* MenuData.swift in Sources */,
