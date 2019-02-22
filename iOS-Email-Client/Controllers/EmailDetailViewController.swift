@@ -555,6 +555,10 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
 
 extension EmailDetailViewController: NavigationToolbarDelegate {
     func onBackPress() {
+        if mailboxData.selectedLabel != SystemLabel.all.id,
+            !self.emailData.emails.contains(where: {$0.labels.contains(where: {$0.id == mailboxData.selectedLabel})}) {
+            mailboxData.removeSelectedRow = true
+        }
         self.emailData.observerToken?.invalidate()
         self.emailData.observerToken = nil
         self.navigationController?.popViewController(animated: true)

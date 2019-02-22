@@ -295,7 +295,6 @@ class DBManager: SharedDB {
     }
     
     class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE, threadIds: [String] = []) -> [Thread] {
-        print(threadIds)
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.all.rejectedLabelIds
         let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@) AND NOT (threadId IN %@)", rejectedLabels, searchParam, searchParam, searchParam, threadIds).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
