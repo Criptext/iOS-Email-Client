@@ -327,6 +327,7 @@ class SendMailAsyncTask {
             shouldSend = true
         }
         if !guestEmails.isEmpty {
+            requestParams["criptextEmails"] = criptextEmails
             requestParams["guestEmail"] = guestEmails
             shouldSend = true
         }

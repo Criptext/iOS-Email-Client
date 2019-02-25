@@ -284,10 +284,14 @@ class InboxViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateBadges()
+        
+        guard mailboxData.threads.count > 0 else {
+            return
+        }
         
         guard let indexPath = self.tableView.indexPathForSelectedRow, !mailboxData.isCustomEditing else {
             mailboxData.removeSelectedRow = false
+            updateBadges()
             refreshThreadRows()
             return
         }
@@ -301,9 +305,9 @@ class InboxViewController: UIViewController {
             return
         }
         let thread = mailboxData.threads[indexPath.row]
-        guard !thread.lastEmail.isInvalidated,
-            let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
-            thread.lastEmail.key == refreshedRowThread.lastEmail.key else {
+        guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
+            thread.lastEmailKey == refreshedRowThread.lastEmailKey else {
+            updateBadges()
             refreshThreadRows()
             return
         }
@@ -630,15 +634,24 @@ extension InboxViewController{
         if mailboxData.isCustomEditing {
             didPressEdit(reload: true)
         }
+        guard labelId != mailboxData.selectedLabel else {
+            self.navigationDrawerController?.closeLeftView()
+            self.getPendingEvents(nil)
+            return
+        }
         mailboxData.selectedLabel = labelId
-        self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         selectLabel = String.localize("SHOW_ALL")
         mailboxData.cancelFetchWorker()
-        loadMails(since: Date(), clear: true)
+        mailboxData.reachedEnd = false
+        mailboxData.threads.removeAll()
         titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
         topToolbar.swapTrashIcon(labelId: labelId)
+        
+        self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.viewSetupNews()
         self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
+        self.showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+        self.tableView.reloadData()
         self.navigationDrawerController?.closeLeftView()
     }
     
@@ -647,15 +660,19 @@ extension InboxViewController{
     }
     
     func updateBadges(){
-        guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
+        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(label: mailboxData.selectedLabel)
+        badgeGetterAsyncTask.start { [weak self] (label, counter) in
+            guard let weakSelf = self,
+                weakSelf.mailboxData.selectedLabel == label else {
                 return
+            }
+            weakSelf.countBarButton.title = counter
+        }
+        
+        guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
+            return
         }
         menuViewController.refreshBadges()
-        let label =  SystemLabel(rawValue: mailboxData.selectedLabel) ?? .all
-        let mailboxCounter = label == .draft
-            ? DBManager.getThreads(from: mailboxData.selectedLabel, since: Date(), limit: 100).count
-            : DBManager.getUnreadMailsCounter(from: mailboxData.selectedLabel)
-        countBarButton.title = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
     }
     
     func updateFeedsBadge(counter: Int){
@@ -722,31 +739,53 @@ extension InboxViewController{
 //MARK: - Load mails
 extension InboxViewController{
     func loadMails(since date:Date, clear: Bool = false, limit: Int = 0){
-        let threads : [Thread]
-        let fetchedThreads = clear ? [] : mailboxData.threads.map({$0.threadId})
-        if (mailboxData.searchMode) {
-            guard let searchParam = self.searchController.searchBar.text else {
+        guard clear || mailboxData.fetchWorker == nil else {
+            return
+        }
+        let searchText = searchController.searchBar.text
+        mailboxData.cancelFetchWorker()
+        var workItem: DispatchWorkItem? = nil
+        workItem = DispatchWorkItem(block: { [weak self] in
+            guard let weakSelf = self else {
                 return
             }
-            threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads)
-        } else {
-            if(selectLabel == String.localize("SHOW_ALL")){
-                threads = DBManager.getThreads(from: mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
+            let threads : [Thread]
+            let fetchedThreads = clear ? [] : weakSelf.mailboxData.threads.map({$0.threadId})
+            if (weakSelf.mailboxData.searchMode) {
+                guard let searchParam = searchText else {
+                    return
+                }
+                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads)
+            } else {
+                if(weakSelf.selectLabel == String.localize("SHOW_ALL")){
+                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
+                }
+                else{
+                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads)
+                }
             }
-            else{
-                threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: date, threadIds: fetchedThreads)
+            guard !(workItem?.isCancelled ?? false) else {
+                return
             }
-        }
-        if(clear){
-            mailboxData.threads = threads
-        } else {
-            mailboxData.threads.append(contentsOf: threads)
-        }
-        mailboxData.reachedEnd = threads.isEmpty
-        mailboxData.fetchWorker = nil
-        self.tableView.reloadData()
-        updateBadges()
-        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+            DispatchQueue.main.async { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                if(clear){
+                    weakSelf.mailboxData.threads = threads
+                } else {
+                    weakSelf.mailboxData.threads.append(contentsOf: threads)
+                }
+                weakSelf.mailboxData.reachedEnd = threads.isEmpty
+                weakSelf.mailboxData.fetchWorker = nil
+                weakSelf.tableView.reloadData()
+                weakSelf.updateBadges()
+                weakSelf.showNoThreadsView(weakSelf.mailboxData.reachedEnd && weakSelf.mailboxData.threads.isEmpty)
+            }
+        })
+        mailboxData.fetchWorker = workItem
+        let queue = DispatchQueue(label: "com.criptext.mail.threads", qos: .userInitiated, attributes: .concurrent)
+        queue.asyncAfter(deadline: .now() + 0.1, execute: mailboxData.fetchWorker!)
     }
 }
 
@@ -833,7 +872,7 @@ extension InboxViewController: UITableViewDataSource{
                 cell.isSelected = false
             }
         } else {
-            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastEmail.fromContact)
+            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastContact)
         }
         return cell
     }
@@ -849,12 +888,7 @@ extension InboxViewController: UITableViewDataSource{
             return footerView
         }
         footerView.displayLoader()
-        if(mailboxData.fetchWorker == nil){
-            mailboxData.fetchWorker = DispatchWorkItem(block: {
-                self.loadMails(since: self.mailboxData.threads.last?.date ?? Date())
-            })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: mailboxData.fetchWorker!)
-        }
+        self.loadMails(since: self.mailboxData.threads.last?.date ?? Date())
         return footerView
     }
     
@@ -1086,7 +1120,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.navigationDrawerController?.closeRightView()
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
-            continueDraft(selectedThread.lastEmail)
+            if let lastEmail = SharedDB.getMailByKey(key: selectedThread.lastEmailKey) {
+                continueDraft(lastEmail)
+            }
             return
         }
         
@@ -1253,6 +1289,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(mailboxData.threads.count == indexPath.row && mailboxData.threads.count == 0){
+            return tableView.frame.height
+        }
         return 79.0
     }
     
@@ -1266,18 +1305,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             guard let weakSelf = self else {
                 return
             }
-            let thread = weakSelf.mailboxData.threads[indexPath.row]
-            weakSelf.moveSingleThreadTrash(threadId: thread.threadId)
+            weakSelf.moveSingleThreadTrash(indexPath: indexPath)
         }
         trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
         
         return [trashAction];
     }
 
-    func moveSingleThreadTrash(threadId: String){
+    func moveSingleThreadTrash(indexPath: IndexPath){
+        let threadId = mailboxData.threads[indexPath.row].threadId
         DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
-        self.removeThreads(threadIds: [threadId])
-        
+        self.removeThreads(indexPaths: [indexPath])
         let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
         DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
     }
@@ -1345,8 +1383,9 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
             tableView.reloadData()
         } else {
             mailboxData.reachedEnd = false
-            self.loadMails(since: Date(), clear: true)
+            loadMails(since: Date(), clear: true)
         }
+        
     }
 }
 
@@ -1356,7 +1395,10 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel)
         if let indexPaths = tableView.indexPathsForSelectedRows{
             for indexPath in indexPaths {
-                let email = mailboxData.threads[indexPath.row].lastEmail!
+                let thread = mailboxData.threads[indexPath.row]
+                guard let email = DBManager.getMail(key: thread.lastEmailKey) else {
+                    continue
+                }
                 for label in email.labels {
                     guard labelsPopover.labels.contains(where: {$0.id == label.id}) else {
                         continue
@@ -1411,66 +1453,36 @@ extension InboxViewController {
         let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         let shouldRemoveItems = removed.contains(where: {$0 == mailboxData.selectedLabel}) || forceRemove
         
-        let changedLabels = getLabelNames(added: added, removed: removed)
-        for threadId in threadIds {
-            DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.mailboxData.selectedLabel)
-        }
+        let addStarred = added.contains(SystemLabel.starred.id)
+        let removeStarred = removed.contains(SystemLabel.starred.id)
         if(shouldRemoveItems){
-            self.removeThreads(threadIds: threadIds)
+            self.removeThreads(indexPaths: indexPaths)
         } else {
-            self.updateThreads(threadIds: threadIds)
+            for indexPath in indexPaths {
+                let thread = mailboxData.threads[indexPath.row]
+                if addStarred {
+                    thread.isStarred = true
+                } else if removeStarred {
+                    thread.isStarred = false
+                }
+            }
+            tableView.reloadRows(at: indexPaths, with: .automatic)
+            updateBadges()
         }
         
-        let eventData = EventData.Peer.ThreadLabels(threadIds: eventThreadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
+        let threadLabelsAsyncTask = ThreadsLabelsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, added: added, removed: removed, currentLabel: mailboxData.selectedLabel)
+        threadLabelsAsyncTask.start() { [weak self] in
+            self?.updateBadges()
+        }
     }
     
-    func removeThreads(threadIds: [String]){
-        var indexesToRemove = [IndexPath]()
-        for threadId in threadIds {
-            guard let index = mailboxData.emailArray.index(where: {$0.threadId == threadId}) else {
-                continue
-            }
-            indexesToRemove.append(IndexPath(row: index, section: 0))
+    func removeThreads(indexPaths: [IndexPath]){
+        let sortedIndexPaths = indexPaths.sorted(by: {$0.row > $1.row})
+        for indexPath in sortedIndexPaths {
+            mailboxData.threads.remove(at: indexPath.row)
         }
-        let sortedIndexPaths = indexesToRemove.sorted(by: {$0.row > $1.row})
-        for path in sortedIndexPaths {
-            mailboxData.threads.remove(at: path.row)
-        }
-        tableView.deleteRows(at: indexesToRemove, with: .left)
-        updateBadges()
+        tableView.deleteRows(at: sortedIndexPaths, with: .left)
         showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
-    }
-    
-    func updateThreads(threadIds: [String]){
-        var indexesToUpdate = [IndexPath]()
-        for threadId in threadIds {
-            guard let index = mailboxData.emailArray.index(where: {$0.threadId == threadId}) else {
-                continue
-            }
-            indexesToUpdate.append(IndexPath(row: index, section: 0))
-        }
-        tableView.reloadRows(at: indexesToUpdate, with: .fade)
-        updateBadges()
-        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
-    }
-    
-    func getLabelNames(added: [Int], removed: [Int]) -> ([String], [String]){
-        var addedNames = [String]()
-        var removedNames = [String]()
-        for id in added {
-            guard let label = DBManager.getLabel(id) else {
-                continue
-            }
-            addedNames.append(label.text)
-        }
-        for id in removed {
-            guard let label = DBManager.getLabel(id) else {
-                continue
-            }
-            removedNames.append(label.text)
-        }
-        return (addedNames, removedNames)
     }
     
     func deleteThreads(){
@@ -1481,13 +1493,12 @@ extension InboxViewController {
         self.didPressEdit(reload: true)
         let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
         let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
-        self.removeThreads(threadIds: threadIds)
-        for threadId in threadIds {
-            DBManager.deleteThreads(threadId, label: self.mailboxData.selectedLabel)
-        }
+        self.removeThreads(indexPaths: indexPaths)
         
-        let eventData = EventData.Peer.ThreadDeleted(threadIds: eventThreadIds)
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
+        let deleteThreadsAsyncTask = DeleteThreadsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, currentLabel: mailboxData.selectedLabel)
+        deleteThreadsAsyncTask.start() { [weak self] in
+            self?.updateBadges()
+        }
     }
 }
 
@@ -1527,26 +1538,24 @@ extension InboxViewController: NavigationToolbarDelegate {
         guard let indexPaths = tableView.indexPathsForSelectedRows else {
             return
         }
-        let threadIds = indexPaths.map({mailboxData.threads[$0.row].threadId})
-        let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
+        var threadIds = [String]()
+        var eventThreadIds = [String]()
         let unread = self.mailboxData.unreadMails <= 0
-        for threadId in threadIds {
-            guard let thread = self.mailboxData.threads.first(where: {$0.threadId == threadId}) else {
-                continue
-            }
-            DBManager.updateThread(threadId: threadId, currentLabel: self.mailboxData.selectedLabel, unread: unread)
+        for indexPath in indexPaths {
+            let thread = mailboxData.threads[indexPath.row]
             thread.unread = unread
+            
+            threadIds.append(thread.threadId)
+            if thread.canTriggerEvent {
+                eventThreadIds.append(thread.threadId)
+            }
         }
-        self.updateThreads(threadIds: threadIds)
         self.didPressEdit(reload: true)
         
-        let params = ["cmd": Event.Peer.threadsUnread.rawValue,
-                      "params": [
-                        "unread": unread ? 1 : 0,
-                        "threadIds": eventThreadIds
-                        ]
-            ] as [String : Any]
-        DBManager.createQueueItem(params: params)
+        let markThreadAsyncTask = MarkThreadsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, unread: unread, currentLabel: mailboxData.selectedLabel)
+        markThreadAsyncTask.start() { [weak self] in
+            self?.updateBadges()
+        }
     }
     
     func onMoreOptions() {
@@ -1605,12 +1614,9 @@ extension InboxViewController: ComposerSendMailDelegate {
                 return
             }
             guard case let .SuccessInt(key) = responseData,
-                let newEmail = DBManager.getMail(key: key) else {
+                DBManager.getMail(key: key) != nil else {
                 weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
                 return
-            }
-            if let index = weakSelf.mailboxData.threads.index(where: {!$0.lastEmail.isInvalidated && $0.threadId == newEmail.threadId}) {
-                weakSelf.mailboxData.threads[index].lastEmail = newEmail
             }
             weakSelf.refreshThreadRows()
             weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
@@ -1632,7 +1638,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func deleteDraft(draftId: Int) {
-        guard let draftIndex = mailboxData.threads.index(where: {$0.lastEmail.key == draftId}) else {
+        guard let draftIndex = mailboxData.threads.index(where: {$0.lastEmailKey == draftId}) else {
                 return
         }
         mailboxData.threads.remove(at: draftIndex)
