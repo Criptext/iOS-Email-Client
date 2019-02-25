@@ -450,7 +450,7 @@
 			remoteGlobalIDString = A77C30AD21A5055A0031E219;
 			remoteInfo = ShareExtension;
 		};
-		A7CC38092190D9DA00C8355A /* PBXContainerItemProxy */ = {
+		A7A388CC2220E9F4005F2E87 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 41B6AAA42017987500D428B7 /* Project object */;
 			proxyType = 1;
@@ -1470,7 +1470,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A7CC380A2190D9DA00C8355A /* PBXTargetDependency */,
+				A7A388CD2220E9F4005F2E87 /* PBXTargetDependency */,
 				A77C30B721A5055A0031E219 /* PBXTargetDependency */,
 			);
 			name = "iOS-Email-Client";
@@ -2136,10 +2136,10 @@
 			target = A77C30AD21A5055A0031E219 /* ShareExtension */;
 			targetProxy = A77C30B621A5055A0031E219 /* PBXContainerItemProxy */;
 		};
-		A7CC380A2190D9DA00C8355A /* PBXTargetDependency */ = {
+		A7A388CD2220E9F4005F2E87 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7CC38032190D9D900C8355A /* NotificationExtension */;
-			targetProxy = A7CC38092190D9DA00C8355A /* PBXContainerItemProxy */;
+			targetProxy = A7A388CC2220E9F4005F2E87 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

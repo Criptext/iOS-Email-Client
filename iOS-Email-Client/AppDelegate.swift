@@ -464,8 +464,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return snackbarController
     }
     
-    
-    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -627,8 +625,38 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Messaging.messaging().appDidReceiveMessage(userInfo)
-        completionHandler(.noData)
+        print(userInfo)
+        guard let inboxVC = getInboxVC(),
+            let keyString = userInfo["metadataKey"] as? String,
+            let key = Int(keyString) else {
+                return
+        }
+        inboxVC.getPendingEvents(nil) { (success) in
+            //self.createEmailNotification(emailKey: key)
+            completionHandler(.newData)
+        }
+    }
+    
+    func createEmailNotification(emailKey: Int) {
+        SharedDB.refresh()
+        guard let email = DBManager.getMail(key: emailKey) else {
+            return
+        }
+        let notification = UNMutableNotificationContent()
+        notification.body = email.preview
+        notification.title = email.fromAddress
+        notification.subtitle = email.subject
+        notification.categoryIdentifier = "OPEN_THREAD"
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: "\(emailKey)", content: notification, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        
+        let trigger2 = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
+        let request2 = UNNotificationRequest(identifier: "\(emailKey)", content: notification, trigger: trigger2)
+        
+        UNUserNotificationCenter.current().add(request2, withCompletionHandler: nil)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

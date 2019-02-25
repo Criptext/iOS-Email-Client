@@ -248,12 +248,14 @@ class NewEmailHandler {
     }
     
     func getContentPreview(content: String) -> (String, String) {
+        /*let preview = String(content.prefix(self.PREVIEW_SIZE))
+        return (preview, content)*/
         do {
-            let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src").addProtocols("img", "src", "cid")
+            //let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src").addProtocols("img", "src", "cid")
             let doc: Document = try SwiftSoup.parse(content)
             let preview = try String(doc.text().prefix(self.PREVIEW_SIZE))
-            let cleanContent = try SwiftSoup.clean(content, allowList)!
-            return (preview, cleanContent)
+            //let cleanContent = try SwiftSoup.clean(content, allowList)! //error triggered
+            return (preview, content)
         } catch {
             let preview = String(content.prefix(self.PREVIEW_SIZE))
             return (preview, content)
