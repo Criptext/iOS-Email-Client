@@ -167,14 +167,19 @@ class SharedAPI {
             versionHeader: apiVersion,
             language: Env.language
         ]
+        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                return
+            }
             let responseData = handleResponse(response)
-            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+            self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
                 if let refreshData = refreshResponseData {
                     completion(refreshData)
                     return
                 }
-                self.getEvents(account: account, completion: completion)
+                self.getEvents(account: refdAccount, completion: completion)
             }
         }
     }
@@ -186,14 +191,19 @@ class SharedAPI {
             versionHeader: apiVersion,
             language: Env.language
         ]
+        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
+            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                return
+            }
             let responseData = handleResponse(response)
-            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+            self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
                 if let refreshData = refreshResponseData {
                     completion(refreshData)
                     return
                 }
-                self.getEmailBody(metadataKey: metadataKey, account: account, completion: completion)
+                self.getEmailBody(metadataKey: metadataKey, account: refdAccount, completion: completion)
             }
         }
     }

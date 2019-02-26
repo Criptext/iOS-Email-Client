@@ -13,6 +13,7 @@ class NewEmailHandler {
     
     var database: SharedDB.Type = SharedDB.self
     var api: SharedAPI.Type = SharedAPI.self
+    var signal: SignalHandler.Type = SignalHandler.self
     let username: String
     let PREVIEW_SIZE = 300
     let queue: DispatchQueue?
@@ -171,7 +172,7 @@ class NewEmailHandler {
         }
         var trueBody: String? = nil
         tryBlock {
-            trueBody = SignalHandler.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
+            trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
         return trueBody
     }
@@ -248,14 +249,12 @@ class NewEmailHandler {
     }
     
     func getContentPreview(content: String) -> (String, String) {
-        /*let preview = String(content.prefix(self.PREVIEW_SIZE))
-        return (preview, content)*/
         do {
-            //let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src").addProtocols("img", "src", "cid")
+            let allowList = try SwiftSoup.Whitelist.relaxed().addTags("style", "title", "header").addAttributes(":all", "class", "style", "src").addProtocols("img", "src", "cid")
             let doc: Document = try SwiftSoup.parse(content)
             let preview = try String(doc.text().prefix(self.PREVIEW_SIZE))
-            //let cleanContent = try SwiftSoup.clean(content, allowList)! //error triggered
-            return (preview, content)
+            let cleanContent = try SwiftSoup.clean(content, allowList)! //error triggered
+            return (preview, cleanContent)
         } catch {
             let preview = String(content.prefix(self.PREVIEW_SIZE))
             return (preview, content)

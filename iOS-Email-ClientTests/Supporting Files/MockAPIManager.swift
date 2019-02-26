@@ -13,7 +13,7 @@ import Alamofire
 class MockAPIManager: APIManager {
     
     override class func getEmailBody(metadataKey: Int, account: Account, queue: DispatchQueue? = .main, completion: @escaping ((ResponseData) -> Void)){
-        completion(ResponseData.SuccessString("ytw8v0ntriuhtkirglsdfnakncbdjshndls"))
+        completion(ResponseData.SuccessDictionary(["body": "ytw8v0ntriuhtkirglsdfnakncbdjshndls"]))
     }
     
     override class func acknowledgeEvents(eventIds: [Int32], token: String){

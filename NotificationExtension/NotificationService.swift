@@ -26,51 +26,6 @@ class NotificationService: UNNotificationServiceExtension {
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         contentHandler(request.content)
-        /*self.contentHandler = contentHandler
-        let defaults = CriptextDefaults()
-        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        guard let bestAttemptContent = bestAttemptContent,
-            let username = defaults.activeAccount,
-            let account = SharedDB.getAccountByUsername(username),
-            !defaults.appStateActive else {
-                contentHandler(request.content)
-                return
-        }
-        SharedAPI.getEvents(account: account) { [weak self] (responseData) in
-            guard let weakSelf = self else {
-                return
-            }
-            let userInfo = request.content.userInfo
-            guard case let .SuccessArray(events) = responseData,
-                let keyString = userInfo["metadataKey"] as? String,
-                let key = Int(keyString) else {
-                    bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
-                    bestAttemptContent.title = "\(username)\(Env.domain)"
-                    bestAttemptContent.body = String.localize("You may have new emails")
-                    contentHandler(bestAttemptContent)
-                    return
-            }
-            weakSelf.handleEvents(events, username: username, for: key) { responseEmail in
-                guard let email = responseEmail ?? SharedDB.getMailByKey(key: key)  else {
-                    bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
-                    bestAttemptContent.title = "\(username)\(Env.domain)"
-                    bestAttemptContent.body = String.localize("You may have new emails")
-                    contentHandler(bestAttemptContent)
-                    return
-                }
-                if defaults.previewDisable {
-                    bestAttemptContent.title = email.fromContact.displayName
-                    bestAttemptContent.subtitle = "NO QUIERO NADA"
-                    bestAttemptContent.body = email.subject
-                } else {
-                    bestAttemptContent.title = email.fromContact.displayName
-                    bestAttemptContent.subtitle = email.subject
-                    bestAttemptContent.body = email.preview
-                }
-                bestAttemptContent.badge = NSNumber(integerLiteral: SharedDB.getUnreadMailsCounter(from: SystemLabel.inbox.id))
-                contentHandler(bestAttemptContent)
-            }
-        }*/
     }
     
     func handleEvents(_ events: [[String: Any]], username: String, for key: Int, completion: @escaping (_ email: Email?) -> Void){
