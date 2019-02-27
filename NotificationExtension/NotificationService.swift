@@ -25,7 +25,8 @@ class NotificationService: UNNotificationServiceExtension {
     }
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        self.contentHandler = contentHandler
+        contentHandler(request.content)
+        /*self.contentHandler = contentHandler
         let defaults = CriptextDefaults()
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         guard let bestAttemptContent = bestAttemptContent,
@@ -35,7 +36,10 @@ class NotificationService: UNNotificationServiceExtension {
                 contentHandler(request.content)
                 return
         }
-        SharedAPI.getEvents(account: account) { (responseData) in
+        SharedAPI.getEvents(account: account) { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
             let userInfo = request.content.userInfo
             guard case let .SuccessArray(events) = responseData,
                 let keyString = userInfo["metadataKey"] as? String,
@@ -46,7 +50,7 @@ class NotificationService: UNNotificationServiceExtension {
                     contentHandler(bestAttemptContent)
                     return
             }
-            self.handleEvents(events, username: username, for: key) { responseEmail in
+            weakSelf.handleEvents(events, username: username, for: key) { responseEmail in
                 guard let email = responseEmail ?? SharedDB.getMailByKey(key: key)  else {
                     bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
                     bestAttemptContent.title = "\(username)\(Env.domain)"
@@ -56,6 +60,7 @@ class NotificationService: UNNotificationServiceExtension {
                 }
                 if defaults.previewDisable {
                     bestAttemptContent.title = email.fromContact.displayName
+                    bestAttemptContent.subtitle = "NO QUIERO NADA"
                     bestAttemptContent.body = email.subject
                 } else {
                     bestAttemptContent.title = email.fromContact.displayName
@@ -65,7 +70,7 @@ class NotificationService: UNNotificationServiceExtension {
                 bestAttemptContent.badge = NSNumber(integerLiteral: SharedDB.getUnreadMailsCounter(from: SystemLabel.inbox.id))
                 contentHandler(bestAttemptContent)
             }
-        }
+        }*/
     }
     
     func handleEvents(_ events: [[String: Any]], username: String, for key: Int, completion: @escaping (_ email: Email?) -> Void){
