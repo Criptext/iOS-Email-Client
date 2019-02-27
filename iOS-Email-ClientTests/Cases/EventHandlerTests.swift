@@ -12,9 +12,9 @@ import XCTest
 
 class EventHandlerTests: XCTestCase {
     
-    let myAccount = Account()
+    var myAccount: Account!
     let eventsString = """
-        {"events":[{"rowid":1213,"cmd":101,"params":{"messageType":3,"threadId":"<1528214090491.099438@jigl.com>","senderDeviceId":4,"subject":"This is a big email","from":"The Velvet <velvet@jigl.com>","to":"velvet@jigl.com","cc":"","bcc":"","messageId":"<1528214090491.099438@jigl.com>","date":"2018-06-05 15:54:50","metadataKey":243,"files":[{"timestamp":"2018-06-05T15:54:50.749Z","token":"9eicctmj1xfji1v7bfp6w5fem0vii7","read_only":0,"type":"image","url":"https://services.criptext.com/viewer/9eicctmj1xfji1v7bfp6w5fem0vii7","ephemeral":0,"status":1,"name":"Criptext_Image_2018_06_05.png","size":1318156},{"timestamp":"2018-06-05T15:54:50.751Z","token":"wzxathnpxg8ji1v74wzbczf5gvrbxt","read_only":0,"type":"image","url":"https://services.criptext.com/viewer/wzxathnpxg8ji1v74wzbczf5gvrbxt","ephemeral":0,"status":1,"name":"Criptext_Image_2018_06_05.png","size":1180191}]}}]}
+        {"events":[{"rowid":1213,"cmd":101,"params":{"messageType":3,"threadId":"<1528214090491.099438@jigl.com>","senderDeviceId":4,"subject":"This is a big email","from":"The Velvet <velvet@jigl.com>","to":"[velvet@jigl.com]","cc":"","bcc":"","messageId":"<1528214090491.099438@jigl.com>","date":"2018-06-05 15:54:50","metadataKey":243,"guestEncryption":0,"files":[{"timestamp":"2018-06-05T15:54:50.749Z","token":"9eicctmj1xfji1v7bfp6w5fem0vii7","read_only":0,"type":"image","url":"https://services.criptext.com/viewer/9eicctmj1xfji1v7bfp6w5fem0vii7","ephemeral":0,"status":1,"name":"Criptext_Image_2018_06_05.png","size":1318156},{"timestamp":"2018-06-05T15:54:50.751Z","token":"wzxathnpxg8ji1v74wzbczf5gvrbxt","read_only":0,"type":"image","url":"https://services.criptext.com/viewer/wzxathnpxg8ji1v74wzbczf5gvrbxt","ephemeral":0,"status":1,"name":"Criptext_Image_2018_06_05.png","size":1180191}]}}]}
         """
     
     let opensString = """
@@ -24,6 +24,12 @@ class EventHandlerTests: XCTestCase {
     override func setUp() {
         DBManager.destroy()
         DBManager.createSystemLabels()
+        
+        let signupData = SignUpData(username: "test", password: "", fullname: "Test", optionalEmail: nil)
+        signupData.token = "<test_token>"
+        myAccount = SignUpData.createAccount(from: signupData)
+        DBManager.store(myAccount)
+        FileUtils.deleteAccountDirectory(account: myAccount)
     }
     
     func createExistingEmail(){
@@ -44,6 +50,15 @@ class EventHandlerTests: XCTestCase {
         eventHandler.signalHandler = MockSignalHandler.self
         let expect = expectation(description: "Callback runs after handling events")
         eventHandler.handleEvents(events: eventsArray) { result in
+            guard let email = DBManager.getMail(key: 243) else {
+                XCTFail("Unable to save email")
+                return
+            }
+            XCTAssert(email.fromAddress == "The Velvet <velvet@jigl.com>")
+            XCTAssert(email.preview == "This is a message inside paragraph tags! And I'm just a paragraph Link")
+            
+            let emailBody = FileUtils.getBodyFromFile(account: self.myAccount, metadataKey: email.key.description)
+            XCTAssert(emailBody == "<p>This is a message inside paragraph tags!</p> \n<div>\n <p>And I\'m just a paragraph</p>\n</div> \n<a href=\"http://www.criptext.com\"> Link </a> \n<img src=\"http://www.domain.com/path/to/image.png\">")
             expect.fulfill()
         }
         waitForExpectations(timeout: 10) { (error) in

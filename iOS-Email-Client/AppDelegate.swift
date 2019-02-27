@@ -625,14 +625,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print(userInfo)
         guard let inboxVC = getInboxVC(),
             let keyString = userInfo["metadataKey"] as? String,
             let key = Int(keyString) else {
                 return
         }
         inboxVC.getPendingEvents(nil) { (success) in
-            //self.createEmailNotification(emailKey: key)
+            self.createEmailNotification(emailKey: key)
             completionHandler(.newData)
         }
     }
@@ -652,11 +651,6 @@ extension AppDelegate: MessagingDelegate {
         let request = UNNotificationRequest(identifier: "\(emailKey)", content: notification, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-        
-        let trigger2 = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
-        let request2 = UNNotificationRequest(identifier: "\(emailKey)", content: notification, trigger: trigger2)
-        
-        UNUserNotificationCenter.current().add(request2, withCompletionHandler: nil)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

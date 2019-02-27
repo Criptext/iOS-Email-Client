@@ -12,7 +12,7 @@ import SignalProtocolFramework
 class Dummy {
 
     let store = AxolotlInMemoryStore()
-    let deviceId : Int32 = 1
+    let deviceId : Int32
     let preKeyId : Int32 = 1
     let signedKeyId : Int32 = 1
     let preKeyPair: ECKeyPair
@@ -20,16 +20,18 @@ class Dummy {
     let signedPreKeySignature: Data
     let recipientId: String
     
-    init(recipientId: String){
+    init(recipientId: String, deviceId: Int32 = 1){
+        self.deviceId = deviceId
         self.recipientId = recipientId
+        
         preKeyPair = Curve25519.generateKeyPair()
         signedPreKeyPair = Curve25519.generateKeyPair()
         signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey().prependByte(), with: store.identityKeyPair())
         
-        let preKey: PreKeyBundle = PreKeyBundle.init(registrationId: store.localRegistrationId(), deviceId: deviceId, preKeyId: preKeyId, preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: store.identityKeyPair()?.publicKey())
+        let preKeyBundle: PreKeyBundle = PreKeyBundle.init(registrationId: store.localRegistrationId(), deviceId: deviceId, preKeyId: preKeyId, preKeyPublic: preKeyPair.publicKey(), signedPreKeyPublic: signedPreKeyPair.publicKey(), signedPreKeyId: signedKeyId, signedPreKeySignature: signedPreKeySignature, identityKey: store.identityKeyPair()?.publicKey())
         
-        self.store.storePreKey(preKeyId, preKeyRecord: PreKeyRecord.init(id: preKey.preKeyId, keyPair: preKeyPair))
-        self.store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: SignedPreKeyRecord.init(id: signedKeyId, keyPair: preKeyPair, signature: signedPreKeySignature, generatedAt: Date()))
+        store.storePreKey(preKeyId, preKeyRecord: PreKeyRecord.init(id: preKeyBundle.preKeyId, keyPair: preKeyPair))
+        store.storeSignedPreKey(signedKeyId, signedPreKeyRecord: SignedPreKeyRecord.init(id: signedKeyId, keyPair: signedPreKeyPair, signature: signedPreKeySignature, generatedAt: Date()))
     }
     
     func getKeyBundle() -> [String: Any]{

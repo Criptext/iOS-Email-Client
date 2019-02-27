@@ -141,6 +141,8 @@ class EventHandler {
     
     func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Event.EventResult) -> Void){
         let handler = NewEmailHandler(username: self.username, queue: self.queue)
+        handler.api = self.apiManager
+        handler.signal = self.signalHandler
         handler.command(params: params) { (result) in
             guard let email = result.email else {
                 finishCallback(result.success, .Empty)
