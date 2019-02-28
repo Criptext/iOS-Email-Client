@@ -183,7 +183,7 @@ class EmailTableViewCell: UITableViewCell{
         self.initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
         self.initialsImageView.layer.borderWidth = 0.0
         if(!emailContact.isEmpty){
-            Utils.setProfilePictureImage(imageView: self.initialsImageView, contact: email.fromContact)
+            UIUtils.setProfilePictureImage(imageView: self.initialsImageView, contact: email.fromContact)
         }
         let size = dateLabel.sizeThatFits(CGSize(width: 100.0, height: 19))
         dateWidthConstraint.constant = size.width

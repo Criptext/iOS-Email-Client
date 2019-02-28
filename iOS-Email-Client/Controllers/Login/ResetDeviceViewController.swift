@@ -174,7 +174,7 @@ class ResetDeviceViewController: UIViewController{
         errorMark.isHidden = !show
         errorLabel.isHidden = !show
         if let errorMessage = message {
-            labelHeightConstraint.constant = Utils.getLabelHeight(errorMessage, width: errorLabel.frame.width, fontSize: errorLabel.fontSize)
+            labelHeightConstraint.constant = UIUtils.getLabelHeight(errorMessage, width: errorLabel.frame.width, fontSize: errorLabel.fontSize)
         }
         errorLabel.text = message ?? ""
     }

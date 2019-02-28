@@ -776,7 +776,7 @@ extension ComposeViewController: UITableViewDataSource {
             
             cell.nameLabel?.text = contact.displayName
             cell.emailLabel?.text = contact.email
-            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: contact)
+            UIUtils.setProfilePictureImage(imageView: cell.avatarImageView, contact: contact)
             return cell
         }
         
@@ -794,7 +794,7 @@ extension ComposeViewController: UITableViewDataSource {
         cell.progressView.isHidden = attachment.requestStatus == .finish
         cell.successImageView.isHidden = attachment.requestStatus != .finish
         
-        cell.typeImageView.image = Utils.getImageByFileType(attachment.mimeType)
+        cell.typeImageView.image = UIUtils.getImageByFileType(attachment.mimeType)
         cell.delegate = self
         
         return cell

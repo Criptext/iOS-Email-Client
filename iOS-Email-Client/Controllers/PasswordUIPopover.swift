@@ -47,10 +47,10 @@ class PasswordUIPopover: BaseUIPopover {
         }
         if let attrMessage = initialAttrMessage {
             passwordMessageLabel.attributedText = attrMessage
-            let height = Utils.getLabelHeight(attrMessage.string, width: passwordMessageLabel.frame.width, fontSize: 14)
+            let height = UIUtils.getLabelHeight(attrMessage.string, width: passwordMessageLabel.frame.width, fontSize: 14)
             messageHeightConstraint.constant = height
             if let title = initialTitle {
-                titleHeightConstraint.constant = Utils.getLabelHeight(title, width: passwordMessageLabel.frame.width, fontSize: 16) + 30
+                titleHeightConstraint.constant = UIUtils.getLabelHeight(title, width: passwordMessageLabel.frame.width, fontSize: 16) + 30
             }
         } else if let message = initialMessage {
             passwordMessageLabel.text = message

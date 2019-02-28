@@ -396,28 +396,28 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         var sumHeights: CGFloat = 0
         let width = self.view.frame.size.width - 90
         for contact in email.getContacts(type: .to) {
-            let height = Utils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
+            let height = UIUtils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
             contactsHeight[contact.email] = height
             toHeigth += height
             sumHeights += height
         }
         for contact in email.getContacts(type: .cc) {
-            let height = Utils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
+            let height = UIUtils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
             contactsHeight[contact.email] = height
             ccHeigth += height
             sumHeights += height
         }
         for contact in email.getContacts(type: .bcc) {
-            let height = Utils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
+            let height = UIUtils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
             contactsHeight[contact.email] = height
             bccHeigth += height
             sumHeights += height
         }
         
-        let myContact = ContactUtils.getStringEmailName(contact: email.fromAddress)
+        let myContact = !email.fromAddress.isEmpty ? ContactUtils.getStringEmailName(contact: email.fromAddress) : (email.fromContact.email, email.fromContact.displayName)
         let name = ContactUtils.checkIfFromHasName(email.fromAddress) ? myContact.1 : email.fromContact.displayName
         let emailString = ContactUtils.checkIfFromHasName(email.fromAddress) ? myContact.0 : email.fromContact.email
-        let fromHeight = Utils.getLabelHeight("\(name) \(emailString)", width: width, fontSize: 13.0) + 8
+        let fromHeight = UIUtils.getLabelHeight("\(name) \(emailString)", width: width, fontSize: 13.0) + 8
         sumHeights += fromHeight
         
         return (contactsHeight, fromHeight, toHeigth, ccHeigth, bccHeigth, sumHeights)

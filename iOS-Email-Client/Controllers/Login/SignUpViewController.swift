@@ -125,7 +125,7 @@ class SignUpViewController: UIViewController{
     func checkUsername(){
         usernameTextField.text = usernameTextField.text?.lowercased()
         guard let username = usernameTextField.text,
-            isValidUsername(username) else {
+            Utils.isValidUsername(username) else {
             let inputError = String.localize("VALID_EMAIL_CONDITION")
             usernameTextField.setStatus(.invalid, inputError)
             return
@@ -280,13 +280,6 @@ class SignUpViewController: UIViewController{
         passwordTextField.placeholderAnimation = .hidden
         confirmPasswordTextField.placeholderAnimation = .hidden
         emailTextField.placeholderAnimation = .hidden
-    }
-    
-    func isValidUsername(_ testStr:String) -> Bool {
-        let emailRegEx = "^[a-z][.a-z0-9_-]+[a-z0-9]$"
-        
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: testStr)
     }
     
     func checkToEnableDisableCreateButton(){

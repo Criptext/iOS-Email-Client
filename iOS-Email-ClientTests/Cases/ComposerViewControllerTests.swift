@@ -12,40 +12,35 @@ import XCTest
 
 class ComposerViewControllerTests: XCTestCase {
     
-    var emailString = """
-    {"deviceId": 10, "type": "to", "body": "MwgLEiEFYdp7w03fKYi1EzQorTLeo6Ltdr7YdMJrqJxWTPTymhkaIQXpYvZ3X6Te9HxglJ5dJVoDqaKGNBsVXp9pb0avv+9OEiJCMwohBTcwupSpytHYsa0JQkCWpD7xN2evMl3sWly9TxihRdoNEAEYACIQxRpkh7PlNjZFvC7FJtkINzEQVcd4o1qoKJlUMGM=", "messageType": 3, "recipientId": "lucifer"}
-    """
-    var composerVC: ComposeViewController!
-    
     override func setUp() {
         super.setUp()
-        
-        guard composerVC == nil else {
-            return
-        }
+        let defaults = CriptextDefaults()
+        defaults.removeConfig()
         DBManager.destroy()
-        for systemLabel in SystemLabel.array {
-            let newLabel = Label(systemLabel.description)
-            newLabel.id = systemLabel.id
-            newLabel.color = systemLabel.hexColor
-            newLabel.type = "system"
-            DBManager.store(newLabel)
-        }
+        
+        DBManager.createSystemLabels()
         let account = Account()
         account.username = "myself"
         account.deviceId = 1
         DBManager.store(account)
         
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        groupDefaults.set(account.username, forKey: "activeAccount")
+        defaults.activeAccount = account.username
+    }
+    
+    override func tearDown() {
+        super.tearDown()
         
+        CriptextDefaults().removeConfig()
+    }
+    
+    func testPassEmailToDelegate(){
         let testContact = Contact()
         testContact.email = "test@criptext.com"
         testContact.displayName = "Test"
-    
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        composerVC = navComposeVC.viewControllers.first as? ComposeViewController
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         let composerData = ComposerData()
         composerData.initToContacts = Array([testContact])
         composerData.initSubject = "test subject"
@@ -54,9 +49,7 @@ class ComposerViewControllerTests: XCTestCase {
         
         composerVC.loadView()
         composerVC.viewDidLoad()
-    }
-    
-    func testPassEmailToDelegate(){
+        
         composerVC.setupInitContacts()
         composerVC.prepareMail()
         guard let email = composerVC.composerData.emailDraft else {
@@ -66,5 +59,42 @@ class ComposerViewControllerTests: XCTestCase {
         
         XCTAssert(email.fromContact.email == "myself\(Constants.domain)")
         XCTAssert(email.subject == "test subject")
+    }
+    
+    func testPassDraftToComposer() {
+        
+        let draft = DBFactory.createAndStoreEmail(key: 1234, preview: "This is a Draft", subject: "Draft", fromAddress: "test <test@criptext.com>")
+        DBManager.addRemoveLabelsFromEmail(draft, addedLabelIds: [SystemLabel.draft.id], removedLabelIds: [])
+        
+        let testContact1 = DBFactory.createAndStoreContact(email: "test1@criptext.com", name: "Test1")
+        let testContact2 = DBFactory.createAndStoreContact(email: "test2@criptext.com", name: "Test2")
+        DBFactory.createAndStoreEmailContact(email: draft, contact: testContact1, type: "from")
+        DBFactory.createAndStoreEmailContact(email: draft, contact: testContact2, type: "to")
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
+        let composerData = ComposerData()
+        composerData.initToContacts = Array(draft.getContacts(type: .to))
+        composerData.initCcContacts = Array(draft.getContacts(type: .cc))
+        composerData.initSubject = draft.subject
+        composerData.emailDraft = draft
+        if(!draft.threadId.isEmpty){
+            composerData.threadId = draft.threadId
+        }
+        composerVC.composerData = composerData
+        
+        composerVC.loadView()
+        composerVC.viewDidLoad()
+        
+        composerVC.setupInitContacts()
+        composerVC.prepareMail()
+        guard let email = composerVC.composerData.emailDraft else {
+            XCTFail("Unable to build email")
+            return
+        }
+        
+        XCTAssert(draft.isInvalidated)
+        XCTAssert(email.key != 1234)
     }
 }

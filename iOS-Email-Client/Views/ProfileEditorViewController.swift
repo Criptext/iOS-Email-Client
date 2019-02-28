@@ -46,7 +46,7 @@ class ProfileEditorViewController: UIViewController {
         self.attachmentContainerBottomConstraint.constant = -100
         nameLabel.text = myAccount.name
         emailLabel.text = "\(myAccount.username)\(Constants.domain)"
-        Utils.deleteSDWebImageCache()
+        UIUtils.deleteSDWebImageCache()
         setProfileImage()
         applyTheme()
     }
@@ -139,7 +139,7 @@ class ProfileEditorViewController: UIViewController {
                 return
             }
             self!.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_deleted"), style: .alert)
-            Utils.deleteSDWebImageCache()
+            UIUtils.deleteSDWebImageCache()
             self!.resetProfileImage()
         }
     }
@@ -163,7 +163,7 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func changeProfilePicture(image: UIImage, imageName: String){
-        let image = Utils().resizeImage(image: image, targetSize: CGSize(width: 250, height: 250))
+        let image = UIUtils.resizeImage(image: image, targetSize: CGSize(width: 250, height: 250))
         let data = UIImagePNGRepresentation(image)
         let inputStream = InputStream.init(data: data!)
         let params = [
@@ -178,7 +178,7 @@ class ProfileEditorViewController: UIViewController {
                 return
             }
             self.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_updated"), style: .alert)
-            Utils.deleteSDWebImageCache()
+            UIUtils.deleteSDWebImageCache()
         }
     }
     

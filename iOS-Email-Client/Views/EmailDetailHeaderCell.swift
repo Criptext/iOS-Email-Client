@@ -61,7 +61,7 @@ class EmailDetailHeaderCell: UITableViewHeaderFooterView{
         let mySubject = subject.isEmpty ? String.localize("NO_SUBJECT") : subject
         subjectLabel.text = mySubject
         subjectLabel.numberOfLines = 0
-        let myHeight = Utils.getLabelHeight(mySubject, width: subjectLabel.frame.width, fontSize: 21.0)
+        let myHeight = UIUtils.getLabelHeight(mySubject, width: subjectLabel.frame.width, fontSize: 21.0)
         subjectHeightConstraint.constant = myHeight
     }
     

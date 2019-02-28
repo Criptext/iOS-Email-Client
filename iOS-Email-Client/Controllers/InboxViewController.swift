@@ -872,7 +872,7 @@ extension InboxViewController: UITableViewDataSource{
                 cell.isSelected = false
             }
         } else {
-            Utils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastContact)
+            UIUtils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastContact)
         }
         return cell
     }
