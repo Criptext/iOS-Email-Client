@@ -26,7 +26,9 @@ protocol EmailTableViewCellDelegate: class {
 class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var counterLabelDown: UILabel!
     @IBOutlet weak var counterLabelUp: UILabel!
+    @IBOutlet weak var upContainerView: UIView!
     @IBOutlet weak var upView: UIView!
+    @IBOutlet weak var bottomContainerView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var infoViewContainer: UIView!
     @IBOutlet weak var previewLabel: UILabel!
@@ -97,8 +99,23 @@ class EmailTableViewCell: UITableViewCell{
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.scrollView.contentSize), options: .new, context: nil)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(expandView(sender:)))
-        upView.addGestureRecognizer(tapGesture)
-        bottomView.addGestureRecognizer(tapGesture)
+        upContainerView.addGestureRecognizer(tapGesture)
+        bottomContainerView.addGestureRecognizer(tapGesture)
+    }
+    
+    func hideCollapse() {
+        bottomContainerView.isHidden = true
+        upContainerView.isHidden = true
+    }
+    
+    func showTopCollapse() {
+        bottomContainerView.isHidden = true
+        upContainerView.isHidden = false
+    }
+    
+    func showBottomCollapse() {
+        bottomContainerView.isHidden = false
+        upContainerView.isHidden = true
     }
     
     @objc func expandView(sender: UITapGestureRecognizer) {
@@ -113,8 +130,8 @@ class EmailTableViewCell: UITableViewCell{
         
         webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal, toItem: webViewWrapperView, attribute: .top, multiplier: 1.0, constant: 0.0))
         webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .bottom, relatedBy: .equal, toItem: webViewWrapperView, attribute: .bottom, multiplier: 1.0, constant: 0.0))
-        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .leading, relatedBy: .equal, toItem: webViewWrapperView, attribute: .leading, multiplier: 1.0, constant: 0.0))
-        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .trailing, relatedBy: .equal, toItem: webViewWrapperView, attribute: .trailing, multiplier: 1.0, constant: 0.0))
+        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .leading, relatedBy: .equal, toItem: webViewWrapperView, attribute: .leading, multiplier: 1.0, constant: 1.0))
+        webViewWrapperView.addConstraint(NSLayoutConstraint(item: webView, attribute: .trailing, relatedBy: .equal, toItem: webViewWrapperView, attribute: .trailing, multiplier: 1.0, constant: -1.0))
         
         webView.scrollView.bounces = false
         webView.navigationDelegate = self
@@ -176,7 +193,7 @@ class EmailTableViewCell: UITableViewCell{
         
         setReadStatus(status: email.status)
         dateLabel.text = email.getFormattedDate()
-        let fromContactName = email.isDraft ? String.localize("Draft") : email.fromContact.displayName
+        let fromContactName = email.isDraft ? String.localize("Draft") : (email.fromAddress.isEmpty ? email.fromContact.displayName : ContactUtils.getStringEmailName(contact: email.fromAddress).1)
         contactsCollapseLabel.text = fromContactName
         contactsCollapseLabel.textColor = email.isDraft ? theme.alert : theme.mainText
         let emailContact = email.isDraft ? "" : email.fromContact.email
