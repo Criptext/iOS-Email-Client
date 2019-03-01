@@ -18,6 +18,7 @@ class EmailDetailViewController: UIViewController {
     let CONTACTS_MAX_HEIGHT: CGFloat = 300.0
     let CONTACTS_ROW_HEIGHT = 28
     
+    var collapseUntilIndex = 0
     var isExpanded = false
     var emailData : EmailDetailData!
     weak var mailboxData : MailboxData!
@@ -59,6 +60,8 @@ class EmailDetailViewController: UIViewController {
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
         
+        calculateCollapse()
+        
         emailData.observerToken = emailData.emails.observe { [weak self] changes in
             guard let tableView = self?.emailsTableView else {
                 return
@@ -66,7 +69,7 @@ class EmailDetailViewController: UIViewController {
             switch(changes){
             case .initial:
                 tableView.reloadData()
-            case .update(_, _, let insertions, _):
+            case .update(_, let deletions, let insertions, _):
                 insertions.forEach({ (position) in
                     guard let email = self?.emailData.emails[position],
                         self?.emailData.bodies[email.key] == nil,
@@ -75,6 +78,9 @@ class EmailDetailViewController: UIViewController {
                     }
                     self?.emailData.bodies[email.key] = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
                 })
+                if deletions.count > 0 {
+                    self?.calculateCollapse()
+                }
                 tableView.reloadData()
                 self?.emailData.rebuildLabels()
                 let hasNewInboxEmail = insertions.contains(where: { (position) -> Bool in
@@ -101,6 +107,32 @@ class EmailDetailViewController: UIViewController {
             }
         }
         applyTheme()
+    }
+    
+    func calculateCollapse() {
+        guard !isExpanded else {
+            return
+        }
+        collapseUntilIndex = 0
+        for (index, email) in emailData.emails.enumerated() {
+            guard emailData.emails.count >= 4,
+                index > 1,
+                let state = emailData.emailStates[email.key] else {
+                    continue
+            }
+            if !state.isExpanded {
+                collapseUntilIndex = index
+            }
+        }
+        if collapseUntilIndex == emailData.emails.count - 1,
+            let lastEmail = emailData.emails.last {
+            emailData.emailStates[lastEmail.key]?.isExpanded = true
+            collapseUntilIndex -= 1
+            if collapseUntilIndex < 2 {
+                collapseUntilIndex = 0
+            }
+        }
+        isExpanded = collapseUntilIndex == 0
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -130,11 +162,6 @@ class EmailDetailViewController: UIViewController {
         self.view.backgroundColor = theme.background
         self.emailsTableView.backgroundColor = theme.background
         self.emailsTableView.reloadData()
-    }
-    
-    func isGroupable() -> Bool {
-        let emails = emailData.emails.filter(NSPredicate(format: "unread == true"))
-        return (emailData.emails.count >= 4 && emails.count == 0 && !isExpanded)
     }
     
     func handleControllerMessage(_ message: ControllerMessage?) {
@@ -198,42 +225,36 @@ class EmailDetailViewController: UIViewController {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         return emailData.getState(email.key).cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : emailData.getState(email.key).cellHeight
     }
 }
 
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
+    func getMail(index: Int) -> Email {
+        let trueIndex = index + collapseUntilIndex
+        return emailData.emails[trueIndex]
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
         cell.setContent(email, emailBody: self.emailData.bodies[email.key] ?? "", state: emailData.getState(email.key), myEmail: emailData.accountEmail)
         cell.delegate = self
         target = cell.moreOptionsContainerView
-        if(isGroupable()){
-            cell.counterLabelUp.text = "\(self.emailData.emails.count - 2)"
-            cell.counterLabelDown.text = "\(self.emailData.emails.count - 2)"
-            if(email == emailData.emails.first){
-                cell.upView.isHidden = true
-                cell.bottomView.isHidden = false
-                cell.isHidden = false
-                return cell
-            }else if(email == emailData.emails.last){
-                cell.upView.isHidden = false
-                cell.bottomView.isHidden = true
-                cell.isHidden = false
-                return cell
-            }else{
-                cell.isHidden = true
-                return self.tableView(tableView, cellForRowAt: IndexPath(row: indexPath.row + 1, section: 0))
-            }
+        guard !isExpanded,
+            indexPath.row == 0 || indexPath.row == 1 else {
+            cell.hideCollapse()
+            return cell
+        }
+        cell.counterLabelUp.text = "\(collapseUntilIndex)"
+        cell.counterLabelDown.text = "\(collapseUntilIndex)"
+        if(indexPath.row == 0){
+            cell.showBottomCollapse()
+            return cell
         }else{
-            cell.upView.isHidden = true
-            cell.bottomView.isHidden = true
-            cell.counterLabelUp.isHidden = true
-            cell.counterLabelDown.isHidden = true
-            cell.isHidden = false
+            cell.showTopCollapse()
             return cell
         }
     }
@@ -248,11 +269,7 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(isGroupable()){
-            return 2
-        }else{
-            return emailData.emails.count
-        }
+        return emailData.emails.count - collapseUntilIndex
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -284,6 +301,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     
     func tableViewExpandViews() {
         isExpanded = true
+        collapseUntilIndex = 0
         emailsTableView.reloadData()
     }
     
@@ -318,7 +336,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         guard let indexPath = self.emailsTableView.indexPath(for: cell) else {
             return
         }
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         emailData.setState(email.key, isExpanded: !emailData.getState(email.key).isExpanded)
         emailsTableView.reloadData()
     }
@@ -365,7 +383,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let contactsTo = Array(email.getContacts(type: .to))
         let contactsCc = Array(email.getContacts(type: .cc))
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: email.subject, content: self.emailData.bodies[email.key] ?? "")
@@ -375,7 +393,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let data = calculateContactsHeight(email: email)
         
         let contactsPopover = ContactsDetailUIPopover()
@@ -438,9 +456,9 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? String.localize("REMOVE_SPAM") : String.localize("MARK_SPAM"), for: .normal)
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         moreOptionsContainerView.showRetry((email.status == .fail || email.status == .sending) ? true : false)
-        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none && email.status != .sending)
+        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none && email.status != .sending && email.status != .fail)
         moreOptionsContainerView.showSourceButton(!email.boundary.isEmpty)
         toggleMoreOptionsView()
     }
@@ -532,7 +550,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
             return
         }
-        emailsTableView.selectRow(at: IndexPath(row: lastIndex, section: 0), animated: false, scrollPosition: .none)
+        emailsTableView.selectRow(at: IndexPath(row: lastIndex - collapseUntilIndex, section: 0), animated: false, scrollPosition: .none)
         onReplyPress()
     }
     
@@ -540,7 +558,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
             return
         }
-        emailsTableView.selectRow(at: IndexPath(row: lastIndex, section: 0), animated: false, scrollPosition: .none)
+        emailsTableView.selectRow(at: IndexPath(row: lastIndex - collapseUntilIndex, section: 0), animated: false, scrollPosition: .none)
         onReplyAllPress()
     }
     
@@ -548,7 +566,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
             return
         }
-        emailsTableView.selectRow(at: IndexPath(row: lastIndex, section: 0), animated: false, scrollPosition: .none)
+        emailsTableView.selectRow(at: IndexPath(row: lastIndex - collapseUntilIndex, section: 0), animated: false, scrollPosition: .none)
         onForwardPress()
     }
 }
@@ -630,7 +648,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             return
         }
         moreOptionsContainerView.closeMoreOptions()
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
         sendMail(email: email, emailBody: self.emailData.bodies[email.key] ?? "", password: nil)
@@ -643,7 +661,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         moreOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let fromContact = email.fromContact
         let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
@@ -659,7 +677,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         moreOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         var contactsTo = [Contact]()
         var contactsCc = [Contact]()
         let myEmail = emailData.accountEmail
@@ -679,7 +697,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         moreOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "<b>\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\"><span>---------- \(String.localize("FORWARD_MAIL")) ---------</span><br><span>\(String.localize("FROM")): ]\(contact)</span><br><span>\(String.localize("DATE")): \(email.completeDate)</span><br><span>\(String.localize("SUBJECT")): \(email.subject)</span><br><br>\(self.emailData.bodies[email.key] ?? "")</div>")
@@ -692,9 +710,9 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             return
         }
         self.toggleMoreOptionsView()
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.draft.id else {
-            self.moveSingleEmailToTrash(email, indexPath: indexPath)
+            self.moveSingleEmailToTrash(email)
             return
         }
         let popover = GenericDualAnswerUIPopover()
@@ -722,7 +740,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
     }
     
-    func moveSingleEmailToTrash(_ email: Email, indexPath: IndexPath){
+    func moveSingleEmailToTrash(_ email: Email){
         let triggerEvent = email.canTriggerEvent
         let changedLabels = getLabelNames(added: [SystemLabel.trash.id], removed: [])
         let emailKey = email.key
@@ -738,7 +756,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.toggleMoreOptionsView()
             return
         }
-        let thresholdDate = emailData.emails[indexPath.row].date
+        let thresholdDate = getMail(index: indexPath.row).date
         var emailKeys = [Int]()
         for email in emailData.emails {
             guard email.date >= thresholdDate else {
@@ -772,7 +790,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let isTrash = emailData.selectedLabel == SystemLabel.trash.id
         let removeLabel = isSpam ? [SystemLabel.spam.id] : isTrash ? [SystemLabel.trash.id] : []
         let addLabel = isSpam ? [] : [SystemLabel.spam.id]
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let emailKey = email.key
         
         let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
@@ -787,7 +805,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
             self.toggleMoreOptionsView()
             return
         }
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         self.toggleMoreOptionsView()
         guard email.status != .unsent && email.isSent else {
             return
@@ -828,7 +846,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
             return
         }
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         let image = UIImage(named: "footer_beta")
         let imageData:Data =  UIImagePNGRepresentation(image!)!
@@ -858,7 +876,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         }
         moreOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
-        let email = emailData.emails[indexPath.row]
+        let email = getMail(index: indexPath.row)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "EmailSourceViewController") as! EmailSourceViewController
         viewController.email = email
@@ -1044,7 +1062,7 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
     
     func getCellFromFile(_ file: File) -> AttachmentTableCell? {
         guard let emailIndex = emailData.emails.index(where: {$0.key == file.emailId}),
-            let index = emailData.emails[emailIndex].files.index(where: {$0.token == file.token}),
+            let index = emailData.emails[emailIndex - collapseUntilIndex].files.index(where: {$0.token == file.token}),
             let emailCell = self.emailsTableView.cellForRow(at: IndexPath(row: emailIndex, section: 0)) as? EmailTableViewCell,
             let attachmentCell = emailCell.attachmentsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
                 return nil

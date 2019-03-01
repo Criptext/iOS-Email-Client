@@ -471,35 +471,37 @@ extension InboxViewController {
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: ((Bool) -> Void)? = nil) {
         guard !mailboxData.updating else {
-            completion?(false)
             refreshControl?.endRefreshing()
+            completion?(false)
             return
         }
         self.mailboxData.updating = true
         APIManager.getEvents(account: myAccount) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 refreshControl?.endRefreshing()
+                completion?(false)
                 return
             }
             if case .Unauthorized = responseData {
                 refreshControl?.endRefreshing()
                 weakSelf.logout(account: weakSelf.myAccount)
+                completion?(false)
                 return
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 refreshControl?.endRefreshing()
-                completion?(false)
                 weakSelf.mailboxData.updating = false
                 weakSelf.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+                completion?(false)
                 return
             }
             
             if case .Forbidden = responseData {
                 refreshControl?.endRefreshing()
-                completion?(false)
                 weakSelf.mailboxData.updating = false
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
+                completion?(false)
                 return
             }
             
@@ -514,7 +516,6 @@ extension InboxViewController {
                 eventHandler.handleEvents(events: events){ [weak self] result in
                     self?.didReceiveEvents(result: result)
                     self!.mailboxData.updating = false
-                    completion?(false)
                     self?.getPendingEvents(refreshControl)
                 }
                 return
