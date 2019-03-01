@@ -73,7 +73,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
         fromEmailTextView.textContainerInset = .zero
         fromEmailTextView.textContainer.lineFragmentPadding = 0
         
-        let myContact = ContactUtils.getStringEmailName(contact: email.fromAddress)
+        let myContact = !email.fromAddress.isEmpty ? ContactUtils.getStringEmailName(contact: email.fromAddress) : (email.fromContact.email, email.fromContact.displayName)
         let name = ContactUtils.checkIfFromHasName(email.fromAddress) ? myContact.1 : email.fromContact.displayName
         let emailString = ContactUtils.checkIfFromHasName(email.fromAddress) ? myContact.0 : email.fromContact.email
         fromEmailTextView.attributedText = buildContactAttributedString(name, emailString)

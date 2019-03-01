@@ -65,15 +65,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentTimestamp = Date().timeIntervalSince1970
         switch(PIN.time(rawValue: defaults.lockTimer) ?? .immediately) {
         case .oneminute:
-            return currentTimestamp - timestamp >= Utils.ONE_MINUTE
+            return currentTimestamp - timestamp >= Time.ONE_MINUTE
         case .fiveminutes:
-            return currentTimestamp - timestamp >= Utils.FIVE_MINUTES
+            return currentTimestamp - timestamp >= Time.FIVE_MINUTES
         case .fifteenminutes:
-            return currentTimestamp - timestamp >= Utils.FIFTEEN_MINUTES
+            return currentTimestamp - timestamp >= Time.FIFTEEN_MINUTES
         case .onehour:
-            return currentTimestamp - timestamp >= Utils.ONE_HOUR
+            return currentTimestamp - timestamp >= Time.ONE_HOUR
         case .oneday:
-            return currentTimestamp - timestamp >= Utils.ONE_DAY
+            return currentTimestamp - timestamp >= Time.ONE_DAY
         default:
             return true
         }

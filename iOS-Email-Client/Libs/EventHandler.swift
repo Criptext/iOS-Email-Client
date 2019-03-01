@@ -305,7 +305,7 @@ extension EventHandler {
     }
     
     func handleUpdateProfilePic(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        Utils.deleteSDWebImageCache()
+        UIUtils.deleteSDWebImageCache()
         finishCallback(true, .UpdateProfilePic)
     }
     

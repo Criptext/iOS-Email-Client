@@ -41,15 +41,14 @@ class Thread {
         self.unread = threadEmails.contains(where: {$0.unread})
         self.counter = threadEmails.count
         self.subject = threadEmails.first!.subject
-        var participants = Set<Contact>()
+        var participants = [Contact]()
         for threadEmail in threadEmails {
-            if(label == SystemLabel.sent.id){
-                if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
-                    participants.formUnion(threadEmail.getContacts(type: .to))
-                    participants.formUnion(threadEmail.getContacts(type: .cc))
+            let allContacts = getParticipantContacts(threadEmail: threadEmail, label: label)
+            for participant in allContacts {
+                guard !participants.contains(where: {$0.email == participant.email}) else {
+                    continue
                 }
-            }else{
-                participants.formUnion(threadEmail.getContacts(type: .from))
+                participants.append(participant)
             }
             if(!self.hasAttachments && threadEmail.files.count > 0){
                 self.hasAttachments = true
@@ -61,8 +60,30 @@ class Thread {
         }
     }
     
+    internal func getParticipantContacts(threadEmail: Email, label: Int) -> [Contact] {
+        if(label == SystemLabel.sent.id){
+            if(threadEmail.labels.contains(where: {$0.id == SystemLabel.sent.id})){
+                return Array(threadEmail.getContacts(type: .to)) + Array(threadEmail.getContacts(type: .cc))
+            }
+        }else{
+            if threadEmail.fromAddress.isEmpty {
+                return [threadEmail.fromContact]
+            } else {
+                let contanctInfo = ContactUtils.getStringEmailName(contact: threadEmail.fromAddress)
+                if contanctInfo.0.contains(contanctInfo.1) {
+                    return [threadEmail.fromContact]
+                } else {
+                    let tempContact = Contact()
+                    tempContact.displayName = contanctInfo.1
+                    tempContact.email = contanctInfo.0
+                    return [tempContact]
+                }
+            }
+        }
+        return []
+    }
     
-    class func getContactsString(participants: Set<Contact>, replaceWithMe email: String) -> String {
+    class func getContactsString(participants: [Contact], replaceWithMe email: String) -> String {
         var contactsTitle = ""
         for contact in participants {
             let contactName = contact.email == email ? String.localize("ME") : contact.displayName

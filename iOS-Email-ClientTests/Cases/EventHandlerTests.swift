@@ -32,7 +32,7 @@ class EventHandlerTests: XCTestCase {
         FileUtils.deleteAccountDirectory(account: myAccount)
     }
     
-    func createExistingEmail(){
+    @discardableResult func createExistingEmail() -> Email {
         let newEmail = Email()
         newEmail.key = 243
         DBManager.store(newEmail)
@@ -40,6 +40,8 @@ class EventHandlerTests: XCTestCase {
         newContact.email = "velvet\(Constants.domain)"
         newContact.displayName = "The Velvet"
         DBManager.store([newContact])
+        
+        return newEmail
     }
     
     func testHandleNewEmailEventWithAttachments(){
@@ -69,7 +71,9 @@ class EventHandlerTests: XCTestCase {
     }
     
     func testHandleOpenEventWithAttachments(){
-        createExistingEmail()
+        let newEmail = createExistingEmail()
+        DBManager.updateEmail(newEmail, status: 5)
+        DBManager.addRemoveLabelsFromEmail(newEmail, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [])
         let eventsJSON = Utils.convertToDictionary(text: opensString)
         let eventsArray = eventsJSON!["events"] as! [[String: Any]]
         let eventHandler = EventHandler(account: myAccount)
@@ -79,6 +83,12 @@ class EventHandlerTests: XCTestCase {
         eventHandler.handleEvents(events: eventsArray) { result in
             let opens = result.opens
             XCTAssert(opens.count == 1)
+            
+            guard let email = DBManager.getMail(key: 243) else {
+                XCTFail("Unable to save email")
+                return
+            }
+            XCTAssert(email.status == .opened, "email status: \(email.delivered)")
             expect.fulfill()
         }
         waitForExpectations(timeout: 10) { (error) in

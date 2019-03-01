@@ -63,7 +63,7 @@ class AttachmentTableCell: UITableViewCell{
     }
     
     func setAttachmentType(_ mimeType: String){
-        typeView.image = Utils.getImageByFileType(mimeType)
+        typeView.image = UIUtils.getImageByFileType(mimeType)
     }
     
     func setAsUnsend(){
