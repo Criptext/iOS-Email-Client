@@ -646,6 +646,7 @@ extension AppDelegate: MessagingDelegate {
         notification.title = email.fromAddress
         notification.subtitle = email.subject
         notification.categoryIdentifier = "OPEN_THREAD"
+        notification.userInfo = ["threadId": email.threadId, "metadataKey": email.key.description]
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: "\(emailKey)", content: notification, trigger: trigger)

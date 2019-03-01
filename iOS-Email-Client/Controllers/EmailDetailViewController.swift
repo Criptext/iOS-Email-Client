@@ -458,7 +458,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = getMail(index: indexPath.row)
         moreOptionsContainerView.showRetry((email.status == .fail || email.status == .sending) ? true : false)
-        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none && email.status != .sending)
+        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none && email.status != .sending && email.status != .fail)
         moreOptionsContainerView.showSourceButton(!email.boundary.isEmpty)
         toggleMoreOptionsView()
     }
