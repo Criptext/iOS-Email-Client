@@ -17,6 +17,7 @@ class Label : Object {
     @objc dynamic var type : String = "custom"
     @objc dynamic var visible : Bool = true
     @objc dynamic var uuid: String = UUID().uuidString
+    @objc dynamic var account : Account!
     
     var localized: String {
         guard type == "custom" else {

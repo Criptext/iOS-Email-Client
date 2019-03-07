@@ -51,6 +51,7 @@ class Email: Object {
     @objc dynamic var replyTo = ""
     @objc dynamic var boundary = ""
     
+    @objc dynamic var account : Account!
     let labels = List<Label>()
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")

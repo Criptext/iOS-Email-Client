@@ -26,24 +26,25 @@ class DBAxolotl {
         }
     }
     
-    class func getAllKeyRecords() -> [CRPreKeyRecord]{
+    class func getAllKeyRecords(account: Account) -> [CRPreKeyRecord]{
         let realm = try! Realm()
         
-        return Array(realm.objects(CRPreKeyRecord.self))
+        return Array(realm.objects(CRPreKeyRecord.self).filter("account.compoundKey == %@", account.compoundKey))
     }
     
-    class func getKeyRecordById(id: Int32) -> CRPreKeyRecord?{
+    class func getKeyRecordById(id: Int32, account: Account) -> CRPreKeyRecord?{
         let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "preKeyId == \(id)")
-        let results = realm.objects(CRPreKeyRecord.self).filter(predicate)
-        
-        return results.first
+        let compoundKey = "\(account.compoundKey):\(id)"
+        guard let keyRecord = realm.object(ofType: CRPreKeyRecord.self, forPrimaryKey: compoundKey) else {
+            return nil
+        }
+        return keyRecord
     }
     
-    class func deleteKeyRecord(id: Int32){
+    class func deleteKeyRecord(id: Int32, account: Account){
         let realm = try! Realm()
-        guard let keyRecord = realm.object(ofType: CRPreKeyRecord.self, forPrimaryKey: id) else {
+        let compoundKey = "\(account.compoundKey):\(id)"
+        guard let keyRecord = realm.object(ofType: CRPreKeyRecord.self, forPrimaryKey: compoundKey) else {
             return
         }
         try! realm.write() {
@@ -67,18 +68,19 @@ class DBAxolotl {
         }
     }
     
-    class func getSignedKeyRecordById(id: Int32) -> CRSignedPreKeyRecord?{
+    class func getSignedKeyRecordById(id: Int32, account: Account) -> CRSignedPreKeyRecord?{
         let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "signedPreKeyId == \(id)")
-        let results = realm.objects(CRSignedPreKeyRecord.self).filter(predicate)
-        
-        return results.first
+        let compoundKey = "\(account.compoundKey):\(id)"
+        guard let keyRecord = realm.object(ofType: CRSignedPreKeyRecord.self, forPrimaryKey: compoundKey) else {
+            return nil
+        }
+        return keyRecord
     }
     
-    class func deleteSignedKeyRecord(id: Int32){
+    class func deleteSignedKeyRecord(id: Int32, account: Account){
         let realm = try! Realm()
-        guard let keyRecord = realm.object(ofType: CRSignedPreKeyRecord.self, forPrimaryKey: id) else {
+        let compoundKey = "\(account.compoundKey):\(id)"
+        guard let keyRecord = realm.object(ofType: CRSignedPreKeyRecord.self, forPrimaryKey: compoundKey) else {
             return
         }
         try! realm.write() {
@@ -86,10 +88,10 @@ class DBAxolotl {
         }
     }
     
-    class func getAllSignedKeyRecords() -> [CRSignedPreKeyRecord]{
+    class func getAllSignedKeyRecords(account: Account) -> [CRSignedPreKeyRecord]{
         let realm = try! Realm()
         
-        return Array(realm.objects(CRSignedPreKeyRecord.self))
+        return Array(realm.objects(CRSignedPreKeyRecord.self).filter("account.compoundKey == '\(account.compoundKey)'"))
     }
     
     class func store(_ sessionRecord: CRSessionRecord){
@@ -108,37 +110,39 @@ class DBAxolotl {
         }
     }
     
-    class func getSessionRecord(contactId: String, deviceId: Int32) -> CRSessionRecord?{
+    class func getSessionRecord(contactId: String, deviceId: Int32, account: Account) -> CRSessionRecord?{
         let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == \(deviceId)")
-        let results = realm.objects(CRSessionRecord.self).filter(predicate)
-        return results.first
+        let compoundKey = "\(account.compoundKey):\(contactId):\(deviceId)"
+        guard let session = realm.object(ofType: CRSessionRecord.self, forPrimaryKey: compoundKey) else {
+            return nil
+        }
+        return session
     }
     
-    class func getSessionRecords(recipientId: String) -> [CRSessionRecord] {
+    class func getSessionRecords(recipientId: String, account: Account) -> [CRSessionRecord] {
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "contactId == '\(recipientId)'")
+        let predicate = NSPredicate(format: "contactId == '\(recipientId)' && account.compoundKey == '\(account.compoundKey)'")
         let results = realm.objects(CRSessionRecord.self).filter(predicate)
         return Array(results)
     }
     
-    class func deleteSessionRecord(contactId: String, deviceId: Int32){
+    class func deleteSessionRecord(contactId: String, deviceId: Int32, account: Account){
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "contactId == '\(contactId)' AND deviceId == \(deviceId)")
-        let results = realm.objects(CRSessionRecord.self).filter(predicate)
-        
+        let compoundKey = "\(account.compoundKey):\(contactId):\(deviceId)"
+        guard let session = realm.object(ofType: CRSessionRecord.self, forPrimaryKey: compoundKey) else {
+            return
+        }
         try! realm.write() {
-            realm.delete(results)
+            realm.delete(session)
         }
     }
     
-    class func deleteAllSessions(contactId: String){
+    class func deleteAllSessions(contactId: String, account: Account){
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "contactId == '\(contactId)'")
+        let predicate = NSPredicate(format: "contactId == '\(contactId)' && account.compoundKey == '\(account.compoundKey)'")
         let results = realm.objects(CRSessionRecord.self).filter(predicate)
         
         try! realm.write() {

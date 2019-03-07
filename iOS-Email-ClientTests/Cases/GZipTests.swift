@@ -16,7 +16,7 @@ import Gzip
 class GZipTests: XCTestCase {
     
     func testSuccessfullyDecompress() {
-        let filepath = Bundle(for: GZipTests.self).path(forResource: "gunzipped", ofType: "txt")!
+        let filepath = CRBundle(for: GZipTests.self).path(forResource: "gunzipped", ofType: "txt")!
         guard let originalContent = try? String(contentsOfFile: filepath),
             let outputPath = try? AESCipher.compressFile(path: filepath, outputName: "hola.gz", compress: true),
             let finalPath = try? AESCipher.compressFile(path: outputPath, outputName: "bye.txt", compress: false),

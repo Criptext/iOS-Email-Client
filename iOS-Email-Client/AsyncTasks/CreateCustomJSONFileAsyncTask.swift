@@ -30,7 +30,7 @@ class CreateCustomJSONFileAsyncTask {
     
     private func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
         let account = DBManager.getAccountByUsername(self.username)
-        let results = DBManager.retrieveWholeDB()
+        let results = DBManager.retrieveWholeDB(account: account!)
         results.contacts.enumerated().forEach {
             contacts[$1.email] = $0 + 1
             let dictionary = $1.toDictionary(id: $0 + 1)

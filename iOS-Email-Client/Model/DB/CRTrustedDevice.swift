@@ -12,6 +12,7 @@ import RealmSwift
 class CRTrustedDevice: Object{
     @objc dynamic var recipientId = ""
     @objc dynamic var identityB64 = ""
+    @objc dynamic var account : Account!
     
     override static func primaryKey() -> String? {
         return "recipientId"

@@ -80,10 +80,10 @@ class SharedDB {
         return email
     }
     
-    class func getUnreadMailsCounter(from label: Int) -> Int {
+    class func getUnreadMailsCounter(from label: Int, account: Account) -> Int {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        return realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@)", label, rejectedLabels).distinct(by: ["threadId"]).count
+        return realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", label, rejectedLabels).distinct(by: ["threadId"]).count
     }
     
     //MARK: - Contacts related
@@ -244,6 +244,7 @@ class SharedDB {
             newEmail.fromAddress = email.fromAddress
             newEmail.replyTo = email.replyTo
             newEmail.boundary = email.boundary
+            newEmail.account = email.account
             
             realm.add(newEmail)
             
@@ -362,10 +363,10 @@ class SharedDB {
         return realm.objects(Label.self).filter(NSPredicate(format: "text = %@", text)).first
     }
     
-    class func getMailByKey(key: Int) -> Email?{
+    class func getMailByKey(key: Int, account: Account) -> Email?{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "key == \(key)")
+        let predicate = NSPredicate(format: "key == \(key) AND account.compoundKey == '\(account.compoundKey)'")
         let results = realm.objects(Email.self).filter(predicate)
         
         return results.first

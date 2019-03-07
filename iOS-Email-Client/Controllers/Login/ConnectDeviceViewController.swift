@@ -18,6 +18,8 @@ class ConnectDeviceViewController: UIViewController{
     let PROGRESS_COMPLETE = 100.0
     @IBOutlet var connectUIView: ConnectUIView!
     var signupData: SignUpData!
+    var account: Account?
+    var bundle: CRBundle?
     var linkData: LoginDeviceViewController.LinkAccept?
     var socket : SingleWebSocket?
     var scheduleWorker = ScheduleWorker(interval: 10.0, maxRetries: 18)
@@ -82,9 +84,6 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func cleanData(){
-        if let jwt = signupData.token {
-            return
-        }
         let defaults = CriptextDefaults()
         guard defaults.hasActiveAccount else {
             return
@@ -100,9 +99,23 @@ class ConnectDeviceViewController: UIViewController{
         }
     }
     
+    func createAccount() -> (Account, [String: Any]) {
+        if let myKeys = self.bundle?.publicKeys,
+            let myAccount = self.account {
+            return(myAccount, myKeys)
+        }
+        let account = SignUpData.createAccount(from: self.signupData)
+        DBManager.store(account)
+        
+        let bundle = CRBundle(account: account)
+        let keys = bundle.generateKeys()
+        return (account, keys)
+    }
+    
     func sendKeysRequest(){
         self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("SENDING_KEYS"), completion: {})
-        let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
+        let accountData = createAccount()
+        let keyBundle = accountData.1["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
             guard case let .SuccessDictionary(tokens) = responseData,
                 let jwt = tokens["token"] as? String,
@@ -131,8 +144,8 @@ class ConnectDeviceViewController: UIViewController{
                 self.presentProcessInterrupted()
                 return
             }
-            let myAccount = self.createAccount()
-            self.state = .unpackDB(myAccount, filepath, data)
+            self.updateAccount()
+            self.state = .unpackDB(self.account!, filepath, data)
             self.handleState()
         }
     }
@@ -167,7 +180,7 @@ class ConnectDeviceViewController: UIViewController{
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
                     dbRows.removeAll()
                     if progress < 99 {
                         progress += 1
@@ -177,7 +190,7 @@ class ConnectDeviceViewController: UIViewController{
                     }
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
@@ -191,9 +204,16 @@ class ConnectDeviceViewController: UIViewController{
         }
     }
     
-    func createAccount() -> Account {
-        let myAccount = SignUpData.createAccount(from: signupData)
-        DBManager.store(myAccount)
+    func updateAccount() {
+        guard let myAccount = self.account,
+            let myBundle = self.bundle,
+            let jwt = signupData.token,
+            let refreshToken = signupData.refreshToken,
+            let identityB64 = myBundle.store.identityKeyStore.getIdentityKeyPairB64() else {
+                return
+        }
+        let regId = myBundle.store.identityKeyStore.getRegId()
+        DBManager.update(account: myAccount, jwt: jwt, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
@@ -202,7 +222,6 @@ class ConnectDeviceViewController: UIViewController{
         let defaults = CriptextDefaults()
         defaults.activeAccount = myAccount.username
         defaults.welcomeTour = true
-        return myAccount
     }
     
     func goToMailbox(_ activeAccount: String){
