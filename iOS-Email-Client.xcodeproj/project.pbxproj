@@ -255,6 +255,9 @@
 		A72C185721AF165700D899EE /* MailboxNewsHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185621AF165700D899EE /* MailboxNewsHeaderUIView.swift */; };
 		A73151C321B9F2FA00D20B72 /* PrivacyUIViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */; };
 		A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */; };
+		A7385F3F2230272E005CB38D /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F3E2230272E005CB38D /* AccountManager.swift */; };
+		A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
+		A7385F432230852D005CB38D /* CRBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F422230852D005CB38D /* CRBundle.swift */; };
 		A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */; };
 		A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
@@ -741,6 +744,9 @@
 		A72C185621AF165700D899EE /* MailboxNewsHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxNewsHeaderUIView.swift; sourceTree = "<group>"; };
 		A73151C221B9F2FA00D20B72 /* PrivacyUIViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyUIViewCell.swift; sourceTree = "<group>"; };
 		A73151C421B9F41500D20B72 /* SecurityPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityPrivacyViewController.swift; sourceTree = "<group>"; };
+		A7385F3E2230272E005CB38D /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		A7385F4022303CF0005CB38D /* AccountContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountContact.swift; sourceTree = "<group>"; };
+		A7385F422230852D005CB38D /* CRBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRBundle.swift; sourceTree = "<group>"; };
 		A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncViewController.swift; sourceTree = "<group>"; };
 		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
 		A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBadgeCounterAsyncTask.swift; sourceTree = "<group>"; };
@@ -1012,6 +1018,7 @@
 				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
 				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
 				A723254421CBE257003CF78D /* ThemeManager.swift */,
+				A7385F3E2230272E005CB38D /* AccountManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1219,6 +1226,7 @@
 				A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */,
 				A723254221CAFE20003CF78D /* Theme.swift */,
 				A70EAE5321DE6A9700FE6055 /* AcceptData.swift */,
+				A7385F422230852D005CB38D /* CRBundle.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1371,6 +1379,7 @@
 				A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */,
 				A71F8BAC219B2239002D93CB /* DummySession.swift */,
 				D6E1E63C21E5156400FA968A /* FileKey.swift */,
+				A7385F4022303CF0005CB38D /* AccountContact.swift */,
 			);
 			path = DB;
 			sourceTree = "<group>";
@@ -1929,6 +1938,7 @@
 				A758E2E9221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */,
+				A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */,
 				7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */,
 				7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */,
@@ -2002,6 +2012,7 @@
 				A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
+				A7385F3F2230272E005CB38D /* AccountManager.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
 				7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */,
@@ -2031,6 +2042,7 @@
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,
 				7C46BED72153F71E00282182 /* SingleWebSocket.swift in Sources */,
 				7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */,
+				A7385F432230852D005CB38D /* CRBundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

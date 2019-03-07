@@ -13,6 +13,8 @@ class QueueItem: Object {
     @objc dynamic var date = Date()
     @objc dynamic var timestamp: String = Date().timeIntervalSince1970.description
     @objc dynamic var serializedParams = ""
+    @objc dynamic var account : Account!
+    
     var params: [String: Any] {
         set(dic) {
             guard let jsonString = Utils.convertToJSONString(dictionary: dic) else {

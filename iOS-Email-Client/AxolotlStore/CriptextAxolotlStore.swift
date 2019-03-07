@@ -10,17 +10,23 @@ import Foundation
 import SignalProtocolFramework
 
 class CriptextAxolotlStore: NSObject{
-    let sessionStore = CriptextSessionStore()
-    let preKeyStore = CriptextPreKeyStore()
-    let signedPreKeyStore = CriptextSignedPreKeyStore()
-    let identityKeyStore : CriptextIdentityKeyStore
+    let sessionStore: CriptextSessionStore
+    let preKeyStore: CriptextPreKeyStore
+    let signedPreKeyStore: CriptextSignedPreKeyStore
+    let identityKeyStore: CriptextIdentityKeyStore
     
-    override init(){
+    init(account: Account){
         identityKeyStore = CriptextIdentityKeyStore()
+        sessionStore = CriptextSessionStore(account: account)
+        preKeyStore = CriptextPreKeyStore(account: account)
+        signedPreKeyStore = CriptextSignedPreKeyStore(account: account)
     }
     
-    init(_ regId: Int32, _ base64Identity: String){
+    init(_ regId: Int32, _ base64Identity: String, account: Account){
         identityKeyStore = CriptextIdentityKeyStore(regId, base64Identity)
+        sessionStore = CriptextSessionStore(account: account)
+        preKeyStore = CriptextPreKeyStore(account: account)
+        signedPreKeyStore = CriptextSignedPreKeyStore(account: account)
     }
 }
 

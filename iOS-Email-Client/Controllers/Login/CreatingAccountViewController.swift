@@ -18,6 +18,8 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
     var signupData: SignUpData!
+    var account: Account?
+    var bundle: CRBundle?
     var state : CreationState = .checkDB
     
     enum CreationState{
@@ -37,7 +39,7 @@ class CreatingAccountViewController: UIViewController{
             }
             sendSignUpRequest()
         case .accountCreate:
-            createAccount()
+            updateAccount()
         }
     }
     
@@ -48,6 +50,15 @@ class CreatingAccountViewController: UIViewController{
         progressBar.layer.sublayers![1].cornerRadius = 5
         progressBar.subviews[1].clipsToBounds = true
         handleState()
+    }
+    
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion)
+        
+        if let myAccount = self.account {
+            DBManager.signout(account: myAccount)
+            DBManager.delete(account: myAccount)
+        }
     }
     
     func checkDatabase(){
@@ -66,9 +77,23 @@ class CreatingAccountViewController: UIViewController{
         defaults.removeQuickGuideFlags()
     }
     
+    func createAccount() -> (Account, [String: Any]) {
+        if let myKeys = self.bundle?.publicKeys,
+            let myAccount = self.account {
+            return(myAccount, myKeys)
+        }
+        let account = SignUpData.createAccount(from: self.signupData)
+        DBManager.store(account)
+        
+        let bundle = CRBundle(account: account)
+        let keys = bundle.generateKeys()
+        return (account, keys)
+    }
+    
     func sendKeysRequest(){
         feedbackLabel.text = String.localize("GENERATING_KEYS")
-        let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
+        let accountData = createAccount()
+        let keyBundle = accountData.1["keybundle"] as! [String: Any]
         APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
@@ -92,7 +117,8 @@ class CreatingAccountViewController: UIViewController{
     
     func sendSignUpRequest(){
         feedbackLabel.text = String.localize("GENERATING_KEYS")
-        APIManager.signUpRequest(signupData.buildDataForRequest()) { (responseData) in
+        let accountData = createAccount()
+        APIManager.signUpRequest(accountData.1) { (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.displayErrorMessage(message: error.description)
@@ -125,17 +151,17 @@ class CreatingAccountViewController: UIViewController{
         feedbackLabel.text = String.localize("GENERATING_KEYS")
     }
     
-    func createAccount(){
+    func updateAccount(){
+        guard let myAccount = self.account,
+            let myBundle = self.bundle,
+            let jwt = signupData.token,
+            let refreshToken = signupData.refreshToken,
+            let identityB64 = myBundle.store.identityKeyStore.getIdentityKeyPairB64() else {
+            return
+        }
+        let regId = myBundle.store.identityKeyStore.getRegId()
         feedbackLabel.text = String.localize("LOGIN_AWESOME")
-        let myAccount = Account()
-        myAccount.username = signupData.username
-        myAccount.name = signupData.fullname
-        myAccount.jwt = signupData.token!
-        myAccount.refreshToken = signupData.refreshToken
-        myAccount.regId = signupData.getRegId()
-        myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""
-        myAccount.deviceId = signupData.deviceId
-        DBManager.store(myAccount)
+        DBManager.update(account: myAccount, jwt: jwt, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"

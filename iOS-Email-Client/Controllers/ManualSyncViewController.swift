@@ -116,7 +116,7 @@ class ManualSyncViewController: UIViewController{
     }
     
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
-        DBManager.clearMailbox()
+        DBManager.clearMailbox(account: myAccount)
         FileUtils.deleteAccountDirectory(account: myAccount)
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
         let username = myAccount.username
@@ -131,7 +131,7 @@ class ManualSyncViewController: UIViewController{
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
                     dbRows.removeAll()
                     if progress < 99 {
                         progress += 1
@@ -141,7 +141,7 @@ class ManualSyncViewController: UIViewController{
                     }
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {

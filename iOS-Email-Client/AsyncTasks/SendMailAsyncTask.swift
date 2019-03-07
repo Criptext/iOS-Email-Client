@@ -190,7 +190,7 @@ class SendMailAsyncTask {
             }
             let keyBundles = keysArray["keyBundles"] as! [[String:Any]]
             let blackListedDevices = keysArray["blacklistedKnownDevices"] as! [[String:Any]]
-            let store: CriptextSessionStore = CriptextSessionStore()
+            let store: CriptextSessionStore = CriptextSessionStore(account: myAccount)
             for blackDevice in blackListedDevices {
                 let devices = blackDevice["devices"] as! [Int32]
                 devices.forEach{

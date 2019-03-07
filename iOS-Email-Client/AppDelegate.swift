@@ -299,6 +299,74 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newContact["score"] = 0
                     }
                 }
+                if (oldSchemaVersion < 17) {
+                    var account: MigrationObject? = nil
+                    migration.enumerateObjects(ofType: Account.className()){ (oldObject, newObject) in
+                        guard let newAccount = newObject else {
+                            return
+                        }
+                        newAccount["compoundKey"] = "\(newAccount["username"]!)"
+                        if account == nil {
+                            account = newAccount
+                        }
+                    }
+                    if let myAccount = account {
+                        migration.enumerateObjects(ofType: Email.className()){ (oldObject, newObject) in
+                            guard let newContact = newObject else{
+                                return
+                            }
+                            newContact["account"] = myAccount
+                        }
+                        migration.enumerateObjects(ofType: CRSignedPreKeyRecord.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                            newRecord["compoundkey"] = "\(myAccount["compoundKey"]!):\(newRecord["signedPreKeyId"]!)"
+                        }
+                        migration.enumerateObjects(ofType: CRPreKeyRecord.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                            newRecord["compoundkey"] = "\(myAccount["compoundKey"]!):\(newRecord["preKeyId"]!)"
+                        }
+                        migration.enumerateObjects(ofType: CRTrustedDevice.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                        }
+                        migration.enumerateObjects(ofType: CRSessionRecord.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                            newRecord["compoundkey"] = "\(myAccount["compoundKey"]!):\(newRecord["contactId"]!):\(newRecord["deviceId"]!)"
+                        }
+                        migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
+                            guard let newLabel = newObject else{
+                                return
+                            }
+                            newLabel["account"] = myAccount
+                        }
+                        migration.enumerateObjects(ofType: QueueItem.className()){ (oldObject, newObject) in
+                            guard let newQueue = newObject else{
+                                return
+                            }
+                            newQueue["account"] = myAccount
+                        }
+                        migration.enumerateObjects(ofType: Contact.className()){ (oldObject, newObject) in
+                            guard let newContact = newObject else{
+                                return
+                            }
+                            let newAccountContact = migration.create(AccountContact.className())
+                            newAccountContact["account"] = myAccount
+                            newAccountContact["contact"] = newContact
+                            newAccountContact["compoundKey"] = "\(myAccount["username"]!):\(newContact["email"]!)"
+                        }
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm
@@ -428,7 +496,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             DBManager.destroy()
             FileUtils.deleteAccountDirectory(account: account)
         } else {
-            DBManager.signout()
+            DBManager.signout(account: account)
         }
     }
     
@@ -467,7 +535,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
+        //UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -591,7 +659,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
             }
             inboxVC.markAsRead(emailKey: key) {
-                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
+                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: inboxVC.myAccount)
                 completionHandler()
             }
             break

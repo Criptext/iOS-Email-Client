@@ -153,9 +153,13 @@ class EventHandler {
     }
     
     func handleEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            finishCallback(false, .Empty)
+            return
+        }
         let event = EventData.EmailStatus.init(params: params)
         if event.type == Email.Status.unsent.rawValue,
-            let email = DBManager.getMail(key: event.emailId) {
+            let email = DBManager.getMail(key: event.emailId, account: myAccount) {
             guard let myAccount = DBManager.getAccountByUsername(self.username) else {
                 finishCallback(false, .Empty)
                 return
@@ -168,7 +172,7 @@ class EventHandler {
         let actionType: FeedItem.Action = event.fileId == nil ? .open : .download
         guard !DBManager.feedExists(emailId: event.emailId, type: actionType.rawValue, contactId: "\(event.from)\(Constants.domain)"),
             let contact = DBManager.getContact("\(event.from)\(Constants.domain)"),
-            let email = DBManager.getMail(key: event.emailId) else {
+            let email = DBManager.getMail(key: event.emailId, account: myAccount) else {
             finishCallback(true, .Empty)
             return
         }
@@ -286,10 +290,15 @@ extension EventHandler {
     }
     
     func handleCreateLabelCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            finishCallback(false, .Empty)
+            return
+        }
         let event = EventData.Peer.NewLabel.init(params: params)
         let label = Label()
         label.text = event.text
         label.color = event.color
+        label.account = myAccount
         DBManager.store(label, incrementId: true)
         finishCallback(true, .LabelCreated)
     }

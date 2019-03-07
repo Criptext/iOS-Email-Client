@@ -317,6 +317,7 @@ extension ShareViewController {
         let draft = Email()
         draft.status = .none
         let bodyWithoutHtml = self.composerUIView.getPlainEditorContent()
+        draft.account = myAccount
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
         draft.subject = self.composerUIView.subjectTextField.text ?? ""

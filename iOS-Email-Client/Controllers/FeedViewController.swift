@@ -170,7 +170,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         let workingLabel = feed.email.isSpam ? SystemLabel.spam.id : (feed.email.isTrash ? SystemLabel.trash.id : SystemLabel.sent.id)
-        guard let selectedThread = DBManager.getThread(threadId: feed.email.threadId, label: workingLabel) else {
+        guard let selectedThread = DBManager.getThread(threadId: feed.email.threadId, label: workingLabel, account: mailboxVC.myAccount) else {
             return
         }
         mailboxVC.goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel)

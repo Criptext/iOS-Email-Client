@@ -79,7 +79,7 @@ class InboxViewController: UIViewController {
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
-        let queueItems = DBManager.getQueueItems()
+        let queueItems = DBManager.getQueueItems(account: self.myAccount)
         newsHeaderView.onClose = { [weak self] in
             self?.mailboxData.feature = nil
             self?.closeNewsHeader()
@@ -305,7 +305,7 @@ class InboxViewController: UIViewController {
             return
         }
         let thread = mailboxData.threads[indexPath.row]
-        guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
+        guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel, account: self.myAccount),
             thread.lastEmailKey == refreshedRowThread.lastEmailKey else {
             updateBadges()
             refreshThreadRows()
@@ -661,7 +661,7 @@ extension InboxViewController{
     }
     
     func updateBadges(){
-        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(label: mailboxData.selectedLabel)
+        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(username: myAccount.username, label: mailboxData.selectedLabel)
         badgeGetterAsyncTask.start { [weak self] (label, counter) in
             guard let weakSelf = self,
                 weakSelf.mailboxData.selectedLabel == label else {
@@ -708,7 +708,7 @@ extension InboxViewController {
     func getUnreadThreads(clear: Bool, since: Date){
         let threads : [Thread]
         let fetchedThreads = mailboxData.threads.map({$0.threadId})
-        threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: since, threadIds: fetchedThreads)
+        threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: since, threadIds: fetchedThreads, account: self.myAccount)
         if(clear){
             mailboxData.threads = threads
         } else {
@@ -756,13 +756,13 @@ extension InboxViewController{
                 guard let searchParam = searchText else {
                     return
                 }
-                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads)
+                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads, account: weakSelf.myAccount)
             } else {
                 if(weakSelf.selectLabel == String.localize("SHOW_ALL")){
-                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
+                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads, account: weakSelf.myAccount)
                 }
                 else{
-                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads)
+                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads, account: weakSelf.myAccount)
                 }
             }
             guard !(workItem?.isCancelled ?? false) else {
@@ -945,14 +945,14 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func emptyTrash(from date: Date = Date()){
-        guard let threadIds = DBManager.getTrashThreads(from: date),
+        guard let threadIds = DBManager.getTrashThreads(from: date, account: myAccount),
             !threadIds.isEmpty else {
             return
         }
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
         DBManager.deleteThreads(threadIds: threadIds)
         self.refreshThreadRows()
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -1121,7 +1121,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.navigationDrawerController?.closeRightView()
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
-            if let lastEmail = SharedDB.getMailByKey(key: selectedThread.lastEmailKey) {
+            if let lastEmail = SharedDB.getMailByKey(key: selectedThread.lastEmailKey, account: self.myAccount) {
                 continueDraft(lastEmail)
             }
             return
@@ -1184,7 +1184,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                         "metadataKeys": peerKeys
             ]] as [String : Any]
         DBManager.updateEmails(peerKeys, unread: false)
-        DBManager.createQueueItem(params: params)
+        DBManager.createQueueItem(params: params, account: self.myAccount)
     }
     
     func openEmails(openKeys: [Int], peerKeys: [Int]) {
@@ -1194,13 +1194,13 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         let params = ["cmd": Event.Queue.open.rawValue, "params": EventData.Queue.EmailOpen(metadataKeys: openKeys).asDictionary()] as [String : Any]
         DBManager.updateEmails(openKeys, unread: false)
-        DBManager.createQueueItem(params: params)
+        DBManager.createQueueItem(params: params, account: self.myAccount)
         self.openOwnEmails(peerKeys)
     }
     
     func goToEmailDetail(threadId: String, message: ControllerMessage? = nil){
         let workingLabel = SystemLabel.inbox.id
-        guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel) else {
+        guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel, account: self.myAccount) else {
             return
         }
         self.navigationController?.popToRootViewController(animated: false)
@@ -1318,7 +1318,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
         self.removeThreads(indexPaths: [indexPath])
         let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
-        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
+        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], account: self.myAccount)
     }
     
     
@@ -1397,7 +1397,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
         if let indexPaths = tableView.indexPathsForSelectedRows{
             for indexPath in indexPaths {
                 let thread = mailboxData.threads[indexPath.row]
-                guard let email = DBManager.getMail(key: thread.lastEmailKey) else {
+                guard let email = DBManager.getMail(key: thread.lastEmailKey, account: self.myAccount) else {
                     continue
                 }
                 for label in email.labels {
@@ -1471,7 +1471,7 @@ extension InboxViewController {
             updateBadges()
         }
         
-        let threadLabelsAsyncTask = ThreadsLabelsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, added: added, removed: removed, currentLabel: mailboxData.selectedLabel)
+        let threadLabelsAsyncTask = ThreadsLabelsAsyncTask(username: self.myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, added: added, removed: removed, currentLabel: mailboxData.selectedLabel)
         threadLabelsAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1496,7 +1496,7 @@ extension InboxViewController {
         let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         self.removeThreads(indexPaths: indexPaths)
         
-        let deleteThreadsAsyncTask = DeleteThreadsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, currentLabel: mailboxData.selectedLabel)
+        let deleteThreadsAsyncTask = DeleteThreadsAsyncTask(username: myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, currentLabel: mailboxData.selectedLabel)
         deleteThreadsAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1553,7 +1553,7 @@ extension InboxViewController: NavigationToolbarDelegate {
         }
         self.didPressEdit(reload: true)
         
-        let markThreadAsyncTask = MarkThreadsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, unread: unread, currentLabel: mailboxData.selectedLabel)
+        let markThreadAsyncTask = MarkThreadsAsyncTask(username: self.myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, unread: unread, currentLabel: mailboxData.selectedLabel)
         markThreadAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1583,7 +1583,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func sendFailEmail(){
-        guard let email = DBManager.getEmailFailed() else {
+        guard let email = DBManager.getEmailFailed(account: self.myAccount) else {
             return
         }
         DBManager.updateEmail(email, status: .sending)
@@ -1615,7 +1615,7 @@ extension InboxViewController: ComposerSendMailDelegate {
                 return
             }
             guard case let .SuccessInt(key) = responseData,
-                DBManager.getMail(key: key) != nil else {
+                DBManager.getMail(key: key, account: weakSelf.myAccount) != nil else {
                 weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
                 return
             }
@@ -1797,7 +1797,7 @@ extension InboxViewController: LinkDeviceDelegate {
 
 extension InboxViewController {
     func markAsRead(emailKey: Int, completion: @escaping (() -> Void)){
-        guard DBManager.getMail(key: emailKey) != nil else {
+        guard DBManager.getMail(key: emailKey, account: self.myAccount) != nil else {
             completion()
             return
         }
@@ -1811,13 +1811,13 @@ extension InboxViewController {
                 completion()
                 return
             }
-            DBManager.createQueueItem(params: eventParams)
+            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
             completion()
         }
     }
     
     func reply(emailKey: Int, completion: @escaping (() -> Void)){
-        guard let email = DBManager.getMail(key: emailKey) else {
+        guard let email = DBManager.getMail(key: emailKey, account: self.myAccount) else {
             completion()
             return
         }
@@ -1828,7 +1828,7 @@ extension InboxViewController {
     }
     
     func moveToTrash(emailKey: Int, completion: @escaping (() -> Void)){
-        guard let email = DBManager.getMail(key: emailKey) else {
+        guard let email = DBManager.getMail(key: emailKey, account: self.myAccount) else {
             completion()
             return
         }
@@ -1842,7 +1842,7 @@ extension InboxViewController {
                 completion()
                 return
             }
-            DBManager.createQueueItem(params: eventParams)
+            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
             completion()
         }
     }
