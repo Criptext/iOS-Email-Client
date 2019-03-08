@@ -70,12 +70,11 @@ class DBManager: SharedDB {
     
     class func retrieveWholeDB(account: Account) -> LinkDBSource {
         let realm = try! Realm()
-        let contacts = realm.objects(Contact.self).filter("account.compoundKey == '\(account.compoundKey)'")
+        let contacts = realm.objects(Contact.self)
         let labels = realm.objects(Label.self).filter("type == 'custom' AND account.compoundKey == '\(account.compoundKey)'")
         let emails = realm.objects(Email.self).filter("messageId != '' AND account.compoundKey == '\(account.compoundKey)'")
-        let files = realm.objects(File.self).filter("email.account.compoundKey == '\(account.compoundKey)'")
         let emailContacts = realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)' AND email.delivered != \(Email.Status.sending.rawValue) AND email.delivered != \(Email.Status.fail.rawValue) AND NOT (ANY email.labels.id == \(SystemLabel.draft.id))")
-        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, files: files)
+        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts)
     }
     
     struct LinkDBSource {
@@ -83,7 +82,6 @@ class DBManager: SharedDB {
         let labels: Results<Label>
         let emails: Results<Email>
         let emailContacts: Results<EmailContact>
-        let files: Results<File>
     }
     
     struct LinkDBMaps {
@@ -91,17 +89,18 @@ class DBManager: SharedDB {
         var contacts: [Int: String]
     }
     
-    class func insertBatchRows(rows: [[String: Any]], maps: inout LinkDBMaps, username: String, account: Account){
+    class func insertBatchRows(rows: [[String: Any]], maps: inout LinkDBMaps, username: String){
         let realm = try! Realm()
         try! realm.write {
             for row in rows {
-                self.insertRow(realm: realm, row: row, maps: &maps, username: username, account: account)
+                self.insertRow(realm: realm, row: row, maps: &maps, username: username)
             }
         }
     }
     
-    class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps, username: String, account: Account){
-        guard let table = row["table"] as? String,
+    class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps, username: String){
+        guard let account = realm.object(ofType: Account.self, forPrimaryKey: username),
+            let table = row["table"] as? String,
             let object = row["object"] as? [String: Any] else {
                 return
         }
@@ -303,6 +302,7 @@ class DBManager: SharedDB {
     class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = [], account: Account) -> [Thread] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
+        print(account)
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
         let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@) AND NOT (threadId IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels, threadIds)
         let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
@@ -383,7 +383,7 @@ class DBManager: SharedDB {
     class func getThreadEmails(_ threadId: String, label: Int) -> Results<Email> {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", rejectedLabels)
+        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
         let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
         let predicate = (label == SystemLabel.trash.id || label == SystemLabel.spam.id || label == SystemLabel.draft.id) ? predicate2 : predicate1
         let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)

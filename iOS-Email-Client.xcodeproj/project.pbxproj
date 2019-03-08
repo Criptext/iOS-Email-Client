@@ -342,6 +342,8 @@
 		A7ADA15C21A729A10027FC1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
+		A7C2E5E82232E0C80026B566 /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
+		A7C2E5E92232E0C90026B566 /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
 		A7C3589E21B19AE300386295 /* GenericAlertUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */; };
 		A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */; };
 		A7C358A021B19CB800386295 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
@@ -402,6 +404,7 @@
 		A7D2DEB421C85328002ED6F8 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */; };
 		A7D2DEB521C85329002ED6F8 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */; };
 		A7E399F5219F61CD007EEC1C /* GoogleService-Info-Support.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */; };
+		A7F2554E2232FF3100034270 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
 		A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3026C216679D800676DD2 /* ScheduleWorker.swift */; };
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
 		A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F30274216EA60B00676DD2 /* gunzipped.txt */; };
@@ -2118,6 +2121,7 @@
 				A70609F921A74C0A0066BFA4 /* EmailSetPasswordViewController.swift in Sources */,
 				D63EE2DA21CC247E001125B3 /* Theme.swift in Sources */,
 				A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */,
+				A7C2E5E82232E0C80026B566 /* AccountContact.swift in Sources */,
 				A70609F621A72F470066BFA4 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				A7ADA13F21A5F2100027FC1C /* DBAxolotl.swift in Sources */,
 				A7ADA13E21A5F2100027FC1C /* CriptextAxolotlStore.swift in Sources */,
@@ -2159,8 +2163,10 @@
 				A7CC386321934EE400C8355A /* CriptextAxolotlStore.swift in Sources */,
 				D6E1E64121E5332500FA968A /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				A7CC385F21934EE400C8355A /* CriptextSessionStore.swift in Sources */,
+				A7C2E5E92232E0C90026B566 /* AccountContact.swift in Sources */,
 				A7CC385B21934DC600C8355A /* Account.swift in Sources */,
 				A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */,
+				A7F2554E2232FF3100034270 /* Time.swift in Sources */,
 				A7CC387621939B2600C8355A /* NewEmailHandler.swift in Sources */,
 				D661A22D21EFA447002A6BDD /* SharedUtils.swift in Sources */,
 				A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */,

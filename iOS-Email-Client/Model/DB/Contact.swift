@@ -15,6 +15,8 @@ class Contact: Object {
     @objc dynamic var isTrusted = false
     @objc dynamic var score = 0
     
+    let accountContacts = LinkingObjects(fromType: AccountContact.self, property: "contact")
+    
     override static func primaryKey() -> String? {
         return "email"
     }

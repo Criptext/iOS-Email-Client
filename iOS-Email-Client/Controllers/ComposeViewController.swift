@@ -344,6 +344,7 @@ class ComposeViewController: UIViewController {
         let draft = Email()
         draft.status = .none
         let bodyWithoutHtml = self.editorView.text.replaceNewLineCharater(separator: " ")
+        draft.account = self.activeAccount
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
         draft.subject = self.subjectField.text ?? ""
@@ -406,7 +407,7 @@ class ComposeViewController: UIViewController {
             newContact.email = email
             newContact.score = 1
             newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
-            DBManager.store([newContact]);
+            DBManager.store([newContact], account: activeAccount);
             emailContact.contact = newContact
         }
         emailContacts.append(emailContact)
@@ -932,7 +933,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         self.toolbarView.isHidden = (view.text?.isEmpty)! ? false : true
         
         if !(text?.isEmpty)! {
-            composerData.contactArray = DBManager.getContacts(text ?? "")
+            composerData.contactArray = DBManager.getContacts(text ?? "", account: self.activeAccount)
             self.contactTableView.isHidden = composerData.contactArray.isEmpty
             self.toolbarHeightConstraint.constant = composerData.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0
             self.toolbarView.isHidden = composerData.contactArray.isEmpty ? false : true

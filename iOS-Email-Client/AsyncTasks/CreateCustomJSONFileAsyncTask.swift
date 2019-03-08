@@ -59,11 +59,13 @@ class CreateCustomJSONFileAsyncTask {
             }
             handleRow($1.toDictionary(id: $0 + 1, emailId: emailId, contactId: contacts[$1.contact.email]!))
         }
-        results.files.enumerated().forEach {
-            guard let emailId = emails[$1.emailId] else {
-                return
-            }
-            handleRow($1.toDictionary(id: $0 + 1, emailId: emailId))
+        results.emails.forEach { (email) in
+            email.files.enumerated().forEach({ (index, file) in
+                guard let emailId = emails[file.emailId] else {
+                    return
+                }
+                handleRow(file.toDictionary(id: index + 1, emailId: emailId))
+            })
         }
         
         DispatchQueue.main.async {

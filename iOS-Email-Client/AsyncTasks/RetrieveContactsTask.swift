@@ -16,17 +16,24 @@ class RetrieveContactsTask {
         var name: String
     }
     
+    let username: String
+    
+    init(username: String) {
+        self.username = username
+    }
+    
     func start(completionHandler: @escaping ((Bool) -> Void)){
         let queue = DispatchQueue(label: "com.criptext.mail.contacts", qos: .background, attributes: .concurrent)
         queue.async {
             self.getContactsFromPhoneBook { (phoneContacts) in
-                guard let phContacts = phoneContacts else {
+                guard let account = DBManager.getAccountByUsername(self.username),
+                    let phContacts = phoneContacts else {
                     DispatchQueue.main.async {
                         completionHandler(false)
                     }
                     return
                 }
-                self.storeContacts(contacts: phContacts)
+                self.storeContacts(contacts: phContacts, account: account)
                 DispatchQueue.main.async {
                     completionHandler(true)
                 }
@@ -34,7 +41,7 @@ class RetrieveContactsTask {
         }
     }
     
-    func storeContacts(contacts: [PhoneContact]) {
+    func storeContacts(contacts: [PhoneContact], account: Account) {
         for contact in contacts {
             guard Utils.validateEmail(contact.email),
                 DBManager.getContact(contact.email) == nil else {
@@ -43,7 +50,7 @@ class RetrieveContactsTask {
             let dbContact = Contact()
             dbContact.displayName = contact.name
             dbContact.email = contact.email
-            DBManager.store([dbContact])
+            DBManager.store([dbContact], account: account)
         }
     }
     

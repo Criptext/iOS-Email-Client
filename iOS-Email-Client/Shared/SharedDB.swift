@@ -88,21 +88,26 @@ class SharedDB {
     
     //MARK: - Contacts related
     
-    class func getContacts(_ text:String) -> [Contact]{
+    class func getContacts(_ text:String, account: Account) -> [Contact]{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
+        let predicate = NSPredicate(format: "(ANY accountContacts.account.compoundKey == '\(account.compoundKey)') AND email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
         let results = realm.objects(Contact.self).filter(predicate).sorted(byKeyPath: "score", ascending: false)
         
         return Array(results)
     }
     
-    class func store(_ contacts:[Contact]){
+    class func store(_ contacts:[Contact], account: Account){
         let realm = try! Realm()
         
         try! realm.write {
             contacts.forEach({ (contact) in
                 realm.add(contacts, update: true)
+                let accountContact = AccountContact()
+                accountContact.account = account
+                accountContact.contact = contact
+                accountContact.buildCompoundKey()
+                realm.add(accountContact, update: true)
             })
         }
     }

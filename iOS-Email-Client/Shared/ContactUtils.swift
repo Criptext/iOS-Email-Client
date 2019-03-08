@@ -9,11 +9,11 @@
 import Foundation
 
 class ContactUtils {
-    private class func parseContact(_ contactString: String) -> Contact {
+    private class func parseContact(_ contactString: String, account: Account) -> Contact {
         let contactMetadata = self.getStringEmailName(contact: contactString);
         guard let existingContact = SharedDB.getContact(contactMetadata.0) else {
             let newContact = Contact(value: ["displayName": contactMetadata.1, "email": contactMetadata.0])
-            SharedDB.store([newContact])
+            SharedDB.store([newContact], account: account)
             return newContact
         }
         let isNewNameFromEmail = contactMetadata.0.starts(with: contactMetadata.1)
@@ -32,9 +32,9 @@ class ContactUtils {
         return matches.last != nil && cleanContact.split(separator: "<").count > 1 ? true : false
     }
     
-    class func parseEmailContacts(_ contacts: [String], email: Email, type: ContactType){
+    class func parseEmailContacts(_ contacts: [String], email: Email, type: ContactType, account: Account){
         contacts.forEach { (contactString) in
-            let contact = parseContact(contactString)
+            let contact = parseContact(contactString, account: account)
             let emailContact = EmailContact()
             emailContact.contact = contact
             emailContact.email = email
@@ -44,8 +44,8 @@ class ContactUtils {
         }
     }
     
-    class func parseFromContact(contact: String) -> String{
-        let from = parseContact(contact)
+    class func parseFromContact(contact: String, account: Account) -> String{
+        let from = parseContact(contact, account: account)
         return "\(from.displayName) <\(from.email)>"
     }
     

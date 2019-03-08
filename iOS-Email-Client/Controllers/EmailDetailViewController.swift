@@ -233,7 +233,7 @@ class EmailDetailViewController: UIViewController {
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 
     func getMail(index: Int) -> Email {
-        let trueIndex = index + collapseUntilIndex
+        let trueIndex = index == 0 ? 0 : index + collapseUntilIndex 
         return emailData.emails[trueIndex]
     }
     
@@ -315,7 +315,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             contact = Contact()
             contact.email = email
             contact.displayName = String(email.split(separator: "@").first!)
-            DBManager.store([contact])
+            DBManager.store([contact], account: self.myAccount)
         }
         presentComposer(contactsTo: [contact])
     }

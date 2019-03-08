@@ -131,7 +131,7 @@ class ManualSyncViewController: UIViewController{
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
                     dbRows.removeAll()
                     if progress < 99 {
                         progress += 1
@@ -141,7 +141,7 @@ class ManualSyncViewController: UIViewController{
                     }
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {

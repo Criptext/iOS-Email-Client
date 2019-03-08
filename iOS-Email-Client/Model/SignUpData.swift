@@ -50,6 +50,7 @@ class SignUpData{
         myAccount.regId = 0
         myAccount.identityB64 = ""
         myAccount.deviceId = signupData.deviceId
+        myAccount.buildCompoundKey()
         return myAccount
     }
 }
