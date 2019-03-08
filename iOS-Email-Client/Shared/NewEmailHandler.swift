@@ -144,7 +144,7 @@ class NewEmailHandler {
             let contacts = [event.from]
             var from = String()
             contacts.forEach{
-                from = (from.isEmpty ? ContactUtils.parseFromContact(contact: $0) : "\(from), \(ContactUtils.parseFromContact(contact: $0))")
+                from = (from.isEmpty ? ContactUtils.parseFromContact(contact: $0, account: myAccount) : "\(from), \(ContactUtils.parseFromContact(contact: $0, account: myAccount))")
             }
             email.fromAddress = from
             guard self.database.store(email) else {
@@ -152,10 +152,10 @@ class NewEmailHandler {
                 return
             }
             
-            ContactUtils.parseEmailContacts([event.from], email: email, type: .from)
-            ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
-            ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
-            ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
+            ContactUtils.parseEmailContacts([event.from], email: email, type: .from, account: myAccount)
+            ContactUtils.parseEmailContacts(event.to, email: email, type: .to, account: myAccount)
+            ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc, account: myAccount)
+            ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc, account: myAccount)
             
             if let myContact = SharedDB.getContact("\(myAccount.username)\(Env.domain)"),
                 myContact.displayName != myAccount.name {

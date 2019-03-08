@@ -109,14 +109,15 @@ class ConnectDeviceViewController: UIViewController{
         
         let bundle = CRBundle(account: account)
         let keys = bundle.generateKeys()
+        self.account = account
+        self.bundle = bundle
         return (account, keys)
     }
     
     func sendKeysRequest(){
         self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("SENDING_KEYS"), completion: {})
         let accountData = createAccount()
-        let keyBundle = accountData.1["keybundle"] as! [String: Any]
-        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
+        APIManager.postKeybundle(params: accountData.1, token: signupData.token!){ (responseData) in
             guard case let .SuccessDictionary(tokens) = responseData,
                 let jwt = tokens["token"] as? String,
                 let refreshToken = tokens["refreshToken"] as? String else {
@@ -180,7 +181,7 @@ class ConnectDeviceViewController: UIViewController{
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
                     dbRows.removeAll()
                     if progress < 99 {
                         progress += 1
@@ -190,7 +191,7 @@ class ConnectDeviceViewController: UIViewController{
                     }
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username, account: myAccount)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
@@ -217,7 +218,7 @@ class ConnectDeviceViewController: UIViewController{
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
-        DBManager.store([myContact])
+        DBManager.store([myContact], account: myAccount)
         DBManager.createSystemLabels()
         let defaults = CriptextDefaults()
         defaults.activeAccount = myAccount.username

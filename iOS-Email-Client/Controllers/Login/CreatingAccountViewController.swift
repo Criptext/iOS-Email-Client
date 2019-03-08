@@ -87,14 +87,15 @@ class CreatingAccountViewController: UIViewController{
         
         let bundle = CRBundle(account: account)
         let keys = bundle.generateKeys()
+        self.account = account
+        self.bundle = bundle
         return (account, keys)
     }
     
     func sendKeysRequest(){
         feedbackLabel.text = String.localize("GENERATING_KEYS")
         let accountData = createAccount()
-        let keyBundle = accountData.1["keybundle"] as! [String: Any]
-        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
+        APIManager.postKeybundle(params: accountData.1, token: signupData.token!){ (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.displayErrorMessage(message: error.description)
@@ -118,7 +119,8 @@ class CreatingAccountViewController: UIViewController{
     func sendSignUpRequest(){
         feedbackLabel.text = String.localize("GENERATING_KEYS")
         let accountData = createAccount()
-        APIManager.signUpRequest(accountData.1) { (responseData) in
+        let signupRequestData = signupData.buildDataForRequest(publicKeys: accountData.1)
+        APIManager.signUpRequest(signupRequestData) { (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.displayErrorMessage(message: error.description)
@@ -165,7 +167,7 @@ class CreatingAccountViewController: UIViewController{
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
-        DBManager.store([myContact])
+        DBManager.store([myContact], account: myAccount)
         let defaults = CriptextDefaults()
         defaults.activeAccount = myAccount.username
         if signupData.deviceId != 1 {

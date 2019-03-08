@@ -277,7 +277,7 @@ class InboxViewController: UIViewController {
                 weakSelf.syncContacts()
                 return
             }
-            let task = RetrieveContactsTask()
+            let task = RetrieveContactsTask(username: weakSelf.myAccount.username)
             task.start { (_) in }
         }
     }
@@ -746,8 +746,10 @@ extension InboxViewController{
         let searchText = searchController.searchBar.text
         mailboxData.cancelFetchWorker()
         var workItem: DispatchWorkItem? = nil
+        let username = myAccount.username
         workItem = DispatchWorkItem(block: { [weak self] in
-            guard let weakSelf = self else {
+            guard let weakSelf = self,
+                let myAccount = DBManager.getAccountByUsername(username) else {
                 return
             }
             let threads : [Thread]
@@ -756,13 +758,13 @@ extension InboxViewController{
                 guard let searchParam = searchText else {
                     return
                 }
-                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads, account: weakSelf.myAccount)
+                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads, account: myAccount)
             } else {
                 if(weakSelf.selectLabel == String.localize("SHOW_ALL")){
-                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads, account: weakSelf.myAccount)
+                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads, account: myAccount)
                 }
                 else{
-                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads, account: weakSelf.myAccount)
+                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads, account: myAccount)
                 }
             }
             guard !(workItem?.isCancelled ?? false) else {

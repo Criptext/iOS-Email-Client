@@ -165,7 +165,7 @@ class ShareViewController: UIViewController {
 
 extension ShareViewController: ComposerDelegate {
     func typingRecipient(text: String) {
-        contacts = SharedDB.getContacts(text)
+        contacts = SharedDB.getContacts(text, account: myAccount)
         self.composerUIView.contactsTableView.isHidden = contacts.isEmpty
         self.composerUIView.contactsTableView.reloadData()
     }
@@ -363,7 +363,7 @@ extension ShareViewController {
             newContact.email = email
             newContact.score = 1
             newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
-            SharedDB.store([newContact]);
+            SharedDB.store([newContact], account: self.myAccount);
             emailContact.contact = newContact
         }
         emailContacts.append(emailContact)

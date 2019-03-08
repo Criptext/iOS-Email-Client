@@ -312,24 +312,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                     if let myAccount = account {
                         migration.enumerateObjects(ofType: Email.className()){ (oldObject, newObject) in
-                            guard let newContact = newObject else{
+                            guard let newEmail = newObject else{
                                 return
                             }
-                            newContact["account"] = myAccount
+                            newEmail["account"] = myAccount
                         }
                         migration.enumerateObjects(ofType: CRSignedPreKeyRecord.className()){ (oldObject, newObject) in
                             guard let newRecord = newObject else{
                                 return
                             }
                             newRecord["account"] = myAccount
-                            newRecord["compoundkey"] = "\(myAccount["compoundKey"]!):\(newRecord["signedPreKeyId"]!)"
+                            newRecord["compoundKey"] = "\(myAccount["compoundKey"]!):\(newRecord["signedPreKeyId"]!)"
                         }
                         migration.enumerateObjects(ofType: CRPreKeyRecord.className()){ (oldObject, newObject) in
                             guard let newRecord = newObject else{
                                 return
                             }
                             newRecord["account"] = myAccount
-                            newRecord["compoundkey"] = "\(myAccount["compoundKey"]!):\(newRecord["preKeyId"]!)"
+                            newRecord["compoundKey"] = "\(myAccount["compoundKey"]!):\(newRecord["preKeyId"]!)"
                         }
                         migration.enumerateObjects(ofType: CRTrustedDevice.className()){ (oldObject, newObject) in
                             guard let newRecord = newObject else{
@@ -342,7 +342,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 return
                             }
                             newRecord["account"] = myAccount
-                            newRecord["compoundkey"] = "\(myAccount["compoundKey"]!):\(newRecord["contactId"]!):\(newRecord["deviceId"]!)"
+                            newRecord["compoundKey"] = "\(myAccount["compoundKey"]!):\(newRecord["contactId"]!):\(newRecord["deviceId"]!)"
                         }
                         migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
                             guard let newLabel = newObject else{
