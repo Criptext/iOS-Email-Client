@@ -25,7 +25,34 @@ class NotificationService: UNNotificationServiceExtension {
     }
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        contentHandler(request.content)
+        let userInfo = request.content.userInfo
+        let defaults = CriptextDefaults()
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+        guard let bestAttemptContent = bestAttemptContent,
+            let username = defaults.activeAccount,
+            let account = SharedDB.getAccountByUsername(username),
+            let recipientId = userInfo["recipientId"] as? String,
+            let deviceIdString = userInfo["messageType"] as? String,
+            let deviceId = Int32(deviceIdString),
+            let messageTypeString = userInfo["messageType"] as? String,
+            let messageType = Int(messageTypeString),
+            let preview = userInfo["preview"] as? String else {
+            contentHandler(request.content)
+            return
+        }
+        
+        var decryptedPreview: String? = nil
+        tryBlock {
+           decryptedPreview = SignalHandler.decryptMessage(preview, messageType: MessageType(rawValue: messageType)!, account: account, recipientId: recipientId, deviceId: deviceId)
+        }
+        
+        guard let decrPreview = decryptedPreview else {
+            contentHandler(request.content)
+            return
+        }
+        
+        bestAttemptContent.subtitle = bestAttemptContent.body
+        bestAttemptContent.body = decrPreview
     }
     
     func handleEvents(_ events: [[String: Any]], username: String, for key: Int, completion: @escaping (_ email: Email?) -> Void){
