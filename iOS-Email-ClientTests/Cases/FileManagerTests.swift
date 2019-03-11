@@ -17,7 +17,7 @@ class FileManagerTests: XCTestCase {
     }
     
     override func setUp() {
-        DBManager.signout()
+        DBManager.destroy()
     }
     
     func testSuccessfullyUploadFile(){
@@ -27,7 +27,7 @@ class FileManagerTests: XCTestCase {
         fileManager.apiManager = MockAPIManager.self
         fileManager.token = token
         fileManager.delegate = delegate
-        let filepath = CRBundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
+        let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         fileManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
@@ -52,7 +52,7 @@ class FileManagerTests: XCTestCase {
         uploadManager.apiManager = MockAPIManager.self
         uploadManager.token = self.token
         uploadManager.delegate = uploadDelegate
-        let filepath = CRBundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
+        let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         uploadManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         uploadManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
@@ -114,7 +114,7 @@ class FileManagerTests: XCTestCase {
         fileManager.token = token
         fileManager.setEncryption(id: 0, key: keyData, iv: ivData)
         fileManager.delegate = delegate
-        let filepath = CRBundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
+        let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         fileManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
@@ -143,7 +143,7 @@ class FileManagerTests: XCTestCase {
         uploadManager.setEncryption(id: 0, key: keyData, iv: ivData)
         uploadManager.delegate = uploadDelegate
         uploadManager.token = token
-        let filepath = CRBundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
+        let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         uploadManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
         waitForExpectations(timeout: 40) { (testError) in

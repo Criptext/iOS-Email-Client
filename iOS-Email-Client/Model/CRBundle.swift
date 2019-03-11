@@ -18,12 +18,20 @@ class CRBundle {
     var signedKeyId: Int32 = 1
     var publicKeys: [String : Any]?
     
+    var regId: Int32 {
+        return store.identityKeyStore.getRegId()
+    }
+    
+    var identity: String {
+        return store.identityKeyStore.getIdentityKeyPairB64() ?? ""
+    }
+    
     init(account: Account) {
         self.account = account
         store = CriptextAxolotlStore(account: account)
     }
     
-    func generateKeys() -> [String: Any] {
+    @discardableResult func generateKeys() -> [String: Any] {
         let signedPreKeyPair: ECKeyPair = Curve25519.generateKeyPair()
         let signedPreKeySignature = Ed25519.sign(signedPreKeyPair.publicKey().prependByte(), with: store.identityKeyPair())
         let signedPreKeyRecord: SignedPreKeyRecord = SignedPreKeyRecord.init(id: signedKeyId, keyPair: signedPreKeyPair, signature: signedPreKeySignature, generatedAt: Date())
