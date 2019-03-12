@@ -629,6 +629,7 @@ extension AppDelegate: MessagingDelegate {
                 return
         }
         inboxVC.getPendingEvents(nil) { (success) in
+            UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
             completionHandler(.newData)
         }
     }

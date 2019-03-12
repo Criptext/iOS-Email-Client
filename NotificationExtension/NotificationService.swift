@@ -28,7 +28,8 @@ class NotificationService: UNNotificationServiceExtension {
         let userInfo = request.content.userInfo
         let defaults = CriptextDefaults()
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        guard let bestAttemptContent = bestAttemptContent,
+        guard !defaults.previewDisable,
+            let bestAttemptContent = bestAttemptContent,
             let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username),
             let recipientId = userInfo["recipientId"] as? String,
