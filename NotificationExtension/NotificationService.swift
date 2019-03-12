@@ -32,9 +32,9 @@ class NotificationService: UNNotificationServiceExtension {
             let username = defaults.activeAccount,
             let account = SharedDB.getAccountByUsername(username),
             let recipientId = userInfo["recipientId"] as? String,
-            let deviceIdString = userInfo["messageType"] as? String,
+            let deviceIdString = userInfo["deviceId"] as? String,
             let deviceId = Int32(deviceIdString),
-            let messageTypeString = userInfo["messageType"] as? String,
+            let messageTypeString = userInfo["previewMessageType"] as? String,
             let messageType = Int(messageTypeString),
             let preview = userInfo["preview"] as? String else {
             contentHandler(request.content)
@@ -53,28 +53,8 @@ class NotificationService: UNNotificationServiceExtension {
         
         bestAttemptContent.subtitle = bestAttemptContent.body
         bestAttemptContent.body = decrPreview
-    }
-    
-    func handleEvents(_ events: [[String: Any]], username: String, for key: Int, completion: @escaping (_ email: Email?) -> Void){
-        var focusEvent: [String: Any]? = nil
-        for event in events {
-            guard let paramsString = event["params"] as? String,
-                let params = SharedUtils.convertToDictionary(text: paramsString),
-                let emailKey = params["metadataKey"] as? Int,
-                emailKey == key else {
-                continue
-            }
-            focusEvent = params
-            break
-        }
-        guard let event = focusEvent else {
-            completion(nil)
-            return
-        }
-        let newEmailHandler = NewEmailHandler(username: username)
-        newEmailHandler.command(params: event) { (result) in
-            completion(result.email)
-        }
+        bestAttemptContent.categoryIdentifier = "OPEN_THREAD"
+        contentHandler(bestAttemptContent)
     }
     
     override func serviceExtensionTimeWillExpire() {

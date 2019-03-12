@@ -12,6 +12,8 @@ import RealmSwift
 
 class SendMailAsyncTask {
     
+    var apiManager: APIManager.Type = APIManager.self
+    
     let fileKey: String?
     var fileKeys: [String]?
     let threadId: String?
@@ -143,7 +145,7 @@ class SendMailAsyncTask {
             completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
-        APIManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
+        apiManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
             guard case let .SuccessDictionary(response) = responseData,
                 let duplicates = response["duplicates"] as? [String: Any],
                 let fileParams = SharedDB.duplicateFiles(key: self.emailKey, duplicates: duplicates) else {
@@ -175,7 +177,7 @@ class SendMailAsyncTask {
             "knownAddresses": keysPayload.1
             ] as [String : Any]
         
-        APIManager.getKeysRequest(params, account: myAccount, queue: queue) { responseData in
+        apiManager.getKeysRequest(params, account: myAccount, queue: queue) { responseData in
             guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
                 return
             }
@@ -257,6 +259,9 @@ class SendMailAsyncTask {
                 let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: contactType, myAccount: myAccount)
                 emailsData.append(criptextEmail)
             }
+            if recipientId == myAccount.username && emailsData.isEmpty {
+                continue
+            }
             criptextEmailData.append([
                 "username": recipientId,
                 "emails": emailsData
@@ -337,7 +342,7 @@ class SendMailAsyncTask {
         if let thread = self.threadId {
             requestParams["threadId"] = thread
         }
-        APIManager.postMailRequest(requestParams, account: myAccount, queue: queue) { responseData in
+        apiManager.postMailRequest(requestParams, account: myAccount, queue: queue) { responseData in
             if case .TooManyRequests = responseData {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()

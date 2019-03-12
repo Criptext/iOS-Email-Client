@@ -253,6 +253,12 @@ struct Constants {
         "</body></html>"
     }
     
+    static func contentUnsent(_ content: String) -> String {
+        return "<span style=\"color:#eea3a3; font-style: italic;\">\(content)</span>"
+    }
+    
+    static let contentEmpty = "<i style=\"color:#ccc;\">\(String.localize("NO_CONTENT"))</i>"
+    
     static let popoverWidth = 270
     static let singleTextPopoverHeight = 178
 }

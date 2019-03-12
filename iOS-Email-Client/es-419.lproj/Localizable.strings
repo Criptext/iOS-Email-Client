@@ -350,3 +350,4 @@
 "EDIT_NAME" = "Editar Nombre";
 "EMAIL_FILTER" = "Filtrado de correo";
 "NO_AVAILABLE_RECIPIENTS" = "Recipientes no disponibles";
+"NO_CONTENT" = "Este correo no tiene contenido";
