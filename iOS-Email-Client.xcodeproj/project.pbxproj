@@ -270,6 +270,7 @@
 		A763E19F222460E700A1CC18 /* TestSignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A763E19E222460E700A1CC18 /* TestSignalHandler.swift */; };
 		A763E1A32225D04A00A1CC18 /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A763E1A22225D04A00A1CC18 /* SearchTests.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
+		A76B5B3E22371BEB0078F6C7 /* SendEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76B5B3D22371BEB0078F6C7 /* SendEmailTests.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77AD67221642AFC00C26F07 /* StreamReader.swift */; };
 		A77C30A721A4DE720031E219 /* PasscodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30A621A4DE720031E219 /* PasscodeConfig.swift */; };
@@ -279,6 +280,7 @@
 		A77C30B821A5055A0031E219 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A77C30AE21A5055A0031E219 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A789B23F21B5E4A700F89DF3 /* PasscodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30A621A4DE720031E219 /* PasscodeConfig.swift */; };
 		A789B24021B8228800F89DF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
+		A78D27A12238084200B3ECD6 /* APIManagerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78D27A02238084200B3ECD6 /* APIManagerSpy.swift */; };
 		A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
@@ -751,6 +753,7 @@
 		A763E19E222460E700A1CC18 /* TestSignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSignalHandler.swift; sourceTree = "<group>"; };
 		A763E1A22225D04A00A1CC18 /* SearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTests.swift; sourceTree = "<group>"; };
 		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
+		A76B5B3D22371BEB0078F6C7 /* SendEmailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailTests.swift; sourceTree = "<group>"; };
 		A774DAC12196215100C411BD /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		A77AD67221642AFC00C26F07 /* StreamReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
 		A77C30A621A4DE720031E219 /* PasscodeConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeConfig.swift; sourceTree = "<group>"; };
@@ -759,6 +762,7 @@
 		A77C30B021A5055A0031E219 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		A77C30B321A5055A0031E219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A77C30B521A5055A0031E219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A78D27A02238084200B3ECD6 /* APIManagerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManagerSpy.swift; sourceTree = "<group>"; };
 		A7ADA11B21A507D70027FC1C /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerUIView.swift; sourceTree = "<group>"; };
 		A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1326,6 +1330,7 @@
 				7CB60A7E20F94BA800C9090C /* FileManagerSpyDelegate.swift */,
 				A763E19E222460E700A1CC18 /* TestSignalHandler.swift */,
 				A718BE662226F15B008CAA72 /* DBFactory.swift */,
+				A78D27A02238084200B3ECD6 /* APIManagerSpy.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -1344,6 +1349,7 @@
 				A763E1A22225D04A00A1CC18 /* SearchTests.swift */,
 				A718BE6822270322008CAA72 /* SignUpTests.swift */,
 				A718BE6E22273646008CAA72 /* ThreadTests.swift */,
+				A76B5B3D22371BEB0078F6C7 /* SendEmailTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -2036,12 +2042,14 @@
 				7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */,
 				A718BE672226F15B008CAA72 /* DBFactory.swift in Sources */,
 				A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */,
+				A76B5B3E22371BEB0078F6C7 /* SendEmailTests.swift in Sources */,
 				A7F30271216E859300676DD2 /* GZipTests.swift in Sources */,
 				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
 				A763E1A32225D04A00A1CC18 /* SearchTests.swift in Sources */,
 				41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */,
 				7C247E0820C6E08E0019321E /* MockAPIManager.swift in Sources */,
 				A763E19D22245F2300A1CC18 /* SignalTests.swift in Sources */,
+				A78D27A12238084200B3ECD6 /* APIManagerSpy.swift in Sources */,
 				A718BE6F22273646008CAA72 /* ThreadTests.swift in Sources */,
 				7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */,
 				7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */,

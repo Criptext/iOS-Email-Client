@@ -12,6 +12,8 @@ import RealmSwift
 
 class SendMailAsyncTask {
     
+    var apiManager: APIManager.Type = APIManager.self
+    
     let fileKey: String?
     var fileKeys: [String]?
     let threadId: String?
@@ -27,6 +29,7 @@ class SendMailAsyncTask {
     let emailKey: Int
     let from: String
     let replyTo: String?
+    let preview: String
     let emailRef: ThreadSafeReference<Object>
     
     init(account: Account, email: Email, emailBody: String, password: String?){
@@ -40,6 +43,7 @@ class SendMailAsyncTask {
         self.emailKey = email.key
         self.subject = email.subject
         self.body = emailBody
+        self.preview = email.preview
         self.isSecure = email.secure
         self.threadId = email.threadId.isEmpty || email.threadId == email.key.description ? nil : email.threadId
         self.guestEmails = recipients.0
@@ -141,7 +145,7 @@ class SendMailAsyncTask {
             completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
-        APIManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
+        apiManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
             guard case let .SuccessDictionary(response) = responseData,
                 let duplicates = response["duplicates"] as? [String: Any],
                 let fileParams = SharedDB.duplicateFiles(key: self.emailKey, duplicates: duplicates) else {
@@ -162,50 +166,18 @@ class SendMailAsyncTask {
             return
         }
         
-        if isSecure && !guestEmails.isEmpty {
-            if let enteredPassword = password {
-                let dummySessionData = self.buildDummySession(password: enteredPassword, myAccount: myAccount)
-                self.guestEmails["body"] = dummySessionData.body
-                self.guestEmails["session"] = dummySessionData.session
-                let dummySession = DummySession()
-                dummySession.body = dummySessionData.body
-                dummySession.session = dummySessionData.session
-                dummySession.key = emailKey
-                SharedDB.store(dummySession)
-            } else if let dummySession = SharedDB.getDummySession(key: emailKey) {
-                self.guestEmails["body"] = dummySession.body
-                self.guestEmails["session"] = dummySession.session
-            } else {
-                deleteUnhandledEmail()
-                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
-                return
-            }
+        if !handleDummySession(myAccount: myAccount) {
+            completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
+            return
         }
         
-        var recipients = [String]()
-        var knownAddresses = [String: [Int32]]()
-        var criptextEmailsData = [[String: Any]]()
-        for (recipientId, type) in criptextEmails {
-            let type = type as! String
-            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId)
-            let deviceIds = recipientSessions.map { $0.deviceId }
-            recipients.append(recipientId)
-            for deviceId in deviceIds {
-                guard !(type == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
-                    continue
-                }
-                let criptextEmail = buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: type, myAccount: myAccount)
-                criptextEmailsData.append(criptextEmail)
-            }
-            knownAddresses[recipientId] = deviceIds
-        }
-        
+        let keysPayload = getRecipientsAndKnownDevices()
         let params = [
-            "recipients": recipients,
-            "knownAddresses": knownAddresses
+            "recipients": keysPayload.0,
+            "knownAddresses": keysPayload.1
             ] as [String : Any]
         
-        APIManager.getKeysRequest(params, account: myAccount, queue: queue) { responseData in
+        apiManager.getKeysRequest(params, account: myAccount, queue: queue) { responseData in
             guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
                 return
             }
@@ -231,32 +203,83 @@ class SendMailAsyncTask {
             for keys in keyBundles {
                 let recipientId = keys["recipientId"] as! String
                 let deviceId = keys["deviceId"] as! Int32
-                let type = self.criptextEmails[recipientId] as! String
                 SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
-                guard !(type == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
-                    continue
-                }
-                let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: type, myAccount: myAccount)
-                criptextEmailsData.append(criptextEmail)
             }
             
-            if let password = self.password {
-                let dummySessionData = self.buildDummySession(password: password, myAccount: myAccount)
-                self.guestEmails["body"] = dummySessionData.body
-                self.guestEmails["session"] = dummySessionData.session
-            }
-            
+            let criptextEmailsData = self.createCriptextEmailData(myAccount: myAccount)
             self.sendMail(myAccount: myAccount, criptextEmails: criptextEmailsData, queue: queue, completion: completion)
         }
     }
     
-    private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, myAccount: Account) -> [String: Any]{
+    private func handleDummySession(myAccount: Account) -> Bool {
+        if isSecure && !guestEmails.isEmpty {
+            if let enteredPassword = password {
+                let dummySessionData = self.buildDummySession(password: enteredPassword, myAccount: myAccount)
+                self.guestEmails["body"] = dummySessionData.body
+                self.guestEmails["session"] = dummySessionData.session
+                let dummySession = DummySession()
+                dummySession.body = dummySessionData.body
+                dummySession.session = dummySessionData.session
+                dummySession.key = emailKey
+                SharedDB.store(dummySession)
+            } else if let dummySession = SharedDB.getDummySession(key: emailKey) {
+                self.guestEmails["body"] = dummySession.body
+                self.guestEmails["session"] = dummySession.session
+            } else {
+                deleteUnhandledEmail()
+                return false
+            }
+        }
+        return true
+    }
+    
+    private func getRecipientsAndKnownDevices() -> ([String], [String: [Int32]]) {
+        var recipients = [String]()
+        var knownAddresses = [String: [Int32]]()
+        for (recipientId, _) in criptextEmails {
+            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId)
+            let deviceIds = recipientSessions.map { $0.deviceId }
+            recipients.append(recipientId)
+            knownAddresses[recipientId] = deviceIds
+        }
+        return (recipients, knownAddresses)
+    }
+    
+    private func createCriptextEmailData(myAccount: Account) -> [[String: Any]] {
+        var criptextEmailData = [[String: Any]]()
+        for (recipientId, type) in criptextEmails {
+            let contactType = type as! String
+            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId)
+            let deviceIds = recipientSessions.map { $0.deviceId }
+            var emailsData = [[String: Any]]()
+            for deviceId in deviceIds {
+                guard !(contactType == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
+                    continue
+                }
+                let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: contactType, myAccount: myAccount)
+                emailsData.append(criptextEmail)
+            }
+            if recipientId == myAccount.username && emailsData.isEmpty {
+                continue
+            }
+            criptextEmailData.append([
+                "username": recipientId,
+                "emails": emailsData
+                ] as [String : Any])
+        }
+        return criptextEmailData
+    }
+    
+    private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, myAccount: Account) -> [String: Any] {
         let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
+        let preview = SignalHandler.encryptMessage(body: self.preview, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         var criptextEmail = ["recipientId": recipientId,
                              "deviceId": deviceId,
                              "type": type,
                              "body": message.0,
-                             "messageType": message.1.rawValue] as [String: Any]
+                             "messageType": message.1.rawValue,
+                             "preview": preview.0,
+                             "previewMessageType": preview.1.rawValue] as [String: Any]
         if !self.files.isEmpty,
             let fileKey = self.fileKey {
             criptextEmail["fileKey"] = SignalHandler.encryptMessage(body: fileKey, deviceId: deviceId, recipientId: recipientId, account: myAccount).0
@@ -302,34 +325,16 @@ class SendMailAsyncTask {
         return message.0
     }
     
-    private func existCriptextRecipients(criptextEmails: [Any]) -> Bool {
-        for criptextEmail in criptextEmails {
-            guard let myCriptextEmail = criptextEmail as? [String: Any],
-                let type = myCriptextEmail["type"] as? String else {
-                continue
-            }
-            if type != "peer" {
-                return true
-            }
-        }
-        return false
-    }
-    
     private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
             return
         }
-        var shouldSend = false
         var requestParams = ["subject": subject] as [String : Any]
-        if !criptextEmails.isEmpty,
-            existCriptextRecipients(criptextEmails: criptextEmails) {
+        if !criptextEmails.isEmpty {
             requestParams["criptextEmails"] = criptextEmails
-            shouldSend = true
         }
         if !guestEmails.isEmpty {
-            requestParams["criptextEmails"] = criptextEmails
             requestParams["guestEmail"] = guestEmails
-            shouldSend = true
         }
         if (!files.isEmpty) {
             requestParams["files"] = files
@@ -337,14 +342,7 @@ class SendMailAsyncTask {
         if let thread = self.threadId {
             requestParams["threadId"] = thread
         }
-        if !shouldSend {
-            DispatchQueue.main.async {
-                self.setEmailAsFailed()
-                completion(ResponseData.Error(CriptextError(message: String.localize("NO_AVAILABLE_RECIPIENTS"))))
-            }
-            return
-        }
-        APIManager.postMailRequest(requestParams, account: myAccount, queue: queue) { responseData in
+        apiManager.postMailRequest(requestParams, account: myAccount, queue: queue) { responseData in
             if case .TooManyRequests = responseData {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()

@@ -25,29 +25,37 @@ class NotificationService: UNNotificationServiceExtension {
     }
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        contentHandler(request.content)
-    }
-    
-    func handleEvents(_ events: [[String: Any]], username: String, for key: Int, completion: @escaping (_ email: Email?) -> Void){
-        var focusEvent: [String: Any]? = nil
-        for event in events {
-            guard let paramsString = event["params"] as? String,
-                let params = SharedUtils.convertToDictionary(text: paramsString),
-                let emailKey = params["metadataKey"] as? Int,
-                emailKey == key else {
-                continue
-            }
-            focusEvent = params
-            break
-        }
-        guard let event = focusEvent else {
-            completion(nil)
+        let userInfo = request.content.userInfo
+        let defaults = CriptextDefaults()
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+        guard !defaults.previewDisable,
+            let bestAttemptContent = bestAttemptContent,
+            let username = defaults.activeAccount,
+            let account = SharedDB.getAccountByUsername(username),
+            let recipientId = userInfo["recipientId"] as? String,
+            let deviceIdString = userInfo["deviceId"] as? String,
+            let deviceId = Int32(deviceIdString),
+            let messageTypeString = userInfo["previewMessageType"] as? String,
+            let messageType = Int(messageTypeString),
+            let preview = userInfo["preview"] as? String else {
+            contentHandler(request.content)
             return
         }
-        let newEmailHandler = NewEmailHandler(username: username)
-        newEmailHandler.command(params: event) { (result) in
-            completion(result.email)
+        
+        var decryptedPreview: String? = nil
+        tryBlock {
+           decryptedPreview = SignalHandler.decryptMessage(preview, messageType: MessageType(rawValue: messageType)!, account: account, recipientId: recipientId, deviceId: deviceId)
         }
+        
+        guard let decrPreview = decryptedPreview else {
+            contentHandler(request.content)
+            return
+        }
+        
+        bestAttemptContent.subtitle = bestAttemptContent.body
+        bestAttemptContent.body = decrPreview
+        bestAttemptContent.categoryIdentifier = "OPEN_THREAD"
+        contentHandler(bestAttemptContent)
     }
     
     override func serviceExtensionTimeWillExpire() {

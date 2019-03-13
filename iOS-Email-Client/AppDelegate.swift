@@ -625,33 +625,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let inboxVC = getInboxVC(),
-            let keyString = userInfo["metadataKey"] as? String,
-            let key = Int(keyString) else {
+        guard let inboxVC = getInboxVC() else {
                 return
         }
         inboxVC.getPendingEvents(nil) { (success) in
-            self.createEmailNotification(emailKey: key)
+            UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
             completionHandler(.newData)
         }
-    }
-    
-    func createEmailNotification(emailKey: Int) {
-        SharedDB.refresh()
-        guard let email = DBManager.getMail(key: emailKey) else {
-            return
-        }
-        let notification = UNMutableNotificationContent()
-        notification.body = email.preview
-        notification.title = email.fromAddress
-        notification.subtitle = email.subject
-        notification.categoryIdentifier = "OPEN_THREAD"
-        notification.userInfo = ["threadId": email.threadId, "metadataKey": email.key.description]
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest(identifier: "\(emailKey)", content: notification, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

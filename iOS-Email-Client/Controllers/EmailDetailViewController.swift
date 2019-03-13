@@ -240,7 +240,9 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let email = getMail(index: indexPath.row)
         let cell = reuseOrCreateCell(identifier: "emailDetail\(email.key)") as! EmailTableViewCell
-        cell.setContent(email, emailBody: self.emailData.bodies[email.key] ?? "", state: emailData.getState(email.key), myEmail: emailData.accountEmail)
+        let body = self.emailData.bodies[email.key] ?? ""
+        let emailBody = body.isEmpty ? (email.isUnsent ? Constants.contentUnsent(email.getPreview()) : Constants.contentEmpty) : body
+        cell.setContent(email, emailBody: emailBody, state: emailData.getState(email.key), myEmail: emailData.accountEmail)
         cell.delegate = self
         target = cell.moreOptionsContainerView
         guard !isExpanded,
