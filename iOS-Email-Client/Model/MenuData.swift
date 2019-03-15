@@ -7,10 +7,13 @@
 //
 
 import Foundation
+import RealmSwift
 
 class MenuData {
     var expandedLabels = false
     var labels : [Label] = []
+    var accounts : Results<Account>!
+    var accountBadge = [String: Int]()
     
     init(){
         labels.append(contentsOf: DBManager.getLabels(notIn: SystemLabel.idsArray))

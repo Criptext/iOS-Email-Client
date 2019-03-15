@@ -33,7 +33,7 @@ class ThreadsLabelsAsyncTask {
                 return
             }
             for threadId in self.threadIds {
-                DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: self.added, removedLabelIds: self.removed, currentLabel: self.currentLabel)
+                DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: self.added, removedLabelIds: self.removed, currentLabel: self.currentLabel, account: myAccount)
             }
             
             let changedLabels = self.getLabelNames(added: self.added, removed: self.removed)

@@ -25,6 +25,7 @@ class ResetDeviceViewController: UIViewController{
     @IBOutlet weak var labelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var resetLoaderView: UIActivityIndicatorView!
     var loginData: LoginData!
+    var multipleAccount = false
     var failed = false
     var buttonTitle: String {
         return loginData.isTwoFactor ? String.localize("CONFIRM") : String.localize("SIGNIN")
@@ -145,6 +146,7 @@ class ResetDeviceViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
         controller.loginData = loginData
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         showLoader(false)
     }
@@ -183,6 +185,7 @@ class ResetDeviceViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
         controller.signupData = signupData
+        controller.multipleAccount = self.multipleAccount
         self.present(controller, animated: true, completion: nil)
     }
     

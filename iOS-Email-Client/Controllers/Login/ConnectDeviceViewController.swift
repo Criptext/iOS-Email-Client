@@ -18,6 +18,7 @@ class ConnectDeviceViewController: UIViewController{
     let PROGRESS_COMPLETE = 100.0
     @IBOutlet var connectUIView: ConnectUIView!
     var signupData: SignUpData!
+    var multipleAccount = false
     var account: Account?
     var bundle: CRBundle?
     var linkData: LoginDeviceViewController.LinkAccept?
@@ -47,8 +48,6 @@ class ConnectDeviceViewController: UIViewController{
         socket = SingleWebSocket()
         socket?.delegate = self
         connectUIView.initialLoad(email: "\(signupData.username)\(Constants.domain)")
-        self.clearFiles()
-        DBManager.destroy()
         scheduleWorker.delegate = self
         connectUIView.goBack = {
             self.goBack()
@@ -84,19 +83,12 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func cleanData(){
-        let defaults = CriptextDefaults()
-        guard defaults.hasActiveAccount else {
+        guard let myAccount = account else {
             return
         }
-        defaults.removeActiveAccount()
-        self.clearFiles()
-        DBManager.destroy()
-    }
-    
-    func clearFiles(){
-        if let account = DBManager.getFirstAccount(){
-            FileUtils.deleteAccountDirectory(account: account)
-        }
+        FileUtils.deleteAccountDirectory(account: myAccount)
+        DBManager.clearMailbox(account: myAccount)
+        DBManager.signout(account: myAccount)
     }
     
     func createAccount() -> (Account, [String: Any]) {
@@ -197,7 +189,11 @@ class ConnectDeviceViewController: UIViewController{
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
                     self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self.goToMailbox(myAccount.username)
+                        if self.multipleAccount {
+                            self.goBackToMailbox(account: myAccount)
+                        } else {
+                            self.goToMailbox(myAccount.username)
+                        }
                         self.registerFirebaseToken(jwt: myAccount.jwt)
                     }
                 }
@@ -223,6 +219,16 @@ class ConnectDeviceViewController: UIViewController{
         let defaults = CriptextDefaults()
         defaults.activeAccount = myAccount.username
         defaults.welcomeTour = true
+    }
+    
+    func goBackToMailbox(account: Account) {
+        self.account = nil
+        self.socket?.close()
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.dismiss(animated: true)
+            return
+        }
+        delegate.swapAccount(account: account)
     }
     
     func goToMailbox(_ activeAccount: String){

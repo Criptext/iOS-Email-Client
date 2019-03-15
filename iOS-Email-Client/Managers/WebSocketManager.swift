@@ -54,6 +54,11 @@ final class WebSocketManager: NSObject {
         socket?.event.close = {_,_,_ in }
         socket?.close()
     }
+    
+    func swapAccount(_ account: Account) {
+        self.close()
+        self.connect(account: account)
+    }
 }
 
 extension WebSocketManager: WebSocketDelegate{

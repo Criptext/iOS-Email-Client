@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class GetBadgeCountersAsyncTask {
     
@@ -14,6 +15,7 @@ class GetBadgeCountersAsyncTask {
         var inbox = 0
         var draft = 0
         var spam = 0
+        var accounts = [(String, Int)]()
     }
     
     let username: String
@@ -33,6 +35,13 @@ class GetBadgeCountersAsyncTask {
             counter.inbox = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: myAccount)
             counter.draft = DBManager.getThreads(from: SystemLabel.draft.id, since: Date(), limit: 100, account: myAccount).count
             counter.spam = DBManager.getUnreadMailsCounter(from: SystemLabel.spam.id, account: myAccount)
+            
+            let accounts = DBManager.getInactiveAccounts()
+            accounts.forEach({ (account) in
+                let counterValue = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: account)
+                counter.accounts.append((account.username, counterValue))
+            })
+            
             DispatchQueue.main.async {
                 completionHandler(counter)
             }
