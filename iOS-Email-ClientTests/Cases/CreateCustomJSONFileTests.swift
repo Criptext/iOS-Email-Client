@@ -72,6 +72,7 @@ class CreateCustomJSONFileTests: XCTestCase {
         email.date = Date(timeIntervalSince1970: 1531840176)
         email.account = self.account
         email.files.append(file)
+        email.buildCompoundKey()
         DBManager.store(email)
         
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [1], removedLabelIds: [])

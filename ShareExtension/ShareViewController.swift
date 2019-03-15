@@ -326,6 +326,7 @@ extension ShareViewController {
         draft.threadId = "\(draft.key)"
         draft.labels.append(SharedDB.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
+        draft.buildCompoundKey()
         SharedDB.store(draft)
         //create email contacts
         var emailContacts = [EmailContact]()

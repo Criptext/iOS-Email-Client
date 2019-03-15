@@ -306,6 +306,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             return
                         }
                         newAccount["compoundKey"] = "\(newAccount["username"]!)"
+                        newAccount["isActive"] = true
+                        newAccount["isLoggedIn"] = true
                         if account == nil {
                             account = newAccount
                         }
@@ -316,6 +318,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 return
                             }
                             newEmail["account"] = myAccount
+                            newEmail["compoundKey"] = "\(myAccount["compoundKey"]!):\(newEmail["key"]!)"
                         }
                         migration.enumerateObjects(ofType: CRSignedPreKeyRecord.className()){ (oldObject, newObject) in
                             guard let newRecord = newObject else{
@@ -479,7 +482,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
         ThemeManager.shared.swapTheme(theme: Theme.init())
-        self.clearDefaults()
+        if let activateAccount = DBManager.getInactiveAccounts().first {
+            let defaults = CriptextDefaults()
+            defaults.activeAccount = activateAccount.username
+            DBManager.activateAccount(account: activateAccount)
+            guard let inboxVC = getInboxVC() else {
+                return
+            }
+            inboxVC.swapAccount(activateAccount)
+            inboxVC.dismiss(animated: true) {
+                inboxVC.showSnackbar(String.localize("Now logged in as \(activateAccount.email)"), attributedText: nil, buttons: "", permanent: false)
+            }
+        } else {
+            self.setloginAsRoot(manually: manually, message: message)
+            if (!manually) {
+                self.clearDefaults()
+            }
+        }
+        
+        if (!manually) {
+            FileUtils.deleteAccountDirectory(account: account)
+            DBManager.signout(account: account)
+            DBManager.clearMailbox(account: account)
+            DBManager.delete(account: account)
+        } else {
+            DBManager.signout(account: account)
+        }
+    }
+    
+    func setloginAsRoot(manually: Bool, message: String) {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if !manually,
@@ -491,18 +522,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         options.duration = 0.4
         options.style = .easeOut
         UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
-        
-        if (!manually) {
-            DBManager.destroy()
-            FileUtils.deleteAccountDirectory(account: account)
-        } else {
-            DBManager.signout(account: account)
-        }
     }
     
     func clearDefaults() {
         let defaults = CriptextDefaults()
         defaults.removeConfig()
+    }
+    
+    func swapAccount(account: Account) {
+        let defaults = CriptextDefaults()
+        defaults.activeAccount = account.username
+        guard let inboxVC = getInboxVC() else {
+            return
+        }
+        inboxVC.swapAccount(account)
+        inboxVC.dismiss(animated: true) {
+            inboxVC.showSnackbar(String.localize("Now logged in as \(account.email)"), attributedText: nil, buttons: "", permanent: false)
+        }
     }
     
     func replaceRootViewController(_ viewController:UIViewController){

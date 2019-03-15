@@ -17,6 +17,7 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
+    var multipleAccount = false
     var signupData: SignUpData!
     var account: Account?
     var bundle: CRBundle?
@@ -63,7 +64,8 @@ class CreatingAccountViewController: UIViewController{
     
     func checkDatabase(){
         self.state = .signupRequest
-        if let account = DBManager.getFirstAccount(),
+        if !multipleAccount,
+            let account = DBManager.getFirstAccount(),
             account.username != self.signupData.username {
             FileUtils.deleteAccountDirectory(account: account)
             DBManager.destroy()
@@ -175,8 +177,21 @@ class CreatingAccountViewController: UIViewController{
         }
         registerFirebaseToken(jwt: myAccount.jwt)
         animateProgress(100.0, 2.0) {
-            self.goToMailbox(myAccount.username)
+            if self.multipleAccount {
+                self.goBackToMailbox(account: myAccount)
+            } else {
+                self.goToMailbox(myAccount.username)
+            }
         }
+    }
+    
+    func goBackToMailbox(account: Account) {
+        self.account = nil
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.dismiss(animated: true)
+            return
+        }
+        delegate.swapAccount(account: account)
     }
     
     func displayErrorMessage(message: String = String.localize("SIGNUP_FALLBACK_ERROR")){

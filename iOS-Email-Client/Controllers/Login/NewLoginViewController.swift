@@ -10,6 +10,7 @@ import Foundation
 import Material
 
 class NewLoginViewController: UIViewController{
+    @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var usernameTextField: TextField!
@@ -17,6 +18,7 @@ class NewLoginViewController: UIViewController{
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var loginErrorLabel: UILabel!
     var loggedOutRemotely: String?
+    var multipleAccount = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +32,7 @@ class NewLoginViewController: UIViewController{
         toggleLoadingView(false)
         clearErrors()
         checkToEnableDisableLoginButton()
+        closeButton.isHidden = !multipleAccount
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -153,6 +156,10 @@ class NewLoginViewController: UIViewController{
     }
     
     func checkUsername(_ username: String) {
+        guard !multipleAccount || !self.checkAccountExists(username: username) else {
+            self.showLoginError(error: String.localize("ACCOUNT_EXISTS"))
+            return
+        }
         APIManager.checkAvailableUsername(username) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
@@ -166,12 +173,21 @@ class NewLoginViewController: UIViewController{
                 weakSelf.showLoginError(error: error.description)
                 return
             }
-            guard let user = weakSelf.existingAccount(username) else {
+            guard !weakSelf.multipleAccount,
+                let user = weakSelf.existingAccount(username) else {
                 weakSelf.linkBegin(username: username)
                 return
             }
             weakSelf.showWarningPopup(username: username, previous: user)
         }
+    }
+    
+    func checkAccountExists(username: String) -> Bool {
+        guard let existingAccount = DBManager.getAccountByUsername(username),
+            existingAccount.isLoggedIn else {
+                return false
+        }
+        return  true
     }
     
     func linkBegin(username: String){
@@ -219,6 +235,10 @@ class NewLoginViewController: UIViewController{
         self.onLoginPress(sender)
     }
     
+    @IBAction func didPressClose(sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     func showLoginError(error: String){
         self.setLoginError(error)
         self.toggleLoadingView(false)
@@ -228,6 +248,7 @@ class NewLoginViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
         controller.loginData = loginData
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
         clearErrors()
@@ -237,6 +258,7 @@ class NewLoginViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
         controller.loginData = loginData
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
         clearErrors()

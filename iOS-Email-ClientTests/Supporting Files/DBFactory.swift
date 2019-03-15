@@ -30,6 +30,7 @@ class DBFactory {
         newEmail.subject = subject
         newEmail.fromAddress = fromAddress
         newEmail.account = account
+        newEmail.buildCompoundKey()
         DBManager.store(newEmail)
         
         return newEmail

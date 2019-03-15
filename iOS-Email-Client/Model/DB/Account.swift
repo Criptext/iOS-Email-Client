@@ -22,6 +22,15 @@ class Account: Object{
     @objc dynamic var signatureEnabled = false
     @objc dynamic var lastTimeFeedOpened = Date()
     @objc dynamic var domain: String? = nil
+    @objc dynamic var isActive = false
+    @objc dynamic var isLoggedIn = false
+    
+    var email: String {
+        guard let myDomain = domain else {
+            return "\(username)\(Constants.domain)"
+        }
+        return "\(username)@\(myDomain)"
+    }
     
     func buildCompoundKey() {
         self.compoundKey = "\(username)\(domain ?? "")"

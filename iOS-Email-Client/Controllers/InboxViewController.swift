@@ -631,11 +631,11 @@ extension InboxViewController{
         self.present(snackVC, animated: true, completion: nil)
     }
     
-    func swapMailbox(labelId: Int, sender: Any?){
+    func swapMailbox(labelId: Int, sender: Any?, force: Bool = false){
         if mailboxData.isCustomEditing {
             didPressEdit(reload: true)
         }
-        guard labelId != mailboxData.selectedLabel else {
+        guard labelId != mailboxData.selectedLabel || force else {
             self.navigationDrawerController?.closeLeftView()
             self.getPendingEvents(nil)
             return
@@ -1123,13 +1123,13 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.navigationDrawerController?.closeRightView()
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
-            if let lastEmail = SharedDB.getMailByKey(key: selectedThread.lastEmailKey, account: self.myAccount) {
+            if let lastEmail = SharedDB.getMail(key: selectedThread.lastEmailKey, account: self.myAccount) {
                 continueDraft(lastEmail)
             }
             return
         }
         
-        let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel)
+        let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel, account: self.myAccount)
         guard let subject = emails.first?.subject,
             let lastEmailKey = emails.last?.key else {
                 refreshThreadRows()
@@ -1185,7 +1185,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                         "unread": 0,
                         "metadataKeys": peerKeys
             ]] as [String : Any]
-        DBManager.updateEmails(peerKeys, unread: false)
+        DBManager.updateEmails(peerKeys, unread: false, account: self.myAccount)
         DBManager.createQueueItem(params: params, account: self.myAccount)
     }
     
@@ -1195,7 +1195,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return
         }
         let params = ["cmd": Event.Queue.open.rawValue, "params": EventData.Queue.EmailOpen(metadataKeys: openKeys).asDictionary()] as [String : Any]
-        DBManager.updateEmails(openKeys, unread: false)
+        DBManager.updateEmails(openKeys, unread: false, account: self.myAccount)
         DBManager.createQueueItem(params: params, account: self.myAccount)
         self.openOwnEmails(peerKeys)
     }
@@ -1317,7 +1317,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
 
     func moveSingleThreadTrash(indexPath: IndexPath){
         let threadId = mailboxData.threads[indexPath.row].threadId
-        DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
+        DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel, account: self.myAccount)
         self.removeThreads(indexPaths: [indexPath])
         let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
         DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], account: self.myAccount)
@@ -1853,5 +1853,39 @@ extension InboxViewController {
 extension InboxViewController: ThemeDelegate {
     func swapTheme(_ theme: Theme) {
         applyTheme()
+    }
+}
+
+extension InboxViewController {
+    func addAccount(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "loginNavController") as! UINavigationController
+        let loginVC = controller.topViewController as! NewLoginViewController
+        loginVC.multipleAccount = true
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func createAccount(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "signupview") as! SignUpViewController
+        controller.multipleAccount = true
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func swapAccount(_ account: Account) {
+        let defaults = CriptextDefaults()
+        DBManager.swapAccount(current: self.myAccount, active: account)
+        self.myAccount = account
+        defaults.activeAccount = account.username
+        WebSocketManager.sharedInstance.swapAccount(account)
+        self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
+        if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
+            menuViewController.reloadView()
+        }
+        if let feedsViewController = navigationDrawerController?.rightViewController as? FeedViewController {
+            feedsViewController.loadFeeds()
+            let badgeCounter = feedsViewController.feedsData.newFeeds.count
+            updateFeedsBadge(counter: badgeCounter)
+        }
     }
 }

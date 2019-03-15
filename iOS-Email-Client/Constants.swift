@@ -149,38 +149,37 @@ struct Constants {
             " <body style=\"height: auto !important\">"
     }
     
-    static let htmlBottomWrapper = "</body><script>\(quoteHideScript)</script></html>"
-    
-    static let darkBottomWrapper = "</body><script>\(darkQuoteScript)</script></html>"
-    
     static let imagePath = Bundle.main.path(forResource: "showmore.png", ofType: nil) ?? ""
     
     static let darkPath = Bundle.main.path(forResource: "dark-showmore.png", ofType: nil) ?? ""
     
-    static let quoteHideScript = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
-        "var newNode = document.createElement(\"img\");" +
-        "newNode.src = \"file://\(imagePath)\";" +
-        "newNode.width = 30;" +
-        "newNode.style.paddingTop = \"10px\";" +
-        "newNode.style.paddingBottom = \"10px\";" +
-        "replybody.style.display = \"none\";" +
-        "replybody.parentElement.insertBefore(newNode, replybody);" +
-        "newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ " +
-        "replybody.style.display = \"none\";} else {" +
-        "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
+    static let imageExpandedPath = Bundle.main.path(forResource: "showmore-light-opened.png", ofType: nil) ?? ""
     
-    static let darkQuoteScript = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
-        "var newNode = document.createElement(\"img\");" +
-        "newNode.src = \"file://\(darkPath)\";" +
-        "newNode.width = 30;" +
-        "newNode.style.paddingTop = \"10px\";" +
-        "newNode.style.paddingBottom = \"10px\";" +
-        "replybody.style.display = \"none\";" +
-        "replybody.parentElement.insertBefore(newNode, replybody);" +
-        "newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ " +
-        "replybody.style.display = \"none\";} else {" +
-        "replybody.style.display = \"block\";} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
-
+    static let darkExpandedPath = Bundle.main.path(forResource: "showmore-dark-opened.png", ofType: nil) ?? ""
+    
+    static func quoteScript(theme: String, isFwd: Bool) -> String {
+        let expandedPath = theme == "Dark" ? darkExpandedPath : imageExpandedPath
+        let path = theme == "Dark" ? darkPath : imagePath
+        let initialDisplay = isFwd ? "block" : "none"
+        let initialPath = isFwd ? expandedPath : path
+        
+        let script = "var replybody = document.getElementsByClassName(\"criptext_quote\")[0] ||document.getElementsByClassName(\"gmail_quote\")[0] || document.getElementById(\"criptext_quote\") || document.getElementsByTagName(\"blockquote\")[0];" +
+            "var newNode = document.createElement(\"img\");" +
+            "newNode.src = \"file://\(initialPath)\";" +
+            "newNode.width = 30;" +
+            "newNode.style.paddingTop = \"10px\";" +
+            "newNode.style.paddingBottom = \"10px\";" +
+            "replybody.style.display = \"\(initialDisplay)\";" +
+            "replybody.parentElement.insertBefore(newNode, replybody);" +
+            "newNode.addEventListener(\"click\", function(){ if(replybody.style.display == \"block\"){ " +
+            "newNode.src = \"file://\(path)\";" +
+            "replybody.style.display = \"none\";} else {" +
+            "replybody.style.display = \"block\";" +
+            "newNode.src = \"file://\(expandedPath)\";" +
+        "} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
+        
+        return "</body><script>\(script)</script></html>"
+    }
     
     static func singleEmail (image: String, subject: String, contact: String, completeDate: String,
                              contacts: String, content: String) -> String{

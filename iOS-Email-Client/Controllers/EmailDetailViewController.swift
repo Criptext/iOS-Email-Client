@@ -993,7 +993,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool){
         let changedLabels = getLabelNames(added: added, removed: removed)
-        DBManager.addRemoveLabelsForThreads(self.emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.emailData.selectedLabel)
+        DBManager.addRemoveLabelsForThreads(self.emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.emailData.selectedLabel, account: self.myAccount)
         self.emailData.rebuildLabels()
         if(forceRemove){
             self.mailboxData.removeSelectedRow = true

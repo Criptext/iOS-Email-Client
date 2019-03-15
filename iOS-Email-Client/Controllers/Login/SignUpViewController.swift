@@ -31,6 +31,7 @@ class SignUpViewController: UIViewController{
     
     var loadingAccount = false
     var apiRequest : DataRequest?
+    var multipleAccount = false
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -40,6 +41,11 @@ class SignUpViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         setupFields()
+        
+        if multipleAccount {
+            backButton.setImage(UIImage(named: "close"), for: .normal)
+            backButton.imageEdgeInsets = UIEdgeInsetsMake(12, 12, 12, 12)
+        }
     }
     
     func setupFields(){
@@ -201,6 +207,10 @@ class SignUpViewController: UIViewController{
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
+        guard !multipleAccount else {
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -229,9 +239,11 @@ class SignUpViewController: UIViewController{
         let password = passwordTextField.text!
         let email = emailTextField.text
         let signupData = SignUpData(username: username, password: password, fullname: fullname, optionalEmail: email)
+        signupData.token = ""
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
         controller.signupData = signupData
+        controller.multipleAccount = self.multipleAccount
         self.present(controller, animated: true, completion: nil)
     }
     

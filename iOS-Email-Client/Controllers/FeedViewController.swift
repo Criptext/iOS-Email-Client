@@ -62,7 +62,7 @@ class FeedViewController: UIViewController{
     }
     
     func loadFeeds(){
-        let feeds = DBManager.getFeeds(since: Date() , limit: 20, lastSeen: lastSeen)
+        let feeds = DBManager.getFeeds(since: Date() , limit: 20, lastSeen: lastSeen, account: mailboxVC.myAccount)
         feedsData.newFeeds = feeds.0
         feedsData.oldFeeds = feeds.1
         newFeedsToken = feedsData.newFeeds.observe { [weak self] changes in

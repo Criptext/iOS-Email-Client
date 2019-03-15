@@ -39,6 +39,12 @@ class SharedDB {
         return realm?.object(ofType: Account.self, forPrimaryKey: username)
     }
     
+    class func getAllAccounts() -> [Account] {
+        let realm = try? Realm()
+        
+        return Array(realm!.objects(Account.self))
+    }
+    
     class func update(_ account: Account, jwt: String) {
         let realm = try! Realm()
         
@@ -60,7 +66,7 @@ class SharedDB {
         
         do {
             try realm.write() {
-                if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
+                if realm.object(ofType: Email.self, forPrimaryKey: email.compoundKey) != nil {
                     return
                 }
                 realm.add(email, update: false)
@@ -250,6 +256,7 @@ class SharedDB {
             newEmail.replyTo = email.replyTo
             newEmail.boundary = email.boundary
             newEmail.account = email.account
+            newEmail.buildCompoundKey()
             
             realm.add(newEmail)
             
@@ -368,13 +375,9 @@ class SharedDB {
         return realm.objects(Label.self).filter(NSPredicate(format: "text = %@", text)).first
     }
     
-    class func getMailByKey(key: Int, account: Account) -> Email?{
+    class func getMail(key: Int, account: Account) -> Email? {
         let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "key == \(key) AND account.compoundKey == '\(account.compoundKey)'")
-        let results = realm.objects(Email.self).filter(predicate)
-        
-        return results.first
+        return realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(key)")
     }
     
     //MARK: - DummySession

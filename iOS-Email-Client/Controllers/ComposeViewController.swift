@@ -354,6 +354,7 @@ class ComposeViewController: UIViewController {
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
         draft.fromAddress = "\(activeAccount.name) <\(activeAccount.username)\(Constants.domain)>"
+        draft.buildCompoundKey()
         DBManager.store(draft)
         
         FileUtils.saveEmailToFile(username: activeAccount.username, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")

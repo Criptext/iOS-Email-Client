@@ -29,7 +29,7 @@ class DeleteThreadsAsyncTask {
                 return
             }
             for threadId in self.threadIds {
-                DBManager.deleteThreads(threadId, label: self.currentLabel)
+                DBManager.deleteThreads(threadId, label: self.currentLabel, account: myAccount)
             }
             let eventData = EventData.Peer.ThreadDeleted(threadIds: self.eventThreadIds)
             DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: myAccount)
