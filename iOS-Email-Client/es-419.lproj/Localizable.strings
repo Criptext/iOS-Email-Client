@@ -9,6 +9,10 @@
 "NOTIFICATIONS" = "NOTIFICACIONES";
 "ABOUT" = "ACERCA DE";
 "APPEARANCE" = "APARIENCIA";
+"ACCOUNT_OPTION" = "Cuenta";
+"DEVICES_OPTION" = "Dispositivos";
+"LABELS_OPTION" = "Etiquetas";
+"SHOW_PREVIEW" = "Vista Previa en Notificaciones";
 "NIGHT_MODE" = "Tema Oscuro";
 "MANUAL_SYNC" = "Sincronización de Buzón";
 "VERSION" = "VERSIÓN";
@@ -147,6 +151,7 @@
 "GUIDE_UNSEND" = "Abre este menu para encontrar \nla opción de retractar este correo.";
 "HAVE_NEW_EMAIL" = "Tienes un nuevo email";
 "PROFILE" = "Perfil";
+"PROFILE_NAME" = "Nombre";
 "SYNC_PHONEBOOK" = "Sincronizar Contactos del Teléfono";
 "SIGNATURE" = "Firma";
 "SIGNATURE_TITLE" = "FIRMA";
@@ -157,6 +162,7 @@
 "RECOVERY_EMAIL_TITLE" = "CORREO DE RECUPERACION";
 "POLICY" = "Política de Privacidad";
 "TERMS" = "Términos del Servicio";
+"FAQ" = "Preguntas Frecuentes";
 "OPEN_LIBS" = "Librerías de Código Abierto";
 "SIGNOUT_ERROR" = "Error de cierre de sesión";
 "DELETE_ACCOUNT_FAILED" = "Error al eliminar la cuenta";

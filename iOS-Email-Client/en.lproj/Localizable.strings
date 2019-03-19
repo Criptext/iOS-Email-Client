@@ -9,6 +9,10 @@
 "NOTIFICATIONS" = "NOTIFICATIONS";
 "ABOUT" = "ABOUT";
 "APPEARANCE" = "APPEARANCE";
+"ACCOUNT_OPTION" = "Account";
+"DEVICES_OPTION" = "Devices";
+"LABELS_OPTION" = "Labels";
+"SHOW_PREVIEW" = "Show Email Preview";
 "NIGHT_MODE" = "Dark Theme";
 "MANUAL_SYNC" = "Mailbox Sync";
 "VERSION" = "VERSION";
@@ -147,6 +151,7 @@
 "GUIDE_UNSEND" = "Open this menu to find\nthe UNSEND button";
 "HAVE_NEW_EMAIL" = "You have a new email";
 "PROFILE" = "Profile";
+"PROFILE_NAME" = "Profile Name";
 "SYNC_PHONEBOOK" = "Sync Phonebook Contacts";
 "SIGNATURE" = "Signature";
 "SIGNATURE_TITLE" = "SIGNATURE";
@@ -155,8 +160,9 @@
 "TWO_FACTOR" = "Two-Factor Authentication";
 "RECOVERY_EMAIL" = "Recovery Email";
 "RECOVERY_EMAIL_TITLE" = "RECOVERY EMAIL";
-"POLICY" = "Privacy Policy";
+"POLICY" = "Privacy Policies";
 "TERMS" = "Terms of Service";
+"FAQ" = "FAQ";
 "OPEN_LIBS" = "Open Source Libraries";
 "SIGNOUT_ERROR" = "Sign out error";
 "DELETE_ACCOUNT_FAILED" = "Delete Account Failed";
