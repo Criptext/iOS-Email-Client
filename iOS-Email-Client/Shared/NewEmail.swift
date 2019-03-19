@@ -29,23 +29,35 @@ struct NewEmail {
     let boundary: String?
     let guestEncryption: Int
     
-    init(params: [String: Any]){
-        threadId = params["threadId"] as! String
-        subject = params["subject"] as! String
-        messageId = params["messageId"] as! String
-        metadataKey = params["metadataKey"] as! Int
+    init(params: [String: Any]) throws {
+        guard let paramsFrom = params["from"] as? String,
+            let paramsThreadId = params["threadId"] as? String,
+            let paramsSubject = params["subject"] as? String,
+            let paramsMessageId = params["messageId"] as? String,
+            let paramsMetadataKey = params["metadataKey"] as? Int,
+            let paramsGuestEncryption = params["guestEncryption"] as? Int else {
+            throw CriptextError(message: "Malformed Email")
+        }
+        
+        from = paramsFrom
+        threadId = paramsThreadId
+        subject = paramsSubject
+        messageId = paramsMessageId
+        metadataKey = paramsMetadataKey
+        guestEncryption = paramsGuestEncryption
+        
         senderDeviceId = params["senderDeviceId"] as? Int32
         messageType = MessageType.init(rawValue: (params["messageType"] as? Int ?? MessageType.none.rawValue))!
         files = params["files"] as? [[String: Any]]
         fileKey = params["fileKey"] as? String
         fileKeys = params["fileKeys"] as? [String]
         isExternal = params["external"] as? Bool ?? false
-        guestEncryption = params["guestEncryption"] as! Int
+        
         
         let dateString = params["date"] as! String
         date = NewEmail.convertToDate(dateString: dateString)
         
-        from = params["from"] as! String
+        
         to = (params["to"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["to"] as? String)
         cc = (params["cc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["cc"] as? String)
         bcc = (params["bcc"] as? [String]) ?? ContactUtils.prepareContactsStringArray(contactsString: params["bcc"] as? String)

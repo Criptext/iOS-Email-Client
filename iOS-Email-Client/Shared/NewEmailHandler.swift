@@ -43,7 +43,11 @@ class NewEmailHandler {
             completion(Result(success: false))
             return
         }
-        let event = NewEmail.init(params: params)
+        
+        guard let event = try? NewEmail.init(params: params) else {
+            completion(Result(success: false))
+            return
+        }
         
         if let email = self.database.getMailByKey(key: event.metadataKey) {
             if(isMeARecipient(email: email, account: myAccount)){
