@@ -12,19 +12,47 @@ import CICropPicker
 
 class ProfileEditorViewController: UIViewController {
     
+    internal enum Option {
+        case name
+        case signature
+        case password
+        case recovery
+        case reply
+        
+        var name: String {
+            switch(self){
+            case .name:
+                return String.localize("PROFILE_NAME")
+            case .signature:
+                return String.localize("SIGNATURE")
+            case .password:
+                return String.localize("PASSWORD")
+            case .recovery:
+                return String.localize("RECOVERY_EMAIL")
+            case .reply:
+                return String.localize("REPLY_TO_TITLE")
+            }
+        }
+    }
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     @IBOutlet weak var blackBackground: UIView!
-    @IBOutlet weak var saveProfile: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var attachmentController: AttachmentOptionsContainerView!
     @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
     var imagePicker = UIImagePickerController()
     var attachmentOptionsHeight: CGFloat = 0
     var generalData: GeneralSettingsData!
     var myAccount: Account!
+    var options = [.name, .signature, .password, .recovery, .reply] as [Option]
+    
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
@@ -40,6 +68,8 @@ class ProfileEditorViewController: UIViewController {
                 attachmentOptionsHeight = 0
             }
         }
+        tableView.delegate = self
+        tableView.dataSource = self
         imagePicker.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideBlackBackground(_:)))
         self.blackBackground.addGestureRecognizer(tap)
@@ -83,11 +113,11 @@ class ProfileEditorViewController: UIViewController {
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
-        self.view.backgroundColor = theme.overallBackground
+        self.view.backgroundColor = theme.background
+        self.tableView.backgroundColor = theme.secondBackground
         nameLabel.textColor = theme.mainText
         emailLabel.textColor = theme.mainText
         attachmentController.docsButton.setTitle(String.localize("remove_picture"), for: .normal)
-        saveProfile.setTitle(String.localize("EDIT_NAME"), for: .normal)
         initFloatingButton(color: theme.criptextBlue)
     }
     
@@ -150,16 +180,6 @@ class ProfileEditorViewController: UIViewController {
             imagePicker.allowsEditing = false
             self.present(imagePicker, animated: true, completion: nil)
         }
-    }
-    
-    @IBAction func saveProfilePressed(_ sender: Any) {
-        let changeNamePopover = SingleTextInputViewController()
-        changeNamePopover.myTitle = String.localize("CHANGE_NAME")
-        changeNamePopover.initInputText = self.myAccount.name
-        changeNamePopover.onOk = { text in
-            self.changeProfileName(name: text)
-        }
-        self.presentPopover(popover: changeNamePopover, height: Constants.singleTextPopoverHeight)
     }
     
     func changeProfilePicture(image: UIImage, imageName: String){
@@ -269,3 +289,105 @@ extension ProfileEditorViewController: UIGestureRecognizerDelegate {
     }
 }
 
+extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return options.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let option = options[indexPath.row]
+        switch(option) {
+        case .recovery:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
+            cell.backgroundColor = .clear
+            cell.optionLabel.textColor = theme.mainText
+            cell.optionLabel.text = option.name
+            cell.messageLabel.text = generalData.recoveryEmailStatus.description
+            cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
+            guard generalData.recoveryEmail != nil else {
+                cell.loader.startAnimating()
+                cell.loader.isHidden = false
+                cell.goImageView.isHidden = true
+                return cell
+            }
+            cell.loader.stopAnimating()
+            cell.loader.isHidden = true
+            cell.goImageView.isHidden = false
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
+            cell.backgroundColor = .clear
+            cell.optionLabel.textColor = theme.mainText
+            cell.optionLabel.text = option.name
+            cell.goImageView.isHidden = false
+            cell.messageLabel.text = ""
+            cell.loader.stopAnimating()
+            cell.loader.isHidden = true
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let option = options[indexPath.row]
+        switch option {
+        case .name:
+            showChangeName()
+        case .signature:
+            goToSignature()
+        case .password:
+            goToChangePassword()
+        case .recovery:
+            goToRecoveryEmail()
+        case .reply:
+            replyTo()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60.0
+    }
+    
+    func showChangeName() {
+        let changeNamePopover = SingleTextInputViewController()
+        changeNamePopover.myTitle = String.localize("CHANGE_NAME")
+        changeNamePopover.initInputText = self.myAccount.name
+        changeNamePopover.onOk = { text in
+            self.changeProfileName(name: text)
+        }
+        self.presentPopover(popover: changeNamePopover, height: Constants.singleTextPopoverHeight)
+    }
+    
+    func goToSignature(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let signatureVC = storyboard.instantiateViewController(withIdentifier: "signatureEditorViewController") as! SignatureEditorViewController
+        signatureVC.myAccount = myAccount
+        self.navigationController?.pushViewController(signatureVC, animated: true)
+    }
+    
+    func goToChangePassword(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let changePassVC = storyboard.instantiateViewController(withIdentifier: "changePassViewController") as! ChangePassViewController
+        changePassVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(changePassVC, animated: true)
+    }
+    
+    func goToRecoveryEmail(){
+        guard generalData.recoveryEmail != nil else {
+            return
+        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let recoveryVC = storyboard.instantiateViewController(withIdentifier: "recoveryEmailViewController") as! RecoveryEmailViewController
+        recoveryVC.generalData = self.generalData
+        recoveryVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(recoveryVC, animated: true)
+    }
+    
+    func replyTo(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let replyToVC = storyboard.instantiateViewController(withIdentifier: "replyToEditorViewController") as! ReplyToEditorViewController
+        replyToVC.generalData = self.generalData
+        replyToVC.myAccount = self.myAccount
+        self.navigationController?.pushViewController(replyToVC, animated: true)
+    }
+}
