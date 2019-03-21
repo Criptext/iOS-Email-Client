@@ -2785,13 +2785,13 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pedro@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sw7-3M-d4M">
-                                                        <rect key="frame" x="23" y="119" width="332" height="17.5"/>
+                                                        <rect key="frame" x="23" y="119" width="332" height="20.5"/>
                                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                         <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="0.44" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PpA-Sa-XHF">
-                                                        <rect key="frame" x="305" y="96" width="50" height="40.5"/>
+                                                        <rect key="frame" x="305" y="96" width="50" height="43.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="xNx-bH-tSw"/>
                                                         </constraints>
@@ -3138,19 +3138,19 @@
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIK-GC-Jmz">
-                                                                    <rect key="frame" x="84" y="23.5" width="273" height="17.5"/>
+                                                                    <rect key="frame" x="84" y="23.5" width="273" height="20.5"/>
                                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nu-aJ-Vxq">
-                                                                    <rect key="frame" x="84" y="45" width="230" height="17.5"/>
+                                                                    <rect key="frame" x="84" y="42" width="230" height="20.5"/>
                                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99+" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKA-TV-UOZ">
-                                                                    <rect key="frame" x="324" y="45.5" width="26" height="16.5"/>
+                                                                    <rect key="frame" x="324" y="42.5" width="26" height="19.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="26" id="IQf-uh-SJU"/>
                                                                     </constraints>
