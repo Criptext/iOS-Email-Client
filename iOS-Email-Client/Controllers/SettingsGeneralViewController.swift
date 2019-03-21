@@ -114,6 +114,9 @@ class SettingsGeneralViewController: UITableViewController{
         self.devicesData.devices.append(Device.createActiveDevice(deviceId: myAccount.deviceId))
         self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
+        
+        self.tableView.insetsContentViewsToSafeArea = true
+        
         self.applyTheme()
         self.loadData()
     }
@@ -328,8 +331,7 @@ class SettingsGeneralViewController: UITableViewController{
         case .openSource:
             goToUrl(url: "https://criptext.com/\(Env.language)/open-source-ios")
         case .logout:
-            guard let customTabsVC = self.tabsController as? CustomTabsController,
-                customTabsVC.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
+            guard self.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
                 showLogout()
                 return
             }

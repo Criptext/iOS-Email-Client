@@ -59,7 +59,7 @@ extension BaseUIPopover: UIPopoverPresentationControllerDelegate{
         
         let parentView = presentationController.presentingViewController.view
         
-        let overlay = UIView(frame: (parentView?.bounds)!)
+        let overlay = UIView(frame: (parentView?.frame)!)
         overlay.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
         parentView?.addSubview(overlay)
         
