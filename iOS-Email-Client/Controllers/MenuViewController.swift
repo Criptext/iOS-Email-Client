@@ -341,10 +341,16 @@ extension MenuViewController{
     }
     
     func accountsTableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard menuData.accounts.count < 3 else {
+            return 0
+        }
         return 103
     }
     
     func accountsTableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard menuData.accounts.count < 3 else {
+            return nil
+        }
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "footerCell") as! AccountsFooterCell
         cell.delegate = self
         return cell
@@ -361,11 +367,6 @@ extension MenuViewController: AccountsFooterDelegate {
     func addAccount() {
         navigationDrawerController?.closeLeftView()
         mailboxVC.addAccount()
-    }
-    
-    func createAccount() {
-        navigationDrawerController?.closeLeftView()
-        mailboxVC?.createAccount()
     }
 }
 

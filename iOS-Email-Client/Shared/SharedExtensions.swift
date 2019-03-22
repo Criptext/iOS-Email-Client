@@ -103,9 +103,9 @@ enum Icon {
         var image: UIImage? {
             switch self {
             case .down:
-                return UIImage(named: "new-arrow-down")
+                return UIImage(named: "icon-down")
             case .up:
-                return UIImage(named: "new-arrow-up")
+                return UIImage(named: "icon-up")
             }
         }
     }

@@ -225,13 +225,13 @@ class ComposeViewController: UIViewController {
         setFrom(account: activeAccount)
         
         applyTheme()
-        
-        fromButton.isHidden = composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description
     }
     
     func setFrom(account: Account) {
         let accounts = DBManager.getAccounts(ignore: account.username)
+        fromButton.isHidden = accounts.count == 0 || (composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description)
         let emails = Array(accounts.map({$0.email}))
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
         fromMenuView.isUserInteractionEnabled = false
         fromMenuView.initialLoad(options: emails)
         activeAccount = account
@@ -278,6 +278,7 @@ class ComposeViewController: UIViewController {
     }
     
     @IBAction func didPressFrom(_ sender: Any) {
+        fromButton.setImage(UIImage(named: "icon-up"), for: .normal)
         fromMenuView.isUserInteractionEnabled = true
         fromMenuView.toggleMenu(true)
         resignKeyboard()
@@ -1276,6 +1277,7 @@ extension ComposeViewController: BottomMenuDelegate {
     
     func didPressBackground() {
         fromMenuView.isUserInteractionEnabled = false
+        self.fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
         self.fromMenuView.toggleMenu(false)
     }
 }
