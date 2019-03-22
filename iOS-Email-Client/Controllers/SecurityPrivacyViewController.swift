@@ -98,10 +98,10 @@ class SecurityPrivacyViewController: UITableViewController {
     }
     
     func initializePrivacyOptions() {
-        let twoFactor = PrivacyOption(label: .twoFactor, pick: nil, isOn: true, hasFlow: false, detail: String.localize("PREVIEW_DETAIL"), isEnabled: true)
+        let twoFactor = PrivacyOption(label: .twoFactor, pick: nil, isOn: true, hasFlow: false, detail: String.localize("TWO_FACTOR_DETAIL"), isEnabled: true)
         let receipts = PrivacyOption(label: .receipts, pick: nil, isOn: true, hasFlow: false, detail: String.localize("RECEIPTS_DETAIL"), isEnabled: true)
-        options.append(twoFactor)
         options.append(receipts)
+        options.append(twoFactor)
         toggleOptions()
     }
     

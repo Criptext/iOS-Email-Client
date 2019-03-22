@@ -37,6 +37,10 @@ class ComposeViewController: UIViewController {
     let COMPOSER_MIN_HEIGHT = 150
     let PASSWORD_POPUP_HEIGHT = 295
     
+    @IBOutlet weak var fromField: UILabel!
+    @IBOutlet weak var fromButton: UIButton!
+    @IBOutlet weak var fromMenuView: BottomMenuView!
+    
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
     @IBOutlet weak var bccField: CLTokenInputView!
@@ -217,7 +221,25 @@ class ComposeViewController: UIViewController {
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
         
+        fromMenuView.delegate = self
+        setFrom(account: activeAccount)
+        
         applyTheme()
+        
+        fromButton.isHidden = composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description
+    }
+    
+    func setFrom(account: Account) {
+        let accounts = DBManager.getAccounts(ignore: account.username)
+        let emails = Array(accounts.map({$0.email}))
+        fromMenuView.isUserInteractionEnabled = false
+        fromMenuView.initialLoad(options: emails)
+        activeAccount = account
+        
+        let attributedFrom = NSMutableAttributedString(string: "From: ", attributes: [.font: Font.bold.size(15)!])
+        let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
+        attributedFrom.append(attributedEmail)
+        fromField.attributedText = attributedFrom
     }
     
     func applyTheme(){
@@ -249,6 +271,16 @@ class ComposeViewController: UIViewController {
         contactTableView.backgroundColor = theme.overallBackground
         subjectField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(subjectField.minimumFontSize)!])
         self.attachmentButtonContainerView.layer.borderColor = theme.overallBackground.cgColor
+        
+        fromField.textColor = theme.mainText
+        fromField.backgroundColor = theme.overallBackground
+        fromButton.imageView?.tintColor = theme.criptextBlue
+    }
+    
+    @IBAction func didPressFrom(_ sender: Any) {
+        fromMenuView.isUserInteractionEnabled = true
+        fromMenuView.toggleMenu(true)
+        resignKeyboard()
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -727,9 +759,9 @@ extension ComposeViewController{
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //See 4.2
         
         // 3.1
-        self.dismissTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ComposeViewController.hideKeyboard))
-        self.dismissTapGestureRecognizer.delegate = self
-        self.view.addGestureRecognizer(self.dismissTapGestureRecognizer)
+        //self.dismissTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ComposeViewController.hideKeyboard))
+        //self.dismissTapGestureRecognizer.delegate = self
+        //self.view.addGestureRecognizer(self.dismissTapGestureRecognizer)
     }
     
     //3.1
@@ -1230,5 +1262,20 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
         }
         self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
         self.toggleAttachmentTable()
+    }
+}
+
+extension ComposeViewController: BottomMenuDelegate {
+    func didPressOption(_ option: String) {
+        let username = String(option.split(separator: "@").first ?? "")
+        guard let account = DBManager.getAccountByUsername(username) else {
+            return
+        }
+        self.setFrom(account: account)
+    }
+    
+    func didPressBackground() {
+        fromMenuView.isUserInteractionEnabled = false
+        self.fromMenuView.toggleMenu(false)
     }
 }

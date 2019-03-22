@@ -229,7 +229,8 @@
 "PRIVACY_AND_SECURITY" = "PRIVACY AND SECURITY";
 "PIN_DETAIL" = "If you forget your PIN code you'll have to sign out and sign back in again.\n\nWarning: 10 failed attempts will result in all data to be erased from the app for security purposes.";
 "PREVIEW_DETAIL" = "Preview the content of emails in Push notifications.";
-"RECEIPTS_DETAIL" = "If disabled, you won't be able to know when others read your emails.";
+"RECEIPTS_DETAIL" = "Know when your emails are opened or read. If turned off, you won’t send or receive read receipts.";
+"TWO_FACTOR_DETAIL" = "A secondary validation to protect your account";
 "UNABLE_RECEIPTS" = "Unable to set read receipts. Please try again.";
 "UNLOCK_FACE" = "Unlock with FaceID";
 "UNLOCK_TOUCH" = "Unlock with Fingerprint";
