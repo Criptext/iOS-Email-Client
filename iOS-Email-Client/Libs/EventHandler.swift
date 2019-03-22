@@ -86,6 +86,7 @@ class EventHandler {
             }
             finishCallback(rowId, result)
         }
+        DBManager.refresh()
         switch(cmd){
         case Event.newEmail.rawValue:
             self.handleNewEmailCommand(params: params, finishCallback: handleEventResponse)
@@ -158,9 +159,9 @@ class EventHandler {
             return
         }
         let event = EventData.EmailStatus.init(params: params)
-        if event.type == Email.Status.unsent.rawValue,
-            let email = DBManager.getMail(key: event.emailId, account: myAccount) {
-            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+        if event.type == Email.Status.unsent.rawValue {
+            guard let email = DBManager.getMail(key: event.emailId, account: myAccount),
+                let myAccount = DBManager.getAccountByUsername(self.username) else {
                 finishCallback(false, .Empty)
                 return
             }

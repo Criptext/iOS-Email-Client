@@ -235,6 +235,10 @@ class NewLoginViewController: UIViewController{
         self.onLoginPress(sender)
     }
     
+    @IBAction func didPressSignup(sender: Any) {
+        self.jumpToSignupDeviceView()
+    }
+    
     @IBAction func didPressClose(sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -258,6 +262,15 @@ class NewLoginViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
         controller.loginData = loginData
+        controller.multipleAccount = self.multipleAccount
+        navigationController?.pushViewController(controller, animated: true)
+        toggleLoadingView(false)
+        clearErrors()
+    }
+    
+    func jumpToSignupDeviceView(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "signupview")  as! SignUpViewController
         controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)

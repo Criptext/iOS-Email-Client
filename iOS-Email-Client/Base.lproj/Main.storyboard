@@ -467,7 +467,8 @@
                                                     <constraint firstAttribute="width" constant="52" id="kCF-wH-0yV"/>
                                                 </constraints>
                                                 <color key="tintColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <state key="normal" image="new-arrow-down"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                                <state key="normal" image="icon-down"/>
                                                 <connections>
                                                     <action selector="didPressCC:" destination="Rmr-j3-9Sc" eventType="touchUpInside" id="ky4-Oa-7YV"/>
                                                 </connections>
@@ -3464,7 +3465,6 @@
         <image name="icon-support" width="33" height="32"/>
         <image name="mark-success" width="28" height="28"/>
         <image name="muted" width="34" height="38"/>
-        <image name="new-arrow-down" width="12" height="7"/>
         <image name="new-arrow-up" width="12" height="7"/>
         <image name="send" width="23" height="20"/>
         <image name="switch_locked_on" width="10" height="12"/>

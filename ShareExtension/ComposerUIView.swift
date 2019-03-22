@@ -130,17 +130,20 @@ class ComposerUIView: UIView {
     }
     
     func setFrom(account: Account, emails: [String]) {
+        fromButton.isHidden = emails.count == 0
         let attributedFrom = NSMutableAttributedString(string: "From: ", attributes: [.font: Font.bold.size(15)!])
         let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
         attributedFrom.append(attributedEmail)
         fromMenuView.isUserInteractionEnabled = false
         fromMenuView.initialLoad(options: emails)
         fromField.attributedText = attributedFrom
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
     }
     
     @IBAction func didPressFrom(_ sender: Any) {
         fromMenuView.isUserInteractionEnabled = true
         fromMenuView.toggleMenu(true)
+        fromButton.setImage(UIImage(named: "icon-up"), for: .normal)
         
         self.toField.endEditing()
         self.ccField.endEditing()
@@ -312,5 +315,6 @@ extension ComposerUIView: BottomMenuDelegate {
     func didPressBackground() {
         fromMenuView.isUserInteractionEnabled = false
         self.fromMenuView.toggleMenu(false)
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
     }
 }
