@@ -11,7 +11,7 @@ import Material
 import SafariServices
 import PasscodeLock
 
-class SettingsGeneralViewController: UITableViewController{
+class SettingsGeneralViewController: UIViewController{
     
     internal enum Section {
         case account
@@ -92,6 +92,8 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
+    @IBOutlet weak var tableView: UITableView!
+    
     let STATUS_NOT_CONFIRMED = 0
     let SECTION_VERSION = 3
     let ROW_HEIGHT: CGFloat = 40.0
@@ -115,6 +117,8 @@ class SettingsGeneralViewController: UITableViewController{
         self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
         
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         self.tableView.insetsContentViewsToSafeArea = true
         
         self.applyTheme()
@@ -166,28 +170,6 @@ class SettingsGeneralViewController: UITableViewController{
         ThemeManager.shared.removeListener(id: "settings")
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menus[sections[section]]!.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let subsection = menus[sections[indexPath.section]]![indexPath.row]
-        switch(sections[indexPath.section]){
-        case .account:
-            return renderAccountCells(subsection: subsection)
-        case .general:
-            return renderGeneralCells(subsection: subsection)
-        case .about:
-            return renderAboutCells(subsection: subsection)
-        default:
-            return renderVersionCells()
-        }
-    }
-    
     func applyTheme(){
         let attributedTitle = NSAttributedString(string: String.localize("GENERAL"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         let attributed2Title = NSAttributedString(string: String.localize("GENERAL"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.criptextBlue])
@@ -199,17 +181,20 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func renderAccountCells(subsection: Section.SubSection) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        cell.optionLabel.textColor = theme.mainText
+        cell.optionLabel.text = subsection.name
+        cell.goImageView.isHidden = true
+        cell.messageLabel.text = ""
+        cell.loader.stopAnimating()
+        cell.loader.isHidden = true
         switch(subsection){
+        case .manualSync:
+            cell.goImageView.isHidden = true
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.optionLabel.textColor = theme.mainText
-            cell.optionLabel.text = subsection.name
             cell.goImageView.isHidden = false
-            cell.messageLabel.text = ""
-            cell.loader.stopAnimating()
-            cell.loader.isHidden = true
-            return cell
         }
+        return cell
     }
     
     func renderGeneralCells(subsection: Section.SubSection) -> UITableViewCell {
@@ -282,66 +267,6 @@ class SettingsGeneralViewController: UITableViewController{
         let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         cell.versionLabel.text = "v.\(appVersionString)"
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section != SECTION_VERSION else {
-            return nil
-        }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
-        let mySection = sections[section]
-        if mySection == .account {
-            cell.titleLabel.text = myAccount.email.uppercased()
-        } else {
-            cell.titleLabel.text = mySection.name
-        }
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section != SECTION_VERSION ? ROW_HEIGHT : 0.0
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65.0
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let subsection = menus[sections[indexPath.section]]![indexPath.row]
-        tableView.deselectRow(at: indexPath, animated: true)
-        switch(subsection){
-        case .account:
-            goToProfile()
-        case .privacy:
-            goToPrivacyAndSecurity()
-        case .devices:
-            goToDevices()
-        case .labels:
-            goToLabels()
-        case .manualSync:
-            showManualSyncWarning()
-        case .pin:
-            goToPinLock()
-        case .faq:
-            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
-        case .policies:
-            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
-        case .terms:
-            goToUrl(url: "https://criptext.com/\(Env.language)/terms")
-        case .openSource:
-            goToUrl(url: "https://criptext.com/\(Env.language)/open-source-ios")
-        case .logout:
-            guard self.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
-                showLogout()
-                return
-            }
-            showWarningLogout()
-        case .deleteAccount:
-            showDeleteAccount()
-        default:
-            break
-        }
-        
     }
     
     func showManualSyncWarning() {
@@ -528,6 +453,90 @@ class SettingsGeneralViewController: UITableViewController{
     func goToUrl(url: String){
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
+    }
+}
+
+extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return menus[sections[section]]!.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let subsection = menus[sections[indexPath.section]]![indexPath.row]
+        switch(sections[indexPath.section]){
+        case .account:
+            return renderAccountCells(subsection: subsection)
+        case .general:
+            return renderGeneralCells(subsection: subsection)
+        case .about:
+            return renderAboutCells(subsection: subsection)
+        default:
+            return renderVersionCells()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section != SECTION_VERSION else {
+            return nil
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
+        let mySection = sections[section]
+        if mySection == .account {
+            cell.titleLabel.text = myAccount.email.uppercased()
+        } else {
+            cell.titleLabel.text = mySection.name
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section != SECTION_VERSION ? ROW_HEIGHT : 0.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65.0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let subsection = menus[sections[indexPath.section]]![indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch(subsection){
+        case .account:
+            goToProfile()
+        case .privacy:
+            goToPrivacyAndSecurity()
+        case .devices:
+            goToDevices()
+        case .labels:
+            goToLabels()
+        case .manualSync:
+            showManualSyncWarning()
+        case .pin:
+            goToPinLock()
+        case .faq:
+            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
+        case .policies:
+            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
+        case .terms:
+            goToUrl(url: "https://criptext.com/\(Env.language)/terms")
+        case .openSource:
+            goToUrl(url: "https://criptext.com/\(Env.language)/open-source-ios")
+        case .logout:
+            guard self.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
+                showLogout()
+                return
+            }
+            showWarningLogout()
+        case .deleteAccount:
+            showDeleteAccount()
+        default:
+            break
+        }
+        
     }
 }
 

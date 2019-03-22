@@ -15,6 +15,7 @@ class MenuViewController: UIViewController{
     let MENU_CONTENT_HEIGHT : CGFloat = 860.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
+    let MAX_ACCOUNTS = 3
     @IBOutlet weak var accountsCollectionView: UICollectionView!
     @IBOutlet weak var accountsTableView: UITableView!
     @IBOutlet weak var accountsSectionButton: UIButton!
@@ -129,6 +130,7 @@ class MenuViewController: UIViewController{
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
+        accountsTableView.backgroundColor = theme.menuBackground
         scrollView.backgroundColor = theme.menuBackground
         self.view.backgroundColor = theme.menuBackground
         nameLabel.textColor = theme.mainText

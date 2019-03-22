@@ -1513,7 +1513,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     func sendMail(email: Email, emailBody: String, password: String?) {
         showSendingSnackBar(message: String.localize("SENDING_MAIL"), permanent: true)
         reloadIfSentMailbox(email: email)
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, emailBody: emailBody, password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: emailBody, password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 return

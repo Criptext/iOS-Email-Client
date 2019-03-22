@@ -32,14 +32,14 @@ class SendMailAsyncTask {
     let preview: String
     let emailRef: ThreadSafeReference<Object>
     
-    init(account: Account, email: Email, emailBody: String, password: String?){
+    init(email: Email, emailBody: String, password: String?){
         let fileParams = SendMailAsyncTask.getFilesRequestData(email: email)
         let files = fileParams.0
         let duplicates = fileParams.1
         let fileKey: String? = email.files.first(where: {!$0.fileKey.isEmpty})?.fileKey
-        let recipients = SendMailAsyncTask.getRecipientEmails(username: account.username, email: email, emailBody: emailBody, files: files, fileKey: fileKey, fileKeys: fileKeys)
+        let recipients = SendMailAsyncTask.getRecipientEmails(username: email.account.username, email: email, emailBody: emailBody, files: files, fileKey: fileKey, fileKeys: fileKeys)
         self.fileKeys = !fileParams.2.isEmpty ? fileParams.2 : nil
-        self.username = account.username
+        self.username = email.account.username
         self.emailKey = email.key
         self.subject = email.subject
         self.body = emailBody

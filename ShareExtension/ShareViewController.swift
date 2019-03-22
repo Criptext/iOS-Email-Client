@@ -53,6 +53,16 @@ class ShareViewController: UIViewController {
         if shouldShowPinLock() {
             self.present(passcodeLockViewController, animated: true, completion: nil)
         }
+        
+        setFrom(account: myAccount)
+    }
+    
+    func setFrom(account: Account) {
+        let accounts = SharedDB.getAccounts(ignore: account.username)
+        let emails = Array(accounts.map({$0.email}))
+        myAccount = account
+        
+        composerUIView.setFrom(account: account, emails: emails)
     }
     
     func shouldShowPinLock() -> Bool {
@@ -183,6 +193,14 @@ extension ShareViewController: ComposerDelegate {
         popover.myTitle = String.localize("INVALID_EMAIL")
         popover.myMessage = String.localize("VALID_EMAIL")
         self.presentPopover(popover: popover, height: 150)
+    }
+    
+    func setAccount(username: String) {
+        let username = String(username.split(separator: "@").first ?? "")
+        guard let account = SharedDB.getAccountByUsername(username) else {
+            return
+        }
+        self.setFrom(account: account)
     }
 }
 
@@ -404,7 +422,7 @@ extension ShareViewController {
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: nil)
         
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, emailBody: self.composerUIView.editorView.html ,password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: self.composerUIView.editorView.html ,password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 alert.dismiss(animated: true, completion: nil)

@@ -229,7 +229,8 @@
 "PRIVACY_AND_SECURITY" = "SEGURIDAD Y PRIVACIDAD";
 "PIN_DETAIL" = "Si olvidas tu código PIN tendrás que cerrar sesión y volver a iniciar sesión de nuevo.\n\nAdvertencia: 10 intentos fallidos resultará en que todos datos de este dispositivo se borren por completo por propósitos de seguridad.";
 "PREVIEW_DETAIL" = "Vista previa del contenido del correo en las notificaciones.";
-"RECEIPTS_DETAIL" = "Si lo deshabilitas, no podrás saber cuando otras personas lean tus correos.";
+"TWO_FACTOR_DETAIL" = "Una segunda validación para proteger tu cuenta";
+"RECEIPTS_DETAIL" = "Enterate cuando tus correos han sido abiertos y leidos. Si lo deshabilitas, no podrás saber cuando otras personas lean tus correos ni vice-versa";
 "UNABLE_RECEIPTS" = "No se puede establecer la confirmación de leído. Inténtalo de nuevo.";
 "UNLOCK_FACE" = "Desbloquear con FaceID";
 "UNLOCK_TOUCH" = "Desbloquear con huella";
