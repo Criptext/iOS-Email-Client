@@ -80,6 +80,11 @@ class InboxViewController: UIViewController {
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
+        applyTheme()
+        setQueueItemsListener()
+    }
+    
+    func setQueueItemsListener() {
         let queueItems = DBManager.getQueueItems(account: self.myAccount)
         newsHeaderView.onClose = { [weak self] in
             self?.mailboxData.feature = nil
@@ -89,11 +94,10 @@ class InboxViewController: UIViewController {
         mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
             guard !(self?.myAccount.isInvalidated ?? false),
                 case .update = changes else {
-                return
+                    return
             }
             self?.dequeueEvents()
         })
-        applyTheme()
     }
     
     func viewSetupNews() {
@@ -1824,6 +1828,7 @@ extension InboxViewController {
         self.myAccount = account
         defaults.activeAccount = account.username
         WebSocketManager.sharedInstance.swapAccount(account)
+        self.invalidateObservers()
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.reloadView()
@@ -1833,6 +1838,7 @@ extension InboxViewController {
             let badgeCounter = feedsViewController.feedsData.newFeeds.count
             updateFeedsBadge(counter: badgeCounter)
         }
+        self.setQueueItemsListener()
         self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
     }
 }

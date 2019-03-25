@@ -374,7 +374,6 @@ extension ShareViewController {
         let emailContact = EmailContact()
         emailContact.email = emailDetail
         emailContact.type = type.rawValue
-        emailContact.compoundKey = "\(emailDetail.key):\(email):\(type.rawValue)"
         if let contact = SharedDB.getContact(email) {
             emailContact.contact = contact
             if(contact.email != "\(myAccount.username)\(Env.domain)"){
@@ -388,6 +387,7 @@ extension ShareViewController {
             SharedDB.store([newContact], account: self.myAccount);
             emailContact.contact = newContact
         }
+        emailContact.compoundKey = emailContact.buildCompoundKey()
         emailContacts.append(emailContact)
     }
     
