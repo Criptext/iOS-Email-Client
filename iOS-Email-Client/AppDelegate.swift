@@ -382,7 +382,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = CriptextDefaults()
         defaults.migrate()
         defaults.appStateActive = true
-        
+                
         if let activeAccount = defaults.activeAccount {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions, activeAccount)
@@ -481,21 +481,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
-        ThemeManager.shared.swapTheme(theme: Theme.init())
-        if let activateAccount = DBManager.getInactiveAccounts().first {
+        if let activateAccount = DBManager.getInactiveAccounts().first,
+            let inboxVC = getInboxVC() {
             let defaults = CriptextDefaults()
             defaults.activeAccount = activateAccount.username
-            DBManager.activateAccount(account: activateAccount)
-            guard let inboxVC = getInboxVC() else {
-                return
-            }
+            DBManager.activateAccount(activateAccount)
             inboxVC.swapAccount(activateAccount)
             inboxVC.dismiss(animated: true)
         } else {
+            DBManager.disableAccount(account)
             self.setloginAsRoot(manually: manually, message: message)
-            if (!manually) {
-                self.clearDefaults()
-            }
+            ThemeManager.shared.swapTheme(theme: Theme.init())
+            self.clearDefaults()
         }
         
         if (!manually) {

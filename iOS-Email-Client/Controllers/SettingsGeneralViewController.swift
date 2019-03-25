@@ -48,8 +48,6 @@ class SettingsGeneralViewController: UIViewController{
             case policies
             case terms
             case openSource
-            case logout
-            case deleteAccount
             
             case version
             
@@ -63,8 +61,6 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("TERMS")
                 case .openSource:
                     return String.localize("OPEN_LIBS")
-                case .logout:
-                    return String.localize("SIGNOUT")
                 case .version:
                     return String.localize("VERSION")
                 case .night:
@@ -85,8 +81,6 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("FAQ")
                 case .policies:
                     return String.localize("POLICY")
-                case .deleteAccount:
-                    return String.localize("DELETE_ACCOUNT")
                 }
             }
         }
@@ -101,7 +95,7 @@ class SettingsGeneralViewController: UIViewController{
     let menus = [
         .account: [.account, .privacy, .devices, .labels, .manualSync],
         .general: [.night, .syncContact, .preview, .pin],
-        .about: [.faq, .policies, .terms, .openSource, .logout, .deleteAccount],
+        .about: [.faq, .policies, .terms, .openSource],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData = GeneralSettingsData()
@@ -256,8 +250,8 @@ class SettingsGeneralViewController: UIViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
-        cell.goImageView.isHidden = subsection == .deleteAccount || subsection == .logout
-        cell.optionLabel.textColor = subsection == .deleteAccount ? theme.alert : theme.mainText
+        cell.goImageView.isHidden = false
+        cell.optionLabel.textColor = theme.mainText
         cell.optionLabel.text = subsection.name
         return cell
     }
@@ -332,98 +326,6 @@ class SettingsGeneralViewController: UIViewController{
         }
     }
     
-    func showLogout(){
-        let logoutPopover = GenericDualAnswerUIPopover()
-        logoutPopover.initialTitle = String.localize("SIGNOUT")
-        logoutPopover.initialMessage = String.localize("Q_SURE_LOGOUT")
-        logoutPopover.leftOption = String.localize("CANCEL")
-        logoutPopover.rightOption = String.localize("YES")
-        logoutPopover.onResponse = { [weak self] accept in
-            guard accept,
-                let weakSelf = self else {
-                    return
-            }
-            weakSelf.confirmLogout()
-        }
-        self.presentPopover(popover: logoutPopover, height: 175)
-    }
-    
-    func showDeleteAccount(){
-        let passwordPopover = PasswordUIPopover()
-        passwordPopover.answerShouldDismiss = false
-        passwordPopover.initialTitle = String.localize("DELETE_ACCOUNT")
-        let attrRegularText = NSMutableAttributedString(string: String.localize("DELETING_ACCOUNT"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
-        let attrBoldText = NSMutableAttributedString(string: String.localize("DELETE_WILL_ERASE"), attributes: [NSAttributedString.Key.font: Font.bold.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
-        let attrRegularText2 = NSMutableAttributedString(string: String.localize("DELETE_NO_LONGER"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
-        attrRegularText.append(attrBoldText)
-        attrRegularText.append(attrRegularText2)
-        passwordPopover.initialAttrMessage = attrRegularText
-        passwordPopover.onOkPress = { [weak self] pass in
-            guard let weakSelf = self else {
-                return
-            }
-            weakSelf.deleteAccount(password: pass)
-        }
-        self.presentPopover(popover: passwordPopover, height: 260)
-    }
-    
-    func deleteAccount(password: String){
-        APIManager.deleteAccount(password: password.sha256()!, account: self.myAccount, completion: { [weak self] (responseData) in
-            guard let weakSelf = self else {
-                return
-            }
-            if case .BadRequest = responseData {
-                if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
-                    popover.dismiss(animated: false, completion: nil)
-                }
-                weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("WRONG_PASS_RETRY"), style: .alert)
-                return
-            }
-            guard case .Success = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate else {
-                    if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
-                        popover.dismiss(animated: false, completion: nil)
-                    }
-                    weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("UNABLE_DELETE_ACCOUNT"), style: .alert)
-                return
-            }
-            delegate.logout(account: weakSelf.myAccount, manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
-        })
-    }
-    
-    func showWarningLogout() {
-        let logoutPopover = GenericDualAnswerUIPopover()
-        logoutPopover.initialTitle = String.localize("WARNING")
-        logoutPopover.initialMessage = String.localize("Q_SIGNOUT_2FA")
-        logoutPopover.leftOption = String.localize("CANCEL")
-        logoutPopover.rightOption = String.localize("YES")
-        logoutPopover.onResponse = { accept in
-            guard accept else {
-                return
-            }
-            self.confirmLogout()
-        }
-        self.presentPopover(popover: logoutPopover, height: 223)
-    }
-    
-    func confirmLogout(){
-        APIManager.logout(account: myAccount) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("UNABLE_SIGNOUT"), style: .alert)
-                return
-            }
-            self.logout(account: self.myAccount, manually: true)
-        }
-    }
-    
     func goToPrivacyAndSecurity(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let securityVC = storyboard.instantiateViewController(withIdentifier: "securityPrivacyViewController") as! SecurityPrivacyViewController
@@ -446,6 +348,7 @@ class SettingsGeneralViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let profileVC = storyboard.instantiateViewController(withIdentifier: "profileEditorView") as! ProfileEditorViewController
         profileVC.generalData = self.generalData
+        profileVC.devicesData = self.devicesData
         profileVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(profileVC, animated: true)
     }
@@ -525,14 +428,6 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             goToUrl(url: "https://criptext.com/\(Env.language)/terms")
         case .openSource:
             goToUrl(url: "https://criptext.com/\(Env.language)/open-source-ios")
-        case .logout:
-            guard self.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
-                showLogout()
-                return
-            }
-            showWarningLogout()
-        case .deleteAccount:
-            showDeleteAccount()
         default:
             break
         }

@@ -18,6 +18,8 @@ class ProfileEditorViewController: UIViewController {
         case password
         case recovery
         case reply
+        case logout
+        case deleteAccount
         
         var name: String {
             switch(self){
@@ -31,6 +33,10 @@ class ProfileEditorViewController: UIViewController {
                 return String.localize("RECOVERY_EMAIL")
             case .reply:
                 return String.localize("REPLY_TO_TITLE")
+            case .logout:
+                return String.localize("SIGNOUT")
+            case .deleteAccount:
+                return String.localize("DELETE_ACCOUNT")
             }
         }
     }
@@ -47,8 +53,9 @@ class ProfileEditorViewController: UIViewController {
     var imagePicker = UIImagePickerController()
     var attachmentOptionsHeight: CGFloat = 0
     var generalData: GeneralSettingsData!
+    var devicesData: DeviceSettingsData!
     var myAccount: Account!
-    var options = [.name, .signature, .password, .recovery, .reply] as [Option]
+    var options = [.name, .signature, .password, .recovery, .reply, .logout, .deleteAccount] as [Option]
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -296,12 +303,19 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let option = options[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
+        cell.backgroundColor = .clear
+        cell.optionLabel.text = option.name
         switch(option) {
+        case .logout, .deleteAccount:
+            cell.messageLabel.text = ""
+            cell.loader.isHidden = true
+            cell.goImageView.isHidden = true
+            cell.optionLabel.textColor = option == .deleteAccount ? theme.alert : theme.mainText
+            cell.loader.stopAnimating()
+            return cell
         case .recovery:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
-            cell.backgroundColor = .clear
             cell.optionLabel.textColor = theme.mainText
-            cell.optionLabel.text = option.name
             cell.messageLabel.text = generalData.recoveryEmailStatus.description
             cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
             guard generalData.recoveryEmail != nil else {
@@ -315,10 +329,7 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
             cell.goImageView.isHidden = false
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
-            cell.backgroundColor = .clear
             cell.optionLabel.textColor = theme.mainText
-            cell.optionLabel.text = option.name
             cell.goImageView.isHidden = false
             cell.messageLabel.text = ""
             cell.loader.stopAnimating()
@@ -341,6 +352,14 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
             goToRecoveryEmail()
         case .reply:
             replyTo()
+        case .logout:
+            guard self.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
+                showLogout()
+                return
+            }
+            showWarningLogout()
+        case .deleteAccount:
+            showDeleteAccount()
         }
     }
     
@@ -389,5 +408,97 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
         replyToVC.generalData = self.generalData
         replyToVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(replyToVC, animated: true)
+    }
+    
+    func showLogout(){
+        let logoutPopover = GenericDualAnswerUIPopover()
+        logoutPopover.initialTitle = String.localize("SIGNOUT")
+        logoutPopover.initialMessage = String.localize("Q_SURE_LOGOUT")
+        logoutPopover.leftOption = String.localize("CANCEL")
+        logoutPopover.rightOption = String.localize("YES")
+        logoutPopover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            weakSelf.confirmLogout()
+        }
+        self.presentPopover(popover: logoutPopover, height: 175)
+    }
+    
+    func showDeleteAccount(){
+        let passwordPopover = PasswordUIPopover()
+        passwordPopover.answerShouldDismiss = false
+        passwordPopover.initialTitle = String.localize("DELETE_ACCOUNT")
+        let attrRegularText = NSMutableAttributedString(string: String.localize("DELETING_ACCOUNT"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let attrBoldText = NSMutableAttributedString(string: String.localize("DELETE_WILL_ERASE"), attributes: [NSAttributedString.Key.font: Font.bold.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let attrRegularText2 = NSMutableAttributedString(string: String.localize("DELETE_NO_LONGER"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
+        attrRegularText.append(attrBoldText)
+        attrRegularText.append(attrRegularText2)
+        passwordPopover.initialAttrMessage = attrRegularText
+        passwordPopover.onOkPress = { [weak self] pass in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.deleteAccount(password: pass)
+        }
+        self.presentPopover(popover: passwordPopover, height: 260)
+    }
+    
+    func deleteAccount(password: String){
+        APIManager.deleteAccount(password: password.sha256()!, account: self.myAccount, completion: { [weak self] (responseData) in
+            guard let weakSelf = self else {
+                return
+            }
+            if case .BadRequest = responseData {
+                if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
+                    popover.dismiss(animated: false, completion: nil)
+                }
+                weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("WRONG_PASS_RETRY"), style: .alert)
+                return
+            }
+            guard case .Success = responseData,
+                let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                    if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
+                        popover.dismiss(animated: false, completion: nil)
+                    }
+                    weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("UNABLE_DELETE_ACCOUNT"), style: .alert)
+                    return
+            }
+            delegate.logout(account: weakSelf.myAccount, manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
+        })
+    }
+    
+    func showWarningLogout() {
+        let logoutPopover = GenericDualAnswerUIPopover()
+        logoutPopover.initialTitle = String.localize("WARNING")
+        logoutPopover.initialMessage = String.localize("Q_SIGNOUT_2FA")
+        logoutPopover.leftOption = String.localize("CANCEL")
+        logoutPopover.rightOption = String.localize("YES")
+        logoutPopover.onResponse = { accept in
+            guard accept else {
+                return
+            }
+            self.confirmLogout()
+        }
+        self.presentPopover(popover: logoutPopover, height: 223)
+    }
+    
+    func confirmLogout(){
+        APIManager.logout(account: myAccount) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout(account: self.myAccount)
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("UNABLE_SIGNOUT"), style: .alert)
+                return
+            }
+            self.logout(account: self.myAccount, manually: true)
+        }
     }
 }
