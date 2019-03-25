@@ -250,6 +250,7 @@
 "DELETE" = "Eliminar";
 "DELETE_PERMANENTLY" = "Eliminar Permanentemente";
 "PRIVACY_SECURITY" = "Seguridad y Privacidad";
+"PRIVACY" = "Privacidad";
 "SIGN_REJECTED" = "Sesión Rechazada";
 "NO_SUBJECT" = "(Sin Asunto)";
 "OPENED" = "abrió";
@@ -359,3 +360,5 @@
 "EMAIL_FILTER" = "Filtrado de correo";
 "NO_AVAILABLE_RECIPIENTS" = "Recipientes no disponibles";
 "NO_CONTENT" = "Este correo no tiene contenido";
+"ADD_ACCOUNT" = "Agregar cuenta";
+"NOW_LOGGED" = "Has iniciado sesión como ";

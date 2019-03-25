@@ -250,6 +250,7 @@
 "DELETE" = "Delete";
 "DELETE_PERMANENTLY" = "Delete Permanently";
 "PRIVACY_SECURITY" = "Privacy and Security";
+"PRIVACY" = "Privacy";
 "SIGN_REJECTED" = "Sign In Rejected";
 "NO_SUBJECT" = "(No Subject)";
 "OPENED" = "opened";
@@ -359,3 +360,5 @@
 "EMAIL_FILTER" = "Email Filter";
 "NO_AVAILABLE_RECIPIENTS" = "No available recipients";
 "NO_CONTENT" = "This email has no content";
+"ADD_ACCOUNT" = "Add Account";
+"NOW_LOGGED" = "Now logged in as ";
