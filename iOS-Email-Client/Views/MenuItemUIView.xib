@@ -13,6 +13,9 @@
         <array key="NunitoSans-Regular.ttf">
             <string>NunitoSans-Regular</string>
         </array>
+        <array key="NunitoSans-SemiBold.ttf">
+            <string>NunitoSans-SemiBold</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -47,7 +50,7 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PV5-XB-Dir">
                             <rect key="frame" x="0.0" y="0.0" width="29" height="19"/>
-                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="13"/>
+                            <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="14"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>

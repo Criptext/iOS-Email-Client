@@ -45,7 +45,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SlT-XZ-Wvh">
+                <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SlT-XZ-Wvh">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="4A0-Ov-DwR"/>
@@ -125,7 +125,8 @@
                                 <constraint firstAttribute="width" constant="52" id="8Md-dR-4IV"/>
                                 <constraint firstAttribute="height" constant="45" id="drq-op-dEe"/>
                             </constraints>
-                            <state key="normal" image="new-arrow-down"/>
+                            <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                            <state key="normal" image="icon-down"/>
                             <connections>
                                 <action selector="onCollapsePress:" destination="-1" eventType="touchUpInside" id="pls-xj-DAH"/>
                             </connections>
@@ -237,7 +238,6 @@
     <resources>
         <image name="close-rounded" width="14" height="14"/>
         <image name="icon-down" width="13" height="8"/>
-        <image name="new-arrow-down" width="12" height="7"/>
         <image name="send" width="23" height="20"/>
     </resources>
 </document>

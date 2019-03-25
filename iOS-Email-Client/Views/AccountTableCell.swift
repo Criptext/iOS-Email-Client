@@ -33,5 +33,6 @@ class AccountTableCell: UITableViewCell {
         nameLabel.text = account.name
         emailLabel.text = account.email
         badgeLabel.text = counter == 0 ? "" : counter.description
+        badgeLabel.isHidden = counter == 0
     }
 }

@@ -490,9 +490,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
             }
             inboxVC.swapAccount(activateAccount)
-            inboxVC.dismiss(animated: true) {
-                inboxVC.showSnackbar(String.localize("Now logged in as \(activateAccount.email)"), attributedText: nil, buttons: "", permanent: false)
-            }
+            inboxVC.dismiss(animated: true)
         } else {
             self.setloginAsRoot(manually: manually, message: message)
             if (!manually) {
@@ -536,9 +534,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         inboxVC.swapAccount(account)
-        inboxVC.dismiss(animated: true) {
-            inboxVC.showSnackbar(String.localize("Now logged in as \(account.email)"), attributedText: nil, buttons: "", permanent: false)
-        }
+        inboxVC.dismiss(animated: true)
     }
     
     func replaceRootViewController(_ viewController:UIViewController){

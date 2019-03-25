@@ -58,7 +58,7 @@ class SettingsGeneralViewController: UIViewController{
                 case .syncContact:
                     return String.localize("SYNC_PHONEBOOK")
                 case .privacy:
-                    return String.localize("POLICY")
+                    return String.localize("PRIVACY")
                 case .terms:
                     return String.localize("TERMS")
                 case .openSource:
@@ -518,7 +518,7 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
         case .pin:
             goToPinLock()
         case .faq:
-            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
+            goToUrl(url: "https://criptext.com/\(Env.language)/faq")
         case .policies:
             goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
         case .terms:

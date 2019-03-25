@@ -1531,9 +1531,12 @@ extension InboxViewController: ComposerSendMailDelegate {
                 weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, buttons: "", permanent: false)
                 return
             }
-            guard case let .SuccessInt(key) = responseData,
-                DBManager.getMail(key: key, account: weakSelf.myAccount) != nil else {
+            guard case let .SuccessInt(key) = responseData else {
                 weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            guard DBManager.getMail(key: key, account: weakSelf.myAccount) != nil else {
+                weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
                 return
             }
             weakSelf.refreshThreadRows()
@@ -1830,6 +1833,7 @@ extension InboxViewController {
             let badgeCounter = feedsViewController.feedsData.newFeeds.count
             updateFeedsBadge(counter: badgeCounter)
         }
+        self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
     }
 }
 

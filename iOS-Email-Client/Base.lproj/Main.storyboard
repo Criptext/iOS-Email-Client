@@ -15,6 +15,9 @@
         <array key="NunitoSans-Regular.ttf">
             <string>NunitoSans-Regular</string>
         </array>
+        <array key="NunitoSans-SemiBold.ttf">
+            <string>NunitoSans-SemiBold</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Connect Upload View Controller-->
@@ -3230,24 +3233,24 @@
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIK-GC-Jmz">
-                                                                    <rect key="frame" x="84" y="23.5" width="236" height="20.5"/>
+                                                                    <rect key="frame" x="84" y="23.5" width="237" height="20.5"/>
                                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nu-aJ-Vxq">
-                                                                    <rect key="frame" x="84" y="42" width="236" height="20.5"/>
+                                                                    <rect key="frame" x="84" y="42" width="237" height="20.5"/>
                                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99+" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKA-TV-UOZ">
-                                                                    <rect key="frame" x="325" y="31.5" width="30" height="22"/>
+                                                                    <rect key="frame" x="326" y="33" width="29" height="19"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="30" id="IQf-uh-SJU"/>
-                                                                        <constraint firstAttribute="height" constant="22" id="Top-kk-8kw"/>
+                                                                        <constraint firstAttribute="width" constant="29" id="IQf-uh-SJU"/>
+                                                                        <constraint firstAttribute="height" constant="19" id="Top-kk-8kw"/>
                                                                     </constraints>
-                                                                    <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="14"/>
+                                                                    <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="14"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                     <userDefinedRuntimeAttributes>

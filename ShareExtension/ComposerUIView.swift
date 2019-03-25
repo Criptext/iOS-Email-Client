@@ -127,6 +127,8 @@ class ComposerUIView: UIView {
         fromField.textColor = theme.mainText
         fromField.backgroundColor = theme.overallBackground
         fromButton.imageView?.tintColor = theme.criptextBlue
+        
+        navigationBar.isTranslucent = false
     }
     
     func setFrom(account: Account, emails: [String]) {

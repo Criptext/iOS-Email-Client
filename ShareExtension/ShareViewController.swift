@@ -55,6 +55,9 @@ class ShareViewController: UIViewController {
         }
         
         setFrom(account: myAccount)
+        
+        let theme: Theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.overallBackground
     }
     
     func setFrom(account: Account) {
