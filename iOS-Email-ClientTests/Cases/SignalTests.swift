@@ -81,7 +81,7 @@ class SignalTests: XCTestCase {
         signupData.token = "test"
         let account = SignUpData.createAccount(from: signupData)
         let bundle = CRBundle(account: account)
-        let preKeys = bundle.generateKeys()
+        bundle.generateKeys()
         DBManager.update(account: account, jwt: "", refreshToken: "", regId: bundle.regId, identityB64: bundle.identity)
         let bob = Dummy(recipientId: "bob", deviceId: 10)
         SignalHandler.buildSession(recipientId: bob.recipientId, deviceId: bob.deviceId, keys: bob.getKeyBundle(), account: account)

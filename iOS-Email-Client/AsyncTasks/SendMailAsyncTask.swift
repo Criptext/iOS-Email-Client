@@ -171,7 +171,7 @@ class SendMailAsyncTask {
             return
         }
         
-        let keysPayload = getRecipientsAndKnownDevices()
+        let keysPayload = getRecipientsAndKnownDevices(myAccount: myAccount)
         let params = [
             "recipients": keysPayload.0,
             "knownAddresses": keysPayload.1
@@ -233,11 +233,11 @@ class SendMailAsyncTask {
         return true
     }
     
-    private func getRecipientsAndKnownDevices() -> ([String], [String: [Int32]]) {
+    private func getRecipientsAndKnownDevices(myAccount: Account) -> ([String], [String: [Int32]]) {
         var recipients = [String]()
         var knownAddresses = [String: [Int32]]()
         for (recipientId, _) in criptextEmails {
-            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId)
+            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
             let deviceIds = recipientSessions.map { $0.deviceId }
             recipients.append(recipientId)
             knownAddresses[recipientId] = deviceIds
@@ -249,7 +249,7 @@ class SendMailAsyncTask {
         var criptextEmailData = [[String: Any]]()
         for (recipientId, type) in criptextEmails {
             let contactType = type as! String
-            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId)
+            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
             let deviceIds = recipientSessions.map { $0.deviceId }
             var emailsData = [[String: Any]]()
             for deviceId in deviceIds {

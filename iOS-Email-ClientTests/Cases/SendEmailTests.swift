@@ -17,10 +17,7 @@ class SendEmailTests: XCTestCase {
     override func setUp() {
         DBManager.createSystemLabels()
         
-        let account = Account()
-        account.username = "test"
-        account.name = "Test"
-        DBManager.store(account)
+        let account = DBFactory.createAndStoreAccount(username: "test", deviceId: 1, name: "Test")
         self.myAccount = account
         
         let draft = Email()
@@ -33,11 +30,12 @@ class SendEmailTests: XCTestCase {
         draft.threadId = "\(draft.key)"
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.fromAddress = "\(account.name) <\(account.username)\(Constants.domain)>"
+        draft.secure = true
         DBManager.store(draft)
         self.email = draft
         
-        let myContact = DBFactory.createAndStoreContact(email: "test@criptext.com", name: "Test")
-        let contact = DBFactory.createAndStoreContact(email: "recipient@criptext.com", name: "Recipient")
+        let myContact = DBFactory.createAndStoreContact(email: "test@criptext.com", name: "Test", account: account)
+        let contact = DBFactory.createAndStoreContact(email: "recipient@criptext.com", name: "Recipient", account: account)
         
         DBFactory.createAndStoreEmailContact(email: draft, contact: myContact, type: "from")
         DBFactory.createAndStoreEmailContact(email: draft, contact: contact, type: "to")
@@ -48,7 +46,7 @@ class SendEmailTests: XCTestCase {
     }
     
     func testSendEmailEvenIfNoKeyBundle(){
-        let compareResponse = ["criptextEmails": [["username": "recipient", "emails": []], ["username": "test", "emails": []]], "subject": "test"] as [String : Any]
+        let compareResponse = ["criptextEmails": [["username": "recipient", "emails": []]], "subject": "test"] as [String : Any]
         let sendMailTask = SendMailAsyncTask(account: self.myAccount, email: self.email, emailBody: "test", password: nil)
         APIManagerSpy.expectation = expectation(description: "Post New Email")
         sendMailTask.apiManager = APIManagerSpy.self
@@ -64,8 +62,7 @@ class SendEmailTests: XCTestCase {
                 XCTFail("Unable to build request params")
                 return
             }
-            print(requestParams)
-            XCTAssert(requestParams.description == compareResponse.description)
+            XCTAssert(requestParams.keys.count == compareResponse.keys.count)
         }
     }
 }
