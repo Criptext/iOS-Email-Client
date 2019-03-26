@@ -10,10 +10,16 @@ import Foundation
 import RealmSwift
 
 class CRSignedPreKeyRecord: Object{
+    @objc dynamic var compoundKey = ""
     @objc dynamic var signedPreKeyId : Int32 = 0
     @objc dynamic var signedPreKeyPair = ""
+    @objc dynamic var account : Account!
+    
+    func buildCompoundKey() {
+        self.compoundKey = "\(account.compoundKey):\(signedPreKeyId)"
+    }
     
     override static func primaryKey() -> String? {
-        return "signedPreKeyId"
+        return "compoundKey"
     }
 }

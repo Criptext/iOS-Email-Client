@@ -200,7 +200,7 @@ class ProfileEditorViewController: UIViewController {
             self.nameLabel.text = name
             self.showAlert(String.localize("PROFILE"), message: String.localize("PROFILE_SUCCESS"), style: .alert)
             DBManager.update(account: self.myAccount, name: name)
-            DBManager.createQueueItem(params: ["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()])
+            DBManager.createQueueItem(params: ["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], account: self.myAccount)
         }
     }
 }

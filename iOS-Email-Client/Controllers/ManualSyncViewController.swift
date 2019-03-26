@@ -116,7 +116,7 @@ class ManualSyncViewController: UIViewController{
     }
     
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
-        DBManager.clearMailbox()
+        DBManager.clearMailbox(account: myAccount)
         FileUtils.deleteAccountDirectory(account: myAccount)
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
         let username = myAccount.username

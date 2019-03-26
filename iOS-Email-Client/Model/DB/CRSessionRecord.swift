@@ -14,6 +14,11 @@ class CRSessionRecord: Object{
     @objc dynamic var deviceId : Int32 = 0
     @objc dynamic var sessionRecord = ""
     @objc dynamic var compoundKey = ""
+    @objc dynamic var account : Account!
+    
+    func buildCompoundKey() {
+        self.compoundKey = "\(account.compoundKey):\(contactId):\(deviceId)"
+    }
     
     override static func primaryKey() -> String? {
         return "compoundKey"

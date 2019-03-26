@@ -49,7 +49,7 @@ class NewEmailHandler {
             return
         }
         
-        if let email = self.database.getMailByKey(key: event.metadataKey) {
+        if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
             if(isMeARecipient(email: email, account: myAccount)){
                 self.database.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
                 completion(Result(email: email))
@@ -88,7 +88,7 @@ class NewEmailHandler {
             }
             
             guard !FileUtils.existBodyFile(username: myAccount.username, metadataKey: "\(event.metadataKey)") else{
-                if let email = self.database.getMailByKey(key: event.metadataKey) {
+                if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
                     completion(Result(email: email))
                     return
                 }
@@ -98,6 +98,7 @@ class NewEmailHandler {
             
             let contentPreview = self.getContentPreview(content: content)
             let email = Email()
+            email.account = myAccount
             email.threadId = event.threadId
             email.subject = event.subject
             email.key = event.metadataKey
@@ -107,6 +108,7 @@ class NewEmailHandler {
             email.unread = true
             email.secure = event.guestEncryption == 1 || event.guestEncryption == 3 ? true : false
             email.preview = contentPreview.0
+            email.buildCompoundKey()
             
             FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
             
@@ -143,7 +145,7 @@ class NewEmailHandler {
             let contacts = [event.from]
             var from = String()
             contacts.forEach{
-                from = (from.isEmpty ? ContactUtils.parseFromContact(contact: $0) : "\(from), \(ContactUtils.parseFromContact(contact: $0))")
+                from = (from.isEmpty ? ContactUtils.parseFromContact(contact: $0, account: myAccount) : "\(from), \(ContactUtils.parseFromContact(contact: $0, account: myAccount))")
             }
             email.fromAddress = from
             guard self.database.store(email) else {
@@ -151,10 +153,10 @@ class NewEmailHandler {
                 return
             }
             
-            ContactUtils.parseEmailContacts([event.from], email: email, type: .from)
-            ContactUtils.parseEmailContacts(event.to, email: email, type: .to)
-            ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc)
-            ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc)
+            ContactUtils.parseEmailContacts([event.from], email: email, type: .from, account: myAccount)
+            ContactUtils.parseEmailContacts(event.to, email: email, type: .to, account: myAccount)
+            ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc, account: myAccount)
+            ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc, account: myAccount)
             
             if let myContact = SharedDB.getContact("\(myAccount.username)\(Env.domain)"),
                 myContact.displayName != myAccount.name {

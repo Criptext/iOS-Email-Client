@@ -13,19 +13,25 @@ class MarkThreadsAsyncTask {
     let eventThreadIds: [String]
     let unread: Bool
     let currentLabel: Int
+    let username: String
     
-    init(threadIds: [String], eventThreadIds: [String], unread: Bool, currentLabel: Int) {
+    init(username: String, threadIds: [String], eventThreadIds: [String], unread: Bool, currentLabel: Int) {
         self.threadIds = threadIds
         self.eventThreadIds = eventThreadIds
         self.unread = unread
         self.currentLabel = currentLabel
+        self.username = username
     }
     
     func start(completion: @escaping (() -> Void)) {
         let queue = DispatchQueue(label: "com.criptext.mail.mark", qos: .userInitiated, attributes: .concurrent)
         queue.async {
+            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+                completion()
+                return
+            }
             for threadId in self.threadIds {
-                DBManager.updateThread(threadId: threadId, currentLabel: self.currentLabel, unread: self.unread)
+                DBManager.updateThread(threadId: threadId, currentLabel: self.currentLabel, unread: self.unread, account: myAccount)
             }
             let params = ["cmd": Event.Peer.threadsUnread.rawValue,
                           "params": [
@@ -33,7 +39,7 @@ class MarkThreadsAsyncTask {
                             "threadIds": self.eventThreadIds
                 ]
                 ] as [String : Any]
-            DBManager.createQueueItem(params: params)
+            DBManager.createQueueItem(params: params, account: myAccount)
             
             DispatchQueue.main.async {
                 completion()

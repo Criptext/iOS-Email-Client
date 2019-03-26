@@ -14,6 +14,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     let keyData     = AESCipher.generateRandomBytes()
     let ivData      = AESCipher.generateRandomBytes()
+    var account: Account!
     
     let desiredDBText = """
     {"object":{"email":"test1@criptext.com","isTrusted":false,"id":1,"name":"Test 1"},"table":"contact"}
@@ -30,19 +31,21 @@ class CreateCustomJSONFileTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let groupDefaults = UserDefaults.init(suiteName: Env.groupApp)!
-        groupDefaults.removeObject(forKey: "activeAccount")
+        self.account = DBFactory.createAndStoreAccount(username: "test", deviceId: 1, name: "Test")
+        let defaults = CriptextDefaults()
+        defaults.activeAccount = account.username
         
-        DBManager.destroy()
         let newLabel = Label("Test 1")
         newLabel.id = 1
         newLabel.color =  "fff000"
         newLabel.type = "custom"
+        newLabel.account = self.account
         DBManager.store(newLabel)
         let newLabel2 = Label("Test 2")
         newLabel2.id = 2
         newLabel2.color =  "ff00ff"
         newLabel2.type = "custom"
+        newLabel2.account = self.account
         DBManager.store(newLabel2)
         
         let testContact = Contact()
@@ -51,7 +54,14 @@ class CreateCustomJSONFileTests: XCTestCase {
         let testContact2 = Contact()
         testContact2.email = "test2@criptext.com"
         testContact2.displayName = "Test 2"
-        DBManager.store([testContact, testContact2])
+        DBManager.store([testContact, testContact2], account: self.account)
+        
+        let file = File()
+        file.fileKey = "fgsfgfgsfdafa:afdsfsagdfgsdf"
+        file.name = "test.pdf"
+        file.emailId = 123
+        file.date = Date(timeIntervalSince1970: 1531840176)
+        DBManager.store(file)
         
         let email = Email()
         email.content = "test 1"
@@ -60,6 +70,9 @@ class CreateCustomJSONFileTests: XCTestCase {
         email.threadId = "<dsfsfd.dsfsdfs@ddsfs.fsdfs>"
         email.key = 123
         email.date = Date(timeIntervalSince1970: 1531840176)
+        email.account = self.account
+        email.files.append(file)
+        email.buildCompoundKey()
         DBManager.store(email)
         
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [1], removedLabelIds: [])
@@ -75,18 +88,13 @@ class CreateCustomJSONFileTests: XCTestCase {
         emailContact2.contact = testContact
         emailContact2.type = ContactType.to.rawValue
         DBManager.store([emailContact, emailContact2])
-        
-        let file = File()
-        file.fileKey = "fgsfgfgsfdafa:afdsfsagdfgsdf"
-        file.name = "test.pdf"
-        file.emailId = 123
-        file.date = Date(timeIntervalSince1970: 1531840176)
-        DBManager.store(file)
-        
-        let account = Account()
-        account.username = "myself"
-        account.deviceId = 1
-        DBManager.store(account)
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        let defaults = CriptextDefaults()
+        defaults.removeConfig()
+        DBManager.destroy()
     }
     
     func testSuccessfullyParseDate(){
@@ -101,15 +109,14 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     func testSuccessfullyCreateEncryptDecryptDBFile(){
         let expect = expectation(description: "Callback runs after generating db file")
-        let account = DBManager.getFirstAccount()
-        CreateCustomJSONFileAsyncTask(username: account?.username ?? "myself").start { (error, url) in
+        CreateCustomJSONFileAsyncTask(username: self.account.username).start { (error, url) in
             guard let myUrl = url else {
                 XCTFail("unable to process db with error: \(String(describing: error))")
                 return
             }
             let fileData = try! Data(contentsOf: myUrl)
             let fileString = String(data: fileData, encoding: .utf8)!
-            XCTAssert(fileString.count == self.desiredDBText.count)
+            XCTAssert(fileString.count == self.desiredDBText.count, "\(fileString)\nvs\n\(self.desiredDBText)")
             
             let outputPath = AESCipher.streamEncrypt(path: myUrl.path, outputName: "secure-db", keyData: self.keyData, ivData: self.ivData, operation: kCCEncrypt)
             
@@ -137,9 +144,9 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     func testSuccessfullyCreateDBFromFile(){
         let expect = expectation(description: "Callback runs after generating db file")
-        let account = DBManager.getFirstAccount()
-        CreateCustomJSONFileAsyncTask(username: account?.username ?? "myself").start { (error, url) in
-            guard let myUrl = url else {
+        CreateCustomJSONFileAsyncTask(username: self.account.username).start { (error, url) in
+            guard let myUrl = url,
+                let account = DBManager.getFirstAccount() else {
                 XCTFail("unable to process db with error: \(String(describing: error))")
                 return
             }
@@ -147,7 +154,6 @@ class CreateCustomJSONFileTests: XCTestCase {
             let fileString = String(data: fileData, encoding: .utf8)!
             XCTAssert(fileString.count == self.desiredDBText.count)
             
-            DBManager.destroy()
             let streamReader = StreamReader(url: myUrl, delimeter: "\n", encoding: .utf8, chunkSize: 1024)
             var dbRows = [[String: Any]]()
             var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
@@ -157,20 +163,19 @@ class CreateCustomJSONFileTests: XCTestCase {
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    let account = DBManager.getFirstAccount()
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account?.username ?? "myself")
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account.username)
                     dbRows.removeAll()
                 }
             }
-            let account = DBManager.getFirstAccount()
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account?.username ?? "myself")
             
-            let email = DBManager.getMail(key: 123)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account.username)
+            
+            let email = DBManager.getMail(key: 123, account: account)
             XCTAssert(email != nil)
             expect.fulfill()
         }
         
-        waitForExpectations(timeout: 2) { (error) in
+        waitForExpectations(timeout: 5) { (error) in
             if let error = error {
                 XCTFail("Unable to execute callback with error : \(error)")
             }

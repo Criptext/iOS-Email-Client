@@ -39,6 +39,12 @@ class SharedDB {
         return realm?.object(ofType: Account.self, forPrimaryKey: username)
     }
     
+    class func getAllAccounts() -> [Account] {
+        let realm = try? Realm()
+        
+        return Array(realm!.objects(Account.self))
+    }
+    
     class func update(_ account: Account, jwt: String) {
         let realm = try! Realm()
         
@@ -60,7 +66,7 @@ class SharedDB {
         
         do {
             try realm.write() {
-                if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
+                if realm.object(ofType: Email.self, forPrimaryKey: email.compoundKey) != nil {
                     return
                 }
                 realm.add(email, update: false)
@@ -80,29 +86,34 @@ class SharedDB {
         return email
     }
     
-    class func getUnreadMailsCounter(from label: Int) -> Int {
+    class func getUnreadMailsCounter(from label: Int, account: Account) -> Int {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        return realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@)", label, rejectedLabels).distinct(by: ["threadId"]).count
+        return realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", label, rejectedLabels).distinct(by: ["threadId"]).count
     }
     
     //MARK: - Contacts related
     
-    class func getContacts(_ text:String) -> [Contact]{
+    class func getContacts(_ text:String, account: Account) -> [Contact]{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
+        let predicate = NSPredicate(format: "(ANY accountContacts.account.compoundKey == '\(account.compoundKey)') AND email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
         let results = realm.objects(Contact.self).filter(predicate).sorted(byKeyPath: "score", ascending: false)
         
         return Array(results)
     }
     
-    class func store(_ contacts:[Contact]){
+    class func store(_ contacts:[Contact], account: Account){
         let realm = try! Realm()
         
         try! realm.write {
             contacts.forEach({ (contact) in
                 realm.add(contacts, update: true)
+                let accountContact = AccountContact()
+                accountContact.account = account
+                accountContact.contact = contact
+                accountContact.buildCompoundKey()
+                realm.add(accountContact, update: true)
             })
         }
     }
@@ -244,6 +255,8 @@ class SharedDB {
             newEmail.fromAddress = email.fromAddress
             newEmail.replyTo = email.replyTo
             newEmail.boundary = email.boundary
+            newEmail.account = email.account
+            newEmail.buildCompoundKey()
             
             realm.add(newEmail)
             
@@ -362,13 +375,9 @@ class SharedDB {
         return realm.objects(Label.self).filter(NSPredicate(format: "text = %@", text)).first
     }
     
-    class func getMailByKey(key: Int) -> Email?{
+    class func getMail(key: Int, account: Account) -> Email? {
         let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "key == \(key)")
-        let results = realm.objects(Email.self).filter(predicate)
-        
-        return results.first
+        return realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(key)")
     }
     
     //MARK: - DummySession

@@ -14,25 +14,31 @@ class ThreadsLabelsAsyncTask {
     let added: [Int]
     let removed: [Int]
     let currentLabel: Int
+    let username: String
     
-    init(threadIds: [String], eventThreadIds: [String], added: [Int], removed: [Int], currentLabel: Int) {
+    init(username: String, threadIds: [String], eventThreadIds: [String], added: [Int], removed: [Int], currentLabel: Int) {
         self.threadIds = threadIds
         self.eventThreadIds = eventThreadIds
         self.added = added
         self.removed = removed
         self.currentLabel = currentLabel
+        self.username = username
     }
     
     func start(completion: @escaping (() -> Void)) {
         let queue = DispatchQueue(label: "com.criptext.mail.labels", qos: .userInitiated, attributes: .concurrent)
         queue.async {
+            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+                completion()
+                return
+            }
             for threadId in self.threadIds {
-                DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: self.added, removedLabelIds: self.removed, currentLabel: self.currentLabel)
+                DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: self.added, removedLabelIds: self.removed, currentLabel: self.currentLabel, account: myAccount)
             }
             
             let changedLabels = self.getLabelNames(added: self.added, removed: self.removed)
             let eventData = EventData.Peer.ThreadLabels(threadIds: self.eventThreadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-            DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
+            DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], account: myAccount)
             
             DispatchQueue.main.async {
                 completion()

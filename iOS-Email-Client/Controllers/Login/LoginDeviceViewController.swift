@@ -11,6 +11,7 @@ import Foundation
 class LoginDeviceViewController: UIViewController{
     
     var loginData: LoginData!
+    var multipleAccount = false
     var socket : SingleWebSocket?
     var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
     @IBOutlet weak var waitingDeviceView: UIView!
@@ -93,6 +94,7 @@ class LoginDeviceViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
         controller.loginData = self.loginData
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -107,9 +109,10 @@ class LoginDeviceViewController: UIViewController{
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
         let signupData = SignUpData(username: loginData.username, password: "no password", fullname: data.name, optionalEmail: nil)
         signupData.deviceId = data.deviceId
-        signupData.token = loginData.jwt
+        signupData.token = loginData.jwt ?? ""
         controller.signupData = signupData
         controller.linkData = data
+        controller.multipleAccount = self.multipleAccount
         present(controller, animated: true, completion: {
             self.navigationController?.popViewController(animated: false)
         })

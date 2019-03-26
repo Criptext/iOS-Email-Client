@@ -79,8 +79,10 @@ class SignalTests: XCTestCase {
     func testSendMessageToInMemoryUser(){
         let signupData = SignUpData(username: "test", password: "123", fullname: "Test", optionalEmail: nil)
         signupData.token = "test"
-        let _ = signupData.buildDataForRequest()
         let account = SignUpData.createAccount(from: signupData)
+        let bundle = CRBundle(account: account)
+        bundle.generateKeys()
+        DBManager.update(account: account, jwt: "", refreshToken: "", regId: bundle.regId, identityB64: bundle.identity)
         let bob = Dummy(recipientId: "bob", deviceId: 10)
         SignalHandler.buildSession(recipientId: bob.recipientId, deviceId: bob.deviceId, keys: bob.getKeyBundle(), account: account)
         
@@ -94,13 +96,14 @@ class SignalTests: XCTestCase {
     func testRecieveMessageFromInMemoryUser(){
         let signupData = SignUpData(username: "test", password: "123", fullname: "Test", optionalEmail: nil)
         signupData.token = "test"
-        let _ = signupData.buildDataForRequest()
         let account = SignUpData.createAccount(from: signupData)
-        var keyBundle = signupData.publicKeys!
-        keyBundle["preKey"] = (keyBundle["preKeys"] as! [[String: Any]]).first!
+        let bundle = CRBundle(account: account)
+        var preKeys = bundle.generateKeys()
+        DBManager.update(account: account, jwt: "", refreshToken: "", regId: bundle.regId, identityB64: bundle.identity)
+        preKeys["preKey"] = (preKeys["preKeys"] as! [[String: Any]]).first!
         
         let bob = Dummy(recipientId: "bob", deviceId: 10)
-        TestSignalHandler.buildSession(recipientId: account.username, deviceId: Int32(account.deviceId), keys: keyBundle, store: bob.store)
+        TestSignalHandler.buildSession(recipientId: account.username, deviceId: Int32(account.deviceId), keys: preKeys, store: bob.store)
         
         let message = "Hello World"
         let encrypted = TestSignalHandler.encryptMessage(body: message, deviceId: Int32(account.deviceId), recipientId: account.username, store: bob.store)

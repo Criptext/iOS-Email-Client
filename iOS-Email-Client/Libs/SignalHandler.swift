@@ -11,7 +11,7 @@ import SignalProtocolFramework
 
 class SignalHandler {
     class func decryptMessage(_ encryptedMessageB64: String, messageType: MessageType, account: Account, recipientId: String, deviceId: Int32) -> String{
-        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64, account: account)
         let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: recipientId, deviceId: deviceId)
         let incomingMessage : CipherMessage = messageType == .cipherText
             ? WhisperMessage.init(data: Data.init(base64Encoded: encryptedMessageB64))
@@ -22,7 +22,7 @@ class SignalHandler {
     }
     
     class func buildSession(recipientId: String, deviceId: Int32, keys: [String: Any], account: Account){
-        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64, account: account)
         
         let contactRegistrationId = keys["registrationId"] as! Int32
         var contactPrekeyPublic: Data? = nil
@@ -42,7 +42,7 @@ class SignalHandler {
     }
     
     class func encryptMessage(body: String, deviceId: Int32, recipientId: String, account: Account) -> (String, MessageType) {
-        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64, account: account)
         let sessionCipher: SessionCipher = SessionCipher.init(axolotlStore: axolotlStore, recipientId: String(recipientId), deviceId: deviceId)
         let outgoingMessage: CipherMessage = sessionCipher.encryptMessage(body.data(using: .utf8))
         let messageText = outgoingMessage.serialized().base64EncodedString()
@@ -51,7 +51,7 @@ class SignalHandler {
     }
     
     class func decryptData(_ data: Data, messageType: MessageType, account: Account, recipientId: String, deviceId: Int32) -> Data? {
-        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64, account: account)
         let sessionCipher = SessionCipher(axolotlStore: axolotlStore, recipientId: recipientId, deviceId: deviceId)
         let incomingMessage : CipherMessage = messageType == .cipherText
             ? WhisperMessage.init(data: data)
@@ -60,7 +60,7 @@ class SignalHandler {
     }
     
     class func encryptData(data: Data, deviceId: Int32, recipientId: String, account: Account) -> Data {
-        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64)
+        let axolotlStore = CriptextAxolotlStore(account.regId, account.identityB64, account: account)
         let sessionCipher: SessionCipher = SessionCipher.init(axolotlStore: axolotlStore, recipientId: String(recipientId), deviceId: deviceId)
         let outgoingMessage: CipherMessage = sessionCipher.encryptMessage(data)
         return outgoingMessage.serialized()

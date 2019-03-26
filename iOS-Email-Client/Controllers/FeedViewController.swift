@@ -62,7 +62,7 @@ class FeedViewController: UIViewController{
     }
     
     func loadFeeds(){
-        let feeds = DBManager.getFeeds(since: Date() , limit: 20, lastSeen: lastSeen)
+        let feeds = DBManager.getFeeds(since: Date() , limit: 20, lastSeen: lastSeen, account: mailboxVC.myAccount)
         feedsData.newFeeds = feeds.0
         feedsData.oldFeeds = feeds.1
         newFeedsToken = feedsData.newFeeds.observe { [weak self] changes in
@@ -170,7 +170,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         let workingLabel = feed.email.isSpam ? SystemLabel.spam.id : (feed.email.isTrash ? SystemLabel.trash.id : SystemLabel.sent.id)
-        guard let selectedThread = DBManager.getThread(threadId: feed.email.threadId, label: workingLabel) else {
+        guard let selectedThread = DBManager.getThread(threadId: feed.email.threadId, label: workingLabel, account: mailboxVC.myAccount) else {
             return
         }
         mailboxVC.goToEmailDetail(selectedThread: selectedThread, selectedLabel: workingLabel)

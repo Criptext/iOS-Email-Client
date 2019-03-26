@@ -17,7 +17,7 @@ class FileManagerTests: XCTestCase {
     }
     
     override func setUp() {
-        DBManager.signout()
+        DBManager.destroy()
     }
     
     func testSuccessfullyUploadFile(){

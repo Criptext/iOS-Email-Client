@@ -55,6 +55,7 @@
 "RECOVERY_OPT" = "Email de Confirmación (opcional)";
 "VALID_EMAIL_CONDITION" = "Al menos 3 caracteres. Debe comenzar con las letras A-Z.";
 "USERNAME_EXISTS" = "Usuario ya existente";
+"ACCOUNT_EXISTS" = "La cuenta ya está agregada!";
 "ENTER_NAME" = "Introduce tu nombre";
 "PASSWORD_LENGTH" = "La contraseña debe contener al menos 8 caracteres.";
 "PASSWORD_NOT_MATCH" = "Las contraseñas no coinciden.";

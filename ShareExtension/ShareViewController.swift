@@ -165,7 +165,7 @@ class ShareViewController: UIViewController {
 
 extension ShareViewController: ComposerDelegate {
     func typingRecipient(text: String) {
-        contacts = SharedDB.getContacts(text)
+        contacts = SharedDB.getContacts(text, account: myAccount)
         self.composerUIView.contactsTableView.isHidden = contacts.isEmpty
         self.composerUIView.contactsTableView.reloadData()
     }
@@ -317,6 +317,7 @@ extension ShareViewController {
         let draft = Email()
         draft.status = .none
         let bodyWithoutHtml = self.composerUIView.getPlainEditorContent()
+        draft.account = myAccount
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
         draft.subject = self.composerUIView.subjectTextField.text ?? ""
@@ -325,6 +326,7 @@ extension ShareViewController {
         draft.threadId = "\(draft.key)"
         draft.labels.append(SharedDB.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
+        draft.buildCompoundKey()
         SharedDB.store(draft)
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -362,7 +364,7 @@ extension ShareViewController {
             newContact.email = email
             newContact.score = 1
             newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
-            SharedDB.store([newContact]);
+            SharedDB.store([newContact], account: self.myAccount);
             emailContact.contact = newContact
         }
         emailContacts.append(emailContact)
