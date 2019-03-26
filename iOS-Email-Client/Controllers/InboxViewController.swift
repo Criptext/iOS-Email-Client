@@ -1803,6 +1803,7 @@ extension InboxViewController {
 extension InboxViewController: ThemeDelegate {
     func swapTheme(_ theme: Theme) {
         applyTheme()
+        tableView.reloadData()
     }
 }
 

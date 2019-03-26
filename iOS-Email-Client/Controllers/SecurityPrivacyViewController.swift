@@ -55,7 +55,7 @@ class SecurityPrivacyViewController: UITableViewController {
     
     override func viewDidLoad() {
         navigationItem.title = String.localize("PRIVACY_AND_SECURITY")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
+        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         tableView.estimatedRowHeight = UITableViewAutomaticDimension

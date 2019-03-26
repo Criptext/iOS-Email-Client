@@ -148,4 +148,13 @@ class UIUtils {
             }
         }
     }
+    
+    class func createLeftBackButton(target: Any?, action: Selector) -> UIBarButtonItem {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 31, height: 31))
+        button.layer.cornerRadius = 15
+        button.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 0.13)
+        button.setImage(#imageLiteral(resourceName: "arrow-back").tint(with: .white), for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+        return UIBarButtonItem(customView: button)
+    }
 }
