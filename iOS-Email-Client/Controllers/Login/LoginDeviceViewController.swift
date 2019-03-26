@@ -109,7 +109,7 @@ class LoginDeviceViewController: UIViewController{
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
         let signupData = SignUpData(username: loginData.username, password: "no password", fullname: data.name, optionalEmail: nil)
         signupData.deviceId = data.deviceId
-        signupData.token = loginData.jwt
+        signupData.token = loginData.jwt ?? ""
         controller.signupData = signupData
         controller.linkData = data
         controller.multipleAccount = self.multipleAccount
