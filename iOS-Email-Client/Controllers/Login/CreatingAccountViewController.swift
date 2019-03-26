@@ -97,7 +97,7 @@ class CreatingAccountViewController: UIViewController{
     func sendKeysRequest(){
         feedbackLabel.text = String.localize("GENERATING_KEYS")
         let accountData = createAccount()
-        APIManager.postKeybundle(params: accountData.1, token: signupData.token!){ (responseData) in
+        APIManager.postKeybundle(params: accountData.1, token: signupData.token){ (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.displayErrorMessage(message: error.description)
@@ -158,14 +158,14 @@ class CreatingAccountViewController: UIViewController{
     func updateAccount(){
         guard let myAccount = self.account,
             let myBundle = self.bundle,
-            let jwt = signupData.token,
+            !signupData.token.isEmpty,
             let refreshToken = signupData.refreshToken,
             let identityB64 = myBundle.store.identityKeyStore.getIdentityKeyPairB64() else {
             return
         }
         let regId = myBundle.store.identityKeyStore.getRegId()
         feedbackLabel.text = String.localize("LOGIN_AWESOME")
-        DBManager.update(account: myAccount, jwt: jwt, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
+        DBManager.update(account: myAccount, jwt: signupData.token, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"

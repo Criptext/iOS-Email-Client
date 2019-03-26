@@ -109,7 +109,7 @@ class ConnectDeviceViewController: UIViewController{
     func sendKeysRequest(){
         self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("SENDING_KEYS"), completion: {})
         let accountData = createAccount()
-        APIManager.postKeybundle(params: accountData.1, token: signupData.token!){ (responseData) in
+        APIManager.postKeybundle(params: accountData.1, token: signupData.token){ (responseData) in
             guard case let .SuccessDictionary(tokens) = responseData,
                 let jwt = tokens["token"] as? String,
                 let refreshToken = tokens["refreshToken"] as? String else {
@@ -126,11 +126,11 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func handleAddress(data: LinkSuccessData) {
-        guard let jwt = signupData.token else {
+        guard !signupData.token.isEmpty else {
             self.presentProcessInterrupted()
             return
         }
-        APIManager.downloadLinkDBFile(address: data.address, token: jwt, progressCallback: { (progress) in
+        APIManager.downloadLinkDBFile(address: data.address, token: signupData.token, progressCallback: { (progress) in
             self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: String.localize("DOWNLOADING_MAIL"), completion: {})
         }) { (responseData) in
             guard case let .SuccessString(filepath) =  responseData else {
@@ -204,13 +204,13 @@ class ConnectDeviceViewController: UIViewController{
     func updateAccount() {
         guard let myAccount = self.account,
             let myBundle = self.bundle,
-            let jwt = signupData.token,
+            !signupData.token.isEmpty,
             let refreshToken = signupData.refreshToken,
             let identityB64 = myBundle.store.identityKeyStore.getIdentityKeyPairB64() else {
                 return
         }
         let regId = myBundle.store.identityKeyStore.getRegId()
-        DBManager.update(account: myAccount, jwt: jwt, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
+        DBManager.update(account: myAccount, jwt: signupData.token, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
@@ -270,11 +270,11 @@ class ConnectDeviceViewController: UIViewController{
 
 extension ConnectDeviceViewController: ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void) {
-        guard let jwt = signupData.token else {
+        guard !signupData.token.isEmpty else {
             self.goBack()
             return
         }
-        APIManager.getLinkData(token: jwt) { (responseData) in
+        APIManager.getLinkData(token: signupData.token) { (responseData) in
             guard case let .SuccessDictionary(event) = responseData,
                 let eventString = event["params"] as? String,
                 let eventParams = Utils.convertToDictionary(text: eventString) else {

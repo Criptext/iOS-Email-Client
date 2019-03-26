@@ -18,7 +18,7 @@ class SignUpData{
         return username
     }
     var deviceId: Int = 1
-    var token: String?
+    var token: String = ""
     var refreshToken: String?
     
     init(username: String, password: String, fullname: String, optionalEmail: String?){
@@ -46,7 +46,7 @@ class SignUpData{
         let myAccount = Account()
         myAccount.username = signupData.username
         myAccount.name = signupData.fullname
-        myAccount.jwt = signupData.token!
+        myAccount.jwt = signupData.token
         myAccount.regId = 0
         myAccount.identityB64 = ""
         myAccount.deviceId = signupData.deviceId
