@@ -54,7 +54,7 @@ class ConnectUploadViewController: UIViewController{
         self.applyTheme()
         scheduleWorker.delegate = self
         self.connectUIView.goBackButton.isHidden = true
-        self.connectUIView.setDeviceIcons(leftType: Device.Kind.current, rightType: Device.Kind(rawValue: linkData.deviceType)!)
+        self.connectUIView.setDeviceIcons(leftType: Device.Kind.current, rightType: Device.Kind(rawValue: linkData.deviceType) ?? .pc)
         connectUIView.goBack = { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }

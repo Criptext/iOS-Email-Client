@@ -50,7 +50,7 @@ class ManualSyncViewController: UIViewController{
             self.goBack()
         }
         if let linkAcceptData = acceptData {
-            self.connectUIView.setDeviceIcons(leftType: Device.Kind(rawValue: linkAcceptData.authorizerType)!, rightType: .current)
+            self.connectUIView.setDeviceIcons(leftType: Device.Kind(rawValue: linkAcceptData.authorizerType) ?? .pc, rightType: .current)
         }
         self.connectUIView.progressChange(value: 0, message: String.localize("WAITING_MAIL"), cancel: true, completion: {})
         self.socket?.connect(jwt: myAccount.jwt)

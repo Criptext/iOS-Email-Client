@@ -71,7 +71,7 @@ extension UIViewController {
     func presentLinkDevicePopover(linkData: LinkData){
         let linkDeviceVC = SignInVerificationUIPopover()
         linkDeviceVC.linkData = linkData
-        linkDeviceVC.deviceType = Device.Kind(rawValue: linkData.deviceType)!
+        linkDeviceVC.deviceType = Device.Kind(rawValue: linkData.deviceType) ?? .pc
         linkDeviceVC.onResponse = { [weak self] accept in
             guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
                 return

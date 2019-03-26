@@ -44,7 +44,7 @@ class SettingsDeviceTableViewCell: UITableViewCell {
     }
     
     func setContent(device: Device){
-        deviceImageView.image = Device.Kind(rawValue: device.type)! != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
+        deviceImageView.image = (Device.Kind(rawValue: device.type) ?? .pc) != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
         deviceNameLabel.text = device.friendlyName
         displayAsActive(device.active)
         guard !device.active else {

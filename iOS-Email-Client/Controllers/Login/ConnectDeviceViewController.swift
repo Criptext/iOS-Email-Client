@@ -52,7 +52,7 @@ class ConnectDeviceViewController: UIViewController{
             self.goBack()
         }
         if let linkAcceptData = linkData {
-            self.connectUIView.setDeviceIcons(leftType: Device.Kind(rawValue: linkAcceptData.authorizerType)!, rightType: .current)
+            self.connectUIView.setDeviceIcons(leftType: Device.Kind(rawValue: linkAcceptData.authorizerType) ?? .pc, rightType: .current)
         }
         
         handleState()
