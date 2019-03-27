@@ -20,6 +20,7 @@ class MailboxData {
     var emailReachedEnd = false
     var filteredReachedEnd = false
     var isCustomEditing = false
+    var selectedThreads = Set<String>()
     var unreadMails = 0
     var feature: Feature? = nil
     var reachedEnd : Bool {

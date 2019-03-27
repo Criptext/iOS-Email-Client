@@ -53,7 +53,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         bestAttemptContent.subtitle = bestAttemptContent.body
-        bestAttemptContent.body = decrPreview
+        bestAttemptContent.body = condenseWhitespace(phrase: decrPreview)
         bestAttemptContent.categoryIdentifier = "OPEN_THREAD"
         contentHandler(bestAttemptContent)
     }
@@ -70,6 +70,11 @@ class NotificationService: UNNotificationServiceExtension {
             bestAttemptContent.body = String.localize("You may have new emails")
             contentHandler(bestAttemptContent)
         }
+    }
+    
+    func condenseWhitespace(phrase: String) -> String {
+        let components = phrase.components(separatedBy: .whitespacesAndNewlines)
+        return components.filter { !$0.isEmpty }.joined(separator: " ")
     }
 
 }
