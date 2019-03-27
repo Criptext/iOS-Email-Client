@@ -76,6 +76,7 @@ class InboxViewController: UIViewController {
         viewSetup()
         WebSocketManager.sharedInstance.delegate = self
         ThemeManager.shared.addListener(id: "mailbox", delegate: self)
+        RequestManager.shared.delegate = self
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
@@ -470,64 +471,8 @@ extension InboxViewController {
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: ((Bool) -> Void)? = nil) {
-        guard !mailboxData.updating else {
-            refreshControl?.endRefreshing()
-            completion?(false)
-            return
-        }
-        self.mailboxData.updating = true
-        APIManager.getEvents(account: myAccount) { [weak self] (responseData) in
-            guard let weakSelf = self else {
-                refreshControl?.endRefreshing()
-                completion?(false)
-                return
-            }
-            if case .Unauthorized = responseData {
-                refreshControl?.endRefreshing()
-                weakSelf.logout(account: weakSelf.myAccount)
-                completion?(false)
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                refreshControl?.endRefreshing()
-                weakSelf.mailboxData.updating = false
-                weakSelf.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
-                completion?(false)
-                return
-            }
-            
-            if case .Forbidden = responseData {
-                refreshControl?.endRefreshing()
-                weakSelf.mailboxData.updating = false
-                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
-                completion?(false)
-                return
-            }
-            
-            guard case let .SuccessArray(events) = responseData else {
-                guard case let .SuccessAndRepeat(events) = responseData else {
-                    weakSelf.mailboxData.updating = false
-                    refreshControl?.endRefreshing()
-                    completion?(false)
-                    return
-                }
-                let eventHandler = EventHandler(account: weakSelf.myAccount)
-                eventHandler.handleEvents(events: events){ [weak self] result in
-                    self?.didReceiveEvents(result: result)
-                    self!.mailboxData.updating = false
-                    self?.getPendingEvents(refreshControl)
-                }
-                return
-            }
-            let eventHandler = EventHandler(account: weakSelf.myAccount)
-            eventHandler.handleEvents(events: events){ [weak self] result in
-                self?.didReceiveEvents(result: result)
-                self?.mailboxData.updating = false
-                refreshControl?.endRefreshing()
-                completion?(true)
-            }
-        }
+        RequestManager.shared.getAccountEvents(username: myAccount.username, get: false)
+        RequestManager.shared.getAccountsEvents()
     }
     
     func didReceiveEvents(result: EventData.Result) {
@@ -1732,7 +1677,7 @@ extension InboxViewController: LinkDeviceDelegate {
         }
     }
     
-    func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+    func onAcceptLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -1740,6 +1685,13 @@ extension InboxViewController: LinkDeviceDelegate {
             self.presentPopover(popover: popover, height: 220)
             return
         }
+        
+        if myAccount.username != username,
+            let account = DBManager.getAccountByUsername(username) {
+            self.dismiss(animated: false, completion: nil)
+            self.swapAccount(account)
+        }
+        
         guard let delegate = UIApplication.shared.delegate as? AppDelegate,
             !delegate.passcodeLockPresenter.isPasscodePresented else {
                 controllerMessage = ControllerMessage.LinkDevice(linkData)
@@ -1754,13 +1706,17 @@ extension InboxViewController: LinkDeviceDelegate {
             completion()
         }
     }
-    func onCancelLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+    func onCancelLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
+        guard let account = DBManager.getAccountByUsername(username) else {
+            completion()
+            return
+        }
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
+            APIManager.syncDeny(randomId: linkData.randomId, account: account, completion: {_ in
                 completion()
             })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
+            APIManager.linkDeny(randomId: linkData.randomId, account: account, completion: {_ in
                 completion()
             })
         }
@@ -1768,8 +1724,9 @@ extension InboxViewController: LinkDeviceDelegate {
 }
 
 extension InboxViewController {
-    func markAsRead(emailKey: Int, completion: @escaping (() -> Void)){
-        guard DBManager.getMail(key: emailKey, account: self.myAccount) != nil else {
+    func markAsRead(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+        guard let account = DBManager.getAccountByUsername(username),
+            DBManager.getMail(key: emailKey, account: account) != nil else {
             completion()
             return
         }
@@ -1777,18 +1734,24 @@ extension InboxViewController {
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailUnreadRaw(metadataKeys: [emailKey], unread: 0)
         let eventParams = ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()] as [String : Any]
-        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: myAccount) { (responseData) in
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: account) { (responseData) in
             if case .Success = responseData {
                 self.refreshThreadRows()
                 completion()
                 return
             }
-            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
+            DBManager.createQueueItem(params: eventParams, account: account)
             completion()
         }
     }
     
-    func reply(emailKey: Int, completion: @escaping (() -> Void)){
+    func reply(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+        if self.myAccount.username != username,
+            let account = DBManager.getAccountByUsername(username){
+            self.dismiss(animated: false, completion: nil)
+            self.swapAccount(account)
+        }
+        
         guard let email = DBManager.getMail(key: emailKey, account: self.myAccount) else {
             completion()
             return
@@ -1799,8 +1762,9 @@ extension InboxViewController {
         completion()
     }
     
-    func moveToTrash(emailKey: Int, completion: @escaping (() -> Void)){
-        guard let email = DBManager.getMail(key: emailKey, account: self.myAccount) else {
+    func moveToTrash(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+        guard let account = DBManager.getAccountByUsername(username),
+            let email = DBManager.getMail(key: emailKey, account: account) else {
             completion()
             return
         }
@@ -1808,15 +1772,24 @@ extension InboxViewController {
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
         let eventParams = ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()] as [String : Any]
-        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: myAccount) { (responseData) in
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: account) { (responseData) in
             if case .Success = responseData {
                 self.refreshThreadRows()
                 completion()
                 return
             }
-            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
+            DBManager.createQueueItem(params: eventParams, account: account)
             completion()
         }
+    }
+    
+    func openThread(username: String, threadId: String) {
+        if self.myAccount.username != username,
+            let account = DBManager.getAccountByUsername(username){
+            self.dismiss(animated: false, completion: nil)
+            self.swapAccount(account)
+        }
+        self.goToEmailDetail(threadId: threadId)
     }
 }
 
@@ -1856,6 +1829,37 @@ extension InboxViewController {
             feedsViewController.loadFeeds()
             let badgeCounter = feedsViewController.feedsData.newFeeds.count
             updateFeedsBadge(counter: badgeCounter)
+        }
+    }
+}
+
+extension InboxViewController: RequestDelegate {
+    func finishRequest(username: String, result: EventData.Result) {
+        guard myAccount.username == username else {
+            return
+        }
+        self.refreshControl.endRefreshing()
+        self.didReceiveEvents(result: result)
+    }
+    
+    func errorRequest(username: String, response: ResponseData) {
+        guard myAccount.username == username else {
+            return
+        }
+        refreshControl.endRefreshing()
+        if case .Unauthorized = response {
+            self.logout(account: self.myAccount)
+            return
+        }
+        if case let .Error(error) = response,
+            error.code != .custom {
+            self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+            return
+        }
+        
+        if case .Forbidden = response {
+            self.presentPasswordPopover(myAccount: self.myAccount)
+            return
         }
     }
 }
