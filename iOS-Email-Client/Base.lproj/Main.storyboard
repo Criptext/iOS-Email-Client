@@ -3252,7 +3252,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                     <userDefinedRuntimeAttributes>
                                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                            <integer key="value" value="11"/>
+                                                                            <integer key="value" value="9"/>
                                                                         </userDefinedRuntimeAttribute>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
@@ -3357,6 +3357,7 @@
                     <connections>
                         <outlet property="accountContainerView" destination="1qd-qs-7ov" id="kxi-vt-C4M"/>
                         <outlet property="accountsCollectionView" destination="icP-sS-ZDd" id="cFE-QS-kBg"/>
+                        <outlet property="accountsCollectionWidthConstraint" destination="zCV-kp-dLQ" id="09j-SZ-PAt"/>
                         <outlet property="accountsSectionButton" destination="PpA-Sa-XHF" id="UnR-DK-YKe"/>
                         <outlet property="accountsTableView" destination="7yK-cx-lA1" id="0h8-fd-aFu"/>
                         <outlet property="allmailMenuItem" destination="wTx-cH-PhY" id="eH1-nz-nYm"/>
