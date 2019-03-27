@@ -47,7 +47,6 @@ class InboxViewController: UIViewController {
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
-    var selectedCells:[Int:Bool] = [:]
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
@@ -560,7 +559,7 @@ extension InboxViewController{
             refreshControl.isEnabled = true
             mailboxData.unreadMails = 0
             updateBadges()
-            selectedCells.removeAll()
+            self.mailboxData.selectedThreads.removeAll()
         }
         
         self.setButtonItems(isEditing: mailboxData.isCustomEditing)
@@ -815,7 +814,7 @@ extension InboxViewController: UITableViewDataSource{
         
         cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
         if mailboxData.isCustomEditing {
-            if(selectedCells[indexPath.row] ?? false){
+            if(mailboxData.selectedThreads.contains(thread.threadId)){
                 cell.setAsSelected()
                 cell.isSelected = true
                 tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
@@ -1000,6 +999,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         self.tableView(self.tableView , didSelectRowAt: indexPath)
+        
+        let thread = mailboxData.threads[indexPath.row]
+        self.mailboxData.selectedThreads.insert(thread.threadId)
     }
     
     func tableViewCellDidTap(_ cell: InboxTableViewCell) {
@@ -1023,14 +1025,15 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 return
             }
             let thread = mailboxData.threads[indexPath.row]
+            self.mailboxData.selectedThreads.insert(thread.threadId)
             if(thread.unread){
                 mailboxData.unreadMails += 1
             }
             swapMarkIcon()
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
             cell.setAsSelected()
-            selectedCells[indexPath.row] = true
-            self.topToolbar.counterLabel.text = "\(selectedCells.count)"
+            self.topToolbar.counterLabel.text = "\(mailboxData.selectedThreads.count)"
+            
             return
         }
         
@@ -1197,12 +1200,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         guard tableView.indexPathsForSelectedRows == nil else {
             let thread = mailboxData.threads[indexPath.row]
+            self.mailboxData.selectedThreads.remove(thread.threadId)
             if(thread.unread){
                 mailboxData.unreadMails -= 1
             }
             swapMarkIcon()
-            selectedCells.removeValue(forKey: indexPath.row)
-            self.topToolbar.counterLabel.text = "\(tableView.indexPathsForSelectedRows!.count)"
+            self.topToolbar.counterLabel.text = "\(mailboxData.selectedThreads.count)"
             tableView.reloadRows(at: [indexPath], with: .none)
             return
         }
@@ -1315,7 +1318,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     
     func handleAddLabels(){
         let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel)
-        if let indexPaths = tableView.indexPathsForSelectedRows{
+        if let indexPaths = mailboxData.selectedIndexPaths {
             for indexPath in indexPaths {
                 let thread = mailboxData.threads[indexPath.row]
                 guard let email = DBManager.getMail(key: thread.lastEmailKey, account: self.myAccount) else {
@@ -1367,7 +1370,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
 
 extension InboxViewController {
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool = false) {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             return
         }
         self.didPressEdit(reload: true)
@@ -1408,7 +1411,7 @@ extension InboxViewController {
     }
     
     func deleteThreads(){
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             self.didPressEdit(reload: true)
             return
         }
@@ -1457,7 +1460,7 @@ extension InboxViewController: NavigationToolbarDelegate {
     }
     
     func onMarkThreads() {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             return
         }
         var threadIds = [String]()
