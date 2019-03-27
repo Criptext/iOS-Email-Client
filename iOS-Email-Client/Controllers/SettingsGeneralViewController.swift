@@ -313,7 +313,7 @@ class SettingsGeneralViewController: UIViewController{
         self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }
     
-    func syncContacts(indexPath: IndexPath){
+    func syncContacts(){
         generalData.syncStatus = .syncing
         tableView.reloadData()
         let syncContactsTask = RetrieveContactsTask(username: myAccount.username)
@@ -418,6 +418,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             goToLabels()
         case .manualSync:
             showManualSyncWarning()
+        case .syncContact:
+            syncContacts()
         case .pin:
             goToPinLock()
         case .faq:

@@ -64,12 +64,14 @@ class CreatingAccountViewController: UIViewController{
     
     func checkDatabase(){
         self.state = .signupRequest
-        if !multipleAccount,
-            let account = DBManager.getFirstAccount(),
-            account.username != self.signupData.username {
-            FileUtils.deleteAccountDirectory(account: account)
-            DBManager.destroy()
-            removeQuickGuideFlags()
+        if DBManager.getLoggedOutAccount(username: self.signupData.username) == nil {
+            let loggedOutAccounts = DBManager.getLoggedOutAccounts()
+            for account in loggedOutAccounts {
+                FileUtils.deleteAccountDirectory(account: account)
+                DBManager.signout(account: account)
+                DBManager.clearMailbox(account: account)
+                DBManager.delete(account: account)
+            }
         }
         self.handleState()
     }
