@@ -148,8 +148,10 @@ class NewLoginViewController: UIViewController{
     }
     
     func existingAccount(_ username: String) -> String? {
-        guard let existingAccount = DBManager.getFirstAccount(),
-            existingAccount.username != username else {
+        guard DBManager.getLoggedOutAccount(username: username) == nil else {
+            return nil
+        }
+        guard let existingAccount = DBManager.getLoggedOutAccounts().first else {
             return nil
         }
         return existingAccount.username
@@ -173,8 +175,7 @@ class NewLoginViewController: UIViewController{
                 weakSelf.showLoginError(error: error.description)
                 return
             }
-            guard !weakSelf.multipleAccount,
-                let user = weakSelf.existingAccount(username) else {
+            guard let user = weakSelf.existingAccount(username) else {
                 weakSelf.linkBegin(username: username)
                 return
             }
