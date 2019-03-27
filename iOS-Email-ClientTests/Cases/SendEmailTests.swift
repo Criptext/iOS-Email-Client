@@ -31,6 +31,7 @@ class SendEmailTests: XCTestCase {
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.fromAddress = "\(account.name) <\(account.username)\(Constants.domain)>"
         draft.secure = true
+        draft.account = account
         DBManager.store(draft)
         self.email = draft
         
@@ -47,7 +48,7 @@ class SendEmailTests: XCTestCase {
     
     func testSendEmailEvenIfNoKeyBundle(){
         let compareResponse = ["criptextEmails": [["username": "recipient", "emails": []]], "subject": "test"] as [String : Any]
-        let sendMailTask = SendMailAsyncTask(account: self.myAccount, email: self.email, emailBody: "test", password: nil)
+        let sendMailTask = SendMailAsyncTask(email: self.email, emailBody: "test", password: nil)
         APIManagerSpy.expectation = expectation(description: "Post New Email")
         sendMailTask.apiManager = APIManagerSpy.self
         sendMailTask.start(completion: { (_) in })
