@@ -1010,40 +1010,10 @@ extension InboxViewController: UITableViewDataSource{
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
-        let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController") as! SettingsLabelsViewController
-        let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController") as! SettingsDevicesViewController
-        
-        let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
-        tabsVC.myAccount = self.myAccount
-        tabsVC.edgesForExtendedLayout = []
-        tabsVC.tabBarAlignment = .top
-        let tabBar = tabsVC.tabBar
-        tabBar.layer.masksToBounds = false
-        
         generalVC.myAccount = self.myAccount
-        labelsVC.myAccount = self.myAccount
-        devicesVC.myAccount = self.myAccount
-        generalVC.generalData = tabsVC.generalData
-        devicesVC.deviceData = tabsVC.devicesData
         
-        let frame = CGRect(x: 0, y: tabBar.layer.height/2, width: self.view.frame.width, height: 6)
-        let backgroundView = UIView(frame: frame)
-        tabBar.addSubview(backgroundView)
-        
-        let topColor = UIColor.black
-        let bottomColor = UIColor.clear
-        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
-        let gradientLocations: [CGFloat] = [0.0, 1.0]
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = gradientColors
-        gradientLayer.locations = gradientLocations as [NSNumber]?
-        gradientLayer.frame = frame
-        gradientLayer.opacity = 0.23
-        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
-        backgroundView.layer.zPosition = 100
-        
-        let navSettingsVC = UINavigationController(rootViewController: tabsVC)
-        navSettingsVC.navigationBar.barStyle = .blackTranslucent
+        let navSettingsVC = UINavigationController(rootViewController: generalVC)
+        navSettingsVC.navigationBar.isTranslucent = false
         navSettingsVC.navigationBar.barTintColor = .charcoal
         let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
