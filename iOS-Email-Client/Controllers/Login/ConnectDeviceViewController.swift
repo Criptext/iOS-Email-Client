@@ -56,7 +56,20 @@ class ConnectDeviceViewController: UIViewController{
             self.connectUIView.setDeviceIcons(leftType: Device.Kind(rawValue: linkAcceptData.authorizerType)!, rightType: .current)
         }
         
+        checkDatabase()
         handleState()
+    }
+    
+    func checkDatabase(){
+        if DBManager.getLoggedOutAccount(username: self.signupData.username) == nil {
+            let loggedOutAccounts = DBManager.getLoggedOutAccounts()
+            for account in loggedOutAccounts {
+                FileUtils.deleteAccountDirectory(account: account)
+                DBManager.signout(account: account)
+                DBManager.clearMailbox(account: account)
+                DBManager.delete(account: account)
+            }
+        }
     }
     
     func handleState(){
