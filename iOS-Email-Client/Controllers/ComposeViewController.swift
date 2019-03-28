@@ -288,14 +288,10 @@ class ComposeViewController: UIViewController {
         switch(sender as? UIView){
         case toField:
             subjectField.becomeFirstResponder()
-            break
         case subjectField:
             editorView.becomeFirstResponder()
-            break
         default:
-            if(self.navigationItem.rightBarButtonItem == self.enableSendButton){
-                self.didPressSend(self.enableSendButton)
-            }
+            break
         }
     }
     
@@ -319,9 +315,7 @@ class ComposeViewController: UIViewController {
             self.thumbUpdated = true
         }
         
-        if self.toField.allTokens.isEmpty {
-            self.navigationItem.rightBarButtonItem = self.disableSendButton
-        }
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -391,11 +385,6 @@ class ComposeViewController: UIViewController {
         DBManager.store(draft)
         
         FileUtils.saveEmailToFile(username: activeAccount.username, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
-        
-        if !fileManager.registeredFiles.isEmpty,
-            let keys = fileManager.keyPairs[0] {
-            let allDuplicates = fileManager.registeredFiles.filter({$0.shouldDuplicate}).count == fileManager.registeredFiles.count
-        }
         
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -936,8 +925,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             return
         }
         
-        self.navigationItem.rightBarButtonItem = self.enableSendButton
-        
         if input.contains(",") || input.contains(" ") {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
@@ -950,10 +937,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             } else {
                 self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             }
-        }
-        
-        if self.toField.allTokens.isEmpty && (self.toField.text?.isEmpty)! {
-            self.navigationItem.rightBarButtonItem = self.disableSendButton
         }
         
         self.contactTableView.isHidden = (view.text?.isEmpty)!
@@ -989,7 +972,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
     }
 
     func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
-        
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
         self.contactTableView.isHidden = true
         
         guard let text = view.text, text.count > 0 else {
@@ -1008,9 +991,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
     }
     
     func tokenInputView(_ view: CLTokenInputView, didRemove token: CLToken) {
-        if self.toField.allTokens.isEmpty && (self.toField.text?.isEmpty)! {
-            self.navigationItem.rightBarButtonItem = self.disableSendButton
-        }
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
     }
     
     func tokenInputView(_ view: CLTokenInputView, didChangeHeightTo height: CGFloat) {
@@ -1094,6 +1075,8 @@ extension ComposeViewController: CNContactPickerDelegate {
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
         view.add(token, highlight: textColor, background: bgColor)
+        
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
     }
 }
 
