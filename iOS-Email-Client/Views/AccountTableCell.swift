@@ -16,10 +16,16 @@ class AccountTableCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        applyTheme()
+    }
+    
+    func applyTheme() {
         let theme = ThemeManager.shared.theme
         nameLabel.textColor = theme.markedText
         emailLabel.textColor = theme.secondText
-        badgeLabel.textColor = theme.criptextBlue
+        badgeLabel.backgroundColor = theme.criptextBlue
+        badgeLabel.textColor = .white
+        backgroundColor = .clear
     }
     
     func setContent(account: Account, counter: Int) {
@@ -27,5 +33,6 @@ class AccountTableCell: UITableViewCell {
         nameLabel.text = account.name
         emailLabel.text = account.email
         badgeLabel.text = counter == 0 ? "" : counter.description
+        badgeLabel.isHidden = counter == 0
     }
 }

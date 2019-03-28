@@ -11,10 +11,13 @@ import SDWebImage
 import RealmSwift
 
 class MenuViewController: UIViewController{
+    let COLLECTION_CELL_WIDTH = 57
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
     let MENU_CONTENT_HEIGHT : CGFloat = 860.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
+    let MAX_ACCOUNTS = 3
+    @IBOutlet weak var accountsCollectionWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var accountsCollectionView: UICollectionView!
     @IBOutlet weak var accountsTableView: UITableView!
     @IBOutlet weak var accountsSectionButton: UIButton!
@@ -91,11 +94,18 @@ class MenuViewController: UIViewController{
             case .update:
                 myself.accountsTableView.reloadData()
                 myself.accountsCollectionView.reloadData()
+                myself.resizeCollectionView()
             default:
                 break
             }
         }
         accountsTableView.reloadData()
+        resizeCollectionView()
+    }
+    
+    func resizeCollectionView() {
+        let width = CGFloat(self.menuData.accounts.count * COLLECTION_CELL_WIDTH)
+        accountsCollectionWidthConstraint.constant = width
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,6 +139,7 @@ class MenuViewController: UIViewController{
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
+        accountsTableView.backgroundColor = theme.menuBackground
         scrollView.backgroundColor = theme.menuBackground
         self.view.backgroundColor = theme.menuBackground
         nameLabel.textColor = theme.mainText
@@ -339,10 +350,16 @@ extension MenuViewController{
     }
     
     func accountsTableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard menuData.accounts.count < 2 else {
+            return 0
+        }
         return 103
     }
     
     func accountsTableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard menuData.accounts.count < 2 else {
+            return nil
+        }
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "footerCell") as! AccountsFooterCell
         cell.delegate = self
         return cell
@@ -359,11 +376,6 @@ extension MenuViewController: AccountsFooterDelegate {
     func addAccount() {
         navigationDrawerController?.closeLeftView()
         mailboxVC.addAccount()
-    }
-    
-    func createAccount() {
-        navigationDrawerController?.closeLeftView()
-        mailboxVC?.createAccount()
     }
 }
 
@@ -388,7 +400,7 @@ extension MenuViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 57, height: 50)
+        return CGSize(width: COLLECTION_CELL_WIDTH, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

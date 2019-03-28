@@ -161,6 +161,7 @@ class ManualSyncViewController: UIViewController{
             return
         }
         inboxVC.dismiss(animated: true) {
+            inboxVC.refreshThreadRows()
             inboxVC.showSnackbar(String.localize("SYNC_COMPLETED"), attributedText: nil, buttons: "", permanent: false)
         }
     }

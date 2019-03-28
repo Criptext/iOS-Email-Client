@@ -39,7 +39,7 @@ class ContactUtils {
             emailContact.contact = contact
             emailContact.email = email
             emailContact.type = type.rawValue
-            emailContact.compoundKey = "\(email.key):\(contact.email):\(type.rawValue)"
+            emailContact.compoundKey = emailContact.buildCompoundKey()
             SharedDB.store([emailContact])
         }
     }

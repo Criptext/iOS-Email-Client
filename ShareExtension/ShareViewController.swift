@@ -53,6 +53,19 @@ class ShareViewController: UIViewController {
         if shouldShowPinLock() {
             self.present(passcodeLockViewController, animated: true, completion: nil)
         }
+        
+        setFrom(account: myAccount)
+        
+        let theme: Theme = ThemeManager.shared.theme
+        self.view.backgroundColor = theme.overallBackground
+    }
+    
+    func setFrom(account: Account) {
+        let accounts = SharedDB.getAccounts(ignore: account.username)
+        let emails = Array(accounts.map({$0.email}))
+        myAccount = account
+        
+        composerUIView.setFrom(account: account, emails: emails)
     }
     
     func shouldShowPinLock() -> Bool {
@@ -183,6 +196,14 @@ extension ShareViewController: ComposerDelegate {
         popover.myTitle = String.localize("INVALID_EMAIL")
         popover.myMessage = String.localize("VALID_EMAIL")
         self.presentPopover(popover: popover, height: 150)
+    }
+    
+    func setAccount(username: String) {
+        let username = String(username.split(separator: "@").first ?? "")
+        guard let account = SharedDB.getAccountByUsername(username) else {
+            return
+        }
+        self.setFrom(account: account)
     }
 }
 
@@ -353,7 +374,6 @@ extension ShareViewController {
         let emailContact = EmailContact()
         emailContact.email = emailDetail
         emailContact.type = type.rawValue
-        emailContact.compoundKey = "\(emailDetail.key):\(email):\(type.rawValue)"
         if let contact = SharedDB.getContact(email) {
             emailContact.contact = contact
             if(contact.email != "\(myAccount.username)\(Env.domain)"){
@@ -367,6 +387,7 @@ extension ShareViewController {
             SharedDB.store([newContact], account: self.myAccount);
             emailContact.contact = newContact
         }
+        emailContact.compoundKey = emailContact.buildCompoundKey()
         emailContacts.append(emailContact)
     }
     
@@ -404,7 +425,7 @@ extension ShareViewController {
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: nil)
         
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, emailBody: self.composerUIView.editorView.html ,password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: self.composerUIView.editorView.html ,password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 alert.dismiss(animated: true, completion: nil)

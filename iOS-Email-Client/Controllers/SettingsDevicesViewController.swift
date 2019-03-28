@@ -8,7 +8,8 @@
 
 import Foundation
 
-class SettingsDevicesViewController: UITableViewController {
+class SettingsDevicesViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
     var myAccount: Account!
     var deviceData: DeviceSettingsData!
     var devices: [Device] {
@@ -19,23 +20,14 @@ class SettingsDevicesViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
+        navigationItem.title = String.localize("DEVICES")
+        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         self.applyTheme()
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return devices.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let device = devices[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsDeviceCell") as! SettingsDeviceTableViewCell
-        cell.delegate = self
-        cell.setContent(device: device)
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 66.0
     }
     
     func applyTheme() {
@@ -46,6 +38,28 @@ class SettingsDevicesViewController: UITableViewController {
         tableView.backgroundColor = theme.overallBackground
         self.view.backgroundColor = theme.overallBackground
         tableView.separatorColor = theme.separator
+    }
+    
+    @objc func goBack(){
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+extension SettingsDevicesViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return devices.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let device = devices[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsDeviceCell") as! SettingsDeviceTableViewCell
+        cell.delegate = self
+        cell.setContent(device: device)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 66.0
     }
 }
 
@@ -87,5 +101,17 @@ extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
         }
         deviceData.devices.remove(at: index)
         tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    }
+}
+
+extension SettingsDevicesViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let nav = self.navigationController else {
+            return false
+        }
+        if(nav.viewControllers.count > 1){
+            return true
+        }
+        return false
     }
 }

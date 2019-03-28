@@ -17,6 +17,7 @@ protocol ComposerDelegate: class {
     func send()
     func badRecipient()
     func typingRecipient(text: String)
+    func setAccount(username: String)
 }
 
 class ComposerUIView: UIView {
@@ -29,6 +30,10 @@ class ComposerUIView: UIView {
     let MAX_ROWS_BEFORE_CALC_HEIGHT = 3
     let ATTACHMENT_ROW_HEIGHT = 65
     let MARGIN_TOP = 20
+    
+    @IBOutlet weak var fromField: UILabel!
+    @IBOutlet weak var fromButton: UIButton!
+    @IBOutlet weak var fromMenuView: BottomMenuView!
     
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var arrowButton: UIButton!
@@ -89,6 +94,8 @@ class ComposerUIView: UIView {
         }
         
         toField.becomeFirstResponder()
+        
+        fromMenuView.delegate = self
         applyTheme()
     }
     
@@ -116,6 +123,35 @@ class ComposerUIView: UIView {
         contactsTableView.backgroundColor = theme.background
         editorView.webView.backgroundColor = theme.background
         editorView.webView.isOpaque = false
+        
+        fromField.textColor = theme.mainText
+        fromField.backgroundColor = theme.overallBackground
+        fromButton.imageView?.tintColor = theme.criptextBlue
+        
+        navigationBar.isTranslucent = false
+    }
+    
+    func setFrom(account: Account, emails: [String]) {
+        fromButton.isHidden = emails.count == 0
+        let attributedFrom = NSMutableAttributedString(string: "From: ", attributes: [.font: Font.bold.size(15)!])
+        let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
+        attributedFrom.append(attributedEmail)
+        fromMenuView.isUserInteractionEnabled = false
+        fromMenuView.initialLoad(options: emails)
+        fromField.attributedText = attributedFrom
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+    }
+    
+    @IBAction func didPressFrom(_ sender: Any) {
+        fromMenuView.isUserInteractionEnabled = true
+        fromMenuView.toggleMenu(true)
+        fromButton.setImage(UIImage(named: "icon-up"), for: .normal)
+        
+        self.toField.endEditing()
+        self.ccField.endEditing()
+        self.bccField.endEditing()
+        self.subjectTextField.resignFirstResponder()
+        self.editorView.webView.endEditing(true)
     }
     
     @IBAction func onClosePress(_ sender: Any) {
@@ -270,5 +306,17 @@ extension ComposerUIView: CLTokenInputViewDelegate {
         } else {
             self.delegate?.badRecipient()
         }
+    }
+}
+
+extension ComposerUIView: BottomMenuDelegate {
+    func didPressOption(_ option: String) {
+        delegate?.setAccount(username: option)
+    }
+    
+    func didPressBackground() {
+        fromMenuView.isUserInteractionEnabled = false
+        self.fromMenuView.toggleMenu(false)
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
     }
 }

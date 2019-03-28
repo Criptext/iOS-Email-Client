@@ -11,7 +11,7 @@ import Material
 import SafariServices
 import PasscodeLock
 
-class SettingsGeneralViewController: UITableViewController{
+class SettingsGeneralViewController: UIViewController{
     
     internal enum Section {
         case account
@@ -48,8 +48,6 @@ class SettingsGeneralViewController: UITableViewController{
             case policies
             case terms
             case openSource
-            case logout
-            case deleteAccount
             
             case version
             
@@ -58,13 +56,11 @@ class SettingsGeneralViewController: UITableViewController{
                 case .syncContact:
                     return String.localize("SYNC_PHONEBOOK")
                 case .privacy:
-                    return String.localize("POLICY")
+                    return String.localize("PRIVACY")
                 case .terms:
                     return String.localize("TERMS")
                 case .openSource:
                     return String.localize("OPEN_LIBS")
-                case .logout:
-                    return String.localize("SIGNOUT")
                 case .version:
                     return String.localize("VERSION")
                 case .night:
@@ -85,12 +81,12 @@ class SettingsGeneralViewController: UITableViewController{
                     return String.localize("FAQ")
                 case .policies:
                     return String.localize("POLICY")
-                case .deleteAccount:
-                    return String.localize("DELETE_ACCOUNT")
                 }
             }
         }
     }
+    
+    @IBOutlet weak var tableView: UITableView!
     
     let STATUS_NOT_CONFIRMED = 0
     let SECTION_VERSION = 3
@@ -99,7 +95,7 @@ class SettingsGeneralViewController: UITableViewController{
     let menus = [
         .account: [.account, .privacy, .devices, .labels, .manualSync],
         .general: [.night, .syncContact, .preview, .pin],
-        .about: [.faq, .policies, .terms, .openSource, .logout, .deleteAccount],
+        .about: [.faq, .policies, .terms, .openSource],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
     var generalData = GeneralSettingsData()
@@ -115,6 +111,8 @@ class SettingsGeneralViewController: UITableViewController{
         self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
         
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         self.tableView.insetsContentViewsToSafeArea = true
         
         self.applyTheme()
@@ -166,28 +164,6 @@ class SettingsGeneralViewController: UITableViewController{
         ThemeManager.shared.removeListener(id: "settings")
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menus[sections[section]]!.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let subsection = menus[sections[indexPath.section]]![indexPath.row]
-        switch(sections[indexPath.section]){
-        case .account:
-            return renderAccountCells(subsection: subsection)
-        case .general:
-            return renderGeneralCells(subsection: subsection)
-        case .about:
-            return renderAboutCells(subsection: subsection)
-        default:
-            return renderVersionCells()
-        }
-    }
-    
     func applyTheme(){
         let attributedTitle = NSAttributedString(string: String.localize("GENERAL"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         let attributed2Title = NSAttributedString(string: String.localize("GENERAL"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.criptextBlue])
@@ -199,17 +175,20 @@ class SettingsGeneralViewController: UITableViewController{
     }
     
     func renderAccountCells(subsection: Section.SubSection) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        cell.optionLabel.textColor = theme.mainText
+        cell.optionLabel.text = subsection.name
+        cell.goImageView.isHidden = true
+        cell.messageLabel.text = ""
+        cell.loader.stopAnimating()
+        cell.loader.isHidden = true
         switch(subsection){
+        case .manualSync:
+            cell.goImageView.isHidden = true
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
-            cell.optionLabel.textColor = theme.mainText
-            cell.optionLabel.text = subsection.name
             cell.goImageView.isHidden = false
-            cell.messageLabel.text = ""
-            cell.loader.stopAnimating()
-            cell.loader.isHidden = true
-            return cell
         }
+        return cell
     }
     
     func renderGeneralCells(subsection: Section.SubSection) -> UITableViewCell {
@@ -271,8 +250,8 @@ class SettingsGeneralViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
         cell.loader.isHidden = true
-        cell.goImageView.isHidden = subsection == .deleteAccount || subsection == .logout
-        cell.optionLabel.textColor = subsection == .deleteAccount ? theme.alert : theme.mainText
+        cell.goImageView.isHidden = false
+        cell.optionLabel.textColor = theme.mainText
         cell.optionLabel.text = subsection.name
         return cell
     }
@@ -282,66 +261,6 @@ class SettingsGeneralViewController: UITableViewController{
         let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         cell.versionLabel.text = "v.\(appVersionString)"
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section != SECTION_VERSION else {
-            return nil
-        }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
-        let mySection = sections[section]
-        if mySection == .account {
-            cell.titleLabel.text = myAccount.email.uppercased()
-        } else {
-            cell.titleLabel.text = mySection.name
-        }
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section != SECTION_VERSION ? ROW_HEIGHT : 0.0
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65.0
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let subsection = menus[sections[indexPath.section]]![indexPath.row]
-        tableView.deselectRow(at: indexPath, animated: true)
-        switch(subsection){
-        case .account:
-            goToProfile()
-        case .privacy:
-            goToPrivacyAndSecurity()
-        case .devices:
-            goToDevices()
-        case .labels:
-            goToLabels()
-        case .manualSync:
-            showManualSyncWarning()
-        case .pin:
-            goToPinLock()
-        case .faq:
-            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
-        case .policies:
-            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
-        case .terms:
-            goToUrl(url: "https://criptext.com/\(Env.language)/terms")
-        case .openSource:
-            goToUrl(url: "https://criptext.com/\(Env.language)/open-source-ios")
-        case .logout:
-            guard self.devicesData.devices.count <= 1 && generalData.isTwoFactor else {
-                showLogout()
-                return
-            }
-            showWarningLogout()
-        case .deleteAccount:
-            showDeleteAccount()
-        default:
-            break
-        }
-        
     }
     
     func showManualSyncWarning() {
@@ -407,98 +326,6 @@ class SettingsGeneralViewController: UITableViewController{
         }
     }
     
-    func showLogout(){
-        let logoutPopover = GenericDualAnswerUIPopover()
-        logoutPopover.initialTitle = String.localize("SIGNOUT")
-        logoutPopover.initialMessage = String.localize("Q_SURE_LOGOUT")
-        logoutPopover.leftOption = String.localize("CANCEL")
-        logoutPopover.rightOption = String.localize("YES")
-        logoutPopover.onResponse = { [weak self] accept in
-            guard accept,
-                let weakSelf = self else {
-                    return
-            }
-            weakSelf.confirmLogout()
-        }
-        self.presentPopover(popover: logoutPopover, height: 175)
-    }
-    
-    func showDeleteAccount(){
-        let passwordPopover = PasswordUIPopover()
-        passwordPopover.answerShouldDismiss = false
-        passwordPopover.initialTitle = String.localize("DELETE_ACCOUNT")
-        let attrRegularText = NSMutableAttributedString(string: String.localize("DELETING_ACCOUNT"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
-        let attrBoldText = NSMutableAttributedString(string: String.localize("DELETE_WILL_ERASE"), attributes: [NSAttributedString.Key.font: Font.bold.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
-        let attrRegularText2 = NSMutableAttributedString(string: String.localize("DELETE_NO_LONGER"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
-        attrRegularText.append(attrBoldText)
-        attrRegularText.append(attrRegularText2)
-        passwordPopover.initialAttrMessage = attrRegularText
-        passwordPopover.onOkPress = { [weak self] pass in
-            guard let weakSelf = self else {
-                return
-            }
-            weakSelf.deleteAccount(password: pass)
-        }
-        self.presentPopover(popover: passwordPopover, height: 260)
-    }
-    
-    func deleteAccount(password: String){
-        APIManager.deleteAccount(password: password.sha256()!, account: self.myAccount, completion: { [weak self] (responseData) in
-            guard let weakSelf = self else {
-                return
-            }
-            if case .BadRequest = responseData {
-                if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
-                    popover.dismiss(animated: false, completion: nil)
-                }
-                weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("WRONG_PASS_RETRY"), style: .alert)
-                return
-            }
-            guard case .Success = responseData,
-                let delegate = UIApplication.shared.delegate as? AppDelegate else {
-                    if let popover = weakSelf.presentedViewController as? PasswordUIPopover {
-                        popover.dismiss(animated: false, completion: nil)
-                    }
-                    weakSelf.showAlert(String.localize("DELETE_ACCOUNT_FAILED"), message: String.localize("UNABLE_DELETE_ACCOUNT"), style: .alert)
-                return
-            }
-            delegate.logout(account: weakSelf.myAccount, manually: false, message: String.localize("DELETE_ACCOUNT_SUCCESS"))
-        })
-    }
-    
-    func showWarningLogout() {
-        let logoutPopover = GenericDualAnswerUIPopover()
-        logoutPopover.initialTitle = String.localize("WARNING")
-        logoutPopover.initialMessage = String.localize("Q_SIGNOUT_2FA")
-        logoutPopover.leftOption = String.localize("CANCEL")
-        logoutPopover.rightOption = String.localize("YES")
-        logoutPopover.onResponse = { accept in
-            guard accept else {
-                return
-            }
-            self.confirmLogout()
-        }
-        self.presentPopover(popover: logoutPopover, height: 223)
-    }
-    
-    func confirmLogout(){
-        APIManager.logout(account: myAccount) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
-                return
-            }
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
-            }
-            guard case .Success = responseData else {
-                self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("UNABLE_SIGNOUT"), style: .alert)
-                return
-            }
-            self.logout(account: self.myAccount, manually: true)
-        }
-    }
-    
     func goToPrivacyAndSecurity(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let securityVC = storyboard.instantiateViewController(withIdentifier: "securityPrivacyViewController") as! SecurityPrivacyViewController
@@ -521,6 +348,7 @@ class SettingsGeneralViewController: UITableViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let profileVC = storyboard.instantiateViewController(withIdentifier: "profileEditorView") as! ProfileEditorViewController
         profileVC.generalData = self.generalData
+        profileVC.devicesData = self.devicesData
         profileVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(profileVC, animated: true)
     }
@@ -528,6 +356,82 @@ class SettingsGeneralViewController: UITableViewController{
     func goToUrl(url: String){
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
+    }
+}
+
+extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return menus[sections[section]]!.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let subsection = menus[sections[indexPath.section]]![indexPath.row]
+        switch(sections[indexPath.section]){
+        case .account:
+            return renderAccountCells(subsection: subsection)
+        case .general:
+            return renderGeneralCells(subsection: subsection)
+        case .about:
+            return renderAboutCells(subsection: subsection)
+        default:
+            return renderVersionCells()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section != SECTION_VERSION else {
+            return nil
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
+        let mySection = sections[section]
+        if mySection == .account {
+            cell.titleLabel.text = myAccount.email.uppercased()
+        } else {
+            cell.titleLabel.text = mySection.name
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section != SECTION_VERSION ? ROW_HEIGHT : 0.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65.0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let subsection = menus[sections[indexPath.section]]![indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch(subsection){
+        case .account:
+            goToProfile()
+        case .privacy:
+            goToPrivacyAndSecurity()
+        case .devices:
+            goToDevices()
+        case .labels:
+            goToLabels()
+        case .manualSync:
+            showManualSyncWarning()
+        case .pin:
+            goToPinLock()
+        case .faq:
+            goToUrl(url: "https://criptext.com/\(Env.language)/faq")
+        case .policies:
+            goToUrl(url: "https://criptext.com/\(Env.language)/privacy")
+        case .terms:
+            goToUrl(url: "https://criptext.com/\(Env.language)/terms")
+        case .openSource:
+            goToUrl(url: "https://criptext.com/\(Env.language)/open-source-ios")
+        default:
+            break
+        }
+        
     }
 }
 

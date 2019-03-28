@@ -27,7 +27,7 @@ class ReplyToEditorViewController: UIViewController {
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("REPLY_TO_TITLE")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
+        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
 [NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         replyToEnableSwitch.isOn = self.generalData.replyTo == "" ? false : true

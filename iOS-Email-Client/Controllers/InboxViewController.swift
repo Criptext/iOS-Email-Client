@@ -80,6 +80,11 @@ class InboxViewController: UIViewController {
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
+        applyTheme()
+        setQueueItemsListener()
+    }
+    
+    func setQueueItemsListener() {
         let queueItems = DBManager.getQueueItems(account: self.myAccount)
         newsHeaderView.onClose = { [weak self] in
             self?.mailboxData.feature = nil
@@ -89,11 +94,10 @@ class InboxViewController: UIViewController {
         mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
             guard !(self?.myAccount.isInvalidated ?? false),
                 case .update = changes else {
-                return
+                    return
             }
             self?.dequeueEvents()
         })
-        applyTheme()
     }
     
     func viewSetupNews() {
@@ -1513,7 +1517,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     func sendMail(email: Email, emailBody: String, password: String?) {
         showSendingSnackBar(message: String.localize("SENDING_MAIL"), permanent: true)
         reloadIfSentMailbox(email: email)
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, emailBody: emailBody, password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: emailBody, password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 return
@@ -1531,9 +1535,12 @@ extension InboxViewController: ComposerSendMailDelegate {
                 weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, buttons: "", permanent: false)
                 return
             }
-            guard case let .SuccessInt(key) = responseData,
-                DBManager.getMail(key: key, account: weakSelf.myAccount) != nil else {
+            guard case let .SuccessInt(key) = responseData else {
                 weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            guard DBManager.getMail(key: key, account: weakSelf.myAccount) != nil else {
+                weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
                 return
             }
             weakSelf.refreshThreadRows()
@@ -1796,6 +1803,7 @@ extension InboxViewController {
 extension InboxViewController: ThemeDelegate {
     func swapTheme(_ theme: Theme) {
         applyTheme()
+        tableView.reloadData()
     }
 }
 
@@ -1821,6 +1829,7 @@ extension InboxViewController {
         self.myAccount = account
         defaults.activeAccount = account.username
         WebSocketManager.sharedInstance.swapAccount(account)
+        self.invalidateObservers()
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.reloadView()
@@ -1830,6 +1839,8 @@ extension InboxViewController {
             let badgeCounter = feedsViewController.feedsData.newFeeds.count
             updateFeedsBadge(counter: badgeCounter)
         }
+        self.setQueueItemsListener()
+        self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
     }
 }
 

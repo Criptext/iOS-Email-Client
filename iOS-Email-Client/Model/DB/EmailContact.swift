@@ -17,7 +17,7 @@ class EmailContact: Object{
     @objc dynamic var type : String = ContactType.to.rawValue
     
     func buildCompoundKey() -> String {
-        return "\(self.email.key):\(self.contact.email):\(self.type)"
+        return "\(self.email.compoundKey):\(self.contact.email):\(self.type)"
     }
     
     override static func primaryKey() -> String? {

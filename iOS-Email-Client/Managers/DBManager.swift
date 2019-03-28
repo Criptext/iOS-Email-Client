@@ -32,16 +32,17 @@ class DBManager: SharedDB {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.delete(realm.objects(Email.self).filter("account.compoundKey == '\(account.compoundKey)'"))
-            realm.delete(realm.objects(Contact.self))
+            let emails = realm.objects(Email.self).filter("account.compoundKey == '\(account.compoundKey)'")
+            for email in emails {
+                realm.delete(email.files)
+                realm.delete(realm.objects(DummySession.self).filter("key == \(email.key)"))
+            }
+            realm.delete(emails)
             realm.delete(realm.objects(FeedItem.self).filter("email.account.compoundKey == '\(account.compoundKey)'"))
             realm.delete(realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)'"))
             realm.delete(realm.objects(Label.self).filter("account.compoundKey == '\(account.compoundKey)'"))
-            realm.delete(realm.objects(File.self))
             realm.delete(realm.objects(QueueItem.self).filter("account.compoundKey == '\(account.compoundKey)'"))
-            realm.delete(realm.objects(DummySession.self))
         }
-        createSystemLabels()
     }
     
     class func destroy(){
@@ -49,6 +50,14 @@ class DBManager: SharedDB {
         
         try! realm.write {
             realm.deleteAll()
+        }
+    }
+    
+    class func deleteEmptyFeeds() {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(realm.objects(FeedItem.self).filter("contact == nil"))
         }
     }
     
@@ -116,7 +125,7 @@ class DBManager: SharedDB {
             let contact = Contact()
             let contactId = object["id"] as! Int
             contact.email = object["email"] as! String
-            contact.displayName = object["name"] as? String ?? String(contact.email.split(separator: "@").first!)
+            contact.displayName = object["name"] as? String ?? (contact.email.contains("@") ? String(contact.email.split(separator: "@").first!) : "Unknown")
             if let isTrusted = object["isTrusted"]{
                 contact.isTrusted = isTrusted as! Bool
             }
@@ -271,7 +280,7 @@ class DBManager: SharedDB {
         }
     }
     
-    class func activateAccount(account: Account) {
+    class func activateAccount(_ account: Account) {
         let realm = try! Realm()
         
         try! realm.write() {
@@ -279,6 +288,14 @@ class DBManager: SharedDB {
         }
     }
     
+    class func disableAccount(_ account: Account) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.isActive = false
+        }
+    }
+ 
     class func swapAccount(current: Account, active: Account) {
         let realm = try! Realm()
         

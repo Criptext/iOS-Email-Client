@@ -16,11 +16,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="103" id="ml3-ik-S6Y" customClass="AccountsFooterCell" customModule="iOS_Email_Client" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="422" height="103"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="56" id="ml3-ik-S6Y" customClass="AccountsFooterCell" customModule="iOS_Email_Client" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="422" height="56"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ml3-ik-S6Y" id="S1g-7Y-MRQ">
-                <rect key="frame" x="0.0" y="0.0" width="422" height="102.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="422" height="55.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sjg-uQ-qGt">
@@ -45,43 +45,13 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sp2-WZ-nbU">
-                        <rect key="frame" x="0.0" y="54" width="422" height="44"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="44" id="Rg2-fE-CcF"/>
-                        </constraints>
-                        <connections>
-                            <action selector="createAccountWithSender:" destination="ml3-ik-S6Y" eventType="touchUpInside" id="X2y-ZQ-GE8"/>
-                        </connections>
-                    </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-plus" translatesAutoresizingMaskIntoConstraints="NO" id="BEY-U5-HFc">
-                        <rect key="frame" x="30" y="69" width="14" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="14" id="3kv-3d-G4x"/>
-                            <constraint firstAttribute="height" constant="14" id="Tza-ZC-cw9"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kgd-Op-3gQ">
-                        <rect key="frame" x="56" y="64.5" width="346" height="23.5"/>
-                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Kgd-Op-3gQ" firstAttribute="leading" secondItem="BEY-U5-HFc" secondAttribute="trailing" constant="12" id="1WO-pH-Bex"/>
                     <constraint firstAttribute="trailing" secondItem="Cwq-nq-8tZ" secondAttribute="trailing" constant="20" id="1ka-fC-leU"/>
-                    <constraint firstItem="Sp2-WZ-nbU" firstAttribute="top" secondItem="sjg-uQ-qGt" secondAttribute="bottom" constant="5" id="3ZT-jR-Wb1"/>
-                    <constraint firstItem="Kgd-Op-3gQ" firstAttribute="centerY" secondItem="Sp2-WZ-nbU" secondAttribute="centerY" id="Ctn-mh-22R"/>
-                    <constraint firstItem="Kgd-Op-3gQ" firstAttribute="trailing" secondItem="Sp2-WZ-nbU" secondAttribute="trailing" constant="-20" id="GYo-4Q-TUx"/>
-                    <constraint firstItem="BEY-U5-HFc" firstAttribute="leading" secondItem="Sp2-WZ-nbU" secondAttribute="leading" constant="30" id="JR9-s7-5wh"/>
                     <constraint firstAttribute="trailing" secondItem="sjg-uQ-qGt" secondAttribute="trailing" id="MMI-Ba-zNC"/>
                     <constraint firstItem="1S7-GM-MoO" firstAttribute="centerY" secondItem="sjg-uQ-qGt" secondAttribute="centerY" id="NbK-0U-eQr"/>
                     <constraint firstItem="sjg-uQ-qGt" firstAttribute="leading" secondItem="S1g-7Y-MRQ" secondAttribute="leading" id="bIS-SV-6WY"/>
-                    <constraint firstItem="Sp2-WZ-nbU" firstAttribute="leading" secondItem="S1g-7Y-MRQ" secondAttribute="leading" id="c2J-i3-48y"/>
-                    <constraint firstItem="BEY-U5-HFc" firstAttribute="centerY" secondItem="Sp2-WZ-nbU" secondAttribute="centerY" id="fGb-AZ-1Hb"/>
                     <constraint firstItem="sjg-uQ-qGt" firstAttribute="top" secondItem="S1g-7Y-MRQ" secondAttribute="top" constant="5" id="fiz-0j-tpa"/>
-                    <constraint firstAttribute="trailing" secondItem="Sp2-WZ-nbU" secondAttribute="trailing" id="ibE-He-4xZ"/>
                     <constraint firstItem="Cwq-nq-8tZ" firstAttribute="leading" secondItem="1S7-GM-MoO" secondAttribute="trailing" constant="12" id="u8f-BU-JAD"/>
                     <constraint firstItem="Cwq-nq-8tZ" firstAttribute="centerY" secondItem="sjg-uQ-qGt" secondAttribute="centerY" id="wyf-QC-2hG"/>
                     <constraint firstItem="1S7-GM-MoO" firstAttribute="leading" secondItem="S1g-7Y-MRQ" secondAttribute="leading" constant="30" id="yiZ-NI-sED"/>
@@ -91,11 +61,8 @@
                 <outlet property="existingContainerButton" destination="sjg-uQ-qGt" id="OHR-il-SbY"/>
                 <outlet property="existingIconImage" destination="1S7-GM-MoO" id="WSX-aU-9uE"/>
                 <outlet property="existingLabel" destination="Cwq-nq-8tZ" id="Sy9-gY-srY"/>
-                <outlet property="newAccountContainerButton" destination="Sp2-WZ-nbU" id="q5C-An-DJv"/>
-                <outlet property="newAccountIconImage" destination="BEY-U5-HFc" id="ICa-sv-h4Y"/>
-                <outlet property="newAccountLabel" destination="Kgd-Op-3gQ" id="Xxb-OI-5xA"/>
             </connections>
-            <point key="canvasLocation" x="62.399999999999999" y="203.74812593703149"/>
+            <point key="canvasLocation" x="62.399999999999999" y="182.60869565217394"/>
         </tableViewCell>
     </objects>
     <resources>

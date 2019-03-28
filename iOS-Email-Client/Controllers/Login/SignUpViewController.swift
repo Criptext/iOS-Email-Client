@@ -41,11 +41,6 @@ class SignUpViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         setupFields()
-        
-        if multipleAccount {
-            backButton.setImage(UIImage(named: "close"), for: .normal)
-            backButton.imageEdgeInsets = UIEdgeInsetsMake(12, 12, 12, 12)
-        }
     }
     
     func setupFields(){
@@ -207,10 +202,6 @@ class SignUpViewController: UIViewController{
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
-        guard !multipleAccount else {
-            self.dismiss(animated: true, completion: nil)
-            return
-        }
         self.navigationController?.popViewController(animated: true)
     }
     
