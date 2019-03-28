@@ -19,7 +19,7 @@ class CriptextFileManager {
     let PENDING = -1
     let MAX_SIZE = 25000000
     
-    var token : String!
+    var myAccount : Account!
     var chunkSize = 512000
     var registeredFiles = [File]()
     var apiManager: APIManager.Type = APIManager.self
@@ -58,7 +58,7 @@ class CriptextFileManager {
             "totalChunks": totalChunks,
             "chunkSize": chunkSize
             ] as [String : Any]
-        apiManager.registerFile(parameters: requestData, token: token) { [weak self] (responseData) in
+        apiManager.registerFile(account: myAccount, parameters: requestData) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 fileRegistry.requestStatus = .failed
                 return
@@ -101,11 +101,12 @@ class CriptextFileManager {
         }
         file.requestType = .download
         registeredFiles.append(file)
-        apiManager.getFileMetadata(filetoken: file.token, token: self.token) { [weak self] (requestError, responseData) in
+        apiManager.getFileMetadata(filetoken: file.token, account: self.myAccount) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
-            guard let metadata = responseData?["file"] as? [String: Any] else {
+            guard case let .SuccessDictionary(responseFile) = responseData,
+            let metadata = responseFile["file"] as? [String: Any] else {
                 file.requestStatus = .failed
                 weakSelf.delegate?.uploadProgressUpdate(file: file, progress: 0)
                 weakSelf.delegate?.finishRequest(file: file, success: false)
@@ -201,7 +202,7 @@ class CriptextFileManager {
             "filename": file.name,
             "mimeType": file.mimeType
         ] as [String: Any]
-        apiManager.uploadChunk(chunk: chunk, params: params, token: self.token, progressDelegate: self) { [weak self] (responseData) in
+        apiManager.uploadChunk(chunk: chunk, params: params, account: myAccount, progressDelegate: self) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -224,7 +225,7 @@ class CriptextFileManager {
     
     private func downloadChunk(file: File, part: Int){
         let filetoken = file.token
-        apiManager.downloadChunk(filetoken: filetoken, part: part + 1, token: self.token, progressDelegate: self) { [weak self] (requestError, chunkData) in
+        apiManager.downloadChunk(filetoken: filetoken, part: part + 1, account: myAccount, progressDelegate: self) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -232,7 +233,7 @@ class CriptextFileManager {
                 weakSelf.handleFileTurn()
                 return
             }
-            guard requestError == nil else {
+            guard case .SuccessString = responseData else {
                 weakSelf.registeredFiles[fileIndex].requestStatus = .failed
                 weakSelf.chunkUpdateProgress(Double(weakSelf.PENDING)/100.0, for: file.token, part: part + 1)
                 weakSelf.delegate?.finishRequest(file: file, success: false)

@@ -114,7 +114,7 @@ class ComposeViewController: UIViewController {
         
         let defaults = CriptextDefaults()
         activeAccount = DBManager.getAccountByUsername(defaults.activeAccount!)
-        fileManager.token = activeAccount.jwt
+        fileManager.myAccount = activeAccount
         
         let sendImage = Icon.send.image?.tint(with: .white)
         self.enableSendButton = UIBarButtonItem(image: sendImage, style: .plain, target: self, action: #selector(didPressSend(_:)))

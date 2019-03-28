@@ -145,7 +145,7 @@ class SendMailAsyncTask {
             completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
-        apiManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
+        apiManager.duplicateFiles(filetokens: self.duplicates, account: myAccount, queue: queue) { (responseData) in
             guard case let .SuccessDictionary(response) = responseData,
                 let myAccount = SharedDB.getAccountByUsername(self.username),
                 let duplicates = response["duplicates"] as? [String: Any],

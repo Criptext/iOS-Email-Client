@@ -51,7 +51,7 @@ class EmailDetailViewController: UIViewController {
         self.topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
         fileManager.delegate = self
-        fileManager.token = myAccount.jwt
+        fileManager.myAccount = myAccount
         
         displayMarkIcon(asRead: false)
         generalOptionsContainerView.handleCurrentLabel(currentLabel: emailData.selectedLabel)

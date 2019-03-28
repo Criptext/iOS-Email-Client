@@ -23,7 +23,7 @@ class CIDSchemeHandler : NSObject,WKURLSchemeHandler {
         super.init()
         fileManager.delegate = self
         activeAccount = DBManager.getAccountByUsername(defaults.activeAccount!)
-        fileManager.token = activeAccount.jwt
+        fileManager.myAccount = activeAccount
     }
     
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {

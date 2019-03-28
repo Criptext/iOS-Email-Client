@@ -616,22 +616,35 @@ class APIManager: SharedAPI {
         }
     }
 
-    class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func registerFile(account: Account, parameters: [String: Any], completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(account.jwt)"]
+        let accountRef = SharedDB.getReference(account)
+        print(account.jwt)
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                return
+            }
             let responseData = handleResponse(response)
-            completion(responseData)
+            self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.registerFile(account: refdAccount, parameters: parameters, completion: completion)
+            }
         }
     }
     
-    class func uploadChunk(chunk: Data, params: [String: Any], token: String, progressDelegate: ProgressDelegate, completion: @escaping ((ResponseData) -> Void)){
+    class func uploadChunk(chunk: Data, params: [String: Any], account: Account, progressDelegate: ProgressDelegate, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/chunk"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(account.jwt)"]
         let filetoken = params["filetoken"] as! String
         let part = params["part"] as! Int
         let filename = params["filename"] as! String
         let mimeType = params["mimeType"] as! String
+        let accountRef = SharedDB.getReference(account)
         Alamofire.upload(multipartFormData: { (multipartForm) in
             for (key, value) in params {
                 multipartForm.append("\(value)".data(using: .utf8)!, withName: key)
@@ -644,8 +657,18 @@ class APIManager: SharedAPI {
                     progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
                 })
                 request.responseJSON(completionHandler: { (response) in
-                    let responseData = handleResponse(response, satisfy: .success)
-                    completion(responseData)
+                    guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                        completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                        return
+                    }
+                    let responseData = handleResponse(response)
+                    self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
+                        if let refreshData = refreshResponseData {
+                            completion(refreshData)
+                            return
+                        }
+                        self.getFileMetadata(filetoken: filetoken, account: refdAccount, completion: completion)
+                    }
                 })
             case .failure(_):
                 completion(ResponseData.Error(CriptextError(message: "Unable to handle request")))
@@ -653,55 +676,80 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func getFileMetadata(filetoken: String, token: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
+    class func getFileMetadata(filetoken: String, account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/\(filetoken)"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(account.jwt)"]
+        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON{
             (response) in
-            guard response.response?.statusCode == 200,
-                let responseData = response.result.value as? [String: Any] else {
-                    let criptextError = CriptextError(code: .noValidResponse)
-                    completion(criptextError, nil)
-                    return
+            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                return
             }
-            completion(nil, responseData)
+            let responseData = handleResponse(response)
+            self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.getFileMetadata(filetoken: filetoken, account: refdAccount, completion: completion)
+            }
         }
     }
     
-    class func duplicateFiles(filetokens: [String], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
+    class func duplicateFiles(filetokens: [String], account: Account, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/duplicate"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(account.jwt)"]
         let params = [
             "files": filetokens
         ]
+        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) {
             (response) in
+            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                return
+            }
             let responseData = handleResponse(response)
-            completion(responseData)
+            self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.duplicateFiles(filetokens: filetokens, account: refdAccount, queue: queue, completion: completion)
+            }
         }
     }
     
-    class func downloadChunk(filetoken: String, part: Int, token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, String?) -> Void)){
+    class func downloadChunk(filetoken: String, part: Int, account: Account, progressDelegate: ProgressDelegate, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/\(filetoken)/chunk/\(part)"
-        let headers = ["Authorization": "Bearer \(token)"]
+        let headers = ["Authorization": "Bearer \(account.jwt)"]
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileURL = documentsURL.appendingPathComponent("\(filetoken).part\(part)")
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             return (fileURL, [.removePreviousFile])
         }
+        let accountRef = SharedDB.getReference(account)
         Alamofire.download(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers, to: destination).downloadProgress { (progress) in
             progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
             }.response { (response) in
-                if let error = response.error {
-                    completion(error, nil)
+                guard response.response?.statusCode != 200 else {
+                    completion(ResponseData.SuccessString(fileURL.path))
                     return
                 }
-                guard response.response?.statusCode == 200 else {
-                    let criptextError = CriptextError(code: .noValidResponse)
-                    completion(criptextError, nil)
+                guard response.response?.statusCode == 401,
+                    let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                    completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
                     return
                 }
-                completion(nil, fileURL.path)
+                
+                self.authorizationRequest(responseData: ResponseData.AuthPending, account: refdAccount) { (refreshResponseData) in
+                    if let refreshData = refreshResponseData {
+                        completion(refreshData)
+                        return
+                    }
+                    self.downloadChunk(filetoken: filetoken, part: part, account: refdAccount, progressDelegate: progressDelegate, completion: completion)
+                }
         }
     }
     
