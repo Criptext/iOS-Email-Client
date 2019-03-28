@@ -755,14 +755,8 @@ extension ComposeViewController{
     // 3
     // Add a gesture on the view controller to close keyboard when tapped
     func enableKeyboardHideOnTap(){
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) // See 4.1
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //See 4.2
-        
-        // 3.1
-        //self.dismissTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ComposeViewController.hideKeyboard))
-        //self.dismissTapGestureRecognizer.delegate = self
-        //self.view.addGestureRecognizer(self.dismissTapGestureRecognizer)
     }
     
     //3.1
