@@ -44,10 +44,11 @@ class InboxViewController: UIViewController {
     var markBarButton:UIBarButtonItem!
     var deleteBarButton:UIBarButtonItem!
     var menuButton:UIBarButtonItem!
+    var menuAvatarButton:UIBarButtonItem!
+    var menuAvatarImageView: UIImageView!
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
-    var selectedCells:[Int:Bool] = [:]
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
@@ -207,7 +208,7 @@ class InboxViewController: UIViewController {
         
         self.setButtonItems(isEditing: false)
         
-        self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+        self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         self.titleBarButton.title = SystemLabel.inbox.description.uppercased()
 
         topToolbar.delegate = self
@@ -328,6 +329,18 @@ class InboxViewController: UIViewController {
         self.coachMarksController.stop(immediately: true)
     }
     
+    func initAvatarButton() {
+        let containerView = UIView(frame: CGRect(x: 3, y: 0, width: 31, height: 28))
+        menuAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
+        menuAvatarImageView.contentMode = .scaleAspectFit
+        menuAvatarImageView.clipsToBounds = true
+        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOpenMenu(_:)))
+        containerView.addSubview(menuAvatarImageView)
+        containerView.addGestureRecognizer(tapGesture)
+        self.menuAvatarButton = UIBarButtonItem(customView: containerView)
+    }
+    
     func initBarButtonItems(){
         self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
@@ -342,10 +355,11 @@ class InboxViewController: UIViewController {
         let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
         let filterICon = #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         let searchImage = #imageLiteral(resourceName: "search").tint(with: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0))
+        
         self.menuButton = UIBarButtonItem(image: menuImage, style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
         self.searchBarButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didPressSearch(_:)))
         self.filterBarButton = UIBarButtonItem(image: filterICon, style: .plain, target: self, action: #selector(didPressFilter(_:)))
-        
+        self.initAvatarButton()
         // Set batButtonItems
         let activityButton = MIBadgeButton(type: .custom)
         let badgeCounter = DBManager.getNewFeedsCount(since: myAccount.lastTimeFeedOpened)
@@ -560,7 +574,7 @@ extension InboxViewController{
             refreshControl.isEnabled = true
             mailboxData.unreadMails = 0
             updateBadges()
-            selectedCells.removeAll()
+            self.mailboxData.selectedThreads.removeAll()
         }
         
         self.setButtonItems(isEditing: mailboxData.isCustomEditing)
@@ -677,7 +691,7 @@ extension InboxViewController{
         
         guard isEditing else {
             self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.filterBarButton, self.spaceBarButton]
-            self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+            self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
             return
         }
         
@@ -815,7 +829,7 @@ extension InboxViewController: UITableViewDataSource{
         
         cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
         if mailboxData.isCustomEditing {
-            if(selectedCells[indexPath.row] ?? false){
+            if(mailboxData.selectedThreads.contains(thread.threadId)){
                 cell.setAsSelected()
                 cell.isSelected = true
                 tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
@@ -1000,6 +1014,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         self.tableView(self.tableView , didSelectRowAt: indexPath)
+        
+        let thread = mailboxData.threads[indexPath.row]
+        self.mailboxData.selectedThreads.insert(thread.threadId)
     }
     
     func tableViewCellDidTap(_ cell: InboxTableViewCell) {
@@ -1023,14 +1040,15 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 return
             }
             let thread = mailboxData.threads[indexPath.row]
+            self.mailboxData.selectedThreads.insert(thread.threadId)
             if(thread.unread){
                 mailboxData.unreadMails += 1
             }
             swapMarkIcon()
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
             cell.setAsSelected()
-            selectedCells[indexPath.row] = true
-            self.topToolbar.counterLabel.text = "\(selectedCells.count)"
+            self.topToolbar.counterLabel.text = "\(mailboxData.selectedThreads.count)"
+            
             return
         }
         
@@ -1197,12 +1215,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         guard tableView.indexPathsForSelectedRows == nil else {
             let thread = mailboxData.threads[indexPath.row]
+            self.mailboxData.selectedThreads.remove(thread.threadId)
             if(thread.unread){
                 mailboxData.unreadMails -= 1
             }
             swapMarkIcon()
-            selectedCells.removeValue(forKey: indexPath.row)
-            self.topToolbar.counterLabel.text = "\(tableView.indexPathsForSelectedRows!.count)"
+            self.topToolbar.counterLabel.text = "\(mailboxData.selectedThreads.count)"
             tableView.reloadRows(at: [indexPath], with: .none)
             return
         }
@@ -1315,7 +1333,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     
     func handleAddLabels(){
         let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel)
-        if let indexPaths = tableView.indexPathsForSelectedRows{
+        if let indexPaths = mailboxData.selectedIndexPaths {
             for indexPath in indexPaths {
                 let thread = mailboxData.threads[indexPath.row]
                 guard let email = DBManager.getMail(key: thread.lastEmailKey, account: self.myAccount) else {
@@ -1367,7 +1385,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
 
 extension InboxViewController {
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool = false) {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             return
         }
         self.didPressEdit(reload: true)
@@ -1408,7 +1426,7 @@ extension InboxViewController {
     }
     
     func deleteThreads(){
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             self.didPressEdit(reload: true)
             return
         }
@@ -1457,7 +1475,7 @@ extension InboxViewController: NavigationToolbarDelegate {
     }
     
     func onMarkThreads() {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             return
         }
         var threadIds = [String]()
@@ -1840,6 +1858,7 @@ extension InboxViewController {
             updateFeedsBadge(counter: badgeCounter)
         }
         self.setQueueItemsListener()
+        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
         self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
     }
 }
