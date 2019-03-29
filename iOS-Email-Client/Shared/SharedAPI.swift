@@ -106,13 +106,17 @@ class SharedAPI {
         }
     }
     
-    class func authorizationRequest(responseData: ResponseData, account: Account, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?) -> Void)) {
+    class func authorizationRequest(responseData: ResponseData, token: String, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?, String) -> Void)) {
         guard case .Unauthorized = responseData else {
-            completionHandler(responseData)
+            completionHandler(responseData, token)
+            return
+        }
+        guard let account = SharedDB.getAccount(token: token) else {
+            completionHandler(ResponseData.Error(CriptextError(code: .unreferencedAccount)), token)
             return
         }
         guard let refreshToken = account.refreshToken else {
-            updgrateToRefreshToken(responseData: responseData, account: account, queue: queue, completionHandler: completionHandler)
+            updgrateToRefreshToken(responseData: responseData, token: token, queue: queue, completionHandler: completionHandler)
             return
         }
         let url = "\(self.baseUrl)/user/refreshtoken"
@@ -122,89 +126,71 @@ class SharedAPI {
             versionHeader: apiVersion
         ]
         
-        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
-            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
-                completionHandler(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
-                return
-            }
             let refreshResponseData = handleResponse(response)
             guard case let .SuccessString(newJwt) = refreshResponseData else {
-                completionHandler(refreshResponseData)
+                completionHandler(refreshResponseData, token)
                 return
             }
-            SharedDB.update(refdAccount, jwt: newJwt)
-            completionHandler(nil)
+            SharedDB.update(oldJwt: token, jwt: newJwt)
+            SharedDB.refresh()
+            completionHandler(nil, newJwt)
         }
     }
     
-    class func updgrateToRefreshToken(responseData: ResponseData, account: Account, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?) -> Void)) {
+    class func updgrateToRefreshToken(responseData: ResponseData, token: String, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?, String) -> Void)) {
         let url = "\(self.baseUrl)/user/refreshtoken/upgrade"
         let headers = [
-            "Authorization": "Bearer \(account.jwt)",
+            "Authorization": "Bearer \(token)",
             versionHeader: apiVersion,
             language: Env.language
         ]
-        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
-            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
-                completionHandler(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
-                return
-            }
             let refreshResponseData = handleResponse(response)
             guard case let .SuccessString(newRefreshToken) = refreshResponseData else {
-                completionHandler(refreshResponseData)
+                completionHandler(refreshResponseData, token)
                 return
             }
-            SharedDB.update(refdAccount, refreshToken: newRefreshToken)
-            completionHandler(nil)
+            SharedDB.update(jwt: token, refreshToken: newRefreshToken)
+            SharedDB.refresh()
+            completionHandler(nil, token)
         }
     }
     
-    class func getEvents(account: Account, completion: @escaping ((ResponseData) -> Void)){
+    class func getEvents(token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event"
         let headers = [
-            "Authorization": "Bearer \(account.jwt)",
+            "Authorization": "Bearer \(token)",
             versionHeader: apiVersion,
             language: Env.language
         ]
-        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
-                completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
-                return
-            }
             let responseData = handleResponse(response)
-            self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
                 if let refreshData = refreshResponseData {
                     completion(refreshData)
                     return
                 }
-                self.getEvents(account: refdAccount, completion: completion)
+                self.getEvents(token: newToken, completion: completion)
             }
         }
     }
     
-    class func getEmailBody(metadataKey: Int, account: Account, queue: DispatchQueue? = .main, completion: @escaping ((ResponseData) -> Void)){
+    class func getEmailBody(metadataKey: Int, token: String, queue: DispatchQueue? = .main, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/email/body/\(metadataKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let headers = [
-            "Authorization": "Bearer \(account.jwt)",
+            "Authorization": "Bearer \(token)",
             versionHeader: apiVersion,
             language: Env.language
         ]
-        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
-            guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
-                completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
-                return
-            }
             let responseData = handleResponse(response)
-            self.authorizationRequest(responseData: responseData, account: refdAccount) { (refreshResponseData) in
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
                 if let refreshData = refreshResponseData {
                     completion(refreshData)
                     return
                 }
-                self.getEmailBody(metadataKey: metadataKey, account: refdAccount, completion: completion)
+                self.getEmailBody(metadataKey: metadataKey, token: newToken, completion: completion)
             }
         }
     }

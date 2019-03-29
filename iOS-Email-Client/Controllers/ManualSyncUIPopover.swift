@@ -48,7 +48,7 @@ class ManualSyncUIPopover: BaseUIPopover {
     }
     
     func startSync() {
-        APIManager.syncBegin(account: myAccount) { (responseData) in
+        APIManager.syncBegin(token: myAccount.jwt) { (responseData) in
             guard case .Success = responseData else {
                 self.dismiss(animated: true, completion: nil)
                 return
@@ -84,7 +84,7 @@ class ManualSyncUIPopover: BaseUIPopover {
     }
     
     @IBAction func onResend(_ sender: Any) {
-        APIManager.syncBegin(account: myAccount) { (responseData) in
+        APIManager.syncBegin(token: myAccount.jwt) { (responseData) in
             guard case .Success = responseData else {
                 self.dismiss(animated: true, completion: nil)
                 return
@@ -112,7 +112,7 @@ extension ManualSyncUIPopover: WebSocketManagerDelegate {
 
 extension ManualSyncUIPopover: ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void) {
-        APIManager.syncStatus(account: myAccount) { (responseData) in
+        APIManager.syncStatus(token: myAccount.jwt) { (responseData) in
             if case .AuthDenied = responseData {
                 completion(true)
                 self.newMessage(result: .SyncDeny)

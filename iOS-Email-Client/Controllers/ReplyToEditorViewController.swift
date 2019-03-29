@@ -67,7 +67,7 @@ class ReplyToEditorViewController: UIViewController {
     private func saveReplyToAPI(enable: Bool){
         let email = enable ? (emailText.text ?? "") : ""
         replyToEnableSwitch.isEnabled = false
-        APIManager.updateReplyTo(email: email, enable: enable, account: myAccount) { (responseData) in
+        APIManager.updateReplyTo(email: email, enable: enable, token: myAccount.jwt) { (responseData) in
             self.replyToEnableSwitch.isEnabled = true
             if case .Unauthorized = responseData {
                 self.logout(account: self.myAccount)
@@ -127,9 +127,9 @@ extension ReplyToEditorViewController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         }
     }
 }

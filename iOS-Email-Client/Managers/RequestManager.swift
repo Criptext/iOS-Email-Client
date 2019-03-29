@@ -28,7 +28,7 @@ final class RequestManager: NSObject {
         }
         processingAccount = username
         accountRequests.removeFirst()
-        APIManager.getEvents(account: myAccount) { [weak self] (responseData) in
+        APIManager.getEvents(token: myAccount.jwt) { [weak self] (responseData) in
             guard let myAccount = DBManager.getAccountByUsername(username),
                 let weakSelf = self else {
                     self?.accountCompletions[username] = nil

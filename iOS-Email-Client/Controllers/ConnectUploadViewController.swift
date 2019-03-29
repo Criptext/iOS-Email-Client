@@ -89,7 +89,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func linkAccept() {
-        APIManager.linkAccept(randomId: linkData.randomId,account: myAccount) { (responseData) in
+        APIManager.linkAccept(randomId: linkData.randomId, token: myAccount.jwt) { (responseData) in
             if case .Missing = responseData {
                 self.showErrorAlert(message: String.localize("DEVICE_REJECTED"))
                 return
@@ -112,7 +112,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func syncAccept() {
-        APIManager.syncAccept(randomId: linkData.randomId, account: myAccount) { (responseData) in
+        APIManager.syncAccept(randomId: linkData.randomId, token: myAccount.jwt) { (responseData) in
             if case .Missing = responseData {
                 self.showErrorAlert(message: String.localize("DEVICE_REJECTED"))
                 return
@@ -204,7 +204,7 @@ class ConnectUploadViewController: UIViewController{
             "key": encryptedKey
         ] as [String: Any]
         self.connectUIView.progressChange(value: PROGRESS_SEND_DATA, message: String.localize("UPLOADING_MAIL"), completion: {})
-        APIManager.linkDataAddress(params: params, account: myAccount) { (responseData) in
+        APIManager.linkDataAddress(params: params, token: myAccount.jwt) { (responseData) in
             guard case .Success = responseData else {
                 self.presentProcessInterrupted()
                 return
@@ -247,7 +247,7 @@ extension ConnectUploadViewController: ScheduleWorkerDelegate {
         if databasePath != nil {
             self.connectUIView.progressChange(value: PROGRESS_GET_KEYS, message: String.localize("GETTING_KEYS"), cancel: true, completion: {})
         }
-        APIManager.getKeybundle(deviceId: deviceId, account: myAccount) { (responseData) in
+        APIManager.getKeybundle(deviceId: deviceId, token: myAccount.jwt) { (responseData) in
             guard case let .SuccessDictionary(keys) = responseData else {
                 completion(false)
                 return

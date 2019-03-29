@@ -1354,7 +1354,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             peerEvents.append(currentEvent)
             eventItems.append(queueItem)
         }
-        APIManager.postPeerEvent(["peerEvents": peerEvents], account: myAccount) { [weak self] (responseData) in
+        APIManager.postPeerEvent(["peerEvents": peerEvents], token: myAccount.jwt) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -1766,9 +1766,9 @@ extension InboxViewController: LinkDeviceDelegate {
     
     func onCancelLinkDevice(linkData: LinkData) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         }
     }
     
@@ -1808,11 +1808,11 @@ extension InboxViewController: LinkDeviceDelegate {
             return
         }
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: account, completion: {_ in
+            APIManager.syncDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in
                 completion()
             })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: account, completion: {_ in
+            APIManager.linkDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in
                 completion()
             })
         }
@@ -1830,7 +1830,7 @@ extension InboxViewController {
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailUnreadRaw(metadataKeys: [emailKey], unread: 0)
         let eventParams = ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()] as [String : Any]
-        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: account) { (responseData) in
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], token: account.jwt) { (responseData) in
             if case .Success = responseData {
                 self.refreshThreadRows()
                 completion()
@@ -1869,7 +1869,7 @@ extension InboxViewController {
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
         let eventParams = ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()] as [String : Any]
-        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: account) { (responseData) in
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], token: account.jwt) { (responseData) in
             if case .Success = responseData {
                 self.refreshThreadRows()
                 completion()

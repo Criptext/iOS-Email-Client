@@ -60,7 +60,8 @@ class NewEmailHandler {
             return
         }
         
-        api.getEmailBody(metadataKey: event.metadataKey, account: myAccount, queue: self.queue) { (responseData) in
+        api.getEmailBody(metadataKey: event.metadataKey, token: myAccount.jwt, queue: self.queue) { (responseData) in
+            var error: CriptextError?
             var unsent = false
             var content = ""
             var contentHeader: String? = nil
