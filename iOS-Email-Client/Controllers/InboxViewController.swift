@@ -44,6 +44,8 @@ class InboxViewController: UIViewController {
     var markBarButton:UIBarButtonItem!
     var deleteBarButton:UIBarButtonItem!
     var menuButton:UIBarButtonItem!
+    var menuAvatarButton:UIBarButtonItem!
+    var menuAvatarImageView: UIImageView!
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
@@ -206,7 +208,7 @@ class InboxViewController: UIViewController {
         
         self.setButtonItems(isEditing: false)
         
-        self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+        self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         self.titleBarButton.title = SystemLabel.inbox.description.uppercased()
 
         topToolbar.delegate = self
@@ -327,6 +329,18 @@ class InboxViewController: UIViewController {
         self.coachMarksController.stop(immediately: true)
     }
     
+    func initAvatarButton() {
+        let containerView = UIView(frame: CGRect(x: 3, y: 0, width: 31, height: 28))
+        menuAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
+        menuAvatarImageView.contentMode = .scaleAspectFit
+        menuAvatarImageView.clipsToBounds = true
+        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOpenMenu(_:)))
+        containerView.addSubview(menuAvatarImageView)
+        containerView.addGestureRecognizer(tapGesture)
+        self.menuAvatarButton = UIBarButtonItem(customView: containerView)
+    }
+    
     func initBarButtonItems(){
         self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
@@ -341,10 +355,11 @@ class InboxViewController: UIViewController {
         let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
         let filterICon = #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         let searchImage = #imageLiteral(resourceName: "search").tint(with: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0))
+        
         self.menuButton = UIBarButtonItem(image: menuImage, style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
         self.searchBarButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didPressSearch(_:)))
         self.filterBarButton = UIBarButtonItem(image: filterICon, style: .plain, target: self, action: #selector(didPressFilter(_:)))
-        
+        self.initAvatarButton()
         // Set batButtonItems
         let activityButton = MIBadgeButton(type: .custom)
         let badgeCounter = DBManager.getNewFeedsCount(since: myAccount.lastTimeFeedOpened)
@@ -676,7 +691,7 @@ extension InboxViewController{
         
         guard isEditing else {
             self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.filterBarButton, self.spaceBarButton]
-            self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+            self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
             return
         }
         
@@ -1843,6 +1858,7 @@ extension InboxViewController {
             updateFeedsBadge(counter: badgeCounter)
         }
         self.setQueueItemsListener()
+        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
         self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
     }
 }
