@@ -15,7 +15,7 @@ class GetBadgeCountersAsyncTask {
         var inbox = 0
         var draft = 0
         var spam = 0
-        var accounts = [(String, Int)]()
+        var accounts = [String: Int]()
     }
     
     let username: String
@@ -39,7 +39,7 @@ class GetBadgeCountersAsyncTask {
             let accounts = DBManager.getInactiveAccounts()
             accounts.forEach({ (account) in
                 let counterValue = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: account)
-                counter.accounts.append((account.username, counterValue))
+                counter.accounts[account.username] = counterValue
             })
             
             DispatchQueue.main.async {

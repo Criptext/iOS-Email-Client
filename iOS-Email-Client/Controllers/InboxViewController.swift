@@ -46,6 +46,7 @@ class InboxViewController: UIViewController {
     var menuButton:UIBarButtonItem!
     var menuAvatarButton:UIBarButtonItem!
     var menuAvatarImageView: UIImageView!
+    var circleBadgeView: UIView!
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
@@ -332,11 +333,19 @@ class InboxViewController: UIViewController {
     func initAvatarButton() {
         let containerView = UIView(frame: CGRect(x: 3, y: 0, width: 31, height: 28))
         menuAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
+        circleBadgeView = UIView(frame: CGRect(x: 22, y: -2, width: 12, height: 12))
+        circleBadgeView.backgroundColor = .red
+        circleBadgeView.layer.cornerRadius = 6
+        circleBadgeView.layer.borderWidth = 2
+        circleBadgeView.layer.borderColor = UIColor.charcoal.cgColor
+        circleBadgeView.isHidden = true
+        
         menuAvatarImageView.contentMode = .scaleAspectFit
         menuAvatarImageView.clipsToBounds = true
         UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOpenMenu(_:)))
         containerView.addSubview(menuAvatarImageView)
+        containerView.addSubview(circleBadgeView)
         containerView.addGestureRecognizer(tapGesture)
         self.menuAvatarButton = UIBarButtonItem(customView: containerView)
     }
@@ -1866,6 +1875,9 @@ extension InboxViewController {
 extension InboxViewController: RequestDelegate {
     func finishRequest(username: String, result: EventData.Result) {
         guard myAccount.username == username else {
+            if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
+                menuViewController.refreshBadges()
+            }
             return
         }
         self.refreshControl.endRefreshing()

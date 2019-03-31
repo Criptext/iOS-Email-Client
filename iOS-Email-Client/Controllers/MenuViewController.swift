@@ -211,17 +211,19 @@ class MenuViewController: UIViewController{
             weakSelf.spamMenuItem.showBadge(counters.spam)
             
             var refreshAccounts = false
+            
             for accountBadge in counters.accounts {
-                if weakSelf.menuData.accountBadge[accountBadge.0] != accountBadge.1 {
-                    weakSelf.menuData.accountBadge[accountBadge.0] = accountBadge.1
+                if weakSelf.menuData.accountBadge[accountBadge.key] != accountBadge.value {
                     refreshAccounts = true
                 }
             }
+            weakSelf.menuData.accountBadge = counters.accounts
             
             if refreshAccounts {
                 weakSelf.accountsTableView.reloadData()
                 weakSelf.accountsCollectionView.reloadData()
             }
+            weakSelf.mailboxVC.circleBadgeView.isHidden = !weakSelf.menuData.accountBadge.contains(where: {$0.value > 0})
         }
     }
     
