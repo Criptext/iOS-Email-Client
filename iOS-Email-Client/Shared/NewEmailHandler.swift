@@ -96,10 +96,16 @@ class NewEmailHandler {
                 return
             }
             
+            var replyThreadId: String? = nil
+            if let inReplyTo = event.inReplyTo,
+                let replyEmail = SharedDB.getEmail(messageId: inReplyTo) {
+                replyThreadId = replyEmail.threadId
+            }
+            
             let contentPreview = self.getContentPreview(content: content)
             let email = Email()
             email.account = myAccount
-            email.threadId = event.threadId
+            email.threadId = replyThreadId ?? event.threadId
             email.subject = event.subject
             email.key = event.metadataKey
             email.messageId = event.messageId

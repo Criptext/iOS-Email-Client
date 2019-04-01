@@ -19,6 +19,7 @@ struct NewEmail {
     let date: Date
     let metadataKey: Int
     let senderDeviceId: Int32?
+    let inReplyTo: String?
     let messageType: MessageType
     let files: [[String: Any]]?
     let fileKey: String?
@@ -64,6 +65,7 @@ struct NewEmail {
         labels = (params["labels"] as? [String]) ?? [String]()
         replyTo = params["replyTo"] as? String
         boundary = params["boundary"] as? String
+        inReplyTo = params["inReplyTo"] as? String
     }
     
     static func convertToDate(dateString: String) -> Date {
