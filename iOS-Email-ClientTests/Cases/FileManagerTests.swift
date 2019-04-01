@@ -12,20 +12,26 @@ import XCTest
 
 class FileManagerTests: XCTestCase {
     
+    var account: Account!
     var token: String {
         return ("qynhtyzjrshazxqarkpy:lofjksedbxuucdjjpnby").data(using: .utf8)!.base64EncodedString()
     }
     
     override func setUp() {
         DBManager.destroy()
+        account = Account()
+        account.jwt = token
     }
     
     func testSuccessfullyUploadFile(){
+        
+        account.jwt = token
+        
         let delegate = FileManagerSpyDelegate()
         delegate.expectation = expectation(description: "Upload Called Back")
         let fileManager = CriptextFileManager()
         fileManager.apiManager = MockAPIManager.self
-        fileManager.token = token
+        fileManager.myAccount = account
         fileManager.delegate = delegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
@@ -50,7 +56,7 @@ class FileManagerTests: XCTestCase {
         uploadDelegate.expectation = expectation(description: "Delegate Called Back")
         let uploadManager = CriptextFileManager()
         uploadManager.apiManager = MockAPIManager.self
-        uploadManager.token = self.token
+        uploadManager.myAccount = self.account
         uploadManager.delegate = uploadDelegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         uploadManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
@@ -74,9 +80,9 @@ class FileManagerTests: XCTestCase {
             let downloadManager = CriptextFileManager()
             downloadManager.apiManager = MockAPIManager.self
             downloadManager.delegate = downloadDelegate
-            downloadManager.token = self.token
+            downloadManager.myAccount = self.account
             downloadManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
-            MockAPIManager.commitFile(filetoken: filetoken, token: uploadManager.token! ){ error in
+            MockAPIManager.commitFile(filetoken: filetoken, token: self.account.jwt){ error in
                 guard error == nil else {
                     XCTFail("Unable to commit file")
                     return
@@ -111,7 +117,7 @@ class FileManagerTests: XCTestCase {
         delegate.expectation = expectation(description: "Upload Called Back")
         let fileManager = CriptextFileManager()
         fileManager.apiManager = MockAPIManager.self
-        fileManager.token = token
+        fileManager.myAccount = account
         fileManager.setEncryption(id: 0, key: keyData, iv: ivData)
         fileManager.delegate = delegate
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
@@ -142,7 +148,7 @@ class FileManagerTests: XCTestCase {
         uploadManager.apiManager = MockAPIManager.self
         uploadManager.setEncryption(id: 0, key: keyData, iv: ivData)
         uploadManager.delegate = uploadDelegate
-        uploadManager.token = token
+        uploadManager.myAccount = account
         let filepath = Bundle(for: FileManagerTests.self).path(forResource: "criptextlogo", ofType: "png")!
         uploadManager.registerFile(filepath: filepath, name: "criptextlogo.png", mimeType: "image/png")
         
@@ -163,10 +169,10 @@ class FileManagerTests: XCTestCase {
             downloadDelegate.expectation = self.expectation(description: "Download Delegate Called Back")
             let downloadManager = CriptextFileManager()
             downloadManager.apiManager = MockAPIManager.self
-            downloadManager.token = self.token
+            downloadManager.myAccount = self.account
             downloadManager.setEncryption(id: 1, key: keyData, iv: ivData)
             downloadManager.delegate = downloadDelegate
-            MockAPIManager.commitFile(filetoken: filetoken, token: uploadManager.token){ error in
+            MockAPIManager.commitFile(filetoken: filetoken, token: self.account.jwt){ error in
                 guard error == nil else {
                     XCTFail("Unable to commit file")
                     return

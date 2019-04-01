@@ -15,14 +15,14 @@ class APIManagerSpy: APIManager {
     static var expectation: XCTestExpectation?
     static var requestParams: [String: Any]? = nil
     
-    override class func getKeysRequest(_ params: [String : Any], account: Account, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
+    override class func getKeysRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         completion(ResponseData.SuccessDictionary([
             "keyBundles": [[String: Any]](),
             "blacklistedKnownDevices": [[String: Any]]()
         ]))
     }
     
-    override class func postMailRequest(_ params: [String : Any], account: Account, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
+    override class func postMailRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         handleExpectation(params: params)
         completion(ResponseData.SuccessDictionary([
             "metadataKey": 1,

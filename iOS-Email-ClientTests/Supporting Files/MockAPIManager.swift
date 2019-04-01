@@ -12,7 +12,7 @@ import Alamofire
 
 class MockAPIManager: APIManager {
     
-    override class func getEmailBody(metadataKey: Int, account: Account, queue: DispatchQueue? = .main, completion: @escaping ((ResponseData) -> Void)){
+    override class func getEmailBody(metadataKey: Int, token: String, queue: DispatchQueue? = .main, completion: @escaping ((ResponseData) -> Void)){
         completion(ResponseData.SuccessDictionary(["body": "ytw8v0ntriuhtkirglsdfnakncbdjshndls"]))
     }
     
@@ -31,7 +31,7 @@ class MockAPIManager: APIManager {
         }
     }
     
-    override class func registerFile(parameters: [String: Any], token: String, completion: @escaping ((ResponseData) -> Void)){
+    override class func registerFile(token: String, parameters: [String: Any], completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/upload"
         let headers = ["Authorization": "Basic \(token)"]
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
@@ -68,22 +68,17 @@ class MockAPIManager: APIManager {
         }
     }
     
-    override class func getFileMetadata(filetoken: String, token: String, completion: @escaping ((Error?, [String: Any]?) -> Void)){
+    override class func getFileMetadata(filetoken: String, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/\(filetoken)"
         let headers = ["Authorization": "Basic \(token)"]
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON{
             (response) in
-            guard response.response?.statusCode == 200,
-                let responseData = response.result.value as? [String: Any] else {
-                    let criptextError = CriptextError(code: .noValidResponse)
-                    completion(criptextError, nil)
-                    return
-            }
-            completion(nil, responseData)
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
-    override class func downloadChunk(filetoken: String, part: Int, token: String, progressDelegate: ProgressDelegate, completion: @escaping ((Error?, String?) -> Void)){
+    override class func downloadChunk(filetoken: String, part: Int, token: String, progressDelegate: ProgressDelegate, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.fileServiceUrl)/file/\(filetoken)/chunk/\(part)"
         let headers = ["Authorization": "Basic \(token)"]
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -94,16 +89,11 @@ class MockAPIManager: APIManager {
         Alamofire.download(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers, to: destination).downloadProgress { (progress) in
             progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
             }.response { (response) in
-                if let error = response.error {
-                    completion(error, nil)
+                guard response.response?.statusCode != 200 else {
+                    completion(ResponseData.SuccessString(fileURL.path))
                     return
                 }
-                guard response.response?.statusCode == 200 else {
-                    let criptextError = CriptextError(code: .noValidResponse)
-                    completion(criptextError, nil)
-                    return
-                }
-                completion(nil, fileURL.path)
+                completion(ResponseData.Error(CriptextError(code: .noValidResponse)))
         }
     }
 }
