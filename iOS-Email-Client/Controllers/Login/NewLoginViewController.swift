@@ -10,6 +10,7 @@ import Foundation
 import Material
 
 class NewLoginViewController: UIViewController{
+    @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var usernameTextField: TextField!
@@ -17,6 +18,7 @@ class NewLoginViewController: UIViewController{
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var loginErrorLabel: UILabel!
     var loggedOutRemotely: String?
+    var multipleAccount = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +32,7 @@ class NewLoginViewController: UIViewController{
         toggleLoadingView(false)
         clearErrors()
         checkToEnableDisableLoginButton()
+        closeButton.isHidden = !multipleAccount
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -145,14 +148,20 @@ class NewLoginViewController: UIViewController{
     }
     
     func existingAccount(_ username: String) -> String? {
-        guard let existingAccount = DBManager.getFirstAccount(),
-            existingAccount.username != username else {
+        guard DBManager.getLoggedOutAccount(username: username) == nil else {
+            return nil
+        }
+        guard let existingAccount = DBManager.getLoggedOutAccounts().first else {
             return nil
         }
         return existingAccount.username
     }
     
     func checkUsername(_ username: String) {
+        guard !multipleAccount || !self.checkAccountExists(username: username) else {
+            self.showLoginError(error: String.localize("ACCOUNT_EXISTS"))
+            return
+        }
         APIManager.checkAvailableUsername(username) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
@@ -172,6 +181,14 @@ class NewLoginViewController: UIViewController{
             }
             weakSelf.showWarningPopup(username: username, previous: user)
         }
+    }
+    
+    func checkAccountExists(username: String) -> Bool {
+        guard let existingAccount = DBManager.getAccountByUsername(username),
+            existingAccount.isLoggedIn else {
+                return false
+        }
+        return  true
     }
     
     func linkBegin(username: String){
@@ -219,6 +236,14 @@ class NewLoginViewController: UIViewController{
         self.onLoginPress(sender)
     }
     
+    @IBAction func didPressSignup(sender: Any) {
+        self.jumpToSignupDeviceView()
+    }
+    
+    @IBAction func didPressClose(sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     func showLoginError(error: String){
         self.setLoginError(error)
         self.toggleLoadingView(false)
@@ -228,6 +253,7 @@ class NewLoginViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "resetdeviceview")  as! ResetDeviceViewController
         controller.loginData = loginData
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
         clearErrors()
@@ -237,6 +263,16 @@ class NewLoginViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
         controller.loginData = loginData
+        controller.multipleAccount = self.multipleAccount
+        navigationController?.pushViewController(controller, animated: true)
+        toggleLoadingView(false)
+        clearErrors()
+    }
+    
+    func jumpToSignupDeviceView(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "signupview")  as! SignUpViewController
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
         clearErrors()

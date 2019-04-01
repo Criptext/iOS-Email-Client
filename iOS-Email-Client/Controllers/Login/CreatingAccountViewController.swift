@@ -17,7 +17,10 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
+    var multipleAccount = false
     var signupData: SignUpData!
+    var account: Account?
+    var bundle: CRBundle?
     var state : CreationState = .checkDB
     
     enum CreationState{
@@ -37,7 +40,7 @@ class CreatingAccountViewController: UIViewController{
             }
             sendSignUpRequest()
         case .accountCreate:
-            createAccount()
+            updateAccount()
         }
     }
     
@@ -50,13 +53,25 @@ class CreatingAccountViewController: UIViewController{
         handleState()
     }
     
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion)
+        
+        if let myAccount = self.account {
+            DBManager.signout(account: myAccount)
+            DBManager.delete(account: myAccount)
+        }
+    }
+    
     func checkDatabase(){
         self.state = .signupRequest
-        if let account = DBManager.getFirstAccount(),
-            account.username != self.signupData.username {
-            FileUtils.deleteAccountDirectory(account: account)
-            DBManager.destroy()
-            removeQuickGuideFlags()
+        if DBManager.getLoggedOutAccount(username: self.signupData.username) == nil {
+            let loggedOutAccounts = DBManager.getLoggedOutAccounts()
+            for account in loggedOutAccounts {
+                FileUtils.deleteAccountDirectory(account: account)
+                DBManager.signout(account: account)
+                DBManager.clearMailbox(account: account)
+                DBManager.delete(account: account)
+            }
         }
         self.handleState()
     }
@@ -66,10 +81,25 @@ class CreatingAccountViewController: UIViewController{
         defaults.removeQuickGuideFlags()
     }
     
+    func createAccount() -> (Account, [String: Any]) {
+        if let myKeys = self.bundle?.publicKeys,
+            let myAccount = self.account {
+            return(myAccount, myKeys)
+        }
+        let account = SignUpData.createAccount(from: self.signupData)
+        DBManager.store(account)
+        
+        let bundle = CRBundle(account: account)
+        let keys = bundle.generateKeys()
+        self.account = account
+        self.bundle = bundle
+        return (account, keys)
+    }
+    
     func sendKeysRequest(){
         feedbackLabel.text = String.localize("GENERATING_KEYS")
-        let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
-        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
+        let accountData = createAccount()
+        APIManager.postKeybundle(params: accountData.1, token: signupData.token){ (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.displayErrorMessage(message: error.description)
@@ -92,7 +122,9 @@ class CreatingAccountViewController: UIViewController{
     
     func sendSignUpRequest(){
         feedbackLabel.text = String.localize("GENERATING_KEYS")
-        APIManager.signUpRequest(signupData.buildDataForRequest()) { (responseData) in
+        let accountData = createAccount()
+        let signupRequestData = signupData.buildDataForRequest(publicKeys: accountData.1)
+        APIManager.signUpRequest(signupRequestData) { (responseData) in
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.displayErrorMessage(message: error.description)
@@ -125,21 +157,21 @@ class CreatingAccountViewController: UIViewController{
         feedbackLabel.text = String.localize("GENERATING_KEYS")
     }
     
-    func createAccount(){
+    func updateAccount(){
+        guard let myAccount = self.account,
+            let myBundle = self.bundle,
+            !signupData.token.isEmpty,
+            let refreshToken = signupData.refreshToken,
+            let identityB64 = myBundle.store.identityKeyStore.getIdentityKeyPairB64() else {
+            return
+        }
+        let regId = myBundle.store.identityKeyStore.getRegId()
         feedbackLabel.text = String.localize("LOGIN_AWESOME")
-        let myAccount = Account()
-        myAccount.username = signupData.username
-        myAccount.name = signupData.fullname
-        myAccount.jwt = signupData.token!
-        myAccount.refreshToken = signupData.refreshToken
-        myAccount.regId = signupData.getRegId()
-        myAccount.identityB64 = signupData.getIdentityKeyPairB64() ?? ""
-        myAccount.deviceId = signupData.deviceId
-        DBManager.store(myAccount)
+        DBManager.update(account: myAccount, jwt: signupData.token, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
-        DBManager.store([myContact])
+        DBManager.store([myContact], account: myAccount)
         let defaults = CriptextDefaults()
         defaults.activeAccount = myAccount.username
         if signupData.deviceId != 1 {
@@ -147,8 +179,21 @@ class CreatingAccountViewController: UIViewController{
         }
         registerFirebaseToken(jwt: myAccount.jwt)
         animateProgress(100.0, 2.0) {
-            self.goToMailbox(myAccount.username)
+            if self.multipleAccount {
+                self.goBackToMailbox(account: myAccount)
+            } else {
+                self.goToMailbox(myAccount.username)
+            }
         }
+    }
+    
+    func goBackToMailbox(account: Account) {
+        self.account = nil
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.dismiss(animated: true)
+            return
+        }
+        delegate.swapAccount(account: account)
     }
     
     func displayErrorMessage(message: String = String.localize("SIGNUP_FALLBACK_ERROR")){

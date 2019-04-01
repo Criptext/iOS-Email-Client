@@ -299,6 +299,77 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newContact["score"] = 0
                     }
                 }
+                if (oldSchemaVersion < 17) {
+                    var account: MigrationObject? = nil
+                    migration.enumerateObjects(ofType: Account.className()){ (oldObject, newObject) in
+                        guard let newAccount = newObject else {
+                            return
+                        }
+                        newAccount["compoundKey"] = "\(newAccount["username"]!)"
+                        newAccount["isActive"] = true
+                        newAccount["isLoggedIn"] = true
+                        if account == nil {
+                            account = newAccount
+                        }
+                    }
+                    if let myAccount = account {
+                        migration.enumerateObjects(ofType: Email.className()){ (oldObject, newObject) in
+                            guard let newEmail = newObject else{
+                                return
+                            }
+                            newEmail["account"] = myAccount
+                            newEmail["compoundKey"] = "\(myAccount["compoundKey"]!):\(newEmail["key"]!)"
+                        }
+                        migration.enumerateObjects(ofType: CRSignedPreKeyRecord.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                            newRecord["compoundKey"] = "\(myAccount["compoundKey"]!):\(newRecord["signedPreKeyId"]!)"
+                        }
+                        migration.enumerateObjects(ofType: CRPreKeyRecord.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                            newRecord["compoundKey"] = "\(myAccount["compoundKey"]!):\(newRecord["preKeyId"]!)"
+                        }
+                        migration.enumerateObjects(ofType: CRTrustedDevice.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                        }
+                        migration.enumerateObjects(ofType: CRSessionRecord.className()){ (oldObject, newObject) in
+                            guard let newRecord = newObject else{
+                                return
+                            }
+                            newRecord["account"] = myAccount
+                            newRecord["compoundKey"] = "\(myAccount["compoundKey"]!):\(newRecord["contactId"]!):\(newRecord["deviceId"]!)"
+                        }
+                        migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
+                            guard let newLabel = newObject else{
+                                return
+                            }
+                            newLabel["account"] = myAccount
+                        }
+                        migration.enumerateObjects(ofType: QueueItem.className()){ (oldObject, newObject) in
+                            guard let newQueue = newObject else{
+                                return
+                            }
+                            newQueue["account"] = myAccount
+                        }
+                        migration.enumerateObjects(ofType: Contact.className()){ (oldObject, newObject) in
+                            guard let newContact = newObject else{
+                                return
+                            }
+                            let newAccountContact = migration.create(AccountContact.className())
+                            newAccountContact["account"] = myAccount
+                            newAccountContact["contact"] = newContact
+                            newAccountContact["compoundKey"] = "\(myAccount["username"]!):\(newContact["email"]!)"
+                        }
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm
@@ -311,7 +382,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = CriptextDefaults()
         defaults.migrate()
         defaults.appStateActive = true
-        
+                
         if let activeAccount = defaults.activeAccount {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions, activeAccount)
@@ -410,8 +481,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
-        ThemeManager.shared.swapTheme(theme: Theme.init())
-        self.clearDefaults()
+        if let activateAccount = DBManager.getInactiveAccounts().first,
+            let inboxVC = getInboxVC() {
+            let defaults = CriptextDefaults()
+            defaults.activeAccount = activateAccount.username
+            DBManager.activateAccount(activateAccount)
+            inboxVC.swapAccount(activateAccount)
+            inboxVC.dismiss(animated: true)
+        } else {
+            DBManager.disableAccount(account)
+            self.setloginAsRoot(manually: manually, message: message)
+            ThemeManager.shared.swapTheme(theme: Theme.init())
+            self.clearDefaults()
+        }
+        
+        if (!manually) {
+            FileUtils.deleteAccountDirectory(account: account)
+            DBManager.signout(account: account)
+            DBManager.clearMailbox(account: account)
+            DBManager.delete(account: account)
+        } else {
+            DBManager.signout(account: account)
+        }
+    }
+    
+    func setloginAsRoot(manually: Bool, message: String) {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if !manually,
@@ -423,18 +517,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         options.duration = 0.4
         options.style = .easeOut
         UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
-        
-        if (!manually) {
-            DBManager.destroy()
-            FileUtils.deleteAccountDirectory(account: account)
-        } else {
-            DBManager.signout()
-        }
     }
     
     func clearDefaults() {
         let defaults = CriptextDefaults()
         defaults.removeConfig()
+    }
+    
+    func swapAccount(account: Account) {
+        let defaults = CriptextDefaults()
+        defaults.activeAccount = account.username
+        guard let inboxVC = getInboxVC() else {
+            return
+        }
+        inboxVC.swapAccount(account)
+        inboxVC.dismiss(animated: true)
     }
     
     func replaceRootViewController(_ viewController:UIViewController){
@@ -467,7 +564,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
+        if let inbox = getInboxVC() {
+            UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: inbox.myAccount)
+        }
+        RequestManager.shared.clearPending()
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -542,7 +642,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
-        guard let inboxVC = getInboxVC() else {
+        guard let inboxVC = getInboxVC(),
+            let accountUser = (userInfo["account"] as? String ?? userInfo["recipientId"] as? String) else {
                 return
         }
         DBManager.refresh()
@@ -554,14 +655,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             }
             let linkData = LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)
             linkData.version = Int(version)!
-            inboxVC.onAcceptLinkDevice(linkData: linkData) {
+            inboxVC.onAcceptLinkDevice(username: accountUser, linkData: linkData) {
                 completionHandler()
             }
         case "LINK_DENY":
             guard let randomId = userInfo["randomId"] as? String else {
                 break
             }
-            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)) {
+            inboxVC.onCancelLinkDevice(username: accountUser, linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)) {
                 completionHandler()
             }
         case "SYNC_ACCEPT":
@@ -575,14 +676,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             let linkData = LinkData(deviceName: deviceName, deviceType: Int(deviceType)!, randomId: randomId, kind: .sync)
             linkData.version = Int(version)!
             linkData.deviceId = Int32(deviceId)!
-            inboxVC.onAcceptLinkDevice(linkData: linkData) {
+            inboxVC.onAcceptLinkDevice(username: accountUser, linkData: linkData) {
                 completionHandler()
             }
         case "SYNC_DENY":
             guard let randomId = userInfo["randomId"] as? String else {
                 break
             }
-            inboxVC.onCancelLinkDevice(linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .sync)) {
+            inboxVC.onCancelLinkDevice(username: accountUser, linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .sync)) {
                 completionHandler()
             }
         case "EMAIL_MARK":
@@ -590,8 +691,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let key = Int(keyString) else {
                 return
             }
-            inboxVC.markAsRead(emailKey: key) {
-                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
+            inboxVC.markAsRead(username: accountUser, emailKey: key) {
+                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: inboxVC.myAccount)
                 completionHandler()
             }
             break
@@ -600,7 +701,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let key = Int(keyString) else {
                     return
             }
-            inboxVC.reply(emailKey: key) {
+            inboxVC.reply(username: accountUser, emailKey: key) {
                 completionHandler()
             }
             break
@@ -609,29 +710,31 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let key = Int(keyString) else {
                     return
             }
-            inboxVC.moveToTrash(emailKey: key) {
+            inboxVC.moveToTrash(username: accountUser, emailKey: key) {
                 completionHandler()
             }
             break
         default:
             if let threadId = userInfo["threadId"] as? String {
-                inboxVC.goToEmailDetail(threadId: threadId)
+                inboxVC.openThread(username: accountUser, threadId: threadId)
             }
         }
-        
     }
 }
 
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let inboxVC = getInboxVC() else {
+        guard let accountUser = userInfo["account"] as? String else {
                 return
         }
-        inboxVC.getPendingEvents(nil) { (success) in
-            UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id)
+        RequestManager.shared.accountCompletions[accountUser] = { _ in
+            if let inboxVC = self.getInboxVC() {
+                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: inboxVC.myAccount)
+            }
             completionHandler(.newData)
         }
+        RequestManager.shared.getAccountEvents(username: accountUser)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

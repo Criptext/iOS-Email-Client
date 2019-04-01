@@ -31,6 +31,7 @@ class SignUpViewController: UIViewController{
     
     var loadingAccount = false
     var apiRequest : DataRequest?
+    var multipleAccount = false
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -232,6 +233,7 @@ class SignUpViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
         controller.signupData = signupData
+        controller.multipleAccount = self.multipleAccount
         self.present(controller, animated: true, completion: nil)
     }
     

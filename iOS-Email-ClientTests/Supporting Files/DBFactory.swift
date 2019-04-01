@@ -10,23 +10,37 @@ import Foundation
 @testable import iOS_Email_Client
 
 class DBFactory {
-    @discardableResult class func createAndStoreEmail(key: Int, preview: String, subject: String, fromAddress: String, threadId: String? = nil) -> Email {
+    
+    @discardableResult class func createAndStoreAccount(username: String, deviceId: Int, name: String) -> Account {
+        let newAccount = Account()
+        newAccount.name = name
+        newAccount.username = username
+        newAccount.deviceId = deviceId
+        newAccount.buildCompoundKey()
+        DBManager.store(newAccount)
+        
+        return newAccount
+    }
+    
+    @discardableResult class func createAndStoreEmail(key: Int, preview: String, subject: String, fromAddress: String, threadId: String? = nil, account: Account) -> Email {
         let newEmail = Email()
         newEmail.key = key
         newEmail.threadId = threadId ?? key.description
         newEmail.preview = preview
         newEmail.subject = subject
         newEmail.fromAddress = fromAddress
+        newEmail.account = account
+        newEmail.buildCompoundKey()
         DBManager.store(newEmail)
         
         return newEmail
     }
     
-    @discardableResult class func createAndStoreContact(email: String, name: String) -> Contact {
+    @discardableResult class func createAndStoreContact(email: String, name: String, account: Account) -> Contact {
         let newContact = Contact()
         newContact.email = email
         newContact.displayName = name
-        DBManager.store([newContact])
+        DBManager.store([newContact], account: account)
         
         return newContact
     }

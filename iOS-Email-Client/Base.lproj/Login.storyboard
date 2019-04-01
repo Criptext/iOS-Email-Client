@@ -21,7 +21,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Dhb-1z-z92">
             <objects>
-                <navigationController navigationBarHidden="YES" id="lgh-kb-FeW" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="loginNavController" navigationBarHidden="YES" id="lgh-kb-FeW" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oRv-vA-hlg">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -94,11 +94,11 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="OMZ-WS-rzb" kind="show" id="ML6-UT-kAO"/>
+                                    <action selector="didPressSignupWithSender:" destination="xiP-Yr-e9p" eventType="touchUpInside" id="ZBV-kU-rAy"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-Fm-cgQ">
-                                <rect key="frame" x="202" y="395.5" width="119" height="20"/>
+                                <rect key="frame" x="202" y="393.5" width="119" height="23.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="kke-wn-nCO"/>
                                 </constraints>
@@ -125,6 +125,24 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8h7-e5-yyo" customClass="CircleBackButton" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="20" y="40" width="42" height="42"/>
+                                <color key="backgroundColor" red="0.34509803919999998" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="sFc-xU-7Zi"/>
+                                    <constraint firstAttribute="width" constant="42" id="ydo-qb-RXa"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
+                                <state key="normal" image="close"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="didPressCloseWithSender:" destination="xiP-Yr-e9p" eventType="touchUpInside" id="0zR-Ct-cYC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.76862745098039209" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -133,8 +151,10 @@
                             <constraint firstItem="cKq-C3-tQl" firstAttribute="centerY" secondItem="gtO-CH-xJW" secondAttribute="centerY" multiplier="1.18" id="5te-Cr-2Nm"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="Z38-EZ-ooJ" secondAttribute="trailing" constant="37.5" id="CqU-en-wR3"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="3eC-DY-ikl" secondAttribute="trailing" constant="54" id="Dhg-Ey-WT5"/>
+                            <constraint firstItem="8h7-e5-yyo" firstAttribute="top" secondItem="gtO-CH-xJW" secondAttribute="top" constant="20" id="GhS-Ny-DoH"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="hQN-zb-RQx" secondAttribute="trailing" constant="22" id="Iw9-Nm-Xh2"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="uqv-px-110" secondAttribute="trailing" constant="22" id="LkO-oq-n1a"/>
+                            <constraint firstItem="8h7-e5-yyo" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="20" id="MX3-Qx-9v4"/>
                             <constraint firstItem="Ksj-Vf-DXI" firstAttribute="centerY" secondItem="Z38-EZ-ooJ" secondAttribute="centerY" id="Nay-Ce-J6A"/>
                             <constraint firstItem="hQN-zb-RQx" firstAttribute="top" secondItem="Z38-EZ-ooJ" secondAttribute="bottom" constant="16" id="QDH-Zl-HZ8"/>
                             <constraint firstItem="Kdd-Jg-Qc6" firstAttribute="centerY" secondItem="aRw-9s-cBf" secondAttribute="centerY" multiplier="0.6" id="RoQ-C3-CI8"/>
@@ -167,6 +187,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="gSg-bh-lzG"/>
                     <connections>
+                        <outlet property="closeButton" destination="8h7-e5-yyo" id="ZT6-2x-h7G"/>
                         <outlet property="errorImage" destination="0kC-sy-x2w" id="7zW-Dc-0q9"/>
                         <outlet property="loadingView" destination="Ksj-Vf-DXI" id="Wqu-z3-AaT"/>
                         <outlet property="loginButton" destination="Z38-EZ-ooJ" id="KiT-1q-DaN"/>
@@ -1204,6 +1225,7 @@ from Criptext</string>
     </scenes>
     <resources>
         <image name="arrow-back" width="17" height="14"/>
+        <image name="close" width="28" height="28"/>
         <image name="criptext-logo" width="118" height="31"/>
         <image name="device-alert" width="49" height="42"/>
         <image name="loading-hourglass" width="38" height="53"/>

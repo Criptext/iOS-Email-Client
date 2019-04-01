@@ -25,9 +25,9 @@ class SecurityPrivacyViewController: UITableViewController {
         case pincode
         case changePin
         case autoLock
-        case preview
-        case receipts
         case biometric
+        case twoFactor
+        case receipts
         
         var description: String {
             switch(self) {
@@ -37,8 +37,8 @@ class SecurityPrivacyViewController: UITableViewController {
                 return String.localize("CHANGE_PIN")
             case .autoLock:
                 return String.localize("AUTO_LOCK")
-            case .preview:
-                return String.localize("NOTIFICATION_PREVIEW")
+            case .twoFactor:
+                return String.localize("TWO_FACTOR")
             case .receipts:
                 return String.localize("READ_RECEIPTS")
             case .biometric:
@@ -47,6 +47,7 @@ class SecurityPrivacyViewController: UITableViewController {
         }
     }
     
+    var isPinControl = false
     var options = [PrivacyOption]()
     var defaults = CriptextDefaults()
     var generalData: GeneralSettingsData!
@@ -54,11 +55,15 @@ class SecurityPrivacyViewController: UITableViewController {
     
     override func viewDidLoad() {
         navigationItem.title = String.localize("PRIVACY_AND_SECURITY")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
+        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         tableView.estimatedRowHeight = UITableViewAutomaticDimension
-        initializeOptions()
+        if isPinControl {
+            initializePinOptions()
+        } else {
+            initializePrivacyOptions()
+        }
         applyTheme()
         
     }
@@ -78,12 +83,10 @@ class SecurityPrivacyViewController: UITableViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    func initializeOptions(){
+    func initializePinOptions() {
         let pinCode = PrivacyOption(label: .pincode, pick: nil, isOn: true, hasFlow: false, detail: String.localize("PIN_DETAIL"), isEnabled: true)
         let changePin = PrivacyOption(label: .changePin, pick: nil, isOn: nil, hasFlow: true, detail: nil, isEnabled: true)
         let autolock = PrivacyOption(label: .autoLock, pick: "1 minute", isOn: nil, hasFlow: false, detail: nil, isEnabled: true)
-        let preview = PrivacyOption(label: .preview, pick: nil, isOn: true, hasFlow: false, detail: String.localize("PREVIEW_DETAIL"), isEnabled: true)
-        let receipts = PrivacyOption(label: .receipts, pick: nil, isOn: true, hasFlow: false, detail: String.localize("RECEIPTS_DETAIL"), isEnabled: true)
         options.append(pinCode)
         options.append(changePin)
         options.append(autolock)
@@ -91,8 +94,14 @@ class SecurityPrivacyViewController: UITableViewController {
             let biometrics = PrivacyOption(label: .biometric, pick: nil, isOn: true, hasFlow: false, detail: nil, isEnabled: true)
             options.append(biometrics)
         }
-        options.append(preview)
+        toggleOptions()
+    }
+    
+    func initializePrivacyOptions() {
+        let twoFactor = PrivacyOption(label: .twoFactor, pick: nil, isOn: true, hasFlow: false, detail: String.localize("TWO_FACTOR_DETAIL"), isEnabled: true)
+        let receipts = PrivacyOption(label: .receipts, pick: nil, isOn: true, hasFlow: false, detail: String.localize("RECEIPTS_DETAIL"), isEnabled: true)
         options.append(receipts)
+        options.append(twoFactor)
         toggleOptions()
     }
     
@@ -107,8 +116,8 @@ class SecurityPrivacyViewController: UITableViewController {
             case .autoLock:
                 newOption.isEnabled = defaults.hasPIN
                 newOption.pick = defaults.lockTimer
-            case .preview:
-                newOption.isOn = !defaults.previewDisable
+            case .twoFactor:
+                newOption.isOn = generalData.isTwoFactor
             case .receipts:
                 newOption.isOn = generalData.hasEmailReceipts
             case .biometric:
@@ -135,11 +144,10 @@ class SecurityPrivacyViewController: UITableViewController {
                 }
                 self?.presentPasscodeController(state: .set)
             }
-        case .preview:
+        case .twoFactor:
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             cell.switchToggle = { [weak self] (isOn) in
-                self?.defaults.previewDisable = !isOn
-                self?.toggleOptions()
+                self?.setTwoFactor(enable: isOn, sender: cell.optionSwitch)
             }
         case .receipts:
             cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -206,6 +214,10 @@ class SecurityPrivacyViewController: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+    }
+    
     func presentPasscodeController(state: PasscodeLockViewController.LockState) {
         let configuration = PasscodeConfig()
         let passcodeVC = CustomPasscodeViewController(state: state, configuration: configuration, animateOnDismiss: true)
@@ -245,6 +257,49 @@ class SecurityPrivacyViewController: UITableViewController {
                 return
             }
         }
+    }
+    
+    func setTwoFactor(enable: Bool, sender: UISwitch?){
+        guard !enable || generalData.recoveryEmailStatus == .verified else {
+            presentRecoveryPopover()
+            return
+        }
+        let initialValue = self.generalData.isTwoFactor
+        self.generalData.isTwoFactor = enable
+        APIManager.setTwoFactor(isOn: enable, account: myAccount) { (responseData) in
+            if case .Conflicts = responseData {
+                self.presentRecoveryPopover()
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert(String.localize("SOMETHING_WRONG"), message: "\(String.localize("UNABLE_TO")) \(enable ? String.localize("ENABLE") : String.localize("DISABLE")) \(String.localize("TWO_FACTOR_RETRY"))", style: .alert)
+                self.generalData.isTwoFactor = initialValue
+                self.toggleOptions()
+                return
+            }
+            if (self.generalData.isTwoFactor) {
+                self.presentTwoFactorPopover()
+            }
+        }
+    }
+    
+    func presentRecoveryPopover() {
+        let popover = GenericAlertUIPopover()
+        let attributedRegular = NSMutableAttributedString(string: String.localize("TO_ENABLE_2FA_1"), attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
+        let attributedSemibold = NSAttributedString(string: String.localize("TO_ENABLE_2FA_2"), attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
+        attributedRegular.append(attributedSemibold)
+        popover.myTitle = String.localize("RECOVERY_NOT_SET")
+        popover.myAttributedMessage = attributedRegular
+        popover.myButton = String.localize("GOT_IT")
+        self.presentPopover(popover: popover, height: 310)
+    }
+    
+    func presentTwoFactorPopover() {
+        let popover = GenericAlertUIPopover()
+        popover.myTitle = String.localize("2FA_ENABLED")
+        popover.myMessage = String.localize("NEXT_TIME_2FA")
+        popover.myButton = String.localize("GOT_IT")
+        self.presentPopover(popover: popover, height: 263)
     }
     
     enum BiometricType {

@@ -20,6 +20,7 @@ class MailboxData {
     var emailReachedEnd = false
     var filteredReachedEnd = false
     var isCustomEditing = false
+    var selectedThreads = Set<String>()
     var unreadMails = 0
     var feature: Feature? = nil
     var reachedEnd : Bool {
@@ -54,6 +55,19 @@ class MailboxData {
     func cancelFetchWorker(){
         fetchWorker?.cancel()
         fetchWorker = nil
+    }
+    
+    var selectedIndexPaths: [IndexPath]? {
+        guard selectedThreads.count > 0 else {
+            return nil
+        }
+        var indexPaths = [IndexPath]()
+        for (index, thread) in threads.enumerated() {
+            if selectedThreads.contains(thread.threadId) {
+                indexPaths.append(IndexPath(row: index, section: 0))
+            }
+        }
+        return indexPaths
     }
     
     struct Feature {

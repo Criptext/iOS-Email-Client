@@ -10,12 +10,17 @@ import Foundation
 import SignalProtocolFramework
 
 class CriptextSessionStore: NSObject{
-    var sessionRecords = [String : [Int32: SessionRecord]]()
+    let account: Account
+    
+    init(account: Account) {
+        self.account = account
+        super.init()
+    }
 }
 
 extension CriptextSessionStore: SessionStore{
     func loadSession(_ contactIdentifier: String!, deviceId: Int32) -> SessionRecord! {
-        guard let rawSessionRecord = DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId),
+        guard let rawSessionRecord = DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId, account: account),
             let sessionData = Data(base64Encoded: rawSessionRecord.sessionRecord),
             let sessionRecord = NSKeyedUnarchiver.unarchiveObject(with: sessionData) as? SessionRecord else {
             return SessionRecord()
@@ -30,7 +35,7 @@ extension CriptextSessionStore: SessionStore{
     func storeSession(_ contactIdentifier: String!, deviceId: Int32, session: SessionRecord!) {
         let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
         let sessionString = sessionData.base64EncodedString()
-        if let existingSession = DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId) {
+        if let existingSession = DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId, account: account) {
             DBAxolotl.update(existingSession, sessionString: sessionString)
             return
         }
@@ -38,20 +43,21 @@ extension CriptextSessionStore: SessionStore{
         sessionRecord.contactId = contactIdentifier
         sessionRecord.deviceId = deviceId
         sessionRecord.sessionRecord = sessionString
-        sessionRecord.compoundKey = "\(contactIdentifier)-\(deviceId)"
+        sessionRecord.account = account
+        sessionRecord.buildCompoundKey()
         DBAxolotl.store(sessionRecord)
     }
     
     func containsSession(_ contactIdentifier: String!, deviceId: Int32) -> Bool {
-        return DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId) != nil
+        return DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId, account: account) != nil
     }
     
     func deleteSession(forContact contactIdentifier: String!, deviceId: Int32) {
-        DBAxolotl.deleteSessionRecord(contactId: contactIdentifier, deviceId: deviceId)
+        DBAxolotl.deleteSessionRecord(contactId: contactIdentifier, deviceId: deviceId, account: account)
     }
     
     func deleteAllSessions(forContact contactIdentifier: String!) {
-        DBAxolotl.deleteAllSessions(contactId: contactIdentifier)
+        DBAxolotl.deleteAllSessions(contactId: contactIdentifier, account: account)
     }
     
 }

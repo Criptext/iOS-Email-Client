@@ -15,31 +15,34 @@ class DBManager: SharedDB {
     
     static let PAGINATION_SIZE = 20
     
-    class func signout(){
+    class func signout(account: Account){
         let realm = try! Realm()
         
         try! realm.write {
-            realm.delete(realm.objects(CRSignedPreKeyRecord.self))
-            realm.delete(realm.objects(CRPreKeyRecord.self))
-            realm.delete(realm.objects(CRSessionRecord.self))
-            realm.delete(realm.objects(CRTrustedDevice.self))
+            account.isLoggedIn = false
+            account.isActive = false
+            realm.delete(realm.objects(CRSignedPreKeyRecord.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(CRPreKeyRecord.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(CRSessionRecord.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(CRTrustedDevice.self).filter("account.compoundKey == '\(account.compoundKey)'"))
         }
     }
     
-    class func clearMailbox(){
+    class func clearMailbox(account: Account){
         let realm = try! Realm()
         
         try! realm.write {
-            realm.delete(realm.objects(Email.self))
-            realm.delete(realm.objects(Contact.self))
-            realm.delete(realm.objects(FeedItem.self))
-            realm.delete(realm.objects(EmailContact.self))
-            realm.delete(realm.objects(Label.self))
-            realm.delete(realm.objects(File.self))
-            realm.delete(realm.objects(QueueItem.self))
-            realm.delete(realm.objects(DummySession.self))
+            let emails = realm.objects(Email.self).filter("account.compoundKey == '\(account.compoundKey)'")
+            for email in emails {
+                realm.delete(email.files)
+                realm.delete(realm.objects(DummySession.self).filter("key == \(email.key)"))
+            }
+            realm.delete(emails)
+            realm.delete(realm.objects(FeedItem.self).filter("email.account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(Label.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(QueueItem.self).filter("account.compoundKey == '\(account.compoundKey)'"))
         }
-        createSystemLabels()
     }
     
     class func destroy(){
@@ -47,6 +50,38 @@ class DBManager: SharedDB {
         
         try! realm.write {
             realm.deleteAll()
+        }
+    }
+    
+    class func deleteEmptyFeeds() {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(realm.objects(FeedItem.self).filter("contact == nil"))
+        }
+    }
+    
+    class func getInactiveAccounts() -> Results<Account> {
+        let realm = try! Realm()
+        return realm.objects(Account.self).filter("isActive == false AND isLoggedIn == true")
+    }
+    
+    class func getLoggedOutAccount(username: String) -> Account? {
+        let realm = try! Realm()
+        let results = realm.objects(Account.self).filter("isLoggedIn == false AND username == '\(username)'")
+        return results.first
+    }
+    
+    class func getLoggedOutAccounts() -> Results<Account> {
+        let realm = try! Realm()
+        return realm.objects(Account.self).filter("isLoggedIn == false")
+    }
+    
+    class func delete(account: Account){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(account)
         }
     }
     
@@ -60,14 +95,13 @@ class DBManager: SharedDB {
         }
     }
     
-    class func retrieveWholeDB() -> LinkDBSource {
+    class func retrieveWholeDB(account: Account) -> LinkDBSource {
         let realm = try! Realm()
         let contacts = realm.objects(Contact.self)
-        let labels = realm.objects(Label.self).filter("type == 'custom'")
-        let emails = realm.objects(Email.self).filter("messageId != ''")
-        let files = realm.objects(File.self)
-        let emailContacts = realm.objects(EmailContact.self).filter("email.delivered != \(Email.Status.sending.rawValue) AND email.delivered != \(Email.Status.fail.rawValue) AND NOT (ANY email.labels.id == \(SystemLabel.draft.id))")
-        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, files: files)
+        let labels = realm.objects(Label.self).filter("type == 'custom' AND account.compoundKey == '\(account.compoundKey)'")
+        let emails = realm.objects(Email.self).filter("messageId != '' AND account.compoundKey == '\(account.compoundKey)'")
+        let emailContacts = realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)' AND email.delivered != \(Email.Status.sending.rawValue) AND email.delivered != \(Email.Status.fail.rawValue) AND NOT (ANY email.labels.id == \(SystemLabel.draft.id))")
+        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts)
     }
     
     struct LinkDBSource {
@@ -75,7 +109,6 @@ class DBManager: SharedDB {
         let labels: Results<Label>
         let emails: Results<Email>
         let emailContacts: Results<EmailContact>
-        let files: Results<File>
     }
     
     struct LinkDBMaps {
@@ -93,7 +126,8 @@ class DBManager: SharedDB {
     }
     
     class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps, username: String){
-        guard let table = row["table"] as? String,
+        guard let account = realm.object(ofType: Account.self, forPrimaryKey: username),
+            let table = row["table"] as? String,
             let object = row["object"] as? [String: Any] else {
                 return
         }
@@ -102,7 +136,7 @@ class DBManager: SharedDB {
             let contact = Contact()
             let contactId = object["id"] as! Int
             contact.email = object["email"] as! String
-            contact.displayName = object["name"] as? String ?? String(contact.email.split(separator: "@").first!)
+            contact.displayName = object["name"] as? String ?? (contact.email.contains("@") ? String(contact.email.split(separator: "@").first!) : "Unknown")
             if let isTrusted = object["isTrusted"]{
                 contact.isTrusted = isTrusted as! Bool
             }
@@ -114,6 +148,7 @@ class DBManager: SharedDB {
             label.visible = object["visible"] as! Bool
             label.color = object["color"] as! String
             label.text = object["text"] as! String
+            label.account = account
             if let uuid = object["uuid"]{
                 label.uuid = uuid as! String
             }
@@ -123,6 +158,7 @@ class DBManager: SharedDB {
             let email = Email()
             let key = object["key"] as! Int
             FileUtils.saveEmailToFile(username: username, metadataKey: "\(key)", body: object["content"] as! String, headers: object["headers"] as? String)
+            email.account = account
             email.messageId = (object["messageId"] as? Int)?.description ?? object["messageId"] as! String
             email.isMuted = object["isMuted"] as! Bool
             email.threadId = object["threadId"] as! String
@@ -150,13 +186,14 @@ class DBManager: SharedDB {
             if let boundary = object["boundary"]{
                 email.boundary = boundary as! String
             }
+            email.buildCompoundKey()
             realm.add(email, update: true)
             maps.emails[id] = email.key
         case "email_label":
             let labelId = object["labelId"] as! Int
             let emailId = object["emailId"] as! Int
             guard let emailKey = maps.emails[emailId],
-                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey),
+                let email = realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(emailKey)"),
                 let label = realm.object(ofType: Label.self, forPrimaryKey: labelId) else {
                     return
             }
@@ -167,7 +204,7 @@ class DBManager: SharedDB {
             guard let emailKey = maps.emails[emailId],
                 let contactEmail = maps.contacts[contactId],
                 let contact = realm.object(ofType: Contact.self, forPrimaryKey: contactEmail),
-                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
+                let email = realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(emailKey)") else {
                     return
             }
             let emailContact = EmailContact()
@@ -179,7 +216,7 @@ class DBManager: SharedDB {
         case "file":
             let emailId = object["emailId"] as! Int
             guard let emailKey = maps.emails[emailId],
-                let email = realm.object(ofType: Email.self, forPrimaryKey: emailKey) else {
+                let email = realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(emailKey)") else {
                 return
             }
             let file = File()
@@ -221,6 +258,23 @@ class DBManager: SharedDB {
         }
     }
     
+    class func update(account: Account, jwt: String, refreshToken: String, regId: Int32, identityB64: String) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            let accounts = realm.objects(Account.self).filter("isActive == true")
+            for activeAccount in accounts {
+                activeAccount.isActive = false
+            }
+            account.jwt = jwt
+            account.refreshToken = refreshToken
+            account.regId = regId
+            account.identityB64 = identityB64
+            account.isActive = true
+            account.isLoggedIn = true
+        }
+    }
+    
     class func update(account: Account, name: String){
         let realm = try! Realm()
         
@@ -234,6 +288,31 @@ class DBManager: SharedDB {
         
         try! realm.write() {
             account.lastTimeFeedOpened = lastSeen
+        }
+    }
+    
+    class func activateAccount(_ account: Account) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.isActive = true
+        }
+    }
+    
+    class func disableAccount(_ account: Account) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.isActive = false
+        }
+    }
+ 
+    class func swapAccount(current: Account, active: Account) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            current.isActive = false
+            active.isActive = true
         }
     }
     
@@ -264,56 +343,47 @@ class DBManager: SharedDB {
         }
     }
     
-    class func getMail(key: Int) -> Email? {
-        let realm = try! Realm()
-        
-        let predicate = NSPredicate(format: "key == \(key)")
-        let results = realm.objects(Email.self).filter(predicate)
-        
-        return results.first
-    }
-    
     class func countMails() -> Int {
         let realm = try! Realm()
         
         return realm.objects(Email.self).count
     }
     
-    class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = []) -> [Thread] {
+    class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = [], account: Account) -> [Thread] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
-        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@) AND NOT (threadId IN %@)", rejectedLabels, threadIds)
+        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@) AND NOT (threadId IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels, threadIds)
         let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
         let threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
             guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
-                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@ ", label, email.threadId)
+                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND account.compoundKey == '\(account.compoundKey)'", label, email.threadId)
             }
-            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", email.threadId, rejectedLabels)
         })
         return threads
     }
     
-    class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE, threadIds: [String] = []) -> [Thread] {
+    class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE, threadIds: [String] = [], account: Account) -> [Thread] {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.all.rejectedLabelIds
-        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@ OR fromAddress contains[cd] %@) AND NOT (threadId IN %@)", rejectedLabels, searchParam, searchParam, searchParam, searchParam, threadIds).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
+        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@ OR fromAddress contains[cd] %@) AND NOT (threadId IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels, searchParam, searchParam, searchParam, searchParam, threadIds).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
         return customDistinctEmailThreads(emails: emails, label: SystemLabel.all.id, limit: limit, date: date, emailFilter: { (email) -> NSPredicate in
-            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@)", email.threadId, rejectedLabels)
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", email.threadId, rejectedLabels)
         })
     }
     
-    class func getUnreadThreads(from label:Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = []) -> [Thread] {
+    class func getUnreadThreads(from label:Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = [], account: Account) -> [Thread] {
         let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.all.rejectedLabelIds
-        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@)", rejectedLabels)
+        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels)
         let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
         let threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, emailFilter: { (email) -> NSPredicate in
             guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
-                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND unread = true", label, email.threadId)
+                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND unread = true AND account.compoundKey == '\(account.compoundKey)'", label, email.threadId)
             }
-            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND unread = true", email.threadId, rejectedLabels)
+            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND unread = true AND account.compoundKey == '\(account.compoundKey)'", email.threadId, rejectedLabels)
         })
         return threads
     }
@@ -342,13 +412,13 @@ class DBManager: SharedDB {
         return threads
     }
     
-    public class func getThread(threadId: String, label: Int) -> Thread? {
+    public class func getThread(threadId: String, label: Int, account: Account) -> Thread? {
         let thread = Thread()
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
         
-        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
-        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
+        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", threadId, rejectedLabels)
+        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND account.compoundKey == '\(account.compoundKey)'", label, threadId)
         let mailsPredicate = label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id ? predicate1 : predicate2
         let threadEmails = realm.objects(Email.self).filter(mailsPredicate).sorted(byKeyPath: "date", ascending: true)
         guard !threadEmails.isEmpty,
@@ -359,21 +429,21 @@ class DBManager: SharedDB {
         return thread
     }
     
-    class func getThreadEmails(_ threadId: String, label: Int) -> Results<Email> {
+    class func getThreadEmails(_ threadId: String, label: Int, account: Account) -> Results<Email> {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@)", threadId, rejectedLabels)
-        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@", label, threadId)
+        let predicate1 = NSPredicate(format: "threadId == %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", threadId, rejectedLabels)
+        let predicate2 = NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND account.compoundKey == '\(account.compoundKey)'", label, threadId)
         let predicate = (label == SystemLabel.trash.id || label == SystemLabel.spam.id || label == SystemLabel.draft.id) ? predicate2 : predicate1
         let results = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: true)
         
         return results
     }
     
-    class func getUnreadMails(from label: Int) -> [Email] {
+    class func getUnreadMails(from label: Int, account: Account) -> [Email] {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []
-        let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@)", label, rejectedLabels))
+        let emails = Array(realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", label, rejectedLabels))
         var myEmails = [Email]()
         var threadIds = Set<String>()
         for email in emails {
@@ -386,12 +456,12 @@ class DBManager: SharedDB {
         return myEmails
     }
     
-    class func updateEmails(_ emailKeys: [Int], unread: Bool) {
+    class func updateEmails(_ emailKeys: [Int], unread: Bool, account: Account) {
         let realm = try! Realm()
         
         try! realm.write() {
             for key in emailKeys {
-                let email = realm.object(ofType: Email.self, forPrimaryKey: key)
+                let email = realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(key)")
                 email?.unread = unread
             }
         }
@@ -434,8 +504,8 @@ class DBManager: SharedDB {
         }
     }
     
-    class func deleteThreads(_ threadId: String, label: Int){
-        let emails = Array(getThreadEmails(threadId, label: label))
+    class func deleteThreads(_ threadId: String, label: Int, account: Account){
+        let emails = Array(getThreadEmails(threadId, label: label, account: account))
         let realm = try! Realm()
         
         try! realm.write {
@@ -443,11 +513,11 @@ class DBManager: SharedDB {
         }
     }
     
-    class func getTrashThreads(from date: Date) -> [String]? {
+    class func getTrashThreads(from date: Date, account: Account) -> [String]? {
         let realm = try! Realm()
         var threadIds: [String]?
         try! realm.write {
-            let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ AND trashDate < %@", [SystemLabel.trash.id], date))
+            let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ AND trashDate < %@ AND account.compoundKey == '\(account.compoundKey)'", [SystemLabel.trash.id], date))
             threadIds = Array(Set(emails.map({ (email) -> String in
                 return email.threadId
             })))
@@ -455,19 +525,19 @@ class DBManager: SharedDB {
         return threadIds
     }
     
-    class func updateThread(threadId: String, currentLabel: Int, unread: Bool){
-        let emails = getThreadEmails(threadId, label: currentLabel)
+    class func updateThread(threadId: String, currentLabel: Int, unread: Bool, account: Account){
+        let emails = getThreadEmails(threadId, label: currentLabel, account: account)
         for email in emails {
             updateEmail(email, unread: unread)
         }
     }
     
-    class func getEmailFailed() -> Email? {
+    class func getEmailFailed(account: Account) -> Email? {
         var dateComponents = DateComponents()
         dateComponents.setValue(-3, for: .day)
         let yesterday = Calendar.current.date(byAdding: dateComponents, to: Date())
         let realm = try! Realm()
-        let hasFailed = NSPredicate(format: "date <= %@ AND delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@)", yesterday! as CVarArg, [SystemLabel.trash.id])
+        let hasFailed = NSPredicate(format: "date <= %@ AND delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", yesterday! as CVarArg, [SystemLabel.trash.id])
         let results = realm.objects(Email.self).filter(hasFailed)
         return results.first
     }
@@ -539,15 +609,15 @@ class DBManager: SharedDB {
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "NOT (id IN %@)", ids)))
     }
     
-    class func setLabelsForThread(_ threadId: String, labels: [Int], currentLabel: Int){
-        let emails = getThreadEmails(threadId, label: currentLabel)
+    class func setLabelsForThread(_ threadId: String, labels: [Int], currentLabel: Int, account: Account){
+        let emails = getThreadEmails(threadId, label: currentLabel, account: account)
         for email in emails {
             setLabelsForEmail(email, labels: labels)
         }
     }
     
-    class func addRemoveLabelsForThreads(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int){
-        let emails = getThreadEmails(threadId, label: currentLabel)
+    class func addRemoveLabelsForThreads(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int, account: Account){
+        let emails = getThreadEmails(threadId, label: currentLabel, account: account)
         for email in emails {
             addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: removedLabelIds)
         }
@@ -599,11 +669,11 @@ class DBManager: SharedDB {
         return results.count > 0
     }
     
-    class func getFeeds(since date: Date, limit: Int, lastSeen: Date) -> (Results<FeedItem>, Results<FeedItem>){
+    class func getFeeds(since date: Date, limit: Int, lastSeen: Date, account: Account) -> (Results<FeedItem>, Results<FeedItem>){
         let realm = try! Realm()
         
-        let newFeeds = realm.objects(FeedItem.self).filter("date > %@", lastSeen).sorted(byKeyPath: "date", ascending: false)
-        let oldFeeds = realm.objects(FeedItem.self).filter("date <= %@", lastSeen).sorted(byKeyPath: "date", ascending: false)
+        let newFeeds = realm.objects(FeedItem.self).filter("date > %@ AND email.account.compoundKey == '\(account.compoundKey)'", lastSeen).sorted(byKeyPath: "date", ascending: false)
+        let oldFeeds = realm.objects(FeedItem.self).filter("date <= %@ AND email.account.compoundKey == '\(account.compoundKey)'", lastSeen).sorted(byKeyPath: "date", ascending: false)
         
         return (newFeeds, oldFeeds)
     }
@@ -757,9 +827,10 @@ class DBManager: SharedDB {
 
     //MARK: - QueueItem
     
-    @discardableResult class func createQueueItem(params: [String: Any]) -> QueueItem {
+    @discardableResult class func createQueueItem(params: [String: Any], account: Account) -> QueueItem {
         let realm = try! Realm()
         let queueItem = QueueItem()
+        queueItem.account = account
         queueItem.params = params
         
         try! realm.write {
@@ -768,9 +839,9 @@ class DBManager: SharedDB {
         return queueItem
     }
     
-    class func getQueueItems() -> Results<QueueItem> {
+    class func getQueueItems(account: Account) -> Results<QueueItem> {
         let realm = try! Realm()
-        return realm.objects(QueueItem.self).sorted(byKeyPath: "date", ascending: true)
+        return realm.objects(QueueItem.self).filter("account.compoundKey == '\(account.compoundKey)'").sorted(byKeyPath: "date", ascending: true)
     }
     
     class func deleteQueueItems(_ queueItems: [QueueItem]) {

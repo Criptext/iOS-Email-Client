@@ -18,6 +18,9 @@ class ConnectDeviceViewController: UIViewController{
     let PROGRESS_COMPLETE = 100.0
     @IBOutlet var connectUIView: ConnectUIView!
     var signupData: SignUpData!
+    var multipleAccount = false
+    var account: Account?
+    var bundle: CRBundle?
     var linkData: LoginDeviceViewController.LinkAccept?
     var socket : SingleWebSocket?
     var scheduleWorker = ScheduleWorker(interval: 10.0, maxRetries: 18)
@@ -45,8 +48,6 @@ class ConnectDeviceViewController: UIViewController{
         socket = SingleWebSocket()
         socket?.delegate = self
         connectUIView.initialLoad(email: "\(signupData.username)\(Constants.domain)")
-        self.clearFiles()
-        DBManager.destroy()
         scheduleWorker.delegate = self
         connectUIView.goBack = {
             self.goBack()
@@ -55,7 +56,20 @@ class ConnectDeviceViewController: UIViewController{
             self.connectUIView.setDeviceIcons(leftType: Device.Kind(rawValue: linkAcceptData.authorizerType) ?? .pc, rightType: .current)
         }
         
+        checkDatabase()
         handleState()
+    }
+    
+    func checkDatabase(){
+        if DBManager.getLoggedOutAccount(username: self.signupData.username) == nil {
+            let loggedOutAccounts = DBManager.getLoggedOutAccounts()
+            for account in loggedOutAccounts {
+                FileUtils.deleteAccountDirectory(account: account)
+                DBManager.signout(account: account)
+                DBManager.clearMailbox(account: account)
+                DBManager.delete(account: account)
+            }
+        }
     }
     
     func handleState(){
@@ -82,28 +96,33 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func cleanData(){
-        if let jwt = signupData.token {
+        guard let myAccount = account else {
             return
         }
-        let defaults = CriptextDefaults()
-        guard defaults.hasActiveAccount else {
-            return
-        }
-        defaults.removeActiveAccount()
-        self.clearFiles()
-        DBManager.destroy()
+        FileUtils.deleteAccountDirectory(account: myAccount)
+        DBManager.clearMailbox(account: myAccount)
+        DBManager.signout(account: myAccount)
     }
     
-    func clearFiles(){
-        if let account = DBManager.getFirstAccount(){
-            FileUtils.deleteAccountDirectory(account: account)
+    func createAccount() -> (Account, [String: Any]) {
+        if let myKeys = self.bundle?.publicKeys,
+            let myAccount = self.account {
+            return(myAccount, myKeys)
         }
+        let account = SignUpData.createAccount(from: self.signupData)
+        DBManager.store(account)
+        
+        let bundle = CRBundle(account: account)
+        let keys = bundle.generateKeys()
+        self.account = account
+        self.bundle = bundle
+        return (account, keys)
     }
     
     func sendKeysRequest(){
         self.connectUIView.progressChange(value: PROGRESS_SEND_KEYS, message: String.localize("SENDING_KEYS"), completion: {})
-        let keyBundle = signupData.buildDataForRequest()["keybundle"] as! [String: Any]
-        APIManager.postKeybundle(params: keyBundle, token: signupData.token!){ (responseData) in
+        let accountData = createAccount()
+        APIManager.postKeybundle(params: accountData.1, token: signupData.token){ (responseData) in
             guard case let .SuccessDictionary(tokens) = responseData,
                 let jwt = tokens["token"] as? String,
                 let refreshToken = tokens["refreshToken"] as? String else {
@@ -120,19 +139,19 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func handleAddress(data: LinkSuccessData) {
-        guard let jwt = signupData.token else {
+        guard !signupData.token.isEmpty else {
             self.presentProcessInterrupted()
             return
         }
-        APIManager.downloadLinkDBFile(address: data.address, token: jwt, progressCallback: { (progress) in
+        APIManager.downloadLinkDBFile(address: data.address, token: signupData.token, progressCallback: { (progress) in
             self.connectUIView.progressChange(value: self.PROGRESS_SENT_KEYS + (self.PROGRESS_DOWNLOADING_MAILBOX - self.PROGRESS_SENT_KEYS) * progress, message: String.localize("DOWNLOADING_MAIL"), completion: {})
         }) { (responseData) in
             guard case let .SuccessString(filepath) =  responseData else {
                 self.presentProcessInterrupted()
                 return
             }
-            let myAccount = self.createAccount()
-            self.state = .unpackDB(myAccount, filepath, data)
+            self.updateAccount()
+            self.state = .unpackDB(self.account!, filepath, data)
             self.handleState()
         }
     }
@@ -154,6 +173,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
+        DBManager.clearMailbox(account: myAccount)
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
         let username = myAccount.username
         queue.async {
@@ -183,7 +203,11 @@ class ConnectDeviceViewController: UIViewController{
                 self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
                     self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self.goToMailbox(myAccount.username)
+                        if self.multipleAccount {
+                            self.goBackToMailbox(account: myAccount)
+                        } else {
+                            self.goToMailbox(myAccount.username)
+                        }
                         self.registerFirebaseToken(jwt: myAccount.jwt)
                     }
                 }
@@ -191,18 +215,34 @@ class ConnectDeviceViewController: UIViewController{
         }
     }
     
-    func createAccount() -> Account {
-        let myAccount = SignUpData.createAccount(from: signupData)
-        DBManager.store(myAccount)
+    func updateAccount() {
+        guard let myAccount = self.account,
+            let myBundle = self.bundle,
+            !signupData.token.isEmpty,
+            let refreshToken = signupData.refreshToken,
+            let identityB64 = myBundle.store.identityKeyStore.getIdentityKeyPairB64() else {
+                return
+        }
+        let regId = myBundle.store.identityKeyStore.getRegId()
+        DBManager.update(account: myAccount, jwt: signupData.token, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
         let myContact = Contact()
         myContact.displayName = myAccount.name
         myContact.email = "\(myAccount.username)\(Constants.domain)"
-        DBManager.store([myContact])
+        DBManager.store([myContact], account: myAccount)
         DBManager.createSystemLabels()
         let defaults = CriptextDefaults()
         defaults.activeAccount = myAccount.username
         defaults.welcomeTour = true
-        return myAccount
+    }
+    
+    func goBackToMailbox(account: Account) {
+        self.account = nil
+        self.socket?.close()
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.dismiss(animated: true)
+            return
+        }
+        delegate.swapAccount(account: account)
     }
     
     func goToMailbox(_ activeAccount: String){
@@ -244,11 +284,11 @@ class ConnectDeviceViewController: UIViewController{
 
 extension ConnectDeviceViewController: ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void) {
-        guard let jwt = signupData.token else {
+        guard !signupData.token.isEmpty else {
             self.goBack()
             return
         }
-        APIManager.getLinkData(token: jwt) { (responseData) in
+        APIManager.getLinkData(token: signupData.token) { (responseData) in
             guard case let .SuccessDictionary(event) = responseData,
                 let eventString = event["params"] as? String,
                 let eventParams = Utils.convertToDictionary(text: eventString) else {

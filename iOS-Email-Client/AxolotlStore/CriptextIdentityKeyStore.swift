@@ -24,6 +24,15 @@ class CriptextIdentityKeyStore: NSObject{
         self.idKeyPair = identityKeys
         self.localRegId = regId
     }
+    
+    func getIdentityKeyPairB64() -> String? {
+        let identityData = NSKeyedArchiver.archivedData(withRootObject: idKeyPair)
+        return identityData.base64EncodedString()
+    }
+    
+    func getRegId() -> Int32 {
+        return localRegId
+    }
 }
 
 extension CriptextIdentityKeyStore: IdentityKeyStore{

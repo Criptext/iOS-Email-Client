@@ -8,24 +8,30 @@
 
 import Foundation
 import RichEditorView
+import Material
 
 class ReplyToEditorViewController: UIViewController {
     
     @IBOutlet weak var saveReplyTo: UIButton!
-    @IBOutlet weak var emailText: UITextField!
+    @IBOutlet weak var emailText: TextField!
     @IBOutlet weak var replyToEnableSwitch: UISwitch!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var OnOffLabel: UILabel!
+    @IBOutlet weak var disableContainerView: UIView!
+    @IBOutlet weak var editContainerView: UIView!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     var generalData: GeneralSettingsData!
     var myAccount: Account!
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("REPLY_TO_TITLE")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-back").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
+        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
 [NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         replyToEnableSwitch.isOn = self.generalData.replyTo == "" ? false : true
+        emailText.text = self.generalData.replyTo == "" ? "" : self.generalData.replyTo!
         setSwitchAttributes()
         applyTheme()
     }
@@ -41,6 +47,9 @@ class ReplyToEditorViewController: UIViewController {
         )
         separatorView.backgroundColor = theme.separator
         OnOffLabel.textColor = theme.mainText
+        disableContainerView.backgroundColor = theme.cellHighlight
+        messageLabel.textColor = theme.secondText
+        titleLabel.textColor = theme.markedText
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,8 +65,10 @@ class ReplyToEditorViewController: UIViewController {
     }
     
     private func saveReplyToAPI(enable: Bool){
-        let email = emailText.text ?? ""
+        let email = enable ? (emailText.text ?? "") : ""
+        replyToEnableSwitch.isEnabled = false
         APIManager.updateReplyTo(email: email, enable: enable, account: myAccount) { (responseData) in
+            self.replyToEnableSwitch.isEnabled = true
             if case .Unauthorized = responseData {
                 self.logout(account: self.myAccount)
                 return
@@ -81,25 +92,16 @@ class ReplyToEditorViewController: UIViewController {
     }
     
     @IBAction func onSwitchToggle(_ sender: Any) {
-        emailText.isHidden = !replyToEnableSwitch.isOn
-        saveReplyTo.isEnabled = replyToEnableSwitch.isOn
         setSwitchAttributes()
-        OnOffLabel.text = replyToEnableSwitch.isOn ? String.localize("ON") : String.localize("OFF")
-        if(!replyToEnableSwitch.isOn){
+        if !replyToEnableSwitch.isOn {
             saveReplyToAPI(enable: false)
-            self.generalData.replyTo = ""
-            emailText.text = ""
-        }else{
-            emailText.text = self.generalData.replyTo
         }
     }
     
     private func setSwitchAttributes(){
-        emailText.isHidden = !replyToEnableSwitch.isOn
-        saveReplyTo.isHidden = !replyToEnableSwitch.isOn
+        disableContainerView.isHidden = replyToEnableSwitch.isOn
+        editContainerView.isHidden = !replyToEnableSwitch.isOn
         OnOffLabel.text = replyToEnableSwitch.isOn ? String.localize("ON") : String.localize("OFF")
-        emailText.text = replyToEnableSwitch.isOn ? self.generalData.replyTo : ""
-        saveReplyTo.isEnabled = replyToEnableSwitch.isOn
     }
     
     @objc func goBack(){

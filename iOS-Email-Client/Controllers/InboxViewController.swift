@@ -44,10 +44,12 @@ class InboxViewController: UIViewController {
     var markBarButton:UIBarButtonItem!
     var deleteBarButton:UIBarButtonItem!
     var menuButton:UIBarButtonItem!
+    var menuAvatarButton:UIBarButtonItem!
+    var menuAvatarImageView: UIImageView!
+    var circleBadgeView: UIView!
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
-    var selectedCells:[Int:Bool] = [:]
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
@@ -76,10 +78,16 @@ class InboxViewController: UIViewController {
         viewSetup()
         WebSocketManager.sharedInstance.delegate = self
         ThemeManager.shared.addListener(id: "mailbox", delegate: self)
+        RequestManager.shared.delegate = self
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
-        let queueItems = DBManager.getQueueItems()
+        applyTheme()
+        setQueueItemsListener()
+    }
+    
+    func setQueueItemsListener() {
+        let queueItems = DBManager.getQueueItems(account: self.myAccount)
         newsHeaderView.onClose = { [weak self] in
             self?.mailboxData.feature = nil
             self?.closeNewsHeader()
@@ -88,11 +96,10 @@ class InboxViewController: UIViewController {
         mailboxData.queueToken = queueItems.observe({ [weak self] (changes) in
             guard !(self?.myAccount.isInvalidated ?? false),
                 case .update = changes else {
-                return
+                    return
             }
             self?.dequeueEvents()
         })
-        applyTheme()
     }
     
     func viewSetupNews() {
@@ -202,7 +209,7 @@ class InboxViewController: UIViewController {
         
         self.setButtonItems(isEditing: false)
         
-        self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+        self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
         self.titleBarButton.title = SystemLabel.inbox.description.uppercased()
 
         topToolbar.delegate = self
@@ -277,7 +284,7 @@ class InboxViewController: UIViewController {
                 weakSelf.syncContacts()
                 return
             }
-            let task = RetrieveContactsTask()
+            let task = RetrieveContactsTask(username: weakSelf.myAccount.username)
             task.start { (_) in }
         }
     }
@@ -305,7 +312,7 @@ class InboxViewController: UIViewController {
             return
         }
         let thread = mailboxData.threads[indexPath.row]
-        guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel),
+        guard let refreshedRowThread = DBManager.getThread(threadId: thread.threadId, label: mailboxData.selectedLabel, account: self.myAccount),
             thread.lastEmailKey == refreshedRowThread.lastEmailKey else {
             updateBadges()
             refreshThreadRows()
@@ -323,6 +330,26 @@ class InboxViewController: UIViewController {
         self.coachMarksController.stop(immediately: true)
     }
     
+    func initAvatarButton() {
+        let containerView = UIView(frame: CGRect(x: 3, y: 0, width: 31, height: 28))
+        menuAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
+        circleBadgeView = UIView(frame: CGRect(x: 22, y: -2, width: 12, height: 12))
+        circleBadgeView.backgroundColor = .red
+        circleBadgeView.layer.cornerRadius = 6
+        circleBadgeView.layer.borderWidth = 2
+        circleBadgeView.layer.borderColor = UIColor.charcoal.cgColor
+        circleBadgeView.isHidden = true
+        
+        menuAvatarImageView.contentMode = .scaleAspectFit
+        menuAvatarImageView.clipsToBounds = true
+        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOpenMenu(_:)))
+        containerView.addSubview(menuAvatarImageView)
+        containerView.addSubview(circleBadgeView)
+        containerView.addGestureRecognizer(tapGesture)
+        self.menuAvatarButton = UIBarButtonItem(customView: containerView)
+    }
+    
     func initBarButtonItems(){
         self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
@@ -337,10 +364,11 @@ class InboxViewController: UIViewController {
         let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
         let filterICon = #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         let searchImage = #imageLiteral(resourceName: "search").tint(with: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0))
+        
         self.menuButton = UIBarButtonItem(image: menuImage, style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
         self.searchBarButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didPressSearch(_:)))
         self.filterBarButton = UIBarButtonItem(image: filterICon, style: .plain, target: self, action: #selector(didPressFilter(_:)))
-        
+        self.initAvatarButton()
         // Set batButtonItems
         let activityButton = MIBadgeButton(type: .custom)
         let badgeCounter = DBManager.getNewFeedsCount(since: myAccount.lastTimeFeedOpened)
@@ -470,64 +498,8 @@ extension InboxViewController {
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: ((Bool) -> Void)? = nil) {
-        guard !mailboxData.updating else {
-            refreshControl?.endRefreshing()
-            completion?(false)
-            return
-        }
-        self.mailboxData.updating = true
-        APIManager.getEvents(account: myAccount) { [weak self] (responseData) in
-            guard let weakSelf = self else {
-                refreshControl?.endRefreshing()
-                completion?(false)
-                return
-            }
-            if case .Unauthorized = responseData {
-                refreshControl?.endRefreshing()
-                weakSelf.logout(account: weakSelf.myAccount)
-                completion?(false)
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                refreshControl?.endRefreshing()
-                weakSelf.mailboxData.updating = false
-                weakSelf.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
-                completion?(false)
-                return
-            }
-            
-            if case .Forbidden = responseData {
-                refreshControl?.endRefreshing()
-                weakSelf.mailboxData.updating = false
-                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
-                completion?(false)
-                return
-            }
-            
-            guard case let .SuccessArray(events) = responseData else {
-                guard case let .SuccessAndRepeat(events) = responseData else {
-                    weakSelf.mailboxData.updating = false
-                    refreshControl?.endRefreshing()
-                    completion?(false)
-                    return
-                }
-                let eventHandler = EventHandler(account: weakSelf.myAccount)
-                eventHandler.handleEvents(events: events){ [weak self] result in
-                    self?.didReceiveEvents(result: result)
-                    self!.mailboxData.updating = false
-                    self?.getPendingEvents(refreshControl)
-                }
-                return
-            }
-            let eventHandler = EventHandler(account: weakSelf.myAccount)
-            eventHandler.handleEvents(events: events){ [weak self] result in
-                self?.didReceiveEvents(result: result)
-                self?.mailboxData.updating = false
-                refreshControl?.endRefreshing()
-                completion?(true)
-            }
-        }
+        RequestManager.shared.getAccountEvents(username: myAccount.username, get: false)
+        RequestManager.shared.getAccountsEvents()
     }
     
     func didReceiveEvents(result: EventData.Result) {
@@ -611,7 +583,7 @@ extension InboxViewController{
             refreshControl.isEnabled = true
             mailboxData.unreadMails = 0
             updateBadges()
-            selectedCells.removeAll()
+            self.mailboxData.selectedThreads.removeAll()
         }
         
         self.setButtonItems(isEditing: mailboxData.isCustomEditing)
@@ -631,11 +603,11 @@ extension InboxViewController{
         self.present(snackVC, animated: true, completion: nil)
     }
     
-    func swapMailbox(labelId: Int, sender: Any?){
+    func swapMailbox(labelId: Int, sender: Any?, force: Bool = false){
         if mailboxData.isCustomEditing {
             didPressEdit(reload: true)
         }
-        guard labelId != mailboxData.selectedLabel else {
+        guard labelId != mailboxData.selectedLabel || force else {
             self.navigationDrawerController?.closeLeftView()
             self.getPendingEvents(nil)
             return
@@ -661,7 +633,7 @@ extension InboxViewController{
     }
     
     func updateBadges(){
-        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(label: mailboxData.selectedLabel)
+        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(username: myAccount.username, label: mailboxData.selectedLabel)
         badgeGetterAsyncTask.start { [weak self] (label, counter) in
             guard let weakSelf = self,
                 weakSelf.mailboxData.selectedLabel == label else {
@@ -708,7 +680,7 @@ extension InboxViewController {
     func getUnreadThreads(clear: Bool, since: Date){
         let threads : [Thread]
         let fetchedThreads = mailboxData.threads.map({$0.threadId})
-        threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: since, threadIds: fetchedThreads)
+        threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: since, threadIds: fetchedThreads, account: self.myAccount)
         if(clear){
             mailboxData.threads = threads
         } else {
@@ -728,7 +700,7 @@ extension InboxViewController{
         
         guard isEditing else {
             self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.filterBarButton, self.spaceBarButton]
-            self.navigationItem.leftBarButtonItems = [self.menuButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+            self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
             return
         }
         
@@ -746,8 +718,10 @@ extension InboxViewController{
         let searchText = searchController.searchBar.text
         mailboxData.cancelFetchWorker()
         var workItem: DispatchWorkItem? = nil
+        let username = myAccount.username
         workItem = DispatchWorkItem(block: { [weak self] in
-            guard let weakSelf = self else {
+            guard let weakSelf = self,
+                let myAccount = DBManager.getAccountByUsername(username) else {
                 return
             }
             let threads : [Thread]
@@ -756,13 +730,13 @@ extension InboxViewController{
                 guard let searchParam = searchText else {
                     return
                 }
-                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads)
+                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads, account: myAccount)
             } else {
                 if(weakSelf.selectLabel == String.localize("SHOW_ALL")){
-                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads)
+                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads, account: myAccount)
                 }
                 else{
-                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads)
+                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads, account: myAccount)
                 }
             }
             guard !(workItem?.isCancelled ?? false) else {
@@ -864,7 +838,7 @@ extension InboxViewController: UITableViewDataSource{
         
         cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
         if mailboxData.isCustomEditing {
-            if(selectedCells[indexPath.row] ?? false){
+            if(mailboxData.selectedThreads.contains(thread.threadId)){
                 cell.setAsSelected()
                 cell.isSelected = true
                 tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
@@ -945,14 +919,14 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func emptyTrash(from date: Date = Date()){
-        guard let threadIds = DBManager.getTrashThreads(from: date),
+        guard let threadIds = DBManager.getTrashThreads(from: date, account: myAccount),
             !threadIds.isEmpty else {
             return
         }
         let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
         DBManager.deleteThreads(threadIds: threadIds)
         self.refreshThreadRows()
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()])
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -1008,40 +982,10 @@ extension InboxViewController: UITableViewDataSource{
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let generalVC = storyboard.instantiateViewController(withIdentifier: "settingsGeneralViewController") as! SettingsGeneralViewController
-        let labelsVC = storyboard.instantiateViewController(withIdentifier: "settingsLabelsViewController") as! SettingsLabelsViewController
-        let devicesVC = storyboard.instantiateViewController(withIdentifier: "settingsDevicesViewController") as! SettingsDevicesViewController
-        
-        let tabsVC = CustomTabsController(viewControllers: [generalVC, labelsVC, devicesVC])
-        tabsVC.myAccount = self.myAccount
-        tabsVC.edgesForExtendedLayout = []
-        tabsVC.tabBarAlignment = .top
-        let tabBar = tabsVC.tabBar
-        tabBar.layer.masksToBounds = false
-        
         generalVC.myAccount = self.myAccount
-        labelsVC.myAccount = self.myAccount
-        devicesVC.myAccount = self.myAccount
-        generalVC.generalData = tabsVC.generalData
-        devicesVC.deviceData = tabsVC.devicesData
         
-        let frame = CGRect(x: 0, y: tabBar.layer.height/2, width: self.view.frame.width, height: 6)
-        let backgroundView = UIView(frame: frame)
-        tabBar.addSubview(backgroundView)
-        
-        let topColor = UIColor.black
-        let bottomColor = UIColor.clear
-        let gradientColors: [CGColor] = [topColor.cgColor, bottomColor.cgColor]
-        let gradientLocations: [CGFloat] = [0.0, 1.0]
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = gradientColors
-        gradientLayer.locations = gradientLocations as [NSNumber]?
-        gradientLayer.frame = frame
-        gradientLayer.opacity = 0.23
-        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
-        backgroundView.layer.zPosition = 100
-        
-        let navSettingsVC = UINavigationController(rootViewController: tabsVC)
-        navSettingsVC.navigationBar.barStyle = .blackTranslucent
+        let navSettingsVC = UINavigationController(rootViewController: generalVC)
+        navSettingsVC.navigationBar.isTranslucent = false
         navSettingsVC.navigationBar.barTintColor = .charcoal
         let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
@@ -1079,6 +1023,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         self.tableView(self.tableView , didSelectRowAt: indexPath)
+        
+        let thread = mailboxData.threads[indexPath.row]
+        self.mailboxData.selectedThreads.insert(thread.threadId)
     }
     
     func tableViewCellDidTap(_ cell: InboxTableViewCell) {
@@ -1102,14 +1049,15 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 return
             }
             let thread = mailboxData.threads[indexPath.row]
+            self.mailboxData.selectedThreads.insert(thread.threadId)
             if(thread.unread){
                 mailboxData.unreadMails += 1
             }
             swapMarkIcon()
             let cell = tableView.cellForRow(at: indexPath) as! InboxTableViewCell
             cell.setAsSelected()
-            selectedCells[indexPath.row] = true
-            self.topToolbar.counterLabel.text = "\(selectedCells.count)"
+            self.topToolbar.counterLabel.text = "\(mailboxData.selectedThreads.count)"
+            
             return
         }
         
@@ -1121,13 +1069,13 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.navigationDrawerController?.closeRightView()
         
         guard mailboxData.selectedLabel != SystemLabel.draft.id else {
-            if let lastEmail = SharedDB.getMailByKey(key: selectedThread.lastEmailKey) {
+            if let lastEmail = SharedDB.getMail(key: selectedThread.lastEmailKey, account: self.myAccount) {
                 continueDraft(lastEmail)
             }
             return
         }
         
-        let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel)
+        let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel, account: self.myAccount)
         guard let subject = emails.first?.subject,
             let lastEmailKey = emails.last?.key else {
                 refreshThreadRows()
@@ -1183,8 +1131,8 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                         "unread": 0,
                         "metadataKeys": peerKeys
             ]] as [String : Any]
-        DBManager.updateEmails(peerKeys, unread: false)
-        DBManager.createQueueItem(params: params)
+        DBManager.updateEmails(peerKeys, unread: false, account: self.myAccount)
+        DBManager.createQueueItem(params: params, account: self.myAccount)
     }
     
     func openEmails(openKeys: [Int], peerKeys: [Int]) {
@@ -1193,14 +1141,14 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return
         }
         let params = ["cmd": Event.Queue.open.rawValue, "params": EventData.Queue.EmailOpen(metadataKeys: openKeys).asDictionary()] as [String : Any]
-        DBManager.updateEmails(openKeys, unread: false)
-        DBManager.createQueueItem(params: params)
+        DBManager.updateEmails(openKeys, unread: false, account: self.myAccount)
+        DBManager.createQueueItem(params: params, account: self.myAccount)
         self.openOwnEmails(peerKeys)
     }
     
     func goToEmailDetail(threadId: String, message: ControllerMessage? = nil){
         let workingLabel = SystemLabel.inbox.id
-        guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel) else {
+        guard let selectedThread = DBManager.getThread(threadId: threadId, label: workingLabel, account: self.myAccount) else {
             return
         }
         self.navigationController?.popToRootViewController(animated: false)
@@ -1276,12 +1224,12 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         
         guard tableView.indexPathsForSelectedRows == nil else {
             let thread = mailboxData.threads[indexPath.row]
+            self.mailboxData.selectedThreads.remove(thread.threadId)
             if(thread.unread){
                 mailboxData.unreadMails -= 1
             }
             swapMarkIcon()
-            selectedCells.removeValue(forKey: indexPath.row)
-            self.topToolbar.counterLabel.text = "\(tableView.indexPathsForSelectedRows!.count)"
+            self.topToolbar.counterLabel.text = "\(mailboxData.selectedThreads.count)"
             tableView.reloadRows(at: [indexPath], with: .none)
             return
         }
@@ -1315,10 +1263,10 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
 
     func moveSingleThreadTrash(indexPath: IndexPath){
         let threadId = mailboxData.threads[indexPath.row].threadId
-        DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel)
+        DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: [SystemLabel.trash.id], removedLabelIds: [], currentLabel: self.mailboxData.selectedLabel, account: self.myAccount)
         self.removeThreads(indexPaths: [indexPath])
         let eventData = EventData.Peer.ThreadLabels(threadIds: [threadId], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
-        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue])
+        DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], account: self.myAccount)
     }
     
     
@@ -1394,10 +1342,10 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     
     func handleAddLabels(){
         let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel)
-        if let indexPaths = tableView.indexPathsForSelectedRows{
+        if let indexPaths = mailboxData.selectedIndexPaths {
             for indexPath in indexPaths {
                 let thread = mailboxData.threads[indexPath.row]
-                guard let email = DBManager.getMail(key: thread.lastEmailKey) else {
+                guard let email = DBManager.getMail(key: thread.lastEmailKey, account: self.myAccount) else {
                     continue
                 }
                 for label in email.labels {
@@ -1446,7 +1394,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
 
 extension InboxViewController {
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool = false) {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             return
         }
         self.didPressEdit(reload: true)
@@ -1471,7 +1419,7 @@ extension InboxViewController {
             updateBadges()
         }
         
-        let threadLabelsAsyncTask = ThreadsLabelsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, added: added, removed: removed, currentLabel: mailboxData.selectedLabel)
+        let threadLabelsAsyncTask = ThreadsLabelsAsyncTask(username: self.myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, added: added, removed: removed, currentLabel: mailboxData.selectedLabel)
         threadLabelsAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1487,7 +1435,7 @@ extension InboxViewController {
     }
     
     func deleteThreads(){
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             self.didPressEdit(reload: true)
             return
         }
@@ -1496,7 +1444,7 @@ extension InboxViewController {
         let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         self.removeThreads(indexPaths: indexPaths)
         
-        let deleteThreadsAsyncTask = DeleteThreadsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, currentLabel: mailboxData.selectedLabel)
+        let deleteThreadsAsyncTask = DeleteThreadsAsyncTask(username: myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, currentLabel: mailboxData.selectedLabel)
         deleteThreadsAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1536,7 +1484,7 @@ extension InboxViewController: NavigationToolbarDelegate {
     }
     
     func onMarkThreads() {
-        guard let indexPaths = tableView.indexPathsForSelectedRows else {
+        guard let indexPaths = mailboxData.selectedIndexPaths else {
             return
         }
         var threadIds = [String]()
@@ -1553,7 +1501,7 @@ extension InboxViewController: NavigationToolbarDelegate {
         }
         self.didPressEdit(reload: true)
         
-        let markThreadAsyncTask = MarkThreadsAsyncTask(threadIds: threadIds, eventThreadIds: eventThreadIds, unread: unread, currentLabel: mailboxData.selectedLabel)
+        let markThreadAsyncTask = MarkThreadsAsyncTask(username: self.myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, unread: unread, currentLabel: mailboxData.selectedLabel)
         markThreadAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1583,7 +1531,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func sendFailEmail(){
-        guard let email = DBManager.getEmailFailed() else {
+        guard let email = DBManager.getEmailFailed(account: self.myAccount) else {
             return
         }
         DBManager.updateEmail(email, status: .sending)
@@ -1596,7 +1544,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     func sendMail(email: Email, emailBody: String, password: String?) {
         showSendingSnackBar(message: String.localize("SENDING_MAIL"), permanent: true)
         reloadIfSentMailbox(email: email)
-        let sendMailAsyncTask = SendMailAsyncTask(account: myAccount, email: email, emailBody: emailBody, password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: emailBody, password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 return
@@ -1614,9 +1562,12 @@ extension InboxViewController: ComposerSendMailDelegate {
                 weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, buttons: "", permanent: false)
                 return
             }
-            guard case let .SuccessInt(key) = responseData,
-                DBManager.getMail(key: key) != nil else {
+            guard case let .SuccessInt(key) = responseData else {
                 weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            guard DBManager.getMail(key: key, account: weakSelf.myAccount) != nil else {
+                weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
                 return
             }
             weakSelf.refreshThreadRows()
@@ -1760,7 +1711,7 @@ extension InboxViewController: LinkDeviceDelegate {
         }
     }
     
-    func onAcceptLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+    func onAcceptLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -1768,6 +1719,13 @@ extension InboxViewController: LinkDeviceDelegate {
             self.presentPopover(popover: popover, height: 220)
             return
         }
+        
+        if myAccount.username != username,
+            let account = DBManager.getAccountByUsername(username) {
+            self.dismiss(animated: false, completion: nil)
+            self.swapAccount(account)
+        }
+        
         guard let delegate = UIApplication.shared.delegate as? AppDelegate,
             !delegate.passcodeLockPresenter.isPasscodePresented else {
                 controllerMessage = ControllerMessage.LinkDevice(linkData)
@@ -1782,13 +1740,17 @@ extension InboxViewController: LinkDeviceDelegate {
             completion()
         }
     }
-    func onCancelLinkDevice(linkData: LinkData, completion: @escaping (() -> Void)) {
+    func onCancelLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
+        guard let account = DBManager.getAccountByUsername(username) else {
+            completion()
+            return
+        }
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
+            APIManager.syncDeny(randomId: linkData.randomId, account: account, completion: {_ in
                 completion()
             })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in
+            APIManager.linkDeny(randomId: linkData.randomId, account: account, completion: {_ in
                 completion()
             })
         }
@@ -1796,8 +1758,9 @@ extension InboxViewController: LinkDeviceDelegate {
 }
 
 extension InboxViewController {
-    func markAsRead(emailKey: Int, completion: @escaping (() -> Void)){
-        guard DBManager.getMail(key: emailKey) != nil else {
+    func markAsRead(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+        guard let account = DBManager.getAccountByUsername(username),
+            DBManager.getMail(key: emailKey, account: account) != nil else {
             completion()
             return
         }
@@ -1805,19 +1768,25 @@ extension InboxViewController {
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailUnreadRaw(metadataKeys: [emailKey], unread: 0)
         let eventParams = ["cmd": Event.Peer.emailsUnread.rawValue, "params": eventData.asDictionary()] as [String : Any]
-        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: myAccount) { (responseData) in
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: account) { (responseData) in
             if case .Success = responseData {
                 self.refreshThreadRows()
                 completion()
                 return
             }
-            DBManager.createQueueItem(params: eventParams)
+            DBManager.createQueueItem(params: eventParams, account: account)
             completion()
         }
     }
     
-    func reply(emailKey: Int, completion: @escaping (() -> Void)){
-        guard let email = DBManager.getMail(key: emailKey) else {
+    func reply(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+        if self.myAccount.username != username,
+            let account = DBManager.getAccountByUsername(username){
+            self.dismiss(animated: false, completion: nil)
+            self.swapAccount(account)
+        }
+        
+        guard let email = DBManager.getMail(key: emailKey, account: self.myAccount) else {
             completion()
             return
         }
@@ -1827,8 +1796,9 @@ extension InboxViewController {
         completion()
     }
     
-    func moveToTrash(emailKey: Int, completion: @escaping (() -> Void)){
-        guard let email = DBManager.getMail(key: emailKey) else {
+    func moveToTrash(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+        guard let account = DBManager.getAccountByUsername(username),
+            let email = DBManager.getMail(key: emailKey, account: account) else {
             completion()
             return
         }
@@ -1836,20 +1806,102 @@ extension InboxViewController {
         self.refreshThreadRows()
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: [SystemLabel.trash.nameId], labelsRemoved: [])
         let eventParams = ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()] as [String : Any]
-        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: myAccount) { (responseData) in
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], account: account) { (responseData) in
             if case .Success = responseData {
                 self.refreshThreadRows()
                 completion()
                 return
             }
-            DBManager.createQueueItem(params: eventParams)
+            DBManager.createQueueItem(params: eventParams, account: account)
             completion()
         }
+    }
+    
+    func openThread(username: String, threadId: String) {
+        if self.myAccount.username != username,
+            let account = DBManager.getAccountByUsername(username){
+            self.dismiss(animated: false, completion: nil)
+            self.swapAccount(account)
+        }
+        self.goToEmailDetail(threadId: threadId)
     }
 }
 
 extension InboxViewController: ThemeDelegate {
     func swapTheme(_ theme: Theme) {
         applyTheme()
+        tableView.reloadData()
+    }
+}
+
+extension InboxViewController {
+    func addAccount(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "loginNavController") as! UINavigationController
+        let loginVC = controller.topViewController as! NewLoginViewController
+        loginVC.multipleAccount = true
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func createAccount(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "signupview") as! SignUpViewController
+        controller.multipleAccount = true
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func swapAccount(_ account: Account) {
+        let defaults = CriptextDefaults()
+        DBManager.swapAccount(current: self.myAccount, active: account)
+        self.myAccount = account
+        defaults.activeAccount = account.username
+        WebSocketManager.sharedInstance.swapAccount(account)
+        self.invalidateObservers()
+        self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
+        if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
+            menuViewController.reloadView()
+        }
+        if let feedsViewController = navigationDrawerController?.rightViewController as? FeedViewController {
+            feedsViewController.loadFeeds()
+            let badgeCounter = feedsViewController.feedsData.newFeeds.count
+            updateFeedsBadge(counter: badgeCounter)
+        }
+        self.setQueueItemsListener()
+        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
+        self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
+    }
+}
+
+extension InboxViewController: RequestDelegate {
+    func finishRequest(username: String, result: EventData.Result) {
+        guard myAccount.username == username else {
+            if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
+                menuViewController.refreshBadges()
+            }
+            return
+        }
+        self.refreshControl.endRefreshing()
+        self.didReceiveEvents(result: result)
+    }
+    
+    func errorRequest(username: String, response: ResponseData) {
+        guard myAccount.username == username else {
+            return
+        }
+        refreshControl.endRefreshing()
+        if case .Unauthorized = response {
+            self.logout(account: self.myAccount)
+            return
+        }
+        if case let .Error(error) = response,
+            error.code != .custom {
+            self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+            return
+        }
+        
+        if case .Forbidden = response {
+            self.presentPasswordPopover(myAccount: self.myAccount)
+            return
+        }
     }
 }

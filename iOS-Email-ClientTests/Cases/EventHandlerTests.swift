@@ -25,22 +25,13 @@ class EventHandlerTests: XCTestCase {
         DBManager.destroy()
         DBManager.createSystemLabels()
         
-        let signupData = SignUpData(username: "test", password: "", fullname: "Test", optionalEmail: nil)
-        signupData.token = "<test_token>"
-        myAccount = SignUpData.createAccount(from: signupData)
-        DBManager.store(myAccount)
+        myAccount = DBFactory.createAndStoreAccount(username: "test", deviceId: 1, name: "Test")
         FileUtils.deleteAccountDirectory(account: myAccount)
     }
     
     @discardableResult func createExistingEmail() -> Email {
-        let newEmail = Email()
-        newEmail.key = 243
-        DBManager.store(newEmail)
-        let newContact = Contact()
-        newContact.email = "velvet\(Constants.domain)"
-        newContact.displayName = "The Velvet"
-        DBManager.store([newContact])
-        
+        let newEmail = DBFactory.createAndStoreEmail(key: 243, preview: "test", subject: "test", fromAddress: "test <test@criptext>", account: self.myAccount)
+        DBFactory.createAndStoreContact(email: "velvet\(Constants.domain)", name: "The Velvet", account: self.myAccount)
         return newEmail
     }
     
@@ -52,7 +43,7 @@ class EventHandlerTests: XCTestCase {
         eventHandler.signalHandler = MockSignalHandler.self
         let expect = expectation(description: "Callback runs after handling events")
         eventHandler.handleEvents(events: eventsArray) { result in
-            guard let email = DBManager.getMail(key: 243) else {
+            guard let email = DBManager.getMail(key: 243, account: self.myAccount) else {
                 XCTFail("Unable to save email")
                 return
             }
@@ -84,7 +75,7 @@ class EventHandlerTests: XCTestCase {
             let opens = result.opens
             XCTAssert(opens.count == 1)
             
-            guard let email = DBManager.getMail(key: 243) else {
+            guard let email = DBManager.getMail(key: 243, account: self.myAccount) else {
                 XCTFail("Unable to save email")
                 return
             }

@@ -34,6 +34,8 @@ class Email: Object {
         }
     }
     
+    
+    @objc dynamic var compoundKey = ""
     @objc dynamic var key = 0 //metadataKey
     @objc dynamic var threadId = ""
     @objc dynamic var messageId = ""
@@ -51,6 +53,7 @@ class Email: Object {
     @objc dynamic var replyTo = ""
     @objc dynamic var boundary = ""
     
+    @objc dynamic var account : Account!
     let labels = List<Label>()
     let files = List<File>()
     let emailContacts = LinkingObjects(fromType: EmailContact.self, property: "email")
@@ -78,7 +81,7 @@ class Email: Object {
     }
     
     override static func primaryKey() -> String? {
-        return "key"
+        return "compoundKey"
     }
     
     var isUnsent: Bool{
@@ -99,6 +102,10 @@ class Email: Object {
     
     var isSent: Bool{
         return labels.contains(where: {$0.id == SystemLabel.sent.id})
+    }
+    
+    func buildCompoundKey() {
+        self.compoundKey = "\(account.compoundKey):\(key)"
     }
     
     func getContacts(type: ContactType, notEqual email: String = "") -> List<Contact> {

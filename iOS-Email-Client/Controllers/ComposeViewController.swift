@@ -37,6 +37,10 @@ class ComposeViewController: UIViewController {
     let COMPOSER_MIN_HEIGHT = 150
     let PASSWORD_POPUP_HEIGHT = 295
     
+    @IBOutlet weak var fromField: UILabel!
+    @IBOutlet weak var fromButton: UIButton!
+    @IBOutlet weak var fromMenuView: BottomMenuView!
+    
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
     @IBOutlet weak var bccField: CLTokenInputView!
@@ -217,7 +221,25 @@ class ComposeViewController: UIViewController {
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
         
+        fromMenuView.delegate = self
+        setFrom(account: activeAccount)
+        
         applyTheme()
+    }
+    
+    func setFrom(account: Account) {
+        let accounts = DBManager.getAccounts(ignore: account.username)
+        fromButton.isHidden = accounts.count == 0 || (composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description)
+        let emails = Array(accounts.map({$0.email}))
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        fromMenuView.isUserInteractionEnabled = false
+        fromMenuView.initialLoad(options: emails)
+        activeAccount = account
+        
+        let attributedFrom = NSMutableAttributedString(string: "From: ", attributes: [.font: Font.bold.size(15)!])
+        let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
+        attributedFrom.append(attributedEmail)
+        fromField.attributedText = attributedFrom
     }
     
     func applyTheme(){
@@ -249,20 +271,27 @@ class ComposeViewController: UIViewController {
         contactTableView.backgroundColor = theme.overallBackground
         subjectField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(subjectField.minimumFontSize)!])
         self.attachmentButtonContainerView.layer.borderColor = theme.overallBackground.cgColor
+        
+        fromField.textColor = theme.mainText
+        fromField.backgroundColor = theme.overallBackground
+        fromButton.imageView?.tintColor = theme.criptextBlue
+    }
+    
+    @IBAction func didPressFrom(_ sender: Any) {
+        fromButton.setImage(UIImage(named: "icon-up"), for: .normal)
+        fromMenuView.isUserInteractionEnabled = true
+        fromMenuView.toggleMenu(true)
+        resignKeyboard()
     }
     
     @objc func onDonePress(_ sender: Any){
         switch(sender as? UIView){
         case toField:
             subjectField.becomeFirstResponder()
-            break
         case subjectField:
             editorView.becomeFirstResponder()
-            break
         default:
-            if(self.navigationItem.rightBarButtonItem == self.enableSendButton){
-                self.didPressSend(self.enableSendButton)
-            }
+            break
         }
     }
     
@@ -286,9 +315,7 @@ class ComposeViewController: UIViewController {
             self.thumbUpdated = true
         }
         
-        if self.toField.allTokens.isEmpty {
-            self.navigationItem.rightBarButtonItem = self.disableSendButton
-        }
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -344,6 +371,7 @@ class ComposeViewController: UIViewController {
         let draft = Email()
         draft.status = .none
         let bodyWithoutHtml = self.editorView.text.replaceNewLineCharater(separator: " ")
+        draft.account = self.activeAccount
         draft.preview = String(bodyWithoutHtml.prefix(100))
         draft.unread = false
         draft.subject = self.subjectField.text ?? ""
@@ -353,14 +381,10 @@ class ComposeViewController: UIViewController {
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
         draft.fromAddress = "\(activeAccount.name) <\(activeAccount.username)\(Constants.domain)>"
+        draft.buildCompoundKey()
         DBManager.store(draft)
         
         FileUtils.saveEmailToFile(username: activeAccount.username, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
-        
-        if !fileManager.registeredFiles.isEmpty,
-            let keys = fileManager.keyPairs[0] {
-            let allDuplicates = fileManager.registeredFiles.filter({$0.shouldDuplicate}).count == fileManager.registeredFiles.count
-        }
         
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -406,7 +430,7 @@ class ComposeViewController: UIViewController {
             newContact.email = email
             newContact.score = 1
             newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
-            DBManager.store([newContact]);
+            DBManager.store([newContact], account: activeAccount);
             emailContact.contact = newContact
         }
         emailContacts.append(emailContact)
@@ -720,14 +744,8 @@ extension ComposeViewController{
     // 3
     // Add a gesture on the view controller to close keyboard when tapped
     func enableKeyboardHideOnTap(){
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) // See 4.1
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //See 4.2
-        
-        // 3.1
-        self.dismissTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ComposeViewController.hideKeyboard))
-        self.dismissTapGestureRecognizer.delegate = self
-        self.view.addGestureRecognizer(self.dismissTapGestureRecognizer)
     }
     
     //3.1
@@ -907,8 +925,6 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             return
         }
         
-        self.navigationItem.rightBarButtonItem = self.enableSendButton
-        
         if input.contains(",") || input.contains(" ") {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
@@ -923,16 +939,12 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             }
         }
         
-        if self.toField.allTokens.isEmpty && (self.toField.text?.isEmpty)! {
-            self.navigationItem.rightBarButtonItem = self.disableSendButton
-        }
-        
         self.contactTableView.isHidden = (view.text?.isEmpty)!
         self.toolbarHeightConstraint.constant = (view.text?.isEmpty)! ? self.toolbarHeightConstraintInitialValue! : 0
         self.toolbarView.isHidden = (view.text?.isEmpty)! ? false : true
         
         if !(text?.isEmpty)! {
-            composerData.contactArray = DBManager.getContacts(text ?? "")
+            composerData.contactArray = DBManager.getContacts(text ?? "", account: self.activeAccount)
             self.contactTableView.isHidden = composerData.contactArray.isEmpty
             self.toolbarHeightConstraint.constant = composerData.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0
             self.toolbarView.isHidden = composerData.contactArray.isEmpty ? false : true
@@ -960,7 +972,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
     }
 
     func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
-        
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
         self.contactTableView.isHidden = true
         
         guard let text = view.text, text.count > 0 else {
@@ -979,9 +991,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
     }
     
     func tokenInputView(_ view: CLTokenInputView, didRemove token: CLToken) {
-        if self.toField.allTokens.isEmpty && (self.toField.text?.isEmpty)! {
-            self.navigationItem.rightBarButtonItem = self.disableSendButton
-        }
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
     }
     
     func tokenInputView(_ view: CLTokenInputView, didChangeHeightTo height: CGFloat) {
@@ -1065,6 +1075,8 @@ extension ComposeViewController: CNContactPickerDelegate {
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
         view.add(token, highlight: textColor, background: bgColor)
+        
+        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
     }
 }
 
@@ -1228,5 +1240,21 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
         }
         self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
         self.toggleAttachmentTable()
+    }
+}
+
+extension ComposeViewController: BottomMenuDelegate {
+    func didPressOption(_ option: String) {
+        let username = String(option.split(separator: "@").first ?? "")
+        guard let account = DBManager.getAccountByUsername(username) else {
+            return
+        }
+        self.setFrom(account: account)
+    }
+    
+    func didPressBackground() {
+        fromMenuView.isUserInteractionEnabled = false
+        self.fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        self.fromMenuView.toggleMenu(false)
     }
 }

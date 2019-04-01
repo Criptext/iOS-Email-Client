@@ -264,7 +264,9 @@ class EmailTableViewCell: UITableViewCell{
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
         let anchorColor = theme.name != "Dark" ? "" : "48a3ff"
-        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(theme.name != "Dark" ? Constants.htmlBottomWrapper : Constants.darkBottomWrapper)"
+        let isFwd = email.subject.range(of: "^(Fw|FW|Fwd|FWD): .*", options: .regularExpression, range: nil, locale: nil) != nil
+        let script = Constants.quoteScript(theme: theme.name, isFwd: isFwd)
+        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(script)"
         webView.scrollView.maximumZoomScale = 2.0
         webView.loadHTMLString(content, baseURL: bundleUrl)
     }

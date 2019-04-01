@@ -12,18 +12,19 @@ import XCTest
 
 class ComposerViewControllerTests: XCTestCase {
     
+    var account: Account!
+    
     override func setUp() {
         super.setUp()
-        let defaults = CriptextDefaults()
-        defaults.removeConfig()
-        DBManager.destroy()
-        
         DBManager.createSystemLabels()
         let account = Account()
         account.username = "myself"
         account.deviceId = 1
+        account.jwt = "<test_jwt>"
+        account.buildCompoundKey()
         DBManager.store(account)
-        
+        self.account = account
+        let defaults = CriptextDefaults()
         defaults.activeAccount = account.username
     }
     
@@ -31,6 +32,7 @@ class ComposerViewControllerTests: XCTestCase {
         super.tearDown()
         
         CriptextDefaults().removeConfig()
+        DBManager.destroy()
     }
     
     func testPassEmailToDelegate(){
@@ -63,11 +65,11 @@ class ComposerViewControllerTests: XCTestCase {
     
     func testPassDraftToComposer() {
         
-        let draft = DBFactory.createAndStoreEmail(key: 1234, preview: "This is a Draft", subject: "Draft", fromAddress: "test <test@criptext.com>")
+        let draft = DBFactory.createAndStoreEmail(key: 1234, preview: "This is a Draft", subject: "Draft", fromAddress: "test <test@criptext.com>", account: self.account)
         DBManager.addRemoveLabelsFromEmail(draft, addedLabelIds: [SystemLabel.draft.id], removedLabelIds: [])
         
-        let testContact1 = DBFactory.createAndStoreContact(email: "test1@criptext.com", name: "Test1")
-        let testContact2 = DBFactory.createAndStoreContact(email: "test2@criptext.com", name: "Test2")
+        let testContact1 = DBFactory.createAndStoreContact(email: "test1@criptext.com", name: "Test1", account: self.account)
+        let testContact2 = DBFactory.createAndStoreContact(email: "test2@criptext.com", name: "Test2", account: self.account)
         DBFactory.createAndStoreEmailContact(email: draft, contact: testContact1, type: "from")
         DBFactory.createAndStoreEmailContact(email: draft, contact: testContact2, type: "to")
         
