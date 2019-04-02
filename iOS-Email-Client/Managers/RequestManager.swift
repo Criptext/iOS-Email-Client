@@ -68,9 +68,9 @@ final class RequestManager: NSObject {
                 
                 if repeatRequest {
                     weakSelf.accountRequests.insert(username, at: 0)
+                } else {
                     weakSelf.accountCompletions[username]?(true)
                     weakSelf.accountCompletions[username] = nil
-                } else {
                     weakSelf.delegate?.finishRequest(username: username, result: result)
                 }
                 weakSelf.processingAccount = nil

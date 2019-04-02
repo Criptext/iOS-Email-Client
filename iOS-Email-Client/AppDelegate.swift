@@ -477,7 +477,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let mailboxVC = getInboxVC() {
             mailboxVC.invalidateObservers()
         }
-        UIApplication.shared.applicationIconBadgeNumber = 0
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
@@ -564,9 +563,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        if let inbox = getInboxVC() {
-            UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: inbox.myAccount)
-        }
+        UIApplication.shared.applicationIconBadgeNumber = SharedDB.getUnreadCounters()
         RequestManager.shared.clearPending()
     }
     
@@ -692,7 +689,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 return
             }
             inboxVC.markAsRead(username: accountUser, emailKey: key) {
-                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: inboxVC.myAccount)
+                UIApplication.shared.applicationIconBadgeNumber = SharedDB.getUnreadCounters()
                 completionHandler()
             }
             break
@@ -728,9 +725,9 @@ extension AppDelegate: MessagingDelegate {
         guard let accountUser = userInfo["account"] as? String else {
                 return
         }
-        RequestManager.shared.accountCompletions[accountUser] = { _ in
-            if let inboxVC = self.getInboxVC() {
-                UIApplication.shared.applicationIconBadgeNumber = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: inboxVC.myAccount)
+        RequestManager.shared.accountCompletions[accountUser] = { success in
+            if success {
+                UIApplication.shared.applicationIconBadgeNumber = SharedDB.getUnreadCounters()
             }
             completionHandler(.newData)
         }

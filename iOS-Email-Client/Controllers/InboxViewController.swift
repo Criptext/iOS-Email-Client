@@ -1712,6 +1712,7 @@ extension InboxViewController: LinkDeviceDelegate {
     }
     
     func onAcceptLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
+        self.navigationDrawerController?.closeLeftView()
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -1780,6 +1781,7 @@ extension InboxViewController {
     }
     
     func reply(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+        self.navigationDrawerController?.closeLeftView()
         if self.myAccount.username != username,
             let account = DBManager.getAccountByUsername(username){
             self.dismiss(animated: false, completion: nil)
@@ -1818,6 +1820,7 @@ extension InboxViewController {
     }
     
     func openThread(username: String, threadId: String) {
+        self.navigationDrawerController?.closeLeftView()
         if self.myAccount.username != username,
             let account = DBManager.getAccountByUsername(username){
             self.dismiss(animated: false, completion: nil)
@@ -1860,6 +1863,7 @@ extension InboxViewController {
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.reloadView()
+            menuViewController.hideAccounts()
         }
         if let feedsViewController = navigationDrawerController?.rightViewController as? FeedViewController {
             feedsViewController.loadFeeds()

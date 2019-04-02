@@ -52,6 +52,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
+        bestAttemptContent.badge = NSNumber(value: SharedDB.getUnreadCounters() + 1) 
         bestAttemptContent.subtitle = bestAttemptContent.body
         bestAttemptContent.body = condenseWhitespace(phrase: decrPreview)
         bestAttemptContent.categoryIdentifier = "OPEN_THREAD"
