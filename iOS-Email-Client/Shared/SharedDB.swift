@@ -97,6 +97,17 @@ class SharedDB {
         return realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", label, rejectedLabels).distinct(by: ["threadId"]).count
     }
     
+    class func getUnreadCounters() -> Int {
+        let realm = try! Realm()
+        var counter = 0
+        let accounts = realm.objects(Account.self).filter("isLoggedIn == true")
+        let rejectedLabels = SystemLabel.inbox.rejectedLabelIds
+        for account in accounts {
+            counter += realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", SystemLabel.inbox.id, rejectedLabels).distinct(by: ["threadId"]).count
+        }
+        return counter
+    }
+    
     //MARK: - Contacts related
     
     class func getContacts(_ text:String, account: Account) -> [Contact]{
@@ -196,10 +207,10 @@ class SharedDB {
         }
     }
     
-    class func duplicateFiles(key: Int, duplicates: [String: Any]) -> [[String: Any]]? {
+    class func duplicateFiles(account: Account, key: Int, duplicates: [String: Any]) -> [[String: Any]]? {
         let realm = try! Realm()
         
-        guard let email = realm.object(ofType: Email.self, forPrimaryKey: key) else {
+        guard let email = realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(key)") else {
             return nil
         }
         

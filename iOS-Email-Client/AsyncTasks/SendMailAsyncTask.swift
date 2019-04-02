@@ -147,8 +147,9 @@ class SendMailAsyncTask {
         }
         apiManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
             guard case let .SuccessDictionary(response) = responseData,
+                let myAccount = SharedDB.getAccountByUsername(self.username),
                 let duplicates = response["duplicates"] as? [String: Any],
-                let fileParams = SharedDB.duplicateFiles(key: self.emailKey, duplicates: duplicates) else {
+                let fileParams = SharedDB.duplicateFiles(account: myAccount, key: self.emailKey, duplicates: duplicates) else {
                 completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_DUPLICATE"))))
                 return
             }

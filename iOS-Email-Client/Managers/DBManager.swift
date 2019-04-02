@@ -332,7 +332,7 @@ class DBManager: SharedDB {
         
         do {
             try realm.write() {
-                if realm.object(ofType: Email.self, forPrimaryKey: email.key) != nil {
+                if realm.object(ofType: Email.self, forPrimaryKey: email.compoundKey) != nil {
                     return
                 }
                 realm.add(email, update: update)
@@ -472,19 +472,6 @@ class DBManager: SharedDB {
         
         try! realm.write() {
             email.isMuted = muted
-        }
-    }
-    
-    class func deleteEmail(id: Int){
-        
-        let realm = try! Realm()
-        
-        guard let email = realm.object(ofType: Email.self, forPrimaryKey: id) else {
-            return
-        }
-        
-        try! realm.write() {
-            self.deleteEmail(realm: realm, emails: [email])
         }
     }
     

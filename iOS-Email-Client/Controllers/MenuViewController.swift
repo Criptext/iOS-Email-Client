@@ -372,6 +372,12 @@ extension MenuViewController{
         self.accountsCollectionView.isHidden = !accountsCollectionView.isHidden
         self.accountsSectionButton.setImage(accountsTableView.isHidden ? UIImage(named: "icon-down") : UIImage(named: "icon-up"), for: .normal)
     }
+    
+    func hideAccounts() {
+        self.accountsTableView.isHidden = true
+        self.accountsCollectionView.isHidden = false
+        self.accountsSectionButton.setImage(UIImage(named: "icon-down"), for: .normal)
+    }
 }
 
 extension MenuViewController: AccountsFooterDelegate {
