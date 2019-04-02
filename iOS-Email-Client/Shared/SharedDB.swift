@@ -196,10 +196,10 @@ class SharedDB {
         }
     }
     
-    class func duplicateFiles(key: Int, duplicates: [String: Any]) -> [[String: Any]]? {
+    class func duplicateFiles(account: Account, key: Int, duplicates: [String: Any]) -> [[String: Any]]? {
         let realm = try! Realm()
         
-        guard let email = realm.object(ofType: Email.self, forPrimaryKey: key) else {
+        guard let email = realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(key)") else {
             return nil
         }
         
