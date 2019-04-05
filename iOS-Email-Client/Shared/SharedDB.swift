@@ -82,10 +82,10 @@ class SharedDB {
         }
     }
     
-    class func getEmail(messageId: String) -> Email? {
+    class func getEmail(messageId: String, account: Account) -> Email? {
         let realm = try! Realm()
         
-        return realm.objects(Email.self).filter("messageId == '\(messageId)'").first
+        return realm.objects(Email.self).filter("messageId == '\(messageId)' AND account.compoundKey == '\(account.compoundKey)'").first
     }
     
     class func clone(_ email: Email) -> Email {

@@ -98,7 +98,7 @@ class NewEmailHandler {
             
             var replyThreadId: String? = nil
             if let inReplyTo = event.inReplyTo,
-                let replyEmail = SharedDB.getEmail(messageId: inReplyTo) {
+                let replyEmail = SharedDB.getEmail(messageId: inReplyTo, account: myAccount) {
                 replyThreadId = replyEmail.threadId
             }
             
