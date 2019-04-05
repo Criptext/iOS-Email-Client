@@ -25,6 +25,11 @@ class Account: Object{
     @objc dynamic var isActive = false
     @objc dynamic var isLoggedIn = false
     
+    @objc dynamic var hasCloudBackup = false
+    @objc dynamic var lastTimeBackup: Date? = nil
+    @objc dynamic var autoBackupFrequency = "Off"
+    @objc dynamic var wifiOnly = true
+    
     var email: String {
         guard let myDomain = domain else {
             return "\(username)\(Constants.domain)"

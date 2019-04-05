@@ -66,6 +66,49 @@ class SharedDB {
         }
     }
     
+    class func update(account: Account, hasCloudBackup: Bool) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.hasCloudBackup = hasCloudBackup
+        }
+    }
+    
+    class func update(account: Account, wifiOnly: Bool) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.wifiOnly = wifiOnly
+        }
+    }
+    
+    class func update(account: Account, frequency: String) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.autoBackupFrequency = frequency
+        }
+    }
+    
+    class func update(account: Account, lastBackup: Date) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.lastTimeBackup = lastBackup
+        }
+    }
+    
+    class func update(username: String, lastBackup: Date) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            guard let account = realm.objects(Account.self).filter("username == '\(username)'").first else {
+                return
+            }
+            account.lastTimeBackup = lastBackup
+        }
+    }
+    
     @discardableResult class func store(_ email:Email) -> Bool {
         let realm = try! Realm()
         

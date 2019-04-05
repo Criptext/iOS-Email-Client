@@ -261,6 +261,7 @@
 		A7385F3F2230272E005CB38D /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F3E2230272E005CB38D /* RequestManager.swift */; };
 		A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
 		A7385F432230852D005CB38D /* CRBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F422230852D005CB38D /* CRBundle.swift */; };
+		A742720522550A1F006D10C9 /* BackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742720422550A1F006D10C9 /* BackupViewController.swift */; };
 		A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */; };
 		A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
 		A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
@@ -283,6 +284,9 @@
 		A763E1A32225D04A00A1CC18 /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A763E1A22225D04A00A1CC18 /* SearchTests.swift */; };
 		A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */; };
 		A76B5B3E22371BEB0078F6C7 /* SendEmailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76B5B3D22371BEB0078F6C7 /* SendEmailTests.swift */; };
+		A76D303622565C64004F8747 /* SettingsOptionTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A76D303522565C64004F8747 /* SettingsOptionTableCell.xib */; };
+		A76D30382256709E004F8747 /* BackupHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A76D30372256709E004F8747 /* BackupHeaderView.xib */; };
+		A76D303A225671DC004F8747 /* BackupHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76D3039225671DC004F8747 /* BackupHeaderView.swift */; };
 		A774DAC02194D39200C411BD /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7621DEB2163D58900ADCD2C /* Env.swift */; };
 		A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77AD67221642AFC00C26F07 /* StreamReader.swift */; };
 		A77C30A721A4DE720031E219 /* PasscodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30A621A4DE720031E219 /* PasscodeConfig.swift */; };
@@ -353,6 +357,7 @@
 		A7ADA15C21A729A10027FC1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
 		A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
+		A7B17A8A2257C93600927102 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B17A892257C93600927102 /* BackupManager.swift */; };
 		A7B5B572223B0CD20083E467 /* AccountCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B5B571223B0CD20083E467 /* AccountCollectionCell.swift */; };
 		A7B5B574223B0D650083E467 /* AccountCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B5B573223B0D650083E467 /* AccountCollectionCell.xib */; };
 		A7C2E5E82232E0C80026B566 /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
@@ -766,6 +771,7 @@
 		A7385F3E2230272E005CB38D /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		A7385F4022303CF0005CB38D /* AccountContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountContact.swift; sourceTree = "<group>"; };
 		A7385F422230852D005CB38D /* CRBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRBundle.swift; sourceTree = "<group>"; };
+		A742720422550A1F006D10C9 /* BackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupViewController.swift; sourceTree = "<group>"; };
 		A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncViewController.swift; sourceTree = "<group>"; };
 		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
 		A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBadgeCounterAsyncTask.swift; sourceTree = "<group>"; };
@@ -781,6 +787,9 @@
 		A763E1A22225D04A00A1CC18 /* SearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTests.swift; sourceTree = "<group>"; };
 		A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAnimatedUIView.swift; sourceTree = "<group>"; };
 		A76B5B3D22371BEB0078F6C7 /* SendEmailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailTests.swift; sourceTree = "<group>"; };
+		A76D303522565C64004F8747 /* SettingsOptionTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsOptionTableCell.xib; sourceTree = "<group>"; };
+		A76D30372256709E004F8747 /* BackupHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupHeaderView.xib; sourceTree = "<group>"; };
+		A76D3039225671DC004F8747 /* BackupHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupHeaderView.swift; sourceTree = "<group>"; };
 		A774DAC12196215100C411BD /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		A77AD67221642AFC00C26F07 /* StreamReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
 		A77C30A621A4DE720031E219 /* PasscodeConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeConfig.swift; sourceTree = "<group>"; };
@@ -796,6 +805,7 @@
 		A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerUIView.swift; sourceTree = "<group>"; };
 		A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
+		A7B17A892257C93600927102 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		A7B5B571223B0CD20083E467 /* AccountCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectionCell.swift; sourceTree = "<group>"; };
 		A7B5B573223B0D650083E467 /* AccountCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCollectionCell.xib; sourceTree = "<group>"; };
 		A7CC38042190D9D900C8355A /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1044,6 +1054,7 @@
 				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
 				A723254421CBE257003CF78D /* ThemeManager.swift */,
 				A7385F3E2230272E005CB38D /* RequestManager.swift */,
+				A7B17A892257C93600927102 /* BackupManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1105,6 +1116,7 @@
 				7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */,
 				7C7F2FF620B5E29900A2CB32 /* SingleTextInputViewController.swift */,
 				7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */,
+				A742720422550A1F006D10C9 /* BackupViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1360,6 +1372,9 @@
 				A7B5B573223B0D650083E467 /* AccountCollectionCell.xib */,
 				A77DE05E2244139E00EA1952 /* BottomMenuView.xib */,
 				A77DE060224415B500EA1952 /* BottomMenuView.swift */,
+				A76D303522565C64004F8747 /* SettingsOptionTableCell.xib */,
+				A76D30372256709E004F8747 /* BackupHeaderView.xib */,
+				A76D3039225671DC004F8747 /* BackupHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1742,8 +1757,10 @@
 				A700F59921D41B3F00792B4A /* dark-showmore.png in Resources */,
 				412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */,
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
+				A76D30382256709E004F8747 /* BackupHeaderView.xib in Resources */,
 				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
 				A7E399F5219F61CD007EEC1C /* GoogleService-Info-Support.plist in Resources */,
+				A76D303622565C64004F8747 /* SettingsOptionTableCell.xib in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
 				A7FFCF30217A910A00FFFDFF /* LabelsFooterTableViewCell.xib in Resources */,
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
@@ -1989,10 +2006,12 @@
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
 				7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */,
 				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
+				A76D303A225671DC004F8747 /* BackupHeaderView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
 				7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */,
 				41AAC53C201A9FCD00809C4D /* URLActivityItemProvider.swift in Sources */,
 				7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */,
+				A7B17A8A2257C93600927102 /* BackupManager.swift in Sources */,
 				A7065E6121CC62E200F8292A /* AttachmentOptionsContainerView.swift in Sources */,
 				A7065E5D21CC1A4200F8292A /* FeedHeaderTitleUIView.swift in Sources */,
 				A7F30280216F9DCF00676DD2 /* SignInVerificationUIPopover.swift in Sources */,
@@ -2001,6 +2020,7 @@
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,
 				7C5FD824205C377F000E5F14 /* AttachmentTableCell.swift in Sources */,
 				A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */,
+				A742720522550A1F006D10C9 /* BackupViewController.swift in Sources */,
 				A723254521CBE257003CF78D /* ThemeManager.swift in Sources */,
 				7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */,
 				7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */,

@@ -477,6 +477,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let mailboxVC = getInboxVC() {
             mailboxVC.invalidateObservers()
         }
+        BackupManager.shared.clearAccount(username: account.username)
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
