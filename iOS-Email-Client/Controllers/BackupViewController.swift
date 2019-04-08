@@ -55,6 +55,11 @@ class BackupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         BackupManager.shared.clearAccount(username: myAccount.username)
+        if BackupManager.shared.contains(username: myAccount.username) {
+            processMessage = "Generating Backup File..."
+            uploading = true
+        }
+        
         navigationItem.title = String.localize("BACKUP")
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
@@ -104,29 +109,29 @@ class BackupViewController: UIViewController {
     }
     
     func startBackup(upload: Bool = true) {
+        guard !uploading else {
+            return
+        }
+        progress = 0
         uploading = true
         processMessage = "Generating Backup File..."
         tableView.reloadData()
-        let createDBTask = CreateCustomJSONFileAsyncTask(username: myAccount.username)
-        createDBTask.start { (error, url) in
-            guard let dbUrl = url,
-                let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.gzippedDB.name, compress: true),
-                let container = self.containerUrl else {
-                    return
-            }
-            guard upload else {
+        if !upload {
+            let createDBTask = CreateCustomJSONFileAsyncTask(username: myAccount.username, kind: .share)
+            createDBTask.start { (error, url) in
+                guard let dbUrl = url,
+                    let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.shareZip.name, compress: true) else {
+                        return
+                }
                 self.processMessage = "Mailbox Backed Successfully!"
                 self.uploading = false
                 self.tableView.reloadData()
-                let activityVC = UIActivityViewController(activityItems: [compressedPath], applicationActivities: nil)
+                let activityVC = UIActivityViewController(activityItems: [URL(fileURLWithPath: compressedPath)], applicationActivities: nil)
                 self.present(activityVC, animated: true, completion: nil)
-                return
             }
-            let cloudUrl = container.appendingPathComponent("backup.db")
-            try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true, attributes: nil)
-            try? FileManager.default.removeItem(at: cloudUrl)
-            try? FileManager.default.copyItem(at: URL(fileURLWithPath: compressedPath), to: cloudUrl)
-            DBManager.update(account: self.myAccount, lastBackup: Date())
+        } else {
+            BackupManager.shared.backupNow(account: self.myAccount)
+            handleProgress()
         }
     }
     

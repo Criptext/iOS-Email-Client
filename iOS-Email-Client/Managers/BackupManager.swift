@@ -24,13 +24,13 @@ final class BackupManager {
         let accounts = DBManager.getLoggedAccounts()
         for account in accounts {
             guard account.hasCloudBackup,
+                !runningBackups.contains(account.compoundKey),
                 let frequency = BackupFrequency.init(rawValue: account.autoBackupFrequency),
                 frequency != .off else {
                 return
             }
             guard let worker = workers[account.compoundKey],
-                worker.frequency == frequency,
-                !runningBackups.contains(account.username) else {
+                worker.frequency == frequency else {
                 workers[account.compoundKey]?.worker.cancel()
                 workers[account.compoundKey] = nil
                 let lastBackup = account.lastTimeBackup ?? Date()
@@ -45,20 +45,32 @@ final class BackupManager {
         workers[username] = nil
     }
     
-    func createWorker(account: Account, lastBackup: Date) {
-        let username = account.username
-        let email = account.email
-        guard let autoFrequency = BackupFrequency.init(rawValue: account.autoBackupFrequency),
-            let dateForBackup = autoFrequency.timelapse(date: lastBackup) else {
+    func contains(username: String) -> Bool {
+        return runningBackups.contains(username)
+    }
+    
+    func backupNow(account: Account) {
+        guard !runningBackups.contains(account.compoundKey) else {
             return
         }
-        let timeForExcecution = dateForBackup.timeIntervalSince1970 - lastBackup.timeIntervalSince1970
+        workers[account.compoundKey]?.worker.cancel()
+        workers[account.compoundKey] = nil
+        createWorker(account: account, lastBackup: Date(), backupNow: true)
+    }
+    
+    func createWorker(account: Account, lastBackup: Date, backupNow: Bool = false) {
+        let username = account.username
+        let email = account.email
+        guard let executionTime = self.timeForExcecution(autoBackUp: account.autoBackupFrequency, lastBackup: lastBackup, force: backupNow) else {
+            return
+        }
         let workItem = DispatchWorkItem {
-            self.runningBackups.insert(account.username)
-            let createDBTask = CreateCustomJSONFileAsyncTask(username: username)
+            print("STARTING BACKUP!!")
+            self.runningBackups.insert(username)
+            let createDBTask = CreateCustomJSONFileAsyncTask(username: username, kind: .backup)
             createDBTask.start { (error, url) in
                 guard let dbUrl = url,
-                    let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.gzippedDB.name, compress: true),
+                    let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.backupZip.name, compress: true),
                     let container = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(email) else {
                         return
                 }
@@ -68,12 +80,26 @@ final class BackupManager {
                 try? FileManager.default.copyItem(at: URL(fileURLWithPath: compressedPath), to: cloudUrl)
                 self.workers[email] = nil
                 DBManager.update(username: username, lastBackup: Date())
-                self.runningBackups.remove(account.username)
+                self.runningBackups.remove(username)
+                print("FINISHING BACKUP!!")
             }
         }
         let queue = DispatchQueue(label: "com.criptext.account.backup", qos: .userInitiated, attributes: .concurrent)
-        queue.asyncAfter(deadline: .now() + timeForExcecution, execute: workItem)
-        workers[email] = BackupWorker(worker: workItem, frequency: autoFrequency)
+        queue.asyncAfter(deadline: .now() + executionTime.0, execute: workItem)
+        workers[email] = BackupWorker(worker: workItem, frequency: executionTime.1)
+    }
+    
+    func timeForExcecution(autoBackUp: String, lastBackup: Date, force: Bool = false) -> (Double, BackupFrequency)? {
+        guard !force else {
+            return (0, .off)
+        }
+        guard let autoFrequency = BackupFrequency.init(rawValue: autoBackUp),
+            let dateForBackup = autoFrequency.timelapse(date: lastBackup) else {
+                return nil
+        }
+        var timeForExcecution = dateForBackup.timeIntervalSince1970 - lastBackup.timeIntervalSince1970
+        timeForExcecution = timeForExcecution < 0 ? 0 : timeForExcecution
+        return (timeForExcecution, autoFrequency)
     }
     
 }
