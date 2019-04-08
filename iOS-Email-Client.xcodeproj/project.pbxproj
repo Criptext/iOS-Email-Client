@@ -358,6 +358,7 @@
 		A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
 		A7B17A8A2257C93600927102 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B17A892257C93600927102 /* BackupManager.swift */; };
+		A7B17A8C225BEFE200927102 /* RestoreUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B17A8B225BEFE200927102 /* RestoreUIPopover.xib */; };
 		A7B5B572223B0CD20083E467 /* AccountCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B5B571223B0CD20083E467 /* AccountCollectionCell.swift */; };
 		A7B5B574223B0D650083E467 /* AccountCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B5B573223B0D650083E467 /* AccountCollectionCell.xib */; };
 		A7C2E5E82232E0C80026B566 /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
@@ -806,6 +807,7 @@
 		A7ADA14021A5F2620027FC1C /* Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Extension-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7ADA14121A5F27F0027FC1C /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		A7B17A892257C93600927102 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
+		A7B17A8B225BEFE200927102 /* RestoreUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreUIPopover.xib; sourceTree = "<group>"; };
 		A7B5B571223B0CD20083E467 /* AccountCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectionCell.swift; sourceTree = "<group>"; };
 		A7B5B573223B0D650083E467 /* AccountCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCollectionCell.xib; sourceTree = "<group>"; };
 		A7CC38042190D9D900C8355A /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1375,6 +1377,7 @@
 				A76D303522565C64004F8747 /* SettingsOptionTableCell.xib */,
 				A76D30372256709E004F8747 /* BackupHeaderView.xib */,
 				A76D3039225671DC004F8747 /* BackupHeaderView.swift */,
+				A7B17A8B225BEFE200927102 /* RestoreUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1716,6 +1719,7 @@
 				A7FFCF42217A91C300FFFDFF /* WelcomeTourView.xib in Resources */,
 				7CF93F572146E41700361837 /* Arm.json in Resources */,
 				A7FFCF39217A912800FFFDFF /* SignInWarningUIPopover.xib in Resources */,
+				A7B17A8C225BEFE200927102 /* RestoreUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
 				A7D2DEB021C852A6002ED6F8 /* PasscodeLock.strings in Resources */,
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
