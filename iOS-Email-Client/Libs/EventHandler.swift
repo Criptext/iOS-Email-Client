@@ -15,6 +15,7 @@ class EventHandler {
     var apiManager : APIManager.Type = APIManager.self
     var signalHandler: SignalHandler.Type = SignalHandler.self
     let queue = DispatchQueue.global(qos: .default)
+    var parsedKeys = false
     
     init(account: Account){
         username = account.username
@@ -92,6 +93,8 @@ class EventHandler {
             self.handleNewEmailCommand(params: params, finishCallback: handleEventResponse)
         case Event.emailStatus.rawValue:
             self.handleEmailStatusCommand(params: params, finishCallback: handleEventResponse)
+        case Event.preKeys.rawValue:
+            self.handlePreKeysCommand(finishCallback: handleEventResponse)
         case Event.Peer.unsent.rawValue:
             var fakeParams = params
             fakeParams["from"] = self.username
@@ -150,6 +153,31 @@ class EventHandler {
                 return
             }
             finishCallback(result.success, .Email(email))
+        }
+    }
+    
+    func handlePreKeysCommand(finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void) {
+        guard !parsedKeys else {
+            finishCallback(true, .Empty)
+            return
+        }
+        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            finishCallback(false, .Empty)
+            return
+        }
+        let bundle = CRBundle(account: myAccount)
+        guard let keys = bundle.generatePreKeys() else {
+            finishCallback(false, .Empty)
+            return
+        }
+        
+        APIManager.postKeys(keys, account: myAccount) { (responseData) in
+            guard case .Success = responseData else {
+                finishCallback(false, .Empty)
+                return
+            }
+            self.parsedKeys = true
+            finishCallback(true, .Empty)
         }
     }
     
@@ -339,6 +367,7 @@ enum Event: Int32 {
     case newEmail = 101
     case emailStatus = 102
     case serverError = 104
+    case preKeys = 107
     case newEvent = 400
     
     enum Link: Int32 {

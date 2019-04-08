@@ -540,7 +540,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?, _ activeAccount: String) -> UIViewController{
-        let myAccount = DBManager.getAccountByUsername(activeAccount)
+        let myAccount = DBManager.getAccountByUsername(activeAccount)!
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
         let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
@@ -552,7 +552,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
-        WebSocketManager.sharedInstance.connect(account: myAccount!)
+        WebSocketManager.sharedInstance.connect(account: myAccount)
         let paddingBottom = window?.safeAreaInsets.bottom ?? 0.0
         let snackbarController = CriptextSnackbarController(rootViewController: drawerVC)
         snackbarController.setBottomPadding(padding: paddingBottom)

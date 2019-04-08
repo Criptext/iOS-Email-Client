@@ -109,6 +109,33 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func postKeys(_ keys: [[String: Any]], account: Account, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/keybundle/prekeys"
+        let headers = [
+            "Authorization": "Bearer \(account.jwt)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = [
+            "preKeys": keys
+            ] as [String: Any]
+        let accountRef = SharedDB.getReference(account)
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
+                guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
+                    completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
+                    return
+                }
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.postKeys(keys, account: refdAccount, completion: completion)
+            }
+        }
+    }
+    
     class func postPeerEvent(_ params: [String : Any], account: Account, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/event/peers"
         let headers = [

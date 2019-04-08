@@ -44,7 +44,8 @@ class NewEmailHandler {
             return
         }
         
-        guard let event = try? NewEmail.init(params: params) else {
+        guard let event = try? NewEmail.init(params: params),
+            let username = ContactUtils.getUsernameFromEmailFormat(event.from)else {
             completion(Result(success: false))
             return
         }
@@ -60,34 +61,38 @@ class NewEmailHandler {
         }
         
         api.getEmailBody(metadataKey: event.metadataKey, account: myAccount, queue: self.queue) { (responseData) in
-            var error: CriptextError?
             var unsent = false
-            if case let .Error(err) = responseData {
-                error = err
+            var content = ""
+            var contentHeader: String? = nil
+            guard let myAccount = self.database.getAccountByUsername(self.username) else {
+                completion(Result(success: false))
+                return
             }
             if case .Missing = responseData {
                 unsent = true
-            }
-            guard (unsent || error == nil),
-                let myAccount = self.database.getAccountByUsername(self.username),
-                case let .SuccessDictionary(data) = responseData,
-                let body = data["body"] as? String,
-                let username = ContactUtils.getUsernameFromEmailFormat(event.from) else {
-                    completion(Result(success: false))
-                    return
-            }
-            let headers = data["headers"] as? String
-            let contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
-            guard let content = unsent ? "" : self.handleContentByMessageType(
-                    event.messageType, content: body, account: myAccount,
+            } else if case let .SuccessDictionary(data) = responseData {
+                guard let bodyString = data["body"] as? String else {
+                        completion(Result(success: false))
+                        return
+                }
+                guard let decryptedContent = self.handleContentByMessageType(
+                    event.messageType, content: bodyString, account: myAccount,
                     recipientId: username, senderDeviceId: event.senderDeviceId,
                     isExternal: event.isExternal)
-                else {
-                    completion(Result(success: true))
-                    return
+                    else {
+                        completion(Result(success: true))
+                        return
+                }
+                
+                content = decryptedContent
+                let headers = data["headers"] as? String
+                contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+            } else {
+                completion(Result(success: false))
+                return
             }
             
-            guard !FileUtils.existBodyFile(username: myAccount.username, metadataKey: "\(event.metadataKey)") else{
+            guard !FileUtils.existBodyFile(username: myAccount.username, metadataKey: "\(event.metadataKey)") else {
                 if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
                     completion(Result(email: email))
                     return
@@ -116,18 +121,20 @@ class NewEmailHandler {
             email.preview = contentPreview.0
             email.buildCompoundKey()
             
-            FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
-            
             if(unsent){
                 email.unsentDate = email.date
-                email.status = .unsent
+                email.delivered = Email.Status.unsent.rawValue
+            } else {
+                FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
             }
             
             self.handleAttachments(recipientId: username, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
             
             if self.isFromMe(email: email, account: myAccount, event: event),
                 let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
-                email.delivered = Email.Status.sent.rawValue
+                if !unsent {
+                    email.delivered = Email.Status.sent.rawValue
+                }
                 email.unread = false
                 email.labels.append(sentLabel)
                 if self.isMeARecipient(email: email, account: myAccount, event: event),

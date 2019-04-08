@@ -59,6 +59,20 @@ class CRBundle {
         return ["publicKey": preKeyPair.publicKey().customBase64String(), "id": index]
     }
     
+    func generatePreKeys() -> [[String: Any]]? {
+        let signedStore = CriptextSignedPreKeyStore(account: self.account)
+        guard let signedRecord = signedStore.loadSignedPrekeyOrNil(signedKeyId) else {
+            return nil
+        }
+        
+        var keys = [[String: Any]]()
+        for index in 1...NUMBER_OF_PREKEYS {
+            let keyData = generateKey(index: Int32(index), signedPreKeyPair: signedRecord.keyPair, signedPreKeySignature: signedRecord.signature)
+            keys.append(keyData)
+        }
+        return keys
+    }
+    
     func bundleKeys(signedPreKeySignature: String, signedPreKeyPublic: String, signedPreKeyId: Int32, preKeys: [[String: Any]], identityPublicKey: String, registrationId: Int32) -> [String: Any] {
         return [
             "deviceName": UIDevice.current.identifierForVendor!.uuidString,
