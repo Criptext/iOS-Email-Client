@@ -53,6 +53,12 @@ class DBManager: SharedDB {
         }
     }
     
+    class func getAllPreKeys() -> [CRPreKeyRecord] {
+        let realm = try! Realm()
+        
+        return Array(realm.objects(CRPreKeyRecord.self))
+    }
+    
     class func deleteEmptyFeeds() {
         let realm = try! Realm()
         
