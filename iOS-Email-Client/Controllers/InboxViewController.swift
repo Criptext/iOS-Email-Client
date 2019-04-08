@@ -612,13 +612,14 @@ extension InboxViewController{
             self.getPendingEvents(nil)
             return
         }
-        mailboxData.selectedLabel = labelId
+        let label = DBManager.getUserLabel(labelId, account: myAccount) ?? DBManager.getLabel(SystemLabel.inbox.id)!
+        mailboxData.selectedLabel = label.id
         selectLabel = String.localize("SHOW_ALL")
         mailboxData.cancelFetchWorker()
         mailboxData.reachedEnd = false
         mailboxData.threads.removeAll()
-        titleBarButton.title = SystemLabel(rawValue: labelId)?.description.uppercased() ?? DBManager.getLabel(labelId)!.text.uppercased()
-        topToolbar.swapTrashIcon(labelId: labelId)
+        titleBarButton.title = label.text.uppercased()
+        topToolbar.swapTrashIcon(labelId: label.id)
         
         self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.viewSetupNews()

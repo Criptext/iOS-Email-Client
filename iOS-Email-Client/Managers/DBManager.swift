@@ -595,11 +595,10 @@ class DBManager: SharedDB {
         return Array(realm.objects(Label.self))
     }
     
-    class func getLabels(notIn ids: [Int]) -> [Label]{
-        guard let realm = try? Realm() else{
-            return [Label()]
-        }
-        return Array(realm.objects(Label.self).filter(NSPredicate(format: "NOT (id IN %@)", ids)))
+    class func getUserLabels(account: Account) -> [Label] {
+        let realm = try! Realm()
+        
+        return Array(realm.objects(Label.self).filter(NSPredicate(format: "account.compoundKey = '\(account.compoundKey)' AND visible = true")))
     }
     
     class func setLabelsForThread(_ threadId: String, labels: [Int], currentLabel: Int, account: Account){

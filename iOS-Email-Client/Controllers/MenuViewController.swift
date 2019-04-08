@@ -130,7 +130,7 @@ class MenuViewController: UIViewController{
     
     func reloadView() {
         setupAccountInfo(mailboxVC.myAccount)
-        menuData.reloadLabels()
+        menuData.reloadLabels(account: mailboxVC.myAccount)
         hideCustomLabels()
         labelsTableView.reloadData()
         accountsCollectionView.reloadData()

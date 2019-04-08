@@ -58,8 +58,6 @@ class SharedAPI {
         switch(code.init(rawValue: status) ?? .none){
         case satisfy:
             return .Success
-        case .successAndRepeat:
-            return .SuccessAndRepeat(responseRequest.result.value as! [[String : Any]])
         case .unauthorized:
             return .Unauthorized
         case .forbidden:
@@ -82,7 +80,7 @@ class SharedAPI {
             return .EntityTooLarge(maxSize)
         case .conflicts:
             return .Conflicts
-        case .success, .successAccepted, .successNoContent, .notModified:
+        case .success, .successAndRepeat, .successAccepted, .successNoContent, .notModified:
             break
         default:
             guard status < code.serverError.rawValue else {
@@ -95,6 +93,9 @@ class SharedAPI {
         case let result as Int:
             return .SuccessInt(result)
         case let result as [[String: Any]]:
+            if status == code.successAndRepeat.rawValue {
+                return .SuccessAndRepeat(result)
+            }
             return .SuccessArray(result)
         case let result as [String: Any]:
             return .SuccessDictionary(result)
