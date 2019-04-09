@@ -15,13 +15,9 @@ class MenuData {
     var accounts : Results<Account>!
     var accountBadge = [String: Int]()
     
-    init(){
-        labels.append(contentsOf: DBManager.getLabels(notIn: SystemLabel.idsArray))
-    }
-    
-    func reloadLabels(){
+    func reloadLabels(account: Account){
         labels.removeAll()
-        labels.append(contentsOf: DBManager.getActiveCustomLabels())
+        labels.append(contentsOf: DBManager.getUserLabels(account: account))
     }
     
 }

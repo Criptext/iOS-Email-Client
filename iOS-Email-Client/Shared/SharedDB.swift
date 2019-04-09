@@ -391,6 +391,12 @@ class SharedDB {
         return realm.object(ofType: Label.self, forPrimaryKey: labelId)
     }
     
+    class func getUserLabel(_ labelId: Int, account: Account) -> Label?{
+        let realm = try! Realm()
+        
+        return realm.objects(Label.self).filter(NSPredicate(format: "id = \(labelId) AND (account.compoundKey = '\(account.compoundKey)' OR account = nil)")).first
+    }
+    
     class func getLabel(text: String) -> Label?{
         let realm = try! Realm()
         

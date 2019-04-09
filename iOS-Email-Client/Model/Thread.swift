@@ -29,7 +29,7 @@ class Thread {
         return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
     }
     
-    func fromLastEmail(lastEmail: Email, threadEmails: Results<Email>, label: Int) {
+    func fromLastEmail(lastEmail: Email, threadEmails: Results<Email>, label: Int, myEmail: String) {
         self.preview = lastEmail.getPreview()
         self.status = Email.Status(rawValue: lastEmail.delivered) ?? .none
         self.isStarred = lastEmail.labels.contains(where: {$0.id == SystemLabel.starred.id})
@@ -54,7 +54,7 @@ class Thread {
                 self.hasAttachments = true
             }
         }
-        self.contactsString = Thread.getContactsString(participants: participants, replaceWithMe: "pedro@criptext.com")
+        self.contactsString = Thread.getContactsString(participants: participants, replaceWithMe: myEmail)
         if let contact = participants.first {
             self.lastContact = (contact.email, contact.displayName)
         }
