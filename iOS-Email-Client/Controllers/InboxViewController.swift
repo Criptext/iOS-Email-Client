@@ -285,8 +285,23 @@ class InboxViewController: UIViewController {
                 return
             }
             let task = RetrieveContactsTask(username: weakSelf.myAccount.username)
-            task.start { (_) in }
+            task.start { (_) in
+                self?.restoreMailbox()
+            }
         }
+    }
+    
+    func restoreMailbox() {
+        guard mailboxData.showRestore else {
+            return
+        }
+        mailboxData.showRestore = false
+        
+        let restorePopover = RestoreUIPopover()
+        restorePopover.onRestore = { [weak self] in
+            self?.showSnackbar("Restore", attributedText: nil, buttons: "", permanent: false)
+        }
+        self.presentPopover(popover: restorePopover, height: 400)
     }
     
     override func viewWillAppear(_ animated: Bool) {

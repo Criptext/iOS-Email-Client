@@ -140,6 +140,11 @@ class SharedDB {
         return email
     }
     
+    class func hasEmails(account: Account) -> Bool {
+        let realm = try! Realm()
+        return realm.objects(Email.self).filter("account.compoundKey == '\(account.compoundKey)'").count > 0
+    }
+    
     class func getUnreadMailsCounter(from label: Int, account: Account) -> Int {
         let realm = try! Realm()
         let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? []

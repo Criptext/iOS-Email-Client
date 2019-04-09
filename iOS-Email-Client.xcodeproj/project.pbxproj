@@ -246,6 +246,9 @@
 		A718BE6F22273646008CAA72 /* ThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A718BE6E22273646008CAA72 /* ThreadTests.swift */; };
 		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
+		A721B344225CFC89004528B4 /* RestoreUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721B343225CFC89004528B4 /* RestoreUIPopover.swift */; };
+		A721B346225D2D5F004528B4 /* RestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721B345225D2D5F004528B4 /* RestoreViewController.swift */; };
+		A721B348225D2DA5004528B4 /* RestoreUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721B347225D2DA5004528B4 /* RestoreUIView.swift */; };
 		A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A723253B21C94E69003CF78D /* EmailDetailTableCell.xib */; };
 		A723254321CAFE20003CF78D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
 		A723254521CBE257003CF78D /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
@@ -755,6 +758,9 @@
 		A718BE6A22272970008CAA72 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		A718BE6E22273646008CAA72 /* ThreadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadTests.swift; sourceTree = "<group>"; };
 		A71F8BAC219B2239002D93CB /* DummySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummySession.swift; sourceTree = "<group>"; };
+		A721B343225CFC89004528B4 /* RestoreUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreUIPopover.swift; sourceTree = "<group>"; };
+		A721B345225D2D5F004528B4 /* RestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreViewController.swift; sourceTree = "<group>"; };
+		A721B347225D2DA5004528B4 /* RestoreUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreUIView.swift; sourceTree = "<group>"; };
 		A723253A21C94E69003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EmailDetailTableCell.xib; sourceTree = "<group>"; };
 		A723253D21C94E6B003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
 		A723253F21C94E6C003CF78D /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailDetailTableCell.strings"; sourceTree = "<group>"; };
@@ -1119,6 +1125,8 @@
 				7C7F2FF620B5E29900A2CB32 /* SingleTextInputViewController.swift */,
 				7CF93F502146DB0600361837 /* WelcomeTourViewController.swift */,
 				A742720422550A1F006D10C9 /* BackupViewController.swift */,
+				A721B343225CFC89004528B4 /* RestoreUIPopover.swift */,
+				A721B345225D2D5F004528B4 /* RestoreViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1378,6 +1386,7 @@
 				A76D30372256709E004F8747 /* BackupHeaderView.xib */,
 				A76D3039225671DC004F8747 /* BackupHeaderView.swift */,
 				A7B17A8B225BEFE200927102 /* RestoreUIPopover.xib */,
+				A721B347225D2DA5004528B4 /* RestoreUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1993,6 +2002,7 @@
 				A723254721CBF901003CF78D /* LabelsHeaderCellView.swift in Sources */,
 				7C20EA3720B478F300E17543 /* SettingsGeneralViewController.swift in Sources */,
 				A70EAE5221DE54C300FE6055 /* ManualSyncUIPopover.swift in Sources */,
+				A721B348225D2DA5004528B4 /* RestoreUIView.swift in Sources */,
 				7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */,
 				A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */,
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
@@ -2003,6 +2013,7 @@
 				A758E2E9221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */,
+				A721B346225D2D5F004528B4 /* RestoreViewController.swift in Sources */,
 				A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */,
 				7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */,
@@ -2054,6 +2065,7 @@
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C7F2FF120B4D2C400A2CB32 /* SettingsDevicesViewController.swift in Sources */,
+				A721B344225CFC89004528B4 /* RestoreUIPopover.swift in Sources */,
 				A758E2EF221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift in Sources */,
 				7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */,
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
