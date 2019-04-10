@@ -174,43 +174,24 @@ class ConnectDeviceViewController: UIViewController{
     
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
         DBManager.clearMailbox(account: myAccount)
-        let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
-        let username = myAccount.username
-        queue.async {
-            let streamReader = StreamReader(url: URL(fileURLWithPath: path), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
-            var dbRows = [[String: Any]]()
-            var progress = 80
-            var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
-            while let line = streamReader?.nextLine() {
-                guard let row = Utils.convertToDictionary(text: line) else {
-                    continue
+        let restoreTask = RestoreDBAsyncTask(path: path, username: myAccount.username, initialProgress: 80)
+        restoreTask.start(progressHandler: { (progress) in
+            self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
+        }) {
+            self.restoreSuccess(myAccount: myAccount)
+        }
+    }
+    
+    func restoreSuccess(myAccount: Account) {
+        self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
+            self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                if self.multipleAccount {
+                    self.goBackToMailbox(account: myAccount)
+                } else {
+                    self.goToMailbox(myAccount.username)
                 }
-                dbRows.append(row)
-                if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
-                    dbRows.removeAll()
-                    if progress < 99 {
-                        progress += 1
-                    }
-                    DispatchQueue.main.async {
-                        self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
-                    }
-                }
-            }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
-            CriptextFileManager.deleteFile(path: path)
-            DispatchQueue.main.async {
-                self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
-                    self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        if self.multipleAccount {
-                            self.goBackToMailbox(account: myAccount)
-                        } else {
-                            self.goToMailbox(myAccount.username)
-                        }
-                        self.registerFirebaseToken(jwt: myAccount.jwt)
-                    }
-                }
+                self.registerFirebaseToken(jwt: myAccount.jwt)
             }
         }
     }
