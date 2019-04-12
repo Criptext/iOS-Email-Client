@@ -399,7 +399,7 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
         let mySection = sections[section]
         if mySection == .account {
-            cell.titleLabel.text = myAccount.email.uppercased()
+            cell.titleLabel.text = myAccount.isInvalidated ? "" : myAccount.email.uppercased()
         } else {
             cell.titleLabel.text = mySection.name
         }

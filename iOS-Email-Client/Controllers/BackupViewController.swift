@@ -36,27 +36,24 @@ class BackupViewController: UIViewController {
         case cloud
         case now
         case auto
-        case share
         
         var description: String {
             switch self {
             case .cloud:
-                return "Cloud Backup"
+                return String.localize("BACKUP_CLOUD")
             case .now:
-                return "Back Up Now"
+                return String.localize("BACKUP_NOW")
             case .auto:
-                return "Auto Backup"
-            case .share:
-                return "Create Backup File"
+                return String.localize("BACKUP_AUTO")
             }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        BackupManager.shared.clearAccount(username: myAccount.username)
         if BackupManager.shared.contains(username: myAccount.username) {
-            processMessage = "Generating Backup File..."
+            self.handleProgress()
+            processMessage = String.localize("BACKUP_GENERATING")
             uploading = true
         }
         
@@ -65,7 +62,6 @@ class BackupViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         
-        self.handleProgress()
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -94,12 +90,10 @@ class BackupViewController: UIViewController {
         let enableBackup = myAccount.hasCloudBackup
         let cloud = BackupOption(label: .cloud, pick: nil, isOn: enableBackup, hasFlow: false, detail: nil, isEnabled: true)
         let now = BackupOption(label: .now, pick: nil, isOn: nil, hasFlow: false, detail: nil, isEnabled: enableBackup)
-        let auto = BackupOption(label: .auto, pick: BackupFrequency.off.rawValue, isOn: nil, hasFlow: false, detail: "Note: Auto Backup works only with cloud backup. To avoid using your celular data, make sure you are connected to Wi-Fi or have iCloud drive disabled for celular data in Configuration > Celular Data > iCloud Drive", isEnabled: enableBackup)
-        let share = BackupOption(label: .share, pick: nil, isOn: nil, hasFlow: false, detail: "Create a file generates an archive to be stored in your local device", isEnabled: enableBackup)
+        let auto = BackupOption(label: .auto, pick: BackupFrequency.off.rawValue, isOn: nil, hasFlow: false, detail: String.localize("BACKUP_AUTO_MESSAGE"), isEnabled: enableBackup)
         options.append(cloud)
         options.append(now)
         options.append(auto)
-        options.append(share)
     }
     
     func applyTheme() {
@@ -108,37 +102,21 @@ class BackupViewController: UIViewController {
         self.view.backgroundColor = theme.overallBackground
     }
     
-    func startBackup(upload: Bool = true) {
+    func startBackup() {
         guard !uploading else {
             return
         }
         progress = 0
         uploading = true
-        processMessage = "Generating Backup File..."
+        processMessage = String.localize("BACKUP_GENERATING")
         tableView.reloadData()
-        if !upload {
-            let createDBTask = CreateCustomJSONFileAsyncTask(username: myAccount.username, kind: .share)
-            createDBTask.start { (error, url) in
-                guard let dbUrl = url,
-                    let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.shareZip.name, compress: true) else {
-                        return
-                }
-                self.processMessage = "Mailbox Backed Successfully!"
-                self.uploading = false
-                self.tableView.reloadData()
-                let activityVC = UIActivityViewController(activityItems: [URL(fileURLWithPath: compressedPath)], applicationActivities: nil)
-                self.present(activityVC, animated: true, completion: nil)
-            }
-        } else {
-            BackupManager.shared.backupNow(account: self.myAccount)
-            handleProgress()
-        }
+        BackupManager.shared.backupNow(account: self.myAccount)
+        handleProgress()
     }
     
     func openPicker(){
         let pickerPopover = OptionsPickerUIPopover()
         pickerPopover.options = [
-            BackupFrequency.minute.rawValue,
             BackupFrequency.daily.rawValue,
             BackupFrequency.weekly.rawValue,
             BackupFrequency.monthly.rawValue,
@@ -150,6 +128,7 @@ class BackupViewController: UIViewController {
             }
             DBManager.update(account: self.myAccount, frequency: selected)
             self.toggleOptions()
+            BackupManager.shared.checkAccounts()
         }
         self.presentPopover(popover: pickerPopover, height: 295)
     }
@@ -193,37 +172,14 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerCell") as! BackupHeaderView
-        cell.emailLabel.text = myAccount.email
-        cell.backupLabel.text = "Backup Size: \(lastBackupSize == nil ? "0MB" : File.prettyPrintSize(size: lastBackupSize!))"
+        cell.setContent(email: myAccount.email, isUploading: uploading, lastBackupDate: lastBackupDate, lastBackupSize: lastBackupSize)
         cell.progressLabel.text = processMessage
         cell.progressView.setProgress(progress, animated: true)
-        
-        if let myDate = lastBackupDate {
-            cell.lastBackupLabel.text = DateUtils.date(toCompleteString: myDate).replacingOccurrences(of: "at", with: String.localize("AT"))
-        }
-        
-        cell.detailContainerView.isHidden = !(uploading || lastBackupDate != nil)
-        if uploading {
-            cell.cancelButton.isHidden = false
-            cell.progressView.isHidden = false
-            cell.progressLabel.isHidden = false
-            cell.lastBackupLabel.isHidden = true
-        } else if lastBackupDate != nil {
-            cell.cancelButton.isHidden = true
-            cell.progressView.isHidden = true
-            cell.progressLabel.isHidden = true
-            cell.lastBackupLabel.isHidden = false
-        } else {
-            cell.cancelButton.isHidden = true
-            cell.progressView.isHidden = true
-            cell.progressLabel.isHidden = true
-            cell.lastBackupLabel.isHidden = true
-        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return (uploading || lastBackupDate != nil) ? 200 : 120
+        return (uploading || lastBackupDate != nil) ? 180 : 120
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -237,8 +193,6 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
             self.startBackup()
         case .auto:
             self.openPicker()
-        case .share:
-            startBackup(upload: false)
         }
     }
     
@@ -255,8 +209,6 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
                 let pick = BackupFrequency.init(rawValue: myAccount.autoBackupFrequency) ?? .off
                 newOption.pick = pick.rawValue
                 newOption.isEnabled = enableBackup
-            case .share:
-                newOption.isEnabled = enableBackup
             }
             return newOption
         }
@@ -266,9 +218,16 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension BackupViewController {
     func handleProgress() {
+        guard let url = containerUrl?.appendingPathComponent("backup.db") else {
+            self.showAlert("Cloud Error", message: "Unable to access your Cloud Drive. Check if you have Cloud Drive enabled for Criptext.", style: .alert)
+            self.uploading = false
+            tableView.reloadData()
+            return
+        }
         query = NSMetadataQuery()
         query.searchScopes = [NSMetadataQueryUbiquitousDataScope]
-        query.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, containerUrl!.appendingPathComponent("backup.db").path)
+        
+        query.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdate), name: NSNotification.Name.NSMetadataQueryDidUpdate, object: nil)
         query.enableUpdates()
@@ -283,7 +242,7 @@ extension BackupViewController {
         for mdItem in items {
             guard !((mdItem.value(forKey: NSMetadataUbiquitousItemIsUploadedKey) as? NSNumber)?.boolValue ?? false) else {
                 uploading = false
-                processMessage = "Mailbox Backed Successfully!"
+                processMessage = String.localize("BACKUP_SUCCESS")
                 self.progress = 1.0
                 self.fetchBackupData()
                 tableView.reloadData()
@@ -295,7 +254,7 @@ extension BackupViewController {
                 return
             }
             uploading = true
-            processMessage = "Uploading Backup... \(progress.intValue)%"
+            processMessage = String.localize("BACKUP_PROGRESS", arguments: progress.intValue)
             self.progress = progress.floatValue/100
             tableView.reloadData()
         }
@@ -305,7 +264,6 @@ extension BackupViewController {
 
 extension BackupViewController: UIGestureRecognizerDelegate {
     @objc func goBack(){
-        BackupManager.shared.checkAccounts()
         navigationController?.popViewController(animated: true)
     }
     

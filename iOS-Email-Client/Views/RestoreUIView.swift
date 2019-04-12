@@ -48,15 +48,16 @@ class RestoreUIView: UIView {
     func setSearching() {
         state = .searching
         
-        let attrText = NSMutableAttributedString(string: "We are searching in your iCloud (if iCloud Drive is enable) for a backup file.", attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.markedText])
-        let attrText2 = NSAttributedString(string: "\nThis may take a while", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
+        let attrText = NSMutableAttributedString(string: String.localize("BACKUP_SEARCH"), attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.markedText])
+        let attrText2 = NSAttributedString(string: "\n\(String.localize("TAKE_WHILE"))", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
         
         attrText.append(attrText2)
         
         messageLabel.isHidden = false
         messageLabel.attributedText = attrText
-        titleLabel.text = "Looking for you backup..."
+        titleLabel.text = String.localize("BACKUP_LOOKING")
         titleLabel.textColor = theme.markedText
+        cloudImageView.image = UIImage(named: "cloud-big")
         
         restoreButton.isHidden = true
         progressBar.isHidden = true
@@ -68,19 +69,20 @@ class RestoreUIView: UIView {
         state = .found
         
         let attrText = NSMutableAttributedString(string: email, attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.markedText])
-        let attrDate = NSAttributedString(string: "\nLast Backup: \(DateUtils.conversationTime(lastDate) ?? "")", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
-        let attrSize = NSAttributedString(string: "\nSize: \(File.prettyPrintSize(size: size))", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
+        let attrDate = NSAttributedString(string: "\n\(String.localize("LAST_BACKUP")) \(DateUtils.conversationTime(lastDate) ?? "")", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
+        let attrSize = NSAttributedString(string: "\n\(String.localize("BACKUP_SIZE")) \(File.prettyPrintSize(size: size))", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
         
         attrText.append(attrDate)
         attrText.append(attrSize)
         
         messageLabel.isHidden = false
         messageLabel.attributedText = attrText
-        titleLabel.text = "Backup Found"
+        titleLabel.text = String.localize("BACKUP_FOUND")
         titleLabel.textColor = theme.markedText
+        cloudImageView.image = UIImage(named: "cloud-big")
         
         restoreButton.isHidden = false
-        restoreButton.setTitle("Restore", for: .normal)
+        restoreButton.setTitle(String.localize("BACKUP_RESTORE"), for: .normal)
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
@@ -88,15 +90,16 @@ class RestoreUIView: UIView {
     
     func setMissing() {
         state = .missing
-        let attrText = NSMutableAttributedString(string: "Backup nowhere to be found! Try checking again if you did have one.", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
+        let attrText = NSMutableAttributedString(string: String.localize("BACKUP_NOT_FOUND_MESSAGE"), attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
         
         messageLabel.isHidden = false
         messageLabel.attributedText = attrText
-        titleLabel.text = "Backup Not Found"
+        titleLabel.text = String.localize("BACKUP_NOT_FOUND")
         titleLabel.textColor = theme.markedText
+        cloudImageView.image = UIImage(named: "cloud-fail")
         
         restoreButton.isHidden = false
-        restoreButton.setTitle("Retry", for: .normal)
+        restoreButton.setTitle(String.localize("RETRY"), for: .normal)
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
@@ -105,18 +108,19 @@ class RestoreUIView: UIView {
     func setError() {
         state = .error
         
-        let attrText = NSMutableAttributedString(string: "Something has happened that is delaying this process.", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
-        let attrQ = NSAttributedString(string: "\n\nDo you want to keep trying? ", attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.markedText])
+        let attrText = NSMutableAttributedString(string: String.localize("DELAYED_PROCESS"), attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
+        let attrQ = NSAttributedString(string: "\n\n\(String.localize("KEEP_RETRY"))", attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.markedText])
         
         attrText.append(attrQ)
         
         messageLabel.isHidden = false
         messageLabel.attributedText = attrText
-        titleLabel.text = "Well that's odd..."
+        titleLabel.text = String.localize("ODD")
         titleLabel.textColor = theme.markedText
+        cloudImageView.image = UIImage(named: "cloud-rip")
         
         restoreButton.isHidden = false
-        restoreButton.setTitle("Retry", for: .normal)
+        restoreButton.setTitle(String.localize("Retry"), for: .normal)
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
@@ -125,7 +129,8 @@ class RestoreUIView: UIView {
     func setRestoring() {
         state = .restoring
         
-        titleLabel.text = "Restoring..."
+        titleLabel.text = String.localize("BACKUP_RESTORING")
+        cloudImageView.image = UIImage(named: "cloud-big")
         
         messageLabel.isHidden = true
         restoreButton.isHidden = true

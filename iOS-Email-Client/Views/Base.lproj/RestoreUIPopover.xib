@@ -30,8 +30,8 @@
             <rect key="frame" x="0.0" y="0.0" width="270" height="400"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment_docproviders" translatesAutoresizingMaskIntoConstraints="NO" id="h0z-ro-tyx">
-                    <rect key="frame" x="105" y="25" width="60" height="40"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cloud-medium" translatesAutoresizingMaskIntoConstraints="NO" id="h0z-ro-tyx">
+                    <rect key="frame" x="105" y="35" width="60" height="40"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="Zcl-zP-SyZ"/>
                         <constraint firstAttribute="height" constant="40" id="feL-tT-nKC"/>
@@ -43,26 +43,26 @@
                     </userDefinedRuntimeAttributes>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restore Backup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xWM-63-wNw">
-                    <rect key="frame" x="77" y="95" width="116.5" height="22"/>
+                    <rect key="frame" x="77" y="105" width="116.5" height="22"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNQ-UH-w8G">
-                    <rect key="frame" x="30" y="142" width="210" height="123"/>
-                    <string key="text">Something about how to restore from Drive  you should give us permissions, and you can always restore later.
-
-</string>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To restore from iCloud, you should enable iCloud Drive for Criptext" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNQ-UH-w8G">
+                    <rect key="frame" x="30" y="152" width="210" height="82"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="82" id="hOq-XX-9HC"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CDQ-w1-eqI">
-                    <rect key="frame" x="55" y="270" width="160" height="44"/>
+                    <rect key="frame" x="45" y="274" width="180" height="44"/>
                     <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="KXD-7w-cOJ"/>
-                        <constraint firstAttribute="width" constant="160" id="y0w-QR-XWH"/>
+                        <constraint firstAttribute="width" constant="180" id="y0w-QR-XWH"/>
                     </constraints>
                     <state key="normal" title="Restore from Cloud">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -77,7 +77,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSo-nM-JLw">
-                    <rect key="frame" x="30" y="344" width="210" height="36"/>
+                    <rect key="frame" x="30" y="348" width="210" height="36"/>
                     <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="17"/>
                     <state key="normal" title="skip restore">
                         <color key="titleColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -90,13 +90,13 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="h0z-ro-tyx" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="0SE-o3-pnv"/>
-                <constraint firstItem="h0z-ro-tyx" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="25" id="8fy-l6-dSa"/>
+                <constraint firstItem="h0z-ro-tyx" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="35" id="8fy-l6-dSa"/>
                 <constraint firstItem="xWM-63-wNw" firstAttribute="top" secondItem="h0z-ro-tyx" secondAttribute="bottom" constant="30" id="Iqk-ep-sv1"/>
                 <constraint firstItem="WNQ-UH-w8G" firstAttribute="top" secondItem="xWM-63-wNw" secondAttribute="bottom" constant="25" id="JZA-Gq-gWX"/>
                 <constraint firstItem="xWM-63-wNw" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="NJE-hM-5DN"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="WNQ-UH-w8G" secondAttribute="trailing" constant="30" id="U6W-uF-5aI"/>
                 <constraint firstItem="CDQ-w1-eqI" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="ZHX-gV-cSq"/>
-                <constraint firstItem="CDQ-w1-eqI" firstAttribute="top" secondItem="WNQ-UH-w8G" secondAttribute="bottom" constant="5" id="haT-FR-b7M"/>
+                <constraint firstItem="CDQ-w1-eqI" firstAttribute="top" secondItem="WNQ-UH-w8G" secondAttribute="bottom" constant="40" id="haT-FR-b7M"/>
                 <constraint firstItem="WNQ-UH-w8G" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="qcX-Rz-oK9"/>
                 <constraint firstItem="aSo-nM-JLw" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="sEb-Za-zAj"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aSo-nM-JLw" secondAttribute="trailing" constant="30" id="ucs-6x-qTT"/>
@@ -108,6 +108,6 @@
         </view>
     </objects>
     <resources>
-        <image name="attachment_docproviders" width="33" height="20"/>
+        <image name="cloud-medium" width="63" height="43"/>
     </resources>
 </document>

@@ -244,8 +244,11 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         viewSetupNews()
-        presentWelcomeTour()
-        restoreMailbox()
+        if mailboxData.showRestore {
+            restoreMailbox()
+        } else {
+            presentWelcomeTour()
+        }
     }
     
     func handleControllerMessage() {
@@ -293,10 +296,6 @@ class InboxViewController: UIViewController {
     }
     
     func restoreMailbox() {
-        mailboxData.showRestore = true
-        guard mailboxData.showRestore else {
-            return
-        }
         mailboxData.showRestore = false
         
         let restorePopover = RestoreUIPopover()

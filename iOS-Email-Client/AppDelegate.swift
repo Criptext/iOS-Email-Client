@@ -386,6 +386,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let activeAccount = defaults.activeAccount {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions, activeAccount)
+            BackupManager.shared.checkAccounts()
         }else{
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -594,7 +595,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if showBiometrics {
             passcodeLockPresenter.present()
         }
-        
+        BackupManager.shared.checkAccounts()
     }
     
     func triggerRefresh(){

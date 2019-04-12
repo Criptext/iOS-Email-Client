@@ -362,3 +362,28 @@
 "NO_CONTENT" = "Este correo no tiene contenido";
 "ADD_ACCOUNT" = "Agregar cuenta";
 "NOW_LOGGED" = "Has iniciado sesión como ";
+
+"BACKUP" = "Respaldo en la nube";
+"BACKUP_CLOUD" = "Respaldo en la nube";
+"BACKUP_NOW" = "Respaldar ahora";
+"BACKUP_AUTO" = "Respaldo automático";
+
+"LAST_BACKUP" = "Respaldado: ";
+"BACKUP_SIZE" = "Tamaño: ";
+
+"BACKUP_GENERATING" = "Generando archivo de respaldo...";
+"BACKUP_AUTO_MESSAGE" = "Nota: El respaldo automático solo funciona con iCloud. Para evitar el uso de tus datos moviles, asegurate de estar conectado a internet o deshabilitar iCloud Drive desde Configuracion > Datos Celulares > iCloud Drive.";
+"BACKUP_PROGRESS" = "Subiendo Respaldo... (%i %%)";
+"BACKUP_SUCCESS" = "Buzon respaldado exitosamente!";
+
+"BACKUP_SEARCH" = "Estamos buscando en tu iCloud (De estar habilitado) un archivo de respaldo existente.";
+"TAKE_WHILE" = "Esto podria demorar un poco";
+"BACKUP_LOOKING" = "Buscando respaldo...";
+"BACKUP_FOUND" = "Respaldo Encontrado!";
+"BACKUP_RESTORE" = "Restaurar";
+"BACKUP_NOT_FOUND_MESSAGE" = "Respaldo NO encontrado! Puedes reintentar la busqueda";
+"BACKUP_NOT_FOUND" = "Respaldo NO encontrado";
+"DELAYED_PROCESS" = "Algo ha sucedido que está retrasando este proceso";
+"KEEP_RETRY" = "Quieres reintentar? ";
+"BACKUP_RESTORING" = "Restaurando...";
+"RESTORE_SUCCESS" = "Buzon restaurado exitosamente!";

@@ -167,7 +167,7 @@ class AESCipher {
     class func compressFile(path: String, outputName: String, compress: Bool) throws -> String {
         let outputURL = CriptextFileManager.getURLForFile(name: outputName)
         try? FileManager.default.removeItem(at: outputURL)
-        FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
+        FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: [FileAttributeKey.type])
         
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
         

@@ -19,18 +19,18 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="154" id="MEf-1G-dmA" customClass="BackupHeaderView" customModule="iOS_Email_Client" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="154"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="179" id="MEf-1G-dmA" customClass="BackupHeaderView" customModule="iOS_Email_Client" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MEf-1G-dmA" id="jeR-ym-as3">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="153.5"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MEf-1G-dmA" id="jeR-ym-as3">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="178.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XoY-qd-THM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="200.5"/>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XoY-qd-THM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="siF-Au-Lsl">
-                                <rect key="frame" x="0.0" y="125.5" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="103.5" width="375" height="75"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZgP-o8-AeA">
                                         <rect key="frame" x="25" y="0.0" width="325" height="75"/>
@@ -50,7 +50,7 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment_docproviders" translatesAutoresizingMaskIntoConstraints="NO" id="QES-GR-ms2">
-                                <rect key="frame" x="25" y="10" width="50" height="50.5"/>
+                                <rect key="frame" x="25" y="10" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Ra6-X5-K48"/>
                                     <constraint firstAttribute="width" constant="50" id="pl3-fB-tMQ"/>
@@ -62,28 +62,31 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YY8-ce-6lH">
-                                <rect key="frame" x="90" y="13" width="260" height="19.5"/>
-                                <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="16"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kuo-BE-Lv6">
-                                <rect key="frame" x="90" y="37.5" width="260" height="19"/>
-                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
+                                <rect key="frame" x="90" y="23.5" width="260" height="23.5"/>
+                                <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H2F-QK-JHg">
-                                <rect key="frame" x="0.0" y="61.5" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="60" width="375" height="43.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4Z-7d-XVA">
-                                        <rect key="frame" x="25" y="12" width="325" height="19"/>
+                                        <rect key="frame" x="25" y="12" width="185" height="22"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="diZ-UI-YFy">
-                                        <rect key="frame" x="27" y="13" width="254" height="4"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kuo-BE-Lv6">
+                                        <rect key="frame" x="220" y="12" width="130" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="130" id="Iwr-YT-MOI"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="diZ-UI-YFy">
+                                        <rect key="frame" x="27" y="13" width="321" height="4"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="4" id="tNX-h2-JKs"/>
                                         </constraints>
@@ -91,55 +94,42 @@
                                         <color key="trackTintColor" red="0.0" green="0.56862745100000001" blue="1" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     </progressView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kC-SH-a3s">
-                                        <rect key="frame" x="27" y="22" width="254" height="17.5"/>
+                                        <rect key="frame" x="27" y="17" width="321" height="20.5"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QpH-w4-ID8">
-                                        <rect key="frame" x="308" y="-5" width="40" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="630-m4-vP4"/>
-                                            <constraint firstAttribute="height" constant="40" id="TTj-ra-7lV"/>
-                                        </constraints>
-                                        <inset key="imageEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
-                                        <state key="normal" image="close"/>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="QpH-w4-ID8" firstAttribute="centerY" secondItem="diZ-UI-YFy" secondAttribute="centerY" id="2lX-NQ-Vce"/>
                                     <constraint firstItem="4kC-SH-a3s" firstAttribute="trailing" secondItem="diZ-UI-YFy" secondAttribute="trailing" id="36o-2r-W9H"/>
-                                    <constraint firstAttribute="trailing" secondItem="w4Z-7d-XVA" secondAttribute="trailing" constant="25" id="8Zs-f4-bGo"/>
+                                    <constraint firstItem="kuo-BE-Lv6" firstAttribute="leading" secondItem="w4Z-7d-XVA" secondAttribute="trailing" constant="10" id="4r1-Q3-R2j"/>
                                     <constraint firstItem="diZ-UI-YFy" firstAttribute="leading" secondItem="H2F-QK-JHg" secondAttribute="leading" constant="27" id="DWw-YK-qrA"/>
-                                    <constraint firstAttribute="trailing" secondItem="QpH-w4-ID8" secondAttribute="trailing" constant="27" id="Kiv-WF-SzG"/>
+                                    <constraint firstItem="kuo-BE-Lv6" firstAttribute="centerY" secondItem="w4Z-7d-XVA" secondAttribute="centerY" id="Iz1-6Y-L0I"/>
                                     <constraint firstItem="4kC-SH-a3s" firstAttribute="leading" secondItem="diZ-UI-YFy" secondAttribute="leading" id="TGb-qw-77W"/>
-                                    <constraint firstItem="4kC-SH-a3s" firstAttribute="top" secondItem="diZ-UI-YFy" secondAttribute="bottom" constant="5" id="Zkb-rz-m7L"/>
+                                    <constraint firstItem="4kC-SH-a3s" firstAttribute="top" secondItem="diZ-UI-YFy" secondAttribute="bottom" id="Zkb-rz-m7L"/>
                                     <constraint firstItem="w4Z-7d-XVA" firstAttribute="top" secondItem="H2F-QK-JHg" secondAttribute="top" constant="12" id="dTE-sS-Awc"/>
                                     <constraint firstItem="diZ-UI-YFy" firstAttribute="top" secondItem="H2F-QK-JHg" secondAttribute="top" constant="13" id="h8a-W8-dtz"/>
                                     <constraint firstItem="w4Z-7d-XVA" firstAttribute="leading" secondItem="H2F-QK-JHg" secondAttribute="leading" constant="25" id="oZB-4i-lAl"/>
-                                    <constraint firstAttribute="trailing" secondItem="diZ-UI-YFy" secondAttribute="trailing" constant="94" id="w29-N8-1r6"/>
+                                    <constraint firstAttribute="trailing" secondItem="diZ-UI-YFy" secondAttribute="trailing" constant="27" id="w29-N8-1r6"/>
+                                    <constraint firstAttribute="trailing" secondItem="kuo-BE-Lv6" secondAttribute="trailing" constant="25" id="wQn-j0-Vuk"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="H2F-QK-JHg" secondAttribute="trailing" id="40p-bl-B3h"/>
-                            <constraint firstItem="YY8-ce-6lH" firstAttribute="top" secondItem="XoY-qd-THM" secondAttribute="top" constant="13" id="63L-EW-mDr"/>
+                            <constraint firstItem="H2F-QK-JHg" firstAttribute="top" secondItem="QES-GR-ms2" secondAttribute="bottom" id="Jdv-zg-bxk"/>
                             <constraint firstItem="siF-Au-Lsl" firstAttribute="leading" secondItem="XoY-qd-THM" secondAttribute="leading" id="Kdw-Es-lQu"/>
                             <constraint firstAttribute="trailing" secondItem="siF-Au-Lsl" secondAttribute="trailing" id="QB1-WF-Fpg"/>
                             <constraint firstItem="YY8-ce-6lH" firstAttribute="leading" secondItem="QES-GR-ms2" secondAttribute="trailing" constant="15" id="QHS-46-ssv"/>
-                            <constraint firstItem="kuo-BE-Lv6" firstAttribute="top" secondItem="YY8-ce-6lH" secondAttribute="bottom" constant="5" id="alW-Lg-Na5"/>
                             <constraint firstAttribute="bottom" secondItem="siF-Au-Lsl" secondAttribute="bottom" id="bKA-iH-vt9"/>
-                            <constraint firstItem="kuo-BE-Lv6" firstAttribute="leading" secondItem="YY8-ce-6lH" secondAttribute="leading" id="gP9-wT-Guk"/>
-                            <constraint firstAttribute="height" constant="200" id="hV4-Zd-dc1"/>
-                            <constraint firstItem="H2F-QK-JHg" firstAttribute="top" secondItem="kuo-BE-Lv6" secondAttribute="bottom" constant="5" id="j2U-xQ-GEx"/>
                             <constraint firstItem="QES-GR-ms2" firstAttribute="top" secondItem="XoY-qd-THM" secondAttribute="top" constant="10" id="jJ9-So-i3W"/>
                             <constraint firstItem="H2F-QK-JHg" firstAttribute="leading" secondItem="XoY-qd-THM" secondAttribute="leading" id="ncs-eH-8RZ"/>
                             <constraint firstItem="siF-Au-Lsl" firstAttribute="top" secondItem="H2F-QK-JHg" secondAttribute="bottom" id="o3u-af-imr"/>
                             <constraint firstItem="QES-GR-ms2" firstAttribute="leading" secondItem="XoY-qd-THM" secondAttribute="leading" constant="25" id="q78-cE-3lg"/>
+                            <constraint firstItem="YY8-ce-6lH" firstAttribute="centerY" secondItem="QES-GR-ms2" secondAttribute="centerY" id="tKf-Vw-xrY"/>
                             <constraint firstAttribute="trailing" secondItem="YY8-ce-6lH" secondAttribute="trailing" constant="25" id="tU8-Od-H6e"/>
-                            <constraint firstItem="kuo-BE-Lv6" firstAttribute="trailing" secondItem="YY8-ce-6lH" secondAttribute="trailing" id="xbX-OY-Zcq"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -151,20 +141,20 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="backupContainerView" destination="H2F-QK-JHg" id="3N3-8G-UUj"/>
                 <outlet property="backupLabel" destination="kuo-BE-Lv6" id="sMB-3V-E2R"/>
-                <outlet property="cancelButton" destination="QpH-w4-ID8" id="c2S-39-81c"/>
-                <outlet property="detailContainerView" destination="siF-Au-Lsl" id="0FU-Hg-bXG"/>
+                <outlet property="cloudImageView" destination="QES-GR-ms2" id="XWb-6d-ROq"/>
+                <outlet property="detailContainerView" destination="siF-Au-Lsl" id="3qu-QU-YFP"/>
                 <outlet property="detailLabel" destination="ZgP-o8-AeA" id="X8B-dK-GtW"/>
                 <outlet property="emailLabel" destination="YY8-ce-6lH" id="U8Q-og-dJL"/>
                 <outlet property="lastBackupLabel" destination="w4Z-7d-XVA" id="tyi-La-8pU"/>
                 <outlet property="progressLabel" destination="4kC-SH-a3s" id="Ptv-VV-8Km"/>
                 <outlet property="progressView" destination="diZ-UI-YFy" id="F3D-xl-LRM"/>
             </connections>
-            <point key="canvasLocation" x="-82.400000000000006" y="81.859070464767626"/>
+            <point key="canvasLocation" x="-82.400000000000006" y="93.103448275862078"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="attachment_docproviders" width="33" height="20"/>
-        <image name="close" width="28" height="28"/>
     </resources>
 </document>

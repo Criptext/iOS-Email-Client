@@ -14,6 +14,7 @@ class RestoreViewController: UIViewController {
     }
     var myAccount: Account!
     var query: NSMetadataQuery!
+    var metaQuery: NSMetadataQuery!
     var containerUrl: URL? {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
     }
@@ -43,23 +44,19 @@ class RestoreViewController: UIViewController {
         do {
             let resourceValues = try url.resourceValues(forKeys: keys)
             let hasBackup = (resourceValues.allValues[.ubiquitousItemIsUploadedKey] as? Bool) ?? false
-            
             if hasBackup {
-                if let cloudUrl = containerUrl?.appendingPathComponent("backup.db"),
-                    let attrs = try? FileManager.default.attributesOfItem(atPath: cloudUrl.path) {
-                    let NSlastBackupDate = attrs[.modificationDate] as? NSDate
-                    let NSlastBackupSize = attrs[.size] as? NSNumber
-                    let lastBackupDate = NSlastBackupDate as Date? ?? Date()
-                    let lastBackupSize = NSlastBackupSize?.intValue ?? 0
-                    
-                    contentView.setFound(email: myAccount.email, lastDate: lastBackupDate, size: lastBackupSize)
-                } else {
-                    contentView.setError()
-                }
+                let NSlastBackupDate = resourceValues.allValues[.volumeCreationDateKey] as? NSDate
+                let NSlastBackupSize = resourceValues.allValues[.fileSizeKey] as? NSNumber
+                let lastBackupDate = NSlastBackupDate as Date? ?? Date()
+                let lastBackupSize = NSlastBackupSize?.intValue ?? 0
+                
+                contentView.setFound(email: myAccount.email, lastDate: lastBackupDate, size: lastBackupSize)
+                handleMetadataQuery()
             } else {
                 contentView.setMissing()
             }
         } catch {
+            print(error)
             contentView.setError()
             return
         }
@@ -68,10 +65,41 @@ class RestoreViewController: UIViewController {
 }
 
 extension RestoreViewController: RestoreDelegate {
+    
+    func handleMetadataQuery() {
+        guard let url = containerUrl?.appendingPathComponent("backup.db") else {
+            return
+        }
+        metaQuery = NSMetadataQuery()
+        metaQuery.searchScopes = [NSMetadataQueryUbiquitousDataScope]
+        metaQuery.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didFinishGathering), name: NSNotification.Name.NSMetadataQueryDidFinishGathering, object: nil)
+        metaQuery.enableUpdates()
+        metaQuery.start()
+    }
+    
+    @objc func didFinishGathering(not: NSNotification) {
+        self.metaQuery.disableUpdates()
+        guard contentView.state == .found,
+            let item = metaQuery.results.first as? NSMetadataItem,
+            let itemSize = item.value(forAttribute: NSMetadataItemFSSizeKey) as? NSNumber,
+            let itemDate = (item.value(forAttribute: NSMetadataItemFSCreationDateKey) as? NSDate) as Date? else {
+            self.metaQuery.stop()
+            return
+        }
+        self.contentView.setFound(email: myAccount.email, lastDate: itemDate, size: itemSize.intValue)
+        self.metaQuery.enableUpdates()
+    }
+    
     func handleDownload() {
+        guard let url = containerUrl?.appendingPathComponent("backup.db") else {
+            contentView.setError()
+            return
+        }
         query = NSMetadataQuery()
         query.searchScopes = [NSMetadataQueryUbiquitousDataScope]
-        query.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, containerUrl!.appendingPathComponent("backup.db").path)
+        query.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdate), name: NSNotification.Name.NSMetadataQueryDidUpdate, object: nil)
         query.enableUpdates()
@@ -79,22 +107,19 @@ extension RestoreViewController: RestoreDelegate {
     }
     
     @objc func didUpdate(not: NSNotification) {
-        guard let items = not.userInfo?[NSMetadataQueryUpdateChangedItemsKey] as? [NSMetadataItem] else {
+        guard let item = (not.userInfo?[NSMetadataQueryUpdateChangedItemsKey] as? [NSMetadataItem])?.first else {
             return
         }
         self.query.disableUpdates()
-        for mdItem in items {
-            guard !((mdItem.value(forKey: NSMetadataUbiquitousItemIsDownloadingKey) as? NSNumber)?.boolValue ?? false) else {
-                print("DOWNLOADED WACHIN!")
-                query.stop()
-                restoreFile()
-                return
+        let isDownloading = (item.value(forAttribute: NSMetadataUbiquitousItemIsDownloadingKey) as? NSNumber)?.boolValue ?? false
+        let downloadStatus = (item.value(forAttribute: NSMetadataUbiquitousItemDownloadingStatusKey) as? String) ?? NSMetadataUbiquitousItemDownloadingStatusNotDownloaded
+        if !isDownloading {
+            if downloadStatus == NSMetadataUbiquitousItemDownloadingStatusCurrent {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.restoreFile()
+                }
+                self.query.stop()
             }
-            guard (mdItem.value(forKey: NSMetadataUbiquitousItemIsUploadingKey) as? NSNumber)?.boolValue ?? false,
-                let progress = mdItem.value(forKey: NSMetadataUbiquitousItemPercentUploadedKey) as? NSNumber else {
-                    return
-            }
-            print("Downloading Backup... \(progress.intValue)%")
         }
         self.query.enableUpdates()
     }
@@ -122,6 +147,7 @@ extension RestoreViewController: RestoreDelegate {
             let resourceValues = try myUrl.resourceValues(forKeys: keys)
             let downloadStatus = (resourceValues.allValues[.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus) ?? .notDownloaded
             
+            contentView.setRestoring()
             if downloadStatus == .current {
                 restoreFile()
             } else {
@@ -139,12 +165,10 @@ extension RestoreViewController: RestoreDelegate {
             contentView.setError()
             return
         }
-        contentView.setRestoring()
         let restoreTask = RestoreDBAsyncTask(path: decompressedPath, username: myAccount.username, initialProgress: 5)
         restoreTask.start(progressHandler: { (progress) in
             self.contentView.animateProgress(Double(progress), 0.5, completion: {})
         }) {
-            print("DONE")
             self.restoreSuccess()
         }
     }
@@ -156,7 +180,7 @@ extension RestoreViewController: RestoreDelegate {
                 return
             }
             inboxVC.dismiss(animated: true) {
-                inboxVC.refreshThreadRows()
+                inboxVC.loadMails(since: Date(), clear: true, limit: 0)
                 inboxVC.showSnackbar(String.localize("RESTORE_SUCCESS"), attributedText: nil, buttons: "", permanent: false)
             }
         })

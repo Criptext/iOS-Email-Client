@@ -65,28 +65,57 @@ final class BackupManager {
             return
         }
         let workItem = DispatchWorkItem {
-            print("STARTING BACKUP!!")
             self.runningBackups.insert(username)
             let createDBTask = CreateCustomJSONFileAsyncTask(username: username, kind: .backup)
             createDBTask.start { (error, url) in
                 guard let dbUrl = url,
                     let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.backupZip.name, compress: true),
                     let container = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(email) else {
+                        self.workers[username] = nil
+                        self.runningBackups.remove(username)
+                        self.checkAccounts()
                         return
                 }
+                print("TIME AND BACKED UP")
+                self.checkAndMoveExistingBackup(username: username)
                 let cloudUrl = container.appendingPathComponent("backup.db")
                 try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true, attributes: nil)
                 try? FileManager.default.removeItem(at: cloudUrl)
                 try? FileManager.default.copyItem(at: URL(fileURLWithPath: compressedPath), to: cloudUrl)
-                self.workers[email] = nil
                 DBManager.update(username: username, lastBackup: Date())
+                self.workers[username] = nil
                 self.runningBackups.remove(username)
-                print("FINISHING BACKUP!!")
+                self.checkAccounts()
             }
         }
+        print("TIME AND TIME AGAIN : \(executionTime.0)")
         let queue = DispatchQueue(label: "com.criptext.account.backup", qos: .userInitiated, attributes: .concurrent)
         queue.asyncAfter(deadline: .now() + executionTime.0, execute: workItem)
-        workers[email] = BackupWorker(worker: workItem, frequency: executionTime.1)
+        workers[username] = BackupWorker(worker: workItem, frequency: executionTime.1)
+    }
+    
+    func checkAndMoveExistingBackup(username: String) {
+        guard let myAccount = DBManager.getAccountByUsername(username),
+            let containerUrl = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email) else {
+            return
+        }
+        let myUrl = containerUrl.appendingPathComponent("backup.db")
+        let oldUrl = containerUrl.appendingPathComponent("backup-old.db")
+        do {
+            var keys = Set<URLResourceKey>()
+            keys.insert(.ubiquitousItemIsUploadedKey)
+            
+            let resourceValues = try myUrl.resourceValues(forKeys: keys)
+            let isUploaded = (resourceValues.allValues[.ubiquitousItemIsUploadedKey] as? NSNumber)?.boolValue ?? false
+            
+            if isUploaded {
+                try? FileManager.default.createDirectory(at: containerUrl, withIntermediateDirectories: true, attributes: nil)
+                try? FileManager.default.removeItem(at: oldUrl)
+                try FileManager.default.moveItem(at: myUrl, to: oldUrl)
+            }
+        } catch {
+            
+        }
     }
     
     func timeForExcecution(autoBackUp: String, lastBackup: Date, force: Bool = false) -> (Double, BackupFrequency)? {
