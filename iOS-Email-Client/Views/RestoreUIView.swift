@@ -46,6 +46,9 @@ class RestoreUIView: UIView {
         progressBar.subviews[1].clipsToBounds = true
 
         cloudImageView.tintColor = theme.criptextBlue
+        
+        cancelButton.setTitle(String.localize("RESTORE_CANCEL"), for: .normal)
+        cancelButton.setTitleColor(theme.criptextBlue, for: .normal)
     }
     
     func setSearching() {

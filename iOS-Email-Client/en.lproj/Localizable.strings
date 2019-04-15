@@ -398,3 +398,10 @@
 "ENCRYPT_BACKUP" = "Encrypt Backup";
 "LOSE_PASSPHRASE" = "If you lose/forget this passphrase you won't be able to restore the backup in the future";
 "NOTE_BACKUP" = "Warning: for your security we recommend you chose to encrypt your backup.";
+"RESTORE_CANCEL" = "Cancel Restore";
+
+"Daily" = "Daily";
+"Weekly" = "Weekly";
+"Monthly" = "Monthly";
+"Off" = "Off";
+"PASS_OPTIONAL" = "Passphrase (Optional)";

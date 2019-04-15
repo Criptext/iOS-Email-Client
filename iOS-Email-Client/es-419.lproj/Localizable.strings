@@ -363,8 +363,8 @@
 "ADD_ACCOUNT" = "Agregar cuenta";
 "NOW_LOGGED" = "Has iniciado sesión como ";
 
-"BACKUP" = "Respaldo en la nube";
-"BACKUP_CLOUD" = "Respaldo en la nube";
+"BACKUP" = "Respaldo en iCloud";
+"BACKUP_CLOUD" = "Respaldo en iCloud";
 "BACKUP_NOW" = "Respaldar ahora";
 "BACKUP_AUTO" = "Respaldo automático";
 
@@ -372,7 +372,7 @@
 "BACKUP_SIZE" = "Tamaño: ";
 
 "BACKUP_GENERATING" = "Generando archivo de respaldo...";
-"BACKUP_AUTO_MESSAGE" = "Nota: El respaldo automático solo funciona con iCloud. Para evitar el uso de tus datos moviles, asegurate de estar conectado a internet o deshabilitar iCloud Drive desde Configuracion > Datos Celulares > iCloud Drive.";
+"BACKUP_AUTO_MESSAGE" = "Nota: El respaldo automático solo funciona con iCloud. Para evitar el uso de tus datos moviles, asegurate de estar conectado a internet o deshabilitar iCloud Drive desde Configuración > Datos Celulares > iCloud Drive.";
 "BACKUP_PROGRESS" = "Subiendo Respaldo... (%i %%)";
 "BACKUP_SUCCESS" = "Buzon respaldado exitosamente!";
 
@@ -398,3 +398,10 @@
 "ENCRYPT_BACKUP" = "Encriptar Respaldo";
 "LOSE_PASSPHRASE" = "Si pierdes/olvidas esta clave, no podras restaurar tu buzon usando el archivo de respaldo.";
 "NOTE_BACKUP" = "Advertencia: por tu seguridad, te recomendamos encriptar el respaldo";
+"RESTORE_CANCEL" = "Cancelar Restauración";
+
+"Daily" = "Diariamente";
+"Weekly" = "Semanalmente";
+"Monthly" = "Mensualmente";
+"Off" = "Deshabilitado";
+"PASS_OPTIONAL" = "Clave (Opcional)";

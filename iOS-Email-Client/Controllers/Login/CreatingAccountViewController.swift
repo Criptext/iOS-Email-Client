@@ -17,6 +17,7 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
+    var fromSignup = false
     var multipleAccount = false
     var signupData: SignUpData!
     var account: Account?
@@ -179,7 +180,7 @@ class CreatingAccountViewController: UIViewController{
         }
         registerFirebaseToken(jwt: myAccount.jwt)
         animateProgress(100.0, 2.0) {
-            let hasEmails = DBManager.hasEmails(account: myAccount)
+            let hasEmails = self.fromSignup ? true : DBManager.hasEmails(account: myAccount)
             if self.multipleAccount {
                 self.goBackToMailbox(account: myAccount, showRestore: !hasEmails)
             } else {
