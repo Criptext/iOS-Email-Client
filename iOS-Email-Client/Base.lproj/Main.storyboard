@@ -73,19 +73,19 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="REz-Zx-0rT">
-                                <rect key="frame" x="46" y="253.5" width="283" height="23.5"/>
+                                <rect key="frame" x="46" y="253.5" width="283" height="27.5"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something about, are you sure you chose the correct drive account, maybe you should try again" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DtG-nx-cFU">
-                                <rect key="frame" x="46" y="307" width="283" height="59.5"/>
+                                <rect key="frame" x="46" y="311" width="283" height="70"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4A5-WU-QSU">
-                                <rect key="frame" x="87.5" y="406.5" width="200" height="44"/>
+                                <rect key="frame" x="87.5" y="456" width="200" height="44"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="bgm-p3-hTz"/>
@@ -104,7 +104,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q5X-aq-sdX">
-                                <rect key="frame" x="46" y="615" width="283" height="32"/>
+                                <rect key="frame" x="46" y="611" width="283" height="36"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <state key="normal" title="Cancel Restore"/>
                                 <connections>
@@ -112,7 +112,7 @@
                                 </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J1Z-8z-V95">
-                                <rect key="frame" x="66" y="317" width="243" height="10"/>
+                                <rect key="frame" x="66" y="326" width="243" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="0hF-Xc-QAh"/>
                                 </constraints>
@@ -120,7 +120,7 @@
                                 <color key="trackTintColor" red="0.0" green="0.56862745100000001" blue="1" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             </progressView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1FT-Hk-Q0Z" customClass="TipUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="167" y="347" width="41" height="20"/>
+                                <rect key="frame" x="167" y="356" width="41" height="20"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki1-Zn-ijd" customClass="CounterLabelUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="41" height="20"/>
@@ -150,22 +150,34 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Passphrase" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KUR-0b-sRf" customClass="TextField" customModule="Material">
+                                <rect key="frame" x="66" y="401" width="243" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Rye-H6-tgZ"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="REz-Zx-0rT" secondAttribute="trailing" constant="30" id="0IB-8P-jRB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KUR-0b-sRf" secondAttribute="trailing" constant="50" id="4H5-0U-suG"/>
                             <constraint firstItem="DtG-nx-cFU" firstAttribute="top" secondItem="REz-Zx-0rT" secondAttribute="bottom" constant="30" id="8JW-rD-00y"/>
+                            <constraint firstItem="KUR-0b-sRf" firstAttribute="leading" secondItem="XeY-9d-Vqy" secondAttribute="leadingMargin" constant="50" id="9Qb-Co-Oq2"/>
                             <constraint firstItem="DtG-nx-cFU" firstAttribute="leading" secondItem="XeY-9d-Vqy" secondAttribute="leadingMargin" constant="30" id="Bjm-qY-wLh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Q5X-aq-sdX" secondAttribute="trailing" constant="30" id="CWm-xm-3dM"/>
                             <constraint firstItem="ixU-JK-Zcn" firstAttribute="centerY" secondItem="XeY-9d-Vqy" secondAttribute="centerY" constant="-180" id="Gby-59-Xgt"/>
                             <constraint firstItem="Q5X-aq-sdX" firstAttribute="leading" secondItem="XeY-9d-Vqy" secondAttribute="leadingMargin" constant="30" id="HXO-pi-ZBr"/>
                             <constraint firstItem="FNT-kb-9DM" firstAttribute="top" secondItem="Q5X-aq-sdX" secondAttribute="bottom" constant="20" id="HmA-kh-Qha"/>
+                            <constraint firstItem="4A5-WU-QSU" firstAttribute="top" secondItem="KUR-0b-sRf" secondAttribute="bottom" constant="25" id="OQ5-y6-bSM"/>
                             <constraint firstItem="REz-Zx-0rT" firstAttribute="leading" secondItem="XeY-9d-Vqy" secondAttribute="leadingMargin" constant="30" id="Sev-d9-p0l"/>
                             <constraint firstItem="4A5-WU-QSU" firstAttribute="centerX" secondItem="XeY-9d-Vqy" secondAttribute="centerX" id="TCI-3a-UK3"/>
                             <constraint firstAttribute="trailingMargin" secondItem="J1Z-8z-V95" secondAttribute="trailing" constant="50" id="Tqu-Pl-6Xx"/>
                             <constraint firstItem="J1Z-8z-V95" firstAttribute="centerY" secondItem="DtG-nx-cFU" secondAttribute="centerY" constant="-15" id="UUH-44-OPA"/>
                             <constraint firstItem="REz-Zx-0rT" firstAttribute="top" secondItem="ixU-JK-Zcn" secondAttribute="bottom" constant="80" id="Wfp-1L-2qE"/>
-                            <constraint firstItem="4A5-WU-QSU" firstAttribute="top" secondItem="DtG-nx-cFU" secondAttribute="bottom" constant="40" id="Wwf-sl-rHz"/>
+                            <constraint firstItem="KUR-0b-sRf" firstAttribute="top" secondItem="DtG-nx-cFU" secondAttribute="bottom" constant="20" id="dQS-nV-y91"/>
                             <constraint firstItem="J1Z-8z-V95" firstAttribute="leading" secondItem="XeY-9d-Vqy" secondAttribute="leadingMargin" constant="50" id="h1Y-5s-9D4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="DtG-nx-cFU" secondAttribute="trailing" constant="30" id="kLQ-1c-oRg"/>
                             <constraint firstItem="1FT-Hk-Q0Z" firstAttribute="centerX" secondItem="J1Z-8z-V95" secondAttribute="centerX" id="l0C-yN-dCz"/>
@@ -176,6 +188,8 @@
                             <outlet property="cancelButton" destination="Q5X-aq-sdX" id="aVe-2l-944"/>
                             <outlet property="cloudImageView" destination="ixU-JK-Zcn" id="EXh-bd-Tqx"/>
                             <outlet property="messageLabel" destination="DtG-nx-cFU" id="TLz-fT-SSt"/>
+                            <outlet property="passwordHeightConstraint" destination="Rye-H6-tgZ" id="FH8-Mk-ua5"/>
+                            <outlet property="passwordTextField" destination="KUR-0b-sRf" id="qqU-jM-G9V"/>
                             <outlet property="percentageContainerView" destination="1FT-Hk-Q0Z" id="jQ6-08-Z5f"/>
                             <outlet property="percentageLabel" destination="ki1-Zn-ijd" id="bWs-n9-Z8n"/>
                             <outlet property="progressBar" destination="J1Z-8z-V95" id="iEL-0q-hCo"/>

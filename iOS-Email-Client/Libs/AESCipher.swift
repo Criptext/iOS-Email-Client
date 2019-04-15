@@ -11,6 +11,12 @@ import Compression
 import Gzip
 
 class AESCipher {
+    
+    struct KeyBundle {
+        let password: String
+        let salt: Data?
+    }
+    
     class func encrypt(data: Data, keyData: Data, ivData: Data, operation: Int) -> Data? {
         let cryptLength = size_t(data.count + kCCBlockSizeAES128)
         var cryptData = Data(count: cryptLength)
@@ -37,11 +43,10 @@ class AESCipher {
         return cryptData
     }
     
-    class func streamEncrypt(path: String, outputName: String, keyData: Data, ivData: Data?, operation: Int) -> String? {
+    class func streamEncrypt(path: String, outputName: String, bundle: KeyBundle? = nil, keyData: Data? = nil, ivData: Data?, operation: Int) -> String? {
         let outputURL = CriptextFileManager.getURLForFile(name: outputName)
         try? FileManager.default.removeItem(at: outputURL)
         FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
-        
         
         let fileAttributes = try! FileManager.default.attributesOfItem(atPath: path)
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
@@ -59,10 +64,21 @@ class AESCipher {
         outputStream.open()
         inputStream.open()
         
-        guard let localIvData = handleIv(inputStream: inputStream, outputStream: outputStream, ivData: ivData) else {
-                return nil
+        guard let localKeyData = keyData ?? handleKey(inputStream: inputStream, bundle: bundle) else {
+            return nil
         }
-        let cryptorStatus = keyData.withUnsafeBytes({ keyBytes in
+        
+        if let salt = bundle?.salt {
+            let saltBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: salt.count)
+            salt.copyBytes(to: saltBuffer, count: salt.count)
+            outputStream.write(saltBuffer, maxLength: salt.count)
+        }
+        
+        guard let localIvData = handleIv(inputStream: inputStream, outputStream: outputStream, ivData: ivData) else {
+            return nil
+        }
+        
+        let cryptorStatus = localKeyData.withUnsafeBytes({ keyBytes in
             localIvData.withUnsafeBytes({ ivBytes in
                 CCCryptorCreate(CCOperation(operation), CCAlgorithm(kCCAlgorithmAES128), options, keyBytes, keyLength, ivBytes, cryptorPointer)
             })
@@ -90,6 +106,20 @@ class AESCipher {
         }
 
         return outputURL.path
+    }
+    
+    private class func handleKey(inputStream: InputStream, bundle: KeyBundle?) -> Data? {
+        guard let myBundle = bundle else {
+            return nil
+        }
+        guard let salt = myBundle.salt else {
+            let bufferSize = 8
+            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+            inputStream.read(buffer, maxLength: bufferSize)
+            let salt = Data.init(bytes: buffer, count: bufferSize)
+            return self.generateKey(password: myBundle.password, saltData: salt)
+        }
+        return self.generateKey(password: myBundle.password, saltData: salt)
     }
     
     private class func handleIv(inputStream: InputStream, outputStream: OutputStream, ivData: Data?) -> Data? {
@@ -167,7 +197,7 @@ class AESCipher {
     class func compressFile(path: String, outputName: String, compress: Bool) throws -> String {
         let outputURL = CriptextFileManager.getURLForFile(name: outputName)
         try? FileManager.default.removeItem(at: outputURL)
-        FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: [FileAttributeKey.type])
+        FileManager.default.createFile(atPath: outputURL.path, contents: nil, attributes: nil)
         
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
         

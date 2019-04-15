@@ -387,3 +387,14 @@
 "KEEP_RETRY" = "Quieres reintentar? ";
 "BACKUP_RESTORING" = "Restaurando...";
 "RESTORE_SUCCESS" = "Buzon restaurado exitosamente!";
+
+"SEND" = "Enviar";
+"NON_CRIPTEXT" = "Destinatario No-Criptext";
+"SEND_ENCRYPTED" = "Enviar Encriptado";
+"SET_PASSPHRASE" = "Establece una clave y compártela con destinatarios no-Criptext para que puedan leer tu correo.";
+"NOTE" = "Las direcciones de correo que no son de Criptext recibirán un correo normal y sin encriptar";
+
+"ENTER_PASSPHRASE" = "Ingresar Clave";
+"ENCRYPT_BACKUP" = "Encriptar Respaldo";
+"LOSE_PASSPHRASE" = "Si pierdes/olvidas esta clave, no podras restaurar tu buzon usando el archivo de respaldo.";
+"NOTE_BACKUP" = "Advertencia: por tu seguridad, te recomendamos encriptar el respaldo";

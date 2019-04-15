@@ -15,7 +15,6 @@ class CreateCustomJSONFileAsyncTask {
     enum Kind {
         case link
         case backup
-        case share
         
         var url: URL {
             switch(self){
@@ -23,8 +22,6 @@ class CreateCustomJSONFileAsyncTask {
                 return StaticFile.emailDB.url
             case .backup:
                 return StaticFile.backupDB.url
-            case .share:
-                return StaticFile.shareDB.url
             }
         }
     }

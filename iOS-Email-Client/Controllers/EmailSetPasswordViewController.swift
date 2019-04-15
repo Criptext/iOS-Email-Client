@@ -26,6 +26,8 @@ class EmailSetPasswordViewController: BaseUIPopover {
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var noPasswordMessageLabel: UILabel!
     @IBOutlet weak var passwordContainerView: UIView!
+    var isBackup = false
+    var onSetPassword: ((Bool, String?) -> Void)?
     var delegate : EmailSetPasswordDelegate?
     
     init(){
@@ -43,7 +45,28 @@ class EmailSetPasswordViewController: BaseUIPopover {
         }
         scrollview.bounces = false
         scrollview.contentSize = CGSize(width: Constants.popoverWidth, height: 335)
+        if isBackup {
+            applyBackup()
+        } else {
+            applyEncrypted()
+        }
         applyTheme()
+    }
+    
+    func applyEncrypted() {
+        titleLabel.text = String.localize("NON_CRIPTEXT")
+        subTitleLabel.text = String.localize("SEND_ENCRYPTED")
+        passphraseLabel.text = String.localize("SET_PASSPHRASE")
+        noPasswordMessageLabel.text = String.localize("NOTE")
+        sendButton.setTitle(String.localize("SEND"), for: .normal)
+    }
+    
+    func applyBackup() {
+        titleLabel.text = String.localize("ENTER_PASSPHRASE")
+        subTitleLabel.text = String.localize("ENCRYPT_BACKUP")
+        passphraseLabel.text = String.localize("LOSE_PASSPHRASE")
+        noPasswordMessageLabel.text = String.localize("NOTE_BACKUP")
+        sendButton.setTitle(String.localize("CONTINUE"), for: .normal)
     }
     
     func applyTheme() {
@@ -89,6 +112,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
         }
         self.dismiss(animated: true, completion: nil)
         self.delegate?.setPassword(active: passwordEnabled, password: passwordEnabled ? password : nil)
+        onSetPassword?(passwordEnabled, passwordEnabled ? password : nil)
     }
     
     @IBAction func onCancelPress(_ sender: Any) {

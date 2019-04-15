@@ -29,6 +29,7 @@ class Account: Object{
     @objc dynamic var lastTimeBackup: Date? = nil
     @objc dynamic var autoBackupFrequency = "Off"
     @objc dynamic var wifiOnly = true
+    @objc dynamic var backupPassword: String?
     
     var email: String {
         guard let myDomain = domain else {

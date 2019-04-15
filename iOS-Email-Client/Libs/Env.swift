@@ -29,7 +29,7 @@ struct Env {
         #if SUPPORT
         return "GoogleService-Info-Support.plist"
         #else
-        return "GoogleService-Info-Support.plist"
+        return "GoogleService-Info.plist"
         #endif
     }()
     
@@ -37,7 +37,7 @@ struct Env {
         #if SUPPORT
         return "group.criptext.support"
         #else
-        return "group.criptext.support"
+        return "group.criptext.team"
         #endif
     }()
     
@@ -77,7 +77,7 @@ struct Env {
         return Locale.current.languageCode ?? "en"
     }
     
-    static let databaseVersion: UInt64 = 18
+    static let databaseVersion: UInt64 = 19
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 3
 }

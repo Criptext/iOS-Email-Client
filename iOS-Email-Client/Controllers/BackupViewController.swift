@@ -187,13 +187,38 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
         let option = options[indexPath.row]
         switch(option.label) {
         case .cloud:
-            DBManager.update(account: myAccount, hasCloudBackup: !myAccount.hasCloudBackup)
-            self.toggleOptions()
+            self.toggleCloudBackup()
         case .now:
             self.startBackup()
         case .auto:
             self.openPicker()
         }
+    }
+    
+    func toggleCloudBackup() {
+        guard !myAccount.hasCloudBackup else {
+            DBManager.update(account: myAccount, hasCloudBackup: !myAccount.hasCloudBackup)
+            BackupManager.shared.clearAccount(username: myAccount.username)
+            self.toggleOptions()
+            return
+        }
+        
+        let setPassPopover = EmailSetPasswordViewController()
+        setPassPopover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: 295)
+        setPassPopover.popoverPresentationController?.sourceView = self.view
+        setPassPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        setPassPopover.popoverPresentationController?.permittedArrowDirections = []
+        setPassPopover.popoverPresentationController?.backgroundColor = ThemeManager.shared.theme.overallBackground
+        setPassPopover.isBackup = true
+        setPassPopover.onSetPassword = { [weak self] (active, password) in
+            guard let weakSelf = self else {
+                return
+            }
+            DBManager.update(account: weakSelf.myAccount, hasCloudBackup: !weakSelf.myAccount.hasCloudBackup, password: password)
+            weakSelf.toggleOptions()
+        }
+        
+        self.present(setPassPopover, animated: true)
     }
     
     func toggleOptions() {
