@@ -362,3 +362,47 @@
 "NO_CONTENT" = "Este correo no tiene contenido";
 "ADD_ACCOUNT" = "Agregar cuenta";
 "NOW_LOGGED" = "Has iniciado sesión como ";
+
+"BACKUP" = "Respaldo en iCloud";
+"BACKUP_CLOUD" = "Respaldo en iCloud";
+"BACKUP_NOW" = "Respaldar ahora";
+"BACKUP_AUTO" = "Respaldo automático";
+
+"LAST_BACKUP" = "Respaldado: ";
+"BACKUP_SIZE" = "Tamaño: ";
+
+"BACKUP_GENERATING" = "Generando archivo de respaldo...";
+"BACKUP_AUTO_MESSAGE" = "Nota: El respaldo automático solo funciona con iCloud. Para evitar el uso de tus datos moviles, asegurate de estar conectado a internet o deshabilitar iCloud Drive desde Configuración > Datos Celulares > iCloud Drive.";
+"BACKUP_PROGRESS" = "Subiendo Respaldo... (%i %%)";
+"BACKUP_SUCCESS" = "Buzon respaldado exitosamente!";
+
+"BACKUP_SEARCH" = "Estamos buscando en tu iCloud (De estar habilitado) un archivo de respaldo existente.";
+"TAKE_WHILE" = "Esto podria demorar un poco";
+"BACKUP_LOOKING" = "Buscando respaldo...";
+"BACKUP_FOUND" = "Respaldo Encontrado!";
+"BACKUP_RESTORE" = "Restaurar";
+"BACKUP_NOT_FOUND_MESSAGE" = "Respaldo NO encontrado! Puedes reintentar la busqueda";
+"BACKUP_NOT_FOUND" = "Respaldo NO encontrado";
+"DELAYED_PROCESS" = "Algo ha sucedido que está retrasando este proceso";
+"KEEP_RETRY" = "Quieres reintentar? ";
+"BACKUP_RESTORING" = "Restaurando...";
+"RESTORE_SUCCESS" = "Buzon restaurado exitosamente!";
+
+"SEND" = "Enviar";
+"NON_CRIPTEXT" = "Destinatario No-Criptext";
+"SEND_ENCRYPTED" = "Enviar Encriptado";
+"SET_PASSPHRASE" = "Establece una clave y compártela con destinatarios no-Criptext para que puedan leer tu correo.";
+"NOTE" = "Las direcciones de correo que no son de Criptext recibirán un correo normal y sin encriptar";
+
+"ENTER_PASSPHRASE" = "Ingresar Clave";
+"ENCRYPT_BACKUP" = "Encriptar Respaldo";
+"LOSE_PASSPHRASE" = "Si pierdes/olvidas esta clave, no podras restaurar tu buzón usando el archivo de respaldo.";
+"NOTE_BACKUP" = "Advertencia: por tu seguridad, te recomendamos encriptar el respaldo";
+"RESTORE_CANCEL" = "Cancelar Restauración";
+
+"Daily" = "Diariamente";
+"Weekly" = "Semanalmente";
+"Monthly" = "Mensualmente";
+"Off" = "Deshabilitado";
+"PASS_OPTIONAL" = "Clave (Opcional)";
+"BACKING_UP" = "Respaldando...";

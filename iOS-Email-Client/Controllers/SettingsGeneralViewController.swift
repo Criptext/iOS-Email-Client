@@ -38,6 +38,7 @@ class SettingsGeneralViewController: UIViewController{
             case devices
             case labels
             case manualSync
+            case backup
             
             case night
             case syncContact
@@ -53,6 +54,8 @@ class SettingsGeneralViewController: UIViewController{
             
             var name: String {
                 switch(self){
+                case .backup:
+                    return String.localize("BACKUP")
                 case .syncContact:
                     return String.localize("SYNC_PHONEBOOK")
                 case .privacy:
@@ -93,7 +96,7 @@ class SettingsGeneralViewController: UIViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = [.account, .general, .about, .version] as [Section]
     let menus = [
-        .account: [.account, .privacy, .devices, .labels, .manualSync],
+        .account: [.account, .privacy, .devices, .labels, .manualSync, .backup],
         .general: [.night, .syncContact, .preview, .pin],
         .about: [.faq, .policies, .terms, .openSource],
         .version : [.version]] as [Section: [Section.SubSection]
@@ -313,6 +316,13 @@ class SettingsGeneralViewController: UIViewController{
         self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }
     
+    func goToBackup() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let backupVC = storyboard.instantiateViewController(withIdentifier: "backupViewController") as! BackupViewController
+        backupVC.myAccount = myAccount
+        self.navigationController?.pushViewController(backupVC, animated: true)
+    }
+    
     func syncContacts(){
         generalData.syncStatus = .syncing
         tableView.reloadData()
@@ -389,7 +399,7 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
         let mySection = sections[section]
         if mySection == .account {
-            cell.titleLabel.text = myAccount.email.uppercased()
+            cell.titleLabel.text = myAccount.isInvalidated ? "" : myAccount.email.uppercased()
         } else {
             cell.titleLabel.text = mySection.name
         }
@@ -418,6 +428,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             goToLabels()
         case .manualSync:
             showManualSyncWarning()
+        case .backup:
+            goToBackup()
         case .syncContact:
             syncContacts()
         case .pin:

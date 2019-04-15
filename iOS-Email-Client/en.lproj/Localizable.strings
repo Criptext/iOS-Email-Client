@@ -362,3 +362,47 @@
 "NO_CONTENT" = "This email has no content";
 "ADD_ACCOUNT" = "Add Account";
 "NOW_LOGGED" = "Now logged in as ";
+
+"BACKUP" = "Cloud Backup";
+"BACKUP_CLOUD" = "Cloud Backup";
+"BACKUP_NOW" = "Back Up Now";
+"BACKUP_AUTO" = "Auto Backup";
+
+"LAST_BACKUP" = "Last Backup: ";
+"BACKUP_SIZE" = "Size: ";
+
+"BACKUP_GENERATING" = "Generating Backup File...";
+"BACKUP_AUTO_MESSAGE" = "Note: Auto Backup works only with cloud backup. To avoid using your celular data, make sure you are connected to Wi-Fi or have iCloud drive disabled for celular data in Configuration > Celular Data > iCloud Drive";
+"BACKUP_PROGRESS" = "Uploading Backup... (%i %%)";
+"BACKUP_SUCCESS" = "Mailbox Backed Successfully!";
+
+"BACKUP_SEARCH" = "We are searching in your iCloud (if iCloud Drive is enable) for a backup file.";
+"TAKE_WHILE" = "This may take a while";
+"BACKUP_LOOKING" = "Looking for your backup...";
+"BACKUP_FOUND" = "Backup Found";
+"BACKUP_RESTORE" = "Restore";
+"BACKUP_NOT_FOUND_MESSAGE" = "Backup nowhere to be found! Try checking again if you did have one.";
+"BACKUP_NOT_FOUND" = "Backup Not Found";
+"DELAYED_PROCESS" = "Something has happened that is delaying this process.";
+"KEEP_RETRY" = "Do you want to keep trying? ";
+"BACKUP_RESTORING" = "Restoring...";
+"RESTORE_SUCCESS" = "Mailbox restored successfully!";
+
+"SEND" = "Send";
+"NON_CRIPTEXT" = "Non-Criptext Recipient";
+"SEND_ENCRYPTED" = "Send Encrypted";
+"SET_PASSPHRASE" = "Set a passphrase and share it with non-Criptext recipients so they can read your email.";
+"NOTE" = "Note: non-Criptext email addresses will receive a normal, un-encrypted email.";
+
+"ENTER_PASSPHRASE" = "Enter Passphrase";
+"ENCRYPT_BACKUP" = "Encrypt Backup";
+"LOSE_PASSPHRASE" = "If you lose/forget this passphrase you won't be able to restore the backup in the future";
+"NOTE_BACKUP" = "Warning: for your security we recommend you chose to encrypt your backup.";
+"RESTORE_CANCEL" = "Cancel Restore";
+
+"Daily" = "Daily";
+"Weekly" = "Weekly";
+"Monthly" = "Monthly";
+"Off" = "Off";
+"PASS_OPTIONAL" = "Passphrase (Optional)";
+"BACKING_UP" = "Backing up...";

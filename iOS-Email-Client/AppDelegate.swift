@@ -386,6 +386,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let activeAccount = defaults.activeAccount {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions, activeAccount)
+            BackupManager.shared.checkAccounts()
         }else{
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -477,6 +478,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let mailboxVC = getInboxVC() {
             mailboxVC.invalidateObservers()
         }
+        BackupManager.shared.clearAccount(username: account.username)
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
@@ -523,12 +525,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.removeConfig()
     }
     
-    func swapAccount(account: Account) {
+    func swapAccount(account: Account, showRestore: Bool = false) {
         let defaults = CriptextDefaults()
         defaults.activeAccount = account.username
         guard let inboxVC = getInboxVC() else {
             return
         }
+        inboxVC.mailboxData.showRestore = showRestore
         inboxVC.swapAccount(account)
         inboxVC.dismiss(animated: true)
     }
@@ -539,7 +542,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
     }
     
-    func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?, _ activeAccount: String) -> UIViewController{
+    func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?, _ activeAccount: String, showRestore: Bool = false) -> UIViewController{
         let myAccount = DBManager.getAccountByUsername(activeAccount)!
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
@@ -548,6 +551,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let inboxVC = rootVC.childViewControllers.first as! InboxViewController
         
         inboxVC.myAccount = myAccount
+        inboxVC.mailboxData.showRestore = showRestore
         let feedsRightView = storyboard.instantiateViewController(withIdentifier: "FeedsViewController") as! FeedViewController
     
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
@@ -591,7 +595,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if showBiometrics {
             passcodeLockPresenter.present()
         }
-        
+        BackupManager.shared.checkAccounts()
     }
     
     func triggerRefresh(){

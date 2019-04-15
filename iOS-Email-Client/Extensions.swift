@@ -354,6 +354,10 @@ enum StaticFile {
     case unzippedDB
     case decryptedDB
     
+    case backupDB
+    case backupZip
+    case backupRSA
+    
     var name: String {
         switch self {
         case .encryptedDB:
@@ -366,6 +370,12 @@ enum StaticFile {
             return "decompressed.db"
         case .decryptedDB:
             return "decrypted.db"
+        case .backupDB:
+            return "backup.db"
+        case .backupZip:
+            return "backup.gz"
+        case .backupRSA:
+            return "backup.rsa"
         }
     }
     

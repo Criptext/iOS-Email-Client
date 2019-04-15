@@ -12,11 +12,26 @@ import RealmSwift
 
 class CreateCustomJSONFileAsyncTask {
     
-    init(username: String) {
-        self.username = username
+    enum Kind {
+        case link
+        case backup
+        
+        var url: URL {
+            switch(self){
+            case .link:
+                return StaticFile.emailDB.url
+            case .backup:
+                return StaticFile.backupDB.url
+            }
+        }
     }
     
-    let fileURL = StaticFile.emailDB.url
+    init(username: String, kind: Kind = .link) {
+        self.username = username
+        self.fileURL = kind.url
+    }
+    
+    let fileURL: URL
     var contacts = [String: Int]()
     var emails = [Int: Int]()
     var username: String

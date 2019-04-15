@@ -244,7 +244,12 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         viewSetupNews()
-        presentWelcomeTour()
+        mailboxData.showRestore = true
+        if mailboxData.showRestore {
+            restoreMailbox()
+        } else {
+            presentWelcomeTour()
+        }
     }
     
     func handleControllerMessage() {
@@ -285,8 +290,28 @@ class InboxViewController: UIViewController {
                 return
             }
             let task = RetrieveContactsTask(username: weakSelf.myAccount.username)
-            task.start { (_) in }
+            task.start { (_) in
+                
+            }
         }
+    }
+    
+    func restoreMailbox() {
+        mailboxData.showRestore = false
+        
+        let restorePopover = RestoreUIPopover()
+        restorePopover.onRestore = { [weak self] in
+            self?.goToRestore()
+        }
+        self.presentPopover(popover: restorePopover, height: 400)
+    }
+    
+    func goToRestore() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let restoreVC = storyboard.instantiateViewController(withIdentifier: "restoreViewController") as! RestoreViewController
+        restoreVC.myAccount = self.myAccount
+        self.present(restoreVC, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

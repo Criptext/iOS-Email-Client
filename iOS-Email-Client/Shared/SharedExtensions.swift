@@ -58,7 +58,6 @@ extension String {
     }
     
     static func localize(_ text: String, arguments: CVarArg...) -> String {
-        print(String.localize(text))
         return String(format: String.localize(text), arguments: arguments)
     }
     

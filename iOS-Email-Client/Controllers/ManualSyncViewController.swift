@@ -118,6 +118,15 @@ class ManualSyncViewController: UIViewController{
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
         DBManager.clearMailbox(account: myAccount)
         FileUtils.deleteAccountDirectory(account: myAccount)
+        DBManager.clearMailbox(account: myAccount)
+        
+        let restoreTask = RestoreDBAsyncTask(path: path, username: myAccount.username, initialProgress: 80)
+        restoreTask.start(progressHandler: { (progress) in
+            self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
+        }) {
+            self.restoreSuccess()
+        }
+        
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
         let username = myAccount.username
         queue.async {
@@ -144,12 +153,16 @@ class ManualSyncViewController: UIViewController{
             DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
-                self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
-                    self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.dismissToRoot()
-                    }
-                }
+                
+            }
+        }
+    }
+    
+    func restoreSuccess() {
+        self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
+            self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.dismissToRoot()
             }
         }
     }

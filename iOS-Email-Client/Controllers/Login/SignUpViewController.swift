@@ -233,6 +233,7 @@ class SignUpViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
         controller.signupData = signupData
+        controller.fromSignup = true
         controller.multipleAccount = self.multipleAccount
         self.present(controller, animated: true, completion: nil)
     }

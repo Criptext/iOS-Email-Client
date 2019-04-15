@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 
 class MailboxData {
+    var showRestore = false
     var updating = false
     var selectedLabel = SystemLabel.inbox.id
     var queueItems: Results<QueueItem>?

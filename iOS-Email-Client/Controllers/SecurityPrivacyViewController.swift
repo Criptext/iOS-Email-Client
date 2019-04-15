@@ -58,6 +58,8 @@ class SecurityPrivacyViewController: UITableViewController {
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
+        let nib = UINib(nibName: "SettingsOptionTableCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "privacycell")
         tableView.estimatedRowHeight = UITableViewAutomaticDimension
         if isPinControl {
             initializePinOptions()
@@ -117,8 +119,10 @@ class SecurityPrivacyViewController: UITableViewController {
                 newOption.isEnabled = defaults.hasPIN
                 newOption.pick = defaults.lockTimer
             case .twoFactor:
+                newOption.isEnabled = !generalData.loading2FA
                 newOption.isOn = generalData.isTwoFactor
             case .receipts:
+                newOption.isEnabled = !generalData.loadingReceipts
                 newOption.isOn = generalData.hasEmailReceipts
             case .biometric:
                 newOption.isEnabled = defaults.hasPIN && biometricType != .none
@@ -130,65 +134,15 @@ class SecurityPrivacyViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "privacycell") as! PrivacyUIViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "privacycell") as! SettingsOptionCell
         let option = options[indexPath.row]
         cell.fillFields(option: option)
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         switch(option.label) {
-        case .pincode:
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            cell.switchToggle = { [weak self] (isOn) in
-                guard isOn else {
-                    self?.defaults.removePasscode()
-                    self?.toggleOptions()
-                    return
-                }
-                self?.presentPasscodeController(state: .set)
-            }
-        case .twoFactor:
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            cell.switchToggle = { [weak self] (isOn) in
-                self?.setTwoFactor(enable: isOn, sender: cell.optionSwitch)
-            }
-        case .receipts:
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            cell.switchToggle = { [weak self] (isOn) in
-                self?.setReadReceipts(enable: isOn, sender: cell.optionSwitch)
-            }
         case .biometric:
             cell.optionTextLabel.text = biometricType == .faceID ? String.localize("UNLOCK_FACE") : String.localize("UNLOCK_TOUCH")
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            cell.switchToggle = { [weak self] (isOn) in
-                guard let weakSelf = self else {
-                    return
-                }
-                switch(weakSelf.biometricType) {
-                case .none:
-                    break
-                case .touchID:
-                    weakSelf.defaults.fingerprintUnlock = isOn
-                case .faceID:
-                    weakSelf.defaults.faceUnlock = isOn
-                }
-                weakSelf.toggleOptions()
-            }
-        case .changePin:
-            cell.selectionStyle = UITableViewCellSelectionStyle.gray
-            cell.didTap = { [weak self] in
-                guard let weakSelf = self else {
-                    return
-                }
-                weakSelf.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                weakSelf.tableView(weakSelf.tableView, didSelectRowAt: indexPath)
-            }
-        case .autoLock:
-            cell.selectionStyle = UITableViewCellSelectionStyle.gray
-            cell.didTap = { [weak self] in
-                guard let weakSelf = self else {
-                    return
-                }
-                weakSelf.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                weakSelf.tableView(weakSelf.tableView, didSelectRowAt: indexPath)
-            }
+        default:
+            break
         }
         return cell
     }
@@ -204,12 +158,35 @@ class SecurityPrivacyViewController: UITableViewController {
             return
         }
         switch(option.label) {
+        case .pincode:
+            let isOn = !(option.isOn ?? false)
+            guard isOn else {
+                self.defaults.removePasscode()
+                self.toggleOptions()
+                return
+            }
+            self.presentPasscodeController(state: .set)
         case .changePin:
             self.presentPasscodeController(state: .change)
         case .autoLock:
             self.openPicker()
-        default:
-            break
+        case .receipts:
+            let isOn = !(option.isOn ?? false)
+            self.setReadReceipts(enable: isOn)
+        case .twoFactor:
+            let isOn = !(option.isOn ?? false)
+            self.setTwoFactor(enable: isOn)
+        case .biometric:
+            let isOn = !(option.isOn ?? false)
+            switch(self.biometricType) {
+            case .none:
+                break
+            case .touchID:
+                self.defaults.fingerprintUnlock = isOn
+            case .faceID:
+                self.defaults.faceUnlock = isOn
+            }
+            self.toggleOptions()
         }
         
     }
@@ -244,31 +221,36 @@ class SecurityPrivacyViewController: UITableViewController {
         self.presentPopover(popover: pickerPopover, height: 295)
     }
     
-    func setReadReceipts(enable: Bool, sender: UISwitch?){
+    func setReadReceipts(enable: Bool){
         let initialValue = self.generalData.hasEmailReceipts
         self.generalData.hasEmailReceipts = enable
+        self.generalData.loadingReceipts = true
         self.toggleOptions()
         APIManager.setReadReceipts(enable: enable, account: myAccount) { (responseData) in
-            sender?.isEnabled = true
+            self.generalData.loadingReceipts = false
             guard case .Success = responseData else {
                 self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_RECEIPTS"), style: .alert)
                 self.generalData.hasEmailReceipts = initialValue
                 self.toggleOptions()
                 return
             }
+            self.toggleOptions()
         }
     }
     
-    func setTwoFactor(enable: Bool, sender: UISwitch?){
+    func setTwoFactor(enable: Bool){
         guard !enable || generalData.recoveryEmailStatus == .verified else {
             presentRecoveryPopover()
             return
         }
         let initialValue = self.generalData.isTwoFactor
         self.generalData.isTwoFactor = enable
+        self.generalData.loading2FA = true
         APIManager.setTwoFactor(isOn: enable, account: myAccount) { (responseData) in
+            self.generalData.loading2FA = false
             if case .Conflicts = responseData {
                 self.presentRecoveryPopover()
+                self.toggleOptions()
                 return
             }
             guard case .Success = responseData else {
@@ -280,6 +262,7 @@ class SecurityPrivacyViewController: UITableViewController {
             if (self.generalData.isTwoFactor) {
                 self.presentTwoFactorPopover()
             }
+            self.toggleOptions()
         }
     }
     

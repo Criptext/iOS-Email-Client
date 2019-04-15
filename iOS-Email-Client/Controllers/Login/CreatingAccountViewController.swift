@@ -17,6 +17,7 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
+    var fromSignup = false
     var multipleAccount = false
     var signupData: SignUpData!
     var account: Account?
@@ -179,21 +180,22 @@ class CreatingAccountViewController: UIViewController{
         }
         registerFirebaseToken(jwt: myAccount.jwt)
         animateProgress(100.0, 2.0) {
+            let hasEmails = self.fromSignup ? true : DBManager.hasEmails(account: myAccount)
             if self.multipleAccount {
-                self.goBackToMailbox(account: myAccount)
+                self.goBackToMailbox(account: myAccount, showRestore: !hasEmails)
             } else {
-                self.goToMailbox(myAccount.username)
+                self.goToMailbox(myAccount.username, showRestore: !hasEmails)
             }
         }
     }
     
-    func goBackToMailbox(account: Account) {
+    func goBackToMailbox(account: Account, showRestore: Bool) {
         self.account = nil
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             self.dismiss(animated: true)
             return
         }
-        delegate.swapAccount(account: account)
+        delegate.swapAccount(account: account, showRestore: showRestore)
     }
     
     func displayErrorMessage(message: String = String.localize("SIGNUP_FALLBACK_ERROR")){
@@ -209,12 +211,12 @@ class CreatingAccountViewController: UIViewController{
         self.present(alert, animated: true, completion: nil)
     }
     
-    func goToMailbox(_ activeAccount: String){
+    func goToMailbox(_ activeAccount: String, showRestore: Bool){
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
         DBManager.createSystemLabels()
-        let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount)
+        let mailboxVC = delegate.initMailboxRootVC(nil, activeAccount, showRestore: showRestore)
         var options = UIWindow.TransitionOptions()
         options.direction = .toTop
         options.duration = 0.4

@@ -83,6 +83,11 @@ class DBManager: SharedDB {
         return realm.objects(Account.self).filter("isLoggedIn == false")
     }
     
+    class func getLoggedAccounts() -> Results<Account> {
+        let realm = try! Realm()
+        return realm.objects(Account.self).filter("isLoggedIn == true")
+    }
+    
     class func delete(account: Account){
         let realm = try! Realm()
         
