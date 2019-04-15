@@ -55,7 +55,7 @@ class Thread {
             }
         }
         self.contactsString = Thread.getContactsString(participants: participants, replaceWithMe: myEmail)
-        if let contact = participants.first {
+        if let contact = threadEmails.last?.fromContact {
             self.lastContact = (contact.email, contact.displayName)
         }
     }

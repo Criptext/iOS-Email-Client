@@ -56,7 +56,6 @@ class RestoreViewController: UIViewController {
                 contentView.setMissing()
             }
         } catch {
-            print(error)
             contentView.setError()
             return
         }
@@ -166,13 +165,7 @@ extension RestoreViewController: RestoreDelegate {
             return
         }
         
-        var filepath = myUrl.path
-        if !contentView.passwordTextField.isEmpty,
-            let decryptedPath = AESCipher.streamEncrypt(path: filepath, outputName: StaticFile.decryptedDB.name, bundle: AESCipher.KeyBundle(password: contentView.passwordTextField.text!, salt: nil), keyData: nil, ivData: nil, operation: kCCDecrypt) {
-            filepath = decryptedPath
-        }
-        
-        guard let decompressedPath = try? AESCipher.compressFile(path: filepath, outputName: StaticFile.unzippedDB.name, compress: false) else {
+        guard let decompressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: StaticFile.unzippedDB.name, compress: false) else {
             contentView.setError()
             return
         }

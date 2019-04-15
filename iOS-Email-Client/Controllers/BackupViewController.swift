@@ -25,6 +25,8 @@ class BackupViewController: UIViewController {
     
     struct BackupOption {
         var label: Backup
+        var text: String?
+        var loading: Bool
         var pick: String?
         var isOn: Bool?
         var hasFlow: Bool
@@ -52,7 +54,6 @@ class BackupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if BackupManager.shared.contains(username: myAccount.username) {
-            self.handleProgress()
             processMessage = String.localize("BACKUP_GENERATING")
             uploading = true
         }
@@ -71,6 +72,7 @@ class BackupViewController: UIViewController {
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "headerCell")
         self.fillOptions()
         
+        handleProgress()
         fetchBackupData()
         toggleOptions()
         applyTheme()
@@ -88,9 +90,9 @@ class BackupViewController: UIViewController {
     
     func fillOptions() {
         let enableBackup = myAccount.hasCloudBackup
-        let cloud = BackupOption(label: .cloud, pick: nil, isOn: enableBackup, hasFlow: false, detail: nil, isEnabled: true)
-        let now = BackupOption(label: .now, pick: nil, isOn: nil, hasFlow: false, detail: nil, isEnabled: enableBackup)
-        let auto = BackupOption(label: .auto, pick: BackupFrequency.off.rawValue, isOn: nil, hasFlow: false, detail: String.localize("BACKUP_AUTO_MESSAGE"), isEnabled: enableBackup)
+        let cloud = BackupOption(label: .cloud, text: nil, loading: false, pick: nil, isOn: enableBackup, hasFlow: false, detail: nil, isEnabled: true)
+        let now = BackupOption(label: .now, text: nil, loading: false, pick: nil, isOn: nil, hasFlow: false, detail: nil, isEnabled: enableBackup)
+        let auto = BackupOption(label: .auto, text: nil, loading: false, pick: BackupFrequency.off.rawValue, isOn: nil, hasFlow: false, detail: String.localize("BACKUP_AUTO_MESSAGE"), isEnabled: enableBackup)
         options.append(cloud)
         options.append(now)
         options.append(auto)
@@ -103,15 +105,12 @@ class BackupViewController: UIViewController {
     }
     
     func startBackup() {
-        guard !uploading else {
-            return
-        }
         progress = 0
         uploading = true
         processMessage = String.localize("BACKUP_GENERATING")
-        tableView.reloadData()
         BackupManager.shared.backupNow(account: self.myAccount)
         handleProgress()
+        toggleOptions()
     }
     
     func openPicker(){
@@ -163,7 +162,7 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! PrivacyUIViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! SettingsOptionCell
         let option = options[indexPath.row]
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.fillFields(option: option)
@@ -179,12 +178,17 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return (uploading || lastBackupDate != nil) ? 180 : 120
+        let HEADER_HEIGHT_WITH_BACKUP: CGFloat = 190
+        let HEADER_HEIGHT_WITHOUT_BACKUP: CGFloat = 130
+        return (uploading || lastBackupDate != nil) ? HEADER_HEIGHT_WITH_BACKUP : HEADER_HEIGHT_WITHOUT_BACKUP
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
         let option = options[indexPath.row]
+        guard option.isEnabled else {
+            return
+        }
         switch(option.label) {
         case .cloud:
             self.toggleCloudBackup()
@@ -196,29 +200,13 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func toggleCloudBackup() {
-        guard !myAccount.hasCloudBackup else {
-            DBManager.update(account: myAccount, hasCloudBackup: !myAccount.hasCloudBackup)
-            BackupManager.shared.clearAccount(username: myAccount.username)
-            self.toggleOptions()
-            return
+        DBManager.update(account: myAccount, hasCloudBackup: !myAccount.hasCloudBackup)
+        BackupManager.shared.clearAccount(username: myAccount.username)
+        if myAccount.hasCloudBackup {
+            startBackup()
+        } else {
+            toggleOptions()
         }
-        
-        let setPassPopover = EmailSetPasswordViewController()
-        setPassPopover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: 295)
-        setPassPopover.popoverPresentationController?.sourceView = self.view
-        setPassPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-        setPassPopover.popoverPresentationController?.permittedArrowDirections = []
-        setPassPopover.popoverPresentationController?.backgroundColor = ThemeManager.shared.theme.overallBackground
-        setPassPopover.isBackup = true
-        setPassPopover.onSetPassword = { [weak self] (active, password) in
-            guard let weakSelf = self else {
-                return
-            }
-            DBManager.update(account: weakSelf.myAccount, hasCloudBackup: !weakSelf.myAccount.hasCloudBackup, password: password)
-            weakSelf.toggleOptions()
-        }
-        
-        self.present(setPassPopover, animated: true)
     }
     
     func toggleOptions() {
@@ -228,8 +216,11 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
             switch(option.label) {
             case .cloud:
                 newOption.isOn = enableBackup
+                newOption.isEnabled = !uploading
             case .now:
-                newOption.isEnabled = enableBackup
+                newOption.isEnabled = (enableBackup && !uploading)
+                newOption.text = uploading ? String.localize("BACKING_UP") : nil
+                newOption.loading = uploading
             case .auto:
                 let pick = BackupFrequency.init(rawValue: myAccount.autoBackupFrequency) ?? .off
                 newOption.pick = pick.rawValue
@@ -246,7 +237,7 @@ extension BackupViewController {
         guard let url = containerUrl?.appendingPathComponent("backup.db") else {
             self.showAlert("Cloud Error", message: "Unable to access your Cloud Drive. Check if you have Cloud Drive enabled for Criptext.", style: .alert)
             self.uploading = false
-            tableView.reloadData()
+            toggleOptions()
             return
         }
         query = NSMetadataQuery()
@@ -270,7 +261,7 @@ extension BackupViewController {
                 processMessage = String.localize("BACKUP_SUCCESS")
                 self.progress = 1.0
                 self.fetchBackupData()
-                tableView.reloadData()
+                toggleOptions()
                 query.stop()
                 return
             }
@@ -278,10 +269,14 @@ extension BackupViewController {
                 let progress = mdItem.value(forKey: NSMetadataUbiquitousItemPercentUploadedKey) as? NSNumber else {
                 return
             }
-            uploading = true
             processMessage = String.localize("BACKUP_PROGRESS", arguments: progress.intValue)
             self.progress = progress.floatValue/100
-            tableView.reloadData()
+            if !uploading {
+                uploading = true
+                toggleOptions()
+            } else {
+                tableView.reloadData()
+            }
         }
         self.query.enableUpdates()
     }

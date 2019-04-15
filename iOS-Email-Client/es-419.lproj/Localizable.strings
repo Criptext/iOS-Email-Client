@@ -396,7 +396,7 @@
 
 "ENTER_PASSPHRASE" = "Ingresar Clave";
 "ENCRYPT_BACKUP" = "Encriptar Respaldo";
-"LOSE_PASSPHRASE" = "Si pierdes/olvidas esta clave, no podras restaurar tu buzon usando el archivo de respaldo.";
+"LOSE_PASSPHRASE" = "Si pierdes/olvidas esta clave, no podras restaurar tu buzón usando el archivo de respaldo.";
 "NOTE_BACKUP" = "Advertencia: por tu seguridad, te recomendamos encriptar el respaldo";
 "RESTORE_CANCEL" = "Cancelar Restauración";
 
@@ -405,3 +405,4 @@
 "Monthly" = "Mensualmente";
 "Off" = "Deshabilitado";
 "PASS_OPTIONAL" = "Clave (Opcional)";
+"BACKING_UP" = "Respaldando...";

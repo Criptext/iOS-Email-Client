@@ -66,12 +66,11 @@ class SharedDB {
         }
     }
     
-    class func update(account: Account, hasCloudBackup: Bool, password: String? = nil) {
+    class func update(account: Account, hasCloudBackup: Bool) {
         let realm = try! Realm()
         
         try! realm.write {
             account.hasCloudBackup = hasCloudBackup
-            account.backupPassword = password
         }
     }
     

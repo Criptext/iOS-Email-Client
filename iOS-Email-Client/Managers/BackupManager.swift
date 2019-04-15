@@ -61,7 +61,6 @@ final class BackupManager {
     
     func createWorker(account: Account, lastBackup: Date, backupNow: Bool = false) {
         let username = account.username
-        let password = account.backupPassword
         let email = account.email
         guard let executionTime = self.timeForExcecution(autoBackUp: account.autoBackupFrequency, lastBackup: lastBackup, force: backupNow) else {
             return
@@ -72,7 +71,7 @@ final class BackupManager {
             let createDBTask = CreateCustomJSONFileAsyncTask(username: username, kind: .backup)
             createDBTask.start { (_, url) in
                 self.queue.async {
-                    self.handleCustomFile(url: url, email: email, password: password, username: username)
+                    self.handleCustomFile(url: url, email: email, username: username)
                 }
             }
         }
@@ -80,7 +79,7 @@ final class BackupManager {
         workers[username] = BackupWorker(worker: workItem, frequency: executionTime.1)
     }
     
-    func handleCustomFile(url: URL?, email: String, password: String?, username: String) {
+    func handleCustomFile(url: URL?, email: String, username: String) {
         guard let dbUrl = url,
             let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.backupZip.name, compress: true),
             let container = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(email) else {
@@ -90,17 +89,11 @@ final class BackupManager {
                 return
         }
         
-        var filePath = compressedPath
-        if let pass = password,
-            let encryptPath = AESCipher.streamEncrypt(path: compressedPath, outputName: StaticFile.backupRSA.name, bundle: AESCipher.KeyBundle(password: pass, salt: AESCipher.generateRandomBytes(length: 8)), ivData: AESCipher.generateRandomBytes(length: 16), operation: kCCEncrypt) {
-            filePath = encryptPath
-        }
-        
         self.checkAndMoveExistingBackup(username: username)
         let cloudUrl = container.appendingPathComponent("backup.db")
         try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true, attributes: nil)
         try? FileManager.default.removeItem(at: cloudUrl)
-        try? FileManager.default.copyItem(at: URL(fileURLWithPath: filePath), to: cloudUrl)
+        try? FileManager.default.copyItem(at: URL(fileURLWithPath: compressedPath), to: cloudUrl)
         DBManager.update(username: username, lastBackup: Date())
         self.workers[username] = nil
         self.runningBackups.remove(username)

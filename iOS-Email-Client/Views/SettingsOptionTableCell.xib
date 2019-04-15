@@ -16,7 +16,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="90" id="O8R-yn-LXG" customClass="PrivacyUIViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="90" id="O8R-yn-LXG" customClass="SettingsOptionCell" customModule="iOS_Email_Client" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O8R-yn-LXG" id="sdn-BQ-U3T">
@@ -61,13 +61,22 @@
                                         <color key="textColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="zNu-UH-KVk">
+                                        <rect key="frame" x="330" y="15" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="BK7-g2-kf5"/>
+                                            <constraint firstAttribute="width" constant="20" id="bZv-TQ-qlH"/>
+                                        </constraints>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="zNu-UH-KVk" firstAttribute="centerY" secondItem="vdk-EA-PAY" secondAttribute="centerY" id="0ah-Xc-Jjx"/>
                                     <constraint firstItem="Vab-eB-vLw" firstAttribute="leading" secondItem="Ay6-KG-Qvq" secondAttribute="leading" constant="25" id="Cpb-P1-XpR"/>
                                     <constraint firstItem="vdk-EA-PAY" firstAttribute="centerY" secondItem="Ay6-KG-Qvq" secondAttribute="centerY" id="JMS-78-OtG"/>
                                     <constraint firstAttribute="height" constant="50" id="O5h-oI-hqB"/>
                                     <constraint firstItem="nXx-Fh-Krm" firstAttribute="centerY" secondItem="Vab-eB-vLw" secondAttribute="centerY" constant="-3" id="YtL-QO-BfD"/>
+                                    <constraint firstAttribute="trailing" secondItem="zNu-UH-KVk" secondAttribute="trailing" constant="25" id="ZMj-Ki-3o6"/>
                                     <constraint firstItem="7tO-8F-OQZ" firstAttribute="centerY" secondItem="Vab-eB-vLw" secondAttribute="centerY" id="e92-2h-XTo"/>
                                     <constraint firstItem="Vab-eB-vLw" firstAttribute="centerY" secondItem="Ay6-KG-Qvq" secondAttribute="centerY" id="gKO-0B-70M"/>
                                     <constraint firstAttribute="trailing" secondItem="vdk-EA-PAY" secondAttribute="trailing" constant="25" id="hmk-6J-Hg3"/>
@@ -106,6 +115,7 @@
             <connections>
                 <outlet property="detailContainerView" destination="kU7-F9-IBs" id="Pkv-nu-hnD"/>
                 <outlet property="detailLabel" destination="2D2-0R-BPH" id="Mmo-aX-zv3"/>
+                <outlet property="optionLoaderView" destination="zNu-UH-KVk" id="MNw-dW-u5r"/>
                 <outlet property="optionNextImage" destination="7tO-8F-OQZ" id="Ege-6S-zWM"/>
                 <outlet property="optionPickLabel" destination="vdk-EA-PAY" id="UEO-mV-XmB"/>
                 <outlet property="optionSwitch" destination="nXx-Fh-Krm" id="PfG-zD-rTX"/>

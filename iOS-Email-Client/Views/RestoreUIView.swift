@@ -23,7 +23,7 @@ class RestoreUIView: UIView {
         case error
         case missing
     }
-    @IBOutlet weak var passwordTextField: TextField!
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var restoreButton: UIButton!
@@ -32,7 +32,6 @@ class RestoreUIView: UIView {
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var percentageContainerView: TipUIView!
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
-    @IBOutlet weak var passwordHeightConstraint: NSLayoutConstraint!
     weak var delegate: RestoreDelegate?
     var state = State.searching
     
@@ -69,9 +68,6 @@ class RestoreUIView: UIView {
         progressBar.isHidden = true
         cancelButton.isHidden = false
         percentageContainerView.isHidden = true
-        
-        passwordHeightConstraint.constant = 0
-        passwordTextField.isHidden = true
     }
     
     func setFound(email: String, lastDate: Date, size: Int) {
@@ -96,8 +92,6 @@ class RestoreUIView: UIView {
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
         
-        passwordHeightConstraint.constant = 30
-        passwordTextField.isHidden = false
     }
     
     func setMissing() {
@@ -115,8 +109,6 @@ class RestoreUIView: UIView {
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
-        passwordHeightConstraint.constant = 0
-        passwordTextField.isHidden = true
     }
     
     func setError() {
@@ -138,8 +130,6 @@ class RestoreUIView: UIView {
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
-        passwordHeightConstraint.constant = 0
-        passwordTextField.isHidden = true
     }
     
     func setRestoring() {
@@ -154,8 +144,6 @@ class RestoreUIView: UIView {
         
         progressBar.isHidden = false
         percentageContainerView.isHidden = false
-        passwordHeightConstraint.constant = 0
-        passwordTextField.isHidden = true
     }
     
     func animateProgress(_ value: Double, _ duration: Double, completion: @escaping () -> Void){

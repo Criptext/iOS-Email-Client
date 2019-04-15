@@ -35,8 +35,8 @@ class BackupHeaderView: UITableViewHeaderFooterView {
         progressLabel.textColor = theme.menuText
         progressView.tintColor = theme.criptextBlue
         
-        detailContainerView.backgroundColor = theme.cellHighlight
-        detailLabel.textColor = theme.secondText        
+        detailContainerView.backgroundColor = theme.settingsDetail
+        detailLabel.textColor = theme.mainText
     }
     
     func setContent(email: String, isUploading: Bool, lastBackupDate: Date?, lastBackupSize: Int?) {

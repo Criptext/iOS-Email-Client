@@ -134,7 +134,7 @@ class SecurityPrivacyViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "privacycell") as! PrivacyUIViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "privacycell") as! SettingsOptionCell
         let option = options[indexPath.row]
         cell.fillFields(option: option)
         cell.selectionStyle = UITableViewCellSelectionStyle.none

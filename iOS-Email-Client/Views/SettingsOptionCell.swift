@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PrivacyUIViewCell: UITableViewCell {
+class SettingsOptionCell: UITableViewCell {
     var switchToggle: ((Bool) -> Void)?
     @IBOutlet weak var detailContainerView: UIView!
     @IBOutlet weak var detailLabel: UILabel!
@@ -16,6 +16,7 @@ class PrivacyUIViewCell: UITableViewCell {
     @IBOutlet weak var optionNextImage: UIImageView!
     @IBOutlet weak var optionTextLabel: UILabel!
     @IBOutlet weak var optionPickLabel: UILabel!
+    @IBOutlet weak var optionLoaderView: UIActivityIndicatorView!
     var theme: Theme {
         return ThemeManager.shared.theme
     }
@@ -29,8 +30,8 @@ class PrivacyUIViewCell: UITableViewCell {
     
     func applyTheme() {
         backgroundColor = .clear
-        detailContainerView.backgroundColor = theme.cellHighlight
-        detailLabel.textColor = theme.secondText
+        detailContainerView.backgroundColor = theme.settingsDetail
+        detailLabel.textColor = theme.mainText
     }
     
     func fillFields(option: SecurityPrivacyViewController.PrivacyOption) {
@@ -42,6 +43,7 @@ class PrivacyUIViewCell: UITableViewCell {
         optionTextLabel.text = String.localize(option.label.description)
         optionPickLabel.isHidden = option.pick == nil
         optionPickLabel.text = String.localize(option.pick ?? "")
+        optionLoaderView.isHidden = true
         if option.isEnabled {
             optionTextLabel.textColor = theme.mainText
             optionPickLabel.textColor = theme.underSelector
@@ -59,9 +61,17 @@ class PrivacyUIViewCell: UITableViewCell {
         optionNextImage.isHidden = !option.hasFlow
         optionSwitch.isHidden = option.isOn == nil
         optionSwitch.isOn = option.isOn ?? false
-        optionTextLabel.text = String.localize(option.label.description)
+        optionTextLabel.text = option.text ?? String.localize(option.label.description)
         optionPickLabel.isHidden = option.pick == nil
         optionPickLabel.text = String.localize(option.pick ?? "")
+        
+        optionLoaderView.isHidden = !option.loading
+        if option.loading {
+            optionLoaderView.startAnimating()
+        } else {
+            optionLoaderView.stopAnimating()
+        }
+        
         if option.isEnabled {
             optionTextLabel.textColor = theme.mainText
             optionPickLabel.textColor = theme.underSelector
