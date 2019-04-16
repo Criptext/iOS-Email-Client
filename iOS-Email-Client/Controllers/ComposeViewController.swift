@@ -430,7 +430,7 @@ class ComposeViewController: UIViewController {
             newContact.email = email
             newContact.score = 1
             newContact.displayName = token.displayText.contains("@") ? String(token.displayText.split(separator: "@")[0]) : token.displayText
-            DBManager.store([newContact], account: activeAccount);
+            DBManager.store([newContact], account: activeAccount)
             emailContact.contact = newContact
         }
         emailContacts.append(emailContact)
