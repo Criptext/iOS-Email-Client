@@ -24,7 +24,7 @@ class AccountCollectionCell: UICollectionViewCell {
             badgeLabel.isHidden = true
         } else {
             badgeLabel.isHidden = false
-            badgeLabel.text = counter.description
+            badgeLabel.text = counter > 100 ? "99+" : counter.description
         }
         backgroundColor = .clear
     }

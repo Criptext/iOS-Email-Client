@@ -727,7 +727,8 @@ extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         guard let accountUser = userInfo["account"] as? String else {
-                return
+            completionHandler(.noData)
+            return
         }
         RequestManager.shared.accountCompletions[accountUser] = { success in
             if success {

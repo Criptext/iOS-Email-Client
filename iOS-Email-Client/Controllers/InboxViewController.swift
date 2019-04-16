@@ -244,7 +244,7 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         viewSetupNews()
-        mailboxData.showRestore = true
+        
         if mailboxData.showRestore {
             restoreMailbox()
         } else {

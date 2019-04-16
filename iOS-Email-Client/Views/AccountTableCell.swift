@@ -32,7 +32,7 @@ class AccountTableCell: UITableViewCell {
         UIUtils.setProfilePictureImage(imageView: self.avatarImage, contact: (account.email, account.name))
         nameLabel.text = account.name
         emailLabel.text = account.email
-        badgeLabel.text = counter == 0 ? "" : counter.description
+        badgeLabel.text = counter > 100 ? "99+" : counter.description
         badgeLabel.isHidden = counter == 0
     }
 }
