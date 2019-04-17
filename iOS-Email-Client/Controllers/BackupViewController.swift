@@ -73,7 +73,6 @@ class BackupViewController: UIViewController {
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "headerCell")
         self.fillOptions()
         
-        handleProgress()
         fetchBackupData()
         toggleOptions()
         applyTheme()
@@ -86,6 +85,7 @@ class BackupViewController: UIViewController {
             let NSlastBackupSize = attrs[.size] as? NSNumber {
             lastBackupDate = NSlastBackupDate as Date?
             lastBackupSize = NSlastBackupSize.intValue
+            handleProgress()
         } else {
             handleMetadataQuery()
         }
@@ -181,8 +181,8 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let HEADER_HEIGHT_WITH_BACKUP: CGFloat = 200
-        let HEADER_HEIGHT_WITHOUT_BACKUP: CGFloat = 140
+        let HEADER_HEIGHT_WITH_BACKUP: CGFloat = 210
+        let HEADER_HEIGHT_WITHOUT_BACKUP: CGFloat = 150
         return (uploading || lastBackupDate != nil) ? HEADER_HEIGHT_WITH_BACKUP : HEADER_HEIGHT_WITHOUT_BACKUP
     }
     
@@ -237,7 +237,6 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension BackupViewController {
     func handleMetadataQuery() {
-        metaQuery?.stop()
         guard let url = containerUrl?.appendingPathComponent("backup.db") else {
             return
         }
@@ -255,12 +254,14 @@ extension BackupViewController {
         guard let item = metaQuery.results.first as? NSMetadataItem,
             let itemSize = item.value(forAttribute: NSMetadataItemFSSizeKey) as? NSNumber,
             let itemDate = (item.value(forAttribute: NSMetadataItemFSCreationDateKey) as? NSDate) as Date? else {
+                handleProgress()
                 self.metaQuery.stop()
                 return
         }
         lastBackupSize = itemSize.intValue
         lastBackupDate = itemDate
         tableView.reloadData()
+        handleProgress()
         self.metaQuery.enableUpdates()
     }
     

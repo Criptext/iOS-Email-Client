@@ -9,11 +9,10 @@
 import Foundation
 
 class CounterLabelUIView: UILabel{
-    let fps = 1.0/30.0
+    let fps = 1.0/15.0
     var currentValue = 0.0
     var targetValue = 0.0
     var ratio = 0.0
-    var intervalTime = 7.0
     var loadingTimer: Timer?
     
     override init(frame: CGRect) {
@@ -42,13 +41,19 @@ class CounterLabelUIView: UILabel{
     }
     
     func setValue(_ value: Double, interval: Double){
-        loadingTimer?.invalidate()
-        loadingTimer = Timer.scheduledTimer(timeInterval: fps, target: self, selector: #selector(continueProgress), userInfo: nil, repeats: true)
+        if loadingTimer == nil {
+            loadingTimer = Timer.scheduledTimer(timeInterval: fps, target: self, selector: #selector(continueProgress), userInfo: nil, repeats: true)
+        }
         ratio = Double(value - currentValue) * fps / interval
         targetValue = value
     }
     
     @objc func continueProgress(){
-        setNeedsDisplay()
+        if targetValue != currentValue {
+            setNeedsDisplay()
+        } else {
+            loadingTimer?.invalidate()
+            loadingTimer = nil
+        }
     }
 }

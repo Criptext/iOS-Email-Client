@@ -20,20 +20,20 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="179" id="MEf-1G-dmA" customClass="BackupHeaderView" customModule="iOS_Email_Client" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="210"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MEf-1G-dmA" id="jeR-ym-as3">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="178.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="209.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XoY-qd-THM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="siF-Au-Lsl">
-                                <rect key="frame" x="0.0" y="93.5" width="375" height="85"/>
+                                <rect key="frame" x="0.0" y="109.5" width="375" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZgP-o8-AeA">
-                                        <rect key="frame" x="25" y="0.0" width="325" height="85"/>
+                                        <rect key="frame" x="25" y="0.0" width="325" height="100"/>
                                         <string key="text">Backup your emails and attachments. So you can restore them when you reinstall Criptext. All your content will be stored encrypted, for maximum security.</string>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="13"/>
                                         <nil key="textColor"/>
@@ -45,7 +45,7 @@
                                     <constraint firstItem="ZgP-o8-AeA" firstAttribute="leading" secondItem="siF-Au-Lsl" secondAttribute="leading" constant="25" id="D4B-3F-7m4"/>
                                     <constraint firstAttribute="bottom" secondItem="ZgP-o8-AeA" secondAttribute="bottom" id="EAO-i8-keR"/>
                                     <constraint firstAttribute="trailing" secondItem="ZgP-o8-AeA" secondAttribute="trailing" constant="25" id="ahv-dC-It0"/>
-                                    <constraint firstAttribute="height" constant="85" id="iMz-6O-bs2"/>
+                                    <constraint firstAttribute="height" constant="100" id="iMz-6O-bs2"/>
                                     <constraint firstItem="ZgP-o8-AeA" firstAttribute="top" secondItem="siF-Au-Lsl" secondAttribute="top" id="ivO-fR-buf"/>
                                 </constraints>
                             </view>
@@ -68,7 +68,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H2F-QK-JHg">
-                                <rect key="frame" x="0.0" y="60" width="375" height="33.5"/>
+                                <rect key="frame" x="0.0" y="60" width="375" height="49.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4Z-7d-XVA">
                                         <rect key="frame" x="25" y="12" width="185" height="22"/>

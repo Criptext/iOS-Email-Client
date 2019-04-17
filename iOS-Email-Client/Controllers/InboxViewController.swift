@@ -68,6 +68,10 @@ class InboxViewController: UIViewController {
     var controllerMessage: ControllerMessage?
     var selectLabel = String.localize("SHOW_ALL")
 
+    var containerUrl: URL? {
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -229,6 +233,7 @@ class InboxViewController: UIViewController {
         envelopeSubtitleView.textColor = theme.secondText
         buttonCompose.backgroundColor = theme.criptextBlue
         initFloatingButton(color: theme.criptextBlue)
+        refreshControl.tintColor = theme.name == "Dark" ? .white : .gray
         view.backgroundColor = theme.background
         generalOptionsContainerView.applyTheme()
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
@@ -246,7 +251,7 @@ class InboxViewController: UIViewController {
         viewSetupNews()
         
         if mailboxData.showRestore {
-            restoreMailbox()
+            fetchBackupData()
         } else {
             presentWelcomeTour()
         }
@@ -296,14 +301,44 @@ class InboxViewController: UIViewController {
         }
     }
     
-    func restoreMailbox() {
+    func restoreMailbox(backup: RestoreUIPopover.BackupData?) {
         mailboxData.showRestore = false
         
         let restorePopover = RestoreUIPopover()
+        restorePopover.backupData = backup
+        restorePopover.myAccount = self.myAccount
         restorePopover.onRestore = { [weak self] in
             self?.goToRestore()
         }
-        self.presentPopover(popover: restorePopover, height: 400)
+        self.presentPopover(popover: restorePopover, height: 370)
+    }
+    
+    func fetchBackupData() {
+        
+        guard let url = containerUrl?.appendingPathComponent("backup.db") else {
+            restoreMailbox(backup: nil)
+            return
+        }
+        
+        var keys = Set<URLResourceKey>()
+        keys.insert(.ubiquitousItemIsUploadedKey)
+        
+        do {
+            let resourceValues = try url.resourceValues(forKeys: keys)
+            let hasBackup = (resourceValues.allValues[.ubiquitousItemIsUploadedKey] as? Bool) ?? false
+            if hasBackup {
+                let NSlastBackupDate = resourceValues.allValues[.volumeCreationDateKey] as? NSDate
+                let NSlastBackupSize = resourceValues.allValues[.fileSizeKey] as? NSNumber
+                let lastBackupDate = NSlastBackupDate as Date? ?? Date()
+                let lastBackupSize = NSlastBackupSize?.intValue ?? 0
+                
+                restoreMailbox(backup: RestoreUIPopover.BackupData(url: url, size: lastBackupSize, date: lastBackupDate))
+            } else {
+                presentWelcomeTour()
+            }
+        } catch {
+            presentWelcomeTour()
+        }
     }
     
     func goToRestore() {
