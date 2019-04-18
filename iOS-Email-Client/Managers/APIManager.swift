@@ -89,29 +89,24 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func postKeys(_ keys: [[String: Any]], account: Account, completion: @escaping ((ResponseData) -> Void)) {
+    class func postKeys(_ keys: [[String: Any]], token: String, completion: @escaping ((ResponseData) -> Void)) {
         let url = "\(self.baseUrl)/keybundle/prekeys"
         let headers = [
-            "Authorization": "Bearer \(account.jwt)",
+            "Authorization": "Bearer \(token)",
             versionHeader: apiVersion,
             language: Env.language
         ]
         let params = [
             "preKeys": keys
             ] as [String: Any]
-        let accountRef = SharedDB.getReference(account)
         Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
             let responseData = handleResponse(response, satisfy: .success)
-            self.authorizationRequest(responseData: responseData, account: account) { (refreshResponseData) in
-                guard let refdAccount = SharedDB.getObject(accountRef) as? Account else {
-                    completion(ResponseData.Error(CriptextError(code: .unreferencedAccount)))
-                    return
-                }
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
                 if let refreshData = refreshResponseData {
                     completion(refreshData)
                     return
                 }
-                self.postKeys(keys, account: refdAccount, completion: completion)
+                self.postKeys(keys, token: newToken, completion: completion)
             }
         }
     }

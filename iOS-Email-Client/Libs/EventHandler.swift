@@ -171,7 +171,7 @@ class EventHandler {
             return
         }
         
-        APIManager.postKeys(keys, account: myAccount) { (responseData) in
+        APIManager.postKeys(keys, token: myAccount.jwt) { (responseData) in
             guard case .Success = responseData else {
                 finishCallback(false, .Empty)
                 return
