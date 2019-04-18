@@ -38,7 +38,9 @@ class NotificationService: UNNotificationServiceExtension {
             let messageTypeString = userInfo["previewMessageType"] as? String,
             let messageType = Int(messageTypeString),
             let preview = userInfo["preview"] as? String else {
-            contentHandler(request.content)
+                
+            self.bestAttemptContent?.badge = NSNumber(value: SharedDB.getUnreadCounters() + 1)
+            contentHandler(self.bestAttemptContent ?? request.content)
             return
         }
         
@@ -69,6 +71,7 @@ class NotificationService: UNNotificationServiceExtension {
             bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
             bestAttemptContent.title = "\(activeAccount)\(Env.domain)"
             bestAttemptContent.body = String.localize("You may have new emails")
+            bestAttemptContent.badge = NSNumber(value: SharedDB.getUnreadCounters() + 1)
             contentHandler(bestAttemptContent)
         }
     }

@@ -372,7 +372,7 @@
 "BACKUP_SIZE" = "Tamaño: ";
 
 "BACKUP_GENERATING" = "Generando archivo de respaldo...";
-"BACKUP_AUTO_MESSAGE" = "Nota: El respaldo automático solo funciona con iCloud. Para evitar el uso de tus datos moviles, asegurate de estar conectado a internet o deshabilitar iCloud Drive desde Configuración > Datos Celulares > iCloud Drive.";
+"BACKUP_AUTO_MESSAGE" = "Nota: Para evitar el uso excesivo de datos móviles, asegúrate de estar conectado a internet o deshabilitar iCloud Drive: Configuración> iCloud> iCloud Drive> Deshabilitado";
 "BACKUP_PROGRESS" = "Subiendo Respaldo... (%i %%)";
 "BACKUP_SUCCESS" = "Buzon respaldado exitosamente!";
 
@@ -406,3 +406,6 @@
 "Off" = "Deshabilitado";
 "PASS_OPTIONAL" = "Clave (Opcional)";
 "BACKING_UP" = "Respaldando...";
+
+"RESTORE_ICLOUD" = "Restaurar desde iCloud";
+"SKIP" = "Omitir";

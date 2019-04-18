@@ -372,7 +372,7 @@
 "BACKUP_SIZE" = "Size: ";
 
 "BACKUP_GENERATING" = "Generating Backup File...";
-"BACKUP_AUTO_MESSAGE" = "Note: Auto Backup works only with cloud backup. To avoid using your celular data, make sure you are connected to Wi-Fi or have iCloud drive disabled for celular data in Configuration > Celular Data > iCloud Drive";
+"BACKUP_AUTO_MESSAGE" = "Note: To avoid excessive data charges, connect your phone to Wi-Fi or disable cellular data for iCloud: iPhone Settings> iCloud> iCloudDrive> Use Cellular Data> Off ";
 "BACKUP_PROGRESS" = "Uploading Backup... (%i %%)";
 "BACKUP_SUCCESS" = "Mailbox Backed Successfully!";
 
@@ -406,3 +406,6 @@
 "Off" = "Off";
 "PASS_OPTIONAL" = "Passphrase (Optional)";
 "BACKING_UP" = "Backing up...";
+
+"RESTORE_ICLOUD" = "Restore from Cloud";
+"SKIP" = "Skip";

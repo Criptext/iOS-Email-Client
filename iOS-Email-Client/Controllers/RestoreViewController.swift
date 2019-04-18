@@ -14,7 +14,6 @@ class RestoreViewController: UIViewController {
     }
     var myAccount: Account!
     var query: NSMetadataQuery!
-    var metaQuery: NSMetadataQuery!
     var containerUrl: URL? {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
     }
@@ -25,71 +24,12 @@ class RestoreViewController: UIViewController {
         contentView.delegate = self
         
         contentView.applyTheme()
-        contentView.setSearching()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.fetchBackupData()
-        }
-    }
-    
-    func fetchBackupData() {
-        
-        guard let url = containerUrl?.appendingPathComponent("backup.db") else {
-            contentView.setError()
-            return
-        }
-        
-        var keys = Set<URLResourceKey>()
-        keys.insert(.ubiquitousItemIsUploadedKey)
-        
-        do {
-            let resourceValues = try url.resourceValues(forKeys: keys)
-            let hasBackup = (resourceValues.allValues[.ubiquitousItemIsUploadedKey] as? Bool) ?? false
-            if hasBackup {
-                let NSlastBackupDate = resourceValues.allValues[.volumeCreationDateKey] as? NSDate
-                let NSlastBackupSize = resourceValues.allValues[.fileSizeKey] as? NSNumber
-                let lastBackupDate = NSlastBackupDate as Date? ?? Date()
-                let lastBackupSize = NSlastBackupSize?.intValue ?? 0
-                
-                contentView.setFound(email: myAccount.email, lastDate: lastBackupDate, size: lastBackupSize)
-                handleMetadataQuery()
-            } else {
-                contentView.setMissing()
-            }
-        } catch {
-            contentView.setError()
-            return
-        }
-        
+        contentView.setRestoring()
+        restore()
     }
 }
 
 extension RestoreViewController: RestoreDelegate {
-    
-    func handleMetadataQuery() {
-        guard let url = containerUrl?.appendingPathComponent("backup.db") else {
-            return
-        }
-        metaQuery = NSMetadataQuery()
-        metaQuery.searchScopes = [NSMetadataQueryUbiquitousDataScope]
-        metaQuery.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didFinishGathering), name: NSNotification.Name.NSMetadataQueryDidFinishGathering, object: nil)
-        metaQuery.enableUpdates()
-        metaQuery.start()
-    }
-    
-    @objc func didFinishGathering(not: NSNotification) {
-        self.metaQuery.disableUpdates()
-        guard contentView.state == .found,
-            let item = metaQuery.results.first as? NSMetadataItem,
-            let itemSize = item.value(forAttribute: NSMetadataItemFSSizeKey) as? NSNumber,
-            let itemDate = (item.value(forAttribute: NSMetadataItemFSCreationDateKey) as? NSDate) as Date? else {
-            self.metaQuery.stop()
-            return
-        }
-        self.contentView.setFound(email: myAccount.email, lastDate: itemDate, size: itemSize.intValue)
-        self.metaQuery.enableUpdates()
-    }
     
     func handleDownload() {
         guard let url = containerUrl?.appendingPathComponent("backup.db") else {
@@ -128,10 +68,8 @@ extension RestoreViewController: RestoreDelegate {
     }
     
     func retryRestore() {
-        contentView.setSearching()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.fetchBackupData()
-        }
+        contentView.setRestoring()
+        self.restore()
     }
     
     func restore() {

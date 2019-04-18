@@ -29,7 +29,7 @@ class GetBadgeCounterAsyncTask {
             let mailboxCounter = label == .draft
                 ? DBManager.getThreads(from: self.label, since: Date(), limit: 100, account: myAccount).count
                 : DBManager.getUnreadMailsCounter(from: self.label, account: myAccount)
-            let counter = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
+            let counter = mailboxCounter > 0 ? "(\(mailboxCounter > 100 ? "99+" : mailboxCounter.description))" : ""
             DispatchQueue.main.async {
                 completionHandler(self.label, counter)
             }

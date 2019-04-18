@@ -15,7 +15,6 @@ class TableEndViewCell: UITableViewCell{
     override func awakeFromNib() {
         super.awakeFromNib()
         loader.color = .black
-        loader.activityIndicatorViewStyle = .gray
         isUserInteractionEnabled = false
         backgroundColor = .clear
     }
@@ -31,5 +30,11 @@ class TableEndViewCell: UITableViewCell{
         messageLabel.text = message
         loader.stopAnimating()
         loader.isHidden = true
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        loader.activityIndicatorViewStyle = ThemeManager.shared.theme.name == "Dark" ? .white : .gray
     }
 }

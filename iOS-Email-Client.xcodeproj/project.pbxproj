@@ -267,6 +267,7 @@
 		A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
 		A7385F432230852D005CB38D /* CRBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F422230852D005CB38D /* CRBundle.swift */; };
 		A741B9EE2264E60D001BB19C /* BackupHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A741B9F02264E60D001BB19C /* BackupHeaderView.xib */; };
+		A741B9F62268DD00001BB19C /* DateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A741B9F52268DD00001BB19C /* DateString.swift */; };
 		A742720522550A1F006D10C9 /* BackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742720422550A1F006D10C9 /* BackupViewController.swift */; };
 		A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */; };
 		A74CF31B21B59C9D00559490 /* CriptextDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */; };
@@ -786,6 +787,7 @@
 		A741B9EF2264E60D001BB19C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BackupHeaderView.xib; sourceTree = "<group>"; };
 		A741B9F22264E610001BB19C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BackupHeaderView.strings; sourceTree = "<group>"; };
 		A741B9F42264E612001BB19C /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/BackupHeaderView.strings"; sourceTree = "<group>"; };
+		A741B9F52268DD00001BB19C /* DateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateString.swift; sourceTree = "<group>"; };
 		A742720422550A1F006D10C9 /* BackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupViewController.swift; sourceTree = "<group>"; };
 		A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncViewController.swift; sourceTree = "<group>"; };
 		A74CF31A21B59C9D00559490 /* CriptextDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDefaults.swift; sourceTree = "<group>"; };
@@ -1163,6 +1165,7 @@
 				A72C185221AEEB1F00D899EE /* Time.swift */,
 				7C5FD825205C857C000E5F14 /* Utils.swift */,
 				A718BE6A22272970008CAA72 /* UIUtils.swift */,
+				A741B9F52268DD00001BB19C /* DateString.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -2080,6 +2083,7 @@
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
 				A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */,
+				A741B9F62268DD00001BB19C /* DateString.swift in Sources */,
 				7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */,
 				7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */,
 				A7B5B572223B0CD20083E467 /* AccountCollectionCell.swift in Sources */,

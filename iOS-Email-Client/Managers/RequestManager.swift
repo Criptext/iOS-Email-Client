@@ -31,10 +31,10 @@ final class RequestManager: NSObject {
         APIManager.getEvents(account: myAccount) { [weak self] (responseData) in
             guard let myAccount = DBManager.getAccountByUsername(username),
                 let weakSelf = self else {
-                self?.accountCompletions[username] = nil
-                self?.processingAccount = nil
-                self?.getEvents()
-                return
+                    self?.accountCompletions[username] = nil
+                    self?.processingAccount = nil
+                    self?.getEvents()
+                    return
             }
             
             var events = [[String: Any]]()
@@ -77,6 +77,7 @@ final class RequestManager: NSObject {
                 weakSelf.getEvents()
             }
         }
+        
     }
     
     func getAccountEvents(username: String, get: Bool = true) {

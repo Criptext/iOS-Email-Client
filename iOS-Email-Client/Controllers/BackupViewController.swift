@@ -13,6 +13,7 @@ class BackupViewController: UIViewController {
     weak var myAccount: Account!
     var options = [BackupOption]()
     var query: NSMetadataQuery!
+    var metaQuery: NSMetadataQuery!
     var uploading = false
     var lastBackupDate: Date? = nil
     var lastBackupSize: Int? = nil
@@ -72,7 +73,6 @@ class BackupViewController: UIViewController {
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "headerCell")
         self.fillOptions()
         
-        handleProgress()
         fetchBackupData()
         toggleOptions()
         applyTheme()
@@ -80,11 +80,14 @@ class BackupViewController: UIViewController {
     
     func fetchBackupData() {
         if let cloudUrl = containerUrl?.appendingPathComponent("backup.db"),
-            let attrs = try? FileManager.default.attributesOfItem(atPath: cloudUrl.path) {
-            let NSlastBackupDate = attrs[.modificationDate] as? NSDate
-            let NSlastBackupSize = attrs[.size] as? NSNumber
+            let attrs = try? FileManager.default.attributesOfItem(atPath: cloudUrl.path),
+            let NSlastBackupDate = attrs[.modificationDate] as? NSDate,
+            let NSlastBackupSize = attrs[.size] as? NSNumber {
             lastBackupDate = NSlastBackupDate as Date?
-            lastBackupSize = NSlastBackupSize?.intValue
+            lastBackupSize = NSlastBackupSize.intValue
+            handleProgress()
+        } else {
+            handleMetadataQuery()
         }
     }
     
@@ -178,9 +181,9 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let HEADER_HEIGHT_WITH_BACKUP: CGFloat = 190
-        let HEADER_HEIGHT_WITHOUT_BACKUP: CGFloat = 130
-        return (uploading || lastBackupDate != nil) ? HEADER_HEIGHT_WITH_BACKUP : HEADER_HEIGHT_WITHOUT_BACKUP
+        let HEADER_HEIGHT_WITH_BACKUP: CGFloat = 210
+        let HEADER_HEIGHT_WITHOUT_BACKUP: CGFloat = 170
+        return uploading ? HEADER_HEIGHT_WITH_BACKUP : HEADER_HEIGHT_WITHOUT_BACKUP
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -233,6 +236,35 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension BackupViewController {
+    func handleMetadataQuery() {
+        guard let url = containerUrl?.appendingPathComponent("backup.db") else {
+            return
+        }
+        metaQuery = NSMetadataQuery()
+        metaQuery.searchScopes = [NSMetadataQueryUbiquitousDataScope]
+        metaQuery.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didFinishGathering), name: NSNotification.Name.NSMetadataQueryDidFinishGathering, object: nil)
+        metaQuery.enableUpdates()
+        metaQuery.start()
+    }
+    
+    @objc func didFinishGathering(not: NSNotification) {
+        self.metaQuery.disableUpdates()
+        guard let item = metaQuery.results.first as? NSMetadataItem,
+            let itemSize = item.value(forAttribute: NSMetadataItemFSSizeKey) as? NSNumber,
+            let itemDate = (item.value(forAttribute: NSMetadataItemFSCreationDateKey) as? NSDate) as Date? else {
+                handleProgress()
+                self.metaQuery.stop()
+                return
+        }
+        lastBackupSize = itemSize.intValue
+        lastBackupDate = itemDate
+        tableView.reloadData()
+        handleProgress()
+        self.metaQuery.enableUpdates()
+    }
+    
     func handleProgress() {
         guard let url = containerUrl?.appendingPathComponent("backup.db") else {
             self.showAlert("Cloud Error", message: "Unable to access your Cloud Drive. Check if you have Cloud Drive enabled for Criptext.", style: .alert)

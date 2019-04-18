@@ -167,7 +167,10 @@ class SharedDB {
     class func getContacts(_ text:String, account: Account) -> [Contact]{
         let realm = try! Realm()
         
-        let predicate = NSPredicate(format: "(ANY accountContacts.account.compoundKey == '\(account.compoundKey)') AND email contains[c] '\(text)' OR displayName contains[c] '\(text)'")
+        let MAX_ADDRESS_LENGTH = 320
+        let query = text.count > 320 ? String(text.prefix(MAX_ADDRESS_LENGTH)) : text
+        
+        let predicate = NSPredicate(format: "(ANY accountContacts.account.compoundKey == '\(account.compoundKey)') AND email contains[c] '\(query)' OR displayName contains[c] '\(text)'")
         let results = realm.objects(Contact.self).filter(predicate).sorted(byKeyPath: "score", ascending: false)
         
         return Array(results)
@@ -197,7 +200,7 @@ class SharedDB {
     
     class func updateScore(contact: Contact){
         let realm = try! Realm()
-        try! realm.write {
+        try? realm.write {
             contact.score = contact.score + 1
         }
     }

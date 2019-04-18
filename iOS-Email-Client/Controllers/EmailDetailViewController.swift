@@ -136,10 +136,9 @@ class EmailDetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
         self.topToolbar.isHidden = true
         self.coachMarksController.stop(immediately: true)
+        super.viewWillDisappear(animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {

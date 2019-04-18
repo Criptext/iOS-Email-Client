@@ -60,7 +60,7 @@ class MenuItemUIView: UIButton {
             return
         }
         badgeView.isHidden = false
-        badgeLabel.text = count.description
+        badgeLabel.text = count > 100 ? "99+" : count.description
     }
     
     func showAsSelected(_ selected: Bool){

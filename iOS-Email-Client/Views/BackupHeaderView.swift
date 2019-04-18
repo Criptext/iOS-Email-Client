@@ -10,7 +10,6 @@ import Foundation
 
 class BackupHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var backupLabel: UILabel!
     @IBOutlet weak var lastBackupLabel: UILabel!
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var backupContainerView: UIView!
@@ -30,7 +29,6 @@ class BackupHeaderView: UITableViewHeaderFooterView {
         
         backgroundColor = .clear
         emailLabel.textColor = theme.mainText
-        backupLabel.textColor = theme.mainText
         lastBackupLabel.textColor = theme.mainText
         progressLabel.textColor = theme.menuText
         progressView.tintColor = theme.criptextBlue
@@ -43,21 +41,16 @@ class BackupHeaderView: UITableViewHeaderFooterView {
         emailLabel.text = email
         if let backupDate = lastBackupDate,
             let backupSize = lastBackupSize {
+            lastBackupLabel.isHidden = false
             setBackupContent(date: backupDate, size: backupSize)
+        } else {
+            lastBackupLabel.isHidden = true
         }
         
-        backupContainerView.isHidden = !(isUploading || lastBackupDate != nil)
+        backupContainerView.isHidden = !isUploading
         if isUploading {
-            progressView.isHidden = false
-            progressLabel.isHidden = false
-            lastBackupLabel.isHidden = true
-            backupLabel.isHidden = true
             cloudImageView.image = UIImage(named: "cloud-small")
         } else if lastBackupDate != nil {
-            progressView.isHidden = true
-            progressLabel.isHidden = true
-            lastBackupLabel.isHidden = false
-            backupLabel.isHidden = false
             cloudImageView.image = UIImage(named: "cloud-success")
         } else {
             cloudImageView.image = UIImage(named: "cloud-small")
@@ -65,13 +58,9 @@ class BackupHeaderView: UITableViewHeaderFooterView {
     }
     
     func setBackupContent(date: Date, size: Int) {
-        let attrStat = NSMutableAttributedString(string: String.localize("LAST_BACKUP"), attributes: [.font: Font.bold.size(16)!])
-        attrStat.append(NSAttributedString(string: DateUtils.conversationTime(date), attributes: [.font: Font.regular.size(16)!]))
-        
-        let attrStat2 = NSMutableAttributedString(string: String.localize("BACKUP_SIZE"), attributes: [.font: Font.bold.size(16)!])
-        attrStat2.append(NSAttributedString(string: File.prettyPrintSize(size: size), attributes: [.font: Font.regular.size(16)!]))
+        let attrStat = NSMutableAttributedString(string: String.localize("LAST_BACKUP"), attributes: [.font: Font.bold.size(15)!])
+        attrStat.append(NSAttributedString(string: "\(DateString.backup(date: date)) (\(File.prettyPrintSize(size: size)))", attributes: [.font: Font.regular.size(16)!]))
         
         lastBackupLabel.attributedText = attrStat
-        backupLabel.attributedText = attrStat2
     }
 }
