@@ -51,7 +51,7 @@ class EmailDetailViewController: UIViewController {
         self.topToolbar.delegate = self
         self.generalOptionsContainerView.delegate = self
         fileManager.delegate = self
-        fileManager.token = myAccount.jwt
+        fileManager.myAccount = myAccount
         
         displayMarkIcon(asRead: false)
         generalOptionsContainerView.handleCurrentLabel(currentLabel: emailData.selectedLabel)
@@ -814,7 +814,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         emailData.setState(email.key, isUnsending: true)
         emailsTableView.reloadData()
         let recipients = getEmailRecipients(contacts: email.getContacts())
-        APIManager.unsendEmail(key: email.key, recipients: recipients, account: myAccount) { [weak self] (responseData) in
+        APIManager.unsendEmail(key: email.key, recipients: recipients, token: myAccount.jwt) { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -1139,9 +1139,9 @@ extension EmailDetailViewController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         }
     }
 }

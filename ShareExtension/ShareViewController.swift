@@ -45,7 +45,7 @@ class ShareViewController: UIViewController {
         composerUIView.attachmentsTableView.register(nibAttachment, forCellReuseIdentifier: "attachmentCell")
         let nibContact = UINib(nibName: "ContactShareTableViewCell", bundle: nil)
         composerUIView.contactsTableView.register(nibContact, forCellReuseIdentifier: "ContactShareTableViewCell")
-        fileManager.token = myAccount.jwt
+        fileManager.myAccount = myAccount
         fileManager.delegate = self
         fileManager.setEncryption(id: 0, key: AESCipher.generateRandomBytes(), iv: AESCipher.generateRandomBytes())
         self.handleExtensionItems()

@@ -105,7 +105,7 @@ class PasswordUIPopover: BaseUIPopover {
         guard let account = myAccount else {
             return
         }
-        APIManager.unlockDevice(password: password.sha256()!, account: account) { (responseData) in
+        APIManager.unlockDevice(password: password.sha256()!, token: account.jwt) { (responseData) in
             self.showLoader(false)
             if case let .Error(error) = responseData,
                 error.code != .custom {
@@ -155,7 +155,7 @@ class PasswordUIPopover: BaseUIPopover {
             return
         }
         self.showLoader(true)
-        APIManager.logout(account: account) { (responseData) in
+        APIManager.logout(token: account.jwt) { (responseData) in
             self.showLoader(false)
             guard case .Success = responseData else {
                 self.passwordTextField.detail = String.localize("UNABLE_SIGNOUT")

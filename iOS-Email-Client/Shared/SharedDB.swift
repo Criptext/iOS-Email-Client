@@ -27,6 +27,12 @@ class SharedDB {
         return ThreadSafeReference(to: obj)
     }
     
+    class func getAccount(token: String) -> Account? {
+        let realm = try! Realm()
+        
+        return realm.objects(Account.self).filter("jwt == '\(token)'").first
+    }
+    
     class func getFirstAccount() -> Account? {
         let realm = try! Realm()
         
@@ -50,19 +56,21 @@ class SharedDB {
         return Array(realm!.objects(Account.self))
     }
     
-    class func update(_ account: Account, jwt: String) {
+    class func update(oldJwt: String, jwt: String) {
         let realm = try! Realm()
         
         try! realm.write {
-            account.jwt = jwt
+            let account = realm.objects(Account.self).filter("jwt == '\(oldJwt)'").first
+            account?.jwt = jwt
         }
     }
     
-    class func update(_ account: Account, refreshToken: String) {
+    class func update(jwt: String, refreshToken: String) {
         let realm = try! Realm()
         
         try! realm.write {
-            account.refreshToken = refreshToken
+            let account = realm.objects(Account.self).filter("jwt == '\(jwt)'").first
+            account?.refreshToken = refreshToken
         }
     }
     

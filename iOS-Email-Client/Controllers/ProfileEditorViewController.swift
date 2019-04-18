@@ -170,7 +170,7 @@ class ProfileEditorViewController: UIViewController {
     
     @IBAction func disPressedRemove(_ sender: Any) {
         self.showAttachmentDrawer(false)
-        APIManager.deleteProfilePicture(account: myAccount) { [weak self] (responseData) in
+        APIManager.deleteProfilePicture(token: myAccount.jwt) { [weak self] (responseData) in
             guard case .Success = responseData else {
                 self!.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("profile_picture_delete_failed"), style: .alert)
                 return
@@ -197,7 +197,7 @@ class ProfileEditorViewController: UIViewController {
             "mimeType": File.mimeTypeForPath(path: imageName),
             "size": data!.count
             ] as [String: Any]
-        APIManager.uploadProfilePicture(inputStream: inputStream, params: params, account: myAccount, progressCallback: { (progress) in
+        APIManager.uploadProfilePicture(inputStream: inputStream, params: params, token: myAccount.jwt, progressCallback: { (progress) in
         }) { (responseData) in
             guard case .Success = responseData else {
                 self.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_update_failed"), style: .alert)
@@ -211,7 +211,7 @@ class ProfileEditorViewController: UIViewController {
     
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
-        APIManager.updateName(name: name, account: myAccount) { (responseData) in
+        APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout(account: self.myAccount)
                 return
@@ -277,9 +277,9 @@ extension ProfileEditorViewController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         }
     }
 }
@@ -446,7 +446,7 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func deleteAccount(password: String){
-        APIManager.deleteAccount(password: password.sha256()!, account: self.myAccount, completion: { [weak self] (responseData) in
+        APIManager.deleteAccount(password: password.sha256()!, token: myAccount.jwt, completion: { [weak self] (responseData) in
             guard let weakSelf = self else {
                 return
             }
@@ -485,7 +485,7 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func confirmLogout(){
-        APIManager.logout(account: myAccount) { (responseData) in
+        APIManager.logout(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout(account: self.myAccount)
                 return

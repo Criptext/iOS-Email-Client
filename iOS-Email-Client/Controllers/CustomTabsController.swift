@@ -39,7 +39,7 @@ class CustomTabsController: TabsController {
     
     func loadData(){
         let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
-        APIManager.getSettings(account: myAccount) { (responseData) in
+        APIManager.getSettings(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout(account: self.myAccount)
                 return
@@ -111,9 +111,9 @@ extension CustomTabsController: LinkDeviceDelegate {
     }
     func onCancelLinkDevice(linkData: LinkData) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, account: myAccount, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
         }
     }
 }
