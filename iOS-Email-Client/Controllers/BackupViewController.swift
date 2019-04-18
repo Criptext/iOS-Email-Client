@@ -182,8 +182,8 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let HEADER_HEIGHT_WITH_BACKUP: CGFloat = 210
-        let HEADER_HEIGHT_WITHOUT_BACKUP: CGFloat = 150
-        return (uploading || lastBackupDate != nil) ? HEADER_HEIGHT_WITH_BACKUP : HEADER_HEIGHT_WITHOUT_BACKUP
+        let HEADER_HEIGHT_WITHOUT_BACKUP: CGFloat = 170
+        return uploading ? HEADER_HEIGHT_WITH_BACKUP : HEADER_HEIGHT_WITHOUT_BACKUP
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

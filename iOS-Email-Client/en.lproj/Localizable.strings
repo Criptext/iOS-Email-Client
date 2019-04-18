@@ -372,7 +372,7 @@
 "BACKUP_SIZE" = "Size: ";
 
 "BACKUP_GENERATING" = "Generating Backup File...";
-"BACKUP_AUTO_MESSAGE" = "Note: To avoid excessive data charges, connect your phone to Wi-Fi or disable cellular data for iCloud: Iphone Settings> iCloud> iCloudDrive> Use Cellular Data> Off ";
+"BACKUP_AUTO_MESSAGE" = "Note: To avoid excessive data charges, connect your phone to Wi-Fi or disable cellular data for iCloud: iPhone Settings> iCloud> iCloudDrive> Use Cellular Data> Off ";
 "BACKUP_PROGRESS" = "Uploading Backup... (%i %%)";
 "BACKUP_SUCCESS" = "Mailbox Backed Successfully!";
 

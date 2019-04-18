@@ -372,7 +372,7 @@
 "BACKUP_SIZE" = "Tamaño: ";
 
 "BACKUP_GENERATING" = "Generando archivo de respaldo...";
-"BACKUP_AUTO_MESSAGE" = "Nota: Para evitar el uso excesivo de datos moviles, asegurate de estar conectado a internet o deshabilitar iCloud Drive: Configuración> iCloud> iCloud Drive> Deshabilitado";
+"BACKUP_AUTO_MESSAGE" = "Nota: Para evitar el uso excesivo de datos móviles, asegúrate de estar conectado a internet o deshabilitar iCloud Drive: Configuración> iCloud> iCloud Drive> Deshabilitado";
 "BACKUP_PROGRESS" = "Subiendo Respaldo... (%i %%)";
 "BACKUP_SUCCESS" = "Buzon respaldado exitosamente!";
 

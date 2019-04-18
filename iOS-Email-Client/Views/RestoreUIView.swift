@@ -74,7 +74,7 @@ class RestoreUIView: UIView {
         state = .found
         
         let attrText = NSMutableAttributedString(string: email, attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.markedText])
-        let attrDate = NSAttributedString(string: "\n\(String.localize("LAST_BACKUP")) \(DateUtils.conversationTime(lastDate) ?? "")", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
+        let attrDate = NSAttributedString(string: "\n\(String.localize("LAST_BACKUP")) \(DateString.backup(date: lastDate))", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
         let attrSize = NSAttributedString(string: "\n\(String.localize("BACKUP_SIZE")) \(File.prettyPrintSize(size: size))", attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
         
         attrText.append(attrDate)
