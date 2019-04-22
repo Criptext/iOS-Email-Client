@@ -251,6 +251,7 @@ class InboxViewController: UIViewController {
         viewSetupNews()
         
         if mailboxData.showRestore {
+            mailboxData.showRestore = false
             fetchBackupData()
         } else {
             presentWelcomeTour()

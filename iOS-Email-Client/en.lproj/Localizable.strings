@@ -210,7 +210,7 @@
 "PASS_MATCH" = "Passwords don't match!";
 "UNABLE_CHANGE_PASS" = "Unable to change password. Please verify that your password is correct!";
 "SAVE" = "Save";
-"DEVICE REJECTED" = "Device was already rejected";
+"DEVICE_REJECTED" = "Device was already rejected";
 "DEVICE_AUTHORIZED" = "Device already authorized";
 "PREPARING_MAIL" = "Preparing Mailbox";
 "UPLOADING_MAIL" = "Uploading Mailbox";
@@ -363,8 +363,8 @@
 "ADD_ACCOUNT" = "Add Account";
 "NOW_LOGGED" = "Now logged in as ";
 
-"BACKUP" = "Cloud Backup";
-"BACKUP_CLOUD" = "Cloud Backup";
+"BACKUP" = "iCloud Backup";
+"BACKUP_CLOUD" = "iCloud Backup";
 "BACKUP_NOW" = "Back Up Now";
 "BACKUP_AUTO" = "Auto Backup";
 
