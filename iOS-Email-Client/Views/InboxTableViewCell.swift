@@ -70,10 +70,7 @@ class InboxTableViewCell: UITableViewCell {
             senderLabel.font = Font.bold.size(15)
         }
         
-        senderLabel.text =  thread.contactsString.isEmpty ? String.localize("EMPTY_CONTACTS") : thread.contactsString
-        if(label == SystemLabel.draft.id){
-            senderLabel.attributedText = NSAttributedString(string: String.localize("SINGLE_DRAFT"), attributes: [NSAttributedStringKey.foregroundColor: UIColor.alert])
-        }
+        senderLabel.attributedText =  thread.buildContactString(theme: theme, fontSize: 15.0)
         subjectLabel.text = thread.subject == "" ? String.localize("NO_SUBJECT") : thread.subject
         dateLabel.text = thread.getFormattedDate()
         previewLabel.text = thread.preview.isEmpty ? String.localize("NO_CONTENT") : thread.preview

@@ -20,10 +20,17 @@ class Thread {
     var status : Email.Status = .none
     var isStarred = false
     var canTriggerEvent = false
-    var contactsString = ""
+    var contactsString: NSAttributedString?
     var isUnsent = false
     var lastEmailKey = 0
     var lastContact = ("", "")
+    var participants = [DisplayContact]()
+    
+    internal struct DisplayContact {
+        var name: String
+        var isDraft: Bool
+        var isUnread: Bool
+    }
     
     func getFormattedDate() -> String {
         return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY"))
@@ -41,20 +48,31 @@ class Thread {
         self.unread = threadEmails.contains(where: {$0.unread})
         self.counter = threadEmails.count
         self.subject = threadEmails.first!.subject
-        var participants = [Contact]()
-        for threadEmail in threadEmails {
+        var emailParticipants = Set<String>()
+        var firstParticipant: DisplayContact?
+        for threadEmail in threadEmails.reversed() {
             let allContacts = getParticipantContacts(threadEmail: threadEmail, label: label)
             for participant in allContacts {
-                guard !participants.contains(where: {$0.email == participant.email}) else {
+                guard !emailParticipants.contains(participant.email) else {
                     continue
                 }
-                participants.append(participant)
+                if firstParticipant == nil {
+                    let firstName = Thread.getContactString(contact: participant, replaceWithMe: myEmail)
+                    firstParticipant = DisplayContact(name: firstName, isDraft: threadEmail.isDraft, isUnread: threadEmail.unread)
+                }
+                let displayName = Thread.getContactString(contact: participant, multiple: threadEmails.count > 1 || allContacts.count > 1, isDraft: threadEmail.isDraft, replaceWithMe: myEmail)
+                emailParticipants.insert(participant.email)
+                self.participants.append(DisplayContact(name: displayName, isDraft: threadEmail.isDraft, isUnread: threadEmail.unread))
             }
             if(!self.hasAttachments && threadEmail.files.count > 0){
                 self.hasAttachments = true
             }
         }
-        self.contactsString = Thread.getContactsString(participants: participants, replaceWithMe: myEmail)
+        if emailParticipants.count < 2,
+            let participant = firstParticipant {
+            self.participants.removeAll()
+            self.participants.append(participant)
+        }
         if let contact = threadEmails.last?.fromContact {
             self.lastContact = (contact.email, contact.displayName)
         }
@@ -83,23 +101,36 @@ class Thread {
         return []
     }
     
-    class func getContactsString(participants: [Contact], replaceWithMe email: String) -> String {
-        var contactsTitle = ""
-        for contact in participants {
-            let contactName = contact.email == email ? String.localize("ME") : contact.displayName
-            guard !contact.displayName.contains("@") else {
-                contactsTitle += "\(contactName.split(separator: "@").first!), "
-                continue
-            }
-            guard participants.count > 1 else {
-                contactsTitle += "\(contactName), "
-                continue
-            }
-            contactsTitle += "\(contactName.split(separator: " ").first ?? Substring(contactName)), "
+    class func getContactString(contact: Contact, multiple: Bool = false, isDraft: Bool = false, replaceWithMe email: String) -> String {
+        guard !isDraft else {
+            return String.localize("SINGLE_DRAFT")
         }
-        guard participants.count > 0 else {
-            return contactsTitle
+        guard contact.email != email else {
+            return String.localize("ME")
         }
-        return String(contactsTitle.prefix(contactsTitle.count - 2))
+        guard multiple else {
+            return contact.displayName
+        }
+        return String(contact.displayName.split(separator: " ").first ?? Substring(contact.displayName))
+    }
+    
+    func buildContactString(theme: Theme, fontSize: CGFloat) -> NSAttributedString {
+        if let myAttrString = self.contactsString {
+            return myAttrString
+        }
+        let attrString = NSMutableAttributedString(string: "")
+        for (index, participant) in self.participants.reversed().enumerated() {
+            let textColor = participant.isDraft ? theme.alert : (participant.isUnread ? theme.markedText : theme.mainText)
+            let textFont = participant.isUnread ? Font.bold.size(fontSize)! : Font.regular.size(fontSize)!
+            let attrs = [.foregroundColor: textColor, .font: textFont] as [NSAttributedStringKey: Any]
+            if index == 0 {
+                attrString.append(NSAttributedString(string: participant.name, attributes: attrs))
+            } else {
+                attrString.append(NSAttributedString(string: ", ", attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(fontSize)!]))
+                attrString.append(NSAttributedString(string: participant.name, attributes: attrs))
+            }
+        }
+        self.contactsString = attrString
+        return attrString
     }
 }
