@@ -18,4 +18,36 @@ class SendEmailData {
             self.session = session
         }
     }
+    
+    var subject: String
+    var threadId: String?
+    var criptextEmails: [[String: Any]]
+    var guestEmails: [String: Any]
+    var files: [[String: Any]]?
+    
+    init(criptextEmails: [[String: Any]] = [[String: Any]](), guestEmails: [String: Any] = [String: Any]()) {
+        subject = ""
+        threadId = nil
+        self.criptextEmails = criptextEmails
+        self.guestEmails = guestEmails
+        files = nil
+    }
+    
+    func buildRequestData() -> [String: Any] {
+        var requestParams = ["subject": subject] as [String : Any]
+        if !criptextEmails.isEmpty {
+            requestParams["criptextEmails"] = criptextEmails
+        }
+        if !guestEmails.isEmpty {
+            requestParams["guestEmail"] = guestEmails
+        }
+        if let myFiles = self.files,
+            !myFiles.isEmpty {
+            requestParams["files"] = files
+        }
+        if let thread = self.threadId {
+            requestParams["threadId"] = thread
+        }
+        return requestParams
+    }
 }
