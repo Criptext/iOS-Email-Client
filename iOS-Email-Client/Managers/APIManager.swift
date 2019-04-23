@@ -625,7 +625,7 @@ class APIManager: SharedAPI {
                     progressDelegate.chunkUpdateProgress(progress.fractionCompleted, for: filetoken, part: part)
                 })
                 request.responseJSON(completionHandler: { (response) in
-                    let responseData = handleResponse(response)
+                    let responseData = handleResponse(response, satisfy: .success)
                     self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
                         if let refreshData = refreshResponseData {
                             completion(refreshData)

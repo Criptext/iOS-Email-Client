@@ -125,8 +125,10 @@ class ComposerUIView: UIView {
         editorView.webView.isOpaque = false
         
         fromField.textColor = theme.mainText
-        fromField.backgroundColor = theme.overallBackground
-        fromButton.imageView?.tintColor = theme.criptextBlue
+        fromField.backgroundColor = theme.background
+        
+        fromButton.imageView?.tintColor = theme.markedText
+        arrowButton.imageView?.tintColor = theme.markedText
         
         navigationBar.isTranslucent = false
     }
@@ -212,6 +214,7 @@ extension ComposerUIView: RichEditorDelegate {
     func richEditorDidLoad(_ editor: RichEditorView) {
         editorView.setEditorFontColor(theme.mainText)
         editorView.setEditorBackgroundColor(theme.background)
+        toField.beginEditing()
     }
     
     func addToContent(text: String) {

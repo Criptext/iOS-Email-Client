@@ -274,7 +274,9 @@ class ComposeViewController: UIViewController {
         
         fromField.textColor = theme.mainText
         fromField.backgroundColor = theme.overallBackground
-        fromButton.imageView?.tintColor = theme.criptextBlue
+        
+        fromButton.imageView?.tintColor = theme.markedText
+        buttonCollapse.imageView?.tintColor = theme.markedText
     }
     
     @IBAction func didPressFrom(_ sender: Any) {
