@@ -15,7 +15,7 @@ import RealmSwift
 
 class SharedAPI {
     static let baseUrl = Env.apiURL
-    static let apiVersion = "7.0.0"
+    static let apiVersion = "9.0.0"
     static let versionHeader = "criptext-api-version"
     static let language = "accept-language"
     
