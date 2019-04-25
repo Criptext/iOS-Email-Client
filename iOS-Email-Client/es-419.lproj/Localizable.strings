@@ -277,6 +277,7 @@
 "Trash" = "Papelera";
 "All Mail" = "Todos";
 "ME" = "Yo";
+"TO_ME" = "Mí";
 "EMPTY_CONTACTS" = "<Lista de contactos vacía>";
 "TO_SENT" = "Para: ";
 "SINGLE_DRAFT" = "Borrador";
