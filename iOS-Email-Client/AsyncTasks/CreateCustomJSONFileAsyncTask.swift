@@ -74,12 +74,14 @@ class CreateCustomJSONFileAsyncTask {
             }
             handleRow($1.toDictionary(id: $0 + 1, emailId: emailId, contactId: contacts[$1.contact.email]!))
         }
+        var fileId = 1
         results.emails.forEach { (email) in
             email.files.enumerated().forEach({ (index, file) in
                 guard let emailId = emails[file.emailId] else {
                     return
                 }
-                handleRow(file.toDictionary(id: index + 1, emailId: emailId))
+                handleRow(file.toDictionary(id: fileId, emailId: emailId))
+                fileId += 1
             })
         }
         

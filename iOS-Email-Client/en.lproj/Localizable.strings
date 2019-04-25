@@ -277,6 +277,7 @@
 "Trash" = "Trash";
 "All Mail" = "All Mail";
 "ME" = "Me";
+"TO_ME" = "Me";
 "EMPTY_CONTACTS" = "<Empty Contact List>";
 "TO_SENT" = "To: ";
 "SINGLE_DRAFT" = "Draft";

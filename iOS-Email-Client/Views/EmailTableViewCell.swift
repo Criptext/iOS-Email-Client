@@ -273,7 +273,7 @@ class EmailTableViewCell: UITableViewCell{
     
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
         guard contact.email != myEmail else {
-            return String.localize("ME")
+            return String.localize("TO_ME")
         }
         guard contactsLength > 1 else {
             return contact.displayName

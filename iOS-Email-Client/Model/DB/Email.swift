@@ -203,15 +203,21 @@ extension Email {
     }
     
     func toDictionaryLabels(emailsMap: [Int: Int]) -> [[String: Any]] {
-        return labels.map { (label) -> [String: Any] in
-            return [
+        var existingLabels = Set<Int>()
+        return labels.reduce([[String: Any]](), { (result, label) -> [[String: Any]] in
+            guard !existingLabels.contains(label.id) else {
+                return result
+            }
+            existingLabels.insert(label.id)
+            let dictionary = [
                 "table": "email_label",
                 "object": [
                     "emailId": emailsMap[self.key],
                     "labelId": label.id,
                 ]
-            ]
-        }
+                ] as [String : Any]
+            return result.appending(dictionary)
+        })
     }
 }
 
