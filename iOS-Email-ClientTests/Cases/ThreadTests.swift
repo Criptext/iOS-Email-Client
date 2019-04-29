@@ -48,7 +48,8 @@ class ThreadTests: XCTestCase {
             XCTFail("no thread")
             return
         }
+        let contactsString = thread.buildContactString(theme: Theme(), fontSize: 15).string
         XCTAssert(thread.counter == 3, "wrong thread")
-        XCTAssert(thread.contactsString == "test, testing, testope", "wrong participants - got \(thread.contactsString)")
+        XCTAssert(contactsString == "test, testing, testope", "wrong participants - got \(contactsString)")
     }
 }

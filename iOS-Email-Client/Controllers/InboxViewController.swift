@@ -824,7 +824,7 @@ extension InboxViewController{
         })
         mailboxData.fetchWorker = workItem
         let queue = DispatchQueue(label: "com.criptext.mail.threads", qos: .userInitiated, attributes: .concurrent)
-        queue.asyncAfter(deadline: .now() + 0.1, execute: mailboxData.fetchWorker!)
+        queue.asyncAfter(deadline: .now(), execute: mailboxData.fetchWorker!)
     }
 }
 
