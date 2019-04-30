@@ -98,7 +98,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-Fm-cgQ">
-                                <rect key="frame" x="202" y="393.5" width="119" height="23.5"/>
+                                <rect key="frame" x="202" y="395.5" width="119" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="119" id="kke-wn-nCO"/>
                                 </constraints>
