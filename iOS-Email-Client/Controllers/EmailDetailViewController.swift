@@ -418,7 +418,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         var ccHeigth: CGFloat = 0.0
         var bccHeigth: CGFloat = 0.0
         var sumHeights: CGFloat = 0
-        let width = self.view.frame.size.width - 90
+        let width = self.view.frame.size.width - 95
         for contact in email.getContacts(type: .to) {
             let height = UIUtils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
             contactsHeight[contact.email] = height
