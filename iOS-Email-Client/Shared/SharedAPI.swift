@@ -128,13 +128,22 @@ class SharedAPI {
         
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
             let refreshResponseData = handleResponse(response)
-            guard case let .SuccessString(newJwt) = refreshResponseData else {
-                completionHandler(refreshResponseData, token)
-                return
+            switch (refreshResponseData) {
+                case .SuccessString(let newJwt):
+                    SharedDB.update(oldJwt: token, jwt: newJwt)
+                    SharedDB.refresh()
+                    completionHandler(nil, newJwt)
+                    break
+                case .SuccessDictionary(let data):
+                    let newJwt = data["token"] as! String
+                    let newRefreshToken = data["refreshToken"] as! String
+                    SharedDB.update(oldJwt: token, jwt: newJwt, refreshToken: newRefreshToken)
+                    SharedDB.refresh()
+                    break
+                default:
+                    completionHandler(refreshResponseData, token)
+                
             }
-            SharedDB.update(oldJwt: token, jwt: newJwt)
-            SharedDB.refresh()
-            completionHandler(nil, newJwt)
         }
     }
     
