@@ -371,6 +371,7 @@
 		A7C3589E21B19AE300386295 /* GenericAlertUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33C2212C745A00045B09 /* GenericAlertUIPopover.swift */; };
 		A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */; };
 		A7C358A021B19CB800386295 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C73203735E000AB96EF /* Constants.swift */; };
+		A7C613D42278FF7A00234C5C /* FindKeybundleSpyApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C613D32278FF7A00234C5C /* FindKeybundleSpyApiManager.swift */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
@@ -824,6 +825,7 @@
 		A7B17A892257C93600927102 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		A7B5B571223B0CD20083E467 /* AccountCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollectionCell.swift; sourceTree = "<group>"; };
 		A7B5B573223B0D650083E467 /* AccountCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCollectionCell.xib; sourceTree = "<group>"; };
+		A7C613D32278FF7A00234C5C /* FindKeybundleSpyApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindKeybundleSpyApiManager.swift; sourceTree = "<group>"; };
 		A7CC38042190D9D900C8355A /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CC38062190D9DA00C8355A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A7CC38082190D9DA00C8355A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1409,6 +1411,7 @@
 				A763E19E222460E700A1CC18 /* TestSignalHandler.swift */,
 				A718BE662226F15B008CAA72 /* DBFactory.swift */,
 				A78D27A02238084200B3ECD6 /* APIManagerSpy.swift */,
+				A7C613D32278FF7A00234C5C /* FindKeybundleSpyApiManager.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -2147,6 +2150,7 @@
 				7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */,
 				A718BE672226F15B008CAA72 /* DBFactory.swift in Sources */,
 				A74CF31C21B5BD0700559490 /* CriptextDefaults.swift in Sources */,
+				A7C613D42278FF7A00234C5C /* FindKeybundleSpyApiManager.swift in Sources */,
 				A76B5B3E22371BEB0078F6C7 /* SendEmailTests.swift in Sources */,
 				A7F30271216E859300676DD2 /* GZipTests.swift in Sources */,
 				7C247E0520C6E0270019321E /* EventHandlerTests.swift in Sources */,
