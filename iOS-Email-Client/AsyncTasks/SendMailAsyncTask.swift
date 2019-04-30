@@ -186,7 +186,6 @@ class SendMailAsyncTask {
                 return
             }
             let guestDomains = self.buildSessions(keysData: keysArray, myAccount: myAccount)
-            print(guestDomains)
             guard let emailsData = self.createSendEmailData(myAccount: myAccount, guestDomains: guestDomains) else {
                 completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
                 return
@@ -296,7 +295,6 @@ class SendMailAsyncTask {
         
         if !toData.1.isEmpty {
             guestEmailData["to"] = toData.1
-            print(guestEmailData)
         }
         if !ccData.1.isEmpty {
             guestEmailData["cc"] = ccData.1
