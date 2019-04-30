@@ -56,12 +56,16 @@ class SharedDB {
         return Array(realm!.objects(Account.self))
     }
     
-    class func update(oldJwt: String, jwt: String) {
+    class func update(oldJwt: String, jwt: String, refreshToken: String? = nil) {
         let realm = try! Realm()
         
         try! realm.write {
             let account = realm.objects(Account.self).filter("jwt == '\(oldJwt)'").first
             account?.jwt = jwt
+            
+            if let rToken = refreshToken {
+                account?.refreshToken = rToken
+            }
         }
     }
     
