@@ -353,6 +353,7 @@ class SendMailAsyncTask {
                 }
                 criptextEmailData.append([
                     "username": recipientId,
+                    "domain": domain,
                     "emails": emailsData
                     ] as [String : Any])
             }
@@ -365,7 +366,6 @@ class SendMailAsyncTask {
         let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         let preview = SignalHandler.encryptMessage(body: self.preview, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         var criptextEmail = ["recipientId": recipientId,
-                             "domain": domain,
                              "deviceId": deviceId,
                              "type": type,
                              "body": message.0,

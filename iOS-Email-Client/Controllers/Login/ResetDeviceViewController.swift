@@ -80,7 +80,8 @@ class ResetDeviceViewController: UIViewController{
         showLoader(true)
         let email = loginData.email
         let username = String(email.split(separator: "@")[0])
-        APIManager.loginRequest(username, password.sha256()!) { (responseData) in
+        let domain = String(email.split(separator: "@")[1])
+        APIManager.loginRequest(username: username, domain: domain, password: password.sha256()!) { (responseData) in
             self.showLoader(false)
             if case .TooManyDevices = responseData {
                 self.showFeedback(true, String.localize("TOO_MANY_DEVICES"))
@@ -107,7 +108,7 @@ class ResetDeviceViewController: UIViewController{
             let name = data["name"] as! String
             let deviceId = data["deviceId"] as! Int
             let token = data["token"] as! String
-            let signupData = SignUpData(username: username, password: password, fullname: name, optionalEmail: nil)
+            let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
             signupData.deviceId = deviceId
             signupData.token = token
             self.jumpToCreatingAccount(signupData: signupData)

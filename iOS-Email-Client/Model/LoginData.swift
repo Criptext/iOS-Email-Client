@@ -9,17 +9,19 @@
 import Foundation
 
 class LoginData{
-    var email: String
+    var username: String
+    var domain: String
     var jwt: String?
     var randomId: String?
     var isTwoFactor = false
     var password: String?
     
-    var username: String {
-        return String(email.split(separator: "@")[0])
+    var email: String {
+        return "\(username)@\(domain)"
     }
     
-    init(_ email: String){
-        self.email = email
+    init(username: String, domain: String){
+        self.username = username
+        self.domain = domain
     }
 }
