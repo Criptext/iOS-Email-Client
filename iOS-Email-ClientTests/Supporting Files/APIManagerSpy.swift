@@ -18,7 +18,8 @@ class APIManagerSpy: APIManager {
     override class func getKeysRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         completion(ResponseData.SuccessDictionary([
             "keyBundles": [[String: Any]](),
-            "blacklistedKnownDevices": [[String: Any]]()
+            "blacklistedKnownDevices": [[String: Any]](),
+            "guestDomains": [String]()
         ]))
     }
     
