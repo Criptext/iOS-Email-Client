@@ -11,6 +11,7 @@ import SignalProtocolFramework
 
 class SignUpData{
     var username: String
+    var domain: String
     var password: String
     var fullname: String
     var optionalEmail: String?
@@ -21,8 +22,9 @@ class SignUpData{
     var token: String = ""
     var refreshToken: String?
     
-    init(username: String, password: String, fullname: String, optionalEmail: String?){
+    init(username: String, password: String, domain: String, fullname: String, optionalEmail: String?){
         self.username = username
+        self.domain = domain
         self.password = password
         self.fullname = fullname
         self.optionalEmail = optionalEmail
@@ -45,6 +47,7 @@ class SignUpData{
     class func createAccount(from signupData: SignUpData) -> Account {
         let myAccount = Account()
         myAccount.username = signupData.username
+        myAccount.domain = "@\(signupData.domain)" == Env.domain ? nil : signupData.domain
         myAccount.name = signupData.fullname
         myAccount.jwt = signupData.token
         myAccount.regId = 0
