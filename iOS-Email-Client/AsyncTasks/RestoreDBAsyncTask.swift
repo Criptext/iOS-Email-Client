@@ -10,12 +10,12 @@ import Foundation
 
 class RestoreDBAsyncTask {
     let path: String
-    let username: String
+    let accountId: String
     let initialProgress: Int
     
-    init(path: String, username: String, initialProgress: Int = 0) {
+    init(path: String, accountId: String, initialProgress: Int = 0) {
         self.path = path
-        self.username = username
+        self.accountId = accountId
         self.initialProgress = initialProgress
     }
     
@@ -37,7 +37,7 @@ class RestoreDBAsyncTask {
                 var progress = Int((100 - UInt64(self.initialProgress)) * streamReader.currentPosition/fileSize) + self.initialProgress
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: self.username)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: self.accountId)
                     dbRows.removeAll()
                     if progress > 99 {
                         progress = 99
@@ -47,7 +47,7 @@ class RestoreDBAsyncTask {
                     }
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: self.username)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: self.accountId)
             CriptextFileManager.deleteFile(path: self.path)
             DispatchQueue.main.async {
                 completion()

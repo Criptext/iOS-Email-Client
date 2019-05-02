@@ -17,7 +17,7 @@ protocol ComposerDelegate: class {
     func send()
     func badRecipient()
     func typingRecipient(text: String)
-    func setAccount(username: String)
+    func setAccount(accountId: String)
 }
 
 class ComposerUIView: UIView {
@@ -314,7 +314,7 @@ extension ComposerUIView: CLTokenInputViewDelegate {
 
 extension ComposerUIView: BottomMenuDelegate {
     func didPressOption(_ option: String) {
-        delegate?.setAccount(username: option)
+        delegate?.setAccount(accountId: option)
     }
     
     func didPressBackground() {

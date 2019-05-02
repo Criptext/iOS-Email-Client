@@ -12,10 +12,10 @@ class DeleteThreadsAsyncTask {
     let threadIds: [String]
     let eventThreadIds: [String]
     let currentLabel: Int
-    let username: String
+    let accountId: String
     
-    init(username: String, threadIds: [String], eventThreadIds: [String], currentLabel: Int) {
-        self.username = username
+    init(accountId: String, threadIds: [String], eventThreadIds: [String], currentLabel: Int) {
+        self.accountId = accountId
         self.threadIds = threadIds
         self.eventThreadIds = eventThreadIds
         self.currentLabel = currentLabel
@@ -24,7 +24,7 @@ class DeleteThreadsAsyncTask {
     func start(completion: @escaping (() -> Void)) {
         let queue = DispatchQueue(label: "com.criptext.mail.deletes", qos: .userInitiated, attributes: .concurrent)
         queue.async {
-            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            guard let myAccount = DBManager.getAccountById(self.accountId) else {
                 completion()
                 return
             }

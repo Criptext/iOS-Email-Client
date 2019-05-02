@@ -9,8 +9,8 @@
 import Foundation
 
 protocol RequestDelegate: class {
-    func finishRequest(username: String, result: EventData.Result)
-    func errorRequest(username: String, response: ResponseData)
+    func finishRequest(accountId: String, result: EventData.Result)
+    func errorRequest(accountId: String, response: ResponseData)
 }
 
 final class RequestManager: NSObject {
@@ -22,16 +22,16 @@ final class RequestManager: NSObject {
     
     func getEvents() {
         guard processingAccount == nil,
-            let username = accountRequests.first,
-            let myAccount = DBManager.getAccountByUsername(username) else {
+            let accountId = accountRequests.first,
+            let myAccount = DBManager.getAccountById(accountId) else {
                 return
         }
-        processingAccount = username
+        processingAccount = accountId
         accountRequests.removeFirst()
         APIManager.getEvents(token: myAccount.jwt) { [weak self] (responseData) in
-            guard let myAccount = DBManager.getAccountByUsername(username),
+            guard let myAccount = DBManager.getAccountById(accountId),
                 let weakSelf = self else {
-                    self?.accountCompletions[username] = nil
+                    self?.accountCompletions[accountId] = nil
                     self?.processingAccount = nil
                     self?.getEvents()
                     return
@@ -50,7 +50,7 @@ final class RequestManager: NSObject {
             }
             
             guard events.count > 0 else {
-                weakSelf.delegate?.errorRequest(username: username, response: responseData)
+                weakSelf.delegate?.errorRequest(accountId: accountId, response: responseData)
                 weakSelf.processingAccount = nil
                 weakSelf.accountCompletions[username]?(false)
                 weakSelf.accountCompletions[username] = nil
@@ -68,11 +68,11 @@ final class RequestManager: NSObject {
                 
                 weakSelf.processingAccount = nil
                 if repeatRequest {
-                    weakSelf.accountRequests.insert(username, at: 0)
+                    weakSelf.accountRequests.insert(accountId, at: 0)
                 } else {
-                    weakSelf.accountCompletions[username]?(true)
-                    weakSelf.accountCompletions[username] = nil
-                    weakSelf.delegate?.finishRequest(username: username, result: result)
+                    weakSelf.accountCompletions[accountId]?(true)
+                    weakSelf.accountCompletions[accountId] = nil
+                    weakSelf.delegate?.finishRequest(accountId: accountId, result: result)
                 }
                 weakSelf.getEvents()
             }
@@ -80,11 +80,11 @@ final class RequestManager: NSObject {
         
     }
     
-    func getAccountEvents(username: String, get: Bool = true) {
-        guard !isInQueue(username: username) else {
+    func getAccountEvents(accountId: String, get: Bool = true) {
+        guard !isInQueue(accountId: accountId) else {
             return
         }
-        accountRequests.append(username)
+        accountRequests.append(accountId)
         if get {
             getEvents()
         }
@@ -93,13 +93,13 @@ final class RequestManager: NSObject {
     func getAccountsEvents() {
         let accounts = DBManager.getInactiveAccounts()
         for acc in accounts {
-            getAccountEvents(username: acc.username, get: false)
+            getAccountEvents(accountId: acc.compoundKey, get: false)
         }
         getEvents()
     }
     
-    func isInQueue(username: String) -> Bool {
-        return processingAccount == username || accountRequests.contains(username)
+    func isInQueue(accountId: String) -> Bool {
+        return processingAccount == accountId || accountRequests.contains(accountId)
     }
     
     func clearPending() {

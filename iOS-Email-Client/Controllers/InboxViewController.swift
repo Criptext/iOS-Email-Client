@@ -295,7 +295,7 @@ class InboxViewController: UIViewController {
                 weakSelf.syncContacts()
                 return
             }
-            let task = RetrieveContactsTask(username: weakSelf.myAccount.username)
+            let task = RetrieveContactsTask(accountId: weakSelf.myAccount.compoundKey)
             task.start { (_) in
                 
             }
@@ -559,7 +559,7 @@ extension InboxViewController {
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: ((Bool) -> Void)? = nil) {
-        RequestManager.shared.getAccountEvents(username: myAccount.username, get: false)
+        RequestManager.shared.getAccountEvents(accountId: myAccount.compoundKey, get: false)
         RequestManager.shared.getAccountsEvents()
     }
     
@@ -697,7 +697,7 @@ extension InboxViewController{
     }
     
     func updateBadges(){
-        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(username: myAccount.username, label: mailboxData.selectedLabel)
+        let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(accountId: myAccount.compoundKey, label: mailboxData.selectedLabel)
         badgeGetterAsyncTask.start { [weak self] (label, counter) in
             guard let weakSelf = self,
                 weakSelf.mailboxData.selectedLabel == label else {
@@ -780,7 +780,7 @@ extension InboxViewController{
             return
         }
         let searchText = searchController.searchBar.text
-        let threadsAsyncTask = GetThreadsAsyncTask(username: myAccount.username, since: date, threads: clear ? [] : mailboxData.threads, limit: limit, searchText: mailboxData.searchMode ? searchText : nil, showAll: selectLabel == String.localize("SHOW_ALL"), selectedLabel: mailboxData.selectedLabel)
+        let threadsAsyncTask = GetThreadsAsyncTask(accountId: myAccount.compoundKey, since: date, threads: clear ? [] : mailboxData.threads, limit: limit, searchText: mailboxData.searchMode ? searchText : nil, showAll: selectLabel == String.localize("SHOW_ALL"), selectedLabel: mailboxData.selectedLabel)
         mailboxData.fetchAsyncTask = threadsAsyncTask
         threadsAsyncTask.start { [weak self] (threads) in
             guard let weakSelf = self else {
@@ -872,7 +872,7 @@ extension InboxViewController: UITableViewDataSource{
         cell.delegate = self
         let thread = mailboxData.threads[indexPath.row]
         
-        cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: "\(myAccount.username)\(Constants.domain)")
+        cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: myAccount.email)
         if mailboxData.isCustomEditing {
             if(mailboxData.selectedThreads.contains(thread.threadId)){
                 cell.setAsSelected()
@@ -1459,7 +1459,7 @@ extension InboxViewController {
             updateBadges()
         }
         
-        let threadLabelsAsyncTask = ThreadsLabelsAsyncTask(username: self.myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, added: added, removed: removed, currentLabel: mailboxData.selectedLabel)
+        let threadLabelsAsyncTask = ThreadsLabelsAsyncTask(accountId: self.myAccount.compoundKey, threadIds: threadIds, eventThreadIds: eventThreadIds, added: added, removed: removed, currentLabel: mailboxData.selectedLabel)
         threadLabelsAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1484,7 +1484,7 @@ extension InboxViewController {
         let eventThreadIds = indexPaths.filter({mailboxData.threads[$0.row].canTriggerEvent}).map({mailboxData.threads[$0.row].threadId})
         self.removeThreads(indexPaths: indexPaths)
         
-        let deleteThreadsAsyncTask = DeleteThreadsAsyncTask(username: myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, currentLabel: mailboxData.selectedLabel)
+        let deleteThreadsAsyncTask = DeleteThreadsAsyncTask(accountId: myAccount.compoundKey, threadIds: threadIds, eventThreadIds: eventThreadIds, currentLabel: mailboxData.selectedLabel)
         deleteThreadsAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1540,8 +1540,7 @@ extension InboxViewController: NavigationToolbarDelegate {
             }
         }
         self.didPressEdit(reload: true)
-        
-        let markThreadAsyncTask = MarkThreadsAsyncTask(username: self.myAccount.username, threadIds: threadIds, eventThreadIds: eventThreadIds, unread: unread, currentLabel: mailboxData.selectedLabel)
+        let markThreadAsyncTask = MarkThreadsAsyncTask(accountId: self.myAccount.compoundKey, threadIds: threadIds, eventThreadIds: eventThreadIds, unread: unread, currentLabel: mailboxData.selectedLabel)
         markThreadAsyncTask.start() { [weak self] in
             self?.updateBadges()
         }
@@ -1761,8 +1760,9 @@ extension InboxViewController: LinkDeviceDelegate {
             return
         }
         
+        //TODO USE ACCOUNT ID
         if myAccount.username != username,
-            let account = DBManager.getAccountByUsername(username) {
+            let account = DBManager.getAccountById(username) {
             self.dismiss(animated: false, completion: nil)
             self.swapAccount(account)
         }
@@ -1782,7 +1782,8 @@ extension InboxViewController: LinkDeviceDelegate {
         }
     }
     func onCancelLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
-        guard let account = DBManager.getAccountByUsername(username) else {
+        //TODO USE ACCOUNT ID
+        guard let account = DBManager.getAccountById(username) else {
             completion()
             return
         }
@@ -1800,7 +1801,8 @@ extension InboxViewController: LinkDeviceDelegate {
 
 extension InboxViewController {
     func markAsRead(username: String, emailKey: Int, completion: @escaping (() -> Void)){
-        guard let account = DBManager.getAccountByUsername(username),
+        //TODO USE ACCOUNT ID
+        guard let account = DBManager.getAccountById(username),
             DBManager.getMail(key: emailKey, account: account) != nil else {
             completion()
             return
@@ -1822,8 +1824,9 @@ extension InboxViewController {
     
     func reply(username: String, emailKey: Int, completion: @escaping (() -> Void)){
         self.navigationDrawerController?.closeLeftView()
+        //TODO USE ACCOUNT ID
         if self.myAccount.username != username,
-            let account = DBManager.getAccountByUsername(username){
+            let account = DBManager.getAccountById(username){
             self.dismiss(animated: false, completion: nil)
             self.swapAccount(account)
         }
@@ -1839,7 +1842,8 @@ extension InboxViewController {
     }
     
     func moveToTrash(username: String, emailKey: Int, completion: @escaping (() -> Void)){
-        guard let account = DBManager.getAccountByUsername(username),
+        //TODO USE ACCOUNT ID
+        guard let account = DBManager.getAccountById(username),
             let email = DBManager.getMail(key: emailKey, account: account) else {
             completion()
             return
@@ -1860,9 +1864,10 @@ extension InboxViewController {
     }
     
     func openThread(username: String, threadId: String) {
+        //TODO USE ACCOUNT ID
         self.navigationDrawerController?.closeLeftView()
         if self.myAccount.username != username,
-            let account = DBManager.getAccountByUsername(username){
+            let account = DBManager.getAccountById(username){
             self.dismiss(animated: false, completion: nil)
             self.swapAccount(account)
         }
@@ -1897,7 +1902,7 @@ extension InboxViewController {
         let defaults = CriptextDefaults()
         DBManager.swapAccount(current: self.myAccount, active: account)
         self.myAccount = account
-        defaults.activeAccount = account.username
+        defaults.activeAccount = account.compoundKey
         WebSocketManager.sharedInstance.connect(accounts: [account])
         self.invalidateObservers()
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
@@ -1917,11 +1922,11 @@ extension InboxViewController {
 }
 
 extension InboxViewController: RequestDelegate {
-    func finishRequest(username: String, result: EventData.Result) {
+    func finishRequest(accountId: String, result: EventData.Result) {
         if !RequestManager.shared.isInQueue(username: myAccount.username) {
             self.refreshControl.endRefreshing()
         }
-        guard myAccount.username == username else {
+        guard myAccount.compoundKey == accountId else {
             if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
                 menuViewController.refreshBadges()
             }
@@ -1930,11 +1935,11 @@ extension InboxViewController: RequestDelegate {
         self.didReceiveEvents(result: result)
     }
     
-    func errorRequest(username: String, response: ResponseData) {
+    func errorRequest(accountId: String, response: ResponseData) {
         if !RequestManager.shared.isInQueue(username: myAccount.username) {
             self.refreshControl.endRefreshing()
         }
-        guard myAccount.username == username else {
+        guard myAccount.compoundKey == accountId else {
             return
         }
         refreshControl.endRefreshing()
