@@ -33,7 +33,7 @@ class CreateCustomJSONFileTests: XCTestCase {
         
         self.account = DBFactory.createAndStoreAccount(username: "test", deviceId: 1, name: "Test")
         let defaults = CriptextDefaults()
-        defaults.activeAccount = account.username
+        defaults.activeAccount = account.compoundKey
         
         let newLabel = Label("Test 1")
         newLabel.id = 1
@@ -109,7 +109,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     func testSuccessfullyCreateEncryptDecryptDBFile(){
         let expect = expectation(description: "Callback runs after generating db file")
-        CreateCustomJSONFileAsyncTask(username: self.account.username).start { (error, url) in
+        CreateCustomJSONFileAsyncTask(accountId: self.account.compoundKey).start { (error, url) in
             guard let myUrl = url else {
                 XCTFail("unable to process db with error: \(String(describing: error))")
                 return
@@ -144,7 +144,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     func testSuccessfullyCreateDBFromFile(){
         let expect = expectation(description: "Callback runs after generating db file")
-        CreateCustomJSONFileAsyncTask(username: self.account.username).start { (error, url) in
+        CreateCustomJSONFileAsyncTask(accountId: self.account.compoundKey).start { (error, url) in
             guard let myUrl = url,
                 let account = DBManager.getFirstAccount() else {
                 XCTFail("unable to process db with error: \(String(describing: error))")
@@ -163,12 +163,12 @@ class CreateCustomJSONFileTests: XCTestCase {
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account.username)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: account.compoundKey)
                     dbRows.removeAll()
                 }
             }
             
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: account.username)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: account.compoundKey)
             
             let email = DBManager.getMail(key: 123, account: account)
             XCTAssert(email != nil)

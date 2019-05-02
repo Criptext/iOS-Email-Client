@@ -478,14 +478,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let mailboxVC = getInboxVC() {
             mailboxVC.invalidateObservers()
         }
-        BackupManager.shared.clearAccount(username: account.username)
+        BackupManager.shared.clearAccount(accountId: account.compoundKey)
         APIManager.cancelAllRequests()
         WebSocketManager.sharedInstance.close()
         WebSocketManager.sharedInstance.delegate = nil
         if let activateAccount = DBManager.getInactiveAccounts().first,
             let inboxVC = getInboxVC() {
             let defaults = CriptextDefaults()
-            defaults.activeAccount = activateAccount.username
+            defaults.activeAccount = activateAccount.compoundKey
             DBManager.activateAccount(activateAccount)
             inboxVC.swapAccount(activateAccount)
             inboxVC.dismiss(animated: true)
@@ -527,7 +527,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func swapAccount(account: Account, showRestore: Bool = false) {
         let defaults = CriptextDefaults()
-        defaults.activeAccount = account.username
+        defaults.activeAccount = account.compoundKey
         guard let inboxVC = getInboxVC() else {
             return
         }
@@ -543,7 +543,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?, _ activeAccount: String, showRestore: Bool = false) -> UIViewController{
-        let myAccount = DBManager.getAccountByUsername(activeAccount)!
+        let myAccount = DBManager.getAccountById(activeAccount)!
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
         let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
@@ -736,7 +736,8 @@ extension AppDelegate: MessagingDelegate {
             }
             completionHandler(.newData)
         }
-        RequestManager.shared.getAccountEvents(username: accountUser)
+        //TODO USE ACCOUNT ID
+        RequestManager.shared.getAccountEvents(accountId: accountUser)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

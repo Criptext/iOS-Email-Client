@@ -201,7 +201,7 @@ class MenuViewController: UIViewController{
     }
     
     func refreshBadges(){
-        let badgesGetterAsyncTask = GetBadgeCountersAsyncTask(username: mailboxVC.myAccount.username)
+        let badgesGetterAsyncTask = GetBadgeCountersAsyncTask(accountId: mailboxVC.myAccount.compoundKey)
         badgesGetterAsyncTask.start { [weak self] (counters) in
             guard let weakSelf = self else {
                 return

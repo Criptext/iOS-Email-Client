@@ -13,20 +13,20 @@ class MarkThreadsAsyncTask {
     let eventThreadIds: [String]
     let unread: Bool
     let currentLabel: Int
-    let username: String
+    let accountId: String
     
-    init(username: String, threadIds: [String], eventThreadIds: [String], unread: Bool, currentLabel: Int) {
+    init(accountId: String, threadIds: [String], eventThreadIds: [String], unread: Bool, currentLabel: Int) {
         self.threadIds = threadIds
         self.eventThreadIds = eventThreadIds
         self.unread = unread
         self.currentLabel = currentLabel
-        self.username = username
+        self.accountId = accountId
     }
     
     func start(completion: @escaping (() -> Void)) {
         let queue = DispatchQueue(label: "com.criptext.mail.mark", qos: .userInitiated, attributes: .concurrent)
         queue.async {
-            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            guard let myAccount = DBManager.getAccountById(self.accountId) else {
                 completion()
                 return
             }

@@ -108,7 +108,7 @@ extension RestoreViewController: RestoreDelegate {
             return
         }
         
-        let restoreTask = RestoreDBAsyncTask(path: decompressedPath, username: myAccount.username, initialProgress: 5)
+        let restoreTask = RestoreDBAsyncTask(path: decompressedPath, accountId: myAccount.compoundKey, initialProgress: 5)
         restoreTask.start(progressHandler: { (progress) in
             self.contentView.animateProgress(Double(progress), 0.5, completion: {})
         }) {
