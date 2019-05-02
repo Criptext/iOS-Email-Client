@@ -77,7 +77,7 @@ class SignalTests: XCTestCase {
     }
     
     func testSendMessageToInMemoryUser(){
-        let signupData = SignUpData(username: "test", password: "123", fullname: "Test", optionalEmail: nil)
+        let signupData = SignUpData(username: "test", password: "123", domain: "criptext.com", fullname: "Test", optionalEmail: nil)
         signupData.token = "test"
         let account = SignUpData.createAccount(from: signupData)
         let bundle = CRBundle(account: account)
@@ -94,7 +94,7 @@ class SignalTests: XCTestCase {
     }
     
     func testRecieveMessageFromInMemoryUser(){
-        let signupData = SignUpData(username: "test", password: "123", fullname: "Test", optionalEmail: nil)
+        let signupData = SignUpData(username: "test", password: "123", domain: "criptext.com", fullname: "Test", optionalEmail: nil)
         signupData.token = "test"
         let account = SignUpData.createAccount(from: signupData)
         let bundle = CRBundle(account: account)
