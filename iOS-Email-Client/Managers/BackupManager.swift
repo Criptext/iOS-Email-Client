@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 protocol BackupDelegate: class {
-    func progressUpdate(username: String, progress: Int)
+    func progressUpdate(accountId: String, progress: Int)
 }
 
 final class BackupManager {
@@ -46,13 +46,13 @@ final class BackupManager {
         }
     }
     
-    func clearAccount(username: String) {
-        workers[username]?.worker.cancel()
-        workers[username] = nil
+    func clearAccount(accountId: String) {
+        workers[accountId]?.worker.cancel()
+        workers[accountId] = nil
     }
     
-    func contains(username: String) -> Bool {
-        return runningBackups.contains(username)
+    func contains(accountId: String) -> Bool {
+        return runningBackups.contains(accountId)
     }
     
     func backupNow(account: Account) {
@@ -65,53 +65,53 @@ final class BackupManager {
     }
     
     func createWorker(account: Account, lastBackup: Date, backupNow: Bool = false) {
-        let username = account.username
+        let accountId = account.compoundKey
         let email = account.email
         guard let executionTime = self.timeForExcecution(autoBackUp: account.autoBackupFrequency, lastBackup: lastBackup, force: backupNow) else {
             return
         }
         
         let workItem = DispatchWorkItem {
-            self.runningBackups.insert(username)
-            let createDBTask = CreateCustomJSONFileAsyncTask(username: username, kind: .backup)
+            self.runningBackups.insert(accountId)
+            let createDBTask = CreateCustomJSONFileAsyncTask(accountId: accountId, kind: .backup)
             createDBTask.start(progressHandler: { [weak self] progress in
-                self?.delegate?.progressUpdate(username: username, progress: progress)
+                self?.delegate?.progressUpdate(accountId: accountId, progress: progress)
             }) { [weak self] (_, url) in
                 self?.queue.async {
-                    self?.handleCustomFile(url: url, email: email, username: username)
+                    self?.handleCustomFile(url: url, email: email, accountId: accountId)
                 }
             }
         }
         queue.asyncAfter(deadline: .now() + executionTime.0, execute: workItem)
-        workers[username] = BackupWorker(worker: workItem, frequency: executionTime.1)
+        workers[accountId] = BackupWorker(worker: workItem, frequency: executionTime.1)
     }
     
-    func handleCustomFile(url: URL?, email: String, username: String) {
+    func handleCustomFile(url: URL?, email: String, accountId: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.delegate?.progressUpdate(username: username, progress: 100)
+            self?.delegate?.progressUpdate(accountId: accountId, progress: 100)
         }
         guard let dbUrl = url,
             let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.backupZip.name, compress: true),
             let container = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(email) else {
-                self.workers[username] = nil
-                self.runningBackups.remove(username)
+                self.workers[accountId] = nil
+                self.runningBackups.remove(accountId)
                 self.checkAccounts()
                 return
         }
         
-        self.checkAndMoveExistingBackup(username: username)
+        self.checkAndMoveExistingBackup(accountId: accountId)
         let cloudUrl = container.appendingPathComponent("backup.db")
         try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true, attributes: nil)
         try? FileManager.default.removeItem(at: cloudUrl)
         try? FileManager.default.copyItem(at: URL(fileURLWithPath: compressedPath), to: cloudUrl)
-        DBManager.update(username: username, lastBackup: Date())
-        self.workers[username] = nil
-        self.runningBackups.remove(username)
+        DBManager.update(accountId: accountId, lastBackup: Date())
+        self.workers[accountId] = nil
+        self.runningBackups.remove(accountId)
         self.checkAccounts()
     }
     
-    func checkAndMoveExistingBackup(username: String) {
-        guard let myAccount = DBManager.getAccountByUsername(username),
+    func checkAndMoveExistingBackup(accountId: String) {
+        guard let myAccount = DBManager.getAccountById(accountId),
             let containerUrl = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email) else {
             return
         }

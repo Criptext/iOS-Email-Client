@@ -116,7 +116,7 @@ class ComposeViewController: UIViewController {
         textField.font = Font.regular.size(14)
         
         let defaults = CriptextDefaults()
-        activeAccount = DBManager.getAccountByUsername(defaults.activeAccount!)
+        activeAccount = DBManager.getAccountById(defaults.activeAccount!)
         fileManager.myAccount = activeAccount
         
         let sendImage = Icon.send.image?.tint(with: .white)
@@ -389,7 +389,7 @@ class ComposeViewController: UIViewController {
         draft.buildCompoundKey()
         DBManager.store(draft)
         
-        FileUtils.saveEmailToFile(username: activeAccount.username, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
+        FileUtils.saveEmailToFile(email: activeAccount.email, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
         
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -1254,8 +1254,8 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
 
 extension ComposeViewController: BottomMenuDelegate {
     func didPressOption(_ option: String) {
-        let username = String(option.split(separator: "@").first ?? "")
-        guard let account = DBManager.getAccountByUsername(username) else {
+        let accountId = option.replacingOccurrences(of: Env.domain, with: "")
+        guard let account = DBManager.getAccountById(accountId) else {
             return
         }
         self.setFrom(account: account)

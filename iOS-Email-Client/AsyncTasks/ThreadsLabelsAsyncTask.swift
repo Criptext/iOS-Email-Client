@@ -14,21 +14,21 @@ class ThreadsLabelsAsyncTask {
     let added: [Int]
     let removed: [Int]
     let currentLabel: Int
-    let username: String
+    let accountId: String
     
-    init(username: String, threadIds: [String], eventThreadIds: [String], added: [Int], removed: [Int], currentLabel: Int) {
+    init(accountId: String, threadIds: [String], eventThreadIds: [String], added: [Int], removed: [Int], currentLabel: Int) {
         self.threadIds = threadIds
         self.eventThreadIds = eventThreadIds
         self.added = added
         self.removed = removed
         self.currentLabel = currentLabel
-        self.username = username
+        self.accountId = accountId
     }
     
     func start(completion: @escaping (() -> Void)) {
         let queue = DispatchQueue(label: "com.criptext.mail.labels", qos: .userInitiated, attributes: .concurrent)
         queue.async {
-            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            guard let myAccount = DBManager.getAccountById(self.accountId) else {
                 completion()
                 return
             }

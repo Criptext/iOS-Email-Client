@@ -39,10 +39,10 @@ class SharedDB {
         return realm.objects(Account.self).first
     }
     
-    class func getAccountByUsername(_ username: String) -> Account? {
+    class func getAccountById(_ id: String) -> Account? {
         let realm = try? Realm()
         
-        return realm?.object(ofType: Account.self, forPrimaryKey: username)
+        return realm?.object(ofType: Account.self, forPrimaryKey: id)
     }
     
     class func getAccounts(ignore username: String) -> Results<Account> {
@@ -111,11 +111,11 @@ class SharedDB {
         }
     }
     
-    class func update(username: String, lastBackup: Date) {
+    class func update(accountId: String, lastBackup: Date) {
         let realm = try! Realm()
         
         try! realm.write {
-            guard let account = realm.objects(Account.self).filter("username == '\(username)'").first else {
+            guard let account = realm.objects(Account.self).filter("compoundKey == '\(accountId)'").first else {
                 return
             }
             account.lastTimeBackup = lastBackup
