@@ -68,11 +68,16 @@ class ContactUtils {
         return concatEmailAddresses(stringArray: stringArray, index: index+1, result: result, remnant: "\(contactString),")
     }
     
-    class func getStringEmailName(contact: String) -> (String, String) {
+    class func getStringEmailName(contact: String, fallback: (String, String)? = nil) -> (String, String) {
         let cleanContact = contact.replacingOccurrences(of: "\"", with: "")
         let myContact = NSString(string: cleanContact)
         let pattern = "<(.*?)>"
-        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        var regex: NSRegularExpression!
+        do {
+            regex = try NSRegularExpression(pattern: pattern, options: [])
+        } catch {
+            return fallback ?? (contact, contact)
+        }
         let matches = regex.matches(in: cleanContact, options: [], range: NSRange(location: 0, length: myContact.length))
         let email = (matches.last != nil ? myContact.substring(with: matches.last!.range(at: 1)) : String(myContact)).lowercased()
         let name = matches.last != nil && cleanContact.split(separator: "<").count > 1 ? cleanContact.prefix(matches.last!.range.location) : email.split(separator: "@")[0]

@@ -75,8 +75,8 @@ class FeedViewController: UIViewController{
             switch(changes){
             case .initial:
                 myself.feedsTableView.reloadData()
-            case .update(_, let deletions, let insertions, let modifications):
-                myself.feedsTableView.applyChanges(section: 0, deletions: deletions, insertions: insertions, updates: modifications)
+            case .update:
+                myself.feedsTableView.reloadData()
             default:
                 break
             }
@@ -89,8 +89,8 @@ class FeedViewController: UIViewController{
             switch(changes){
             case .initial:
                 myself.feedsTableView.reloadData()
-            case .update(_, let deletions, let insertions, let modifications):
-                myself.feedsTableView.applyChanges(section: 1, deletions: deletions, insertions: insertions, updates: modifications)
+            case .update:
+                myself.feedsTableView.reloadData()
             default:
                 break
             }

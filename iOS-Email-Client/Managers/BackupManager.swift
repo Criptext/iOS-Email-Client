@@ -28,7 +28,7 @@ final class BackupManager {
                 !runningBackups.contains(account.compoundKey),
                 let frequency = BackupFrequency.init(rawValue: account.autoBackupFrequency),
                 frequency != .off else {
-                return
+                continue
             }
             guard let worker = workers[account.compoundKey],
                 worker.frequency == frequency else {
@@ -36,7 +36,7 @@ final class BackupManager {
                 workers[account.compoundKey] = nil
                 let lastBackup = account.lastTimeBackup ?? Date()
                 createWorker(account: account, lastBackup: lastBackup)
-                return
+                continue
             }
         }
     }
@@ -132,7 +132,7 @@ final class BackupManager {
             let dateForBackup = autoFrequency.timelapse(date: lastBackup) else {
                 return nil
         }
-        var timeForExcecution = dateForBackup.timeIntervalSince1970 - lastBackup.timeIntervalSince1970
+        var timeForExcecution = dateForBackup.timeIntervalSince1970 - Date().timeIntervalSince1970
         timeForExcecution = timeForExcecution < 0 ? 0 : timeForExcecution
         return (timeForExcecution, autoFrequency)
     }

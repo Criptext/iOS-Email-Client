@@ -87,7 +87,8 @@ class Thread {
             if threadEmail.fromAddress.isEmpty {
                 return [threadEmail.fromContact]
             } else {
-                let contanctInfo = ContactUtils.getStringEmailName(contact: threadEmail.fromAddress)
+                let fallbackContact = (threadEmail.fromContact.email, threadEmail.fromContact.displayName)
+                let contanctInfo = ContactUtils.getStringEmailName(contact: threadEmail.fromAddress, fallback: fallbackContact)
                 if contanctInfo.0.contains(contanctInfo.1) {
                     return [threadEmail.fromContact]
                 } else {
