@@ -58,6 +58,7 @@ class APIManager: SharedAPI {
             versionHeader: apiVersion,
             language: Env.language
         ]
+        print(params)
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, token: token, queue: queue) { (refreshResponseData, newToken) in
@@ -77,6 +78,7 @@ class APIManager: SharedAPI {
             versionHeader: apiVersion,
             language: Env.language
         ]
+        print(params)
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
@@ -853,10 +855,11 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func resetPassword(username: String, completion: @escaping ((ResponseData) -> Void)){
+    class func resetPassword(username: String, domain: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/password/reset"
         let params = [
-            "recipientId": username
+            "recipientId": username,
+            "domain": domain
             ] as [String: Any]
         let headers = [versionHeader: apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in

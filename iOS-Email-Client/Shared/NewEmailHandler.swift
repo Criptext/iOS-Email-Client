@@ -45,7 +45,7 @@ class NewEmailHandler {
         }
         
         guard let event = try? NewEmail.init(params: params),
-            let username = ContactUtils.getUsernameFromEmailFormat(event.from)else {
+            let recipientId = event.recipientId else {
             completion(Result(success: false))
             return
         }
@@ -61,7 +61,6 @@ class NewEmailHandler {
         }
         
         api.getEmailBody(metadataKey: event.metadataKey, token: myAccount.jwt, queue: self.queue) { (responseData) in
-            var error: CriptextError?
             var unsent = false
             var content = ""
             var contentHeader: String? = nil
@@ -78,7 +77,7 @@ class NewEmailHandler {
                 }
                 guard let decryptedContent = self.handleContentByMessageType(
                     event.messageType, content: bodyString, account: myAccount,
-                    recipientId: username, senderDeviceId: event.senderDeviceId,
+                    recipientId: recipientId, senderDeviceId: event.senderDeviceId,
                     isExternal: event.isExternal)
                     else {
                         completion(Result(success: true))
@@ -87,7 +86,7 @@ class NewEmailHandler {
                 
                 content = decryptedContent
                 let headers = data["headers"] as? String
-                contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
             } else {
                 completion(Result(success: false))
                 return
@@ -130,7 +129,7 @@ class NewEmailHandler {
                 FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
             }
             
-            self.handleAttachments(recipientId: username, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
+            self.handleAttachments(recipientId: recipientId, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
             
             if self.isFromMe(email: email, account: myAccount, event: event),
                 let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
