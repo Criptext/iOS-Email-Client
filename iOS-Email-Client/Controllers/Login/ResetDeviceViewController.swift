@@ -121,7 +121,7 @@ class ResetDeviceViewController: UIViewController{
             return
         }
         showLoader(true)
-        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username, domain: loginData.domain)
         deviceInfo["password"] = password.sha256()!
         APIManager.linkAuth(deviceInfo: deviceInfo, token: jwt) { (responseData) in
             self.showLoader(false)
@@ -206,8 +206,9 @@ class ResetDeviceViewController: UIViewController{
     
     func sendResetLink(){
         forgotButton.isEnabled = false
-        let recipientId = loginData.email.split(separator: "@")[0]
-        APIManager.resetPassword(username: String(recipientId)) { (responseData) in
+        let recipientId = loginData.username
+        let domain = loginData.domain
+        APIManager.resetPassword(username: String(recipientId), domain: domain) { (responseData) in
             self.forgotButton.isEnabled = true
             if case let .Error(error) = responseData,
                 error.code != .custom {
