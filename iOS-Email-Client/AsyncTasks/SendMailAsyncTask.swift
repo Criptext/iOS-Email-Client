@@ -265,7 +265,8 @@ class SendMailAsyncTask {
             let allRecipients = tos + ccs + bccs + peers
             
             for username in allRecipients {
-                let recipientSessions = DBAxolotl.getSessionRecords(recipientId: username, account: myAccount)
+                let recipientId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+                let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
                 let deviceIds = recipientSessions.map { $0.deviceId }
                 recipients.append(username)
                 knownAddresses[username] = deviceIds
@@ -352,7 +353,7 @@ class SendMailAsyncTask {
                     continue
                 }
                 criptextEmailData.append([
-                    "username": recipientId,
+                    "username": username,
                     "domain": domain,
                     "emails": emailsData
                     ] as [String : Any])
@@ -365,7 +366,7 @@ class SendMailAsyncTask {
     private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, domain: String, myAccount: Account) -> [String: Any] {
         let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         let preview = SignalHandler.encryptMessage(body: self.preview, deviceId: deviceId, recipientId: recipientId, account: myAccount)
-        var criptextEmail = ["recipientId": recipientId,
+        var criptextEmail = ["recipientId": recipientId.split(separator: "@").first ?? recipientId,
                              "deviceId": deviceId,
                              "type": type,
                              "body": message.0,

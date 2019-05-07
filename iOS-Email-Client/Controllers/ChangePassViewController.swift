@@ -82,7 +82,8 @@ class ChangePassViewController: UIViewController {
     func sendResetLink(){
         forgotButton.isEnabled = false
         let username = myAccount.username
-        APIManager.resetPassword(username: username) { (responseData) in
+        let domain = myAccount.domain ?? Env.plainDomain
+        APIManager.resetPassword(username: username, domain: domain) { (responseData) in
             self.forgotButton.isEnabled = true
             if case let .Error(error) = responseData,
                 error.code != .custom {
