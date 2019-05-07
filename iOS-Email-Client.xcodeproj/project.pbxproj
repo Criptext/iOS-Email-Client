@@ -266,6 +266,7 @@
 		A7385F3F2230272E005CB38D /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F3E2230272E005CB38D /* RequestManager.swift */; };
 		A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F4022303CF0005CB38D /* AccountContact.swift */; };
 		A7385F432230852D005CB38D /* CRBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7385F422230852D005CB38D /* CRBundle.swift */; };
+		A73ACB9B2280CAB500B0CF91 /* GetThreadsAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73ACB9A2280CAB500B0CF91 /* GetThreadsAsyncTask.swift */; };
 		A741B9EE2264E60D001BB19C /* BackupHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A741B9F02264E60D001BB19C /* BackupHeaderView.xib */; };
 		A741B9F62268DD00001BB19C /* DateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A741B9F52268DD00001BB19C /* DateString.swift */; };
 		A742720522550A1F006D10C9 /* BackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742720422550A1F006D10C9 /* BackupViewController.swift */; };
@@ -784,6 +785,7 @@
 		A7385F3E2230272E005CB38D /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		A7385F4022303CF0005CB38D /* AccountContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountContact.swift; sourceTree = "<group>"; };
 		A7385F422230852D005CB38D /* CRBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRBundle.swift; sourceTree = "<group>"; };
+		A73ACB9A2280CAB500B0CF91 /* GetThreadsAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetThreadsAsyncTask.swift; sourceTree = "<group>"; };
 		A741B9EF2264E60D001BB19C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BackupHeaderView.xib; sourceTree = "<group>"; };
 		A741B9F22264E610001BB19C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BackupHeaderView.strings; sourceTree = "<group>"; };
 		A741B9F42264E612001BB19C /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/BackupHeaderView.strings"; sourceTree = "<group>"; };
@@ -1463,6 +1465,7 @@
 				CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */,
 				A758E2E6221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift */,
 				A758E2E8221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift */,
+				A73ACB9A2280CAB500B0CF91 /* GetThreadsAsyncTask.swift */,
 				A758E2EA221F48E4007ECC21 /* MarkThreadsAsyncTask.swift */,
 				A758E2EC221F4B24007ECC21 /* ThreadsLabelsAsyncTask.swift */,
 				A758E2EE221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift */,
@@ -1965,6 +1968,7 @@
 				7CAC1CEE20F6AE7B004A50C6 /* PaddingUILabel.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,
+				A73ACB9B2280CAB500B0CF91 /* GetThreadsAsyncTask.swift in Sources */,
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
