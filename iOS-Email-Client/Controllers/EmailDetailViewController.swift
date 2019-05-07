@@ -551,7 +551,8 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
             return
         }
-        emailsTableView.selectRow(at: IndexPath(row: lastIndex - collapseUntilIndex, section: 0), animated: false, scrollPosition: .none)
+        let index = lastIndex == 0 ? 0 : lastIndex - collapseUntilIndex
+        emailsTableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
         onReplyPress()
     }
     
@@ -559,7 +560,8 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
             return
         }
-        emailsTableView.selectRow(at: IndexPath(row: lastIndex - collapseUntilIndex, section: 0), animated: false, scrollPosition: .none)
+        let index = lastIndex == 0 ? 0 : lastIndex - collapseUntilIndex
+        emailsTableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
         onReplyAllPress()
     }
     
@@ -567,7 +569,8 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         guard let lastIndex = emailData.emails.lastIndex(where: {!$0.isDraft}) else {
             return
         }
-        emailsTableView.selectRow(at: IndexPath(row: lastIndex - collapseUntilIndex, section: 0), animated: false, scrollPosition: .none)
+        let index = lastIndex == 0 ? 0 : lastIndex - collapseUntilIndex
+        emailsTableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
         onForwardPress()
     }
 }
@@ -1063,8 +1066,8 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
     
     func getCellFromFile(_ file: File) -> AttachmentTableCell? {
         guard let emailIndex = emailData.emails.index(where: {$0.key == file.emailId}),
-            let index = emailData.emails[emailIndex - collapseUntilIndex].files.index(where: {$0.token == file.token}),
-            let emailCell = self.emailsTableView.cellForRow(at: IndexPath(row: emailIndex, section: 0)) as? EmailTableViewCell,
+            let index = emailData.emails[emailIndex].files.index(where: {$0.token == file.token}),
+            let emailCell = self.emailsTableView.cellForRow(at: IndexPath(row: emailIndex == 0 ? 0 : emailIndex - collapseUntilIndex, section: 0)) as? EmailTableViewCell,
             let attachmentCell = emailCell.attachmentsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
                 return nil
         }

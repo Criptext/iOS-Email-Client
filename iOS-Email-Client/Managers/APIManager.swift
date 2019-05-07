@@ -613,6 +613,7 @@ class APIManager: SharedAPI {
         let part = params["part"] as! Int
         let filename = params["filename"] as! String
         let mimeType = params["mimeType"] as! String
+        print(token)
         Alamofire.upload(multipartFormData: { (multipartForm) in
             for (key, value) in params {
                 multipartForm.append("\(value)".data(using: .utf8)!, withName: key)

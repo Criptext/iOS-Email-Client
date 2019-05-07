@@ -1916,13 +1916,15 @@ extension InboxViewController {
 
 extension InboxViewController: RequestDelegate {
     func finishRequest(username: String, result: EventData.Result) {
+        if !RequestManager.shared.isInQueue(username: myAccount.username) {
+            self.refreshControl.endRefreshing()
+        }
         guard myAccount.username == username else {
             if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
                 menuViewController.refreshBadges()
             }
             return
         }
-        self.refreshControl.endRefreshing()
         self.didReceiveEvents(result: result)
     }
     

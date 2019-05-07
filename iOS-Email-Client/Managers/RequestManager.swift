@@ -51,9 +51,9 @@ final class RequestManager: NSObject {
             
             guard events.count > 0 else {
                 weakSelf.delegate?.errorRequest(username: username, response: responseData)
+                weakSelf.processingAccount = nil
                 weakSelf.accountCompletions[username]?(false)
                 weakSelf.accountCompletions[username] = nil
-                weakSelf.processingAccount = nil
                 weakSelf.getEvents()
                 return
             }
@@ -66,6 +66,7 @@ final class RequestManager: NSObject {
                     return
                 }
                 
+                weakSelf.processingAccount = nil
                 if repeatRequest {
                     weakSelf.accountRequests.insert(username, at: 0)
                 } else {
@@ -73,7 +74,6 @@ final class RequestManager: NSObject {
                     weakSelf.accountCompletions[username] = nil
                     weakSelf.delegate?.finishRequest(username: username, result: result)
                 }
-                weakSelf.processingAccount = nil
                 weakSelf.getEvents()
             }
         }
