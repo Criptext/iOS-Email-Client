@@ -13,8 +13,8 @@ class MailboxData {
     var showRestore = false
     var updating = false
     var selectedLabel = SystemLabel.inbox.id
-    var queueItems: Results<QueueItem>?
-    var queueToken: NotificationToken?
+    weak var queueItems: Results<QueueItem>?
+    weak var queueToken: NotificationToken?
     var isDequeueing = false
     var emailArray = [Thread]()
     var filteredEmailArray = [Thread]()
@@ -38,7 +38,7 @@ class MailboxData {
     }
     var selectedThread: String? = nil
     var removeSelectedRow = false
-    var fetchWorker: DispatchWorkItem?
+    weak var fetchAsyncTask: GetThreadsAsyncTask?
     var searchMode = false
     var threads: [Thread] {
         get {
@@ -53,9 +53,9 @@ class MailboxData {
         }
     }
     
-    func cancelFetchWorker(){
-        fetchWorker?.cancel()
-        fetchWorker = nil
+    func cancelFetchAsyncTask(){
+        fetchAsyncTask?.cancel()
+        fetchAsyncTask = nil
     }
     
     var selectedIndexPaths: [IndexPath]? {

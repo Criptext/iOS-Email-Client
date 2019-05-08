@@ -361,27 +361,34 @@ class DBManager: SharedDB {
     }
     
     class func getThreads(from label: Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = [], account: Account) -> [Thread] {
-        let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
-        let realm = try! Realm()
-        let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
-        let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@) AND NOT (threadId IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels, threadIds)
-        let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
-        let threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, myEmail: account.email, emailFilter: { (email) -> NSPredicate in
-            guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
-                return NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND account.compoundKey == '\(account.compoundKey)'", label, email.threadId)
-            }
-            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", email.threadId, rejectedLabels)
-        })
+        var threads = [Thread]()
+        autoreleasepool {
+            let emailsLimit = limit == 0 ? PAGINATION_SIZE : limit
+            let realm = try! Realm()
+            let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
+            let predicate = NSPredicate(format: "NOT (ANY labels.id IN %@) AND NOT (threadId IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels, threadIds)
+            let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
+            threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, date: date, myEmail: account.email, emailFilter: { (email) -> NSPredicate in
+                guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
+                    return NSPredicate(format: "ANY labels.id = %d AND threadId = %@ AND account.compoundKey == '\(account.compoundKey)'", label, email.threadId)
+                }
+                return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", email.threadId, rejectedLabels)
+            })
+        }
         return threads
     }
     
     class func getThreads(since date:Date, searchParam: String, limit: Int = PAGINATION_SIZE, threadIds: [String] = [], account: Account) -> [Thread] {
-        let realm = try! Realm()
-        let rejectedLabels = SystemLabel.all.rejectedLabelIds
-        let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@ OR fromAddress contains[cd] %@) AND NOT (threadId IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels, searchParam, searchParam, searchParam, searchParam, threadIds).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
-        return customDistinctEmailThreads(emails: emails, label: SystemLabel.all.id, limit: limit, date: date, myEmail: account.email, emailFilter: { (email) -> NSPredicate in
-            return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", email.threadId, rejectedLabels)
-        })
+        var threads = [Thread]()
+        autoreleasepool {
+            let realm = try! Realm()
+            let rejectedLabels = SystemLabel.all.rejectedLabelIds
+            let emails = realm.objects(Email.self).filter("NOT (ANY labels.id IN %@) AND (ANY emailContacts.contact.displayName contains[cd] %@ OR preview contains[cd] %@ OR subject contains[cd] %@ OR fromAddress contains[cd] %@) AND NOT (threadId IN %@) AND account.compoundKey == '\(account.compoundKey)'", rejectedLabels, searchParam, searchParam, searchParam, searchParam, threadIds).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"]).filter("date < %@", date)
+            threads = customDistinctEmailThreads(emails: emails, label: SystemLabel.all.id, limit: limit, date: date, myEmail: account.email, emailFilter: { (email) -> NSPredicate in
+                return NSPredicate(format: "threadId = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", email.threadId, rejectedLabels)
+            })
+        }
+        return threads
     }
     
     class func getUnreadThreads(from label:Int, since date:Date, limit: Int = PAGINATION_SIZE, threadIds: [String] = [], account: Account) -> [Thread] {
@@ -547,7 +554,7 @@ class DBManager: SharedDB {
             email.content = ""
             email.preview = ""
             email.unsentDate = date
-            email.status = .unsent
+            email.delivered = Email.Status.unsent.rawValue
             
             email.files.forEach({ (file) in
                 file.name = ""

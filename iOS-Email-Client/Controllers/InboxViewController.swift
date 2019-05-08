@@ -678,7 +678,7 @@ extension InboxViewController{
         let myLabelId = isAllMail ? -1 : fallbackLabel.id
         mailboxData.selectedLabel = myLabelId
         selectLabel = String.localize("SHOW_ALL")
-        mailboxData.cancelFetchWorker()
+        mailboxData.cancelFetchAsyncTask()
         mailboxData.reachedEnd = false
         mailboxData.threads.removeAll()
         titleBarButton.title = (SystemLabel(rawValue: myLabelId)?.description ?? fallbackLabel.text).uppercased()
@@ -751,7 +751,7 @@ extension InboxViewController {
             mailboxData.threads.append(contentsOf: threads)
         }
         mailboxData.reachedEnd = threads.isEmpty
-        mailboxData.fetchWorker = nil
+        mailboxData.cancelFetchAsyncTask()
         self.tableView.reloadData()
         updateBadges()
         showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
@@ -776,55 +776,27 @@ extension InboxViewController{
 //MARK: - Load mails
 extension InboxViewController{
     func loadMails(since date:Date, clear: Bool = false, limit: Int = 0){
-        guard clear || mailboxData.fetchWorker == nil else {
+        guard clear || mailboxData.fetchAsyncTask == nil else {
             return
         }
         let searchText = searchController.searchBar.text
-        mailboxData.cancelFetchWorker()
-        var workItem: DispatchWorkItem? = nil
-        let username = myAccount.username
-        workItem = DispatchWorkItem(block: { [weak self] in
-            guard let weakSelf = self,
-                let myAccount = DBManager.getAccountByUsername(username) else {
+        let threadsAsyncTask = GetThreadsAsyncTask(username: myAccount.username, since: date, threads: clear ? [] : mailboxData.threads, limit: limit, searchText: mailboxData.searchMode ? searchText : nil, showAll: selectLabel == String.localize("SHOW_ALL"), selectedLabel: mailboxData.selectedLabel)
+        mailboxData.fetchAsyncTask = threadsAsyncTask
+        threadsAsyncTask.start { [weak self] (threads) in
+            guard let weakSelf = self else {
                 return
             }
-            let threads : [Thread]
-            let fetchedThreads = clear ? [] : weakSelf.mailboxData.threads.map({$0.threadId})
-            if (weakSelf.mailboxData.searchMode) {
-                guard let searchParam = searchText else {
-                    return
-                }
-                threads = DBManager.getThreads(since: date, searchParam: searchParam, threadIds: fetchedThreads, account: myAccount)
+            if(clear){
+                weakSelf.mailboxData.threads = threads
             } else {
-                if(weakSelf.selectLabel == String.localize("SHOW_ALL")){
-                    threads = DBManager.getThreads(from: weakSelf.mailboxData.selectedLabel, since: date, limit: limit, threadIds: fetchedThreads, account: myAccount)
-                }
-                else{
-                    threads = DBManager.getUnreadThreads(from: weakSelf.mailboxData.selectedLabel, since: date, threadIds: fetchedThreads, account: myAccount)
-                }
+                weakSelf.mailboxData.threads.append(contentsOf: threads)
             }
-            guard !(workItem?.isCancelled ?? false) else {
-                return
-            }
-            DispatchQueue.main.async { [weak self] in
-                guard let weakSelf = self else {
-                    return
-                }
-                if(clear){
-                    weakSelf.mailboxData.threads = threads
-                } else {
-                    weakSelf.mailboxData.threads.append(contentsOf: threads)
-                }
-                weakSelf.mailboxData.reachedEnd = threads.isEmpty
-                weakSelf.mailboxData.fetchWorker = nil
-                weakSelf.tableView.reloadData()
-                weakSelf.updateBadges()
-                weakSelf.showNoThreadsView(weakSelf.mailboxData.reachedEnd && weakSelf.mailboxData.threads.isEmpty)
-            }
-        })
-        mailboxData.fetchWorker = workItem
-        let queue = DispatchQueue(label: "com.criptext.mail.threads", qos: .userInitiated, attributes: .concurrent)
-        queue.asyncAfter(deadline: .now(), execute: mailboxData.fetchWorker!)
+            weakSelf.mailboxData.reachedEnd = threads.isEmpty
+            weakSelf.mailboxData.fetchAsyncTask = nil
+            weakSelf.tableView.reloadData()
+            weakSelf.updateBadges()
+            weakSelf.showNoThreadsView(weakSelf.mailboxData.reachedEnd && weakSelf.mailboxData.threads.isEmpty)
+        }
     }
 }
 
@@ -1132,58 +1104,60 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     func goToEmailDetail(selectedThread: Thread, selectedLabel: Int, message: ControllerMessage? = nil){
         self.navigationDrawerController?.closeRightView()
         
-        guard mailboxData.selectedLabel != SystemLabel.draft.id else {
-            if let lastEmail = SharedDB.getMail(key: selectedThread.lastEmailKey, account: self.myAccount) {
-                continueDraft(lastEmail)
+        autoreleasepool {
+            guard mailboxData.selectedLabel != SystemLabel.draft.id else {
+                if let lastEmail = SharedDB.getMail(key: selectedThread.lastEmailKey, account: self.myAccount) {
+                    continueDraft(lastEmail)
+                }
+                return
             }
-            return
-        }
-        
-        let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel, account: self.myAccount)
-        guard let subject = emails.first?.subject,
-            let lastEmailKey = emails.last?.key else {
-                refreshThreadRows()
-            return
-        }
-        
-        let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
-        var labelsSet = Set<Label>()
-        var openKeys = [Int]()
-        var peerKeys = [Int]()
-        var bodies = [Int: String]()
-        for email in emails {
-            let bodyFromFile = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
-            bodies[email.key] = bodyFromFile.isEmpty ? email.content : bodyFromFile
-            var emailState = Email.State()
-            emailState.isExpanded = email.unread
-            emailDetailData.emailStates[email.key] = emailState
-            labelsSet.formUnion(email.labels)
-            if(email.unread){
-                if(email.status == .none) {
-                    openKeys.append(email.key)
-                } else if (email.canTriggerEvent) {
-                    peerKeys.append(email.key)
+            
+            let emails = DBManager.getThreadEmails(selectedThread.threadId, label: selectedLabel, account: self.myAccount)
+            guard let subject = emails.first?.subject,
+                let lastEmailKey = emails.last?.key else {
+                    refreshThreadRows()
+                return
+            }
+            
+            let emailDetailData = EmailDetailData(threadId: selectedThread.threadId, label: mailboxData.searchMode ? SystemLabel.all.id : selectedLabel)
+            var labelsSet = Set<Label>()
+            var openKeys = [Int]()
+            var peerKeys = [Int]()
+            var bodies = [Int: String]()
+            for email in emails {
+                let bodyFromFile = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+                bodies[email.key] = bodyFromFile.isEmpty ? email.content : bodyFromFile
+                var emailState = Email.State()
+                emailState.isExpanded = email.unread
+                emailDetailData.emailStates[email.key] = emailState
+                labelsSet.formUnion(email.labels)
+                if(email.unread){
+                    if(email.status == .none) {
+                        openKeys.append(email.key)
+                    } else if (email.canTriggerEvent) {
+                        peerKeys.append(email.key)
+                    }
                 }
             }
+            emailDetailData.emails = emails
+            emailDetailData.bodies = bodies
+            emailDetailData.selectedLabel = selectedLabel
+            emailDetailData.labels = Array(labelsSet)
+            emailDetailData.subject = subject
+            emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
+            var emailState = Email.State()
+            emailState.isExpanded = true
+            emailDetailData.emailStates[lastEmailKey] = emailState
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
+            vc.message = message
+            vc.emailData = emailDetailData
+            vc.mailboxData = self.mailboxData
+            vc.myAccount = self.myAccount
+            self.navigationController?.pushViewController(vc, animated: true)
+            openEmails(openKeys: openKeys, peerKeys: peerKeys)
         }
-        emailDetailData.emails = emails
-        emailDetailData.bodies = bodies
-        emailDetailData.selectedLabel = selectedLabel
-        emailDetailData.labels = Array(labelsSet)
-        emailDetailData.subject = subject
-        emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
-        var emailState = Email.State()
-        emailState.isExpanded = true
-        emailDetailData.emailStates[lastEmailKey] = emailState
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "EmailDetailViewController") as! EmailDetailViewController
-        vc.message = message
-        vc.emailData = emailDetailData
-        vc.mailboxData = self.mailboxData
-        vc.myAccount = self.myAccount
-        self.navigationController?.pushViewController(vc, animated: true)
-        openEmails(openKeys: openKeys, peerKeys: peerKeys)
     }
     
     func openOwnEmails(_ peerKeys: [Int]){
@@ -1390,7 +1364,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
     
     func filterContentForSearchText(searchText: String) {
-        mailboxData.cancelFetchWorker()
+        mailboxData.cancelFetchAsyncTask()
         if(!mailboxData.searchMode){
             showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
             tableView.reloadData()
@@ -1942,13 +1916,15 @@ extension InboxViewController {
 
 extension InboxViewController: RequestDelegate {
     func finishRequest(username: String, result: EventData.Result) {
+        if !RequestManager.shared.isInQueue(username: myAccount.username) {
+            self.refreshControl.endRefreshing()
+        }
         guard myAccount.username == username else {
             if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
                 menuViewController.refreshBadges()
             }
             return
         }
-        self.refreshControl.endRefreshing()
         self.didReceiveEvents(result: result)
     }
     
