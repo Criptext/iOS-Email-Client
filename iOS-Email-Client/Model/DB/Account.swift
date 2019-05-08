@@ -38,7 +38,7 @@ class Account: Object{
     }
     
     func buildCompoundKey() {
-        self.compoundKey = "\(username)\(domain ?? "")"
+        self.compoundKey = "\(username)\(domain == nil ? "" : "@\(domain)")"
     }
     
     override static func primaryKey() -> String? {

@@ -10,18 +10,18 @@ import Foundation
 
 class FileUtils{
     
-    static func saveEmailToFile(username: String, metadataKey: String, body: String, headers: String?){
-        let fileBodyUrl = FileUtils.getURLForBody(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
-        let fileHeaderUrl = FileUtils.getURLForHeader(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
-        let directoryUrl = FileUtils.getDirectoryURLForEmail(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
+    static func saveEmailToFile(email: String, metadataKey: String, body: String, headers: String?){
+        let fileBodyUrl = FileUtils.getURLForBody(email: email, metadataKey: metadataKey)
+        let fileHeaderUrl = FileUtils.getURLForHeader(email: email, metadataKey: metadataKey)
+        let directoryUrl = FileUtils.getDirectoryURLForEmail(email: email, metadataKey: metadataKey)
         FileUtils.saveToFile(fileUrl: fileBodyUrl, directoryUrl: directoryUrl, text: body)
         if let myHeaders = headers {
             FileUtils.saveToFile(fileUrl: fileHeaderUrl, directoryUrl: directoryUrl, text: myHeaders)
         }        
     }
     
-    static func existBodyFile(username: String, metadataKey: String) -> Bool{
-        let fileBodyUrl = FileUtils.getURLForBody(email: "\(username)\(Env.domain)", metadataKey: metadataKey)
+    static func existBodyFile(email: String, metadataKey: String) -> Bool{
+        let fileBodyUrl = FileUtils.getURLForBody(email: email, metadataKey: metadataKey)
         return FileManager.default.fileExists(atPath: fileBodyUrl.path)
     }
     
@@ -37,7 +37,7 @@ class FileUtils{
     }
     
     static func getBodyFromFile(account: Account, metadataKey: String) -> String{
-        let fileUrl = FileUtils.getURLForBody(email: "\(account.username)\(Env.domain)", metadataKey: metadataKey)
+        let fileUrl = FileUtils.getURLForBody(email: account.email, metadataKey: metadataKey)
         guard FileManager.default.fileExists(atPath: fileUrl.path) else {
             return ""
         }
@@ -46,7 +46,7 @@ class FileUtils{
     }
     
     static func deleteDirectoryFromEmail(account: Account, metadataKey: String){
-        let fileUrl = FileUtils.getDirectoryURLForEmail(email: "\(account.username)\(Env.domain)", metadataKey: metadataKey)
+        let fileUrl = FileUtils.getDirectoryURLForEmail(email: account.email, metadataKey: metadataKey)
         guard FileManager.default.fileExists(atPath: fileUrl.path) else {
             return
         }
@@ -54,7 +54,7 @@ class FileUtils{
     }
     
     static func deleteAccountDirectory(account: Account){
-        let fileUrl = FileUtils.getDirectoryForAccount(email: "\(account.username)\(Env.domain)")
+        let fileUrl = FileUtils.getDirectoryForAccount(email: account.email)
         guard FileManager.default.fileExists(atPath: fileUrl.path) else {
             return
         }
@@ -62,7 +62,7 @@ class FileUtils{
     }
     
     static func getHeaderFromFile(account: Account, metadataKey: String) -> String{
-        let fileUrl = FileUtils.getURLForHeader(email: "\(account.username)\(Env.domain)", metadataKey: metadataKey)
+        let fileUrl = FileUtils.getURLForHeader(email: account.email, metadataKey: metadataKey)
         guard FileManager.default.fileExists(atPath: fileUrl.path) else {
             return ""
         }

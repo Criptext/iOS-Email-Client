@@ -123,7 +123,7 @@ class LoginDeviceViewController: UIViewController{
             self.navigationController?.popViewController(animated: true)
             return
         }
-        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username, domain: loginData.domain)
         if loginData.isTwoFactor,
             let password = loginData.password {
             deviceInfo["password"] = password

@@ -31,7 +31,7 @@ class SendMailAsyncTask {
     let duplicates: [String]
     let password: String?
     let isSecure: Bool
-    let username: String
+    let accountId: String
     let emailKey: Int
     let from: String
     let replyTo: String?
@@ -48,7 +48,7 @@ class SendMailAsyncTask {
         let recipients = SendMailAsyncTask.getRecipientEmails(username: email.account.username, domain: domain, email: email)
         self.recipients = recipients
         self.fileKeys = !fileParams.2.isEmpty ? fileParams.2 : nil
-        self.username = email.account.username
+        self.accountId = email.account.compoundKey
         self.emailKey = email.key
         self.subject = email.subject
         self.body = emailBody
@@ -149,13 +149,13 @@ class SendMailAsyncTask {
             getSessionAndEncrypt(queue: queue, completion: completion)
             return
         }
-        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+        guard let myAccount = SharedDB.getAccountById(self.accountId) else {
             completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
         apiManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
             guard case let .SuccessDictionary(response) = responseData,
-                let myAccount = SharedDB.getAccountByUsername(self.username),
+                let myAccount = SharedDB.getAccountById(self.accountId),
                 let duplicates = response["duplicates"] as? [String: Any],
                 let fileParams = SharedDB.duplicateFiles(account: myAccount, key: self.emailKey, duplicates: duplicates) else {
                 completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_DUPLICATE"))))
@@ -167,7 +167,7 @@ class SendMailAsyncTask {
     }
     
     private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+        guard let myAccount = SharedDB.getAccountById(self.accountId) else {
             completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
@@ -175,7 +175,7 @@ class SendMailAsyncTask {
         let keysPayload = getRecipientsAndKnownDevices(myAccount: myAccount)
         
         apiManager.getKeysRequest(keysPayload, token: myAccount.jwt, queue: queue) { responseData in
-            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+            guard let myAccount = SharedDB.getAccountById(self.accountId) else {
                 return
             }
             guard case let .SuccessDictionary(keysArray) = responseData else {
@@ -265,7 +265,8 @@ class SendMailAsyncTask {
             let allRecipients = tos + ccs + bccs + peers
             
             for username in allRecipients {
-                let recipientSessions = DBAxolotl.getSessionRecords(recipientId: username, account: myAccount)
+                let recipientId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+                let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
                 let deviceIds = recipientSessions.map { $0.deviceId }
                 recipients.append(username)
                 knownAddresses[username] = deviceIds
@@ -352,7 +353,7 @@ class SendMailAsyncTask {
                     continue
                 }
                 criptextEmailData.append([
-                    "username": recipientId,
+                    "username": username,
                     "domain": domain,
                     "emails": emailsData
                     ] as [String : Any])
@@ -365,7 +366,7 @@ class SendMailAsyncTask {
     private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, domain: String, myAccount: Account) -> [String: Any] {
         let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         let preview = SignalHandler.encryptMessage(body: self.preview, deviceId: deviceId, recipientId: recipientId, account: myAccount)
-        var criptextEmail = ["recipientId": recipientId,
+        var criptextEmail = ["recipientId": recipientId.split(separator: "@").first ?? recipientId,
                              "deviceId": deviceId,
                              "type": type,
                              "body": message.0,
@@ -418,7 +419,7 @@ class SendMailAsyncTask {
     }
     
     private func sendMail(myAccount: Account, sendEmailData: SendEmailData, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+        guard let myAccount = SharedDB.getAccountById(self.accountId) else {
             return
         }
         
@@ -438,11 +439,11 @@ class SendMailAsyncTask {
                 return
             }
             
-            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+            guard let myAccount = SharedDB.getAccountById(self.accountId) else {
                 return
             }
             FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(self.emailKey)")
-            FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(updateData["metadataKey"] as! Int)", body: self.body, headers: "")
+            FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(updateData["metadataKey"] as! Int)", body: self.body, headers: "")
             
             guard let key = self.updateEmailData(updateData) else {
                 DispatchQueue.main.async {

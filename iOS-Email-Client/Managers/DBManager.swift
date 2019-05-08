@@ -72,9 +72,9 @@ class DBManager: SharedDB {
         return realm.objects(Account.self).filter("isActive == false AND isLoggedIn == true")
     }
     
-    class func getLoggedOutAccount(username: String) -> Account? {
+    class func getLoggedOutAccount(accountId: String) -> Account? {
         let realm = try! Realm()
-        let results = realm.objects(Account.self).filter("isLoggedIn == false AND username == '\(username)'")
+        let results = realm.objects(Account.self).filter("isLoggedIn == false AND compoundKey == '\(accountId)'")
         return results.first
     }
     
@@ -127,17 +127,17 @@ class DBManager: SharedDB {
         var contacts: [Int: String]
     }
     
-    class func insertBatchRows(rows: [[String: Any]], maps: inout LinkDBMaps, username: String){
+    class func insertBatchRows(rows: [[String: Any]], maps: inout LinkDBMaps, accountId: String){
         let realm = try! Realm()
         try! realm.write {
             for row in rows {
-                self.insertRow(realm: realm, row: row, maps: &maps, username: username)
+                self.insertRow(realm: realm, row: row, maps: &maps, accountId: accountId)
             }
         }
     }
     
-    class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps, username: String){
-        guard let account = realm.object(ofType: Account.self, forPrimaryKey: username),
+    class func insertRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps, accountId: String){
+        guard let account = realm.object(ofType: Account.self, forPrimaryKey: accountId),
             let table = row["table"] as? String,
             let object = row["object"] as? [String: Any] else {
                 return
@@ -168,7 +168,7 @@ class DBManager: SharedDB {
             let id = object["id"] as! Int
             let email = Email()
             let key = object["key"] as! Int
-            FileUtils.saveEmailToFile(username: username, metadataKey: "\(key)", body: object["content"] as! String, headers: object["headers"] as? String)
+            FileUtils.saveEmailToFile(email: account.email, metadataKey: "\(key)", body: object["content"] as! String, headers: object["headers"] as? String)
             email.account = account
             email.messageId = (object["messageId"] as? Int)?.description ?? object["messageId"] as! String
             email.isMuted = object["isMuted"] as! Bool

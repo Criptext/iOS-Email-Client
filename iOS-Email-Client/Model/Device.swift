@@ -35,9 +35,10 @@ class Device {
         }
     }
     
-    func toDictionary(recipientId: String) -> [String: Any] {
+    func toDictionary(recipientId: String, domain: String) -> [String: Any] {
         return [
             "recipientId": recipientId,
+            "domain": domain,
             "deviceName": self.name,
             "deviceFriendlyName": self.friendlyName,
             "deviceType": self.type

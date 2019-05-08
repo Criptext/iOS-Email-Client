@@ -61,7 +61,8 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func checkDatabase(){
-        if DBManager.getLoggedOutAccount(username: self.signupData.username) == nil {
+        let accountId = self.signupData.domain == Env.plainDomain ? signupData.username : "\(signupData.username)@\(signupData.domain)"
+        if DBManager.getLoggedOutAccount(accountId: accountId) == nil {
             let loggedOutAccounts = DBManager.getLoggedOutAccounts()
             for account in loggedOutAccounts {
                 FileUtils.deleteAccountDirectory(account: account)
@@ -174,7 +175,7 @@ class ConnectDeviceViewController: UIViewController{
     
     func restoreDB(myAccount: Account, path: String, data: LinkSuccessData) {
         DBManager.clearMailbox(account: myAccount)
-        let restoreTask = RestoreDBAsyncTask(path: path, username: myAccount.username, initialProgress: 80)
+        let restoreTask = RestoreDBAsyncTask(path: path, accountId: myAccount.compoundKey, initialProgress: 80)
         restoreTask.start(progressHandler: { (progress) in
             self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
         }) {
@@ -212,7 +213,7 @@ class ConnectDeviceViewController: UIViewController{
         DBManager.store([myContact], account: myAccount)
         DBManager.createSystemLabels()
         let defaults = CriptextDefaults()
-        defaults.activeAccount = myAccount.username
+        defaults.activeAccount = myAccount.compoundKey
         defaults.welcomeTour = true
     }
     

@@ -151,8 +151,8 @@ class NewLoginViewController: UIViewController{
         self.presentPopover(popover: warningPopover, height: 275)
     }
     
-    func existingAccount(_ username: String) -> Account? {
-        guard DBManager.getLoggedOutAccount(username: username) == nil else {
+    func existingAccount(_ accountId: String) -> Account? {
+        guard DBManager.getLoggedOutAccount(accountId: accountId) == nil else {
             return nil
         }
         guard let existingAccount = DBManager.getLoggedOutAccounts().first else {
@@ -177,14 +177,18 @@ class NewLoginViewController: UIViewController{
     
     func checkUsername(_ email: String) {
         
-        guard let usernameDomain = checkEmailInput(email),
-            !multipleAccount || !self.checkAccountExists(username: usernameDomain.0) else {
-            self.showLoginError(error: String.localize("ACCOUNT_EXISTS"))
+        guard let usernameDomain = checkEmailInput(email) else {
             return
         }
         
         let username = usernameDomain.0
         let domain = usernameDomain.1
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        
+        guard !multipleAccount || !self.checkAccountExists(accountId: accountId) else {
+                self.showLoginError(error: String.localize("ACCOUNT_EXISTS"))
+                return
+        }
         
         APIManager.checkLogin(username: username, domain: domain) { [weak self] (responseData) in
             guard let weakSelf = self else {
@@ -199,17 +203,17 @@ class NewLoginViewController: UIViewController{
                 weakSelf.showLoginError(error: String.localize("USERNAME_NOT"))
                 return
             }
-            guard let user = weakSelf.existingAccount(username) else {
+            guard let user = weakSelf.existingAccount(accountId) else {
                 weakSelf.linkBegin(username: username, domain: domain)
                 return
             }
-            let previousEmail = "\(user.username.hideMidChars())@\(user.domain)"
+            let previousEmail = "\(user.username.hideMidChars())@\(user.domain ?? Env.plainDomain)"
             weakSelf.showWarningPopup(username: username, domain: domain, previous: previousEmail)
         }
     }
     
-    func checkAccountExists(username: String) -> Bool {
-        guard let existingAccount = DBManager.getAccountByUsername(username),
+    func checkAccountExists(accountId: String) -> Bool {
+        guard let existingAccount = DBManager.getAccountById(accountId),
             existingAccount.isLoggedIn else {
                 return false
         }

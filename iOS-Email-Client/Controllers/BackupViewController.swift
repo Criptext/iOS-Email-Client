@@ -54,7 +54,7 @@ class BackupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if BackupManager.shared.contains(username: myAccount.username) {
+        if BackupManager.shared.contains(accountId: myAccount.compoundKey) {
             processMessage = String.localize("BACKUP_GENERATING")
             uploading = true
         }
@@ -204,7 +204,7 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
     
     func toggleCloudBackup() {
         DBManager.update(account: myAccount, hasCloudBackup: !myAccount.hasCloudBackup)
-        BackupManager.shared.clearAccount(username: myAccount.username)
+        BackupManager.shared.clearAccount(accountId: myAccount.compoundKey)
         if myAccount.hasCloudBackup {
             startBackup()
         } else {

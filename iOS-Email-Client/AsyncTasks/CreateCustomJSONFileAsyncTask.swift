@@ -26,15 +26,15 @@ class CreateCustomJSONFileAsyncTask {
         }
     }
     
-    init(username: String, kind: Kind = .link) {
-        self.username = username
+    init(accountId: String, kind: Kind = .link) {
+        self.accountId = accountId
         self.fileURL = kind.url
     }
     
     let fileURL: URL
     var contacts = [String: Int]()
     var emails = [Int: Int]()
-    var username: String
+    var accountId: String
     
     func start(completion: @escaping ((Error?, URL?) -> Void)){
         try? FileManager.default.removeItem(at: fileURL)
@@ -44,7 +44,7 @@ class CreateCustomJSONFileAsyncTask {
     }
     
     private func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
-        let account = DBManager.getAccountByUsername(self.username)
+        let account = DBManager.getAccountById(self.accountId)
         let results = DBManager.retrieveWholeDB(account: account!)
         results.contacts.enumerated().forEach {
             contacts[$1.email] = $0 + 1
