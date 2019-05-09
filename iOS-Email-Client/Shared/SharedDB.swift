@@ -65,12 +65,13 @@ class SharedDB {
         }
     }
     
-    class func update(jwt: String, refreshToken: String) {
+    class func update(oldJwt: String, refreshToken: String, jwt: String) {
         let realm = try! Realm()
         
         try! realm.write {
-            let account = realm.objects(Account.self).filter("jwt == '\(jwt)'").first
+            let account = realm.objects(Account.self).filter("jwt == '\(oldJwt)'").first
             account?.refreshToken = refreshToken
+            account?.jwt = jwt
         }
     }
     
@@ -207,9 +208,13 @@ class SharedDB {
     }
     
     class func updateScore(contact: Contact){
-        let realm = try! Realm()
-        try? realm.write {
-            contact.score = contact.score + 1
+        do {
+            let realm = try Realm()
+            try realm.write {
+                contact.score = contact.score + 1
+            }
+        } catch {
+            
         }
     }
     

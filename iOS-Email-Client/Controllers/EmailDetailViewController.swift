@@ -136,9 +136,9 @@ class EmailDetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         self.topToolbar.isHidden = true
         self.coachMarksController.stop(immediately: true)
-        super.viewWillDisappear(animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -154,6 +154,11 @@ class EmailDetailViewController: UIViewController {
         }
         
         handleControllerMessage(message)
+    }
+    
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion)
+        emailData.observerToken?.invalidate()
     }
     
     func applyTheme() {
@@ -667,7 +672,8 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         deselectSelectedRow()
         let email = getMail(index: indexPath.row)
         let fromContact = email.fromContact
-        let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [fromContact]
+        let replyToContact = email.replyTo.isEmpty ? nil : ContactUtils.parseContact(email.replyTo, account: myAccount)
+        let contactsTo = (fromContact.email == emailData.accountEmail) ? Array(email.getContacts(type: .to)) : [replyToContact ?? fromContact]
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
@@ -685,7 +691,12 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         var contactsTo = [Contact]()
         var contactsCc = [Contact]()
         let myEmail = emailData.accountEmail
-        contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
+        let replyToContact = email.replyTo.isEmpty ? nil : ContactUtils.parseContact(email.replyTo, account: myAccount)
+        if let replyTo = replyToContact {
+            contactsTo.append(replyTo)
+        } else {
+            contactsTo.append(contentsOf: email.getContacts(type: .from, notEqual: myEmail))
+        }
         contactsTo.append(contentsOf: email.getContacts(type: .to, notEqual: myEmail))
         contactsCc.append(contentsOf: email.getContacts(type: .cc, notEqual: myEmail))
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
@@ -955,7 +966,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
 extension EmailDetailViewController : LabelsUIPopoverDelegate{
     
     func handleAddLabels(){
-        let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: emailData.selectedLabel)
+        let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: emailData.selectedLabel, myAccount: myAccount)
         for label in emailData.labels {
             labelsPopover.selectedLabels[label.id] = label
         }
@@ -963,7 +974,7 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     }
     
     func handleMoveTo(){
-        let labelsPopover = LabelsUIPopover.instantiate(type: .moveTo, selectedLabel: emailData.selectedLabel)
+        let labelsPopover = LabelsUIPopover.instantiate(type: .moveTo, selectedLabel: emailData.selectedLabel, myAccount: myAccount)
         presentPopover(labelsPopover, height: Constants.basePopoverHeight + labelsPopover.labels.count * Constants.labelPopoverHeight)
     }
     

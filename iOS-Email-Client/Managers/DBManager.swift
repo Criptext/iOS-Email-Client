@@ -520,13 +520,10 @@ class DBManager: SharedDB {
     
     class func getTrashThreads(from date: Date, account: Account) -> [String]? {
         let realm = try! Realm()
-        var threadIds: [String]?
-        try! realm.write {
-            let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ AND trashDate < %@ AND account.compoundKey == '\(account.compoundKey)'", [SystemLabel.trash.id], date))
-            threadIds = Array(Set(emails.map({ (email) -> String in
-                return email.threadId
-            })))
-        }
+        let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ AND trashDate < %@ AND account.compoundKey == '\(account.compoundKey)'", [SystemLabel.trash.id], date))
+        let threadIds = Array(Set(emails.map({ (email) -> String in
+            return email.threadId
+        })))
         return threadIds
     }
     
@@ -595,10 +592,10 @@ class DBManager: SharedDB {
         return Array(realm.objects(Label.self).filter(NSPredicate(format: "type = %@", type)))
     }
     
-    class func getActiveCustomLabels() -> [Label]{
+    class func getActiveCustomLabels(account: Account) -> [Label]{
         let realm = try! Realm()
         
-        return Array(realm.objects(Label.self).filter(NSPredicate(format: "type = 'custom' and visible = true")))
+        return Array(realm.objects(Label.self).filter(NSPredicate(format: "account.compoundKey = '\(account.compoundKey)' AND type = 'custom' AND visible = true")))
     }
     
     class func getLabels() -> [Label]{
@@ -607,10 +604,13 @@ class DBManager: SharedDB {
         return Array(realm.objects(Label.self))
     }
     
-    class func getUserLabels(account: Account) -> [Label] {
+    class func getUserLabels(account: Account, visible: Bool = true) -> [Label] {
         let realm = try! Realm()
         
-        return Array(realm.objects(Label.self).filter(NSPredicate(format: "account.compoundKey = '\(account.compoundKey)' AND visible = true")))
+        if visible {
+            return Array(realm.objects(Label.self).filter(NSPredicate(format: "account.compoundKey = '\(account.compoundKey)' AND visible = true")))
+        }
+        return Array(realm.objects(Label.self).filter(NSPredicate(format: "account.compoundKey = '\(account.compoundKey)'")))
     }
     
     class func setLabelsForThread(_ threadId: String, labels: [Int], currentLabel: Int, account: Account){
@@ -634,8 +634,8 @@ class DBManager: SharedDB {
         })
     }
     
-    class func getSettableLabels() -> [Label] {
-        var settableLabels = getActiveCustomLabels()
+    class func getSettableLabels(account: Account) -> [Label] {
+        var settableLabels = getActiveCustomLabels(account: account)
         settableLabels.append(getLabel(SystemLabel.starred.id)!)
         return settableLabels
     }

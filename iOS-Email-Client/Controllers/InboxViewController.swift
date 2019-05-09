@@ -955,14 +955,16 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func emptyTrash(from date: Date = Date()){
-        guard let threadIds = DBManager.getTrashThreads(from: date, account: myAccount),
-            !threadIds.isEmpty else {
-            return
+        autoreleasepool {
+            guard let threadIds = DBManager.getTrashThreads(from: date, account: myAccount),
+                !threadIds.isEmpty else {
+                return
+            }
+            let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
+            DBManager.deleteThreads(threadIds: threadIds)
+            self.refreshThreadRows()
+            DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
         }
-        let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
-        DBManager.deleteThreads(threadIds: threadIds)
-        self.refreshThreadRows()
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -1379,7 +1381,7 @@ extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
 extension InboxViewController : LabelsUIPopoverDelegate{
     
     func handleAddLabels(){
-        let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel)
+        let labelsPopover = LabelsUIPopover.instantiate(type: .addLabels, selectedLabel: mailboxData.selectedLabel, myAccount: myAccount)
         if let indexPaths = mailboxData.selectedIndexPaths {
             for indexPath in indexPaths {
                 let thread = mailboxData.threads[indexPath.row]
@@ -1398,7 +1400,7 @@ extension InboxViewController : LabelsUIPopoverDelegate{
     }
     
     func handleMoveTo(){
-        let labelsPopover = LabelsUIPopover.instantiate(type: .moveTo, selectedLabel: mailboxData.selectedLabel)
+        let labelsPopover = LabelsUIPopover.instantiate(type: .moveTo, selectedLabel: mailboxData.selectedLabel, myAccount: myAccount)
         presentPopover(labelsPopover, height: Constants.basePopoverHeight + labelsPopover.labels.count * Constants.labelPopoverHeight)
     }
     
@@ -1929,6 +1931,9 @@ extension InboxViewController: RequestDelegate {
     }
     
     func errorRequest(username: String, response: ResponseData) {
+        if !RequestManager.shared.isInQueue(username: myAccount.username) {
+            self.refreshControl.endRefreshing()
+        }
         guard myAccount.username == username else {
             return
         }

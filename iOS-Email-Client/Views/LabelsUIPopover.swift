@@ -88,11 +88,11 @@ class LabelsUIPopover: BaseUIPopover {
         self.popoverPresentationController?.backgroundColor = theme.overallBackground
     }
     
-    class func instantiate(type: ActionType, selectedLabel: Int) -> LabelsUIPopover {
+    class func instantiate(type: ActionType, selectedLabel: Int, myAccount: Account) -> LabelsUIPopover {
         let labelsPopover = LabelsUIPopover()
         labelsPopover.type = type
         labelsPopover.headerTitle = type == .moveTo ? String.localize("MOVE_TO") : String.localize("ADD_LABELS")
-        let labels = type == .moveTo ? DBManager.getMoveableLabels(label: selectedLabel) : DBManager.getSettableLabels()
+        let labels = type == .moveTo ? DBManager.getMoveableLabels(label: selectedLabel) : DBManager.getSettableLabels(account: myAccount)
         labelsPopover.labels.append(contentsOf: labels)
         return labelsPopover
     }
