@@ -102,7 +102,7 @@ class NewEmailHandler {
                 return
             }
             
-            var replyThreadId: String? = nil
+            var replyThreadId = event.threadId
             if let inReplyTo = event.inReplyTo,
                 let replyEmail = SharedDB.getEmail(messageId: inReplyTo, account: myAccount) {
                 replyThreadId = replyEmail.threadId
@@ -111,7 +111,7 @@ class NewEmailHandler {
             let contentPreview = self.getContentPreview(content: content)
             let email = Email()
             email.account = myAccount
-            email.threadId = replyThreadId ?? event.threadId
+            email.threadId = replyThreadId
             email.subject = event.subject
             email.key = event.metadataKey
             email.messageId = event.messageId
@@ -120,6 +120,7 @@ class NewEmailHandler {
             email.unread = true
             email.secure = event.guestEncryption == 1 || event.guestEncryption == 3 ? true : false
             email.preview = contentPreview.0
+            email.replyTo = event.replyTo ?? ""
             email.buildCompoundKey()
             
             if(unsent){

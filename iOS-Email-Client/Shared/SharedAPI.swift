@@ -119,6 +119,7 @@ class SharedAPI {
             updgrateToRefreshToken(responseData: responseData, token: token, queue: queue, completionHandler: completionHandler)
             return
         }
+        
         let url = "\(self.baseUrl)/user/refreshtoken"
         let headers = [
             "Authorization": "Bearer \(refreshToken)",
@@ -145,15 +146,17 @@ class SharedAPI {
             versionHeader: apiVersion,
             language: Env.language
         ]
-        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { (response) in
             let refreshResponseData = handleResponse(response)
-            guard case let .SuccessString(newRefreshToken) = refreshResponseData else {
+            guard case let .SuccessDictionary(data) = refreshResponseData,
+                let newToken = data["token"] as? String,
+                let newRefreshToken = data["refreshToken"] as? String else {
                 completionHandler(refreshResponseData, token)
                 return
             }
-            SharedDB.update(jwt: token, refreshToken: newRefreshToken)
+            SharedDB.update(oldJwt: token, refreshToken: newRefreshToken, jwt: newToken)
             SharedDB.refresh()
-            completionHandler(nil, token)
+            completionHandler(nil, newToken)
         }
     }
     

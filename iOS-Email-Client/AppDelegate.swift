@@ -370,6 +370,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
                 }
+                if (oldSchemaVersion < 19) {
+                    migration.enumerateObjects(ofType: Account.className()){ (oldObject, newObject) in
+                        guard let newAccount = newObject,
+                            let oldAccount = oldObject,
+                            let refreshToken = oldAccount["refreshToken"] as? String,
+                            let refreshDic = Utils.convertToDictionary(text: refreshToken),
+                            let rToken = refreshDic["refreshToken"] as? String else {
+                            return
+                        }
+                        newAccount["refreshToken"] = rToken
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm

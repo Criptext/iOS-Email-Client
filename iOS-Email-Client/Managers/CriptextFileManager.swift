@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol CriptextFileDelegate {
+protocol CriptextFileDelegate: class {
     func uploadProgressUpdate(file: File, progress: Int)
     func finishRequest(file: File, success: Bool)
     func fileError(message: String)
@@ -19,11 +19,11 @@ class CriptextFileManager {
     let PENDING = -1
     let MAX_SIZE = 25000000
     
-    var myAccount : Account!
+    weak var myAccount : Account!
     var chunkSize = 512000
     var registeredFiles = [File]()
     var apiManager: APIManager.Type = APIManager.self
-    var delegate: CriptextFileDelegate?
+    weak var delegate: CriptextFileDelegate?
     
     internal(set) var keyPairs = [Int: (Data, Data)]()
     var encryption : Bool {

@@ -9,7 +9,7 @@
 import Foundation
 
 class ContactUtils {
-    private class func parseContact(_ contactString: String, account: Account) -> Contact {
+    class func parseContact(_ contactString: String, account: Account) -> Contact {
         let contactMetadata = self.getStringEmailName(contact: contactString);
         guard let existingContact = SharedDB.getContact(contactMetadata.0) else {
             let newContact = Contact(value: ["displayName": contactMetadata.1, "email": contactMetadata.0])

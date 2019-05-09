@@ -21,15 +21,18 @@ class GetBadgeCounterAsyncTask {
     func start(completionHandler: @escaping ((Int, String) -> Void)){
         let queue = DispatchQueue(label: "com.criptext.mail.badge", qos: .userInitiated, attributes: .concurrent)
         queue.async {
-            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
-                completionHandler(self.label, "0")
-                return
+            var counter = ""
+            autoreleasepool {
+                guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+                    completionHandler(self.label, "0")
+                    return
+                }
+                let label =  SystemLabel(rawValue: self.label) ?? .all
+                let mailboxCounter = label == .draft
+                    ? DBManager.getThreads(from: self.label, since: Date(), limit: 100, account: myAccount).count
+                    : DBManager.getUnreadMailsCounter(from: self.label, account: myAccount)
+                counter = mailboxCounter > 0 ? "(\(mailboxCounter > 100 ? "99+" : mailboxCounter.description))" : ""
             }
-            let label =  SystemLabel(rawValue: self.label) ?? .all
-            let mailboxCounter = label == .draft
-                ? DBManager.getThreads(from: self.label, since: Date(), limit: 100, account: myAccount).count
-                : DBManager.getUnreadMailsCounter(from: self.label, account: myAccount)
-            let counter = mailboxCounter > 0 ? "(\(mailboxCounter > 100 ? "99+" : mailboxCounter.description))" : ""
             DispatchQueue.main.async {
                 completionHandler(self.label, counter)
             }

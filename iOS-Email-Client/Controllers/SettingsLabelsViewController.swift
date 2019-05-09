@@ -24,7 +24,7 @@ class SettingsLabelsViewController: UIViewController {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         
         labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
-        labels.append(contentsOf: DBManager.getUserLabels(account: myAccount))
+        labels.append(contentsOf: DBManager.getUserLabels(account: myAccount, visible: false))
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UINib(nibName: "LabelsFooterTableViewCell", bundle: nil ), forHeaderFooterViewReuseIdentifier: "settingsAddLabel")
