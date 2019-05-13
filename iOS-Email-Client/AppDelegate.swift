@@ -656,8 +656,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
+        print(userInfo)
+        
         guard let inboxVC = getInboxVC(),
-            let accountUser = (userInfo["account"] as? String ?? userInfo["recipientId"] as? String) else {
+            let accountUser = (userInfo["account"] as? String ?? userInfo["recipientId"] as? String),
+            let accountDomain = userInfo["domain"] as? String else {
                 return
         }
         DBManager.refresh()
@@ -669,14 +672,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             }
             let linkData = LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)
             linkData.version = Int(version)!
-            inboxVC.onAcceptLinkDevice(username: accountUser, linkData: linkData) {
+            inboxVC.onAcceptLinkDevice(username: accountUser, domain: accountDomain, linkData: linkData) {
                 completionHandler()
             }
         case "LINK_DENY":
             guard let randomId = userInfo["randomId"] as? String else {
                 break
             }
-            inboxVC.onCancelLinkDevice(username: accountUser, linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)) {
+            inboxVC.onCancelLinkDevice(username: accountUser, domain: accountDomain, linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .link)) {
                 completionHandler()
             }
         case "SYNC_ACCEPT":
@@ -690,14 +693,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             let linkData = LinkData(deviceName: deviceName, deviceType: Int(deviceType)!, randomId: randomId, kind: .sync)
             linkData.version = Int(version)!
             linkData.deviceId = Int32(deviceId)!
-            inboxVC.onAcceptLinkDevice(username: accountUser, linkData: linkData) {
+            inboxVC.onAcceptLinkDevice(username: accountUser, domain: accountDomain, linkData: linkData) {
                 completionHandler()
             }
         case "SYNC_DENY":
             guard let randomId = userInfo["randomId"] as? String else {
                 break
             }
-            inboxVC.onCancelLinkDevice(username: accountUser, linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .sync)) {
+            inboxVC.onCancelLinkDevice(username: accountUser, domain: accountDomain, linkData: LinkData(deviceName: "", deviceType: 1, randomId: randomId, kind: .sync)) {
                 completionHandler()
             }
         case "EMAIL_MARK":
@@ -705,7 +708,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let key = Int(keyString) else {
                 return
             }
-            inboxVC.markAsRead(username: accountUser, emailKey: key) {
+            inboxVC.markAsRead(username: accountUser, domain: accountDomain, emailKey: key) {
                 UIApplication.shared.applicationIconBadgeNumber = SharedDB.getUnreadCounters()
                 completionHandler()
             }
@@ -715,7 +718,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let key = Int(keyString) else {
                     return
             }
-            inboxVC.reply(username: accountUser, emailKey: key) {
+            inboxVC.reply(username: accountUser, domain: accountDomain, emailKey: key) {
                 completionHandler()
             }
             break
@@ -724,13 +727,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 let key = Int(keyString) else {
                     return
             }
-            inboxVC.moveToTrash(username: accountUser, emailKey: key) {
+            inboxVC.moveToTrash(username: accountUser, domain: accountDomain, emailKey: key) {
                 completionHandler()
             }
             break
         default:
             if let threadId = userInfo["threadId"] as? String {
-                inboxVC.openThread(username: accountUser, threadId: threadId)
+                inboxVC.openThread(username: accountUser, domain: accountDomain, threadId: threadId)
             }
         }
     }
@@ -739,7 +742,21 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let accountUser = userInfo["account"] as? String else {
+        
+        print(userInfo)
+        
+        if let action = userInfo["action"] as? String ,
+            action == "anti_push",
+            let metadataKeys = userInfo["metadataKeys"] as? String {
+            let keys = metadataKeys.split(separator: ",").map({String($0)})
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: keys)
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: keys)
+            completionHandler(.noData)
+            return
+        }
+        
+        guard let accountUser = userInfo["account"] as? String,
+            let accountDomain = userInfo["domain"] as? String else {
             completionHandler(.noData)
             return
         }
@@ -749,8 +766,8 @@ extension AppDelegate: MessagingDelegate {
             }
             completionHandler(.newData)
         }
-        //TODO USE ACCOUNT ID
-        RequestManager.shared.getAccountEvents(accountId: accountUser)
+        let accountId = accountDomain == Env.plainDomain ? accountUser : "\(accountUser)@\(accountDomain)"
+        RequestManager.shared.getAccountEvents(accountId: accountId)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

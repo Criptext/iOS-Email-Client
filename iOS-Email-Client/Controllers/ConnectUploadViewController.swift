@@ -50,7 +50,7 @@ class ConnectUploadViewController: UIViewController{
         super.viewDidLoad()
         mailboxDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = self
-        connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
+        connectUIView.initialLoad(email: myAccount.email)
         self.applyTheme()
         scheduleWorker.delegate = self
         self.connectUIView.goBackButton.isHidden = true

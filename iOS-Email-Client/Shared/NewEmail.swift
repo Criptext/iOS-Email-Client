@@ -66,6 +66,13 @@ struct NewEmail {
         replyTo = params["replyTo"] as? String
         boundary = params["boundary"] as? String
         inReplyTo = params["inReplyTo"] as? String
+        
+        if let senderId = params["senderId"] as? String,
+            let senderDomain = params["senderDomain"] as? String {
+            recipientId = senderDomain == Env.plainDomain ? senderId : "\(senderId)@\(senderDomain)"
+        } else {
+            recipientId = ContactUtils.getUsernameFromEmailFormat(from)
+        }
     }
     
     static func convertToDate(dateString: String) -> Date {

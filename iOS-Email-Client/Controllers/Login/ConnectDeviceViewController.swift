@@ -47,7 +47,7 @@ class ConnectDeviceViewController: UIViewController{
         super.viewDidLoad()
         socket = SingleWebSocket()
         socket?.delegate = self
-        connectUIView.initialLoad(email: "\(signupData.username)\(Constants.domain)")
+        connectUIView.initialLoad(email: "\(signupData.username)@\(signupData.domain)")
         scheduleWorker.delegate = self
         connectUIView.goBack = {
             self.goBack()
@@ -190,7 +190,7 @@ class ConnectDeviceViewController: UIViewController{
                 if self.multipleAccount {
                     self.goBackToMailbox(account: myAccount)
                 } else {
-                    self.goToMailbox(myAccount.username)
+                    self.goToMailbox(myAccount.compoundKey)
                 }
                 self.registerFirebaseToken(jwt: myAccount.jwt)
             }

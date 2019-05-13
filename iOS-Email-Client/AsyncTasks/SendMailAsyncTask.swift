@@ -91,6 +91,7 @@ class SendMailAsyncTask {
     private class func getRecipientEmails(username: String, domain: String, email: Email) -> Recipients {
         var recipients = Recipients()
         recipients.peers[domain] = [username]
+        recipients.domains.insert(domain)
         
         let toContacts = email.getContacts(type: .to)
         for contact in toContacts {
