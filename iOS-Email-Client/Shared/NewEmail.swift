@@ -68,10 +68,9 @@ struct NewEmail {
         boundary = params["boundary"] as? String
         inReplyTo = params["inReplyTo"] as? String
         
-        if let fromDomain = params["fromDomain"] as? [String: Any],
-            let username = fromDomain["from"] as? String,
-            let domain = fromDomain["domain"] as? String {
-            recipientId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        if let senderId = params["senderId"] as? String,
+            let senderDomain = params["senderDomain"] as? String {
+            recipientId = senderDomain == Env.plainDomain ? senderId : "\(senderId)@\(senderDomain)"
         } else {
             recipientId = ContactUtils.getUsernameFromEmailFormat(from)
         }

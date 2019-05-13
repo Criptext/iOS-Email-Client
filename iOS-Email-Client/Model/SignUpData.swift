@@ -47,7 +47,7 @@ class SignUpData{
     class func createAccount(from signupData: SignUpData) -> Account {
         let myAccount = Account()
         myAccount.username = signupData.username
-        myAccount.domain = "@\(signupData.domain)" == Env.domain ? nil : signupData.domain
+        myAccount.domain = signupData.domain == Env.plainDomain ? nil : signupData.domain
         myAccount.name = signupData.fullname
         myAccount.jwt = signupData.token
         myAccount.regId = 0
