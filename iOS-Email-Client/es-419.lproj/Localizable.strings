@@ -364,16 +364,19 @@
 "ADD_ACCOUNT" = "Agregar cuenta";
 "NOW_LOGGED" = "Has iniciado sesión como ";
 
-"BACKUP" = "Respaldo en iCloud";
-"BACKUP_CLOUD" = "Respaldo en iCloud";
+"BACKUP" = "Respaldo en la nube";
+"BACKUP_CLOUD" = "Respaldo en la nube";
 "BACKUP_NOW" = "Respaldar ahora";
 "BACKUP_AUTO" = "Respaldo automático";
 
 "LAST_BACKUP" = "Respaldado: ";
 "BACKUP_SIZE" = "Tamaño: ";
 
+"CLOUD_ERROR" = "Error de iCloud";
+"CLOUD_ERROR_MSG" = "Unable to access your iCloud Drive. Asegúrate de habilitar iCloud Drive: Configuración> iCloud> iCloud Drive";
 "BACKUP_GENERATING" = "Generando archivo de respaldo...";
 "BACKUP_AUTO_MESSAGE" = "Nota: Para evitar el uso excesivo de datos móviles, asegúrate de estar conectado a internet o deshabilitar iCloud Drive: Configuración> iCloud> iCloud Drive> Deshabilitado";
+"GENERATING_PROGRESS" = "Generando archivo de respaldo... (%i %%)";
 "BACKUP_PROGRESS" = "Subiendo Respaldo... (%i %%)";
 "BACKUP_SUCCESS" = "Buzon respaldado exitosamente!";
 

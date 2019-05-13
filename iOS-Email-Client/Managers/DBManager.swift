@@ -112,7 +112,9 @@ class DBManager: SharedDB {
         let labels = realm.objects(Label.self).filter("type == 'custom' AND account.compoundKey == '\(account.compoundKey)'")
         let emails = realm.objects(Email.self).filter("messageId != '' AND account.compoundKey == '\(account.compoundKey)'")
         let emailContacts = realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)' AND email.delivered != \(Email.Status.sending.rawValue) AND email.delivered != \(Email.Status.fail.rawValue) AND NOT (ANY email.labels.id == \(SystemLabel.draft.id))")
-        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts)
+        let total = contacts.count + labels.count + 3 * emails.count + emailContacts.count
+        let step = total * 5 / 100
+        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, total: total, step: step)
     }
     
     struct LinkDBSource {
@@ -120,6 +122,8 @@ class DBManager: SharedDB {
         let labels: Results<Label>
         let emails: Results<Email>
         let emailContacts: Results<EmailContact>
+        let total: Int
+        let step: Int
     }
     
     struct LinkDBMaps {

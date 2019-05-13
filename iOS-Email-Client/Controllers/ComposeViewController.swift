@@ -931,11 +931,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
             guard name.contains("@") else {
-                addToken("\(name)\(Constants.domain)", value: "\(name)\(Constants.domain)", to: view)
+                addToken("\(name)\(Constants.domain)", value: "\(name)\(Constants.domain)".lowercased(), to: view)
                 return
             }
             if Utils.validateEmail(name) {
-                addToken(name, value: name, to: view)
+                addToken(name, value: name.lowercased(), to: view)
             } else {
                 self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             }
@@ -982,11 +982,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         guard text.contains("@") else {
-            addToken("\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)", to: view)
+            addToken("\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)".lowercased(), to: view)
             return
         }
         if Utils.validateEmail(text) {
-            addToken(text, value: text, to: view)
+            addToken(text, value: text.lowercased(), to: view)
         } else {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
         }
