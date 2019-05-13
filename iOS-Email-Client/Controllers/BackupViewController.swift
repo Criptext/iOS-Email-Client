@@ -58,6 +58,7 @@ class BackupViewController: UIViewController {
             processMessage = String.localize("BACKUP_GENERATING")
             uploading = true
         }
+        BackupManager.shared.delegate = self
         
         navigationItem.title = String.localize("BACKUP")
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
@@ -73,22 +74,9 @@ class BackupViewController: UIViewController {
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "headerCell")
         self.fillOptions()
         
-        fetchBackupData()
+        handleMetadataQuery()
         toggleOptions()
         applyTheme()
-    }
-    
-    func fetchBackupData() {
-        if let cloudUrl = containerUrl?.appendingPathComponent("backup.db"),
-            let attrs = try? FileManager.default.attributesOfItem(atPath: cloudUrl.path),
-            let NSlastBackupDate = attrs[.modificationDate] as? NSDate,
-            let NSlastBackupSize = attrs[.size] as? NSNumber {
-            lastBackupDate = NSlastBackupDate as Date?
-            lastBackupSize = NSlastBackupSize.intValue
-            handleProgress()
-        } else {
-            handleMetadataQuery()
-        }
     }
     
     func fillOptions() {
@@ -233,6 +221,17 @@ extension BackupViewController: UITableViewDataSource, UITableViewDelegate {
         }
         tableView.reloadData()
     }
+    
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion)
+        NotificationCenter.default.removeObserver(self)
+        if let myQuery = query {
+            myQuery.stop()
+        }
+        if let myMetaQuery = metaQuery {
+            myMetaQuery.stop()
+        }
+    }
 }
 
 extension BackupViewController {
@@ -243,31 +242,34 @@ extension BackupViewController {
         metaQuery = NSMetadataQuery()
         metaQuery.searchScopes = [NSMetadataQueryUbiquitousDataScope]
         metaQuery.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(didFinishGathering), name: NSNotification.Name.NSMetadataQueryDidFinishGathering, object: nil)
-        metaQuery.enableUpdates()
         metaQuery.start()
     }
     
     @objc func didFinishGathering(not: NSNotification) {
         self.metaQuery.disableUpdates()
-        guard let item = metaQuery.results.first as? NSMetadataItem,
-            let itemSize = item.value(forAttribute: NSMetadataItemFSSizeKey) as? NSNumber,
+        guard let item = metaQuery.results.first as? NSMetadataItem else {
+            return
+        }
+        guard let itemSize = item.value(forAttribute: NSMetadataItemFSSizeKey) as? NSNumber,
             let itemDate = (item.value(forAttribute: NSMetadataItemFSCreationDateKey) as? NSDate) as Date? else {
-                handleProgress()
+                self.metaQuery.enableUpdates()
                 self.metaQuery.stop()
+                if (item.value(forKey: NSMetadataUbiquitousItemIsUploadingKey) as? NSNumber)?.boolValue ?? false {
+                    handleProgress()
+                }
                 return
         }
+        self.metaQuery.enableUpdates()
+        self.metaQuery.stop()
         lastBackupSize = itemSize.intValue
         lastBackupDate = itemDate
         tableView.reloadData()
-        handleProgress()
-        self.metaQuery.enableUpdates()
     }
     
     func handleProgress() {
         guard let url = containerUrl?.appendingPathComponent("backup.db") else {
-            self.showAlert("Cloud Error", message: "Unable to access your Cloud Drive. Check if you have Cloud Drive enabled for Criptext.", style: .alert)
+            self.showAlert(String.localize("CLOUD_ERROR"), message: String.localize("CLOUD_ERROR_MSG"), style: .alert)
             self.uploading = false
             toggleOptions()
             return
@@ -278,23 +280,22 @@ extension BackupViewController {
         query.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdate), name: NSNotification.Name.NSMetadataQueryDidUpdate, object: nil)
-        query.enableUpdates()
         query.start()
     }
     
     @objc func didUpdate(not: NSNotification) {
+        self.query.disableUpdates()
         guard let items = not.userInfo?[NSMetadataQueryUpdateChangedItemsKey] as? [NSMetadataItem] else {
             return
         }
-        self.query.disableUpdates()
         for mdItem in items {
             guard !((mdItem.value(forKey: NSMetadataUbiquitousItemIsUploadedKey) as? NSNumber)?.boolValue ?? false) else {
                 uploading = false
                 processMessage = String.localize("BACKUP_SUCCESS")
                 self.progress = 1.0
-                self.fetchBackupData()
                 toggleOptions()
                 query.stop()
+                self.handleMetadataQuery()
                 return
             }
             guard (mdItem.value(forKey: NSMetadataUbiquitousItemIsUploadingKey) as? NSNumber)?.boolValue ?? false,
@@ -327,5 +328,16 @@ extension BackupViewController: UIGestureRecognizerDelegate {
             return true
         }
         return false
+    }
+}
+
+extension BackupViewController: BackupDelegate {
+    func progressUpdate(username: String, progress: Int) {
+        guard username == myAccount.username else {
+            return
+        }
+        processMessage = String.localize("GENERATING_PROGRESS", arguments: progress)
+        self.progress = Float(progress)/100
+        tableView.reloadData()
     }
 }

@@ -36,22 +36,27 @@ class CreateCustomJSONFileAsyncTask {
     var emails = [Int: Int]()
     var username: String
     
-    func start(completion: @escaping ((Error?, URL?) -> Void)){
+    func start(progressHandler: @escaping ((Int) -> Void), completion: @escaping ((Error?, URL?) -> Void)){
         try? FileManager.default.removeItem(at: fileURL)
         DispatchQueue.global().async {
-            self.createDBFile(completion: completion)
+            self.createDBFile(progressHandler: progressHandler, completion: completion)
         }
     }
     
-    private func createDBFile(completion: @escaping ((Error?, URL?) -> Void)){
+    private func createDBFile(progressHandler: @escaping ((Int) -> Void), completion: @escaping ((Error?, URL?) -> Void)){
         let account = DBManager.getAccountByUsername(self.username)
         let results = DBManager.retrieveWholeDB(account: account!)
+        var progress = handleProgress(progress: 0, total: results.total, step: results.step, progressHandler: progressHandler)
         results.contacts.enumerated().forEach {
             contacts[$1.email] = $0 + 1
             let dictionary = $1.toDictionary(id: $0 + 1)
             handleRow(dictionary)
+            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
         }
-        results.labels.forEach {handleRow($0.toDictionary())}
+        results.labels.forEach {
+            handleRow($0.toDictionary())
+            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+        }
         results.emails.enumerated().forEach {
             emails[$1.key] = $0 + 1
             let dictionary = $1.toDictionary(
@@ -59,6 +64,7 @@ class CreateCustomJSONFileAsyncTask {
                 emailBody: FileUtils.getBodyFromFile(account: account!, metadataKey: "\($1.key)"),
                 headers: FileUtils.getHeaderFromFile(account: account!, metadataKey: "\($1.key)"))
             handleRow(dictionary)
+            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
         }
         results.emails.forEach { (email) in
             email.toDictionaryLabels(emailsMap: emails).forEach({ (emailLabelDictionary) in
@@ -66,6 +72,7 @@ class CreateCustomJSONFileAsyncTask {
                     return
                 }
                 writeRowToFile(jsonRow: jsonString)
+                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
             })
         }
         results.emailContacts.enumerated().forEach {
@@ -73,6 +80,7 @@ class CreateCustomJSONFileAsyncTask {
                 return
             }
             handleRow($1.toDictionary(id: $0 + 1, emailId: emailId, contactId: contacts[$1.contact.email]!))
+            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
         }
         var fileId = 1
         results.emails.forEach { (email) in
@@ -81,10 +89,10 @@ class CreateCustomJSONFileAsyncTask {
                     return
                 }
                 handleRow(file.toDictionary(id: fileId, emailId: emailId))
+                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
                 fileId += 1
             })
         }
-        
         DispatchQueue.main.async {
             completion(nil, self.fileURL)
         }
@@ -107,5 +115,22 @@ class CreateCustomJSONFileAsyncTask {
         } else {
             try! rowData.write(to: fileURL, options: .atomic)
         }
+    }
+    
+    private func handleProgress(progress: Int, total: Int, step: Int, progressHandler: @escaping ((Int) -> Void)) -> Int {
+        let newProgress = progress + 1
+        guard step > 0 else {
+            DispatchQueue.main.async {
+                progressHandler(newProgress * 100 / total)
+            }
+            return newProgress
+        }
+        guard newProgress % step == 0 else {
+            return newProgress
+        }
+        DispatchQueue.main.async {
+            progressHandler(newProgress * 100 / total)
+        }
+        return newProgress
     }
 }

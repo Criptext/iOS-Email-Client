@@ -9,6 +9,10 @@
 import Foundation
 import RealmSwift
 
+protocol BackupDelegate: class {
+    func progressUpdate(username: String, progress: Int)
+}
+
 final class BackupManager {
     
     internal struct BackupWorker {
@@ -19,6 +23,7 @@ final class BackupManager {
     static let shared = BackupManager()
     var workers = [String: BackupWorker]()
     var runningBackups = Set<String>()
+    weak var delegate: BackupDelegate?
     let queue = DispatchQueue(label: "com.criptext.account.backup", qos: .userInitiated, attributes: .concurrent)
     
     func checkAccounts() {
@@ -69,9 +74,11 @@ final class BackupManager {
         let workItem = DispatchWorkItem {
             self.runningBackups.insert(username)
             let createDBTask = CreateCustomJSONFileAsyncTask(username: username, kind: .backup)
-            createDBTask.start { (_, url) in
-                self.queue.async {
-                    self.handleCustomFile(url: url, email: email, username: username)
+            createDBTask.start(progressHandler: { [weak self] progress in
+                self?.delegate?.progressUpdate(username: username, progress: progress)
+            }) { [weak self] (_, url) in
+                self?.queue.async {
+                    self?.handleCustomFile(url: url, email: email, username: username)
                 }
             }
         }
@@ -80,6 +87,9 @@ final class BackupManager {
     }
     
     func handleCustomFile(url: URL?, email: String, username: String) {
+        DispatchQueue.main.async { [weak self] in
+            self?.delegate?.progressUpdate(username: username, progress: 100)
+        }
         guard let dbUrl = url,
             let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.backupZip.name, compress: true),
             let container = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(email) else {
