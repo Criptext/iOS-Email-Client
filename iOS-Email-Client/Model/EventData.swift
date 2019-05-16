@@ -17,15 +17,15 @@ class EventData {
     enum Socket {
         case Unhandled
         case Error
-        case NewEvent
+        case NewEvent(String)
         case PasswordChange
         case Logout
         case RecoveryChanged(String)
         case KeyBundle(Int32)
         case RecoveryVerified
-        case LinkData(LinkData)
+        case LinkData(LinkData, String)
         case SyncDeny
-        case SyncAccept(AcceptData)
+        case SyncAccept(AcceptData, String)
     }
     
     struct Result {

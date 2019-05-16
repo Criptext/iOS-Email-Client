@@ -35,6 +35,6 @@ class TableEndViewCell: UITableViewCell{
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        loader.activityIndicatorViewStyle = ThemeManager.shared.theme.name == "Dark" ? .white : .gray
+        loader.style = ThemeManager.shared.theme.name == "Dark" ? .white : .gray
     }
 }

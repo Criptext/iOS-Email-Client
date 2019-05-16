@@ -36,8 +36,8 @@ class UIUtils {
     }
     
     class func deleteSDWebImageCache(){
-        SDImageCache.shared().clearMemory()
-        SDImageCache.shared().clearDisk()
+        SDImageCache.shared.clearMemory()
+        SDImageCache.shared.clearDisk()
     }
     
     class func getNumberOfLines(_ text: String, width: CGFloat, fontSize: CGFloat) -> CGFloat {

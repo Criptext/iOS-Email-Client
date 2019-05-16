@@ -2,15 +2,15 @@ version: 2
 jobs:
   build-and-test:
     macos:
-      xcode: "9.3.0"
+      xcode: "10.2"
     steps:
       - checkout
       - restore_cache:
           keys:
-            - criptext-carthage
+            - criptext-carthage-swift5
       - run: bash ./scripts/intelligent-bootstrap.sh
       - save_cache:
-          key: criptext-carthage
+          key: criptext-carthage-swift5
           paths:
             - ./Carthage
       - run:

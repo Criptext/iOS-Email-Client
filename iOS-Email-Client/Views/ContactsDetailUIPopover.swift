@@ -84,7 +84,7 @@ class ContactsDetailUIPopover: BaseUIPopover{
     func buildContactAttributedString(_ contact: String) -> NSMutableAttributedString{
         let theme = ThemeManager.shared.theme
         
-        let attrs = [NSAttributedStringKey.font : Font.regular.size(13.0)!, NSAttributedStringKey.foregroundColor : theme.mainText]
+        let attrs = [NSAttributedString.Key.font : Font.regular.size(13.0)!, NSAttributedString.Key.foregroundColor : theme.mainText]
         let stringPart1 = NSMutableAttributedString(string:contact, attributes:attrs)
         return stringPart1
     }
@@ -92,10 +92,10 @@ class ContactsDetailUIPopover: BaseUIPopover{
     func buildContactAttributedString(_ name: String, _ email: String) -> NSMutableAttributedString{
         let theme = ThemeManager.shared.theme
         
-        let attrs = [NSAttributedStringKey.font : Font.regular.size(13.0)!, NSAttributedStringKey.foregroundColor : theme.mainText]
+        let attrs = [NSAttributedString.Key.font : Font.regular.size(13.0)!, NSAttributedString.Key.foregroundColor : theme.mainText]
         let stringPart1 = NSMutableAttributedString(string:name + " ", attributes:attrs)
         
-        let highlightAttrs = [NSAttributedStringKey.font : Font.regular.size(13.0)!, NSAttributedStringKey.foregroundColor : theme.criptextBlue]
+        let highlightAttrs = [NSAttributedString.Key.font : Font.regular.size(13.0)!, NSAttributedString.Key.foregroundColor : theme.criptextBlue]
         let stringPart2 = NSMutableAttributedString(string:email, attributes: highlightAttrs)
         
         stringPart1.append(stringPart2)

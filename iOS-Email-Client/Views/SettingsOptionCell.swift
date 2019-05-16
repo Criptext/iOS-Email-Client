@@ -32,7 +32,7 @@ class SettingsOptionCell: UITableViewCell {
         backgroundColor = .clear
         detailContainerView.backgroundColor = theme.settingsDetail
         detailLabel.textColor = theme.mainText
-        optionLoaderView.activityIndicatorViewStyle = theme.name == "Dark" ? .white : .gray
+        optionLoaderView.style = theme.name == "Dark" ? .white : .gray
     }
     
     func fillFields(option: SecurityPrivacyViewController.PrivacyOption) {

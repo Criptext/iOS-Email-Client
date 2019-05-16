@@ -13,10 +13,13 @@ protocol LinkDeviceDelegate {
     func onCancelLinkDevice(linkData: LinkData, account: Account)
 }
 
-class GenericDualAnswerUIPopover: BaseUIPopover {
+class LinkDeviceUIPopover: BaseUIPopover {
     
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var deviceNameLabel: UILabel!
+    @IBOutlet weak var accountEmailLabel: UILabel!
     @IBOutlet weak var rightButton: UIButton!
     @IBOutlet weak var leftButton: UIButton!
     var initialTitle = ""
@@ -53,6 +56,9 @@ class GenericDualAnswerUIPopover: BaseUIPopover {
         navigationController?.navigationBar.barTintColor = theme.toolbar
         view.backgroundColor = theme.background
         titleLabel.textColor = theme.mainText
+        subtitleLabel.textColor = theme.mainText
+        deviceNameLabel.textColor = theme.secondText
+        accountEmailLabel.textColor = theme.secondText
         messageLabel.textColor = theme.mainText
         rightButton.backgroundColor = theme.popoverButton
         leftButton.backgroundColor = theme.popoverButton

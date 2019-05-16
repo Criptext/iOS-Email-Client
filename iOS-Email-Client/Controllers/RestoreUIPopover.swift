@@ -103,7 +103,7 @@ class RestoreUIPopover: BaseUIPopover {
         titleLabel.textColor = theme.markedText
         messageLabel.textColor = theme.mainText
         view.backgroundColor = theme.background
-        let attrSkip = NSAttributedString(string: String.localize("SKIP"), attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.criptextBlue, .underlineStyle: NSUnderlineStyle.styleSingle.rawValue, .underlineColor: theme.criptextBlue])
+        let attrSkip = NSAttributedString(string: String.localize("SKIP"), attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.criptextBlue, .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: theme.criptextBlue])
         skipButton.setAttributedTitle(attrSkip, for: .normal)
     }
     

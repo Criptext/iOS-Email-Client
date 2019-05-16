@@ -50,13 +50,13 @@ class SettingsDeviceTableViewCell: UITableViewCell {
         guard !device.active else {
             return
         }
-        let attrString = NSMutableAttributedString(string: "Last Active ", attributes: [NSAttributedStringKey.font: Font.bold.size(12.0)!])
+        let attrString = NSMutableAttributedString(string: "Last Active ", attributes: [NSAttributedString.Key.font: Font.bold.size(12.0)!])
         guard let date = device.lastActivity else {
-            attrString.append(NSAttributedString(string: "Over 2 month ago", attributes: [NSAttributedStringKey.font: Font.regular.size(12.0)!]))
+            attrString.append(NSAttributedString(string: "Over 2 month ago", attributes: [NSAttributedString.Key.font: Font.regular.size(12.0)!]))
             deviceLocationLabel.attributedText = attrString
             return
         }
-        attrString.append(NSAttributedString(string: "\(String(DateUtils.beautyDate(date)!).replacingOccurrences(of: "at ", with: ""))", attributes: [NSAttributedStringKey.font: Font.regular.size(12.0)!]))
+        attrString.append(NSAttributedString(string: "\(String(DateUtils.beautyDate(date)!).replacingOccurrences(of: "at ", with: ""))", attributes: [NSAttributedString.Key.font: Font.regular.size(12.0)!]))
         deviceLocationLabel.attributedText = attrString
     }
     

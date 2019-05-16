@@ -53,7 +53,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         passwordTextField.textColor = theme.mainText
         passwordTextField.placeholderLabel.textColor = theme.mainText
         passwordTextField.visibilityIconButton?.tintColor = theme.mainText
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [NSAttributedStringKey.foregroundColor: theme.placeholder])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
         confirmButton.backgroundColor = theme.popoverButton
         cancelButton.backgroundColor = theme.popoverButton
         confirmButton.setTitleColor(theme.mainText, for: .normal)

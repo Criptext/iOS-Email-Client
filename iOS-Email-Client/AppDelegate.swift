@@ -79,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Initialize sign-in
         Fabric.with([Crashlytics.self])
@@ -554,13 +554,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
     }
     
-    func initMailboxRootVC(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]?, _ activeAccount: String, showRestore: Bool = false) -> UIViewController{
+    func initMailboxRootVC(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?, _ activeAccount: String, showRestore: Bool = false) -> UIViewController{
         let myAccount = DBManager.getAccountByUsername(activeAccount)!
+        let accounts = DBManager.getLoggedAccounts()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
         let sidemenuVC = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
         sidemenuVC.menuData = MenuData()
-        let inboxVC = rootVC.childViewControllers.first as! InboxViewController
+        let inboxVC = rootVC.children.first as! InboxViewController
         
         inboxVC.myAccount = myAccount
         inboxVC.mailboxData.showRestore = showRestore
@@ -568,7 +569,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         let drawerVC = CriptextDrawerController(rootViewController: rootVC, leftViewController: sidemenuVC, rightViewController: feedsRightView)
         drawerVC.delegate = inboxVC
-        WebSocketManager.sharedInstance.connect(account: myAccount)
+        WebSocketManager.sharedInstance.connect(accounts: Array(accounts))
         let paddingBottom = window?.safeAreaInsets.bottom ?? 0.0
         let snackbarController = CriptextSnackbarController(rootViewController: drawerVC)
         snackbarController.setBottomPadding(padding: paddingBottom)
@@ -641,9 +642,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func getInboxVC() -> InboxViewController? {
         guard let snackVC = self.window?.rootViewController?.snackbarController,
-            let rootVC = snackVC.childViewControllers.first as? NavigationDrawerController,
-            let navVC = rootVC.childViewControllers.first as? UINavigationController,
-            let inboxVC = navVC.childViewControllers.first as? InboxViewController else {
+            let rootVC = snackVC.children.first as? NavigationDrawerController,
+            let navVC = rootVC.children.first as? UINavigationController,
+            let inboxVC = navVC.children.first as? InboxViewController else {
                 return nil
         }
         return inboxVC

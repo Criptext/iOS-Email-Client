@@ -425,11 +425,11 @@ class SharedDB {
         let realm = try! Realm()
         let wasInTrash = email.isTrash
         try! realm.write {
-            let keepLabels = email.labels.reduce(List<Label>(), { (labels, label) -> List<Label> in
+            let keepLabels = email.labels.reduce([Label](), { (labels, label) -> [Label] in
                 guard label.id == SystemLabel.draft.id || label.id == SystemLabel.sent.id else {
                     return labels
                 }
-                return labels + [label]
+                return Array(labels) + [label]
             })
             email.labels.removeAll()
             email.trashDate = nil

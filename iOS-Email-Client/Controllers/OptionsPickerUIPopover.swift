@@ -75,6 +75,6 @@ extension OptionsPickerUIPopover: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let titleData = String.localize(options[row])
-        return NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.foregroundColor:theme.mainText])
+        return NSAttributedString(string: titleData, attributes: [NSAttributedString.Key.foregroundColor:theme.mainText])
     }
 }

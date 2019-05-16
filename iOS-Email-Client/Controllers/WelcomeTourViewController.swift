@@ -25,30 +25,30 @@ class WelcomeTourViewController: UIViewController {
     let pageOptionColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 0.58)
     let activeOptionColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
     var initialX: CGFloat = 0
-    var envelopeAnimationView: LOTAnimationView!
-    var lockAnimationView: LOTAnimationView!
-    var armAnimationView: LOTAnimationView!
+    var envelopeAnimationView: AnimationView!
+    var lockAnimationView: AnimationView!
+    var armAnimationView: AnimationView!
     var onDismiss: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let emailPath = Bundle.main.path(forResource: "Email", ofType: "json")!
-        self.envelopeAnimationView = LOTAnimationView(filePath: emailPath)
+        self.envelopeAnimationView = AnimationView(filePath: emailPath)
         self.envelopeView.addSubview(envelopeAnimationView)
         envelopeAnimationView.center = self.envelopeView.center
         envelopeAnimationView.frame = self.envelopeView.bounds
         envelopeAnimationView.contentMode = .scaleAspectFit
         
         let lockPath = Bundle.main.path(forResource: "Lock", ofType: "json")!
-        self.lockAnimationView = LOTAnimationView(filePath: lockPath)
+        self.lockAnimationView = AnimationView(filePath: lockPath)
         self.lockView.addSubview(lockAnimationView)
         lockAnimationView.center = self.lockView.center
         lockAnimationView.frame = self.lockView.bounds
         lockAnimationView.contentMode = .scaleAspectFit
         
         let armPath = Bundle.main.path(forResource: "Arm", ofType: "json")!
-        self.armAnimationView = LOTAnimationView(filePath: armPath)
+        self.armAnimationView = AnimationView(filePath: armPath)
         self.armView.addSubview(armAnimationView)
         armAnimationView.center = self.armView.center
         armAnimationView.frame = self.armView.bounds
@@ -133,7 +133,7 @@ class WelcomeTourViewController: UIViewController {
                 guard !self.lockAnimationView.isAnimationPlaying else {
                     break
                 }
-                self.lockAnimationView.play(fromProgress: 0.1, toProgress: 0.9, withCompletion: nil)
+                self.lockAnimationView.play(fromProgress: 0.1, toProgress: 0.9, completion: nil)
             case 3:
                 guard !self.armAnimationView.isAnimationPlaying else {
                     break

@@ -123,7 +123,7 @@ class Thread {
         for (index, participant) in self.participants.reversed().enumerated() {
             let textColor = participant.isDraft ? theme.alert : (participant.isUnread ? theme.markedText : theme.mainText)
             let textFont = participant.isUnread ? Font.bold.size(fontSize)! : Font.regular.size(fontSize)!
-            let attrs = [.foregroundColor: textColor, .font: textFont] as [NSAttributedStringKey: Any]
+            let attrs = [.foregroundColor: textColor, .font: textFont] as [NSAttributedString.Key: Any]
             if index == 0 {
                 attrString.append(NSAttributedString(string: participant.name, attributes: attrs))
             } else {

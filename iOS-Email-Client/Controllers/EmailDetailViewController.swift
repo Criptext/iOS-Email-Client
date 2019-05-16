@@ -191,7 +191,7 @@ class EmailDetailViewController: UIViewController {
         self.topToolbar.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: -8.0).isActive = true
         self.topToolbar.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 8.0).isActive = true
         self.topToolbar.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: 8.0).isActive = true
-        self.navigationController?.navigationBar.bringSubview(toFront: self.topToolbar)
+        self.navigationController?.navigationBar.bringSubviewToFront(self.topToolbar)
         self.topToolbar.isHidden = true
         
         let cancelButton = UIButton(type: .custom)
@@ -205,7 +205,7 @@ class EmailDetailViewController: UIViewController {
     }
     
     func setupMoreOptionsViews(){
-        emailsTableView.sectionHeaderHeight = UITableViewAutomaticDimension;
+        emailsTableView.sectionHeaderHeight = UITableView.automaticDimension;
         emailsTableView.estimatedSectionHeaderHeight = ESTIMATED_SECTION_HEADER_HEIGHT;
         if emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.spam.id {
             moreOptionsContainerView.deleteButton.setTitle(String.localize("DELETE_PERMANENTLY"), for: .normal)
@@ -537,7 +537,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         }
         composerVC.delegate = self
         composerVC.composerData = composerData
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+        self.navigationController?.children.last!.present(snackVC, animated: true, completion: nil)
     }
     
     func presentComposer(contactsTo: [Contact]){
@@ -549,7 +549,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
         composerData.initToContacts.append(contentsOf: contactsTo)
         composerVC.delegate = self
         composerVC.composerData = composerData
-        self.navigationController?.childViewControllers.last!.present(snackVC, animated: true, completion: nil)
+        self.navigationController?.children.last!.present(snackVC, animated: true, completion: nil)
     }
     
     func onFooterReplyPress() {
@@ -864,7 +864,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let email = getMail(index: indexPath.row)
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         let image = UIImage(named: "footer_beta")
-        let imageData:Data =  UIImagePNGRepresentation(image!)!
+        let imageData:Data =  image!.pngData()!
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let html = Constants.singleEmail(image: imageData.base64EncodedString(), subject: subject, contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: email.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: email.getFullContacts()), content: self.emailData.bodies[email.key] ?? "")
         webView.frame = self.view.bounds
@@ -908,7 +908,7 @@ extension EmailDetailViewController: UIWebViewDelegate {
         let printer = UIPrintInteractionController.shared
         let printInfo = UIPrintInfo(dictionary:nil)
         
-        printInfo.outputType = UIPrintInfoOutputType.general
+        printInfo.outputType = UIPrintInfo.OutputType.general
         printInfo.jobName = emailData.subject
         
         printer.showsPaperSelectionForLoadedPapers = true
@@ -955,7 +955,7 @@ extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
             body = "\(body) \(Constants.bodyEmail(contact: SharedUtils.replaceContactToStringChar(text: contact), completeDate: mail.completeDate, contacts: SharedUtils.replaceContactToStringChar(text: mail.getFullContacts()), content: self.emailData.bodies[mail.key] ?? "")) <hr>"
         }
         let image = UIImage(named: "footer_beta")
-        let imageData:Data =  UIImagePNGRepresentation(image!)!
+        let imageData:Data =  image!.pngData()!
         let message = (emailData.emails.count) > 1 ? "\((emails?.count)!) \(String.localize("MESSAGES"))" : "1 \(String.localize("MESSAGE"))"
         let html = Constants.threadEmail(image: imageData.base64EncodedString(), subject: subject, body: body, messages: message)
         webView.frame = self.view.bounds
@@ -1137,7 +1137,7 @@ extension EmailDetailViewController: CoachMarksControllerDataSource, CoachMarksC
 }
 
 extension EmailDetailViewController: LinkDeviceDelegate {
-    func onAcceptLinkDevice(linkData: LinkData) {
+    func onAcceptLinkDevice(linkData: LinkData, account: Account) {
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -1148,14 +1148,14 @@ extension EmailDetailViewController: LinkDeviceDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
-        linkDeviceVC.myAccount = myAccount
+        linkDeviceVC.myAccount = account
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
-    func onCancelLinkDevice(linkData: LinkData) {
+    func onCancelLinkDevice(linkData: LinkData, account: Account) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         }
     }
 }

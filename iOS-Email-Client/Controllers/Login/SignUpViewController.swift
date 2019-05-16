@@ -44,7 +44,7 @@ class SignUpViewController: UIViewController{
     }
     
     func setupFields(){
-        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
+        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
         
         usernameTextField.autocorrectionType = .no
         usernameTextField.autocapitalizationType = .none
@@ -240,11 +240,11 @@ class SignUpViewController: UIViewController{
     
     func labelInit(){
         let boldText  = String.localize("TERMS_CONDITIONS")
-        let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.white]
+        let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor : UIColor.white]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
         
         let normalText = String.localize("ACCEPT_TERMS")
-        let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.white]
+        let normalAttrs = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor : UIColor.white]
         let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
         
         normalString.append(attributedString)
@@ -253,8 +253,8 @@ class SignUpViewController: UIViewController{
     }
     
     func buildWarningString() -> NSMutableAttributedString{
-        let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
-        let boldAttrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedStringKey.foregroundColor : UIColor.black]
+        let normalAttrs = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor : UIColor.black]
+        let boldAttrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor : UIColor.black]
         
         let boldText  = String.localize("WARNING_RECOVERY_2")
         let boldString = NSMutableAttributedString(string:boldText, attributes:boldAttrs)

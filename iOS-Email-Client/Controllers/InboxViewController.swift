@@ -190,7 +190,7 @@ class InboxViewController: UIViewController {
         self.topToolbar.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: -8.0).isActive = true
         self.topToolbar.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 8.0).isActive = true
         self.topToolbar.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: 8.0).isActive = true
-        self.navigationController?.navigationBar.bringSubview(toFront: self.topToolbar)
+        self.navigationController?.navigationBar.bringSubviewToFront(self.topToolbar)
         
         self.tableView.register(UINib(nibName: "TableEndViewCell", bundle: nil), forCellReuseIdentifier: "EndCell")
         
@@ -203,7 +203,7 @@ class InboxViewController: UIViewController {
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.searchBar.barStyle = .black
-        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "NunitoSans-Regular", size: 18.0)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .normal)
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "NunitoSans-Regular", size: 18.0)!, NSAttributedString.Key.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .normal)
         
         self.navigationItem.searchController = self.searchController
         self.definesPresentationContext = true
@@ -264,7 +264,7 @@ class InboxViewController: UIViewController {
             return
         }
         controllerMessage = nil
-        self.onAcceptLinkDevice(linkData: linkData)
+        self.onAcceptLinkDevice(linkData: linkData, account: myAccount!)
     }
     
     func showGuide(){
@@ -417,9 +417,9 @@ class InboxViewController: UIViewController {
         self.fixedSpaceBarButton.width = 25.0
         self.flexibleSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         
-        self.titleBarButton.setTitleTextAttributes([NSAttributedStringKey.font: Font.bold.size(16)!, NSAttributedStringKey.foregroundColor: UIColor.white], for: .disabled)
+        self.titleBarButton.setTitleTextAttributes([NSAttributedString.Key.font: Font.bold.size(16)!, NSAttributedString.Key.foregroundColor: UIColor.white], for: .disabled)
         self.titleBarButton.isEnabled = false
-        self.countBarButton.setTitleTextAttributes([NSAttributedStringKey.font: Font.bold.size(16)!, NSAttributedStringKey.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
+        self.countBarButton.setTitleTextAttributes([NSAttributedString.Key.font: Font.bold.size(16)!, NSAttributedString.Key.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
         self.countBarButton.isEnabled = false
         
         let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
@@ -435,16 +435,16 @@ class InboxViewController: UIViewController {
         let badgeCounter = DBManager.getNewFeedsCount(since: myAccount.lastTimeFeedOpened)
         activityButton.badgeString = badgeCounter > 0 ? badgeCounter.description : ""
         activityButton.frame = CGRect(x:0, y:0, width: 16, height: 20)
-        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(0, 1, 2, 0)
+        activityButton.badgeEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 2, right: 0)
         activityButton.setImage(#imageLiteral(resourceName: "activity"), for: .normal)
         activityButton.tintColor = UIColor.white
-        activityButton.addTarget(self, action: #selector(didPressActivityMenu), for: UIControlEvents.touchUpInside)
+        activityButton.addTarget(self, action: #selector(didPressActivityMenu), for: UIControl.Event.touchUpInside)
         self.activityBarButton = UIBarButtonItem(customView: activityButton)
         
         self.activityBarButton.tintColor = UIColor.white
         
         let font:UIFont = Font.regular.size(13)!
-        let attributes:[NSAttributedStringKey : Any] = [NSAttributedStringKey.font: font];
+        let attributes:[NSAttributedString.Key : Any] = [NSAttributedString.Key.font: font];
         self.statusBarButton.setTitleTextAttributes(attributes, for: .normal)
         self.statusBarButton.tintColor = UIColor.darkGray
     }
@@ -506,10 +506,10 @@ class InboxViewController: UIViewController {
 extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
-        case .LinkData(let data):
-            self.handleLinkStart(linkData: data)
-        case .NewEvent:
-            self.getPendingEvents(nil)
+        case .LinkData(let data, let recipientId):
+            self.handleLinkStart(linkData: data, account: DBManager.getAccountByUsername(recipientId)!)
+        case .NewEvent(let username):
+            RequestManager.shared.getAccountEvents(username: username)
         case .PasswordChange:
             self.presentPasswordPopover(myAccount: myAccount)
         case .Logout:
@@ -519,7 +519,7 @@ extension InboxViewController: WebSocketManagerDelegate {
             delegate.logout(account: myAccount)
         case .RecoveryChanged(let address):
             guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.childViewControllers.first as? CustomTabsController else {
+                let settings = nav.children.first as? CustomTabsController else {
                 return
             }
             settings.generalData.recoveryEmail = address
@@ -528,7 +528,7 @@ extension InboxViewController: WebSocketManagerDelegate {
             settings.reloadChildViews()
         case .RecoveryVerified:
             guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.childViewControllers.first as? CustomTabsController else {
+                let settings = nav.children.first as? CustomTabsController else {
                     return
             }
             settings.generalData.recoveryEmailStatus = .verified
@@ -538,8 +538,8 @@ extension InboxViewController: WebSocketManagerDelegate {
         }
     }
     
-    func handleLinkStart(linkData: LinkData){
-        self.presentLinkDevicePopover(linkData: linkData)
+    func handleLinkStart(linkData: LinkData, account: Account){
+        self.presentLinkDevicePopover(linkData: linkData, account: account)
     }
 }
 
@@ -578,7 +578,7 @@ extension InboxViewController {
         }
         
         if let linkData = result.linkStartData {
-            handleLinkStart(linkData: linkData)
+            handleLinkStart(linkData: linkData, account: self.myAccount)
         }
         
         if result.updateSideMenu {
@@ -877,7 +877,7 @@ extension InboxViewController: UITableViewDataSource{
             if(mailboxData.selectedThreads.contains(thread.threadId)){
                 cell.setAsSelected()
                 cell.isSelected = true
-                tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
             } else {
                 cell.setAsNotSelected()
                 cell.isSelected = false
@@ -1025,7 +1025,7 @@ extension InboxViewController: UITableViewDataSource{
         let navSettingsVC = UINavigationController(rootViewController: generalVC)
         navSettingsVC.navigationBar.isTranslucent = false
         navSettingsVC.navigationBar.barTintColor = .charcoal
-        let attrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.bold.size(17)!] as [NSAttributedStringKey : Any]
+        let attrs = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: Font.bold.size(17)!] as [NSAttributedString.Key : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         
         self.present(navSettingsVC, animated: true, completion: nil)
@@ -1035,7 +1035,7 @@ extension InboxViewController: UITableViewDataSource{
 //MARK: - TableView Delegate
 extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
     
@@ -1290,7 +1290,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             return []
         }
         
-        let trashAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "         ") { [weak self] (action, index) in
+        let trashAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: "         ") { [weak self] (action, index) in
             guard let weakSelf = self else {
                 return
             }
@@ -1624,7 +1624,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     
     func showSendingSnackBar(message: String, permanent: Bool) {
         let fullString = NSMutableAttributedString(string: "")
-        let attrs = [NSAttributedStringKey.font : Font.regular.size(15)!, NSAttributedStringKey.foregroundColor : UIColor.white]
+        let attrs = [NSAttributedString.Key.font : Font.regular.size(15)!, NSAttributedString.Key.foregroundColor : UIColor.white]
         fullString.append(NSAttributedString(string: message, attributes: attrs))
         self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
     }
@@ -1727,7 +1727,7 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
 }
 
 extension InboxViewController: LinkDeviceDelegate {
-    func onAcceptLinkDevice(linkData: LinkData) {
+    func onAcceptLinkDevice(linkData: LinkData, account: Account) {
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -1738,16 +1738,16 @@ extension InboxViewController: LinkDeviceDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
-        linkDeviceVC.myAccount = myAccount
+        linkDeviceVC.myAccount = account
         self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
         self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }
     
-    func onCancelLinkDevice(linkData: LinkData) {
+    func onCancelLinkDevice(linkData: LinkData, account: Account) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         }
     }
     
@@ -1898,7 +1898,7 @@ extension InboxViewController {
         DBManager.swapAccount(current: self.myAccount, active: account)
         self.myAccount = account
         defaults.activeAccount = account.username
-        WebSocketManager.sharedInstance.swapAccount(account)
+        WebSocketManager.sharedInstance.connect(accounts: [account])
         self.invalidateObservers()
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {

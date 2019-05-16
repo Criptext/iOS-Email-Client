@@ -13,7 +13,7 @@ class CriptextDrawerController: NavigationDrawerController{
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         //avoid activating when there's a VC pushed
-        if self.rootViewController.childViewControllers.count > 1 {
+        if self.rootViewController.children.count > 1 {
             return false
         }
         

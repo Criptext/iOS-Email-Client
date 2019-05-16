@@ -66,7 +66,7 @@ class ProfileEditorViewController: UIViewController {
         navigationItem.title = String.localize("PROFILE")
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
-            [NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+            [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         if UIDevice().userInterfaceIdiom == .phone {
             switch UIScreen.main.nativeBounds.height {
             case 2436, 2688, 1792:
@@ -161,9 +161,9 @@ class ProfileEditorViewController: UIViewController {
     }
     
     @IBAction func didPressedGallery(_ sender: Any) {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
             imagePicker.allowsEditing = false
-            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
             self.present(imagePicker, animated: true, completion: nil)
         }
     }
@@ -182,8 +182,8 @@ class ProfileEditorViewController: UIViewController {
     }
     
     @IBAction func didPressedCamera(_ sender: Any) {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
-            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+            imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = false
             self.present(imagePicker, animated: true, completion: nil)
         }
@@ -191,7 +191,7 @@ class ProfileEditorViewController: UIViewController {
     
     func changeProfilePicture(image: UIImage, imageName: String){
         let image = UIUtils.resizeImage(image: image, targetSize: CGSize(width: 250, height: 250))
-        let data = UIImagePNGRepresentation(image)
+        let data = image.pngData()
         let inputStream = InputStream.init(data: data!)
         let params = [
             "mimeType": File.mimeTypeForPath(path: imageName),
@@ -237,22 +237,22 @@ extension ProfileEditorViewController: UIImagePickerControllerDelegate, UINaviga
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: nil)
         self.showAttachmentDrawer(false)
-        if let imgUrl = info[UIImagePickerControllerImageURL] as? URL{
+        if let imgUrl = info[UIImagePickerController.InfoKey.imageURL.rawValue] as? URL{
             let imageName = imgUrl.lastPathComponent
-            let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+            let image = info[UIImagePickerController.InfoKey.originalImage.rawValue] as! UIImage
             imageView.image = image
             self.makeCircleImage()
             changeProfilePicture(image: image, imageName: imageName)
             return
         }
 
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
             let imageName = "\(String.random()).png"
             imageView.image = pickedImage
             self.makeCircleImage()
             let fileManager = FileManager.default
             let path = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(imageName)
-            let data = UIImagePNGRepresentation(pickedImage)
+            let data = pickedImage.pngData()
             fileManager.createFile(atPath: path as String, contents: data, attributes: nil)
             changeProfilePicture(image: pickedImage, imageName: imageName)
             return
@@ -261,7 +261,7 @@ extension ProfileEditorViewController: UIImagePickerControllerDelegate, UINaviga
 }
 
 extension ProfileEditorViewController: LinkDeviceDelegate {
-    func onAcceptLinkDevice(linkData: LinkData) {
+    func onAcceptLinkDevice(linkData: LinkData, account: Account) {
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -272,14 +272,14 @@ extension ProfileEditorViewController: LinkDeviceDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
-        linkDeviceVC.myAccount = myAccount
+        linkDeviceVC.myAccount = account
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
-    func onCancelLinkDevice(linkData: LinkData) {
+    func onCancelLinkDevice(linkData: LinkData, account: Account) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         }
     }
 }
