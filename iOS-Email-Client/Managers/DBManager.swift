@@ -729,7 +729,8 @@ class DBManager: SharedDB {
         
         try! realm.write {
             for threadId in threadIds {
-                let emails = realm.objects(Email.self).filter("threadId == '\(threadId)'")
+                let predicate = NSPredicate(format: "text = %@", threadId)
+                let emails = realm.objects(Email.self).filter("threadId == '\(predicate)'")
                 emails.forEach({ (email) in
                     email.unread = unread
                 })
@@ -755,7 +756,8 @@ class DBManager: SharedDB {
         
         try! realm.write {
             for threadId in threadIds {
-                let emails = realm.objects(Email.self).filter("threadId == '\(threadId)'")
+                let predicate = NSPredicate(format: "text = %@", threadId)
+                let emails = realm.objects(Email.self).filter("threadId == '\(predicate)'")
                 for email in emails {
                     self.addRemoveLabels(realm: realm, email: email, addedLabelNames: addedLabelNames, removedLabelNames: removedLabelNames)
                 }
@@ -804,8 +806,9 @@ class DBManager: SharedDB {
         
         try! realm.write {
             for threadId in threadIds {
+                let predicate = NSPredicate(format: "text = %@", threadId)
                 let deletableLabels = [SystemLabel.trash.id, SystemLabel.spam.id, SystemLabel.draft.id]
-                let emails = Array(realm.objects(Email.self).filter("threadId == '\(threadId)' AND ANY labels.id IN %@", deletableLabels))
+                let emails = Array(realm.objects(Email.self).filter("threadId == '\(predicate)' AND ANY labels.id IN %@", deletableLabels))
                 self.deleteEmail(realm: realm, emails: emails)
             }
         }
