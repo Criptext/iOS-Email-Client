@@ -18,7 +18,7 @@ class ProgressAnimatedUIView: UIView{
     lazy var progressLayer: CALayer = {
         let layer = CALayer()
         layer.frame = CGRect(x: 0, y: 0, width: frame.width * CGFloat(progress), height: frame.height)
-        layer.contentsGravity = kCAGravityLeft
+        layer.contentsGravity = CALayerContentsGravity.left
         layer.masksToBounds = true
         layer.cornerRadius = frame.height / 2
         return layer
@@ -28,7 +28,7 @@ class ProgressAnimatedUIView: UIView{
         let layer = CALayer()
         layer.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         layer.backgroundColor = UIColor(red: 0, green: 145/255, blue: 1, alpha: 0.25).cgColor
-        layer.contentsGravity = kCAGravityLeft
+        layer.contentsGravity = CALayerContentsGravity.left
         layer.masksToBounds = true
         layer.cornerRadius = frame.height / 2
         return layer
@@ -114,7 +114,7 @@ class ProgressAnimatedUIView: UIView{
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(duration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
 
         let frameAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.frame))
         frameAnimation.fromValue = oldFrame

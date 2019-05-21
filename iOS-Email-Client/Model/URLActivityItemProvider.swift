@@ -17,7 +17,7 @@ class URLActivityItemProvider: UIActivityItemProvider {
         }
     }
     
-    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
+    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
         return self.urlInvite
     }
     

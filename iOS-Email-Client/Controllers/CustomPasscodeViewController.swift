@@ -18,11 +18,11 @@ class CustomPasscodeViewController: PasscodeLockViewController {
         super.viewDidLoad()
         navigationItem.title = String.localize("PIN_LOCK_TITLE");
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         
         touchIDButton?.setImage(UIImage(named: biometricType == .faceID ? "faceID" : "touchID"), for: .normal)
         signoutButton?.isHidden = !showSignOut
-        signoutButton?.setAttributedTitle(NSAttributedString(string: String.localize("PIN_SIGN_OUT"), attributes: [NSAttributedString.Key.font: Font.regular.size(17)!, NSAttributedString.Key.underlineStyle: NSUnderlineStyle.styleSingle.rawValue, NSAttributedString.Key.foregroundColor: UIColor.white]), for: .normal)
+        signoutButton?.setAttributedTitle(NSAttributedString(string: String.localize("PIN_SIGN_OUT"), attributes: [NSAttributedString.Key.font: Font.regular.size(17)!, NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue, NSAttributedString.Key.foregroundColor: UIColor.white]), for: .normal)
     }
     
     override func appWillEnterForegroundHandler(_ notification: Notification) {

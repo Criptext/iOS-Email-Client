@@ -44,7 +44,7 @@ class MenuViewController: UIViewController{
     var selectedMenuItem : MenuItemUIView?
     var mailboxVC : InboxViewController! {
         get {
-            return self.navigationDrawerController?.rootViewController.childViewControllers.first as? InboxViewController
+            return self.navigationDrawerController?.rootViewController.children.first as? InboxViewController
         }
     }
     var menuData : MenuData!
@@ -412,7 +412,7 @@ extension MenuViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
 }

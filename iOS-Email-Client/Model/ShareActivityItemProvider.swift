@@ -20,7 +20,7 @@ class ShareActivityItemProvider: UIActivityItemProvider {
         }
     }
     
-    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
+    override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
         
         var finalString = self.invitationText
         
@@ -31,7 +31,7 @@ class ShareActivityItemProvider: UIActivityItemProvider {
         return finalString
     }
     
-    override func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivityType?) -> String {
+    override func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
         return self.subject ?? ""
     }
     

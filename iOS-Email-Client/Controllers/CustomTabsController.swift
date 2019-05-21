@@ -70,7 +70,7 @@ class CustomTabsController: TabsController {
     }
     
     func reloadChildViews(){
-        self.navigationController?.childViewControllers.forEach({ (vc) in
+        self.navigationController?.children.forEach({ (vc) in
             guard let childTabVC = vc as? CustomTabsChildController else {
                 return
             }
@@ -95,7 +95,7 @@ class CustomTabsController: TabsController {
 }
 
 extension CustomTabsController: LinkDeviceDelegate {
-    func onAcceptLinkDevice(linkData: LinkData) {
+    func onAcceptLinkDevice(linkData: LinkData, account: Account) {
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -106,14 +106,14 @@ extension CustomTabsController: LinkDeviceDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
-        linkDeviceVC.myAccount = myAccount
+        linkDeviceVC.myAccount = account
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
-    func onCancelLinkDevice(linkData: LinkData) {
+    func onCancelLinkDevice(linkData: LinkData, account: Account) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         }
     }
 }

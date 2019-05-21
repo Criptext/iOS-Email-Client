@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +20,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignInVerificationUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
+                <outlet property="accounLabel" destination="JrY-D2-TXa" id="W5L-Qy-st4"/>
                 <outlet property="approveButton" destination="fvv-Cn-cZX" id="sZw-rC-cmN"/>
+                <outlet property="deviceImageView" destination="U9i-uw-Vx7" id="gwc-uf-FER"/>
                 <outlet property="deviceLabel" destination="6wv-bj-Fxr" id="Dhx-8n-FKe"/>
                 <outlet property="rejectButton" destination="vel-x6-KLE" id="gzs-qO-KhH"/>
                 <outlet property="subTitleLabel" destination="LPV-Vu-Nw4" id="gkv-Sr-SPw"/>
@@ -57,7 +59,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you want to approve?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPV-Vu-Nw4">
-                    <rect key="frame" x="31" y="72.5" width="208" height="17.5"/>
+                    <rect key="frame" x="31" y="67.5" width="208" height="17.5"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -76,12 +78,30 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daniel’s Sony Xperia" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wv-bj-Fxr">
-                    <rect key="frame" x="37" y="106" width="196" height="30"/>
+                    <rect key="frame" x="70" y="105" width="138" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="Gjo-DT-zFQ"/>
+                        <constraint firstAttribute="height" constant="18" id="MD8-oC-XNb"/>
+                        <constraint firstAttribute="width" constant="138" id="Xwt-nL-dac"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                     <color key="textColor" red="0.44705882352941173" green="0.44705882352941173" blue="0.44705882352941173" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U9i-uw-Vx7" userLabel="Device Image">
+                    <rect key="frame" x="37" y="109" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="V60-2L-v6J"/>
+                        <constraint firstAttribute="height" constant="25" id="t2I-M4-U8C"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="daniel@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JrY-D2-TXa" userLabel="Account Label">
+                    <rect key="frame" x="70" y="124" width="138" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="138" id="KfQ-54-Bzb"/>
+                        <constraint firstAttribute="height" constant="17" id="NZZ-Xb-uaE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <color key="textColor" red="0.44705882349999998" green="0.44705882349999998" blue="0.44705882349999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -89,23 +109,26 @@
             <constraints>
                 <constraint firstItem="3S2-tH-1Ug" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="25" id="3nE-sF-0GQ"/>
                 <constraint firstItem="LPV-Vu-Nw4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="31" id="8b7-6Y-OTm"/>
+                <constraint firstItem="6wv-bj-Fxr" firstAttribute="leading" secondItem="U9i-uw-Vx7" secondAttribute="trailing" constant="8" id="Dlg-fV-rmC"/>
                 <constraint firstItem="vel-x6-KLE" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="GOV-d2-R6b"/>
                 <constraint firstItem="vel-x6-KLE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NCQ-2J-sry"/>
                 <constraint firstItem="3S2-tH-1Ug" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Nd1-9f-gKR"/>
+                <constraint firstItem="6wv-bj-Fxr" firstAttribute="top" secondItem="LPV-Vu-Nw4" secondAttribute="bottom" constant="20" id="P5s-kB-hOe"/>
+                <constraint firstItem="U9i-uw-Vx7" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="37" id="Rxt-25-Coq"/>
                 <constraint firstItem="fvv-Cn-cZX" firstAttribute="leading" secondItem="vel-x6-KLE" secondAttribute="trailing" id="UNb-cy-W5w"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6wv-bj-Fxr" secondAttribute="trailing" constant="37" id="bNR-rv-mXS"/>
+                <constraint firstItem="U9i-uw-Vx7" firstAttribute="top" secondItem="LPV-Vu-Nw4" secondAttribute="bottom" constant="24" id="bNi-Fh-w1U"/>
                 <constraint firstItem="LPV-Vu-Nw4" firstAttribute="centerX" secondItem="3S2-tH-1Ug" secondAttribute="centerX" id="bRx-Hh-AgD"/>
-                <constraint firstItem="6wv-bj-Fxr" firstAttribute="top" secondItem="LPV-Vu-Nw4" secondAttribute="bottom" constant="16" id="cS9-mV-odo"/>
                 <constraint firstItem="fvv-Cn-cZX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="j4b-r3-U6W"/>
-                <constraint firstItem="6wv-bj-Fxr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="37" id="lv4-aX-myi"/>
-                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="top" secondItem="3S2-tH-1Ug" secondAttribute="bottom" constant="24" id="pHC-5u-V4c"/>
+                <constraint firstItem="LPV-Vu-Nw4" firstAttribute="top" secondItem="3S2-tH-1Ug" secondAttribute="bottom" constant="19" id="pHC-5u-V4c"/>
+                <constraint firstItem="JrY-D2-TXa" firstAttribute="leading" secondItem="U9i-uw-Vx7" secondAttribute="trailing" constant="8" id="vnI-aS-kie"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fvv-Cn-cZX" secondAttribute="trailing" id="xgO-tQ-7fK"/>
                 <constraint firstAttribute="trailing" secondItem="LPV-Vu-Nw4" secondAttribute="trailing" constant="31" id="xrb-58-nuL"/>
+                <constraint firstItem="JrY-D2-TXa" firstAttribute="top" secondItem="6wv-bj-Fxr" secondAttribute="bottom" constant="1" id="z1z-OG-SWg"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="fvv-Cn-cZX" secondAttribute="bottom" id="z2X-x0-1w5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="137.59999999999999" y="102.54872563718142"/>
+            <point key="canvasLocation" x="137.59999999999999" y="102.09895052473765"/>
         </view>
     </objects>
 </document>

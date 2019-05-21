@@ -48,7 +48,7 @@ class NewLoginViewController: UIViewController{
     }
     
     func usernameTextFieldInit(){
-        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedStringKey: Any]
+        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
         usernameTextField.placeholderAnimation = .hidden
         usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: placeholderAttrs)
         usernameTextField.delegate = self
@@ -67,11 +67,11 @@ class NewLoginViewController: UIViewController{
         loginButton.layer.cornerRadius = 20
         
         let boldText  = String.localize("SIGNUP")
-        let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
+        let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.white]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
     
         let normalText = String.localize("NOT_REGISTERED")
-        let normalAttrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17), NSAttributedStringKey.foregroundColor : UIColor.white]
+        let normalAttrs = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.white]
         let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
     
         normalString.append(attributedString)

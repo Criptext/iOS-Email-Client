@@ -178,13 +178,13 @@ class ComposeViewController: UIViewController {
         
         self.tableView.separatorStyle = .none
         self.tableView.tableFooterView = UIView()
-        self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         
         let activityButton = MIBadgeButton(type: .custom)
         activityButton.badgeString = ""
         activityButton.frame = CGRect(x:14, y:8, width:18, height:32)
-        activityButton.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 5, 2)
-        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
+        activityButton.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 5, right: 2)
+        activityButton.badgeEdgeInsets = UIEdgeInsets(top: 5, left: 12, bottom: 0, right: 13)
         activityButton.tintColor = Icon.enabled.color
         activityButton.isUserInteractionEnabled = false
         self.attachmentBarButton = activityButton
@@ -195,7 +195,7 @@ class ComposeViewController: UIViewController {
         self.title = String.localize("NEW_SECURE_EMAIL")
         self.navigationItem.rightBarButtonItem = self.enableSendButton
         activityButton.setImage(Icon.attachment.vertical.image, for: .normal)
-        activityButton.badgeEdgeInsets = UIEdgeInsetsMake(5, 12, 0, 13)
+        activityButton.badgeEdgeInsets = UIEdgeInsets(top: 5, left: 12, bottom: 0, right: 13)
         
         let closeImage = UIImage(named: "close-rounded")!.tint(with: UIColor.white.withAlphaComponent(0.6))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(didPressCancel(_:)))
@@ -689,7 +689,7 @@ extension ComposeViewController: CICropPickerDelegate {
     func imagePicker(_ imagePicker: UIImagePickerController!, pickedImage image: UIImage!) {
         
         let currentDate = Date().timeIntervalSince1970
-        guard let data = UIImageJPEGRepresentation(image, 0.6) else {
+        guard let data = image.jpegData(compressionQuality: 0.6) else {
             return
         }
         
@@ -746,8 +746,8 @@ extension ComposeViewController{
     // 3
     // Add a gesture on the view controller to close keyboard when tapped
     func enableKeyboardHideOnTap(){
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil) // See 4.1
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil) //See 4.2
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil) // See 4.1
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil) //See 4.2
     }
     
     //3.1
@@ -758,8 +758,8 @@ extension ComposeViewController{
     //4.1
     @objc func keyboardWillShow(notification: NSNotification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let duration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
         var marginBottom: CGFloat = 0.0
         if #available(iOS 11.0, *),
             let window = UIApplication.shared.keyWindow {
@@ -775,7 +775,7 @@ extension ComposeViewController{
     
     //4.2
     @objc func keyboardWillHide(notification: NSNotification) {
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+        let duration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: duration) { () -> Void in
             self.toolbarBottomConstraint.constant = self.toolbarBottomConstraintInitialValue!

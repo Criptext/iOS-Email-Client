@@ -4,7 +4,7 @@ github "Alamofire/Alamofire" ~> 4.7
 github "SwiftyJSON/SwiftyJSON"
 binary "./realm-cocoa.json"
 github "Hirobreak/CLTokenInputView" == 3.0.3
-github "CosmicMind/Material"
+github "CosmicMind/Material" == 3.1.1
 github "Hirobreak/CICropPicker" == 1.1.2
 github "rs/SDWebImage"
 github "Marxon13/M13Checkbox"

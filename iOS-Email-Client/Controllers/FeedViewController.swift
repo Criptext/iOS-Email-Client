@@ -24,7 +24,7 @@ class FeedViewController: UIViewController{
     
     var mailboxVC : InboxViewController! {
         get {
-            return self.navigationDrawerController?.rootViewController.childViewControllers.first as? InboxViewController
+            return self.navigationDrawerController?.rootViewController.children.first as? InboxViewController
         }
     }
     var lastSeen : Date {

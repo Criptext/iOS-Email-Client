@@ -20,7 +20,7 @@ class ManualSyncUIPopover: BaseUIPopover {
     @IBOutlet weak var hourglassImage: UIImageView!
     @IBOutlet weak var alertImage: UIImageView!
     @IBOutlet weak var progressArrowView: ProgressArrowUIView!
-    var onAccept: ((AcceptData) -> Void)?
+    var onAccept: ((AcceptData, String) -> Void)?
     weak var myAccount: Account!
     weak var previousWebsocketDelegate: WebSocketManagerDelegate?
     var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
@@ -95,20 +95,25 @@ class ManualSyncUIPopover: BaseUIPopover {
 
 extension ManualSyncUIPopover: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket) {
-        guard case let .SyncAccept(acceptData) = result else {
-            self.bottomView.isHidden = true
-            self.hourglassImage.isHidden = true
-            self.progressArrowView.isHidden = true
-            self.bottomLabel.isHidden = false
-            self.alertImage.isHidden = false
-            self.topLabel.text = String.localize("SYNC_FAIL")
-            self.titleLabel.text = String.localize("SYNC_REJECTED")
-            self.cancelButton.setTitle(String.localize("OK"), for: .normal)
+        guard case let .SyncAccept(acceptData, recipientId) = result else {
+            notAccept()
             return
         }
-        self.onAccept?(acceptData)
+        self.onAccept?(acceptData, recipientId)
+    }
+    
+    private func notAccept(){
+        self.bottomView.isHidden = true
+        self.hourglassImage.isHidden = true
+        self.progressArrowView.isHidden = true
+        self.bottomLabel.isHidden = false
+        self.alertImage.isHidden = false
+        self.topLabel.text = String.localize("SYNC_FAIL")
+        self.titleLabel.text = String.localize("SYNC_REJECTED")
+        self.cancelButton.setTitle(String.localize("OK"), for: .normal)
     }
 }
+
 
 extension ManualSyncUIPopover: ScheduleWorkerDelegate {
     func work(completion: @escaping (Bool) -> Void) {
@@ -123,7 +128,7 @@ extension ManualSyncUIPopover: ScheduleWorkerDelegate {
                 return
             }
             completion(true)
-            self.newMessage(result: .SyncAccept(acceptData))
+            self.newMessage(result: .SyncAccept(acceptData, self.myAccount.username))
         }
     }
     

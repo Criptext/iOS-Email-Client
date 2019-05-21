@@ -56,11 +56,11 @@ class SecurityPrivacyViewController: UITableViewController {
     override func viewDidLoad() {
         navigationItem.title = String.localize("PRIVACY_AND_SECURITY")
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         let nib = UINib(nibName: "SettingsOptionTableCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "privacycell")
-        tableView.estimatedRowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = UITableView.automaticDimension
         if isPinControl {
             initializePinOptions()
         } else {
@@ -137,7 +137,7 @@ class SecurityPrivacyViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "privacycell") as! SettingsOptionCell
         let option = options[indexPath.row]
         cell.fillFields(option: option)
-        cell.selectionStyle = UITableViewCellSelectionStyle.none
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         switch(option.label) {
         case .biometric:
             cell.optionTextLabel.text = biometricType == .faceID ? String.localize("UNLOCK_FACE") : String.localize("UNLOCK_TOUCH")
@@ -267,8 +267,8 @@ class SecurityPrivacyViewController: UITableViewController {
     
     func presentRecoveryPopover() {
         let popover = GenericAlertUIPopover()
-        let attributedRegular = NSMutableAttributedString(string: String.localize("TO_ENABLE_2FA_1"), attributes: [NSAttributedStringKey.font: Font.regular.size(15)!])
-        let attributedSemibold = NSAttributedString(string: String.localize("TO_ENABLE_2FA_2"), attributes: [NSAttributedStringKey.font: Font.semibold.size(15)!])
+        let attributedRegular = NSMutableAttributedString(string: String.localize("TO_ENABLE_2FA_1"), attributes: [NSAttributedString.Key.font: Font.regular.size(15)!])
+        let attributedSemibold = NSAttributedString(string: String.localize("TO_ENABLE_2FA_2"), attributes: [NSAttributedString.Key.font: Font.semibold.size(15)!])
         attributedRegular.append(attributedSemibold)
         popover.myTitle = String.localize("RECOVERY_NOT_SET")
         popover.myAttributedMessage = attributedRegular

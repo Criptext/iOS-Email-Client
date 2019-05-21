@@ -20,7 +20,7 @@ class SettingsLabelsViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = String.localize("LABELS")
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         
         labels.append(DBManager.getLabel(SystemLabel.starred.id)!)

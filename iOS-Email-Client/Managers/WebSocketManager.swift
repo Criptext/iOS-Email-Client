@@ -16,30 +16,31 @@ protocol WebSocketManagerDelegate: class {
 final class WebSocketManager: NSObject {
     static let sharedInstance = WebSocketManager()
     weak var delegate : WebSocketManagerDelegate?
-    var socket : WebSocket?
-    var myAccount : Account?
-    var shouldReconnect = true
-    let SOCKET_URL = Env.socketURL
+    private var socket : WebSocket?
+    private var myAccounts = [Account?]()
+    private var shouldReconnect = true
+    private let SOCKET_URL = Env.socketURL
     
     private override init(){
         super.init()
     }
     
-    func connect(account: Account){
+    func connect(accounts: [Account]){
         shouldReconnect = true
-        myAccount = account
-        socket = WebSocket("\(SOCKET_URL)?token=\(account.jwt)", subProtocol: "criptext-protocol")
+        let newAccounts = accounts.filter({ account in !myAccounts.contains(where: { $0?.compoundKey == account.compoundKey })  })
+        myAccounts.append(contentsOf: newAccounts)
+        let jwts: [String] = getValidAccounts().map({ $0.jwt })
+        socket = WebSocket("\(SOCKET_URL)?token=\(jwts.joined(separator: "%2C"))", subProtocol: "criptext-protocol")
         socket?.delegate = self
     }
     
     func reconnect(){
         shouldReconnect = true
         guard let mySocket = socket,
-            mySocket.readyState != .open && mySocket.readyState != .connecting,
-            let account = self.myAccount else {
+            mySocket.readyState != .open && mySocket.readyState != .connecting else {
             return
         }
-        self.connect(account: account)
+        self.connect(accounts: getValidAccounts())
     }
     
     func pause() {
@@ -50,14 +51,13 @@ final class WebSocketManager: NSObject {
     
     func close(){
         shouldReconnect = false
-        myAccount = nil
+        myAccounts.removeAll()
         socket?.event.close = {_,_,_ in }
         socket?.close()
     }
     
-    func swapAccount(_ account: Account) {
-        self.close()
-        self.connect(account: account)
+    private func getValidAccounts() -> [Account] {
+        return self.myAccounts.filter({ !($0?.isInvalidated ?? true) }).map({$0!})
     }
 }
 
@@ -81,12 +81,11 @@ extension WebSocketManager: WebSocketDelegate{
     }
     
     func webSocketMessageText(_ text: String) {
-        guard let event = Utils.convertToDictionary(text: text),
-            let account = self.myAccount else {
+        guard let event = Utils.convertToDictionary(text: text) else {
             return
         }
-        let eventHandler = EventHandler(account: account)
-        let result = eventHandler.handleSocketEvent(event: event)
+        let eventParser = EventParser(accounts: getValidAccounts())
+        let result = eventParser.handleSocketEvent(event: event)
         delegate?.newMessage(result: result)
     }
     

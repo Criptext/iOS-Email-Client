@@ -68,19 +68,20 @@ extension UIViewController {
         self.presentPopover(popover: passwordVC, height: 225)
     }
     
-    func presentLinkDevicePopover(linkData: LinkData){
+    func presentLinkDevicePopover(linkData: LinkData, account: Account){
         let linkDeviceVC = SignInVerificationUIPopover()
         linkDeviceVC.linkData = linkData
+        linkDeviceVC.emailText = account.email
         linkDeviceVC.deviceType = Device.Kind(rawValue: linkData.deviceType) ?? .pc
         linkDeviceVC.onResponse = { [weak self] accept in
             guard let delegate = self?.getTopView() as? LinkDeviceDelegate else {
                 return
             }
             guard accept else {
-                delegate.onCancelLinkDevice(linkData: linkData)
+                delegate.onCancelLinkDevice(linkData: linkData, account: account)
                 return
             }
-            delegate.onAcceptLinkDevice(linkData: linkData)
+            delegate.onAcceptLinkDevice(linkData: linkData, account: account)
         }
         guard self.getTopView() is LinkDeviceDelegate else {
             return
@@ -139,14 +140,14 @@ func systemIdentifier() -> String {
 }
 
 extension UIViewController {
-    func showAlert(_ title: String?, message: String?, style: UIAlertControllerStyle) {
+    func showAlert(_ title: String?, message: String?, style: UIAlertController.Style) {
         let popover = GenericAlertUIPopover()
         popover.myTitle = title
         popover.myMessage = message
         self.presentPopover(popover: popover, height: 200)
     }
     
-    func showAlert(_ title: String?, message: String?, style: UIAlertControllerStyle, actions:[UIAlertAction]?) {
+    func showAlert(_ title: String?, message: String?, style: UIAlertController.Style, actions:[UIAlertAction]?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: style)
         let okButton = UIAlertAction(title: "Ok", style: .default, handler: nil)
         

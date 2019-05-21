@@ -11,19 +11,22 @@ import Foundation
 class SignInVerificationUIPopover: BaseUIPopover {
     
     @IBOutlet weak var deviceLabel: UILabel!
+    @IBOutlet weak var accounLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var approveButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
+    @IBOutlet weak var deviceImageView: UIImageView!
     
     var deviceType: Device.Kind = .pc
     var linkData: LinkData!
+    var emailText: String = ""
     var deviceImage: UIImage {
         switch(deviceType){
         case .pc:
-            return UIImage(named: "device-desktop")!.resize(toHeight: 26.0)!.tint(with: UIColor(red: 186/255, green: 189/255, blue: 196/255, alpha: 1.0))!.resizableImage(withCapInsets: UIEdgeInsetsMake(13, 0, 0, 5))
+            return UIImage(named: "device-desktop")!.resize(toHeight: 26.0)!.tint(with: UIColor(red: 186/255, green: 189/255, blue: 196/255, alpha: 1.0))!.resizableImage(withCapInsets: UIEdgeInsets(top: 13, left: 0, bottom: 0, right: 5))
         default:
-            return UIImage(named: "device-mobile")!.resize(toHeight: 26.0)!.tint(with: UIColor(red: 186/255, green: 189/255, blue: 196/255, alpha: 1.0))!.resizableImage(withCapInsets: UIEdgeInsetsMake(13, 0, 0, 5))
+            return UIImage(named: "device-mobile")!.resize(toHeight: 26.0)!.tint(with: UIColor(red: 186/255, green: 189/255, blue: 196/255, alpha: 1.0))!.resizableImage(withCapInsets: UIEdgeInsets(top: 13, left: 0, bottom: 0, right: 5))
         }
     }
     var onResponse: ((Bool) -> Void)?
@@ -39,15 +42,11 @@ class SignInVerificationUIPopover: BaseUIPopover {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let attachment = NSTextAttachment();
-        attachment.image = deviceImage
-        attachment.bounds = CGRect(x: 0.0, y: deviceLabel.font.descender - 2.0, width: attachment.image!.size.width, height: attachment.image!.size.height)
         
-        let attachmentString = NSMutableAttributedString(attachment: attachment)
-        let myString = NSAttributedString(string: "   \(linkData.deviceName)")
-        attachmentString.append(myString)
-        deviceLabel.attributedText = attachmentString;
+        deviceLabel.text = linkData.deviceName;
+        accounLabel.text = emailText
         titleLabel.text = linkData.kind == .link ? String.localize("SYNC_LINK") : String.localize("SYNC_MAIL")
+        deviceImageView.image = deviceImage
         applyTheme()
     }
     
@@ -57,7 +56,8 @@ class SignInVerificationUIPopover: BaseUIPopover {
         view.backgroundColor = theme.background
         titleLabel.textColor = theme.mainText
         subTitleLabel.textColor = theme.mainText
-        deviceLabel.textColor = theme.mainText
+        deviceLabel.textColor = theme.secondText
+        accounLabel.textColor = theme.secondText
         approveButton.backgroundColor = theme.popoverButton
         rejectButton.backgroundColor = theme.popoverButton
         rejectButton.setTitleColor(theme.mainText, for: .normal)

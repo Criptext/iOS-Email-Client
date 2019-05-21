@@ -247,7 +247,7 @@ class EmailTableViewCell: UITableViewCell{
     
     func setExpandedContent(_ email: Email, myEmail: String){
         moreOptionsIcon.image = email.isDraft ? #imageLiteral(resourceName: "icon-edit") : #imageLiteral(resourceName: "dots-options")
-        let allContacts = email.getContacts(type: .to) + email.getContacts(type: .cc) + email.getContacts(type: .bcc)
+        let allContacts = Array(email.getContacts(type: .to)) + Array(email.getContacts(type: .cc)) + Array(email.getContacts(type: .bcc))
         contactsLabel.text = allContacts.reduce("", { (result, contact) -> String in
             let displayName = parseContact(contact, myEmail: myEmail, contactsLength: allContacts.count)
             if(result.isEmpty){

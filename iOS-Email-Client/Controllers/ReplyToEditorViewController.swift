@@ -29,7 +29,7 @@ class ReplyToEditorViewController: UIViewController {
         navigationItem.title = String.localize("REPLY_TO_TITLE")
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
-[NSAttributedStringKey.foregroundColor: UIColor.white], for: .normal)
+            [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         replyToEnableSwitch.isOn = self.generalData.replyTo == "" ? false : true
         emailText.text = self.generalData.replyTo == "" ? "" : self.generalData.replyTo!
         setSwitchAttributes()
@@ -111,7 +111,7 @@ class ReplyToEditorViewController: UIViewController {
 }
 
 extension ReplyToEditorViewController: LinkDeviceDelegate {
-    func onAcceptLinkDevice(linkData: LinkData) {
+    func onAcceptLinkDevice(linkData: LinkData, account: Account) {
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
             popover.myTitle = String.localize("VERSION_TITLE")
@@ -122,14 +122,15 @@ extension ReplyToEditorViewController: LinkDeviceDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
-        linkDeviceVC.myAccount = myAccount
+        linkDeviceVC.myAccount = account
         self.present(linkDeviceVC, animated: true, completion: nil)
     }
-    func onCancelLinkDevice(linkData: LinkData) {
+    
+    func onCancelLinkDevice(linkData: LinkData, account: Account) {
         if case .sync = linkData.kind {
-            APIManager.syncDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.syncDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         } else {
-            APIManager.linkDeny(randomId: linkData.randomId, token: myAccount.jwt, completion: {_ in })
+            APIManager.linkDeny(randomId: linkData.randomId, token: account.jwt, completion: {_ in })
         }
     }
 }
