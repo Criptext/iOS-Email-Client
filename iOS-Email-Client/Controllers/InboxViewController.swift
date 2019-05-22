@@ -507,9 +507,11 @@ extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
         case .LinkData(let data, let recipientId):
-            self.handleLinkStart(linkData: data, account: DBManager.getAccountByUsername(recipientId)!)
+            //TODO NOT RECIPIENT, ID
+            self.handleLinkStart(linkData: data, account: DBManager.getAccountById(recipientId)!)
         case .NewEvent(let username):
-            RequestManager.shared.getAccountEvents(username: username)
+            //TODO NOT USERNAME, ID
+            RequestManager.shared.getAccountEvents(accountId: username)
         case .PasswordChange:
             self.presentPasswordPopover(myAccount: myAccount)
         case .Logout:
@@ -1923,7 +1925,7 @@ extension InboxViewController {
 
 extension InboxViewController: RequestDelegate {
     func finishRequest(accountId: String, result: EventData.Result) {
-        if !RequestManager.shared.isInQueue(username: myAccount.username) {
+        if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
             self.refreshControl.endRefreshing()
         }
         guard myAccount.compoundKey == accountId else {
@@ -1936,7 +1938,7 @@ extension InboxViewController: RequestDelegate {
     }
     
     func errorRequest(accountId: String, response: ResponseData) {
-        if !RequestManager.shared.isInQueue(username: myAccount.username) {
+        if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
             self.refreshControl.endRefreshing()
         }
         guard myAccount.compoundKey == accountId else {

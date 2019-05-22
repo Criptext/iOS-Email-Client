@@ -333,7 +333,7 @@ extension BackupViewController: UIGestureRecognizerDelegate {
 
 extension BackupViewController: BackupDelegate {
     func progressUpdate(accountId: String, progress: Int) {
-        guard username == myAccount.username else {
+        guard accountId == myAccount.compoundKey else {
             return
         }
         processMessage = String.localize("GENERATING_PROGRESS", arguments: progress)
