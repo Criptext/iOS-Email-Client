@@ -507,9 +507,11 @@ extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
         case .LinkData(let data, let recipientId):
-            self.handleLinkStart(linkData: data, account: DBManager.getAccountByUsername(recipientId)!)
+            //TODO NOT RECIPIENT, ID
+            self.handleLinkStart(linkData: data, account: DBManager.getAccountById(recipientId)!)
         case .NewEvent(let username):
-            RequestManager.shared.getAccountEvents(username: username)
+            //TODO NOT USERNAME, ID
+            RequestManager.shared.getAccountEvents(accountId: username)
         case .PasswordChange:
             self.presentPasswordPopover(myAccount: myAccount)
         case .Logout:
@@ -1750,7 +1752,7 @@ extension InboxViewController: LinkDeviceDelegate {
         }
     }
     
-    func onAcceptLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
+    func onAcceptLinkDevice(username: String, domain: String, linkData: LinkData, completion: @escaping (() -> Void)) {
         self.navigationDrawerController?.closeLeftView()
         guard linkData.version == Env.linkVersion else {
             let popover = GenericAlertUIPopover()
@@ -1760,9 +1762,9 @@ extension InboxViewController: LinkDeviceDelegate {
             return
         }
         
-        //TODO USE ACCOUNT ID
-        if myAccount.username != username,
-            let account = DBManager.getAccountById(username) {
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        if myAccount.email != "\(username)@\(domain)",
+            let account = DBManager.getAccountById(accountId) {
             self.dismiss(animated: false, completion: nil)
             self.swapAccount(account)
         }
@@ -1781,9 +1783,9 @@ extension InboxViewController: LinkDeviceDelegate {
             completion()
         }
     }
-    func onCancelLinkDevice(username: String, linkData: LinkData, completion: @escaping (() -> Void)) {
-        //TODO USE ACCOUNT ID
-        guard let account = DBManager.getAccountById(username) else {
+    func onCancelLinkDevice(username: String, domain: String, linkData: LinkData, completion: @escaping (() -> Void)) {
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        guard let account = DBManager.getAccountById(accountId) else {
             completion()
             return
         }
@@ -1800,9 +1802,9 @@ extension InboxViewController: LinkDeviceDelegate {
 }
 
 extension InboxViewController {
-    func markAsRead(username: String, emailKey: Int, completion: @escaping (() -> Void)){
-        //TODO USE ACCOUNT ID
-        guard let account = DBManager.getAccountById(username),
+    func markAsRead(username: String, domain: String, emailKey: Int, completion: @escaping (() -> Void)){
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        guard let account = DBManager.getAccountById(accountId),
             DBManager.getMail(key: emailKey, account: account) != nil else {
             completion()
             return
@@ -1822,11 +1824,11 @@ extension InboxViewController {
         }
     }
     
-    func reply(username: String, emailKey: Int, completion: @escaping (() -> Void)){
+    func reply(username: String, domain: String, emailKey: Int, completion: @escaping (() -> Void)){
         self.navigationDrawerController?.closeLeftView()
-        //TODO USE ACCOUNT ID
-        if self.myAccount.username != username,
-            let account = DBManager.getAccountById(username){
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        if self.myAccount.compoundKey != accountId,
+            let account = DBManager.getAccountById(accountId){
             self.dismiss(animated: false, completion: nil)
             self.swapAccount(account)
         }
@@ -1841,9 +1843,9 @@ extension InboxViewController {
         completion()
     }
     
-    func moveToTrash(username: String, emailKey: Int, completion: @escaping (() -> Void)){
-        //TODO USE ACCOUNT ID
-        guard let account = DBManager.getAccountById(username),
+    func moveToTrash(username: String, domain: String, emailKey: Int, completion: @escaping (() -> Void)){
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        guard let account = DBManager.getAccountById(accountId),
             let email = DBManager.getMail(key: emailKey, account: account) else {
             completion()
             return
@@ -1863,11 +1865,11 @@ extension InboxViewController {
         }
     }
     
-    func openThread(username: String, threadId: String) {
-        //TODO USE ACCOUNT ID
+    func openThread(username: String, domain: String, threadId: String) {
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
         self.navigationDrawerController?.closeLeftView()
         if self.myAccount.username != username,
-            let account = DBManager.getAccountById(username){
+            let account = DBManager.getAccountById(accountId){
             self.dismiss(animated: false, completion: nil)
             self.swapAccount(account)
         }
@@ -1923,7 +1925,7 @@ extension InboxViewController {
 
 extension InboxViewController: RequestDelegate {
     func finishRequest(accountId: String, result: EventData.Result) {
-        if !RequestManager.shared.isInQueue(username: myAccount.username) {
+        if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
             self.refreshControl.endRefreshing()
         }
         guard myAccount.compoundKey == accountId else {
@@ -1936,7 +1938,7 @@ extension InboxViewController: RequestDelegate {
     }
     
     func errorRequest(accountId: String, response: ResponseData) {
-        if !RequestManager.shared.isInQueue(username: myAccount.username) {
+        if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
             self.refreshControl.endRefreshing()
         }
         guard myAccount.compoundKey == accountId else {

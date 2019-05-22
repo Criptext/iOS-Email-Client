@@ -185,7 +185,7 @@ class CreatingAccountViewController: UIViewController{
             if self.multipleAccount {
                 self.goBackToMailbox(account: myAccount, showRestore: !hasEmails)
             } else {
-                self.goToMailbox(myAccount.username, showRestore: !hasEmails)
+                self.goToMailbox(myAccount.compoundKey, showRestore: !hasEmails)
             }
         }
     }
