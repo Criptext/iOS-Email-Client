@@ -105,6 +105,9 @@ class ComposeViewController: UIViewController {
     var disableSendButton: UIBarButtonItem!
     var popoverToPresent: BaseUIPopover?
     
+    var composerKeyboardOffset: CGFloat = 0.0
+    var composerEditorHeight: CGFloat = 0.0
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -752,6 +755,8 @@ extension ComposeViewController{
     
     //3.1
     @objc func hideKeyboard() {
+        composerKeyboardOffset = 0.0
+        self.editorHeightConstraint.constant = composerEditorHeight
         self.view.endEditing(true)
     }
     
@@ -770,7 +775,8 @@ extension ComposeViewController{
             self.toolbarBottomConstraint.constant = keyboardFrame.size.height - marginBottom
             self.view.layoutIfNeeded()
         }
-        
+        composerKeyboardOffset = keyboardFrame.size.height - marginBottom
+        self.editorHeightConstraint.constant = composerEditorHeight + composerKeyboardOffset
     }
     
     //4.2
@@ -1144,7 +1150,8 @@ extension ComposeViewController: RichEditorDelegate {
             return
         }
         
-        self.editorHeightConstraint.constant = cgheight
+        composerEditorHeight = cgheight
+        self.editorHeightConstraint.constant = cgheight + composerKeyboardOffset
     }
     
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {

@@ -62,6 +62,9 @@ class InboxTableViewCell: UITableViewCell {
         secureAttachmentImageView.isHidden = true
         secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
+        
+        
+        senderLabel.attributedText =  thread.buildContactString(theme: theme, fontSize: 15.0)
         if !thread.unread {
             backgroundColor = theme.background
             senderLabel.font = Font.regular.size(15)
@@ -69,8 +72,6 @@ class InboxTableViewCell: UITableViewCell {
             backgroundColor = theme.secondBackground
             senderLabel.font = Font.bold.size(15)
         }
-        
-        senderLabel.attributedText =  thread.buildContactString(theme: theme, fontSize: 15.0)
         subjectLabel.text = thread.subject == "" ? String.localize("NO_SUBJECT") : thread.subject
         dateLabel.text = thread.getFormattedDate()
         previewLabel.text = thread.preview.isEmpty ? String.localize("NO_CONTENT") : thread.preview

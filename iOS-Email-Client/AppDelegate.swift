@@ -370,7 +370,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
                 }
-                if (oldSchemaVersion < 19) {
+                if (oldSchemaVersion < 19 && oldSchemaVersion >= 12) {
                     migration.enumerateObjects(ofType: Account.className()){ (oldObject, newObject) in
                         guard let newAccount = newObject,
                             let oldAccount = oldObject,
