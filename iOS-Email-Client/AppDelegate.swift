@@ -656,8 +656,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
-        print(userInfo)
-        
         guard let inboxVC = getInboxVC(),
             let accountUser = (userInfo["account"] as? String ?? userInfo["recipientId"] as? String),
             let accountDomain = userInfo["domain"] as? String else {
@@ -742,9 +740,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
-        print(userInfo)
-        
+                
         if let action = userInfo["action"] as? String ,
             action == "anti_push",
             let metadataKeys = userInfo["metadataKeys"] as? String {
