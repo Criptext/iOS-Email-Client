@@ -49,7 +49,7 @@ class InboxViewController: UIViewController {
     var circleBadgeView: UIView!
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
-    var countBarButton = UIBarButtonItem(title: "(12)", style: .plain, target: nil, action: nil)
+    var countBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     
     let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     

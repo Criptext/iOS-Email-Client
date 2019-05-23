@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -1212,26 +1212,27 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="envelope" translatesAutoresizingMaskIntoConstraints="NO" id="qzp-lC-DPr">
-                                        <rect key="frame" x="131.5" y="208.5" width="112" height="65"/>
+                                        <rect key="frame" x="112.5" y="196" width="150" height="90"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="65" id="Lcn-1x-6wc"/>
+                                            <constraint firstAttribute="height" constant="90" id="Lcn-1x-6wc"/>
+                                            <constraint firstAttribute="width" constant="150" id="SQF-vE-XQq"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Here are no emails" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nel-C4-iB9">
-                                        <rect key="frame" x="50" y="288.5" width="275" height="20"/>
+                                        <rect key="frame" x="50" y="301" width="275" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="hId-Vy-UB5"/>
+                                            <constraint firstAttribute="height" constant="25" id="hId-Vy-UB5"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="but we love you anyway" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IrZ-fh-55m">
-                                        <rect key="frame" x="50" y="313.5" width="275" height="20"/>
+                                        <rect key="frame" x="50" y="331" width="275" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="kDo-H8-RfW"/>
+                                            <constraint firstAttribute="height" constant="25" id="kDo-H8-RfW"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                                         <color key="textColor" red="0.60720486111111116" green="0.60784313725490191" blue="0.60732631033182494" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -3503,7 +3504,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="activity" width="16" height="20"/>
+        <image name="activity" width="16" height="20.5"/>
         <image name="arrow-next" width="8" height="12"/>
         <image name="attachment" width="20" height="36"/>
         <image name="attachment_camera" width="28" height="21"/>
@@ -3511,16 +3512,16 @@
         <image name="attachment_inbox" width="36" height="20"/>
         <image name="attachment_pdf" width="80" height="80"/>
         <image name="attachment_photolibrary" width="27" height="27"/>
-        <image name="camera" width="28" height="28"/>
+        <image name="camera" width="28.5" height="28.5"/>
         <image name="close" width="28" height="28"/>
         <image name="close-rounded" width="14" height="14"/>
         <image name="color-bell" width="45" height="50"/>
         <image name="composer" width="32" height="30"/>
-        <image name="delete-icon" width="16" height="18"/>
+        <image name="delete-icon" width="16.5" height="18"/>
         <image name="device-desktop" width="52" height="45"/>
-        <image name="double-check" width="18" height="10"/>
+        <image name="double-check" width="18.5" height="10.5"/>
         <image name="envelope" width="112" height="112"/>
-        <image name="formatting" width="15" height="18"/>
+        <image name="formatting" width="15" height="18.5"/>
         <image name="icon-allmail" width="48" height="37"/>
         <image name="icon-down" width="13" height="8"/>
         <image name="icon-draft" width="30" height="30"/>
@@ -3535,6 +3536,6 @@
         <image name="muted" width="34" height="38"/>
         <image name="new-arrow-up" width="12" height="7"/>
         <image name="send" width="23" height="20"/>
-        <image name="switch_locked_on" width="10" height="12"/>
+        <image name="switch_locked_on" width="10.5" height="12.5"/>
     </resources>
 </document>
