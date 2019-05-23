@@ -20,10 +20,10 @@ class RestoreDBAsyncTask {
     }
     
     func start(progressHandler: @escaping ((Int) -> Void), completion: @escaping (() -> Void)) {
-        let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
+        let queue = DispatchQueue(label: "com.email.loaddb", qos: .userInteractive, attributes: .concurrent)
         queue.async {
             guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: self.path),
-                let streamReader = StreamReader(url: URL(fileURLWithPath: self.path), delimeter: "\n", encoding: .utf8, chunkSize: 1024) else {
+                let streamReader = StreamReader(url: URL(fileURLWithPath: self.path), delimeter: "\n", encoding: .utf8, chunkSize: 2048) else {
                 completion()
                 return
             }
