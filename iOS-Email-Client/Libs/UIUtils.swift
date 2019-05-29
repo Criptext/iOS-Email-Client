@@ -120,8 +120,7 @@ class UIUtils {
         imageView.setImageWith(contact.displayName, color: color, circular: true, fontName: "NunitoSans-Regular")
         imageView.layer.borderWidth = 0.0
         
-        let username = ContactUtils.getUsernameFromEmailFormat(contact.email)!
-        let domain = ContactUtils.getDomainFromEmailFormat(contact.email)!
+        let (username, domain) = ContactUtils.getUsernameAndDomain(email: contact.email)
         imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(domain)/\(username)"), placeholderImage: imageView.image, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
             if error == nil {
                 imageView.contentMode = .scaleAspectFill
@@ -138,8 +137,7 @@ class UIUtils {
         imageView.setImageWith(contact.1, color: color, circular: true, fontName: "NunitoSans-Regular")
         imageView.layer.borderWidth = 0.0
         
-        let username = ContactUtils.getUsernameFromEmailFormat(contact.0)!
-        let domain = ContactUtils.getDomainFromEmailFormat(contact.0)!
+        let (username, domain) = ContactUtils.getUsernameAndDomain(email: contact.0)
         imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(domain)/\(username)"), placeholderImage: imageView.image, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
             if error == nil {
                 imageView.contentMode = .scaleAspectFill
