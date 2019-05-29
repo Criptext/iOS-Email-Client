@@ -57,7 +57,7 @@ class Thread {
                     continue
                 }
                 if firstParticipant == nil {
-                    let firstName = Thread.getContactString(contact: participant, replaceWithMe: myEmail)
+                    let firstName = Thread.getContactString(contact: participant, isDraft: threadEmail.isDraft, replaceWithMe: myEmail)
                     firstParticipant = DisplayContact(name: firstName, isDraft: threadEmail.isDraft, isUnread: threadEmail.unread)
                 }
                 let displayName = Thread.getContactString(contact: participant, multiple: threadEmails.count > 1 || allContacts.count > 1, isDraft: threadEmail.isDraft, replaceWithMe: myEmail)

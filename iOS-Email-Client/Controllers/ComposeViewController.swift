@@ -377,7 +377,7 @@ class ComposeViewController: UIViewController {
         draft.status = .none
         let bodyWithoutHtml = self.editorView.text.replaceNewLineCharater(separator: " ")
         draft.account = self.activeAccount
-        draft.preview = String(bodyWithoutHtml.prefix(100))
+        draft.preview = String(bodyWithoutHtml.prefix(100)).filter { !"\n\t\r".contains($0) }
         draft.unread = false
         draft.subject = self.subjectField.text ?? ""
         draft.date = Date()
