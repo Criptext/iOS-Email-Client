@@ -607,13 +607,13 @@ class ComposeViewController: UIViewController {
         
         let containsNonCriptextEmail = draftEmail.getContacts(type: .to).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .cc).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .bcc).contains(where: {!$0.email.contains(Constants.domain)})
         
-        guard !containsNonCriptextEmail else {
+        guard !(containsNonCriptextEmail && activeAccount.encryptToExternal) else {
             self.presentPopover()
             return
         }
         
         self.toggleInteraction(false)
-        sendMailInMainController()
+        sendMailInMainController(secure: false)
     }
     
     func presentPopover(){
