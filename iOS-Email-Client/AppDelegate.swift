@@ -743,12 +743,28 @@ extension AppDelegate: MessagingDelegate {
                 
         if let action = userInfo["action"] as? String ,
             action == "anti_push",
-            let metadataKeys = userInfo["metadataKeys"] as? String {
-            let keys = metadataKeys.split(separator: ",").map({String($0)})
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: keys)
-            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: keys)
-            completionHandler(.noData)
-            return
+            let subAction = userInfo["subAction"] as? String{
+            switch(subAction){
+            case "delete_new_email":
+                guard let metadataKeys = userInfo["metadataKeys"] as? String else {
+                    return
+                }
+                let keys = metadataKeys.split(separator: ",").map({String($0)})
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: keys)
+                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: keys)
+                completionHandler(.noData)
+                return
+            case "delete_sync_link":
+                guard let randomId = userInfo["randomId"] as? String else {
+                    return
+                }
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [randomId])
+                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [randomId])
+                completionHandler(.noData)
+                return
+            default:
+                return
+            }
         }
         
         guard let accountUser = userInfo["account"] as? String,
