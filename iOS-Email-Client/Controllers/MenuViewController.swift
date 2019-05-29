@@ -116,7 +116,7 @@ class MenuViewController: UIViewController{
     func setupAccountInfo(_ myAccount: Account){
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.email
-        avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
+        avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.domain ?? Env.plainDomain)/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
             if error != nil {
                 self.avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
             }else{

@@ -103,6 +103,14 @@ class SharedDB {
         }
     }
     
+    class func update(account: Account, encryptToExternal: Bool) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.encryptToExternal = encryptToExternal
+        }
+    }
+    
     class func update(account: Account, lastBackup: Date) {
         let realm = try! Realm()
         
