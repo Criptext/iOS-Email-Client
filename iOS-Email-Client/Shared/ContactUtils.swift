@@ -94,4 +94,15 @@ class ContactUtils {
         }
         return email.substring(with: range)
     }
+    
+    class func getDomainFromEmailFormat(_ emailFormat: String) -> String? {
+        let email = NSString(string: emailFormat)
+        let pattern = "(?<=\\<).*(?=@)"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let matches = regex.matches(in: emailFormat, options: [], range: NSRange(location: 0, length: email.length))
+        guard let range = matches.first?.range else {
+            return String(emailFormat.split(separator: "@")[1])
+        }
+        return email.substring(with: range)
+    }
 }

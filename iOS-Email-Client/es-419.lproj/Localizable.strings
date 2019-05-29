@@ -231,6 +231,7 @@
 "PREVIEW_DETAIL" = "Vista previa del contenido del correo en las notificaciones.";
 "TWO_FACTOR_DETAIL" = "Una segunda validación para proteger tu cuenta";
 "RECEIPTS_DETAIL" = "Enterate cuando tus correos han sido abiertos y leidos. Si lo deshabilitas, no podrás saber cuando otras personas lean tus correos ni vice-versa";
+"ENCRYPT_EXTERNALS_DETAIL" = "Si enciendes esta opción, cada vez que envies un correo a una cuenta que no es de Criptext, te preguntaremos si deaseas encriptarlo con una contraseña.";
 "UNABLE_RECEIPTS" = "No se puede establecer la confirmación de leído. Inténtalo de nuevo.";
 "UNLOCK_FACE" = "Desbloquear con FaceID";
 "UNLOCK_TOUCH" = "Desbloquear con huella";
@@ -290,6 +291,7 @@
 "AUTO_LOCK" = "Auto-Bloqueo";
 "NOTIFICATION_PREVIEW" = "Vista Previa en Notificaciones";
 "READ_RECEIPTS" = "Confirmaciones de Lectura";
+"ENCRYPT_TO_EXTERNAL" = "Encriptar Correos a Externos";
 
 "DONE" = "Listo";
 "YESTERDAY" = "Ayer";

@@ -822,19 +822,6 @@ class DBManager: SharedDB {
         })
         realm.delete(emails)
     }
-    
-    class func updateAccount(recipientId: String, name: String){
-        let realm = try! Realm()
-        
-        try! realm.write {
-            if let account = realm.object(ofType: Account.self, forPrimaryKey: recipientId) {
-                account.name = name
-            }
-            if let contact = realm.object(ofType: Contact.self, forPrimaryKey: "\(recipientId)\(Constants.domain)") {
-                contact.displayName = name
-            }
-        }
-    }
 
     //MARK: - QueueItem
     

@@ -119,34 +119,36 @@ class UIUtils {
         let color = UIColor.init().colorByName(name: contact.displayName)
         imageView.setImageWith(contact.displayName, color: color, circular: true, fontName: "NunitoSans-Regular")
         imageView.layer.borderWidth = 0.0
-        if contact.email.contains("\(Constants.domain)"){
-            let username = ContactUtils.getUsernameFromEmailFormat(contact.email)!
-            imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(username)"), placeholderImage: imageView.image, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
-                if error == nil {
-                    imageView.contentMode = .scaleAspectFill
-                    imageView.layer.masksToBounds = false
-                    imageView.layer.cornerRadius = imageView.frame.size.width / 2
-                    imageView.clipsToBounds = true
-                }
+        
+        let username = ContactUtils.getUsernameFromEmailFormat(contact.email)!
+        let domain = ContactUtils.getDomainFromEmailFormat(contact.email)!
+        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(domain)/\(username)"), placeholderImage: imageView.image, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
+            if error == nil {
+                imageView.contentMode = .scaleAspectFill
+                imageView.layer.masksToBounds = false
+                imageView.layer.cornerRadius = imageView.frame.size.width / 2
+                imageView.clipsToBounds = true
             }
         }
+        
     }
     
     class func setProfilePictureImage(imageView: UIImageView, contact: (String, String)) {
         let color = UIColor.init().colorByName(name: contact.1)
         imageView.setImageWith(contact.1, color: color, circular: true, fontName: "NunitoSans-Regular")
         imageView.layer.borderWidth = 0.0
-        if contact.0.contains("\(Constants.domain)"){
-            let username = ContactUtils.getUsernameFromEmailFormat(contact.0)!
-            imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(username)"), placeholderImage: imageView.image, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
-                if error == nil {
-                    imageView.contentMode = .scaleAspectFill
-                    imageView.layer.masksToBounds = false
-                    imageView.layer.cornerRadius = imageView.frame.size.width / 2
-                    imageView.clipsToBounds = true
-                }
+        
+        let username = ContactUtils.getUsernameFromEmailFormat(contact.0)!
+        let domain = ContactUtils.getDomainFromEmailFormat(contact.0)!
+        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(domain)/\(username)"), placeholderImage: imageView.image, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
+            if error == nil {
+                imageView.contentMode = .scaleAspectFill
+                imageView.layer.masksToBounds = false
+                imageView.layer.cornerRadius = imageView.frame.size.width / 2
+                imageView.clipsToBounds = true
             }
         }
+        
     }
     
     class func createLeftBackButton(target: Any?, action: Selector) -> UIBarButtonItem {
