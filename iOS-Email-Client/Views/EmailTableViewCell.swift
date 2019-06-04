@@ -366,7 +366,8 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     }
     
     func webViewEvaluateHeight(_ webview: WKWebView){
-        let jsString = "document.body.clientHeight + (document.body.childNodes[0].offsetTop || 0)"
+        let jsString = "Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);"
+        
         webView.evaluateJavaScript(jsString) { (result, error) in
             guard let height = result as? CGFloat else {
                 return
