@@ -74,7 +74,9 @@ class InboxTableViewCell: UITableViewCell {
         }
         subjectLabel.text = thread.subject == "" ? String.localize("NO_SUBJECT") : thread.subject
         dateLabel.text = thread.getFormattedDate()
-        previewLabel.text = thread.preview.isEmpty ? String.localize("NO_CONTENT") : thread.preview.filter { !"\n\t\r".contains($0) }
+        
+        
+        previewLabel.text = thread.preview.isEmpty ? String.localize("NO_CONTENT") : thread.preview
         
         if(thread.isUnsent){
             previewLabel.textColor = .alertText

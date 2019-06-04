@@ -377,7 +377,13 @@ class ComposeViewController: UIViewController {
         draft.status = .none
         let bodyWithoutHtml = self.editorView.text.replaceNewLineCharater(separator: " ")
         draft.account = self.activeAccount
-        draft.preview = String(bodyWithoutHtml.prefix(100)).filter { !"\n\t\r".contains($0) }
+        
+        let preview = String(bodyWithoutHtml.prefix(100))
+        let pattern = "\\s+"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let cleanedPreview = regex.stringByReplacingMatches(in: preview, range: NSMakeRange(0, preview.count), withTemplate: " ")
+        
+        draft.preview = cleanedPreview
         draft.unread = false
         draft.subject = self.subjectField.text ?? ""
         draft.date = Date()
