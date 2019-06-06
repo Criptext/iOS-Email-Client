@@ -323,6 +323,8 @@ class SecurityPrivacyViewController: UITableViewController {
                     return .touchID
                 case .faceID:
                     return .faceID
+                @unknown default:
+                    return .none
                 }
             } else {
                 return  .touchID

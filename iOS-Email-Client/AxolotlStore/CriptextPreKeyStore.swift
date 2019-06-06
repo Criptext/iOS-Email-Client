@@ -29,7 +29,7 @@ class CriptextPreKeyStore: NSObject, PreKeyStore{
         return preKeyRecord
     }
     
-    func storePreKey(_ preKeyId: Int32, preKeyRecord record: PreKeyRecord!) {
+    func storePreKey(_ preKeyId: Int32, preKeyRecord record: PreKeyRecord) {
         let keyData = NSKeyedArchiver.archivedData(withRootObject: record)
         let keyString = keyData.base64EncodedString()
         let keyRecord = CRPreKeyRecord()

@@ -149,6 +149,8 @@ class CustomPasscodeViewController: PasscodeLockViewController {
                     return .touchID
                 case .faceID:
                     return .faceID
+                @unknown default:
+                    return .none
                 }
             } else {
                 return  .touchID

@@ -152,15 +152,6 @@ class SharedDB {
         return realm.objects(Email.self).filter("messageId == '\(messageId)' AND account.compoundKey == '\(account.compoundKey)'").first
     }
     
-    class func clone(_ email: Email) -> Email {
-        let realm = try! Realm()
-        var email: Email!
-        try! realm.write {
-            email = realm.create(Email.self, value: email, update: true)
-        }
-        return email
-    }
-    
     class func hasEmails(account: Account) -> Bool {
         let realm = try! Realm()
         return realm.objects(Email.self).filter("account.compoundKey == '\(account.compoundKey)'").count > 0
@@ -420,7 +411,7 @@ class SharedDB {
                 email.labels.append(label)
             }
             for labelId in removedLabelIds {
-                guard let index = email.labels.index(where: {$0.id == labelId}) else {
+                guard let index = email.labels.firstIndex(where: {$0.id == labelId}) else {
                     continue
                 }
                 email.labels.remove(at: index)

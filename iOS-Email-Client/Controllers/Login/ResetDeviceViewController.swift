@@ -39,7 +39,7 @@ class ResetDeviceViewController: UIViewController{
         let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
-        passwordTextField.becomeFirstResponder()
+        let _ = passwordTextField.becomeFirstResponder()
         
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
         passwordTextField.placeholderAnimation = .hidden

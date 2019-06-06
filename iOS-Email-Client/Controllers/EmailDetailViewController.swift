@@ -1077,8 +1077,8 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
     }
     
     func getCellFromFile(_ file: File) -> AttachmentTableCell? {
-        guard let emailIndex = emailData.emails.index(where: {$0.key == file.emailId}),
-            let index = emailData.emails[emailIndex].files.index(where: {$0.token == file.token}),
+        guard let emailIndex = emailData.emails.firstIndex(where: {$0.key == file.emailId}),
+            let index = emailData.emails[emailIndex].files.firstIndex(where: {$0.token == file.token}),
             let emailCell = self.emailsTableView.cellForRow(at: IndexPath(row: emailIndex == 0 ? 0 : emailIndex - collapseUntilIndex, section: 0)) as? EmailTableViewCell,
             let attachmentCell = emailCell.attachmentsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
                 return nil

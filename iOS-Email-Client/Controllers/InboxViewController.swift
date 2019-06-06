@@ -597,7 +597,7 @@ extension InboxViewController {
         }
         
         let pathsToUpdate = result.opens.reduce([IndexPath]()) { (result, open) -> [IndexPath] in
-            guard let index = mailboxData.threads.index(where: {$0.threadId == open}) else {
+            guard let index = mailboxData.threads.firstIndex(where: {$0.threadId == open}) else {
                 return result
             }
             return result + [IndexPath(row: index, section: 0)]
@@ -1633,7 +1633,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func deleteDraft(draftId: Int) {
-        guard let draftIndex = mailboxData.threads.index(where: {$0.lastEmailKey == draftId}) else {
+        guard let draftIndex = mailboxData.threads.firstIndex(where: {$0.lastEmailKey == draftId}) else {
                 return
         }
         mailboxData.threads.remove(at: draftIndex)

@@ -775,7 +775,7 @@ class DBManager: SharedDB {
             email.labels.append(label)
         }
         for labelName in removedLabelNames {
-            guard let index = email.labels.index(where: {$0.text == labelName}) else {
+            guard let index = email.labels.firstIndex(where: {$0.text == labelName}) else {
                 continue
             }
             email.labels.remove(at: index)

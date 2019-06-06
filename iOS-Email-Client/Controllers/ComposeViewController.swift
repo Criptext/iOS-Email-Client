@@ -342,7 +342,7 @@ class ComposeViewController: UIViewController {
     
     func remove(_ attachment:File){
         
-        guard let index = fileManager.registeredFiles.index(where: { (attach) -> Bool in
+        guard let index = fileManager.registeredFiles.firstIndex(where: { (attach) -> Bool in
             return attach == attachment
         }) else {
             //if not found, do nothing
@@ -1125,7 +1125,7 @@ extension ComposeViewController: CriptextFileDelegate {
     }
     
     func getCellForFile(_ file: File) -> AttachmentTableViewCell? {
-        guard let index = fileManager.registeredFiles.index(where: {$0.token == file.token}),
+        guard let index = fileManager.registeredFiles.firstIndex(where: {$0.token == file.token}),
             let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
                 return nil
         }

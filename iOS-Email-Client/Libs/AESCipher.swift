@@ -185,7 +185,7 @@ class AESCipher {
     class func generateRandomBytes(length bytesCount: Int = 16) -> Data {
         var randomBytes = Array<UInt8>(repeating: 0, count: bytesCount)
         let _ = SecRandomCopyBytes(kSecRandomDefault, bytesCount, &randomBytes)
-        return Data(bytes: randomBytes)
+        return Data(_: randomBytes)
     }
     
     class func sha256(_ data: Data) -> Data? {

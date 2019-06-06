@@ -283,7 +283,7 @@ extension ShareViewController: CriptextFileDelegate {
     }
     
     func getCellForFile(_ file: File) -> AttachmentTableCell? {
-        guard let index = fileManager.registeredFiles.index(where: {$0.token == file.token}),
+        guard let index = fileManager.registeredFiles.firstIndex(where: {$0.token == file.token}),
             let cell = self.composerUIView.attachmentsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
                 return nil
         }

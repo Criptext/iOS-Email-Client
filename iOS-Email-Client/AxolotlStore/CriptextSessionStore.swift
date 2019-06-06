@@ -32,7 +32,7 @@ extension CriptextSessionStore: SessionStore{
         return [String]()
     }
     
-    func storeSession(_ contactIdentifier: String!, deviceId: Int32, session: SessionRecord!) {
+    func storeSession(_ contactIdentifier: String!, deviceId: Int32, session: SessionRecord) {
         let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
         let sessionString = sessionData.base64EncodedString()
         if let existingSession = DBAxolotl.getSessionRecord(contactId: contactIdentifier, deviceId: deviceId, account: account) {
