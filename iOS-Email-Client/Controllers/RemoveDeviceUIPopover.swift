@@ -39,7 +39,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        passwordTextField.becomeFirstResponder()
+        let _ = passwordTextField.becomeFirstResponder()
     }
     
     func applyTheme() {

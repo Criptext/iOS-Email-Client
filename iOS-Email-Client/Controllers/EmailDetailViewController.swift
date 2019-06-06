@@ -149,7 +149,8 @@ class EmailDetailViewController: UIViewController {
         if !defaults.guideUnsend,
             let email = emailData.emails.first,
             email.isSent && emailData.getState(email.key).isExpanded && emailData.emails.count == 1 {
-            self.coachMarksController.start(on: self)
+            let presentationContext = PresentationContext.viewController(self)
+            self.coachMarksController.start(in: presentationContext)
             defaults.guideUnsend = true
         }
         

@@ -39,7 +39,7 @@ class PasswordUIPopover: BaseUIPopover {
     override func viewDidLoad() {
         super.viewDidLoad()
         passwordTextField.isVisibilityIconButtonEnabled = true
-        passwordTextField.becomeFirstResponder()
+        let _ = passwordTextField.becomeFirstResponder()
         shouldDismiss = !remotelyCheckPassword
         passwordTitleLabel.text = remotelyCheckPassword ? String.localize("PASSWORD_CHANGE") : String.localize("PASSWORD_CONTINUE")
         if let title = initialTitle {

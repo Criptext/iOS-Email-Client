@@ -42,7 +42,7 @@ class ChangePassViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        oldPassTextField.becomeFirstResponder()
+        let _ = oldPassTextField.becomeFirstResponder()
     }
     
     func applyTheme() {
@@ -140,10 +140,10 @@ class ChangePassViewController: UIViewController {
     @objc func onDonePress(_ sender: Any){
         switch(sender as? TextField){
         case oldPassTextField:
-            newPassTextField.becomeFirstResponder()
+            let _ = newPassTextField.becomeFirstResponder()
             break
         case newPassTextField:
-            confirmPassTextField.becomeFirstResponder()
+            let _ = confirmPassTextField.becomeFirstResponder()
             break
         default:
             if(saveButton.isEnabled){

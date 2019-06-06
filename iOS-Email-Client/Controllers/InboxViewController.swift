@@ -271,13 +271,15 @@ class InboxViewController: UIViewController {
         let defaults = CriptextDefaults()
         if !defaults.guideComposer {
             currentGuide = CriptextDefaults.Guide.composer.rawValue
-            self.coachMarksController.start(on: self)
+            let presentationContext = PresentationContext.viewController(self)
+            self.coachMarksController.start(in: presentationContext)
             defaults.guideComposer = true
         } else if !defaults.guideFeed,
             let feedVC = navigationDrawerController?.rightViewController as? FeedViewController,
             feedVC.feedsData.newFeeds.count > 0 {
             currentGuide = CriptextDefaults.Guide.feed.rawValue
-            self.coachMarksController.start(on: self)
+            let presentationContext = PresentationContext.viewController(self)
+            self.coachMarksController.start(in: presentationContext)
             defaults.guideFeed = true
         }
     }

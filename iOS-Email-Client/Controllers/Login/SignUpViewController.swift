@@ -82,16 +82,16 @@ class SignUpViewController: UIViewController{
     @objc func onDonePress(_ sender: Any){
         switch(sender as? StatusTextField){
         case usernameTextField:
-            fullnameTextField.becomeFirstResponder()
+            let _ = fullnameTextField.becomeFirstResponder()
             break
         case fullnameTextField:
-            passwordTextField.becomeFirstResponder()
+            let _ = passwordTextField.becomeFirstResponder()
             break
         case passwordTextField:
-            confirmPasswordTextField.becomeFirstResponder()
+            let _ = confirmPasswordTextField.becomeFirstResponder()
             break
         case confirmPasswordTextField:
-            emailTextField.becomeFirstResponder()
+            let _ = emailTextField.becomeFirstResponder()
             break
         default:
             if(createAccountButton.isEnabled){

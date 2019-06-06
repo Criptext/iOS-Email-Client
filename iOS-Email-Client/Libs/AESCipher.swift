@@ -124,7 +124,7 @@ class AESCipher {
     
     private class func handleIv(inputStream: InputStream, outputStream: OutputStream, ivData: Data?) -> Data? {
         if let localIvData = ivData {
-            localIvData.withUnsafeBytes { ivBytes in
+            let _ = localIvData.withUnsafeBytes { ivBytes in
                 outputStream.write(ivBytes, maxLength: localIvData.count)
             }
             return localIvData
@@ -184,7 +184,7 @@ class AESCipher {
     
     class func generateRandomBytes(length bytesCount: Int = 16) -> Data {
         var randomBytes = Array<UInt8>(repeating: 0, count: bytesCount)
-        SecRandomCopyBytes(kSecRandomDefault, bytesCount, &randomBytes)
+        let _ = SecRandomCopyBytes(kSecRandomDefault, bytesCount, &randomBytes)
         return Data(bytes: randomBytes)
     }
     

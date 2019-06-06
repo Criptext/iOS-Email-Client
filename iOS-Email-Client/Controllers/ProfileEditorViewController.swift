@@ -234,7 +234,7 @@ class ProfileEditorViewController: UIViewController {
 
 
 extension ProfileEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: nil)
         self.showAttachmentDrawer(false)
         if let imgUrl = info[UIImagePickerController.InfoKey.imageURL.rawValue] as? URL{

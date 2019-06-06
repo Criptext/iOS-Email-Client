@@ -25,7 +25,7 @@ class CriptextFileManager {
     var apiManager: APIManager.Type = APIManager.self
     weak var delegate: CriptextFileDelegate?
     
-    internal(set) var keyPairs = [Int: (Data, Data)]()
+    var keyPairs = [Int: (Data, Data)]()
     var encryption : Bool {
         return keyPairs.count > 0
     }

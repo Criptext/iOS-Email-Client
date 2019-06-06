@@ -35,7 +35,7 @@ class SingleTextInputViewController: BaseUIPopover {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        nameTextField.becomeFirstResponder()
+        let _ = nameTextField.becomeFirstResponder()
     }
     
     required init?(coder aDecoder: NSCoder) {

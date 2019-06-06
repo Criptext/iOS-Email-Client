@@ -294,7 +294,7 @@ class ComposeViewController: UIViewController {
         case toField:
             subjectField.becomeFirstResponder()
         case subjectField:
-            editorView.becomeFirstResponder()
+            let _ = editorView.becomeFirstResponder()
         default:
             break
         }
@@ -678,7 +678,7 @@ class ComposeViewController: UIViewController {
     }
     
     @IBAction func didPressAttachmentDocuments(_ sender: UIButton) {
-        let providerList = UIDocumentMenuViewController(documentTypes: ["public.content", "public.data"], in: .import)
+        let providerList = UIDocumentPickerViewController(documentTypes: ["public.content", "public.data"], in: .import)
         providerList.delegate = self;
         
         providerList.popoverPresentationController?.sourceView = self.view
@@ -720,9 +720,9 @@ extension ComposeViewController: CICropPickerDelegate {
 }
 
 //MARK: - Document Handler Delegate
-extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate {
+extension ComposeViewController: UIDocumentPickerDelegate {
     
-    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+    func documentMenu(didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         //show document picker
         documentPicker.delegate = self;
         
@@ -1195,7 +1195,8 @@ extension ComposeViewController: RichEditorDelegate {
         self.collapseCC(true)
         let defaults = CriptextDefaults()
         if !defaults.guideAttachments {
-            self.coachMarksController.start(on: self)
+            let presentationContext = PresentationContext.viewController(self)
+            self.coachMarksController.start(in: presentationContext)
             defaults.guideAttachments = true
         }
     }
