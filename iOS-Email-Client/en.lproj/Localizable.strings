@@ -35,6 +35,7 @@
 "CONFIRM" = "Confirm";
 "RETRY" = "Retry";
 "USERNAME" = "Username";
+"EMAIL" = "Email Address";
 "FULLNAME" = "Full Name";
 "PASSWORD" = "Password";
 "CONFIRM_PASSWORD" = "Confirm Password";

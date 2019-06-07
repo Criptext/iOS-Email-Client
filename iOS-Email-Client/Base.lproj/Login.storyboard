@@ -46,7 +46,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bWh-30-jzP" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="56" y="390.5" width="265" height="30"/>
+                                <rect key="frame" x="56" y="390.5" width="263" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="gzy-ZV-IDZ"/>
                                 </constraints>
@@ -59,7 +59,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z38-EZ-ooJ">
-                                <rect key="frame" x="37.5" y="455.5" width="300" height="44"/>
+                                <rect key="frame" x="56" y="455.5" width="263" height="44"/>
                                 <color key="backgroundColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="QSw-DY-9sv"/>
@@ -137,7 +137,7 @@
                             <constraint firstItem="uqv-px-110" firstAttribute="top" secondItem="Kdd-Jg-Qc6" secondAttribute="bottom" constant="11" id="1nS-oQ-ZAH"/>
                             <constraint firstItem="hQN-zb-RQx" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="22" id="2er-D9-3er"/>
                             <constraint firstItem="bWh-30-jzP" firstAttribute="top" secondItem="3eC-DY-ikl" secondAttribute="bottom" constant="8.5" id="7pb-9I-8oi"/>
-                            <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="Z38-EZ-ooJ" secondAttribute="trailing" constant="37.5" id="CqU-en-wR3"/>
+                            <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="Z38-EZ-ooJ" secondAttribute="trailing" constant="56" id="CqU-en-wR3"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="3eC-DY-ikl" secondAttribute="trailing" constant="54" id="Dhg-Ey-WT5"/>
                             <constraint firstItem="0kC-sy-x2w" firstAttribute="centerY" secondItem="bWh-30-jzP" secondAttribute="centerY" id="EEc-oj-Dh9"/>
                             <constraint firstItem="8h7-e5-yyo" firstAttribute="top" secondItem="gtO-CH-xJW" secondAttribute="top" constant="20" id="GhS-Ny-DoH"/>
@@ -149,11 +149,11 @@
                             <constraint firstItem="Kdd-Jg-Qc6" firstAttribute="centerY" secondItem="aRw-9s-cBf" secondAttribute="centerY" multiplier="0.6" id="RoQ-C3-CI8"/>
                             <constraint firstItem="bWh-30-jzP" firstAttribute="leading" secondItem="0kC-sy-x2w" secondAttribute="trailing" constant="13" id="UCt-rB-JWu"/>
                             <constraint firstItem="hQN-zb-RQx" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="VzL-qi-Orq"/>
-                            <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="bWh-30-jzP" secondAttribute="trailing" constant="54" id="Yq7-e7-Jky"/>
+                            <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="bWh-30-jzP" secondAttribute="trailing" constant="56" id="Yq7-e7-Jky"/>
                             <constraint firstItem="uqv-px-110" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="22" id="Z3c-n8-YwC"/>
                             <constraint firstItem="Kdd-Jg-Qc6" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="eAP-bD-gmh"/>
                             <constraint firstItem="bWh-30-jzP" firstAttribute="centerY" secondItem="gtO-CH-xJW" secondAttribute="centerY" multiplier="1.18" id="h1a-4o-g83"/>
-                            <constraint firstItem="Z38-EZ-ooJ" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="37.5" id="h2a-g1-dqz"/>
+                            <constraint firstItem="Z38-EZ-ooJ" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="56" id="h2a-g1-dqz"/>
                             <constraint firstItem="bWh-30-jzP" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="56" id="m77-p1-8dU"/>
                             <constraint firstItem="Z38-EZ-ooJ" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="o9q-I8-MvP"/>
                             <constraint firstItem="3eC-DY-ikl" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="56" id="sKL-xc-lA9"/>
@@ -704,7 +704,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGe-4s-CNR">
-                                                <rect key="frame" x="33" y="113.5" width="309" height="31.5"/>
+                                                <rect key="frame" x="33" y="111" width="309" height="37"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -724,7 +724,7 @@ was rejected by a verified device</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-alert" translatesAutoresizingMaskIntoConstraints="NO" id="u04-Cm-YDi">
-                                                        <rect key="frame" x="162.5" y="299.5" width="50" height="50"/>
+                                                        <rect key="frame" x="162.5" y="299.5" width="50.000000000000014" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="LZr-Cj-ZWh"/>
                                                             <constraint firstAttribute="height" constant="50" id="a7m-S3-MgJ"/>

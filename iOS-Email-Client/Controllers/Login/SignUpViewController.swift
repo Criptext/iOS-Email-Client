@@ -51,7 +51,7 @@ class SignUpViewController: UIViewController{
         usernameTextField.markView = usernameMark
         usernameTextField.font = Font.regular.size(17.0)
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("EMAIL"), attributes: placeholderAttrs)
         fullnameTextField.markView = fullnameMark
         fullnameTextField.font = Font.regular.size(17.0)
         fullnameTextField.placeholderAnimation = .hidden

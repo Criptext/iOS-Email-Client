@@ -50,7 +50,7 @@ class NewLoginViewController: UIViewController{
     func usernameTextFieldInit(){
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("EMAIL"), attributes: placeholderAttrs)
         usernameTextField.delegate = self
         usernameTextField.autocapitalizationType = .none
         usernameTextField.autocorrectionType = .no
