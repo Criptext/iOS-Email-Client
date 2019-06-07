@@ -326,7 +326,7 @@ class SettingsGeneralViewController: UIViewController{
     func syncContacts(){
         generalData.syncStatus = .syncing
         tableView.reloadData()
-        let syncContactsTask = RetrieveContactsTask(username: myAccount.username)
+        let syncContactsTask = RetrieveContactsTask(accountId: myAccount.compoundKey)
         syncContactsTask.start { [weak self] (success) in
             guard let weakSelf = self else {
                 return

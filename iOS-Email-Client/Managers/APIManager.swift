@@ -716,11 +716,12 @@ class APIManager: SharedAPI {
         }
     }
 
-    class func linkBegin(username: String, completion: @escaping ((ResponseData) -> Void)) {
+    class func linkBegin(username: String, domain: String, completion: @escaping ((ResponseData) -> Void)) {
         let url = "\(self.baseUrl)/link/begin"
         let headers = [versionHeader: apiVersion]
         let params = [
             "targetUsername": username,
+            "domain": domain,
             "version": Env.linkVersion.description
         ] as [String : Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
@@ -810,6 +811,15 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
+    
+    class func checkLogin(username: String, domain: String, completion: @escaping((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/user/canlogin?username=\(username)&domain=\(domain)"
+        let headers = [versionHeader: apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
 
     @discardableResult class func checkAvailableUsername(_ username: String, completion: @escaping ((ResponseData) -> Void)) -> DataRequest{
         let url = "\(self.baseUrl)/user/available?username=\(username)"
@@ -830,8 +840,9 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func loginRequest(_ username: String, _ password: String, completion: @escaping ((ResponseData) -> Void)){
+    class func loginRequest(username: String, domain: String, password: String, completion: @escaping ((ResponseData) -> Void)){
         let parameters = ["username": username,
+                          "domain": domain,
                           "password": password] as [String : Any]
         let url = "\(self.baseUrl)/user/auth"
         let headers = [versionHeader: apiVersion]
@@ -842,10 +853,11 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func resetPassword(username: String, completion: @escaping ((ResponseData) -> Void)){
+    class func resetPassword(username: String, domain: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/password/reset"
         let params = [
-            "recipientId": username
+            "recipientId": username,
+            "domain": domain
             ] as [String: Any]
         let headers = [versionHeader: apiVersion]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in

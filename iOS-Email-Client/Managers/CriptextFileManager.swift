@@ -25,7 +25,7 @@ class CriptextFileManager {
     var apiManager: APIManager.Type = APIManager.self
     weak var delegate: CriptextFileDelegate?
     
-    internal(set) var keyPairs = [Int: (Data, Data)]()
+    var keyPairs = [Int: (Data, Data)]()
     var encryption : Bool {
         return keyPairs.count > 0
     }
@@ -110,7 +110,7 @@ class CriptextFileManager {
                 file.requestStatus = .failed
                 weakSelf.delegate?.uploadProgressUpdate(file: file, progress: 0)
                 weakSelf.delegate?.finishRequest(file: file, success: false)
-                if let index = weakSelf.registeredFiles.index(where: {$0.token == file.token}) {
+                if let index = weakSelf.registeredFiles.firstIndex(where: {$0.token == file.token}) {
                     weakSelf.registeredFiles.remove(at: index)
                     weakSelf.delegate?.fileError(message: String.localize("UNABLE_FILE"))
                 }
@@ -157,7 +157,7 @@ class CriptextFileManager {
     }
     
     private func startRequest(_ filetoken: String){
-        guard let fileIndex = registeredFiles.index(where: {$0.token == filetoken}) else {
+        guard let fileIndex = registeredFiles.firstIndex(where: {$0.token == filetoken}) else {
             handleFileTurn()
             return
         }
@@ -206,7 +206,7 @@ class CriptextFileManager {
             guard let weakSelf = self else {
                 return
             }
-            guard let fileIndex = weakSelf.registeredFiles.index(where: {$0.token == filetoken}) else {
+            guard let fileIndex = weakSelf.registeredFiles.firstIndex(where: {$0.token == filetoken}) else {
                 weakSelf.handleFileTurn()
                 return
             }
@@ -229,7 +229,7 @@ class CriptextFileManager {
             guard let weakSelf = self else {
                 return
             }
-            guard let fileIndex = weakSelf.registeredFiles.index(where: {$0.token == filetoken}) else {
+            guard let fileIndex = weakSelf.registeredFiles.firstIndex(where: {$0.token == filetoken}) else {
                 weakSelf.handleFileTurn()
                 return
             }
@@ -295,14 +295,14 @@ class CriptextFileManager {
     }
     
     func removeFile(filetoken: String){
-        guard let index = registeredFiles.index(where: {$0.token == filetoken}) else {
+        guard let index = registeredFiles.firstIndex(where: {$0.token == filetoken}) else {
             return
         }
         registeredFiles.remove(at: index)
     }
     
     func removeFile(path: String){
-        guard let index = registeredFiles.index(where: {$0.filepath == path}) else {
+        guard let index = registeredFiles.firstIndex(where: {$0.filepath == path}) else {
             return
         }
         registeredFiles.remove(at: index)

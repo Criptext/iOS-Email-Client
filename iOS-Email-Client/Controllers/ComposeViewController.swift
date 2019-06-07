@@ -116,7 +116,7 @@ class ComposeViewController: UIViewController {
         textField.font = Font.regular.size(14)
         
         let defaults = CriptextDefaults()
-        activeAccount = DBManager.getAccountByUsername(defaults.activeAccount!)
+        activeAccount = DBManager.getAccountById(defaults.activeAccount!)
         fileManager.myAccount = activeAccount
         
         let sendImage = Icon.send.image?.tint(with: .white)
@@ -294,7 +294,7 @@ class ComposeViewController: UIViewController {
         case toField:
             subjectField.becomeFirstResponder()
         case subjectField:
-            editorView.becomeFirstResponder()
+            let _ = editorView.becomeFirstResponder()
         default:
             break
         }
@@ -342,7 +342,7 @@ class ComposeViewController: UIViewController {
     
     func remove(_ attachment:File){
         
-        guard let index = fileManager.registeredFiles.index(where: { (attach) -> Bool in
+        guard let index = fileManager.registeredFiles.firstIndex(where: { (attach) -> Bool in
             return attach == attachment
         }) else {
             //if not found, do nothing
@@ -395,7 +395,7 @@ class ComposeViewController: UIViewController {
         draft.buildCompoundKey()
         DBManager.store(draft)
         
-        FileUtils.saveEmailToFile(username: activeAccount.username, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
+        FileUtils.saveEmailToFile(email: activeAccount.email, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
         
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -607,13 +607,13 @@ class ComposeViewController: UIViewController {
         
         let containsNonCriptextEmail = draftEmail.getContacts(type: .to).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .cc).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .bcc).contains(where: {!$0.email.contains(Constants.domain)})
         
-        guard !containsNonCriptextEmail else {
+        guard !(containsNonCriptextEmail && activeAccount.encryptToExternal) else {
             self.presentPopover()
             return
         }
         
         self.toggleInteraction(false)
-        sendMailInMainController()
+        sendMailInMainController(secure: false)
     }
     
     func presentPopover(){
@@ -678,7 +678,7 @@ class ComposeViewController: UIViewController {
     }
     
     @IBAction func didPressAttachmentDocuments(_ sender: UIButton) {
-        let providerList = UIDocumentMenuViewController(documentTypes: ["public.content", "public.data"], in: .import)
+        let providerList = UIDocumentPickerViewController(documentTypes: ["public.content", "public.data"], in: .import)
         providerList.delegate = self;
         
         providerList.popoverPresentationController?.sourceView = self.view
@@ -720,9 +720,9 @@ extension ComposeViewController: CICropPickerDelegate {
 }
 
 //MARK: - Document Handler Delegate
-extension ComposeViewController:UIDocumentMenuDelegate, UIDocumentPickerDelegate {
+extension ComposeViewController: UIDocumentPickerDelegate {
     
-    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+    func documentMenu(didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         //show document picker
         documentPicker.delegate = self;
         
@@ -1125,7 +1125,7 @@ extension ComposeViewController: CriptextFileDelegate {
     }
     
     func getCellForFile(_ file: File) -> AttachmentTableViewCell? {
-        guard let index = fileManager.registeredFiles.index(where: {$0.token == file.token}),
+        guard let index = fileManager.registeredFiles.firstIndex(where: {$0.token == file.token}),
             let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableViewCell else {
                 return nil
         }
@@ -1195,7 +1195,8 @@ extension ComposeViewController: RichEditorDelegate {
         self.collapseCC(true)
         let defaults = CriptextDefaults()
         if !defaults.guideAttachments {
-            self.coachMarksController.start(on: self)
+            let presentationContext = PresentationContext.viewController(self)
+            self.coachMarksController.start(in: presentationContext)
             defaults.guideAttachments = true
         }
     }
@@ -1260,8 +1261,8 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
 
 extension ComposeViewController: BottomMenuDelegate {
     func didPressOption(_ option: String) {
-        let username = String(option.split(separator: "@").first ?? "")
-        guard let account = DBManager.getAccountByUsername(username) else {
+        let accountId = option.replacingOccurrences(of: Env.domain, with: "")
+        guard let account = DBManager.getAccountById(accountId) else {
             return
         }
         self.setFrom(account: account)

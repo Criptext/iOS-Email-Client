@@ -14,12 +14,12 @@ class NewEmailHandler {
     var database: SharedDB.Type = SharedDB.self
     var api: SharedAPI.Type = SharedAPI.self
     var signal: SignalHandler.Type = SignalHandler.self
-    let username: String
+    let accountId: String
     let PREVIEW_SIZE = 300
     let queue: DispatchQueue?
     
-    init(username: String, queue: DispatchQueue? = nil){
-        self.username = username
+    init(accountId: String, queue: DispatchQueue? = nil, domain: String? = nil){
+        self.accountId = accountId
         self.queue = queue
     }
     
@@ -39,13 +39,13 @@ class NewEmailHandler {
     }
     
     func command(params: [String: Any], completion: @escaping (_ result: Result) -> Void){
-        guard let myAccount = database.getAccountByUsername(self.username) else {
+        guard let myAccount = database.getAccountById(accountId) else {
             completion(Result(success: false))
             return
         }
         
         guard let event = try? NewEmail.init(params: params),
-            let username = ContactUtils.getUsernameFromEmailFormat(event.from)else {
+            let recipientId = event.recipientId else {
             completion(Result(success: false))
             return
         }
@@ -61,11 +61,10 @@ class NewEmailHandler {
         }
         
         api.getEmailBody(metadataKey: event.metadataKey, token: myAccount.jwt, queue: self.queue) { (responseData) in
-            var error: CriptextError?
             var unsent = false
             var content = ""
             var contentHeader: String? = nil
-            guard let myAccount = self.database.getAccountByUsername(self.username) else {
+            guard let myAccount = self.database.getAccountById(self.accountId) else {
                 completion(Result(success: false))
                 return
             }
@@ -78,7 +77,7 @@ class NewEmailHandler {
                 }
                 guard let decryptedContent = self.handleContentByMessageType(
                     event.messageType, content: bodyString, account: myAccount,
-                    recipientId: username, senderDeviceId: event.senderDeviceId,
+                    recipientId: recipientId, senderDeviceId: event.senderDeviceId,
                     isExternal: event.isExternal)
                     else {
                         completion(Result(success: true))
@@ -87,13 +86,13 @@ class NewEmailHandler {
                 
                 content = decryptedContent
                 let headers = data["headers"] as? String
-                contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: username, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
             } else {
                 completion(Result(success: false))
                 return
             }
             
-            guard !FileUtils.existBodyFile(username: myAccount.username, metadataKey: "\(event.metadataKey)") else {
+            guard !FileUtils.existBodyFile(email: myAccount.email, metadataKey: "\(event.metadataKey)") else {
                 if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
                     completion(Result(email: email))
                     return
@@ -127,10 +126,10 @@ class NewEmailHandler {
                 email.unsentDate = email.date
                 email.delivered = Email.Status.unsent.rawValue
             } else {
-                FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
+                FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
             }
             
-            self.handleAttachments(recipientId: username, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
+            self.handleAttachments(recipientId: recipientId, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
             
             if self.isFromMe(email: email, account: myAccount, event: event),
                 let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
@@ -173,7 +172,7 @@ class NewEmailHandler {
             ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc, account: myAccount)
             ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc, account: myAccount)
             
-            if let myContact = SharedDB.getContact("\(myAccount.username)\(Env.domain)"),
+            if let myContact = SharedDB.getContact(myAccount.email),
                 myContact.displayName != myAccount.name {
                 SharedDB.update(contact: myContact, name: myAccount.name)
             }
@@ -242,7 +241,7 @@ class NewEmailHandler {
     }
     
     func isMeARecipient(email: Email, account: Account) -> Bool {
-        let accountEmail = "\(account.username)\(Env.domain)"
+        let accountEmail = account.email
         let bccContacts = Array(email.getContacts(type: .bcc))
         let ccContacts = Array(email.getContacts(type: .cc))
         let toContacts = Array(email.getContacts(type: .to))
@@ -252,12 +251,12 @@ class NewEmailHandler {
     }
     
     func isFromMe(email: Email, account: Account) -> Bool {
-        let accountEmail = "\(account.username)\(Env.domain)"
+        let accountEmail = account.email
         return accountEmail == email.fromContact.email
     }
     
     func isMeARecipient(email: Email, account: Account, event: NewEmail) -> Bool {
-        let accountEmail = "\(account.username)\(Env.domain)"
+        let accountEmail = account.email
         let isInBcc = event.bcc.contains(where: {ContactUtils.getStringEmailName(contact: $0).0 == accountEmail})
         let isInCc = event.cc.contains(where: {ContactUtils.getStringEmailName(contact: $0).0 == accountEmail})
         let isInTo = event.to.contains(where: {ContactUtils.getStringEmailName(contact: $0).0 == accountEmail})
@@ -265,8 +264,7 @@ class NewEmailHandler {
     }
     
     func isFromMe(email: Email, account: Account, event: NewEmail) -> Bool {
-        let accountEmail = "\(account.username)\(Env.domain)"
-        return accountEmail == ContactUtils.getStringEmailName(contact: event.from).0
+        return account.email == ContactUtils.getStringEmailName(contact: event.from).0
     }
     
     func getContentPreview(content: String) -> (String, String) {

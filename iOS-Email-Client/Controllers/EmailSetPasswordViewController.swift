@@ -128,7 +128,7 @@ class EmailSetPasswordViewController: BaseUIPopover {
             resignKeyboard()
             return
         }
-        passwordTextField.becomeFirstResponder()
+        let _ = passwordTextField.becomeFirstResponder()
     }
     
     func resignKeyboard(){

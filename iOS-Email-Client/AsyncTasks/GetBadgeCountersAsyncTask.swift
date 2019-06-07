@@ -18,16 +18,16 @@ class GetBadgeCountersAsyncTask {
         var accounts = [String: Int]()
     }
     
-    let username: String
+    let accountId: String
     
-    init(username: String) {
-        self.username = username
+    init(accountId: String) {
+        self.accountId = accountId
     }
     
     func start(completionHandler: @escaping ((Counter) -> Void)){
         let queue = DispatchQueue(label: "com.criptext.mail.badges", qos: .userInitiated, attributes: .concurrent)
         queue.async {
-            guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+            guard let myAccount = DBManager.getAccountById(self.accountId) else {
                 completionHandler(Counter())
                 return
             }

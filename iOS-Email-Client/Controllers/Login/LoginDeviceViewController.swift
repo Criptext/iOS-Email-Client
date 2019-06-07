@@ -107,7 +107,7 @@ class LoginDeviceViewController: UIViewController{
     func jumpToConnectDevice(data: LinkAccept){
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "connectdeviceview")  as! ConnectDeviceViewController
-        let signupData = SignUpData(username: loginData.username, password: "no password", fullname: data.name, optionalEmail: nil)
+        let signupData = SignUpData(username: loginData.username, password: "no password", domain: loginData.domain, fullname: data.name, optionalEmail: nil)
         signupData.deviceId = data.deviceId
         signupData.token = loginData.jwt ?? ""
         controller.signupData = signupData
@@ -123,7 +123,7 @@ class LoginDeviceViewController: UIViewController{
             self.navigationController?.popViewController(animated: true)
             return
         }
-        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username, domain: loginData.domain)
         if loginData.isTwoFactor,
             let password = loginData.password {
             deviceInfo["password"] = password

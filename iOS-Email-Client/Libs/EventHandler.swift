@@ -10,7 +10,7 @@ import Foundation
 import SwiftSoup
 
 class EventHandler {
-    let username : String
+    let accountId : String
     let jwt: String
     var apiManager : APIManager.Type = APIManager.self
     var signalHandler: SignalHandler.Type = SignalHandler.self
@@ -18,7 +18,7 @@ class EventHandler {
     var parsedKeys = false
     
     init(account: Account){
-        username = account.username
+        accountId = account.compoundKey
         jwt = account.jwt
     }
 
@@ -97,7 +97,7 @@ class EventHandler {
             self.handlePreKeysCommand(finishCallback: handleEventResponse)
         case Event.Peer.unsent.rawValue:
             var fakeParams = params
-            fakeParams["from"] = self.username
+            fakeParams["from"] = self.accountId.contains("@") ? String(accountId.split(separator: "@").first!) : accountId
             fakeParams["type"] = Email.Status.unsent.rawValue
             fakeParams["date"] = Date().description
             self.handlePeerUnsentCommand(params: fakeParams, finishCallback: handleEventResponse)
@@ -144,7 +144,7 @@ class EventHandler {
     }
     
     func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Event.EventResult) -> Void){
-        let handler = NewEmailHandler(username: self.username, queue: self.queue)
+        let handler = NewEmailHandler(accountId: self.accountId, queue: self.queue)
         handler.api = self.apiManager
         handler.signal = self.signalHandler
         handler.command(params: params) { (result) in
@@ -161,7 +161,7 @@ class EventHandler {
             finishCallback(true, .Empty)
             return
         }
-        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
             finishCallback(false, .Empty)
             return
         }
@@ -182,14 +182,14 @@ class EventHandler {
     }
     
     func handleEmailStatusCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
             finishCallback(false, .Empty)
             return
         }
         let event = EventData.EmailStatus.init(params: params)
         if event.type == Email.Status.unsent.rawValue {
             guard let email = DBManager.getMail(key: event.emailId, account: myAccount),
-                let myAccount = DBManager.getAccountByUsername(self.username) else {
+                let myAccount = DBManager.getAccountById(self.accountId) else {
                 finishCallback(false, .Empty)
                 return
             }
@@ -268,7 +268,7 @@ extension EventHandler {
     }
     
     func handleCreateLabelCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
             finishCallback(false, .Empty)
             return
         }
@@ -282,7 +282,7 @@ extension EventHandler {
     }
     
     func handleChangeNameCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
             finishCallback(false, .Empty)
             return
         }

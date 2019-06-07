@@ -39,7 +39,7 @@ class ResetDeviceViewController: UIViewController{
         let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
-        passwordTextField.becomeFirstResponder()
+        let _ = passwordTextField.becomeFirstResponder()
         
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
         passwordTextField.placeholderAnimation = .hidden
@@ -80,7 +80,8 @@ class ResetDeviceViewController: UIViewController{
         showLoader(true)
         let email = loginData.email
         let username = String(email.split(separator: "@")[0])
-        APIManager.loginRequest(username, password.sha256()!) { (responseData) in
+        let domain = String(email.split(separator: "@")[1])
+        APIManager.loginRequest(username: username, domain: domain, password: password.sha256()!) { (responseData) in
             self.showLoader(false)
             if case .TooManyDevices = responseData {
                 self.showFeedback(true, String.localize("TOO_MANY_DEVICES"))
@@ -107,7 +108,7 @@ class ResetDeviceViewController: UIViewController{
             let name = data["name"] as! String
             let deviceId = data["deviceId"] as! Int
             let token = data["token"] as! String
-            let signupData = SignUpData(username: username, password: password, fullname: name, optionalEmail: nil)
+            let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
             signupData.deviceId = deviceId
             signupData.token = token
             self.jumpToCreatingAccount(signupData: signupData)
@@ -120,7 +121,7 @@ class ResetDeviceViewController: UIViewController{
             return
         }
         showLoader(true)
-        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username)
+        var deviceInfo = Device.createActiveDevice(deviceId: 0).toDictionary(recipientId: loginData.username, domain: loginData.domain)
         deviceInfo["password"] = password.sha256()!
         APIManager.linkAuth(deviceInfo: deviceInfo, token: jwt) { (responseData) in
             self.showLoader(false)
@@ -205,8 +206,9 @@ class ResetDeviceViewController: UIViewController{
     
     func sendResetLink(){
         forgotButton.isEnabled = false
-        let recipientId = loginData.email.split(separator: "@")[0]
-        APIManager.resetPassword(username: String(recipientId)) { (responseData) in
+        let recipientId = loginData.username
+        let domain = loginData.domain
+        APIManager.resetPassword(username: String(recipientId), domain: domain) { (responseData) in
             self.forgotButton.isEnabled = true
             if case let .Error(error) = responseData,
                 error.code != .custom {

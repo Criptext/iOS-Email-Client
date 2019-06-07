@@ -29,6 +29,8 @@ class Account: Object{
     @objc dynamic var lastTimeBackup: Date? = nil
     @objc dynamic var autoBackupFrequency = "Off"
     @objc dynamic var wifiOnly = true
+    @objc dynamic var encryptToExternal = false
+    
     
     var email: String {
         guard let myDomain = domain else {
@@ -38,7 +40,11 @@ class Account: Object{
     }
     
     func buildCompoundKey() {
-        self.compoundKey = "\(username)\(domain ?? "")"
+        guard let myDomain = domain else {
+            self.compoundKey = username
+            return
+        }
+        self.compoundKey = "\(username)@\(myDomain)"
     }
     
     override static func primaryKey() -> String? {

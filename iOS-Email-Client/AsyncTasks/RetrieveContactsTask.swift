@@ -16,17 +16,17 @@ class RetrieveContactsTask {
         var name: String
     }
     
-    let username: String
+    let accountId: String
     
-    init(username: String) {
-        self.username = username
+    init(accountId: String) {
+        self.accountId = accountId
     }
     
     func start(completionHandler: @escaping ((Bool) -> Void)){
         let queue = DispatchQueue(label: "com.criptext.mail.contacts", qos: .background, attributes: .concurrent)
         queue.async {
             self.getContactsFromPhoneBook { (phoneContacts) in
-                guard let account = DBManager.getAccountByUsername(self.username),
+                guard let account = DBManager.getAccountById(self.accountId),
                     let phContacts = phoneContacts else {
                     DispatchQueue.main.async {
                         completionHandler(false)

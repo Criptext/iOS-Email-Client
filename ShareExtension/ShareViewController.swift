@@ -152,8 +152,8 @@ class ShareViewController: UIViewController {
     
     func getAccount() {
         let defaults = CriptextDefaults()
-        guard let username = defaults.activeAccount,
-            let account = SharedDB.getAccountByUsername(username) else {
+        guard let accountId = defaults.activeAccount,
+            let account = SharedDB.getAccountById(accountId) else {
                 self.close()
                 return
         }
@@ -198,9 +198,8 @@ extension ShareViewController: ComposerDelegate {
         self.presentPopover(popover: popover, height: 150)
     }
     
-    func setAccount(username: String) {
-        let username = String(username.split(separator: "@").first ?? "")
-        guard let account = SharedDB.getAccountByUsername(username) else {
+    func setAccount(accountId: String) {
+        guard let account = SharedDB.getAccountById(accountId) else {
             return
         }
         self.setFrom(account: account)
@@ -284,7 +283,7 @@ extension ShareViewController: CriptextFileDelegate {
     }
     
     func getCellForFile(_ file: File) -> AttachmentTableCell? {
-        guard let index = fileManager.registeredFiles.index(where: {$0.token == file.token}),
+        guard let index = fileManager.registeredFiles.firstIndex(where: {$0.token == file.token}),
             let cell = self.composerUIView.attachmentsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
                 return nil
         }
@@ -360,11 +359,11 @@ extension ShareViewController {
         self.composerUIView.bccField.allTokens.forEach { (token) in
             self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: draft, type: ContactType.bcc)
         }
-        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(myAccount.username)\(Env.domain)", context: nil), emailDetail: draft, type: ContactType.from)
+        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: myAccount.email, context: nil), emailDetail: draft, type: ContactType.from)
         
         SharedDB.store(emailContacts)
         
-        FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(draft.key)", body: self.composerUIView.editorView.html, headers: "")
+        FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(draft.key)", body: self.composerUIView.editorView.html, headers: "")
         
         return draft
     }
@@ -376,7 +375,7 @@ extension ShareViewController {
         emailContact.type = type.rawValue
         if let contact = SharedDB.getContact(email) {
             emailContact.contact = contact
-            if(contact.email != "\(myAccount.username)\(Env.domain)"){
+            if(contact.email != myAccount.email){
                 SharedDB.updateScore(contact: contact)
             }
         } else {

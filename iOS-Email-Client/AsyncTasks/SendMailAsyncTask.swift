@@ -12,6 +12,14 @@ import RealmSwift
 
 class SendMailAsyncTask {
     
+    internal struct Recipients {
+        var tos = [String: [String]]()
+        var ccs = [String: [String]]()
+        var bccs = [String: [String]]()
+        var peers = [String: [String]]()
+        var domains = Set<String>()
+    }
+    
     var apiManager: APIManager.Type = APIManager.self
     
     let fileKey: String?
@@ -19,35 +27,34 @@ class SendMailAsyncTask {
     let threadId: String?
     let subject: String
     let body: String
-    var guestEmails: [String: Any]
-    let criptextEmails: [String: Any]
     var files: [[String: Any]]
     let duplicates: [String]
     let password: String?
     let isSecure: Bool
-    let username: String
+    let accountId: String
     let emailKey: Int
     let from: String
     let replyTo: String?
     let preview: String
     let emailRef: ThreadSafeReference<Object>
+    let recipients: Recipients
     
     init(email: Email, emailBody: String, password: String?){
         let fileParams = SendMailAsyncTask.getFilesRequestData(email: email)
         let files = fileParams.0
         let duplicates = fileParams.1
         let fileKey: String? = email.files.first(where: {!$0.fileKey.isEmpty})?.fileKey
-        let recipients = SendMailAsyncTask.getRecipientEmails(username: email.account.username, email: email, emailBody: emailBody, files: files, fileKey: fileKey, fileKeys: fileKeys)
+        let domain = email.account.domain ?? Env.domain.replacingOccurrences(of: "@", with: "")
+        let recipients = SendMailAsyncTask.getRecipientEmails(username: email.account.username, domain: domain, email: email)
+        self.recipients = recipients
         self.fileKeys = !fileParams.2.isEmpty ? fileParams.2 : nil
-        self.username = email.account.username
+        self.accountId = email.account.compoundKey
         self.emailKey = email.key
         self.subject = email.subject
         self.body = emailBody
         self.preview = email.preview
         self.isSecure = email.secure
         self.threadId = email.threadId.isEmpty || email.threadId == email.key.description ? nil : email.threadId
-        self.guestEmails = recipients.0
-        self.criptextEmails = recipients.1
         self.files = files
         self.duplicates = duplicates
         self.emailRef = SharedDB.getReference(email)
@@ -81,52 +88,54 @@ class SendMailAsyncTask {
         return (files, duplicates, fileKeys + duplicatedFileKeys)
     }
     
-    private class func getRecipientEmails(username: String, email: Email, emailBody: String, files: [[String: Any]], fileKey: String?, fileKeys: [String]?) -> ([String: Any], [String: Any]) {
-        var criptextEmails = [username: "peer"] as [String: String]
-        var toArray = [String]()
-        var ccArray = [String]()
-        var bccArray = [String]()
+    private class func getRecipientEmails(username: String, domain: String, email: Email) -> Recipients {
+        var recipients = Recipients()
+        recipients.peers[domain] = [username]
+        recipients.domains.insert(domain)
         
         let toContacts = email.getContacts(type: .to)
         for contact in toContacts {
-            if(contact.email.contains(Env.domain)){
-                criptextEmails[String(contact.email.split(separator: "@")[0])] = "to"
-            } else {
-                toArray.append(contact.email)
+            let emailSplit = contact.email.split(separator: "@")
+            guard let emailUsername = emailSplit.first?.description ,
+                let emailDomain = emailSplit.last?.description else {
+                continue
             }
+            if recipients.tos[emailDomain] == nil {
+                recipients.tos[emailDomain] = [String]()
+            }
+            recipients.tos[emailDomain]?.append(emailUsername)
+            recipients.domains.insert(emailDomain)
         }
         
         let ccContacts = email.getContacts(type: .cc)
         for contact in ccContacts {
-            if(contact.email.contains(Env.domain)){
-                criptextEmails[String(contact.email.split(separator: "@")[0])] = "cc"
-            } else {
-                ccArray.append(contact.email)
+            let emailSplit = contact.email.split(separator: "@")
+            guard let emailUsername = emailSplit.first?.description ,
+                let emailDomain = emailSplit.last?.description else {
+                    continue
             }
+            if recipients.ccs[emailDomain] == nil {
+                recipients.ccs[emailDomain] = [String]()
+            }
+            recipients.ccs[emailDomain]?.append(emailUsername)
+            recipients.domains.insert(emailDomain)
         }
         
         let bccContacts = email.getContacts(type: .bcc)
         for contact in bccContacts {
-            if(contact.email.contains(Env.domain)){
-                criptextEmails[String(contact.email.split(separator: "@")[0])] = "bcc"
-            } else {
-                bccArray.append(contact.email)
+            let emailSplit = contact.email.split(separator: "@")
+            guard let emailUsername = emailSplit.first?.description ,
+                let emailDomain = emailSplit.last?.description else {
+                    continue
             }
+            if recipients.bccs[emailDomain] == nil {
+                recipients.bccs[emailDomain] = [String]()
+            }
+            recipients.bccs[emailDomain]?.append(emailUsername)
+            recipients.domains.insert(emailDomain)
         }
         
-        var guestEmails = [String : Any]()
-        if(!toArray.isEmpty || !ccArray.isEmpty || !bccArray.isEmpty){
-            guestEmails["to"] = toArray
-            guestEmails["cc"] = ccArray
-            guestEmails["bcc"] = bccArray
-            guestEmails["body"] = "\(emailBody)\(email.secure ? "" : Constants.footer)"
-            if !email.secure,
-                let fKey = fileKey {
-                guestEmails["fileKey"] = fKey
-                guestEmails["fileKeys"] = fileKeys
-            }
-        }
-        return (guestEmails, criptextEmails)
+        return recipients
     }
     
     func start(completion: @escaping ((ResponseData) -> Void)){
@@ -141,45 +150,33 @@ class SendMailAsyncTask {
             getSessionAndEncrypt(queue: queue, completion: completion)
             return
         }
-        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+        guard let myAccount = SharedDB.getAccountById(self.accountId) else {
             completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
         apiManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
             guard case let .SuccessDictionary(response) = responseData,
-                let myAccount = SharedDB.getAccountByUsername(self.username),
+                let myAccount = SharedDB.getAccountById(self.accountId),
                 let duplicates = response["duplicates"] as? [String: Any],
                 let fileParams = SharedDB.duplicateFiles(account: myAccount, key: self.emailKey, duplicates: duplicates) else {
                 completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_DUPLICATE"))))
                 return
             }
             self.files.append(contentsOf: fileParams)
-            if self.guestEmails["body"] != nil {
-                self.guestEmails["body"] = "\(self.body)\(self.isSecure ? "" : Constants.footer)"
-            }
             self.getSessionAndEncrypt(queue: queue, completion: completion)
         }
     }
     
     private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
-            completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
-            return
-        }
-        
-        if !handleDummySession(myAccount: myAccount) {
+        guard let myAccount = SharedDB.getAccountById(self.accountId) else {
             completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
             return
         }
         
         let keysPayload = getRecipientsAndKnownDevices(myAccount: myAccount)
-        let params = [
-            "recipients": keysPayload.0,
-            "knownAddresses": keysPayload.1
-            ] as [String : Any]
         
-        apiManager.getKeysRequest(params, token: myAccount.jwt, queue: queue) { responseData in
-            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+        apiManager.getKeysRequest(keysPayload, token: myAccount.jwt, queue: queue) { responseData in
+            guard let myAccount = SharedDB.getAccountById(self.accountId) else {
                 return
             }
             guard case let .SuccessDictionary(keysArray) = responseData else {
@@ -189,92 +186,188 @@ class SendMailAsyncTask {
                 }
                 return
             }
-            let keyBundles = keysArray["keyBundles"] as! [[String:Any]]
-            let blackListedDevices = keysArray["blacklistedKnownDevices"] as! [[String:Any]]
-            let store: CriptextSessionStore = CriptextSessionStore(account: myAccount)
-            for blackDevice in blackListedDevices {
-                let devices = blackDevice["devices"] as! [Int32]
-                devices.forEach{
-                    store.deleteSession(
-                        forContact: blackDevice["name"] as? String ?? "",
-                        deviceId: $0
-                    )
-                }
+            let guestDomains = self.buildSessions(keysData: keysArray, myAccount: myAccount)
+            guard let emailsData = self.createSendEmailData(myAccount: myAccount, guestDomains: guestDomains) else {
+                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
+                return
             }
-            for keys in keyBundles {
-                let recipientId = keys["recipientId"] as! String
-                let deviceId = keys["deviceId"] as! Int32
-                SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
-            }
-            
-            let criptextEmailsData = self.createCriptextEmailData(myAccount: myAccount)
-            self.sendMail(myAccount: myAccount, criptextEmails: criptextEmailsData, queue: queue, completion: completion)
+            let sendEmailData = SendEmailData(criptextEmails: emailsData.0, guestEmails: emailsData.1)
+            sendEmailData.files = self.files
+            sendEmailData.subject = self.subject
+            sendEmailData.threadId = self.threadId
+            self.sendMail(myAccount: myAccount, sendEmailData: sendEmailData, queue: queue, completion: completion)
         }
     }
     
-    private func handleDummySession(myAccount: Account) -> Bool {
-        if isSecure && !guestEmails.isEmpty {
+    private func buildSessions(keysData: [String: Any], myAccount: Account) -> [String] {
+        let keyBundles = keysData["keyBundles"] as! [[String:Any]]
+        let blackListedDevices = keysData["blacklistedKnownDevices"] as! [[String:Any]]
+        let guestDomains = keysData["guestDomains"] as! [String]
+        let store: CriptextSessionStore = CriptextSessionStore(account: myAccount)
+        for blackDevice in blackListedDevices {
+            guard let devices = blackDevice["devices"] as? [Int32],
+                let username = blackDevice["name"] as? String,
+                let domain = blackDevice["domain"] as? String else {
+                    continue
+            }
+            let recipientId = "@\(domain)" == Env.domain ? username : "\(username)@\(domain)"
+            devices.forEach{
+                store.deleteSession(
+                    forContact: recipientId,
+                    deviceId: $0
+                )
+            }
+        }
+        for keys in keyBundles {
+            guard let username = keys["recipientId"] as? String,
+                let deviceId = keys["deviceId"] as? Int32,
+                let domain = keys["domain"] as? String else {
+                    continue
+            }
+            let recipientId = "@\(domain)" == Env.domain ? username : "\(username)@\(domain)"
+            SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
+        }
+        
+        return guestDomains
+    }
+    
+    private func handleDummySession(myAccount: Account) throws -> SendEmailData.GuestContent? {
+        if isSecure {
             if let enteredPassword = password {
                 let dummySessionData = self.buildDummySession(password: enteredPassword, myAccount: myAccount)
-                self.guestEmails["body"] = dummySessionData.body
-                self.guestEmails["session"] = dummySessionData.session
                 let dummySession = DummySession()
                 dummySession.body = dummySessionData.body
                 dummySession.session = dummySessionData.session
                 dummySession.key = emailKey
                 SharedDB.store(dummySession)
+                return dummySessionData
             } else if let dummySession = SharedDB.getDummySession(key: emailKey) {
-                self.guestEmails["body"] = dummySession.body
-                self.guestEmails["session"] = dummySession.session
+                return SendEmailData.GuestContent(body: dummySession.body, session: dummySession.session)
             } else {
-                deleteUnhandledEmail()
-                return false
+                throw CriptextError(message: "No Dummy Session")
             }
         }
-        return true
+        return nil
     }
     
-    private func getRecipientsAndKnownDevices(myAccount: Account) -> ([String], [String: [Int32]]) {
-        var recipients = [String]()
-        var knownAddresses = [String: [Int32]]()
-        for (recipientId, _) in criptextEmails {
-            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
-            let deviceIds = recipientSessions.map { $0.deviceId }
-            recipients.append(recipientId)
-            knownAddresses[recipientId] = deviceIds
+    private func getRecipientsAndKnownDevices(myAccount: Account) -> [String: [[String: Any]]] {
+        var recipientsByDomains = [[String: Any]]()
+        
+        for domain in self.recipients.domains {
+            var domainDic = [String: Any]()
+            var recipients = [String]()
+            var knownAddresses = [String: [Int32]]()
+            
+            let tos = self.recipients.tos[domain] ?? []
+            let ccs = self.recipients.ccs[domain] ?? []
+            let bccs = self.recipients.bccs[domain] ?? []
+            let peers = self.recipients.peers[domain] ?? []
+            
+            let allRecipients = tos + ccs + bccs + peers
+            
+            for username in allRecipients {
+                let recipientId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+                let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
+                let deviceIds = recipientSessions.map { $0.deviceId }
+                recipients.append(username)
+                knownAddresses[username] = deviceIds
+            }
+            if allRecipients.count > 0 {
+                domainDic["name"] = domain
+                domainDic["recipients"] = recipients
+                domainDic["knownAddresses"] = knownAddresses
+                recipientsByDomains.append(domainDic)
+            }
         }
-        return (recipients, knownAddresses)
+        return ["domains": recipientsByDomains]
     }
     
-    private func createCriptextEmailData(myAccount: Account) -> [[String: Any]] {
+    private func createSendEmailData(myAccount: Account, guestDomains: [String]) -> ([[String: Any]], [String: Any])? {
         var criptextEmailData = [[String: Any]]()
-        for (recipientId, type) in criptextEmails {
-            let contactType = type as! String
-            let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
-            let deviceIds = recipientSessions.map { $0.deviceId }
-            var emailsData = [[String: Any]]()
-            for deviceId in deviceIds {
-                guard !(contactType == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
+        var guestEmailData = [String: Any]()
+        
+        let peerData = createEmailData(myAccount: myAccount, recipients: self.recipients.peers, contactType: "peer", guestDomains: guestDomains)
+        let toData = createEmailData(myAccount: myAccount, recipients: self.recipients.tos, contactType: "to", guestDomains: guestDomains)
+        let ccData = createEmailData(myAccount: myAccount, recipients: self.recipients.ccs, contactType: "cc", guestDomains: guestDomains)
+        let bccData = createEmailData(myAccount: myAccount, recipients: self.recipients.bccs, contactType: "bcc", guestDomains: guestDomains)
+        criptextEmailData.append(contentsOf: peerData.0)
+        criptextEmailData.append(contentsOf: toData.0)
+        criptextEmailData.append(contentsOf: ccData.0)
+        criptextEmailData.append(contentsOf: bccData.0)
+        
+        if !toData.1.isEmpty {
+            guestEmailData["to"] = toData.1
+        }
+        if !ccData.1.isEmpty {
+            guestEmailData["cc"] = ccData.1
+        }
+        if !bccData.1.isEmpty {
+            guestEmailData["bcc"] = bccData.1
+        }
+        if !guestEmailData.isEmpty {
+            guestEmailData["body"] = self.isSecure ? self.body : "\(self.body)<br/><br/>\(Constants.footer)"
+            guestEmailData["encrypted"] = isSecure
+            
+            var dummySession: SendEmailData.GuestContent?
+            do {
+                dummySession = try handleDummySession(myAccount: myAccount)
+            } catch {
+                return nil
+            }
+            
+            if isSecure,
+                let dummy = dummySession {
+                guestEmailData["body"] = dummy.body
+                guestEmailData["session"] = dummy.session
+            } else if let fKey = fileKey {
+                guestEmailData["fileKey"] = fKey
+                guestEmailData["fileKeys"] = fileKeys
+            }
+        }
+        
+        return (criptextEmailData, guestEmailData)
+    }
+    
+    private func createEmailData(myAccount: Account, recipients: [String: [String]], contactType: String, guestDomains: [String]) -> ([[String: Any]], [String]) {
+        var criptextEmailData = [[String: Any]]()
+        var emptyEmails = [String]()
+        
+        for (domain, usernames) in recipients {
+            for username in usernames {
+                guard !guestDomains.contains(domain) else {
+                    emptyEmails.append("\(username)@\(domain)")
                     continue
                 }
-                let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: contactType, myAccount: myAccount)
-                emailsData.append(criptextEmail)
+                let recipientId = "@\(domain)" == Env.domain ? username : "\(username)@\(domain)"
+                let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
+                let deviceIds = recipientSessions.map { $0.deviceId }
+                
+                var emailsData = [[String: Any]]()
+                for deviceId in deviceIds {
+                    guard !(contactType == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
+                        continue
+                    }
+                    let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: contactType, domain: domain, myAccount: myAccount)
+                    emailsData.append(criptextEmail)
+                }
+                if recipientId == myAccount.username && emailsData.isEmpty {
+                    continue
+                }
+                criptextEmailData.append([
+                    "username": username,
+                    "domain": domain,
+                    "emails": emailsData
+                    ] as [String : Any])
             }
-            if recipientId == myAccount.username && emailsData.isEmpty {
-                continue
-            }
-            criptextEmailData.append([
-                "username": recipientId,
-                "emails": emailsData
-                ] as [String : Any])
         }
-        return criptextEmailData
+        
+        return (criptextEmailData, emptyEmails)
     }
     
-    private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, myAccount: Account) -> [String: Any] {
+    private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, domain: String, myAccount: Account) -> [String: Any] {
         let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         let preview = SignalHandler.encryptMessage(body: self.preview, deviceId: deviceId, recipientId: recipientId, account: myAccount)
-        var criptextEmail = ["recipientId": recipientId,
+        var criptextEmail = ["recipientId": recipientId.split(separator: "@").first ?? recipientId,
                              "deviceId": deviceId,
                              "type": type,
                              "body": message.0,
@@ -295,7 +388,7 @@ class SendMailAsyncTask {
         return criptextEmail
     }
     
-    private func buildDummySession(password: String, myAccount: Account) -> SendEmailData.GuestContent{
+    private func buildDummySession(password: String, myAccount: Account) -> SendEmailData.GuestContent {
         let dummy = Dummy(recipientId: password)
         let keyBundle = dummy.getKeyBundle()
         let body = encryptDummyBody(keys: keyBundle, myAccount: myAccount)
@@ -326,24 +419,12 @@ class SendMailAsyncTask {
         return message.0
     }
     
-    private func sendMail(myAccount: Account, criptextEmails: [Any], queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+    private func sendMail(myAccount: Account, sendEmailData: SendEmailData, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
+        guard let myAccount = SharedDB.getAccountById(self.accountId) else {
             return
         }
-        var requestParams = ["subject": subject] as [String : Any]
-        if !criptextEmails.isEmpty {
-            requestParams["criptextEmails"] = criptextEmails
-        }
-        if !guestEmails.isEmpty {
-            requestParams["guestEmail"] = guestEmails
-        }
-        if (!files.isEmpty) {
-            requestParams["files"] = files
-        }
-        if let thread = self.threadId {
-            requestParams["threadId"] = thread
-        }
-        apiManager.postMailRequest(requestParams, token: myAccount.jwt, queue: queue) { responseData in
+        
+        apiManager.postMailRequest(sendEmailData.buildRequestData(), token: myAccount.jwt, queue: queue) { responseData in
             if case .TooManyRequests = responseData {
                 DispatchQueue.main.async {
                     self.setEmailAsFailed()
@@ -359,11 +440,11 @@ class SendMailAsyncTask {
                 return
             }
             
-            guard let myAccount = SharedDB.getAccountByUsername(self.username) else {
+            guard let myAccount = SharedDB.getAccountById(self.accountId) else {
                 return
             }
             FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(self.emailKey)")
-            FileUtils.saveEmailToFile(username: myAccount.username, metadataKey: "\(updateData["metadataKey"] as! Int)", body: self.body, headers: "")
+            FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(updateData["metadataKey"] as! Int)", body: self.body, headers: "")
             
             guard let key = self.updateEmailData(updateData) else {
                 DispatchQueue.main.async {

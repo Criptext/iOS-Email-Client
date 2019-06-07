@@ -13,13 +13,13 @@ class GetThreadsAsyncTask {
     var date: Date
     var threads: [Thread]
     var limit: Int
-    var username: String
+    var accountId: String
     var searchText: String?
     var showAll: Bool
     var selectedLabel: Int
     
-    init(username: String, since date: Date, threads: [Thread], limit: Int = 0, searchText: String? = nil, showAll: Bool, selectedLabel: Int) {
-        self.username = username
+    init(accountId: String, since date: Date, threads: [Thread], limit: Int = 0, searchText: String? = nil, showAll: Bool, selectedLabel: Int) {
+        self.accountId = accountId
         self.date = date
         self.threads = threads
         self.limit = limit
@@ -36,7 +36,7 @@ class GetThreadsAsyncTask {
             }
             var threads = [Thread]()
             autoreleasepool {
-                guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+                guard let myAccount = DBManager.getAccountById(self.accountId) else {
                     completionHandler([])
                     return
                 }

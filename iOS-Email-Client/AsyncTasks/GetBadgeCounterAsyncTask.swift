@@ -11,11 +11,11 @@ import Foundation
 class GetBadgeCounterAsyncTask {
     
     var label: Int = 0
-    var username: String = ""
+    var accountId: String = ""
     
-    init(username: String, label: Int) {
+    init(accountId: String, label: Int) {
         self.label = label
-        self.username = username
+        self.accountId = accountId
     }
     
     func start(completionHandler: @escaping ((Int, String) -> Void)){
@@ -23,7 +23,7 @@ class GetBadgeCounterAsyncTask {
         queue.async {
             var counter = ""
             autoreleasepool {
-                guard let myAccount = DBManager.getAccountByUsername(self.username) else {
+                guard let myAccount = DBManager.getAccountById(self.accountId) else {
                     completionHandler(self.label, "0")
                     return
                 }

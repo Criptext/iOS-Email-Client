@@ -39,10 +39,10 @@ class SharedDB {
         return realm.objects(Account.self).first
     }
     
-    class func getAccountByUsername(_ username: String) -> Account? {
+    class func getAccountById(_ id: String) -> Account? {
         let realm = try? Realm()
         
-        return realm?.object(ofType: Account.self, forPrimaryKey: username)
+        return realm?.object(ofType: Account.self, forPrimaryKey: id)
     }
     
     class func getAccounts(ignore username: String) -> Results<Account> {
@@ -56,12 +56,16 @@ class SharedDB {
         return Array(realm!.objects(Account.self))
     }
     
-    class func update(oldJwt: String, jwt: String) {
+    class func update(oldJwt: String, jwt: String, refreshToken: String? = nil) {
         let realm = try! Realm()
         
         try! realm.write {
             let account = realm.objects(Account.self).filter("jwt == '\(oldJwt)'").first
             account?.jwt = jwt
+            
+            if let rToken = refreshToken {
+                account?.refreshToken = rToken
+            }
         }
     }
     
@@ -99,6 +103,14 @@ class SharedDB {
         }
     }
     
+    class func update(account: Account, encryptToExternal: Bool) {
+        let realm = try! Realm()
+        
+        try! realm.write {
+            account.encryptToExternal = encryptToExternal
+        }
+    }
+    
     class func update(account: Account, lastBackup: Date) {
         let realm = try! Realm()
         
@@ -107,11 +119,11 @@ class SharedDB {
         }
     }
     
-    class func update(username: String, lastBackup: Date) {
+    class func update(accountId: String, lastBackup: Date) {
         let realm = try! Realm()
         
         try! realm.write {
-            guard let account = realm.objects(Account.self).filter("username == '\(username)'").first else {
+            guard let account = realm.objects(Account.self).filter("compoundKey == '\(accountId)'").first else {
                 return
             }
             account.lastTimeBackup = lastBackup
@@ -138,15 +150,6 @@ class SharedDB {
         let realm = try! Realm()
         
         return realm.objects(Email.self).filter("messageId == '\(messageId)' AND account.compoundKey == '\(account.compoundKey)'").first
-    }
-    
-    class func clone(_ email: Email) -> Email {
-        let realm = try! Realm()
-        var email: Email!
-        try! realm.write {
-            email = realm.create(Email.self, value: email, update: true)
-        }
-        return email
     }
     
     class func hasEmails(account: Account) -> Bool {
@@ -408,7 +411,7 @@ class SharedDB {
                 email.labels.append(label)
             }
             for labelId in removedLabelIds {
-                guard let index = email.labels.index(where: {$0.id == labelId}) else {
+                guard let index = email.labels.firstIndex(where: {$0.id == labelId}) else {
                     continue
                 }
                 email.labels.remove(at: index)

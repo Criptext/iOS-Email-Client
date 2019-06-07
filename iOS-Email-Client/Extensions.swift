@@ -95,7 +95,7 @@ func MD5(string: String) -> Data {
     var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
     _ = digestData.withUnsafeMutableBytes {digestBytes in
         messageData.withUnsafeBytes {messageBytes in
-            CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+            CC_MD5(messageBytes.baseAddress!, CC_LONG(messageData.count), digestBytes.bindMemory(to: UInt8.self).baseAddress)
         }
     }
     return digestData
@@ -191,10 +191,10 @@ extension UIViewController {
         }
         
         snackbarVC.customSnackbar.backgroundColor = UIColor(red: 28/255, green: 29/255, blue: 34/255, alpha: 1.0)
-        snackbarVC.animate(snackbar: .visible, delay: 0)
+        let _ = snackbarVC.animate(snackbar: .visible, delay: 0)
         
         if !permanent {
-            snackbarVC.animate(snackbar: .hidden, delay: 2.5)
+            let _ = snackbarVC.animate(snackbar: .hidden, delay: 2.5)
         }
     }
     
@@ -221,11 +221,11 @@ extension UIViewController {
 extension UIAlertController {
     
     func isValidEmail(_ email: String) -> Bool {
-        return email.characters.count > 0 && NSPredicate(format: "self matches %@", "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,64}").evaluate(with: email)
+        return email.description.count > 0 && NSPredicate(format: "self matches %@", "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,64}").evaluate(with: email)
     }
     
     func isValidPassword(_ password: String) -> Bool {
-        return password.characters.count > 4 && password.rangeOfCharacter(from: .whitespacesAndNewlines) == nil
+        return password.description.count > 4 && password.rangeOfCharacter(from: .whitespacesAndNewlines) == nil
     }
     
     @objc func textDidChangeInLoginAlert() {

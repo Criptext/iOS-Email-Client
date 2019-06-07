@@ -101,7 +101,7 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func setProfileImage(){
-        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
+        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.domain ?? Env.plainDomain)/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
             if error != nil {
                 self.resetProfileImage()
             }else{
@@ -234,7 +234,7 @@ class ProfileEditorViewController: UIViewController {
 
 
 extension ProfileEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: nil)
         self.showAttachmentDrawer(false)
         if let imgUrl = info[UIImagePickerController.InfoKey.imageURL.rawValue] as? URL{

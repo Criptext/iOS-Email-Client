@@ -29,6 +29,7 @@ struct NewEmail {
     let replyTo: String?
     let boundary: String?
     let guestEncryption: Int
+    let recipientId: String?
     
     init(params: [String: Any]) throws {
         guard let paramsFrom = params["from"] as? String,
@@ -66,6 +67,14 @@ struct NewEmail {
         replyTo = params["replyTo"] as? String
         boundary = params["boundary"] as? String
         inReplyTo = params["inReplyTo"] as? String
+   
+        if let senderId = params["senderId"] as? String,
+            let senderDomain = params["senderDomain"] as? String {
+            recipientId = senderDomain == Env.plainDomain ? senderId : "\(senderId)@\(senderDomain)"
+
+        } else {
+            recipientId = ContactUtils.getUsernameFromEmailFormat(from)
+        }
     }
     
     static func convertToDate(dateString: String) -> Date {

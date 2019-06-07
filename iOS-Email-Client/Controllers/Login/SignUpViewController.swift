@@ -51,7 +51,7 @@ class SignUpViewController: UIViewController{
         usernameTextField.markView = usernameMark
         usernameTextField.font = Font.regular.size(17.0)
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("EMAIL"), attributes: placeholderAttrs)
         fullnameTextField.markView = fullnameMark
         fullnameTextField.font = Font.regular.size(17.0)
         fullnameTextField.placeholderAnimation = .hidden
@@ -82,16 +82,16 @@ class SignUpViewController: UIViewController{
     @objc func onDonePress(_ sender: Any){
         switch(sender as? StatusTextField){
         case usernameTextField:
-            fullnameTextField.becomeFirstResponder()
+            let _ = fullnameTextField.becomeFirstResponder()
             break
         case fullnameTextField:
-            passwordTextField.becomeFirstResponder()
+            let _ = passwordTextField.becomeFirstResponder()
             break
         case passwordTextField:
-            confirmPasswordTextField.becomeFirstResponder()
+            let _ = confirmPasswordTextField.becomeFirstResponder()
             break
         case confirmPasswordTextField:
-            emailTextField.becomeFirstResponder()
+            let _ = emailTextField.becomeFirstResponder()
             break
         default:
             if(createAccountButton.isEnabled){
@@ -229,7 +229,7 @@ class SignUpViewController: UIViewController{
         let fullname = fullnameTextField.text!
         let password = passwordTextField.text!
         let email = emailTextField.text
-        let signupData = SignUpData(username: username, password: password, fullname: fullname, optionalEmail: email)
+        let signupData = SignUpData(username: username, password: password, domain: Env.domain.replacingOccurrences(of: "@", with: ""),  fullname: fullname, optionalEmail: email)
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
         controller.signupData = signupData

@@ -31,8 +31,10 @@ class NotificationService: UNNotificationServiceExtension {
         guard !defaults.previewDisable,
             let bestAttemptContent = bestAttemptContent,
             let username = userInfo["account"] as? String,
-            let account = SharedDB.getAccountByUsername(username),
-            let recipientId = userInfo["recipientId"] as? String,
+            let domain = userInfo["domain"] as? String,
+            let account = SharedDB.getAccountById(domain == Env.plainDomain ? username : "\(username)@\(domain)"),
+            let senderId = userInfo["senderId"] as? String,
+            let senderDomain = userInfo["senderDomain"] as? String,
             let deviceIdString = userInfo["deviceId"] as? String,
             let deviceId = Int32(deviceIdString),
             let messageTypeString = userInfo["previewMessageType"] as? String,
@@ -44,6 +46,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
+        let recipientId = senderDomain == Env.plainDomain ? senderId : "\(senderId)@\(senderDomain)"
         var decryptedPreview: String? = nil
         tryBlock {
            decryptedPreview = SignalHandler.decryptMessage(preview, messageType: MessageType(rawValue: messageType)!, account: account, recipientId: recipientId, deviceId: deviceId)

@@ -149,7 +149,8 @@ class EmailDetailViewController: UIViewController {
         if !defaults.guideUnsend,
             let email = emailData.emails.first,
             email.isSent && emailData.getState(email.key).isExpanded && emailData.emails.count == 1 {
-            self.coachMarksController.start(on: self)
+            let presentationContext = PresentationContext.viewController(self)
+            self.coachMarksController.start(in: presentationContext)
             defaults.guideUnsend = true
         }
         
@@ -418,7 +419,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         var ccHeigth: CGFloat = 0.0
         var bccHeigth: CGFloat = 0.0
         var sumHeights: CGFloat = 0
-        let width = self.view.frame.size.width - 90
+        let width = self.view.frame.size.width - 95
         for contact in email.getContacts(type: .to) {
             let height = UIUtils.getLabelHeight("\(contact.displayName) \(contact.email)", width: width, fontSize: 13.0) + 8
             contactsHeight[contact.email] = height
@@ -1076,8 +1077,8 @@ extension EmailDetailViewController : CriptextFileDelegate, UIDocumentInteractio
     }
     
     func getCellFromFile(_ file: File) -> AttachmentTableCell? {
-        guard let emailIndex = emailData.emails.index(where: {$0.key == file.emailId}),
-            let index = emailData.emails[emailIndex].files.index(where: {$0.token == file.token}),
+        guard let emailIndex = emailData.emails.firstIndex(where: {$0.key == file.emailId}),
+            let index = emailData.emails[emailIndex].files.firstIndex(where: {$0.token == file.token}),
             let emailCell = self.emailsTableView.cellForRow(at: IndexPath(row: emailIndex == 0 ? 0 : emailIndex - collapseUntilIndex, section: 0)) as? EmailTableViewCell,
             let attachmentCell = emailCell.attachmentsTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? AttachmentTableCell else {
                 return nil

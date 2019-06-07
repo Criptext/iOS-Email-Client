@@ -94,4 +94,10 @@ class ContactUtils {
         }
         return email.substring(with: range)
     }
+    
+    class func getUsernameAndDomain(email: String) -> (String, String) {
+        let domain = email.split(separator: "@")[1]
+        let username = email.split(separator: "@")[0]
+        return (username.description, domain.description)
+    }
 }

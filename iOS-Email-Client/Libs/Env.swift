@@ -54,9 +54,16 @@ struct Env {
     
     static var domain: String {
         guard !Env.isProduction else {
-            return "@criptext.com"
+            return "@\(plainDomain)"
         }
-        return "@criptext.com"
+        return "@\(plainDomain)"
+    }
+    
+    static var plainDomain: String {
+        guard !Env.isProduction else {
+            return "criptext.com"
+        }
+        return "criptext.com"
     }
     
     static var apiURL: String {
@@ -77,7 +84,7 @@ struct Env {
         return Locale.current.languageCode ?? "en"
     }
     
-    static let databaseVersion: UInt64 = 19
+    static let databaseVersion: UInt64 = 20
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 3
 }

@@ -96,7 +96,7 @@ extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
     }
     
     func removeDevice(_ deviceId: Int){
-        guard let index = deviceData.devices.index(where: {$0.id == deviceId}) else {
+        guard let index = deviceData.devices.firstIndex(where: {$0.id == deviceId}) else {
             return
         }
         deviceData.devices.remove(at: index)

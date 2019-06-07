@@ -50,7 +50,7 @@ class ConnectUploadViewController: UIViewController{
         super.viewDidLoad()
         mailboxDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = self
-        connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
+        connectUIView.initialLoad(email: myAccount.email)
         self.applyTheme()
         scheduleWorker.delegate = self
         self.connectUIView.goBackButton.isHidden = true
@@ -135,7 +135,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     func createDBFile(deviceId: Int32){
-        CreateCustomJSONFileAsyncTask(username: myAccount.username).start(progressHandler: { _ in }) { (error, url) in
+        CreateCustomJSONFileAsyncTask(accountId: myAccount.compoundKey).start(progressHandler: { _ in }) { (error, url) in
             guard let myUrl = url else {
                 self.presentProcessInterrupted()
                 return

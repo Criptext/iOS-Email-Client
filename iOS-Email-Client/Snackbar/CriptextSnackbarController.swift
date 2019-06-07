@@ -12,7 +12,7 @@ import Motion
 
 class CriptextSnackbarController : SnackbarController {    
     let customSnackbar = CriptextSnackbar()
-    internal(set) var isMyAnimating = false
+    var isMyAnimating = false
     
     override func animate(snackbar status: SnackbarStatus, delay: TimeInterval = 0, animations: ((Snackbar) -> Void)? = nil, completion: ((Snackbar) -> Void)? = nil) -> MotionCancelBlock? {
         return Motion.delay(delay) { [weak self, status = status, animations = animations, completion = completion] in

@@ -10,7 +10,7 @@ import Foundation
 import Material
 
 class CriptextSnackbar: Snackbar {
-    internal(set) var bottomPadding: CGFloat = 0.0
+    var bottomPadding: CGFloat = 0.0
     
     override var text: String? {
         get {
@@ -32,7 +32,7 @@ class CriptextSnackbar: Snackbar {
         }
     }
     
-    open let customLabel = PaddingUILabel()
+    public let customLabel = PaddingUILabel()
     open internal(set) var myStatus = SnackbarStatus.hidden
     
     override var intrinsicContentSize: CGSize {

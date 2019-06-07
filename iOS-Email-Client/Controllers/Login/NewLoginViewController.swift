@@ -50,7 +50,7 @@ class NewLoginViewController: UIViewController{
     func usernameTextFieldInit(){
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
         usernameTextField.placeholderAnimation = .hidden
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: placeholderAttrs)
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("EMAIL"), attributes: placeholderAttrs)
         usernameTextField.delegate = self
         usernameTextField.autocapitalizationType = .none
         usernameTextField.autocorrectionType = .no
@@ -106,30 +106,34 @@ class NewLoginViewController: UIViewController{
     }
     
     func checkToEnableDisableLoginButton(){
-        loginButton.isEnabled = !usernameTextField.isEmpty
-        if(loginButton.isEnabled && loadingView.isHidden){
-            loginButton.alpha = 1.0
-        }else{
-            loginButton.alpha = 0.5
+        guard loadingView.isHidden,
+            let input = usernameTextField.text,
+            let usernameDomain = checkEmailInput(input),
+            Utils.validateEmail("\(usernameDomain.0)@\(usernameDomain.1)") else {
+                loginButton.isEnabled = false
+                loginButton.alpha = 0.5
+                return
         }
+        loginButton.isEnabled = true
+        loginButton.alpha = 1.0
     }
     
     @IBAction func onLoginPress(_ sender: Any) {
-        guard let username = usernameTextField.text?.lowercased() else {
+        guard let email = usernameTextField.text?.lowercased() else {
             return
         }
         toggleLoadingView(true)
-        checkUsername(username)
+        checkUsername(email)
     }
     
-    func showWarningPopup(username: String, previous: String) {
+    func showWarningPopup(username: String, domain: String, previous: String) {
         let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
         let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
         let warningPopover = SignInWarningPopoverViewController()
         let attrText = NSMutableAttributedString(string: String.localize("SIGNIN_WARNING_1"), attributes: regularAttrs)
         let attrTextBold = NSAttributedString(string: String.localize("SIGNIN_WARNING_2"), attributes: boldAttrs)
         let attrText2 = NSAttributedString(string: String.localize("SIGNIN_WARNING_3"), attributes: regularAttrs)
-        let attrTextBold2 = NSAttributedString(string: "\(previous.hideMidChars())\(Env.domain)\n\n", attributes: boldAttrs)
+        let attrTextBold2 = NSAttributedString(string: "\(previous)\n\n", attributes: boldAttrs)
         let attrText3 = NSAttributedString(string: String.localize("SIGNIN_WARNING_4"), attributes: regularAttrs)
         attrText.append(attrTextBold)
         attrText.append(attrText2)
@@ -142,32 +146,52 @@ class NewLoginViewController: UIViewController{
                 self?.toggleLoadingView(false)
                 return
             }
-            self?.linkBegin(username: username)
+            self?.linkBegin(username: username, domain: domain)
         }
         self.presentPopover(popover: warningPopover, height: 275)
     }
     
-    func existingAccount(_ username: String) -> String? {
-        guard DBManager.getLoggedOutAccount(username: username) == nil else {
+    func existingAccount(_ accountId: String) -> Account? {
+        guard DBManager.getLoggedOutAccount(accountId: accountId) == nil else {
             return nil
         }
         guard let existingAccount = DBManager.getLoggedOutAccounts().first else {
             return nil
         }
-        return existingAccount.username
+        return existingAccount
     }
     
-    func checkUsername(_ username: String) {
-        guard !multipleAccount || !self.checkAccountExists(username: username) else {
-            self.showLoginError(error: String.localize("ACCOUNT_EXISTS"))
+    func checkEmailInput(_ input: String) -> (String, String)? {
+        guard input.contains("@") else {
+            return (input, Env.domain.replacingOccurrences(of: "@", with: ""))
+        }
+        
+        let emailSplit = input.split(separator: "@")
+        guard let username = emailSplit.first?.description,
+            let domain = emailSplit.last?.description  else {
+                return nil
+        }
+        
+        return (username, domain)
+    }
+    
+    func checkUsername(_ email: String) {
+        
+        guard let usernameDomain = checkEmailInput(email) else {
             return
         }
-        APIManager.checkAvailableUsername(username) { [weak self] (responseData) in
-            guard let weakSelf = self else {
+        
+        let username = usernameDomain.0
+        let domain = usernameDomain.1
+        let accountId = domain == Env.plainDomain ? username : "\(username)@\(domain)"
+        
+        guard !multipleAccount || !self.checkAccountExists(accountId: accountId) else {
+                self.showLoginError(error: String.localize("ACCOUNT_EXISTS"))
                 return
-            }
-            if case .Success = responseData {
-                weakSelf.showLoginError(error: String.localize("USERNAME_NOT"))
+        }
+        
+        APIManager.checkLogin(username: username, domain: domain) { [weak self] (responseData) in
+            guard let weakSelf = self else {
                 return
             }
             if case let .Error(error) = responseData,
@@ -175,26 +199,30 @@ class NewLoginViewController: UIViewController{
                 weakSelf.showLoginError(error: error.description)
                 return
             }
-            guard let user = weakSelf.existingAccount(username) else {
-                weakSelf.linkBegin(username: username)
+            guard case .Success = responseData else {
+                weakSelf.showLoginError(error: String.localize("USERNAME_NOT"))
                 return
             }
-            weakSelf.showWarningPopup(username: username, previous: user)
+            guard let user = weakSelf.existingAccount(accountId) else {
+                weakSelf.linkBegin(username: username, domain: domain)
+                return
+            }
+            let previousEmail = "\(user.username.hideMidChars())@\(user.domain ?? Env.plainDomain)"
+            weakSelf.showWarningPopup(username: username, domain: domain, previous: previousEmail)
         }
     }
     
-    func checkAccountExists(username: String) -> Bool {
-        guard let existingAccount = DBManager.getAccountByUsername(username),
+    func checkAccountExists(accountId: String) -> Bool {
+        guard let existingAccount = DBManager.getAccountById(accountId),
             existingAccount.isLoggedIn else {
                 return false
         }
         return  true
     }
     
-    func linkBegin(username: String){
-        let email = "\(usernameTextField.text!.lowercased())\(Constants.domain)"
-        let loginData = LoginData(email)
-        APIManager.linkBegin(username: username) { (responseData) in
+    func linkBegin(username: String, domain: String){
+        let loginData = LoginData(username: username, domain: domain)
+        APIManager.linkBegin(username: username, domain: domain) { (responseData) in
             if case .Missing = responseData {
                 self.showLoginError(error: String.localize("USERNAME_NOT"))
                 return

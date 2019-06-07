@@ -120,7 +120,7 @@ class ManualSyncViewController: UIViewController{
         FileUtils.deleteAccountDirectory(account: myAccount)
         DBManager.clearMailbox(account: myAccount)
         
-        let restoreTask = RestoreDBAsyncTask(path: path, username: myAccount.username, initialProgress: 80)
+        let restoreTask = RestoreDBAsyncTask(path: path, accountId: myAccount.compoundKey, initialProgress: 80)
         restoreTask.start(progressHandler: { (progress) in
             self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
         }) {
@@ -128,7 +128,7 @@ class ManualSyncViewController: UIViewController{
         }
         
         let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
-        let username = myAccount.username
+        let accountId = myAccount.compoundKey
         queue.async {
             let streamReader = StreamReader(url: URL(fileURLWithPath: path), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
             var dbRows = [[String: Any]]()
@@ -140,7 +140,7 @@ class ManualSyncViewController: UIViewController{
                 }
                 dbRows.append(row)
                 if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
+                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: accountId)
                     dbRows.removeAll()
                     if progress < 99 {
                         progress += 1
@@ -150,7 +150,7 @@ class ManualSyncViewController: UIViewController{
                     }
                 }
             }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, username: username)
+            DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: accountId)
             CriptextFileManager.deleteFile(path: path)
             DispatchQueue.main.async {
                 

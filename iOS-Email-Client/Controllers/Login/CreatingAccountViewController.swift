@@ -65,7 +65,8 @@ class CreatingAccountViewController: UIViewController{
     
     func checkDatabase(){
         self.state = .signupRequest
-        if DBManager.getLoggedOutAccount(username: self.signupData.username) == nil {
+        let accountId = self.signupData.domain == Env.plainDomain ? signupData.username : "\(signupData.username)@\(signupData.domain)"
+        if DBManager.getLoggedOutAccount(accountId: accountId) == nil {
             let loggedOutAccounts = DBManager.getLoggedOutAccounts()
             for account in loggedOutAccounts {
                 FileUtils.deleteAccountDirectory(account: account)
@@ -174,7 +175,7 @@ class CreatingAccountViewController: UIViewController{
         myContact.email = "\(myAccount.username)\(Constants.domain)"
         DBManager.store([myContact], account: myAccount)
         let defaults = CriptextDefaults()
-        defaults.activeAccount = myAccount.username
+        defaults.activeAccount = myAccount.compoundKey
         if signupData.deviceId != 1 {
             defaults.welcomeTour = true
         }
@@ -184,7 +185,7 @@ class CreatingAccountViewController: UIViewController{
             if self.multipleAccount {
                 self.goBackToMailbox(account: myAccount, showRestore: !hasEmails)
             } else {
-                self.goToMailbox(myAccount.username, showRestore: !hasEmails)
+                self.goToMailbox(myAccount.compoundKey, showRestore: !hasEmails)
             }
         }
     }

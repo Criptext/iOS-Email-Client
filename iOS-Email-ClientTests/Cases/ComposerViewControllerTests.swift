@@ -25,7 +25,7 @@ class ComposerViewControllerTests: XCTestCase {
         DBManager.store(account)
         self.account = account
         let defaults = CriptextDefaults()
-        defaults.activeAccount = account.username
+        defaults.activeAccount = account.compoundKey
     }
     
     override func tearDown() {
