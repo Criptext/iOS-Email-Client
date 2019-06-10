@@ -167,6 +167,7 @@ struct Constants {
             "var newNode = document.createElement(\"img\");" +
             "newNode.src = \"file://\(initialPath)\";" +
             "newNode.width = 30;" +
+            "newNode.id = \"criptext_more_button\";" +
             "newNode.style.paddingTop = \"10px\";" +
             "newNode.style.paddingBottom = \"10px\";" +
             "replybody.style.display = \"\(initialDisplay)\";" +

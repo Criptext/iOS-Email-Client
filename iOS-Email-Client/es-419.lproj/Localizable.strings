@@ -35,7 +35,7 @@
 "CONFIRM" = "Confirmar";
 "RETRY" = "Reintentar";
 "USERNAME" = "Usuario";
-"EMAIL" = "Dirección de Correo";
+"EMAIL" = "Correo o Nombre de Usuario";
 "FULLNAME" = "Nombre Completo";
 "PASSWORD" = "Contraseña";
 "CONFIRM_PASSWORD" = "Confirmar Contraseaña";

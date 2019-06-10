@@ -366,9 +366,13 @@ extension EmailTableViewCell: WKNavigationDelegate, WKScriptMessageHandler, UISc
     }
     
     func webViewEvaluateHeight(_ webview: WKWebView){
-        let jsString = "Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);"
+        let script = "var moreButton = document.getElementById(\"criptext_more_button\");" +
+        "if(moreButton == null || moreButton.style.display == \"none\"){" +
+        "Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);" +
+        "} else {" +
+        "document.body.offsetHeight + (document.body.childNodes[0].offsetTop || 0); }"
         
-        webView.evaluateJavaScript(jsString) { (result, error) in
+        webView.evaluateJavaScript(script) { (result, error) in
             guard let height = result as? CGFloat else {
                 return
             }
