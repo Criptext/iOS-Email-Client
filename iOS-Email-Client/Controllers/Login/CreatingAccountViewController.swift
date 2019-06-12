@@ -35,7 +35,7 @@ class CreatingAccountViewController: UIViewController{
         case .checkDB:
             checkDatabase()
         case .signupRequest:
-            guard signupData.deviceId == 1 else {
+            guard !signupData.comingFromLogin else {
                 sendKeysRequest()
                 break
             }

@@ -111,6 +111,7 @@ class ResetDeviceViewController: UIViewController{
             let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
             signupData.deviceId = deviceId
             signupData.token = token
+            signupData.comingFromLogin = true
             self.jumpToCreatingAccount(signupData: signupData)
         }
     }
