@@ -232,7 +232,7 @@
 "PREVIEW_DETAIL" = "Preview the content of emails in Push notifications.";
 "RECEIPTS_DETAIL" = "Know when your emails are opened or read. If turned off, you won’t send or receive read receipts.";
 "TWO_FACTOR_DETAIL" = "A secondary validation to protect your account";
-"ENCRYPT_EXTERNALS_DETAIL" = "When sending emails to non-Criptext accounts, if this is turned on we will always ask you if you wish to encrypt that email with a password.";
+"ENCRYPT_EXTERNALS_DETAIL" = "Get asked if you want to encrypt the email before sending it to an address that is outside the Criptext network. (I.e. Gmail).";
 "UNABLE_RECEIPTS" = "Unable to set read receipts. Please try again.";
 "UNLOCK_FACE" = "Unlock with FaceID";
 "UNLOCK_TOUCH" = "Unlock with Fingerprint";
@@ -292,7 +292,7 @@
 "AUTO_LOCK" = "Auto-Lock";
 "NOTIFICATION_PREVIEW" = "Notification Preview";
 "READ_RECEIPTS" = "Read Receipts";
-"ENCRYPT_TO_EXTERNAL" = "Encrypt Emails to Externals";
+"ENCRYPT_TO_EXTERNAL" = "Encrypt for Unsecured Addresses";
 
 "DONE" = "Done";
 "YESTERDAY" = "Yesterday";

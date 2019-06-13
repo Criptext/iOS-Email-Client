@@ -100,6 +100,16 @@ class ResetDeviceViewController: UIViewController{
                 self.showFeedback(true, error.description)
                 return
             }
+            if case .PreConditionFail = responseData {
+                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                let controller = storyboard.instantiateViewController(withIdentifier: "changePasswordLoginView")  as! ChangePasswordLoginViewController
+                self.loginData.password = password
+                controller.loginData = self.loginData
+                controller.multipleAccount = self.multipleAccount
+                self.navigationController?.pushViewController(controller, animated: true)
+                self.showLoader(false)
+                return
+            }
             guard case let .SuccessString(dataString) = responseData,
                 let data = Utils.convertToDictionary(text: dataString) else {
                     self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
@@ -111,6 +121,7 @@ class ResetDeviceViewController: UIViewController{
             let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
             signupData.deviceId = deviceId
             signupData.token = token
+            signupData.comingFromLogin = true
             self.jumpToCreatingAccount(signupData: signupData)
         }
     }

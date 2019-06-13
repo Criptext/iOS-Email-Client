@@ -64,6 +64,7 @@
 		41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A275207C6466004BDF90 /* Crashlytics.framework */; };
 		41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A277207C6470004BDF90 /* Fabric.framework */; };
+		48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */; };
 		7C049F8920879CD5007A6213 /* LabelsUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */; };
 		7C049F8D2087AB5F007A6213 /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */; };
 		7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */; };
@@ -582,6 +583,7 @@
 		41EE748F207C68D700CCA685 /* CLTokenInputView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CLTokenInputView.framework; path = Carthage/Build/iOS/CLTokenInputView.framework; sourceTree = "<group>"; };
 		41F3A275207C6466004BDF90 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		41F3A277207C6470004BDF90 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordLoginViewController.swift; sourceTree = "<group>"; };
 		7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsUIPopover.swift; sourceTree = "<group>"; };
 		7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelTableViewCell.xib; sourceTree = "<group>"; };
@@ -1496,6 +1498,7 @@
 				7C8D6C692035FCD700AB96EF /* LoginDeviceViewController.swift */,
 				7C8D6C6D20362F8600AB96EF /* ResetDeviceViewController.swift */,
 				7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */,
+				48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2040,6 +2043,7 @@
 				7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */,
 				7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
+				48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */,
 				7C1E884C208D1193003FA304 /* GeneralMoreOptionsUIView.swift in Sources */,
 				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
 				A76D303A225671DC004F8747 /* BackupHeaderView.swift in Sources */,

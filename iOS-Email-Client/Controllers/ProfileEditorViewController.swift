@@ -82,7 +82,7 @@ class ProfileEditorViewController: UIViewController {
         self.blackBackground.addGestureRecognizer(tap)
         self.attachmentContainerBottomConstraint.constant = -100
         nameLabel.text = myAccount.name
-        emailLabel.text = "\(myAccount.username)\(Constants.domain)"
+        emailLabel.text = "\(myAccount.email)"
         UIUtils.deleteSDWebImageCache()
         setProfileImage()
         applyTheme()

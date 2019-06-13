@@ -21,6 +21,7 @@ class SignUpData{
     var deviceId: Int = 1
     var token: String = ""
     var refreshToken: String?
+    var comingFromLogin = false
     
     init(username: String, password: String, domain: String, fullname: String, optionalEmail: String?){
         self.username = username
@@ -50,6 +51,7 @@ class SignUpData{
         myAccount.domain = signupData.domain == Env.plainDomain ? nil : signupData.domain
         myAccount.name = signupData.fullname
         myAccount.jwt = signupData.token
+        myAccount.refreshToken = signupData.refreshToken
         myAccount.regId = 0
         myAccount.identityB64 = ""
         myAccount.deviceId = signupData.deviceId

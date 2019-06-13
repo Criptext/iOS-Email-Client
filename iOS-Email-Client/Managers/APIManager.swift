@@ -853,6 +853,20 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func loginChangePasswordRequest(username: String, domain: String, password: String, newPassword: String, completion: @escaping ((ResponseData) -> Void)){
+        let parameters = ["username": username,
+                          "domain": domain,
+                          "oldPassword": password,
+                          "newPassword": newPassword] as [String : Any]
+        let url = "\(self.baseUrl)/user/auth/first"
+        let headers = [versionHeader: apiVersion]
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseString {
+            (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
     class func resetPassword(username: String, domain: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/password/reset"
         let params = [
