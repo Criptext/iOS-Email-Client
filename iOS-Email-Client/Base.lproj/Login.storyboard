@@ -1208,6 +1208,279 @@ from Criptext</string>
             </objects>
             <point key="canvasLocation" x="904.79999999999995" y="1440.6296851574214"/>
         </scene>
+        <!--Change Password Login View Controller-->
+        <scene sceneID="oBw-H4-Aeb">
+            <objects>
+                <viewController storyboardIdentifier="changepasswordloginview" id="Hc2-zU-RHc" userLabel="Change Password Login View Controller" customClass="ResetDeviceViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KSk-so-vz1" customClass="GradientUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QjU-3I-V62">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1FW-Vc-JDO">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28H-bO-HbP" customClass="CircleBackButton" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="20" y="20" width="42" height="42"/>
+                                                <color key="backgroundColor" red="0.34509803919999998" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="42" id="ZEB-un-dh0"/>
+                                                    <constraint firstAttribute="height" constant="42" id="chh-db-l7T"/>
+                                                </constraints>
+                                                <state key="normal" image="arrow-back"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="backButtonPress:" destination="Hc2-zU-RHc" eventType="touchUpInside" id="Z8E-bB-KSH"/>
+                                                </connections>
+                                            </button>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="criptext-logo" translatesAutoresizingMaskIntoConstraints="NO" id="ERs-gX-0TX">
+                                                <rect key="frame" x="229" y="20" width="120" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="120" id="Jjl-jL-ugc"/>
+                                                    <constraint firstAttribute="height" constant="40" id="Vrc-e9-RiR"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change the password for:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k5b-AK-Viu">
+                                                <rect key="frame" x="20" y="177" width="335" height="37"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="david.grindstaff@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MVz-Sq-Hog">
+                                                <rect key="frame" x="33" y="222.5" width="309" height="48"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="aHO-HX-Ctg"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spW-0d-eId">
+                                                <rect key="frame" x="38" y="482" width="301" height="44"/>
+                                                <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="hRY-GE-n3T"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
+                                                <state key="normal" title="Change Password">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="20"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onResetPress:" destination="Hc2-zU-RHc" eventType="touchUpInside" id="3Na-s6-LIA"/>
+                                                </connections>
+                                            </button>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="krz-aH-omr" customClass="TextField" customModule="Material">
+                                                <rect key="frame" x="56" y="340.5" width="265" height="30.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30.5" id="OOq-20-YCe"/>
+                                                </constraints>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="dividerNormalColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="0.24970135700000001" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="dividerActiveColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderNormalColor">
+                                                        <color key="value" red="1" green="0.99872596150000004" blue="1" alpha="0.60272123470000005" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderActiveColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="detailColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isVisibilityIconButtonEnabled" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onPasswordChange:" destination="Hc2-zU-RHc" eventType="editingChanged" id="6Bo-1w-FkI"/>
+                                                    <action selector="textfieldDidEndOnExit:" destination="Hc2-zU-RHc" eventType="editingDidEndOnExit" id="gPG-Xk-VUR"/>
+                                                </connections>
+                                            </textField>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-error" translatesAutoresizingMaskIntoConstraints="NO" id="Q63-p6-Je1">
+                                                <rect key="frame" x="21" y="345" width="22" height="22"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="22" id="COP-Vf-cI4"/>
+                                                    <constraint firstAttribute="height" constant="22" id="NRn-BL-CTt"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect Password" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMc-7e-OAS">
+                                                <rect key="frame" x="56.5" y="311" width="262" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="Ncz-AN-JGY"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="mIn-tv-ab3">
+                                                <rect key="frame" x="178.5" y="494" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="20" id="8W0-ut-uSh"/>
+                                                    <constraint firstAttribute="height" constant="20" id="JSx-4g-GiX"/>
+                                                </constraints>
+                                            </activityIndicatorView>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Repeat Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VWm-dz-xZE" userLabel="Confirm Password Text Field" customClass="TextField" customModule="Material">
+                                                <rect key="frame" x="56" y="413" width="265" height="30.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30.5" id="UcC-yL-aIj"/>
+                                                </constraints>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="dividerNormalColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="0.24970135700000001" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="dividerActiveColor">
+                                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderNormalColor">
+                                                        <color key="value" red="1" green="0.99872596150000004" blue="1" alpha="0.60272123470000005" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderActiveColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="detailVerticalOffset">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="detailColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isVisibilityIconButtonEnabled" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onPasswordChange:" destination="Hc2-zU-RHc" eventType="editingChanged" id="OfR-pH-Akf"/>
+                                                    <action selector="textfieldDidEndOnExit:" destination="Hc2-zU-RHc" eventType="editingDidEndOnExit" id="8v6-ha-5Dp"/>
+                                                </connections>
+                                            </textField>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-error" translatesAutoresizingMaskIntoConstraints="NO" id="GLS-DH-yQo" userLabel="Confirm Error Mark">
+                                                <rect key="frame" x="21" y="417.5" width="22" height="22"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="22" id="BON-cC-xnw"/>
+                                                    <constraint firstAttribute="width" constant="22" id="gPC-V2-KIm"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect Password" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Hu-gW-eXs" userLabel="Confirm Error Label">
+                                                <rect key="frame" x="56.5" y="379" width="262" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="7mP-Ya-SvT"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="white-logo" translatesAutoresizingMaskIntoConstraints="NO" id="gy9-k9-P9s" userLabel="white-logo">
+                                                <rect key="frame" x="149" y="100" width="77" height="69"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="HMc-7e-OAS" firstAttribute="centerX" secondItem="1FW-Vc-JDO" secondAttribute="centerX" id="0SL-jS-zvD"/>
+                                            <constraint firstAttribute="trailing" secondItem="gy9-k9-P9s" secondAttribute="trailing" constant="149" id="0nC-zp-yd8"/>
+                                            <constraint firstAttribute="trailing" secondItem="ERs-gX-0TX" secondAttribute="trailing" constant="26" id="1pP-7d-2Ac"/>
+                                            <constraint firstItem="spW-0d-eId" firstAttribute="top" secondItem="VWm-dz-xZE" secondAttribute="bottom" constant="38.5" id="26p-xL-nmz"/>
+                                            <constraint firstItem="krz-aH-omr" firstAttribute="leading" secondItem="Q63-p6-Je1" secondAttribute="trailing" constant="13" id="2Xg-G0-vVV"/>
+                                            <constraint firstItem="gy9-k9-P9s" firstAttribute="leading" secondItem="1FW-Vc-JDO" secondAttribute="leading" constant="149" id="4Lc-US-pkh"/>
+                                            <constraint firstItem="MVz-Sq-Hog" firstAttribute="leading" secondItem="1FW-Vc-JDO" secondAttribute="leading" constant="33" id="6M9-fB-Pet"/>
+                                            <constraint firstItem="krz-aH-omr" firstAttribute="leading" secondItem="1FW-Vc-JDO" secondAttribute="leading" constant="56" id="6kA-2B-bKV"/>
+                                            <constraint firstItem="mIn-tv-ab3" firstAttribute="centerY" secondItem="spW-0d-eId" secondAttribute="centerY" id="9Ua-gt-ajX"/>
+                                            <constraint firstItem="7Hu-gW-eXs" firstAttribute="centerX" secondItem="1FW-Vc-JDO" secondAttribute="centerX" id="BTV-Ut-Rev"/>
+                                            <constraint firstItem="ERs-gX-0TX" firstAttribute="top" secondItem="1FW-Vc-JDO" secondAttribute="top" constant="20" id="Dip-YJ-l9B"/>
+                                            <constraint firstItem="7Hu-gW-eXs" firstAttribute="width" secondItem="VWm-dz-xZE" secondAttribute="width" multiplier="0.99" id="Fpk-mR-1pH"/>
+                                            <constraint firstItem="28H-bO-HbP" firstAttribute="top" secondItem="1FW-Vc-JDO" secondAttribute="top" constant="20" id="Io6-WU-W8h"/>
+                                            <constraint firstItem="VWm-dz-xZE" firstAttribute="leading" secondItem="GLS-DH-yQo" secondAttribute="trailing" constant="13" id="KFE-wa-C6j"/>
+                                            <constraint firstItem="k5b-AK-Viu" firstAttribute="leading" secondItem="1FW-Vc-JDO" secondAttribute="leading" constant="20" id="RAo-0i-JXM"/>
+                                            <constraint firstItem="28H-bO-HbP" firstAttribute="leading" secondItem="1FW-Vc-JDO" secondAttribute="leading" constant="20" id="Sg5-3z-GCk"/>
+                                            <constraint firstAttribute="trailing" secondItem="krz-aH-omr" secondAttribute="trailing" constant="54" id="V5g-Mt-aGR"/>
+                                            <constraint firstItem="HMc-7e-OAS" firstAttribute="width" secondItem="krz-aH-omr" secondAttribute="width" multiplier="0.99" id="VyO-IX-frb"/>
+                                            <constraint firstItem="Q63-p6-Je1" firstAttribute="centerY" secondItem="krz-aH-omr" secondAttribute="centerY" id="WBO-Sq-VPY"/>
+                                            <constraint firstItem="mIn-tv-ab3" firstAttribute="centerX" secondItem="spW-0d-eId" secondAttribute="centerX" id="Wkb-GL-dX4"/>
+                                            <constraint firstItem="mIn-tv-ab3" firstAttribute="centerX" secondItem="VWm-dz-xZE" secondAttribute="centerX" id="aEA-2p-UhU"/>
+                                            <constraint firstItem="VWm-dz-xZE" firstAttribute="top" secondItem="7Hu-gW-eXs" secondAttribute="bottom" constant="13" id="crt-8u-IE4"/>
+                                            <constraint firstAttribute="trailing" secondItem="k5b-AK-Viu" secondAttribute="trailing" constant="20" id="gB7-DD-yqe"/>
+                                            <constraint firstItem="krz-aH-omr" firstAttribute="centerY" secondItem="1FW-Vc-JDO" secondAttribute="centerY" multiplier="1.1" id="gix-Vv-zv3"/>
+                                            <constraint firstItem="krz-aH-omr" firstAttribute="top" secondItem="HMc-7e-OAS" secondAttribute="bottom" constant="8.5" id="kph-QN-7em"/>
+                                            <constraint firstItem="MVz-Sq-Hog" firstAttribute="top" secondItem="k5b-AK-Viu" secondAttribute="bottom" constant="8.5" id="nKn-dB-CdZ"/>
+                                            <constraint firstAttribute="trailing" secondItem="VWm-dz-xZE" secondAttribute="trailing" constant="54" id="oXY-wN-O8q"/>
+                                            <constraint firstItem="VWm-dz-xZE" firstAttribute="leading" secondItem="1FW-Vc-JDO" secondAttribute="leading" constant="56" id="qdd-Sx-YZ8"/>
+                                            <constraint firstItem="krz-aH-omr" firstAttribute="top" secondItem="MVz-Sq-Hog" secondAttribute="bottom" constant="70" id="rAt-ME-hTe"/>
+                                            <constraint firstItem="spW-0d-eId" firstAttribute="leading" secondItem="1FW-Vc-JDO" secondAttribute="leading" constant="38" id="s6L-ug-2cj"/>
+                                            <constraint firstItem="7Hu-gW-eXs" firstAttribute="top" secondItem="krz-aH-omr" secondAttribute="bottom" constant="8" id="smz-co-tAm"/>
+                                            <constraint firstItem="GLS-DH-yQo" firstAttribute="centerY" secondItem="VWm-dz-xZE" secondAttribute="centerY" id="tKg-Wy-6dB"/>
+                                            <constraint firstAttribute="trailing" secondItem="MVz-Sq-Hog" secondAttribute="trailing" constant="33" id="zdc-gK-3Ze"/>
+                                            <constraint firstItem="k5b-AK-Viu" firstAttribute="top" secondItem="gy9-k9-P9s" secondAttribute="bottom" constant="8" id="zgH-5c-2QR"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="1FW-Vc-JDO" firstAttribute="top" secondItem="QjU-3I-V62" secondAttribute="top" id="HfP-4j-Dx4"/>
+                                    <constraint firstItem="1FW-Vc-JDO" firstAttribute="height" secondItem="QjU-3I-V62" secondAttribute="height" id="Hjv-10-nJe"/>
+                                    <constraint firstItem="1FW-Vc-JDO" firstAttribute="leading" secondItem="QjU-3I-V62" secondAttribute="leading" id="Oqq-Nh-KSH"/>
+                                    <constraint firstAttribute="trailing" secondItem="1FW-Vc-JDO" secondAttribute="trailing" id="gyG-s3-J6k"/>
+                                    <constraint firstAttribute="bottom" secondItem="1FW-Vc-JDO" secondAttribute="bottom" id="jl2-G1-VTg"/>
+                                    <constraint firstItem="1FW-Vc-JDO" firstAttribute="width" secondItem="QjU-3I-V62" secondAttribute="width" id="xdO-Tk-3jP"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.67491319439999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="QjU-3I-V62" firstAttribute="leading" secondItem="Psp-9m-u6p" secondAttribute="leading" id="AqH-qU-cgy"/>
+                            <constraint firstItem="Psp-9m-u6p" firstAttribute="trailing" secondItem="QjU-3I-V62" secondAttribute="trailing" id="JCd-6y-HzK"/>
+                            <constraint firstItem="QjU-3I-V62" firstAttribute="bottom" secondItem="Psp-9m-u6p" secondAttribute="bottom" id="dPl-un-6cs"/>
+                            <constraint firstItem="QjU-3I-V62" firstAttribute="top" secondItem="Psp-9m-u6p" secondAttribute="top" id="eqb-hY-07Q"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Psp-9m-u6p"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                <color key="value" red="0.0" green="0.76862745099999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <connections>
+                        <outlet property="emailLabel" destination="MVz-Sq-Hog" id="lpb-2Z-lmh"/>
+                        <outlet property="errorLabel" destination="HMc-7e-OAS" id="cCj-6J-1TZ"/>
+                        <outlet property="errorMark" destination="Q63-p6-Je1" id="jjZ-Ld-UNO"/>
+                        <outlet property="labelHeightConstraint" destination="Ncz-AN-JGY" id="gAD-oj-BkO"/>
+                        <outlet property="passwordTextField" destination="krz-aH-omr" id="hac-MU-ZLH"/>
+                        <outlet property="resetButton" destination="spW-0d-eId" id="fcY-wE-d2i"/>
+                        <outlet property="resetLoaderView" destination="mIn-tv-ab3" id="mpj-eK-D6C"/>
+                        <outlet property="titleLabel" destination="k5b-AK-Viu" id="uDB-cA-xn1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DQH-t0-5xn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="904.79999999999995" y="1440.6296851574214"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow-back" width="17" height="14"/>
