@@ -103,10 +103,8 @@ class ChangePasswordLoginViewController: UIViewController{
     }
     
     func loginRequest(){
-        guard let password = loginData.password else {
-            return
-        }
-        guard let newPassword = confirmPasswordTextField.text else {
+        guard let password = loginData.password,
+            let newPassword = confirmPasswordTextField.text else {
             return
         }
         showLoader(true)
