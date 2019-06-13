@@ -1211,7 +1211,7 @@ from Criptext</string>
         <!--Change Password Login View Controller-->
         <scene sceneID="oBw-H4-Aeb">
             <objects>
-                <viewController storyboardIdentifier="changepasswordloginview" id="Hc2-zU-RHc" userLabel="Change Password Login View Controller" customClass="ResetDeviceViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="changePasswordLoginView" id="Hc2-zU-RHc" userLabel="Change Password Login View Controller" customClass="ChangePasswordLoginViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KSk-so-vz1" customClass="GradientUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1467,6 +1467,9 @@ from Criptext</string>
                         </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
+                        <outlet property="confirmErrorLabel" destination="7Hu-gW-eXs" id="b5C-n8-1X1"/>
+                        <outlet property="confirmErrorMark" destination="GLS-DH-yQo" id="it6-9Y-J1x"/>
+                        <outlet property="confirmPasswordTextField" destination="VWm-dz-xZE" id="wxs-dW-i0g"/>
                         <outlet property="emailLabel" destination="MVz-Sq-Hog" id="lpb-2Z-lmh"/>
                         <outlet property="errorLabel" destination="HMc-7e-OAS" id="cCj-6J-1TZ"/>
                         <outlet property="errorMark" destination="Q63-p6-Je1" id="jjZ-Ld-UNO"/>

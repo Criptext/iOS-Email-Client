@@ -35,6 +35,7 @@ class SharedAPI {
         case authDenied = 493
         case tooManyDevices = 439
         case tooManyRequests = 429
+        case preConditionFail = 412
         case entityTooLarge = 413
         case serverError = 500
     }
@@ -82,6 +83,8 @@ class SharedAPI {
             return .Conflicts
         case .success, .successAndRepeat, .successAccepted, .successNoContent, .notModified:
             break
+        case .preConditionFail:
+            return .PreConditionFail
         default:
             guard status < code.serverError.rawValue else {
                 return .ServerError
