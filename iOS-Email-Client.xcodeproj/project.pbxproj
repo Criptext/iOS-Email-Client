@@ -323,7 +323,6 @@
 		A7ADA13021A5F1E10027FC1C /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82C20607602000E5F14 /* Label.swift */; };
 		A7ADA13121A5F1E50027FC1C /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9568328F20753FBE007F8489 /* File.swift */; };
 		A7ADA13321A5F1F10027FC1C /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
-		A7ADA13421A5F1FA0027FC1C /* NewEmailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387421939B2600C8355A /* NewEmailHandler.swift */; };
 		A7ADA13521A5F1FA0027FC1C /* NewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC386921936A0300C8355A /* NewEmail.swift */; };
 		A7ADA13621A5F1FA0027FC1C /* SharedDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387921939C3D00C8355A /* SharedDB.swift */; };
 		A7ADA13721A5F1FA0027FC1C /* SharedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387C21939D6500C8355A /* SharedAPI.swift */; };
@@ -401,7 +400,6 @@
 		A7CC386C21936A6000C8355A /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
 		A7CC386D21936D9D00C8355A /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */; };
 		A7CC387521939B2600C8355A /* NewEmailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387421939B2600C8355A /* NewEmailHandler.swift */; };
-		A7CC387621939B2600C8355A /* NewEmailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387421939B2600C8355A /* NewEmailHandler.swift */; };
 		A7CC387821939BA600C8355A /* NewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC386921936A0300C8355A /* NewEmail.swift */; };
 		A7CC387A21939C3D00C8355A /* SharedDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387921939C3D00C8355A /* SharedDB.swift */; };
 		A7CC387B21939C3D00C8355A /* SharedDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387921939C3D00C8355A /* SharedDB.swift */; };
@@ -2235,7 +2233,6 @@
 				A7ADA12F21A5F1DD0027FC1C /* EmailContact.swift in Sources */,
 				A7ADA13321A5F1F10027FC1C /* DummySession.swift in Sources */,
 				D63EE2DB21CC248E001125B3 /* ThemeManager.swift in Sources */,
-				A7ADA13421A5F1FA0027FC1C /* NewEmailHandler.swift in Sources */,
 				A7ADA14821A60B8D0027FC1C /* AESCipher.swift in Sources */,
 				A7ADA12E21A5F1DA0027FC1C /* CRTrustedDevice.swift in Sources */,
 				A77C30B121A5055A0031E219 /* ShareViewController.swift in Sources */,
@@ -2274,7 +2271,6 @@
 				A7CC385B21934DC600C8355A /* Account.swift in Sources */,
 				A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */,
 				A7F2554E2232FF3100034270 /* Time.swift in Sources */,
-				A7CC387621939B2600C8355A /* NewEmailHandler.swift in Sources */,
 				D661A22D21EFA447002A6BDD /* SharedUtils.swift in Sources */,
 				A74CF31D21B5BD0700559490 /* CriptextDefaults.swift in Sources */,
 				A7CC386621934FF400C8355A /* CRPreKeyRecord.swift in Sources */,

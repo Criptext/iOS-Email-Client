@@ -1349,7 +1349,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             case .Forbidden:
                 completion?()
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
-            case .Success:
+            case .Success, .SuccessString:
                 DBManager.deleteQueueItems(eventItems)
                 completion?()
             default:

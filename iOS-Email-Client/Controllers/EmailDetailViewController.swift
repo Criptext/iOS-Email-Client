@@ -10,6 +10,7 @@ import Foundation
 import Photos
 import SafariServices
 import Instructions
+import RealmSwift
 
 class EmailDetailViewController: UIViewController {
     let ESTIMATED_ROW_HEIGHT : CGFloat = 75
@@ -714,9 +715,12 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         moreOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
         let email = getMail(index: indexPath.row)
+        let ccContacts: List<Contact> = email.getContacts(type: ContactType.cc)
+        let toContacts: List<Contact> = email.getContacts(type: ContactType.to)
+        toContacts.append(objectsIn: ccContacts)
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
-        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "<b>\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
-        let content = ("<br><br><div class=\"criptext_quote\"><span>---------- \(String.localize("FORWARD_MAIL")) ---------</span><br><span>\(String.localize("FROM")): ]\(contact)</span><br><span>\(String.localize("DATE")): \(email.completeDate)</span><br><span>\(String.localize("SUBJECT")): \(email.subject)</span><br><br>\(self.emailData.bodies[email.key] ?? "")</div>")
+        let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress.replacingOccurrences(of: "<", with: "&#60;").replacingOccurrences(of: ">", with: "&#62;") : "<b>\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
+        let content = ("<br><br><div class=\"criptext_quote\"><span>---------- \(String.localize("FORWARD_MAIL")) ---------</span><br><span>\(String.localize("FROM")): \(contact)</span><br><span>\(String.localize("DATE")): \(email.completeDate)</span><br><span>\(String.localize("SUBJECT")): \(email.subject)</span><br>\(String.localize("TO")): \(toContacts.map({$0.displayName + " &#60;" + $0.email + "&#62;"}).joined(separator: ", "))<br><br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
         presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content, attachments: email.getFiles())
     }
     

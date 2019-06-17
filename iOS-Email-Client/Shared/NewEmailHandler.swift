@@ -233,7 +233,7 @@ class NewEmailHandler {
         file.readOnly = attachment["read_only"] as? Int ?? 0
         file.emailId = email.key
         if let fileCid = cid,
-            body.contains("cid:\(fileCid)") {
+            body.contains("cid:\(fileCid)") && UIUtils.getExternalImage(file.mimeType) == "fileimage" {
             file.cid = cid != nil && body.contains("cid:\(fileCid)") ? cid : nil
         }
         database.store(file)
