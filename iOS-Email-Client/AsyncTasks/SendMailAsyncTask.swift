@@ -305,7 +305,7 @@ class SendMailAsyncTask {
             guestEmailData["bcc"] = bccData.1
         }
         if !guestEmailData.isEmpty {
-            guestEmailData["body"] = self.isSecure ? self.body : "\(self.body)<br/><br/>\(Constants.footer)"
+            guestEmailData["body"] = self.isSecure || myAccount.domain != Env.plainDomain ? self.body : "\(self.body)<br/><br/>\(Constants.footer)"
             guestEmailData["encrypted"] = isSecure
             
             var dummySession: SendEmailData.GuestContent?

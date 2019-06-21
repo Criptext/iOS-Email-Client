@@ -68,6 +68,33 @@ extension UIViewController {
         self.presentPopover(popover: passwordVC, height: 225)
     }
     
+    func presentAccountSuspendedPopover(myAccount: Account, accounts: [Account],
+                                        onPressSwitch: ((Account) -> (Void))?,
+                                        onPressLogin: (() -> (Void))?){
+        let suspendedVC = GenericAlertUIPopover()
+        suspendedVC.canDismiss = false
+        suspendedVC.myTitle = String.localize("ACCOUNT_SUSPENDED_TITLE")
+        suspendedVC.myMessage = String.localize("ACCOUNT_SUSPENDED_MESSAGE", arguments: myAccount.email)
+        suspendedVC.myButton = accounts.count > 1 ? String.localize("ACCOUNT_SUSPENDED_BUTTON")
+            : String.localize("SIGNIN")
+        
+        suspendedVC.onOkPress = {
+            if(accounts.count > 1){
+                let selectedAccountIndex = accounts.firstIndex(of: myAccount)
+                if(selectedAccountIndex != nil){
+                    if(selectedAccountIndex == accounts.count - 1){
+                        onPressSwitch?(accounts[0])
+                    } else {
+                        onPressSwitch?(accounts[selectedAccountIndex! + 1])
+                    }
+                } else {
+                    onPressLogin?()
+                }
+            }
+        }
+        self.presentPopover(popover: suspendedVC, height: 300)
+    }
+    
     func presentLinkDevicePopover(linkData: LinkData, account: Account){
         let linkDeviceVC = SignInVerificationUIPopover()
         linkDeviceVC.linkData = linkData

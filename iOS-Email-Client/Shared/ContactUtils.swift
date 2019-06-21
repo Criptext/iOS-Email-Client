@@ -96,6 +96,7 @@ class ContactUtils {
     }
     
     class func getUsernameAndDomain(email: String) -> (String, String) {
+        if(!email.contains("@")) { return ("","") }
         let domain = email.split(separator: "@")[1]
         let username = email.split(separator: "@")[0]
         return (username.description, domain.description)

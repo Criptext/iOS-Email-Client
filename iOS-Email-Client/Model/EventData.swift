@@ -17,15 +17,19 @@ class EventData {
     enum Socket {
         case Unhandled
         case Error
-        case NewEvent(String)
+        case NewEvent(String, String)
         case PasswordChange
         case Logout
         case RecoveryChanged(String)
         case KeyBundle(Int32)
         case RecoveryVerified
-        case LinkData(LinkData, String)
+        case LinkData(LinkData, String, String)
         case SyncDeny
-        case SyncAccept(AcceptData, String)
+        case SyncAccept(AcceptData, String, String)
+        case EnterpriseSuspended(String, String)
+        case EnterpriseUnSuspended(String, String)
+        case LinkDismiss(String, String)
+        case SyncDismiss(String, String)
     }
     
     struct Result {
@@ -34,6 +38,7 @@ class EventData {
         var modifiedThreadIds = [String]()
         var modifiedEmailKeys = [Int]()
         var removed = false
+        var suspended = false
         var updateSideMenu = false
         var linkStartData: LinkData? = nil
         var feature: MailboxData.Feature? = nil

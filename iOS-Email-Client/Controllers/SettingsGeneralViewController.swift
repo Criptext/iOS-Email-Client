@@ -286,7 +286,7 @@ class SettingsGeneralViewController: UIViewController{
     func showManualSyncPopup() {
         let popover = ManualSyncUIPopover()
         popover.myAccount = self.myAccount
-        popover.onAccept = { [weak self] acceptData, recipientId in
+        popover.onAccept = { [weak self] acceptData, recipientId, domain in
             self?.goToManualSync(acceptData: acceptData)
         }
         self.presentPopover(popover: popover, height: 350)

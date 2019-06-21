@@ -37,6 +37,7 @@ class SharedAPI {
         case tooManyRequests = 429
         case preConditionFail = 412
         case entityTooLarge = 413
+        case enterpriseSuspended = 451
         case serverError = 500
     }
     
@@ -85,6 +86,8 @@ class SharedAPI {
             break
         case .preConditionFail:
             return .PreConditionFail
+        case .enterpriseSuspended:
+            return .EnterpriseSuspended
         default:
             guard status < code.serverError.rawValue else {
                 return .ServerError
@@ -111,6 +114,10 @@ class SharedAPI {
     
     class func authorizationRequest(responseData: ResponseData, token: String, queue: DispatchQueue? = nil, completionHandler: @escaping ((ResponseData?, String) -> Void)) {
         guard case .Unauthorized = responseData else {
+            completionHandler(responseData, token)
+            return
+        }
+        guard case .EnterpriseSuspended = responseData else {
             completionHandler(responseData, token)
             return
         }

@@ -508,12 +508,15 @@ class InboxViewController: UIViewController {
 extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
-        case .LinkData(let data, let recipientId):
-            //TODO NOT RECIPIENT, ID
-            self.handleLinkStart(linkData: data, account: DBManager.getAccountById(recipientId)!)
-        case .NewEvent(let username):
-            //TODO NOT USERNAME, ID
-            RequestManager.shared.getAccountEvents(accountId: username)
+        case .LinkData(let data, let recipientId, let domain):
+            self.handleLinkStart(linkData: data, account: DBManager.getAccountById(recipientId + "@\(domain)")!)
+        case .LinkDismiss( _, _), .SyncDismiss( _, _):
+            let topView = self.getTopView().presentedViewController
+            if(topView is SignInVerificationUIPopover){
+                topView?.dismiss(animated: false, completion: nil)
+            }
+        case .NewEvent(let username, let domain):
+            RequestManager.shared.getAccountEvents(accountId: username + "@\(domain)")
         case .PasswordChange:
             self.presentPasswordPopover(myAccount: myAccount)
         case .Logout:
@@ -537,6 +540,15 @@ extension InboxViewController: WebSocketManagerDelegate {
             }
             settings.generalData.recoveryEmailStatus = .verified
             settings.reloadChildViews()
+        case .EnterpriseSuspended(let recipientId, let domain):
+            if(myAccount.email == (recipientId + "@\(domain)")){
+                let accounts = DBManager.getLoggedAccounts()
+                self.presentAccountSuspendedPopover(myAccount: myAccount, accounts: Array(accounts), onPressSwitch: self.swapAccount(_:), onPressLogin: self.addAccount)
+            }
+        case .EnterpriseUnSuspended(let recipientId, let domain):
+            if(myAccount.email == (recipientId + "@\(domain)")) {
+                self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
+            }
         default:
             break
         }
@@ -574,6 +586,14 @@ extension InboxViewController {
             }
             delegate.logout(account: self.myAccount)
             return
+        }
+        
+        if (result.suspended) {
+            let accounts = DBManager.getLoggedAccounts()
+            self.presentAccountSuspendedPopover(myAccount: myAccount, accounts: Array(accounts), onPressSwitch: self.swapAccount(_:), onPressLogin: self.addAccount)
+            return
+        } else {
+            self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
         }
         
         if let feature = result.feature {
@@ -1033,6 +1053,22 @@ extension InboxViewController: UITableViewDataSource{
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         
         self.present(navSettingsVC, animated: true, completion: nil)
+    }
+    
+    func goToProfile(){
+        self.navigationDrawerController?.closeLeftView()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let profileVC = storyboard.instantiateViewController(withIdentifier: "profileEditorView") as! ProfileEditorViewController
+        profileVC.myAccount = self.myAccount
+        profileVC.loadDataAtStart = true
+        
+        let navProfileVC = UINavigationController(rootViewController: profileVC)
+        navProfileVC.navigationBar.isTranslucent = false
+        navProfileVC.navigationBar.barTintColor = .charcoal
+        let attrs = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: Font.bold.size(17)!] as [NSAttributedString.Key : Any]
+        navProfileVC.navigationBar.titleTextAttributes = attrs
+        self.present(navProfileVC, animated: true, completion: nil)
     }
 }
 
@@ -1922,6 +1958,7 @@ extension InboxViewController {
         self.setQueueItemsListener()
         UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
         self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
+        RequestManager.shared.getAccountEvents(accountId: account.compoundKey)
     }
 }
 
@@ -1947,19 +1984,26 @@ extension InboxViewController: RequestDelegate {
             return
         }
         refreshControl.endRefreshing()
-        if case .Unauthorized = response {
-            self.logout(account: self.myAccount)
-            return
-        }
-        if case let .Error(error) = response,
-            error.code != .custom {
-            self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
-            return
-        }
         
-        if case .Forbidden = response {
-            self.presentPasswordPopover(myAccount: self.myAccount)
-            return
+        switch response {
+            case .Unauthorized:
+                self.logout(account: self.myAccount)
+                return
+            case .Error(let error):
+                if(error.code != .custom) {
+                    self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+                    return
+                }
+            case .Forbidden:
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            case .Success:
+                let topView = self.getTopView().presentedViewController
+                if(topView is GenericAlertUIPopover){
+                    topView?.dismiss(animated: false, completion: nil)
+                }
+            default:
+                return
         }
     }
 }

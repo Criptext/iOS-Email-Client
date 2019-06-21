@@ -50,11 +50,13 @@ class ProfileEditorViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var attachmentController: AttachmentOptionsContainerView!
     @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
+    let STATUS_NOT_CONFIRMED = 0
     var imagePicker = UIImagePickerController()
     var attachmentOptionsHeight: CGFloat = 0
-    var generalData: GeneralSettingsData!
-    var devicesData: DeviceSettingsData!
+    var generalData: GeneralSettingsData = GeneralSettingsData()
+    var devicesData: DeviceSettingsData = DeviceSettingsData()
     var myAccount: Account!
+    var loadDataAtStart: Bool = false
     var options = [.name, .signature, .password, .recovery, .reply, .logout, .deleteAccount] as [Option]
     
     var theme: Theme {
@@ -64,7 +66,6 @@ class ProfileEditorViewController: UIViewController {
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("PROFILE")
-        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
             [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         if UIDevice().userInterfaceIdiom == .phone {
@@ -86,6 +87,44 @@ class ProfileEditorViewController: UIViewController {
         UIUtils.deleteSDWebImageCache()
         setProfileImage()
         applyTheme()
+        if(loadDataAtStart){
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(goBack))
+            self.loadData()
+        } else {
+            navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
+        }
+    }
+    
+    func loadData(){
+        let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
+        APIManager.getSettings(token: myAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout(account: self.myAccount)
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.myAccount)
+                return
+            }
+            guard case let .SuccessDictionary(settings) = responseData,
+                let devices = settings["devices"] as? [[String: Any]],
+                let general = settings["general"] as? [String: Any] else {
+                    return
+            }
+            let myDevices = devices.map({Device.fromDictionary(data: $0)}).filter({$0.id != myDevice.id}).sorted(by: {$0.safeDate > $1.safeDate})
+            self.devicesData.devices.append(contentsOf: myDevices)
+            let email = general["recoveryEmail"] as! String
+            let status = general["recoveryEmailConfirmed"] as! Int
+            let isTwoFactor = general["twoFactorAuth"] as! Int
+            let hasEmailReceipts = general["trackEmailRead"] as! Int
+            let replyTo = general["replyTo"] as? String ?? ""
+            self.generalData.replyTo = replyTo
+            self.generalData.recoveryEmail = email
+            self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
+            self.generalData.isTwoFactor = isTwoFactor == 1 ? true : false
+            self.generalData.hasEmailReceipts = hasEmailReceipts == 1 ? true : false
+            self.tableView.reloadData()
+        }
     }
     
     @objc func hideBlackBackground(_ flag:Bool = false){
@@ -144,7 +183,12 @@ class ProfileEditorViewController: UIViewController {
     }
     
     @objc func goBack(){
-        navigationController?.popViewController(animated: true)
+        if(loadDataAtStart){
+            navigationController?.dismiss(animated: true, completion: nil)
+            
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
         return
     }
     

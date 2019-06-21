@@ -28,4 +28,5 @@ enum ResponseData {
     case TooManyRequests(Int64)
     case ServerError
     case PreConditionFail
+    case EnterpriseSuspended
 }

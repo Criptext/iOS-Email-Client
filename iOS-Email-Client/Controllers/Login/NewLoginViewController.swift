@@ -194,6 +194,10 @@ class NewLoginViewController: UIViewController{
             guard let weakSelf = self else {
                 return
             }
+            if case .EnterpriseSuspended = responseData {
+                weakSelf.showLoginError(error: String.localize("ACCOUNT_SUSPENDED_LOGIN"))
+                return
+            }
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 weakSelf.showLoginError(error: error.description)
