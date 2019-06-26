@@ -20,7 +20,7 @@ class ManualSyncUIPopover: BaseUIPopover {
     @IBOutlet weak var hourglassImage: UIImageView!
     @IBOutlet weak var alertImage: UIImageView!
     @IBOutlet weak var progressArrowView: ProgressArrowUIView!
-    var onAccept: ((AcceptData, String) -> Void)?
+    var onAccept: ((AcceptData, String, String) -> Void)?
     weak var myAccount: Account!
     weak var previousWebsocketDelegate: WebSocketManagerDelegate?
     var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
@@ -95,11 +95,11 @@ class ManualSyncUIPopover: BaseUIPopover {
 
 extension ManualSyncUIPopover: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket) {
-        guard case let .SyncAccept(acceptData, recipientId) = result else {
+        guard case let .SyncAccept(acceptData, recipientId, domain) = result else {
             notAccept()
             return
         }
-        self.onAccept?(acceptData, recipientId)
+        self.onAccept?(acceptData, recipientId, domain)
     }
     
     private func notAccept(){
@@ -128,7 +128,7 @@ extension ManualSyncUIPopover: ScheduleWorkerDelegate {
                 return
             }
             completion(true)
-            self.newMessage(result: .SyncAccept(acceptData, self.myAccount.username))
+            self.newMessage(result: .SyncAccept(acceptData, self.myAccount.username, self.myAccount.domain ?? Env.plainDomain))
         }
     }
     

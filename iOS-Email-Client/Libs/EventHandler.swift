@@ -326,12 +326,14 @@ enum Event: Int32 {
         case success = 204
         case removed = 205
         case deny = 206
+        case dismiss = 207
     }
     
     enum Sync: Int32 {
         case start = 211
         case accept = 212
         case deny = 216
+        case dismiss = 217
     }
     
     enum Peer: Int32 {
@@ -356,6 +358,11 @@ enum Event: Int32 {
     
     enum Queue: Int32 {
         case open = 500
+    }
+    
+    enum Enterprise: Int32 {
+        case accountSuspended = 600
+        case accountUnsuspended = 601
     }
     
     enum EventResult {

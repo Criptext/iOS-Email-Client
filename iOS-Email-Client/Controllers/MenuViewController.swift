@@ -60,6 +60,13 @@ class MenuViewController: UIViewController{
         loadAccounts()
         loadCollectionView()
         applyTheme()
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(openProfile))
+        avatarImage.isUserInteractionEnabled = true
+        avatarImage.addGestureRecognizer(gesture)
+    }
+    
+    @objc func openProfile(){
+        mailboxVC.goToProfile()
     }
     
     func loadCollectionView() {

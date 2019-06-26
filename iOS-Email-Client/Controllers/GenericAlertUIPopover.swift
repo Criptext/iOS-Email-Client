@@ -15,6 +15,7 @@ class GenericAlertUIPopover: BaseUIPopover {
     var myAttributedMessage: NSAttributedString?
     var myButton: String = "Ok"
     var onOkPress: (() -> (Void))?
+    var canDismiss: Bool = true
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var okButton: UIButton!
@@ -32,6 +33,7 @@ class GenericAlertUIPopover: BaseUIPopover {
         super.viewDidLoad()
         titleLabel.text = myTitle
         okButton.setTitle(myButton, for: .normal)
+        shouldDismiss = canDismiss
         if let attributedMessage = myAttributedMessage {
             messageLabel.attributedText = attributedMessage
         } else {

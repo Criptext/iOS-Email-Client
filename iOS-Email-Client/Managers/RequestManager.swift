@@ -40,6 +40,20 @@ final class RequestManager: NSObject {
             var events = [[String: Any]]()
             var repeatRequest = false
             switch(responseData) {
+            case .Unauthorized:
+                var result = EventData.Result()
+                result.removed = true
+                weakSelf.accountCompletions[accountId]?(true)
+                weakSelf.accountCompletions[accountId] = nil
+                weakSelf.delegate?.finishRequest(accountId: accountId, result: result)
+                weakSelf.getEvents()
+            case .EnterpriseSuspended:
+                var result = EventData.Result()
+                result.suspended = true
+                weakSelf.accountCompletions[accountId]?(true)
+                weakSelf.accountCompletions[accountId] = nil
+                weakSelf.delegate?.finishRequest(accountId: accountId, result: result)
+                weakSelf.getEvents()
             case .SuccessAndRepeat(let responseEvents):
                 events = responseEvents
                 repeatRequest = true

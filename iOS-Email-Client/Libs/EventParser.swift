@@ -28,24 +28,27 @@ class EventParser {
         switch(cmd){
         case Event.Sync.start.rawValue:
             guard let params = event["params"] as? [String: Any],
+                let domain = params["domain"] as? String,
                 let linkData = LinkData.fromDictionary(params, kind: .sync) else {
                     return .Error
             }
-            return .LinkData(linkData, recipientId)
+            return .LinkData(linkData, recipientId, domain)
         case Event.Sync.accept.rawValue:
             guard let params = event["params"] as? [String: Any],
+                let domain = params["domain"] as? String,
                 let syncData = AcceptData.fromDictionary(params) else {
                     return .Error
             }
-            return .SyncAccept(syncData, recipientId)
+            return .SyncAccept(syncData, recipientId, domain)
         case Event.Sync.deny.rawValue:
             return .SyncDeny
         case Event.Link.start.rawValue:
             guard let params = event["params"] as? [String: Any],
+                let domain = params["domain"] as? String,
                 let linkData = LinkData.fromDictionary(params, kind: .link) else {
                     return .Error
             }
-            return .LinkData(linkData, recipientId)
+            return .LinkData(linkData, recipientId, domain)
         case Event.Peer.passwordChange.rawValue:
             return .PasswordChange
         case Event.Link.removed.rawValue:
@@ -64,8 +67,34 @@ class EventParser {
             return .RecoveryChanged(address)
         case Event.Peer.recoveryVerify.rawValue:
             return .RecoveryVerified
+        case Event.Enterprise.accountSuspended.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let domain = params["domain"] as? String else {
+                    return .Error
+            }
+            return .EnterpriseSuspended(recipientId, domain)
+        case Event.Enterprise.accountUnsuspended.rawValue:
+            guard let params = event["params"] as? [String: Any],
+                let domain = params["domain"] as? String else {
+                    return .Error
+            }
+            return .EnterpriseUnSuspended(recipientId, domain)
+        case Event.Link.dismiss.rawValue:
+            guard let domain = event["domain"] as? String else {
+                return .Error
+            }
+            return .LinkDismiss(recipientId, domain)
+        case Event.Sync.dismiss.rawValue:
+            guard let domain = event["domain"] as? String else {
+                return .Error
+            }
+            return .SyncDismiss(recipientId, domain)
         case Event.newEvent.rawValue:
-            return .NewEvent(recipientId)
+            guard let params = event["params"] as? [String: Any],
+                let domain = params["domain"] as? String else {
+                    return .Error
+            }
+            return .NewEvent(recipientId, domain)
         default:
             return .Unhandled
         }

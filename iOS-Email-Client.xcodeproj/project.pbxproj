@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34C4173622BC20530095DF23 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */; };
+		34C4173722BC20530095DF23 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */; };
+		34C4173822BC20530095DF23 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173122BC20520095DF23 /* FirebaseNanoPB.framework */; };
+		34C4173922BC20530095DF23 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173222BC20520095DF23 /* GoogleToolboxForMac.framework */; };
+		34C4173A22BC20530095DF23 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173322BC20520095DF23 /* nanopb.framework */; };
+		34C4173B22BC20530095DF23 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173422BC20530095DF23 /* FirebaseCore.framework */; };
+		34C4173C22BC20530095DF23 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173522BC20530095DF23 /* FirebaseAnalytics.framework */; };
+		34C4173F22BC20660095DF23 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173D22BC20660095DF23 /* Protobuf.framework */; };
+		34C4174022BC20660095DF23 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173E22BC20660095DF23 /* FirebaseMessaging.framework */; };
 		411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411FDF70204CF93300BCD787 /* InitialsImageView.swift */; };
 		412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */; };
 		412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */; };
@@ -448,15 +457,6 @@
 		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
 		A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
 		A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */; };
-		CF3994732293339B00906827 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF39946A2293339A00906827 /* Protobuf.framework */; };
-		CF3994742293339B00906827 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF39946B2293339A00906827 /* FirebaseMessaging.framework */; };
-		CF3994752293339B00906827 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF39946C2293339A00906827 /* nanopb.framework */; };
-		CF3994762293339B00906827 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF39946D2293339A00906827 /* FirebaseAnalytics.framework */; };
-		CF3994772293339B00906827 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF39946E2293339B00906827 /* FirebaseInstanceID.framework */; };
-		CF3994782293339B00906827 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF39946F2293339B00906827 /* FirebaseCoreDiagnostics.framework */; };
-		CF3994792293339B00906827 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3994702293339B00906827 /* GoogleToolboxForMac.framework */; };
-		CF39947A2293339B00906827 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3994712293339B00906827 /* FirebaseNanoPB.framework */; };
-		CF39947B2293339B00906827 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3994722293339B00906827 /* FirebaseCore.framework */; };
 		CF96000221FA7D65001FD5A3 /* CIDSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */; };
 		D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */; };
 		D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */; };
@@ -517,6 +517,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
+		34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		34C4173122BC20520095DF23 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseNanoPB.framework; sourceTree = "<group>"; };
+		34C4173222BC20520095DF23 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
+		34C4173322BC20520095DF23 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
+		34C4173422BC20530095DF23 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
+		34C4173522BC20530095DF23 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		34C4173D22BC20660095DF23 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Protobuf.framework; sourceTree = "<group>"; };
+		34C4173E22BC20660095DF23 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = "<group>"; };
+		34C4174122BC20800095DF23 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		34C4174222BC20800095DF23 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		411FDF70204CF93300BCD787 /* InitialsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsImageView.swift; sourceTree = "<group>"; };
 		412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Black.ttf"; sourceTree = "<group>"; };
 		412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -922,17 +933,6 @@
 		A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerMessage.swift; sourceTree = "<group>"; };
 		A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueItem.swift; sourceTree = "<group>"; };
 		A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TLPhotoPicker.framework; path = Carthage/Build/iOS/TLPhotoPicker.framework; sourceTree = "<group>"; };
-		CF3994682293331900906827 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		CF3994692293331900906827 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
-		CF39946A2293339A00906827 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Protobuf.framework; sourceTree = "<group>"; };
-		CF39946B2293339A00906827 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = "<group>"; };
-		CF39946C2293339A00906827 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
-		CF39946D2293339A00906827 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
-		CF39946E2293339B00906827 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
-		CF39946F2293339B00906827 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
-		CF3994702293339B00906827 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
-		CF3994712293339B00906827 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseNanoPB.framework; sourceTree = "<group>"; };
-		CF3994722293339B00906827 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
 		CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIDSchemeHandler.swift; sourceTree = "<group>"; };
 		D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterUIPopover.swift; sourceTree = "<group>"; };
 		D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterUIPopover.xib; sourceTree = "<group>"; };
@@ -952,38 +952,38 @@
 			files = (
 				A77C30A921A4EC240031E219 /* PasscodeLock.framework in Frameworks */,
 				A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */,
+				34C4173F22BC20660095DF23 /* Protobuf.framework in Frameworks */,
 				A7F3027C216EBABD00676DD2 /* Gzip.framework in Frameworks */,
 				7CF93F5A2146EDC300361837 /* Lottie.framework in Frameworks */,
 				7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */,
+				34C4174022BC20660095DF23 /* FirebaseMessaging.framework in Frameworks */,
 				7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */,
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
-				CF3994792293339B00906827 /* GoogleToolboxForMac.framework in Frameworks */,
 				41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */,
 				41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */,
 				41C36848207C69F3008B50A8 /* IQKeyboardManagerSwift.framework in Frameworks */,
+				34C4173A22BC20530095DF23 /* nanopb.framework in Frameworks */,
 				41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */,
-				CF39947A2293339B00906827 /* FirebaseNanoPB.framework in Frameworks */,
 				41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */,
 				41C9CC8B20781C5600B8994F /* SwiftWebSocket.framework in Frameworks */,
+				34C4173B22BC20530095DF23 /* FirebaseCore.framework in Frameworks */,
 				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
 				41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */,
 				41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */,
 				41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */,
-				CF3994762293339B00906827 /* FirebaseAnalytics.framework in Frameworks */,
-				CF39947B2293339B00906827 /* FirebaseCore.framework in Frameworks */,
-				CF3994782293339B00906827 /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */,
+				34C4173722BC20530095DF23 /* FirebaseInstanceID.framework in Frameworks */,
 				41C3684A207C6C0B008B50A8 /* Motion.framework in Frameworks */,
 				41C9CC832078195900B8994F /* Material.framework in Frameworks */,
 				41E229BF207696DE00C32998 /* Realm.framework in Frameworks */,
+				34C4173C22BC20530095DF23 /* FirebaseAnalytics.framework in Frameworks */,
 				41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */,
-				CF3994752293339B00906827 /* nanopb.framework in Frameworks */,
 				41E229C0207696DE00C32998 /* RealmSwift.framework in Frameworks */,
-				CF3994732293339B00906827 /* Protobuf.framework in Frameworks */,
 				41C9CBBA20769A9600B8994F /* Alamofire.framework in Frameworks */,
-				CF3994772293339B00906827 /* FirebaseInstanceID.framework in Frameworks */,
 				41C9CBBB20769A9F00B8994F /* SignalProtocolFramework.framework in Frameworks */,
-				CF3994742293339B00906827 /* FirebaseMessaging.framework in Frameworks */,
+				34C4173922BC20530095DF23 /* GoogleToolboxForMac.framework in Frameworks */,
+				34C4173622BC20530095DF23 /* FirebaseCoreDiagnostics.framework in Frameworks */,
+				34C4173822BC20530095DF23 /* FirebaseNanoPB.framework in Frameworks */,
 				41C9CBBC20769AA500B8994F /* SwiftyJSON.framework in Frameworks */,
 				41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */,
 			);
@@ -1178,15 +1178,15 @@
 		41B6AAA32017987500D428B7 = {
 			isa = PBXGroup;
 			children = (
-				CF39946D2293339A00906827 /* FirebaseAnalytics.framework */,
-				CF3994722293339B00906827 /* FirebaseCore.framework */,
-				CF39946F2293339B00906827 /* FirebaseCoreDiagnostics.framework */,
-				CF39946E2293339B00906827 /* FirebaseInstanceID.framework */,
-				CF39946B2293339A00906827 /* FirebaseMessaging.framework */,
-				CF3994712293339B00906827 /* FirebaseNanoPB.framework */,
-				CF3994702293339B00906827 /* GoogleToolboxForMac.framework */,
-				CF39946C2293339A00906827 /* nanopb.framework */,
-				CF39946A2293339A00906827 /* Protobuf.framework */,
+				34C4173E22BC20660095DF23 /* FirebaseMessaging.framework */,
+				34C4173D22BC20660095DF23 /* Protobuf.framework */,
+				34C4173522BC20530095DF23 /* FirebaseAnalytics.framework */,
+				34C4173422BC20530095DF23 /* FirebaseCore.framework */,
+				34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */,
+				34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */,
+				34C4173122BC20520095DF23 /* FirebaseNanoPB.framework */,
+				34C4173222BC20520095DF23 /* GoogleToolboxForMac.framework */,
+				34C4173322BC20520095DF23 /* nanopb.framework */,
 				41F3A277207C6470004BDF90 /* Fabric.framework */,
 				41F3A275207C6466004BDF90 /* Crashlytics.framework */,
 				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
@@ -1212,8 +1212,8 @@
 		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
 			isa = PBXGroup;
 			children = (
-				CF3994692293331900906827 /* Firebase.h */,
-				CF3994682293331900906827 /* module.modulemap */,
+				34C4174122BC20800095DF23 /* Firebase.h */,
+				34C4174222BC20800095DF23 /* module.modulemap */,
 				A7CC387721939B7700C8355A /* Shared */,
 				7CF93F522146E3D700361837 /* Lottie */,
 				7CB60A7520F7E75F00C9090C /* Snackbar */,
