@@ -12,31 +12,45 @@ import CICropPicker
 
 class ProfileEditorViewController: UIViewController {
     
-    internal enum Option {
-        case name
-        case signature
-        case password
-        case recovery
-        case reply
-        case logout
-        case deleteAccount
+    internal enum Section {
+        case profile
+        case danger
         
         var name: String {
             switch(self){
-            case .name:
-                return String.localize("PROFILE_NAME")
-            case .signature:
-                return String.localize("SIGNATURE")
-            case .password:
-                return String.localize("PASSWORD")
-            case .recovery:
-                return String.localize("RECOVERY_EMAIL")
-            case .reply:
-                return String.localize("REPLY_TO_TITLE")
-            case .logout:
-                return String.localize("SIGNOUT")
-            case .deleteAccount:
-                return String.localize("DELETE_ACCOUNT")
+            case .profile:
+                return String.localize("PROFILE")
+            case .danger:
+                return String.localize("PROFILE_SECTION_DANGER")
+            }
+        }
+        
+        enum Option {
+            case name
+            case signature
+            case password
+            case recovery
+            case reply
+            case logout
+            case deleteAccount
+            
+            var name: String {
+                switch(self){
+                case .name:
+                    return String.localize("PROFILE_NAME")
+                case .signature:
+                    return String.localize("SIGNATURE")
+                case .password:
+                    return String.localize("PASSWORD")
+                case .recovery:
+                    return String.localize("RECOVERY_EMAIL")
+                case .reply:
+                    return String.localize("REPLY_TO_TITLE")
+                case .logout:
+                    return String.localize("SIGNOUT")
+                case .deleteAccount:
+                    return String.localize("DELETE_ACCOUNT")
+                }
             }
         }
     }
@@ -51,13 +65,19 @@ class ProfileEditorViewController: UIViewController {
     @IBOutlet weak var attachmentController: AttachmentOptionsContainerView!
     @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
     let STATUS_NOT_CONFIRMED = 0
+    let SECTION_PROFILE = 0
+    let ROW_HEIGHT: CGFloat = 40.0
     var imagePicker = UIImagePickerController()
     var attachmentOptionsHeight: CGFloat = 0
     var generalData: GeneralSettingsData = GeneralSettingsData()
     var devicesData: DeviceSettingsData = DeviceSettingsData()
     var myAccount: Account!
     var loadDataAtStart: Bool = false
-    var options = [.name, .signature, .password, .recovery, .reply, .logout, .deleteAccount] as [Option]
+    let sections = [.profile, .danger] as [Section]
+    let options = [
+        .profile: [.name, .signature, .password, .recovery, .reply, .logout],
+        .danger: [.deleteAccount]] as [Section: [Section.Option]
+    ]
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -341,12 +361,16 @@ extension ProfileEditorViewController: UIGestureRecognizerDelegate {
 }
 
 extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return options.count
+        return options[sections[section]]!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let option = options[indexPath.row]
+        let option = options[sections[indexPath.section]]![indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
         cell.backgroundColor = .clear
         cell.optionLabel.text = option.name
@@ -384,7 +408,7 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let option = options[indexPath.row]
+        let option = options[sections[indexPath.section]]![indexPath.row]
         switch option {
         case .name:
             showChangeName()
@@ -405,6 +429,22 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
         case .deleteAccount:
             showDeleteAccount()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section != SECTION_PROFILE else {
+            return nil
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
+        
+        let mySection = sections[section]
+        cell.titleLabel.text = mySection.name
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section != SECTION_PROFILE ? ROW_HEIGHT : 0.0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -474,6 +514,9 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
         let passwordPopover = PasswordUIPopover()
         passwordPopover.answerShouldDismiss = false
         passwordPopover.initialTitle = String.localize("DELETE_ACCOUNT")
+        passwordPopover.buttonText = String.localize("DELETE")
+        passwordPopover.titleTextColor = theme.alert
+        passwordPopover.buttonTextColor = theme.alert
         let attrRegularText = NSMutableAttributedString(string: String.localize("DELETING_ACCOUNT"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
         let attrBoldText = NSMutableAttributedString(string: String.localize("DELETE_WILL_ERASE"), attributes: [NSAttributedString.Key.font: Font.bold.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])
         let attrRegularText2 = NSMutableAttributedString(string: String.localize("DELETE_NO_LONGER"), attributes: [NSAttributedString.Key.font: Font.regular.size(14)!, NSAttributedString.Key.foregroundColor: UIColor.black])

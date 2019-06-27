@@ -16,10 +16,10 @@ class ChangePasswordLoginViewController: UIViewController{
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var resetButton: UIButton!
-    @IBOutlet weak var passwordTextField: TextField!
+    @IBOutlet weak var passwordTextField: StatusTextField!
     @IBOutlet weak var confirmErrorMark: UIImageView!
     @IBOutlet weak var confirmErrorLabel: UILabel!
-    @IBOutlet weak var confirmPasswordTextField: TextField!
+    @IBOutlet weak var confirmPasswordTextField: StatusTextField!
     @IBOutlet weak var labelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var resetLoaderView: UIActivityIndicatorView!
     var loginData: LoginData!
@@ -33,21 +33,37 @@ class ChangePasswordLoginViewController: UIViewController{
         resetLoaderView.isHidden = true
         showFeedback(false)
         checkToEnableDisableResetButton()
+        fieldsInit()
         let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
-        passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        
         let _ = passwordTextField.becomeFirstResponder()
         
         let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
+        passwordTextField.markView = errorMark
+        passwordTextField.font = Font.regular.size(17.0)
+        passwordTextField.rightViewMode = .always
         passwordTextField.placeholderAnimation = .hidden
         passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_NEW_PASS"), attributes: placeholderAttrs)
         
-        confirmPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
-        
         let confirmPlaceholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
+        confirmPasswordTextField.markView = confirmErrorMark
+        confirmPasswordTextField.font = Font.regular.size(17.0)
+        confirmPasswordTextField.rightViewMode = .always
         confirmPasswordTextField.placeholderAnimation = .hidden
         confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("CONFIRM_NEW_PASS"), attributes: confirmPlaceholderAttrs)
         
+        passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        confirmPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+        
+    }
+    
+    func fieldsInit(){
+        errorMark.isHidden = true
+        confirmErrorMark.isHidden = true
+
+        passwordTextField.placeholderAnimation = .hidden
+        confirmPasswordTextField.placeholderAnimation = .hidden
     }
     
     func validateForm() -> Bool {
@@ -79,16 +95,22 @@ class ChangePasswordLoginViewController: UIViewController{
     @IBAction func onPasswordChange(_ sender: TextField!) {
         switch(sender){
         case passwordTextField, confirmPasswordTextField:
-            guard passwordTextField.text!.count > 7 else {
-                setValidField(passwordTextField, valid: false, error: String.localize("8_CHARS"))
-                break
+            passwordTextField.setStatus(.none)
+            confirmPasswordTextField.setStatus(.none)
+            guard let password = passwordTextField.text,
+                password.count >= Constants.MinCharactersPassword else {
+                    let inputError = String.localize("PASSWORD_LENGTH")
+                    passwordTextField.setStatus(.invalid, inputError)
+                    return
             }
-            setValidField(passwordTextField, valid: true)
-            guard confirmPasswordTextField.text == passwordTextField.text else {
-                setValidField(confirmPasswordTextField, valid: false, error: String.localize("PASS_MATCH"))
-                break
+            passwordTextField.setStatus(.valid)
+            
+            guard let confirmPassword = confirmPasswordTextField.text, confirmPassword == password else {
+                let inputError = String.localize("PASSWORD_NOT_MATCH")
+                confirmPasswordTextField.setStatus(.invalid, inputError)
+                return
             }
-            setValidField(confirmPasswordTextField, valid: true)
+            confirmPasswordTextField.setStatus(.valid)
         default:
             break
         }

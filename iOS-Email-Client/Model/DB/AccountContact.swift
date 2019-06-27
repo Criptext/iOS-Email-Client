@@ -16,7 +16,7 @@ class AccountContact: Object{
     @objc dynamic var contact : Contact!
     
     func buildCompoundKey() {
-        self.compoundKey = "\(self.account.username):\(self.contact.email)"
+        self.compoundKey = "\(self.account.compoundKey):\(self.contact.email)"
     }
     
     override static func primaryKey() -> String? {

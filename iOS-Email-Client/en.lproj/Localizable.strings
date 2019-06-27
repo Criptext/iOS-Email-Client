@@ -421,3 +421,4 @@
 "ACCOUNT_SUSPENDED_MESSAGE" = "The account %@ has been temporarily suspended by your administrator. Please contact your company administrator for more information.";
 "ACCOUNT_SUSPENDED_BUTTON" = "Switch Account";
 "ACCOUNT_SUSPENDED_LOGIN" = "This account is suspended.";
+"PROFILE_SECTION_DANGER" = "DANGER ZONE";

@@ -112,7 +112,7 @@
                                 </connections>
                             </button>
                             <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J1Z-8z-V95">
-                                <rect key="frame" x="66" y="410" width="243" height="10"/>
+                                <rect key="frame" x="66" y="409.66666666666669" width="243" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="0hF-Xc-QAh"/>
                                 </constraints>
@@ -120,7 +120,7 @@
                                 <color key="trackTintColor" red="0.0" green="0.56862745100000001" blue="1" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             </progressView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1FT-Hk-Q0Z" customClass="TipUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="167" y="440" width="41" height="20"/>
+                                <rect key="frame" x="167" y="439.66666666666669" width="41" height="20"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki1-Zn-ijd" customClass="CounterLabelUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="41" height="20"/>
@@ -204,7 +204,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Zh-Q6-aV4">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="770"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="810"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P91-Ih-lR9">
                                                 <rect key="frame" x="92.666666666666686" y="60" width="190" height="190"/>
@@ -256,10 +256,10 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DpM-gh-gF1">
-                                                <rect key="frame" x="0.0" y="350" width="375" height="420"/>
+                                                <rect key="frame" x="0.0" y="350" width="375" height="460"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="420" id="6Rf-k7-s1h"/>
+                                                    <constraint firstAttribute="height" constant="460" id="6Rf-k7-s1h"/>
                                                 </constraints>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="optionCell" rowHeight="70" id="ucD-0a-ZQF" customClass="GeneralTapTableCellView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -323,6 +323,31 @@
                                                             <outlet property="optionLabel" destination="VP3-8g-pra" id="aGi-dc-OeD"/>
                                                         </connections>
                                                     </tableViewCell>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralHeader" id="3fm-8w-gPC" customClass="GeneralHeaderTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="98" width="375" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3fm-8w-gPC" id="NKl-o8-1bf">
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACCOUNT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfk-j6-DuT">
+                                                                    <rect key="frame" x="27" y="11" width="316" height="22"/>
+                                                                    <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstItem="Qfk-j6-DuT" firstAttribute="leading" secondItem="NKl-o8-1bf" secondAttribute="leading" constant="27" id="HYE-JH-MXR"/>
+                                                                <constraint firstAttribute="trailingMargin" secondItem="Qfk-j6-DuT" secondAttribute="trailing" constant="17" id="SBT-nJ-Big"/>
+                                                                <constraint firstItem="Qfk-j6-DuT" firstAttribute="centerY" secondItem="NKl-o8-1bf" secondAttribute="centerY" id="XQB-wq-U5q"/>
+                                                            </constraints>
+                                                        </tableViewCellContentView>
+                                                        <connections>
+                                                            <outlet property="titleLabel" destination="Qfk-j6-DuT" id="dQG-82-Rfs"/>
+                                                        </connections>
+                                                    </tableViewCell>
                                                 </prototypes>
                                             </tableView>
                                         </subviews>
@@ -339,7 +364,7 @@
                                             <constraint firstItem="tur-l8-f3X" firstAttribute="leading" secondItem="9Zh-Q6-aV4" secondAttribute="leading" constant="30" id="Xov-nH-qcQ"/>
                                             <constraint firstItem="DpM-gh-gF1" firstAttribute="top" secondItem="Rp3-xB-Hgi" secondAttribute="bottom" constant="23" id="dja-mI-ufe"/>
                                             <constraint firstItem="tur-l8-f3X" firstAttribute="top" secondItem="P91-Ih-lR9" secondAttribute="bottom" constant="25" id="fTr-U6-7em"/>
-                                            <constraint firstAttribute="height" constant="770" id="joo-XE-enL"/>
+                                            <constraint firstAttribute="height" constant="810" id="joo-XE-enL"/>
                                             <constraint firstAttribute="trailing" secondItem="DpM-gh-gF1" secondAttribute="trailing" id="mDc-04-CS2"/>
                                             <constraint firstItem="gLE-WY-dAx" firstAttribute="bottom" secondItem="P91-Ih-lR9" secondAttribute="bottom" id="pCb-ry-AZ4"/>
                                             <constraint firstItem="DpM-gh-gF1" firstAttribute="leading" secondItem="9Zh-Q6-aV4" secondAttribute="leading" id="xky-Vm-jUz"/>
