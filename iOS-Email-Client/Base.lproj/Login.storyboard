@@ -52,7 +52,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                 <connections>
                                     <action selector="textfieldDidEndOnExit:" destination="xiP-Yr-e9p" eventType="editingDidEndOnExit" id="icJ-6e-PT4"/>
                                     <action selector="usernameChange:" destination="xiP-Yr-e9p" eventType="editingChanged" id="cj1-d6-x7J"/>
@@ -397,7 +397,7 @@
                                                 </constraints>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="textColor">
                                                         <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1280,7 +1280,7 @@ from Criptext</string>
                                                     <action selector="onResetPress:" destination="Hc2-zU-RHc" eventType="touchUpInside" id="3Na-s6-LIA"/>
                                                 </connections>
                                             </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="krz-aH-omr" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="krz-aH-omr" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
                                                 <rect key="frame" x="56" y="340.5" width="265" height="30.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30.5" id="OOq-20-YCe"/>
@@ -1341,7 +1341,7 @@ from Criptext</string>
                                                     <constraint firstAttribute="height" constant="20" id="JSx-4g-GiX"/>
                                                 </constraints>
                                             </activityIndicatorView>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Repeat Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VWm-dz-xZE" userLabel="Confirm Password Text Field" customClass="TextField" customModule="Material">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Repeat Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VWm-dz-xZE" userLabel="Confirm Password Text Field" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
                                                 <rect key="frame" x="56" y="413" width="265" height="30.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30.5" id="UcC-yL-aIj"/>
@@ -1468,11 +1468,11 @@ from Criptext</string>
                     </view>
                     <connections>
                         <outlet property="confirmErrorLabel" destination="7Hu-gW-eXs" id="b5C-n8-1X1"/>
-                        <outlet property="confirmErrorMark" destination="GLS-DH-yQo" id="it6-9Y-J1x"/>
+                        <outlet property="confirmErrorMark" destination="GLS-DH-yQo" id="bVT-ws-neZ"/>
                         <outlet property="confirmPasswordTextField" destination="VWm-dz-xZE" id="wxs-dW-i0g"/>
                         <outlet property="emailLabel" destination="MVz-Sq-Hog" id="lpb-2Z-lmh"/>
                         <outlet property="errorLabel" destination="HMc-7e-OAS" id="cCj-6J-1TZ"/>
-                        <outlet property="errorMark" destination="Q63-p6-Je1" id="jjZ-Ld-UNO"/>
+                        <outlet property="errorMark" destination="Q63-p6-Je1" id="j7j-2W-k9g"/>
                         <outlet property="labelHeightConstraint" destination="Ncz-AN-JGY" id="gAD-oj-BkO"/>
                         <outlet property="passwordTextField" destination="krz-aH-omr" id="hac-MU-ZLH"/>
                         <outlet property="resetButton" destination="spW-0d-eId" id="fcY-wE-d2i"/>

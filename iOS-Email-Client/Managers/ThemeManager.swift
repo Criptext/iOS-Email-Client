@@ -29,6 +29,7 @@ final class ThemeManager: NSObject {
     }
     
     func swapTheme(theme: Theme) {
+        UITextField.appearance().keyboardAppearance = theme.keyboardLook
         self.theme = theme
         for (_, delegate) in delegates {
             delegate.swapTheme(theme)

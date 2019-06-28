@@ -394,6 +394,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = CriptextDefaults()
         defaults.migrate()
         defaults.appStateActive = true
+        
+        if (defaults.themeMode == "Dark") {
+            UITextField.appearance().keyboardAppearance = .dark
+        }
                 
         if let activeAccount = defaults.activeAccount {
             //Go to inbox

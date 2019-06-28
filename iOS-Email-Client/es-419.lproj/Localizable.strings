@@ -421,3 +421,4 @@
 "ACCOUNT_SUSPENDED_MESSAGE" = "La cuenta %@ ha sido suspendida temporalmente por tu administrador. Por favor, contacta al administrador de tu companía para más información";
 "ACCOUNT_SUSPENDED_BUTTON" = "Cambiar de Cuenta";
 "ACCOUNT_SUSPENDED_LOGIN" = "Esta cuenta está suspendida.";
+"PROFILE_SECTION_DANGER" = "ZONA DE PELIGRO";

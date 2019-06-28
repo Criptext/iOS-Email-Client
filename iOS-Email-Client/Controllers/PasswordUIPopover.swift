@@ -17,6 +17,9 @@ class PasswordUIPopover: BaseUIPopover {
     var myAccount: Account?
     var remotelyCheckPassword = false
     var initialTitle: String?
+    var titleTextColor: UIColor?
+    var buttonText: String?
+    var buttonTextColor: UIColor?
     var initialAttrMessage: NSAttributedString?
     var initialMessage: String?
     @IBOutlet weak var titleHeightConstraint: NSLayoutConstraint!
@@ -58,6 +61,10 @@ class PasswordUIPopover: BaseUIPopover {
             messageHeightConstraint.constant = 0
         }
         
+        if let bText = buttonText {
+            okButton.setTitle(bText, for: .normal)
+        }
+        
         showLoader(false)
         applyTheme()
     }
@@ -66,7 +73,7 @@ class PasswordUIPopover: BaseUIPopover {
         let theme: Theme = ThemeManager.shared.theme
         navigationController?.navigationBar.barTintColor = theme.toolbar
         view.backgroundColor = theme.background
-        passwordTitleLabel.textColor = theme.mainText
+        passwordTitleLabel.textColor = titleTextColor ?? theme.mainText
         passwordMessageLabel.textColor = theme.mainText
         passwordTextField.detailColor = theme.alert
         passwordTextField.textColor = theme.mainText
@@ -75,7 +82,7 @@ class PasswordUIPopover: BaseUIPopover {
         passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
         okButton.backgroundColor = theme.popoverButton
         cancelButton.backgroundColor = theme.popoverButton
-        okButton.setTitleColor(theme.mainText, for: .normal)
+        okButton.setTitleColor(buttonTextColor ?? theme.mainText, for: .normal)
         cancelButton.setTitleColor(theme.mainText, for: .normal)
         loader.color = theme.loader
     }
