@@ -2011,13 +2011,12 @@ extension InboxViewController: RequestDelegate {
     }
     
     func errorRequest(accountId: String, response: ResponseData) {
-        if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
+        if !RequestManager.shared.isInQueue(accountId: accountId) {
             self.refreshControl.endRefreshing()
         }
-        guard myAccount.compoundKey == accountId else {
+        guard !myAccount.isInvalidated && myAccount.compoundKey == accountId else {
             return
         }
-        refreshControl.endRefreshing()
         
         switch response {
             case .Unauthorized:

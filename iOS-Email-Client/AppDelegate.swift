@@ -443,6 +443,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func registerPushNotifications() {
+        guard FirebaseApp.app() == nil else {
+            return
+        }
+        
         let filepath = Env.googleFileName
         if let fileOps = FirebaseOptions(contentsOfFile: filepath) {
             FirebaseApp.configure(options: fileOps)
