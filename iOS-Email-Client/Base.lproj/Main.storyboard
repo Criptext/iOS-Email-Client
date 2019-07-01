@@ -1287,7 +1287,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfx-S0-hVs">
-                                                    <rect key="frame" x="72" y="60" width="116" height="20"/>
+                                                    <rect key="frame" x="72" y="60" width="99" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="Zst-d0-TBV"/>
                                                     </constraints>
@@ -1371,11 +1371,19 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment_inbox" translatesAutoresizingMaskIntoConstraints="NO" id="UIJ-IR-1G9">
-                                                    <rect key="frame" x="198" y="61.666666666666657" width="18" height="17"/>
+                                                    <rect key="frame" x="181" y="61.666666666666657" width="18" height="17"/>
                                                     <color key="tintColor" red="0.83520287275314331" green="0.83534681797027588" blue="0.8351936936378479" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="Rc6-0l-C0F"/>
                                                         <constraint firstAttribute="height" constant="17" id="Rro-06-lqq"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icSecinb" translatesAutoresizingMaskIntoConstraints="NO" id="tVm-NQ-hk4" userLabel="Secure Email Lock">
+                                                    <rect key="frame" x="203" y="61.666666666666657" width="18" height="17"/>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="17" id="GIw-Zu-pN0"/>
+                                                        <constraint firstAttribute="width" constant="18" id="XtP-bl-4ez"/>
                                                     </constraints>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-starred" translatesAutoresizingMaskIntoConstraints="NO" id="3vI-M6-Owh">
@@ -1394,16 +1402,18 @@
                                             <constraints>
                                                 <constraint firstItem="vfx-S0-hVs" firstAttribute="top" secondItem="bTS-Ap-zGj" secondAttribute="topMargin" constant="5" id="1rE-gN-lf9"/>
                                                 <constraint firstItem="3Jt-xU-pVS" firstAttribute="leading" secondItem="vfx-S0-hVs" secondAttribute="leading" id="2na-5F-SUO"/>
-                                                <constraint firstItem="BPT-s1-oSH" firstAttribute="leading" secondItem="UIJ-IR-1G9" secondAttribute="trailing" constant="10" id="52e-zI-jmI"/>
                                                 <constraint firstItem="TyM-xa-owd" firstAttribute="leading" secondItem="8aL-Yg-J9u" secondAttribute="trailing" id="8ZT-0V-kuZ"/>
                                                 <constraint firstItem="HjE-2P-Xa0" firstAttribute="leading" secondItem="bTS-Ap-zGj" secondAttribute="leading" constant="18" id="Gal-ZN-Daj"/>
                                                 <constraint firstItem="plx-qW-utu" firstAttribute="centerY" secondItem="3Jt-xU-pVS" secondAttribute="centerY" id="HXT-e6-Hgo"/>
                                                 <constraint firstItem="HjE-2P-Xa0" firstAttribute="centerY" secondItem="bTS-Ap-zGj" secondAttribute="centerY" id="MZ0-cU-edc"/>
                                                 <constraint firstItem="UIJ-IR-1G9" firstAttribute="leading" secondItem="vfx-S0-hVs" secondAttribute="trailing" constant="10" id="N5d-jp-cg2"/>
+                                                <constraint firstItem="tVm-NQ-hk4" firstAttribute="leading" secondItem="vfx-S0-hVs" secondAttribute="trailing" constant="32" id="Qhk-YJ-DPU"/>
                                                 <constraint firstItem="8aL-Yg-J9u" firstAttribute="centerY" secondItem="TyM-xa-owd" secondAttribute="centerY" id="Rkd-W5-Ngi"/>
                                                 <constraint firstItem="UIJ-IR-1G9" firstAttribute="centerY" secondItem="BPT-s1-oSH" secondAttribute="centerY" id="Tqp-Yd-lBi"/>
                                                 <constraint firstItem="BPT-s1-oSH" firstAttribute="centerY" secondItem="vfx-S0-hVs" secondAttribute="centerY" id="UIN-Fn-mjm"/>
                                                 <constraint firstItem="vfx-S0-hVs" firstAttribute="leading" secondItem="HjE-2P-Xa0" secondAttribute="trailing" constant="18" id="VpA-gu-KXe"/>
+                                                <constraint firstItem="tVm-NQ-hk4" firstAttribute="centerY" secondItem="BPT-s1-oSH" secondAttribute="centerY" id="ZNH-5V-ZID"/>
+                                                <constraint firstItem="BPT-s1-oSH" firstAttribute="leading" secondItem="tVm-NQ-hk4" secondAttribute="trailing" constant="5" id="eCx-aQ-19D"/>
                                                 <constraint firstItem="3vI-M6-Owh" firstAttribute="trailing" secondItem="BPT-s1-oSH" secondAttribute="trailing" id="elm-2c-vCc"/>
                                                 <constraint firstItem="TyM-xa-owd" firstAttribute="top" secondItem="3Jt-xU-pVS" secondAttribute="bottom" id="hiS-dG-K7b"/>
                                                 <constraint firstAttribute="trailing" secondItem="TyM-xa-owd" secondAttribute="trailing" constant="50" id="k4O-JG-U1w"/>
@@ -1425,6 +1435,7 @@
                                             <outlet property="readImageView" destination="8aL-Yg-J9u" id="Tg5-c9-LJ0"/>
                                             <outlet property="readWidthConstraint" destination="elV-h1-cYZ" id="Lwq-5x-iHo"/>
                                             <outlet property="secureAttachmentImageView" destination="UIJ-IR-1G9" id="1EL-um-9qe"/>
+                                            <outlet property="secureLockImageView" destination="tVm-NQ-hk4" id="Ti2-69-C59"/>
                                             <outlet property="senderLabel" destination="vfx-S0-hVs" id="SLR-Ra-wqw"/>
                                             <outlet property="starredImageView" destination="3vI-M6-Owh" id="lXa-Xm-DYS"/>
                                             <outlet property="subjectLabel" destination="3Jt-xU-pVS" id="bEw-X4-G73"/>
@@ -2192,19 +2203,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9Q-rO-GEN">
-                                <rect key="frame" x="27" y="69" width="321" height="23.666666666666671"/>
+                                <rect key="frame" x="27" y="69" width="321" height="20"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNz-jU-IJX">
-                                <rect key="frame" x="27" y="107.66666666666667" width="201" height="20.333333333333329"/>
+                                <rect key="frame" x="27" y="104" width="201" height="17.666666666666671"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                 <color key="textColor" red="0.42352941176470588" green="0.44705882352941173" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Confirmed" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Upi-pd-9ph">
-                                <rect key="frame" x="228" y="70.666666666666671" width="120" height="20.333333333333329"/>
+                                <rect key="frame" x="228" y="70.333333333333329" width="120" height="17.666666666666671"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="Lo0-SR-aHk"/>
                                 </constraints>
@@ -2213,7 +2224,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3y-BG-AGw">
-                                <rect key="frame" x="223" y="143" width="125" height="38"/>
+                                <rect key="frame" x="223" y="136.66666666666666" width="125" height="38"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="38" id="RRn-4a-jgd"/>
@@ -2233,16 +2244,16 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="W6o-Yn-D7Z">
-                                <rect key="frame" x="275.66666666666669" y="152" width="20" height="20"/>
+                                <rect key="frame" x="275.66666666666669" y="145.66666666666666" width="20" height="20"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zcd-QO-oCP">
-                                <rect key="frame" x="27" y="214" width="321" height="23.666666666666657"/>
+                                <rect key="frame" x="27" y="207.66666666666666" width="321" height="20"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter new recovery email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nCs-ch-41A" customClass="TextField" customModule="Material">
-                                <rect key="frame" x="27" y="252.66666666666663" width="321" height="30"/>
+                                <rect key="frame" x="27" y="242.66666666666663" width="321" height="30"/>
                                 <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -2259,7 +2270,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NsV-eR-Br8">
-                                <rect key="frame" x="243" y="347.66666666666669" width="105" height="38"/>
+                                <rect key="frame" x="243" y="337.66666666666669" width="105" height="38"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="38" id="698-sM-68Z"/>
@@ -2279,10 +2290,10 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="i2e-ku-M8K">
-                                <rect key="frame" x="285.66666666666669" y="356.66666666666669" width="20" height="20"/>
+                                <rect key="frame" x="285.66666666666669" y="346.66666666666669" width="20" height="20"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: Changing your recovery email will turn off Two-Factor Authentication" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM2-53-pVD">
-                                <rect key="frame" x="27" y="300.66666666666669" width="321" height="38.333333333333314"/>
+                                <rect key="frame" x="27" y="290.66666666666669" width="321" height="32.666666666666686"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                 <color key="textColor" red="0.44705882349999998" green="0.44705882349999998" blue="0.44705882349999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -3547,6 +3558,7 @@
         <image name="double-check" width="18.666666030883789" height="10.666666984558105"/>
         <image name="envelope" width="112" height="112"/>
         <image name="formatting" width="18.333333969116211" height="22.333333969116211"/>
+        <image name="icSecinb" width="17" height="17"/>
         <image name="icon-allmail" width="48" height="37"/>
         <image name="icon-down" width="13" height="8"/>
         <image name="icon-draft" width="30" height="30"/>

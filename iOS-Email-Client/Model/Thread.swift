@@ -25,6 +25,7 @@ class Thread {
     var lastEmailKey = 0
     var lastContact = ("", "")
     var participants = [DisplayContact]()
+    var isSecure = true
     
     internal struct DisplayContact {
         var name: String
@@ -48,6 +49,7 @@ class Thread {
         self.unread = threadEmails.contains(where: {$0.unread})
         self.counter = threadEmails.count
         self.subject = threadEmails.first!.subject
+        self.isSecure = lastEmail.secure
         var emailParticipants = Set<String>()
         var firstParticipant: DisplayContact?
         for threadEmail in threadEmails.reversed() {

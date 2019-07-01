@@ -20,6 +20,7 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var previewLabel: UILabel!
     
     @IBOutlet weak var secureAttachmentImageView: UIImageView!
+    @IBOutlet weak var secureLockImageView: UIImageView!
     
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var containerBadge: UIView!
@@ -61,6 +62,8 @@ class InboxTableViewCell: UITableViewCell {
         dateLabel.textColor = theme.secondText
         secureAttachmentImageView.isHidden = true
         secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
+        secureLockImageView.isHidden = true
+        secureLockImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         
         
         
@@ -99,6 +102,7 @@ class InboxTableViewCell: UITableViewCell {
         setBadge(thread.counter)
         starredImageView.isHidden = !thread.isStarred
         secureAttachmentImageView.isHidden = !thread.hasAttachments
+        secureLockImageView.isHidden = !thread.isSecure
     }
     
     func setReadStatus(status: Email.Status){

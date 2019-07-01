@@ -135,8 +135,10 @@
 "EMAIL_FAILED" = "Fallo al enviar el mensaje. Se volverá a enviar mas adelante.";
 "RESENT_FUTURE" = "Será reenviado después.";
 "EMAIL_SENT" = "Correo Enviado";
+"EMAIL_SENT_SECURE" = "🔒 Correo Enviado";
 "GUIDE_TAP_COMPOSE" = "Presiona aquí para \nescribir un correo.";
 "GUIDE_FEEDS" = "Puedes ver quien \nha leído tus correos.";
+"GUIDE_SECURE_LOCK" = "Este icono significa que\neste correo está encriptado.";
 "EMAIL_OPENED" = "Alguien abrió";
 "NEW" = "NUEVO";
 "OLDER" = "ANTIGUO";

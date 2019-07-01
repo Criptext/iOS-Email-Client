@@ -323,7 +323,7 @@ class SharedDB {
         }
     }
     
-    class func updateEmail(_ email: Email, key: Int, messageId: String, threadId: String) {
+    class func updateEmail(_ email: Email, key: Int, messageId: String, threadId: String, isSecure: Bool) {
         let realm = try! Realm()
         try! realm.write() {
             let newEmail = Email()
@@ -332,7 +332,7 @@ class SharedDB {
             newEmail.threadId = threadId
             newEmail.delivered = Email.Status.sent.rawValue
             newEmail.unread = false
-            newEmail.secure = email.secure
+            newEmail.secure = isSecure
             newEmail.subject = email.subject
             newEmail.content = email.content
             newEmail.preview = email.preview

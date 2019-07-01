@@ -135,7 +135,9 @@
 "EMAIL_FAILED" = "Email Failed. It will be resent in the future";
 "RESENT_FUTURE" = "It will be resent in the future";
 "EMAIL_SENT" = "Email Sent";
+"EMAIL_SENT_SECURE" = "🔒 Email Sent";
 "GUIDE_TAP_COMPOSE" = "Tap to compose\na secure email";
+"GUIDE_SECURE_LOCK" = "Lock icon means this\nemail is encrypted";
 "GUIDE_FEEDS" = "See who's reading\nyour emails";
 "EMAIL_OPENED" = "Someone opened";
 "NEW" = "NEW";
