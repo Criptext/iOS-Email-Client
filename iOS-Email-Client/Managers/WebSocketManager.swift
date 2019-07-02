@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwiftWebSocket
+import Starscream
 
 protocol WebSocketManagerDelegate: class {
     func newMessage(result: EventData.Socket)
@@ -30,14 +30,16 @@ final class WebSocketManager: NSObject {
         let newAccounts = accounts.filter({ account in !myAccounts.contains(where: { $0?.compoundKey == account.compoundKey })  })
         myAccounts.append(contentsOf: newAccounts)
         let jwts: [String] = getValidAccounts().map({ $0.jwt })
-        socket = WebSocket("\(SOCKET_URL)?token=\(jwts.joined(separator: "%2C"))", subProtocol: "criptext-protocol")
+        let url = URL(string: "\(SOCKET_URL)?token=\(jwts.joined(separator: "%2C"))")!
+        socket = WebSocket(url: url, protocols: ["criptext-protocol"])
         socket?.delegate = self
+        socket?.connect()
     }
     
     func reconnect(){
         shouldReconnect = true
         guard let mySocket = socket,
-            mySocket.readyState != .open && mySocket.readyState != .connecting else {
+            !mySocket.isConnected else {
             return
         }
         self.connect(accounts: getValidAccounts())
@@ -45,15 +47,13 @@ final class WebSocketManager: NSObject {
     
     func pause() {
         shouldReconnect = false
-        socket?.event.close = {_,_,_ in }
-        socket?.close()
+        socket?.disconnect()
     }
     
     func close(){
         shouldReconnect = false
         myAccounts.removeAll()
-        socket?.event.close = {_,_,_ in }
-        socket?.close()
+        socket?.disconnect()
     }
     
     private func getValidAccounts() -> [Account] {
@@ -62,12 +62,12 @@ final class WebSocketManager: NSObject {
 }
 
 extension WebSocketManager: WebSocketDelegate{
-    func webSocketOpen() {
-        print("Websocket - Open")
+    func websocketDidConnect(socket: WebSocketClient) {
+        print("Websocket - Connected")
     }
     
-    func webSocketClose(_ code: Int, reason: String, wasClean: Bool) {
-        print("Websocket - Close : \(code) -> \(reason)")
+    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
+        print("Websocket - Disconnected : \(error?.localizedDescription ?? "Clean")")
         guard shouldReconnect else {
             return
         }
@@ -76,11 +76,8 @@ extension WebSocketManager: WebSocketDelegate{
         }
     }
     
-    func webSocketError(_ error: NSError) {
-        print("Websocket - Error : \(error.description)")
-    }
-    
-    func webSocketMessageText(_ text: String) {
+    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
+        print("WebSocket - Message: \(text)")
         guard let event = Utils.convertToDictionary(text: text) else {
             return
         }
@@ -89,7 +86,7 @@ extension WebSocketManager: WebSocketDelegate{
         delegate?.newMessage(result: result)
     }
     
-    func webSocketPong() {
-        print("Pong")
+    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
+        
     }
 }
