@@ -64,10 +64,10 @@ final class RequestManager: NSObject {
             }
             
             guard events.count > 0 else {
-                weakSelf.delegate?.errorRequest(accountId: accountId, response: responseData)
                 weakSelf.processingAccount = nil
                 weakSelf.accountCompletions[accountId]?(false)
                 weakSelf.accountCompletions[accountId] = nil
+                weakSelf.delegate?.errorRequest(accountId: accountId, response: responseData)
                 weakSelf.getEvents()
                 return
             }

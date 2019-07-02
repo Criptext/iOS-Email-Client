@@ -332,6 +332,9 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
+        guard !email.isInvalidated else {
+            return
+        }
         emailData.setState(email.key, cellHeight: height)
         self.emailsTableView.reloadData()
     }

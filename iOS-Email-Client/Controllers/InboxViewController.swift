@@ -10,7 +10,6 @@
 import UIKit
 import Material
 import SDWebImage
-import SwiftWebSocket
 import MIBadgeButton_Swift
 import SwiftyJSON
 import SignalProtocolFramework
@@ -1309,7 +1308,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         supportContact.displayName = "Criptext Support"
         supportContact.email = "support@criptext.com"
         let composerData = ComposerData()
-        composerData.initContent = "<br/><br/><span>\(String.localize("DONT_WRITE_BELOW"))</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(systemIdentifier())</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
+        composerData.initContent = "<br/><br/><span>\(String.localize("DONT_WRITE_BELOW"))</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(UIDevice.modelName) [\(systemIdentifier())]</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
         composerData.initToContacts = [supportContact]
         composerData.initSubject = "Customer Support - iOS"
         openComposer(composerData: composerData, files: List<File>())
@@ -2011,13 +2010,12 @@ extension InboxViewController: RequestDelegate {
     }
     
     func errorRequest(accountId: String, response: ResponseData) {
-        if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
+        if !RequestManager.shared.isInQueue(accountId: accountId) {
             self.refreshControl.endRefreshing()
         }
-        guard myAccount.compoundKey == accountId else {
+        guard !myAccount.isInvalidated && myAccount.compoundKey == accountId else {
             return
         }
-        refreshControl.endRefreshing()
         
         switch response {
             case .Unauthorized:

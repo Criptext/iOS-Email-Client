@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwiftWebSocket
+import Starscream
 
 protocol SingleSocketDelegate {
     func newMessage(cmd: Int32, params: [String: Any]?)
@@ -21,24 +21,25 @@ class SingleWebSocket {
     
     func connect(jwt: String){
         self.jwt = jwt
-        socket = WebSocket("\(SOCKET_URL)?token=\(jwt)", subProtocol: "criptext-protocol")
+        let url = URL(string: "\(SOCKET_URL)?token=\(jwt)")!
+        socket = WebSocket(url: url, protocols: ["criptext-protocol"])
         socket.delegate = self
+        socket.connect()
     }
     
     func close(){
         jwt = nil
-        socket.event.close = {_,_,_ in }
-        socket.close()
+        socket.disconnect()
     }
 }
 
 extension SingleWebSocket: WebSocketDelegate{
-    func webSocketOpen() {
-        print("SingleSocket - Open")
+    func websocketDidConnect(socket: WebSocketClient) {
+        print("SingleSocket - Connected")
     }
     
-    func webSocketClose(_ code: Int, reason: String, wasClean: Bool) {
-        print("SingleSocket - Close : \(code) -> \(reason)")
+    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
+        print("SingleSocket - Disconnected : \(error?.localizedDescription ?? "Clean")")
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)){
             if let jwt = self.jwt {
                 self.connect(jwt: jwt)
@@ -46,11 +47,7 @@ extension SingleWebSocket: WebSocketDelegate{
         }
     }
     
-    func webSocketError(_ error: NSError) {
-        print("SingleSocket - Error : \(error.description)")
-    }
-    
-    func webSocketMessageText(_ text: String) {
+    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         guard let event = Utils.convertToDictionary(text: text),
             let cmd = event["cmd"] as? Int32 else {
                 return
@@ -59,7 +56,7 @@ extension SingleWebSocket: WebSocketDelegate{
         delegate?.newMessage(cmd: cmd, params: params)
     }
     
-    func webSocketPong() {
-        print("Pong")
+    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
+        
     }
 }
