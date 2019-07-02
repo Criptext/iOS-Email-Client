@@ -8,7 +8,6 @@ github "CosmicMind/Material" == 3.1.1
 github "Hirobreak/CICropPicker" == 1.1.2
 github "rs/SDWebImage"
 github "Marxon13/M13Checkbox"
-github "tidwall/SwiftWebSocket"
 github "daltoniam/Starscream" >= 3.0.2
 github "scinfu/SwiftSoup"
 github "misterwell/MMMaterialDesignSpinner"

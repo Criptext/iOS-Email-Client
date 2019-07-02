@@ -48,7 +48,6 @@ extension SingleWebSocket: WebSocketDelegate{
     }
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-        print("SingleSocket - Message: \(text)")
         guard let event = Utils.convertToDictionary(text: text),
             let cmd = event["cmd"] as? Int32 else {
                 return

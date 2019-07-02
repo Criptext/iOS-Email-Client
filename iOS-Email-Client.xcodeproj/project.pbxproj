@@ -62,7 +62,6 @@
 		41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC842078196600B8994F /* CICropPicker.framework */; };
 		41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8620781C4600B8994F /* SDWebImage.framework */; };
 		41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8820781C4E00B8994F /* M13Checkbox.framework */; };
-		41C9CC8B20781C5600B8994F /* SwiftWebSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8A20781C5600B8994F /* SwiftWebSocket.framework */; };
 		41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */; };
 		41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8E20781C6700B8994F /* MMMaterialDesignSpinner.framework */; };
 		41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
@@ -967,7 +966,6 @@
 				34C4173A22BC20530095DF23 /* nanopb.framework in Frameworks */,
 				41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */,
 				41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */,
-				41C9CC8B20781C5600B8994F /* SwiftWebSocket.framework in Frameworks */,
 				34C4173B22BC20530095DF23 /* FirebaseCore.framework in Frameworks */,
 				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
 				41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */,
@@ -1890,7 +1888,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/CICropPicker.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/M13Checkbox.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftWebSocket.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftSoup.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MMMaterialDesignSpinner.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MIBadgeButton_Swift.framework",
@@ -1919,7 +1916,6 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CICropPicker.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SDWebImage.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/M13Checkbox.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftWebSocket.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftSoup.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MMMaterialDesignSpinner.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MIBadgeButton_Swift.framework",

@@ -77,7 +77,6 @@ extension WebSocketManager: WebSocketDelegate{
     }
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
-        print("WebSocket - Message: \(text)")
         guard let event = Utils.convertToDictionary(text: text) else {
             return
         }
