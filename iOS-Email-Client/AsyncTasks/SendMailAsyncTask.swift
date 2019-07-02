@@ -30,7 +30,7 @@ class SendMailAsyncTask {
     var files: [[String: Any]]
     let duplicates: [String]
     let password: String?
-    let isSecure: Bool
+    var isSecure: Bool
     let accountId: String
     let emailKey: Int
     let from: String
@@ -53,7 +53,7 @@ class SendMailAsyncTask {
         self.subject = email.subject
         self.body = emailBody
         self.preview = email.preview
-        self.isSecure = email.secure
+        self.isSecure = password != nil ? true : email.secure
         self.threadId = email.threadId.isEmpty || email.threadId == email.key.description ? nil : email.threadId
         self.files = files
         self.duplicates = duplicates
@@ -203,6 +203,9 @@ class SendMailAsyncTask {
         let keyBundles = keysData["keyBundles"] as! [[String:Any]]
         let blackListedDevices = keysData["blacklistedKnownDevices"] as! [[String:Any]]
         let guestDomains = keysData["guestDomains"] as! [String]
+        if(guestDomains.count > 0 && password == nil){
+            self.isSecure = false
+        }
         let store: CriptextSessionStore = CriptextSessionStore(account: myAccount)
         for blackDevice in blackListedDevices {
             guard let devices = blackDevice["devices"] as? [Int32],
@@ -481,7 +484,7 @@ class SendMailAsyncTask {
         let key = updateData["metadataKey"] as! Int
         let messageId = updateData["messageId"] as! String
         let threadId = updateData["threadId"] as! String
-        SharedDB.updateEmail(email, key: key, messageId: messageId, threadId: threadId)
+        SharedDB.updateEmail(email, key: key, messageId: messageId, threadId: threadId, isSecure: self.isSecure)
         SharedDB.deleteDummySession(key: emailKey)
         updateFiles(emailId: key)
         return key

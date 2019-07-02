@@ -66,6 +66,15 @@ class CriptextDefaults {
         }
     }
     
+    var guideLock: Bool {
+        get {
+            return defaults.bool(forKey: Guide.secureLock.rawValue)
+        }
+        set (value) {
+            defaults.set(value, forKey: Guide.secureLock.rawValue)
+        }
+    }
+    
     //SHARED DEFAULTS
     
     var hasActiveAccount: Bool {
@@ -180,6 +189,7 @@ class CriptextDefaults {
         case composer = "guideComposer"
         case feed = "guideFeed"
         case unsend = "guideUnsend"
+        case secureLock = "guideSecure"
     }
     
     enum Config: String {

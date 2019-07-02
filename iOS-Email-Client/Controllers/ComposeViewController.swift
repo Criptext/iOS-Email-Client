@@ -589,13 +589,12 @@ class ComposeViewController: UIViewController {
         self.prepareMail()
     }
     
-    func sendMailInMainController(secure: Bool = true, password: String? = nil){
+    func sendMailInMainController(password: String? = nil){
         guard let email = composerData.emailDraft else {
             return
         }
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
-        DBManager.updateEmail(email, secure: secure)
         self.dismiss(animated: true){
             self.delegate?.sendMail(email: email, emailBody: self.editorView.html, password: password)
         }
@@ -613,7 +612,7 @@ class ComposeViewController: UIViewController {
         }
         
         self.toggleInteraction(false)
-        sendMailInMainController(secure: false)
+        sendMailInMainController()
     }
     
     func presentPopover(){
@@ -746,7 +745,7 @@ extension ComposeViewController: UIDocumentPickerDelegate {
 extension ComposeViewController: EmailSetPasswordDelegate {
     func setPassword(active: Bool, password: String?) {
         self.toggleInteraction(false)
-        sendMailInMainController(secure: active, password: password)
+        sendMailInMainController(password: password)
     }
 }
 

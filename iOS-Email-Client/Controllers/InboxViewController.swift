@@ -284,6 +284,21 @@ class InboxViewController: UIViewController {
         }
     }
     
+    func showGuide(guide: CriptextDefaults.Guide){
+        switch(guide){
+        case .secureLock:
+            let defaults = CriptextDefaults()
+            if !defaults.guideLock {
+                currentGuide = CriptextDefaults.Guide.secureLock.rawValue
+                let presentationContext = PresentationContext.viewController(self)
+                self.coachMarksController.start(in: presentationContext)
+                defaults.guideLock = true
+            }
+        default:
+            break
+        }
+    }
+    
     func syncContacts() {
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -811,6 +826,11 @@ extension InboxViewController{
                 return
             }
             if(clear){
+                let secureThread = threads.firstIndex(where: { $0.isSecure })
+                if(secureThread != nil && secureThread! == 0) {
+                    weakSelf.currentGuide = CriptextDefaults.Guide.secureLock.rawValue
+                    weakSelf.showGuide(guide: CriptextDefaults.Guide.secureLock)
+                }
                 weakSelf.mailboxData.threads = threads
             } else {
                 weakSelf.mailboxData.threads.append(contentsOf: threads)
@@ -1645,12 +1665,14 @@ extension InboxViewController: ComposerSendMailDelegate {
                 weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
                 return
             }
-            guard DBManager.getMail(key: key, account: weakSelf.myAccount) != nil else {
+            let sentEmail = DBManager.getMail(key: key, account: weakSelf.myAccount)
+            guard sentEmail != nil else {
                 weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
                 return
             }
             weakSelf.refreshThreadRows()
-            weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
+            let message = sentEmail!.secure ? String.localize("EMAIL_SENT_SECURE") : String.localize("EMAIL_SENT")
+            weakSelf.showSendingSnackBar(message: message, permanent: false)
             weakSelf.sendFailEmail()
         }
     }
@@ -1731,12 +1753,18 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
     
     func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
         let hintView = HintUIView()
-        hintView.messageLabel.text = String.localize("GUIDE_TAP_COMPOSE")
         
-        if(currentGuide == "guideFeed"){
+        switch(currentGuide){
+        case "guideFeed":
             hintView.topCenterConstraint.constant = -10
             hintView.rightConstraint.constant = 35
             hintView.messageLabel.text = String.localize("GUIDE_FEEDS")
+        case "guideSecure":
+            hintView.topCenterConstraint.constant = -10
+            hintView.rightConstraint.constant = 35
+            hintView.messageLabel.text = String.localize("GUIDE_SECURE_LOCK")
+        default:
+            hintView.messageLabel.text = String.localize("GUIDE_TAP_COMPOSE")
         }
         
         return (bodyView: hintView, arrowView: nil)
@@ -1751,10 +1779,16 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
         return coachMark
     }
     
-    func getTarget() -> UIView {
+    func getTarget() -> UIView? {
         switch(currentGuide){
         case "guideFeed":
             return self.activityBarButton.customView as! MIBadgeButton
+        case "guideSecure":
+            let index = IndexPath(row: mailboxData.threads.firstIndex(where: { $0.isSecure }) ?? -1, section: 0)
+            if(index.row != -1) {
+                return (self.tableView.cellForRow(at: index) as! InboxTableViewCell).secureLockImageView
+            }
+            return nil
         default:
             return buttonCompose
         }
