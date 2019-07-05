@@ -22,9 +22,12 @@ final class RequestManager: NSObject {
     
     func getEvents() {
         guard processingAccount == nil,
-            let accountId = accountRequests.first,
-            let myAccount = DBManager.getAccountById(accountId) else {
+            let accountId = accountRequests.first else {
                 return
+        }
+        guard let myAccount = DBManager.getAccountById(accountId) else {
+            accountRequests.removeFirst()
+            return
         }
         processingAccount = accountId
         accountRequests.removeFirst()
@@ -74,13 +77,12 @@ final class RequestManager: NSObject {
             
             let eventHandler = EventHandler(account: myAccount)
             eventHandler.handleEvents(events: events){ [weak self] result in
+                weakSelf.processingAccount = nil
                 guard let weakSelf = self else {
-                    self?.processingAccount = nil
                     self?.getEvents()
                     return
                 }
                 
-                weakSelf.processingAccount = nil
                 if repeatRequest {
                     weakSelf.accountRequests.insert(accountId, at: 0)
                 } else {

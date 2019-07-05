@@ -748,7 +748,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-                
+        
+        guard UIApplication.shared.applicationState != .active else {
+            completionHandler(.noData)
+            return
+        }
+        
         if let action = userInfo["action"] as? String ,
             action == "anti_push",
             let subAction = userInfo["subAction"] as? String{

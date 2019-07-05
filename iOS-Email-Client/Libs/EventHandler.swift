@@ -14,7 +14,7 @@ class EventHandler {
     let jwt: String
     var apiManager : APIManager.Type = APIManager.self
     var signalHandler: SignalHandler.Type = SignalHandler.self
-    let queue = DispatchQueue.global(qos: .default)
+    let queue = DispatchQueue.global(qos: .userInteractive)
     var parsedKeys = false
     
     init(account: Account){
