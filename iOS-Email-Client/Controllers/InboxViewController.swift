@@ -249,6 +249,11 @@ class InboxViewController: UIViewController {
         sendFailEmail()
         viewSetupNews()
         
+        if let account = myAccount,
+            !RequestManager.shared.isInQueue(accountId: account.compoundKey) {
+            self.refreshControl.endRefreshing()
+        }
+        
         if mailboxData.showRestore {
             mailboxData.showRestore = false
             fetchBackupData()
@@ -914,7 +919,7 @@ extension InboxViewController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let thread = mailboxData.threads[indexPath.row]
-        
+        cell.selectedBackgroundView?.isHidden = mailboxData.isCustomEditing
         cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: myAccount.email)
         if mailboxData.isCustomEditing {
             if(mailboxData.selectedThreads.contains(thread.threadId)){

@@ -90,8 +90,7 @@ class EventParser {
             }
             return .SyncDismiss(recipientId, domain)
         case Event.newEvent.rawValue:
-            guard let params = event["params"] as? [String: Any],
-                let domain = params["domain"] as? String else {
+            guard let domain = event["domain"] as? String else {
                     return .Error
             }
             return .NewEvent(recipientId, domain)

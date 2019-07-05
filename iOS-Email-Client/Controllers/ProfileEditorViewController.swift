@@ -8,7 +8,7 @@
 
 import Foundation
 import SDWebImage
-import CICropPicker
+import Photos
 
 class ProfileEditorViewController: UIViewController {
     
@@ -64,44 +64,38 @@ class ProfileEditorViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var attachmentController: AttachmentOptionsContainerView!
     @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollContentViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     let STATUS_NOT_CONFIRMED = 0
     let SECTION_PROFILE = 0
-    let ROW_HEIGHT: CGFloat = 40.0
+    let ROW_HEADER_HEIGHT: CGFloat = 40.0
+    let ROW_HEIGHT: CGFloat = 60.0
     var imagePicker = UIImagePickerController()
-    var attachmentOptionsHeight: CGFloat = 0
+    var attachmentOptionsBottomPadding: CGFloat = -120
     var generalData: GeneralSettingsData = GeneralSettingsData()
     var devicesData: DeviceSettingsData = DeviceSettingsData()
     var myAccount: Account!
     var loadDataAtStart: Bool = false
-    let sections = [.profile, .danger] as [Section]
-    let options = [
-        .profile: [.name, .signature, .password, .recovery, .reply, .logout],
-        .danger: [.deleteAccount]] as [Section: [Section.Option]
-    ]
+    var sections = [Section]()
+    var options = [Section: [Section.Option]]()
     
     var theme: Theme {
         return ThemeManager.shared.theme
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setupSections()
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         navigationItem.title = String.localize("PROFILE")
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
             [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
-        if UIDevice().userInterfaceIdiom == .phone {
-            switch UIScreen.main.nativeBounds.height {
-            case 2436, 2688, 1792:
-                attachmentOptionsHeight = -20
-            default:
-                attachmentOptionsHeight = 0
-            }
-        }
         tableView.delegate = self
         tableView.dataSource = self
         imagePicker.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideBlackBackground(_:)))
         self.blackBackground.addGestureRecognizer(tap)
-        self.attachmentContainerBottomConstraint.constant = -100
+        self.attachmentContainerBottomConstraint.constant = attachmentOptionsBottomPadding
         nameLabel.text = myAccount.name
         emailLabel.text = "\(myAccount.email)"
         UIUtils.deleteSDWebImageCache()
@@ -112,6 +106,24 @@ class ProfileEditorViewController: UIViewController {
             self.loadData()
         } else {
             navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
+        }
+    }
+    
+    func setupSections() {
+        tableView.tableFooterView = UIView()
+        if self.myAccount.domain == nil {
+            sections = [.profile, .danger] as [Section]
+            options = [
+                .profile: [.name, .signature, .password, .recovery, .reply, .logout],
+                .danger: [.deleteAccount]
+            ] as [Section: [Section.Option]]
+        } else {
+            sections = [.profile] as [Section]
+            options = [
+                .profile: [.name, .signature, .password, .recovery, .reply, .logout],
+            ] as [Section: [Section.Option]]
+            tableViewHeightConstraint.constant -= (ROW_HEIGHT + ROW_HEADER_HEIGHT)
+            scrollContentViewHeightConstraint.constant -= (ROW_HEIGHT + ROW_HEADER_HEIGHT)
         }
     }
     
@@ -213,7 +225,7 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func showAttachmentDrawer(_ flag:Bool = false){
-        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? -attachmentOptionsHeight : -100)
+        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? 0 : attachmentOptionsBottomPadding)
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
             self.blackBackground.alpha = flag ? 0.5 : 0
@@ -225,11 +237,25 @@ class ProfileEditorViewController: UIViewController {
     }
     
     @IBAction func didPressedGallery(_ sender: Any) {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
-            imagePicker.allowsEditing = false
-            imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
-            self.present(imagePicker, animated: true, completion: nil)
+        guard UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) else {
+            return
         }
+        PHPhotoLibrary.requestAuthorization({ (status) in
+            DispatchQueue.main.async { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                switch status {
+                case .authorized:
+                    weakSelf.imagePicker.allowsEditing = false
+                    weakSelf.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+                    weakSelf.present(weakSelf.imagePicker, animated: true, completion: nil)
+                    break
+                default:
+                    break
+                }
+            }
+        })
     }
     
     @IBAction func disPressedRemove(_ sender: Any) {
@@ -298,19 +324,19 @@ class ProfileEditorViewController: UIViewController {
 
 
 extension ProfileEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         self.showAttachmentDrawer(false)
-        if let imgUrl = info[UIImagePickerController.InfoKey.imageURL.rawValue] as? URL{
+        if let imgUrl = info[.imageURL] as? URL{
             let imageName = imgUrl.lastPathComponent
-            let image = info[UIImagePickerController.InfoKey.originalImage.rawValue] as! UIImage
+            let image = info[.originalImage] as! UIImage
             imageView.image = image
             self.makeCircleImage()
             changeProfilePicture(image: image, imageName: imageName)
             return
         }
 
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
+        if let pickedImage = info[.originalImage] as? UIImage {
             let imageName = "\(String.random()).png"
             imageView.image = pickedImage
             self.makeCircleImage()
@@ -444,11 +470,11 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section != SECTION_PROFILE ? ROW_HEIGHT : 0.0
+        return section != SECTION_PROFILE ? ROW_HEADER_HEIGHT : 0.0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60.0
+        return ROW_HEIGHT
     }
     
     func showChangeName() {
