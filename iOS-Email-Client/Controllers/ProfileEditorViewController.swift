@@ -70,8 +70,8 @@ class ProfileEditorViewController: UIViewController {
     let SECTION_PROFILE = 0
     let ROW_HEADER_HEIGHT: CGFloat = 40.0
     let ROW_HEIGHT: CGFloat = 60.0
+    var ATTACHMENT_OPTIONS_BOTTOM_PADDING: CGFloat = -120
     var imagePicker = UIImagePickerController()
-    var attachmentOptionsBottomPadding: CGFloat = -120
     var generalData: GeneralSettingsData = GeneralSettingsData()
     var devicesData: DeviceSettingsData = DeviceSettingsData()
     var myAccount: Account!
@@ -95,7 +95,7 @@ class ProfileEditorViewController: UIViewController {
         imagePicker.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideBlackBackground(_:)))
         self.blackBackground.addGestureRecognizer(tap)
-        self.attachmentContainerBottomConstraint.constant = attachmentOptionsBottomPadding
+        self.attachmentContainerBottomConstraint.constant = ATTACHMENT_OPTIONS_BOTTOM_PADDING
         nameLabel.text = myAccount.name
         emailLabel.text = "\(myAccount.email)"
         UIUtils.deleteSDWebImageCache()
@@ -225,7 +225,7 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func showAttachmentDrawer(_ flag:Bool = false){
-        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? 0 : attachmentOptionsBottomPadding)
+        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? 0 : ATTACHMENT_OPTIONS_BOTTOM_PADDING)
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
             self.blackBackground.alpha = flag ? 0.5 : 0
