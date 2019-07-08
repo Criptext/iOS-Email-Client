@@ -33,7 +33,6 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var readImageView: UIImageView!
     @IBOutlet weak var starredImageView: UIImageView!
     
-    var holdGestureRecognizer:UILongPressGestureRecognizer!
     weak var delegate:InboxTableViewCellDelegate?
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -44,7 +43,10 @@ class InboxTableViewCell: UITableViewCell {
         
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         self.addGestureRecognizer(hold)
-        self.holdGestureRecognizer = hold
+        
+        let myView = UIView()
+        myView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.2)
+        self.selectedBackgroundView = myView
     }
     
     @objc func handleLongPress(_ gestureRecognizer:UILongPressGestureRecognizer){
@@ -53,6 +55,20 @@ class InboxTableViewCell: UITableViewCell {
         }
         
         delegate.tableViewCellDidLongPress(self)
+    }
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        if highlighted {
+            containerBadge.backgroundColor = theme.threadBadge
+        }
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if selected {
+            containerBadge.backgroundColor = theme.threadBadge
+        }
     }
     
     func setFields(thread: Thread, label: Int, myEmail: String){
@@ -137,6 +153,7 @@ class InboxTableViewCell: UITableViewCell {
         avatarImageView.tintColor = UIColor.white
         avatarImageView.layer.borderWidth = 2.0
         avatarImageView.layer.borderColor = UIColor(red:0.00, green:0.57, blue:1.00, alpha:1.0).cgColor
+        containerBadge.backgroundColor = theme.threadBadge
     }
     
     func setAsNotSelected(){
@@ -144,6 +161,7 @@ class InboxTableViewCell: UITableViewCell {
         avatarImageView.layer.borderWidth = 2.0
         avatarImageView.layer.borderColor = theme.separator.cgColor
         avatarImageView.layer.backgroundColor = UIColor.clear.cgColor
+        containerBadge.backgroundColor = theme.threadBadge
     }
     
     func setBadge(_ value: Int){

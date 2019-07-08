@@ -249,6 +249,11 @@ class InboxViewController: UIViewController {
         sendFailEmail()
         viewSetupNews()
         
+        if let account = myAccount,
+            !RequestManager.shared.isInQueue(accountId: account.compoundKey) {
+            self.refreshControl.endRefreshing()
+        }
+        
         if mailboxData.showRestore {
             mailboxData.showRestore = false
             fetchBackupData()
@@ -523,14 +528,19 @@ extension InboxViewController: WebSocketManagerDelegate {
     func newMessage(result: EventData.Socket){
         switch(result){
         case .LinkData(let data, let recipientId, let domain):
-            self.handleLinkStart(linkData: data, account: DBManager.getAccountById(recipientId + "@\(domain)")!)
+            let accountId = recipientId + "\(domain == Env.plainDomain ? "" : "@\(domain)")"
+            guard let account = DBManager.getAccountById(accountId) else {
+                return
+            }
+            self.handleLinkStart(linkData: data, account: account)
         case .LinkDismiss( _, _), .SyncDismiss( _, _):
             let topView = self.getTopView().presentedViewController
             if(topView is SignInVerificationUIPopover){
                 topView?.dismiss(animated: false, completion: nil)
             }
         case .NewEvent(let username, let domain):
-            RequestManager.shared.getAccountEvents(accountId: username + "@\(domain)")
+            let accountId = username + "\(domain == Env.plainDomain ? "" : "@\(domain)")"
+            RequestManager.shared.getAccountEvents(accountId: accountId)
         case .PasswordChange:
             self.presentPasswordPopover(myAccount: myAccount)
         case .Logout:
@@ -914,7 +924,7 @@ extension InboxViewController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "InboxTableViewCell", for: indexPath) as! InboxTableViewCell
         cell.delegate = self
         let thread = mailboxData.threads[indexPath.row]
-        
+        cell.selectedBackgroundView?.isHidden = mailboxData.isCustomEditing
         cell.setFields(thread: thread, label: mailboxData.selectedLabel, myEmail: myAccount.email)
         if mailboxData.isCustomEditing {
             if(mailboxData.selectedThreads.contains(thread.threadId)){
