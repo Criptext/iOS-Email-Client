@@ -9,6 +9,56 @@
 import Foundation
 
 class Utils: SharedUtils {
+    
+    static let defaultDomains = [
+        /* Criptext Domains*/
+        Env.plainDomain: true,
+        /* Default domains included */
+        "aol.com": false, "att.net": false, "comcast.net": false, "facebook.com": false, "gmail.com": false, "gmx.com": false, "googlemail.com": false,
+        "google.com": false, "hotmail.com": false, "hotmail.co.uk": false, "mac.com": false, "me.com": false, "mail.com": false, "msn.com": false,
+        "live.com": false, "sbcglobal.net": false, "verizon.net": false, "yahoo.com": false, "yahoo.co.uk": false,
+        
+        /* Other global domains */
+        "email.com": false, "fastmail.fm": false, "games.com": false, "gmx.net": false, "hush.com": false, "hushmail.com": false, "icloud.com": false,
+        "iname.com": false, "inbox.com": false, "lavabit.com": false, "love.com": false, "outlook.com": false, "pobox.com": false, "protonmail.ch": false, "protonmail.com": false, "tutanota.de": false, "tutanota.com": false, "tutamail.com": false, "tuta.io": false,
+        "keemail.me": false, "rocketmail.com": false, "safe-mail.net": false, "wow.com": false, "ygm.com": false,
+        "ymail.com": false, "zoho.com": false, "yandex.com": false,
+        
+        /* United States ISP domains */
+        "bellsouth.net": false, "charter.net": false, "cox.net": false, "earthlink.net": false, "juno.com": false,
+        
+        /* British ISP domains */
+        "btinternet.com": false, "virginmedia.com": false, "blueyonder.co.uk": false, "freeserve.co.uk": false, "live.co.uk": false,
+        "ntlworld.com": false, "o2.co.uk": false, "orange.net": false, "sky.com": false, "talktalk.co.uk": false, "tiscali.co.uk": false,
+        "virgin.net": false, "wanadoo.co.uk": false, "bt.com": false,
+        
+        /* Domains used in Asia */
+        "sina.com": false, "sina.cn": false, "qq.com": false, "naver.com": false, "hanmail.net": false, "daum.net": false, "nate.com": false, "yahoo.co.jp": false, "yahoo.co.kr": false, "yahoo.co.id": false, "yahoo.co.in": false, "yahoo.com.sg": false, "yahoo.com.ph": false, "163.com": false, "yeah.net": false, "126.com": false, "21cn.com": false, "aliyun.com": false, "foxmail.com": false,
+        
+        /* French ISP domains */
+        "hotmail.fr": false, "live.fr": false, "laposte.net": false, "yahoo.fr": false, "wanadoo.fr": false, "orange.fr": false, "gmx.fr": false, "sfr.fr": false, "neuf.fr": false, "free.fr": false,
+        
+        /* German ISP domains */
+        "gmx.de": false, "hotmail.de": false, "live.de": false, "online.de": false, "t-online.de": false, "web.de": false, "yahoo.de": false,
+        
+        /* Italian ISP domains */
+        "libero.it": false, "virgilio.it": false, "hotmail.it": false, "aol.it": false, "tiscali.it": false, "alice.it": false, "live.it": false, "yahoo.it": false, "email.it": false, "tin.it": false, "poste.it": false, "teletu.it": false,
+        
+        /* Russian ISP domains */
+        "mail.ru": false, "rambler.ru": false, "yandex.ru": false, "ya.ru": false, "list.ru": false,
+        
+        /* Belgian ISP domains */
+        "hotmail.be": false, "live.be": false, "skynet.be": false, "voo.be": false, "tvcablenet.be": false, "telenet.be": false,
+        
+        /* Argentinian ISP domains */
+        "hotmail.com.ar": false, "live.com.ar": false, "yahoo.com.ar": false, "fibertel.com.ar": false, "speedy.com.ar": false, "arnet.com.ar": false,
+        
+        /* Domains used in Mexico */
+        "yahoo.com.mx": false, "live.com.mx": false, "hotmail.es": false, "hotmail.com.mx": false, "prodigy.net.mx": false,
+        
+        /* Domains used in Brazil */
+        "yahoo.com.br": false, "hotmail.com.br": false, "outlook.com.br": false, "uol.com.br": false, "bol.com.br": false, "terra.com.br": false, "ig.com.br": false, "itelefonica.com.br": false, "r7.com": false, "zipmail.com.br": false, "globo.com": false, "globomail.com": false, "oi.com.br": false
+    ]
 
     class func convertToJSONString(dictionary: [String: Any]) -> String? {
         do {

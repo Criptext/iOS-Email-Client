@@ -59,6 +59,9 @@ class ComposerUIView: UIView {
     var previousCcHeight: CGFloat = 45
     var previousBccHeight: CGFloat = 45
     var collapsed = false
+    weak var myAccount: Account!
+    var checkedDomains: [String: Bool] = Utils.defaultDomains
+    
     var theme: Theme {
         return ThemeManager.shared.theme
     }
@@ -142,6 +145,7 @@ class ComposerUIView: UIView {
         fromMenuView.initialLoad(options: emails)
         fromField.attributedText = attributedFrom
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        self.myAccount = account
     }
     
     @IBAction func didPressFrom(_ sender: Any) {
@@ -269,11 +273,38 @@ extension ComposerUIView: CLTokenInputViewDelegate {
         self.delegate?.typingRecipient(text: input)
     }
     
+    private func checkDomain(domain: String, token: CLToken, view: CLTokenInputView) -> Bool {
+        let theme = ThemeManager.shared.theme
+        var checked: Bool = (domain == Env.plainDomain)
+        APIManager.getDomainCheck(domains: [domain], token: self.myAccount.jwt) { (responseData) in
+            guard case let .SuccessArray(domainArray) = responseData else {
+                return
+            }
+            checked = domainArray[0]["isCriptextDomain"] as? Bool ?? checked
+            self.checkedDomains[domainArray[0]["name"] as! String] = checked
+            
+            let textColor = checked ? theme.emailBubbleCriptext : theme.emailBubble
+            let bgColor = checked ? theme.bgBubbleCriptext : theme.bgBubble
+            
+            view.remove(token)
+            view.add(token, highlight: textColor, background: bgColor)
+        }
+        return checked
+    }
+    
     func addToken(display: String, value: String, view: CLTokenInputView) {
-        let textColor = value.contains(Constants.domain) ? UIColor(red: 0, green:0.23, blue: 0.41, alpha: 1.0) : UIColor(red: 0.13, green:0.13, blue: 0.13, alpha: 1.0)
-        let bgColor = value.contains(Constants.domain) ? UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0) : UIColor(red: 0.94, green:0.94, blue: 0.94, alpha: 1.0)
+        let theme = ThemeManager.shared.theme
+        var isFromCriptext = value.contains(Constants.domain)
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
+        
+        if(Utils.validateEmail(value)){
+            let domain = ContactUtils.getUsernameAndDomain(email: value).1
+            isFromCriptext = checkedDomains[domain] ?? checkDomain(domain: domain, token: token, view: view)
+        }
+        let textColor = isFromCriptext ? theme.emailBubbleCriptext : theme.emailBubble
+        let bgColor = isFromCriptext ? theme.bgBubbleCriptext : theme.bgBubble
+        
         view.add(token, highlight: textColor, background: bgColor)
     }
     

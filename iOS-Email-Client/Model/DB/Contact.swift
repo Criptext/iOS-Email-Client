@@ -14,6 +14,7 @@ class Contact: Object {
     @objc dynamic var email = ""
     @objc dynamic var isTrusted = false
     @objc dynamic var score = 0
+    @objc dynamic var spamScore = 0
     
     let accountContacts = LinkingObjects(fromType: AccountContact.self, property: "contact")
     
@@ -30,7 +31,8 @@ extension Contact {
                 "id": id,
                 "email": email,
                 "name": displayName,
-                "isTrusted": isTrusted
+                "isTrusted": isTrusted,
+                "spamScore": spamScore
             ]
         ]
     }

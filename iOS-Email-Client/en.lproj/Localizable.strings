@@ -178,7 +178,7 @@
 "DISABLE" = "disable";
 "TWO_FACTOR_RETRY" = "two-factor authentication. Please try again";
 "TO_ENABLE_2FA_1" = "To enable Two-Factor Authentication you must set and verify a recovery email on your account";
-"TO_ENABLE_2FA_2" = "\n\nPlease go to Settings > Recovery Email to complete this step.";
+"TO_ENABLE_2FA_2" = "\n\nPlease go to Settings > Account > Recovery Email to complete this step.";
 "RECOVERY_NOT_SET" = "Recovery Email Not Set";
 "GOT_IT" = "Got it!";
 "2FA_ENABLED" = "2FA Enabled!";

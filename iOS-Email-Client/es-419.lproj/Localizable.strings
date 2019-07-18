@@ -178,7 +178,7 @@
 "DISABLE" = "inhabilitar";
 "TWO_FACTOR_RETRY" = "Autenticación de dos factores. Inténtalo de nuevo";
 "TO_ENABLE_2FA_1" = "Para habilitar la autenticación de dos factores, debes configurar y verificar un correo de recuperación en tu cuenta";
-"TO_ENABLE_2FA_2" = "\nPor favor, ve a Configuración > Correo de recuperación para completar este paso";
+"TO_ENABLE_2FA_2" = "\nPor favor, ve a Configuración > Cuenta > Correo de recuperación para completar este paso";
 "RECOVERY_NOT_SET" = "Correo de Recuperación";
 "GOT_IT" = "¡Listo!";
 "2FA_ENABLED" = "¡A2F Habilitada!";

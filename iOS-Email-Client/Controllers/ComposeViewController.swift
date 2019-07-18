@@ -108,6 +108,8 @@ class ComposeViewController: UIViewController {
     var composerKeyboardOffset: CGFloat = 0.0
     var composerEditorHeight: CGFloat = 0.0
     
+    var checkedDomains: [String: Bool] = Utils.defaultDomains
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1065,6 +1067,25 @@ extension ComposeViewController: CNContactPickerDelegate {
         self.addToken(email, value: email.lowercased(), to: tokenInputView)
     }
     
+    private func checkDomain(domain: String, token: CLToken, view: CLTokenInputView) -> Bool {
+        let theme = ThemeManager.shared.theme
+        var checked: Bool = (domain == Env.plainDomain)
+        APIManager.getDomainCheck(domains: [domain], token: self.activeAccount.jwt) { (responseData) in
+            guard case let .SuccessArray(domainArray) = responseData else {
+                return
+            }
+            checked = domainArray[0]["isCriptextDomain"] as? Bool ?? checked
+            self.checkedDomains[domainArray[0]["name"] as! String] = checked
+            
+            let textColor = checked ? theme.emailBubbleCriptext : theme.emailBubble
+            let bgColor = checked ? theme.bgBubbleCriptext : theme.bgBubble
+            
+            view.remove(token)
+            view.add(token, highlight: textColor, background: bgColor)
+        }
+        return checked
+    }
+    
     func addToken(_ display:String, value:String, to view:CLTokenInputView){
         let theme = ThemeManager.shared.theme
         guard ccField.allTokens.count + bccField.allTokens.count + toField.allTokens.count < 300 else {
@@ -1083,10 +1104,16 @@ extension ComposeViewController: CNContactPickerDelegate {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             return
         }
-        let textColor = value.contains(Constants.domain) ? theme.emailBubbleCriptext : theme.emailBubble
-        let bgColor = value.contains(Constants.domain) ? theme.bgBubbleCriptext : theme.bgBubble
+        var isFromCriptext = value.contains(Constants.domain)
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
+        if(Utils.validateEmail(value)){
+            let domain = ContactUtils.getUsernameAndDomain(email: value).1
+            isFromCriptext = checkedDomains[domain] ?? checkDomain(domain: domain, token: token, view: view)
+        }
+        let textColor = isFromCriptext ? theme.emailBubbleCriptext : theme.emailBubble
+        let bgColor = isFromCriptext ? theme.bgBubbleCriptext : theme.bgBubble
+        
         view.add(token, highlight: textColor, background: bgColor)
         
         self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
