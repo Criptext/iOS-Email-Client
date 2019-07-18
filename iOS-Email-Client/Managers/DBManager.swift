@@ -155,6 +155,9 @@ class DBManager: SharedDB {
             if let isTrusted = object["isTrusted"]{
                 contact.isTrusted = isTrusted as! Bool
             }
+            if let spamScore = object["spamScore"]{
+                contact.spamScore = spamScore as! Int
+            }
             realm.add(contact, update: true)
             maps.contacts[contactId] = contact.email
         case "label":
@@ -624,10 +627,17 @@ class DBManager: SharedDB {
         }
     }
     
-    class func addRemoveLabelsForThreads(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int, account: Account){
+    class func  addRemoveLabelsForThreads(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int, account: Account){
         let emails = getThreadEmails(threadId, label: currentLabel, account: account)
         for email in emails {
             addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: removedLabelIds)
+            if(email.fromContact.email != account.email) {
+                if(addedLabelIds.contains(SystemLabel.spam.id)){
+                    uptickSpamCounter(email.fromContact)
+                } else if (removedLabelIds.contains(SystemLabel.spam.id)) {
+                    resetSpamCounter(email.fromContact)
+                }
+            }
         }
     }
     

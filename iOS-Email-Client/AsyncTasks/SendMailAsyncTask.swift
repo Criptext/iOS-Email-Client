@@ -350,13 +350,14 @@ class SendMailAsyncTask {
                     guard !(contactType == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
                         continue
                     }
-                    let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, type: contactType, domain: domain, myAccount: myAccount)
+                    let criptextEmail = self.buildCriptextEmail(recipientId: recipientId, deviceId: deviceId, domain: domain, myAccount: myAccount)
                     emailsData.append(criptextEmail)
                 }
                 if recipientId == myAccount.username && emailsData.isEmpty {
                     continue
                 }
                 criptextEmailData.append([
+                    "type": contactType,
                     "username": username,
                     "domain": domain,
                     "emails": emailsData
@@ -367,12 +368,11 @@ class SendMailAsyncTask {
         return (criptextEmailData, emptyEmails)
     }
     
-    private func buildCriptextEmail(recipientId: String, deviceId: Int32, type: String, domain: String, myAccount: Account) -> [String: Any] {
+    private func buildCriptextEmail(recipientId: String, deviceId: Int32, domain: String, myAccount: Account) -> [String: Any] {
         let message = SignalHandler.encryptMessage(body: self.body, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         let preview = SignalHandler.encryptMessage(body: self.preview, deviceId: deviceId, recipientId: recipientId, account: myAccount)
         var criptextEmail = ["recipientId": recipientId.split(separator: "@").first ?? recipientId,
                              "deviceId": deviceId,
-                             "type": type,
                              "body": message.0,
                              "messageType": message.1.rawValue,
                              "preview": preview.0,

@@ -228,12 +228,12 @@ class NewEmailHandler {
         let iv = attachment["iv"] as? String
         let fileKeyIv = key != nil && iv != nil ? "\(key!):\(iv!)" : fileKey
         file.fileKey = fileKeyIv
-        file.mimeType = File.mimeTypeForPath(path: file.name)
+        file.mimeType = attachment["mimeType"] as? String ?? File.mimeTypeForPath(path: file.name)
         file.date = email.date
         file.readOnly = attachment["read_only"] as? Int ?? 0
         file.emailId = email.key
         if let fileCid = cid,
-            body.contains("cid:\(fileCid)") && UIUtils.getExternalImage(file.mimeType) == "fileimage" {
+            body.contains("cid:\(fileCid)") && (UIUtils.getExternalImage(file.mimeType) == "fileimage") {
             file.cid = cid != nil && body.contains("cid:\(fileCid)") ? cid : nil
         }
         database.store(file)

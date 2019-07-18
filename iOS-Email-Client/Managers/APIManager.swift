@@ -913,4 +913,13 @@ class APIManager: SharedAPI {
             completion(.SuccessString(fileURL.path))
         }
     }
+    
+    class func getDomainCheck(domains: [String], token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/domain?\(domains.map { "domain=\($0)" }.joined(separator: "&"))"
+        let headers = [versionHeader: apiVersion, "Authorization": "Bearer \(token)"]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
 }

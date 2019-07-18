@@ -117,10 +117,6 @@ class SharedAPI {
             completionHandler(responseData, token)
             return
         }
-        guard case .EnterpriseSuspended = responseData else {
-            completionHandler(responseData, token)
-            return
-        }
         guard let account = SharedDB.getAccount(token: token) else {
             completionHandler(ResponseData.Error(CriptextError(code: .unreferencedAccount)), token)
             return
@@ -137,7 +133,7 @@ class SharedAPI {
             versionHeader: apiVersion
         ]
         
-        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { (response) in
             let refreshResponseData = handleResponse(response)
             switch (refreshResponseData) {
                 case .SuccessString(let newJwt):
@@ -150,6 +146,7 @@ class SharedAPI {
                     let newRefreshToken = data["refreshToken"] as! String
                     SharedDB.update(oldJwt: token, jwt: newJwt, refreshToken: newRefreshToken)
                     SharedDB.refresh()
+                    completionHandler(nil, newJwt)
                     break
                 default:
                     completionHandler(refreshResponseData, token)

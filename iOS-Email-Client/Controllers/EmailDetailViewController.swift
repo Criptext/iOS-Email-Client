@@ -817,6 +817,13 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
         let emailKey = email.key
         
         let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
+        if(email.fromContact.email != self.myAccount.email) {
+            if(addLabel.contains(SystemLabel.spam.id)){
+                DBManager.uptickSpamCounter(email.fromContact)
+            } else if (removeLabel.contains(SystemLabel.spam.id)) {
+                DBManager.resetSpamCounter(email.fromContact)
+            }
+        }
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
         let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
         DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()], account: myAccount)

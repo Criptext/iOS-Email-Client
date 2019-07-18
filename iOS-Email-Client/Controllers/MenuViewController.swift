@@ -342,7 +342,7 @@ extension MenuViewController{
     func accountsTableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "accountCell", for: indexPath) as! AccountTableCell
         let account = self.menuData.accounts[indexPath.row]
-        let counter = self.menuData.accountBadge[account.username] ?? 0
+        let counter = self.menuData.accountBadge[account.compoundKey] ?? 0
         cell.setContent(account: account, counter: counter)
         return cell
     }
@@ -402,7 +402,7 @@ extension MenuViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "accountCell", for: indexPath) as! AccountCollectionCell
         let account = self.menuData.accounts[indexPath.row]
-        let counter = self.menuData.accountBadge[account.username] ?? 0
+        let counter = self.menuData.accountBadge[account.compoundKey] ?? 0
         cell.setContent(account: account, counter: counter)
         return cell
     }

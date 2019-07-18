@@ -182,7 +182,7 @@ class SharedDB {
         let MAX_ADDRESS_LENGTH = 320
         let query = text.count > 320 ? String(text.prefix(MAX_ADDRESS_LENGTH)) : text
         
-        let predicate = NSPredicate(format: "(ANY accountContacts.account.compoundKey == '\(account.compoundKey)') OR email contains[c] '\(query)' OR displayName contains[c] '\(text)'")
+        let predicate = NSPredicate(format: "email contains[c] '\(query)' OR displayName contains[c] '\(text)'")
         let results = realm.objects(Contact.self).filter(predicate).sorted(byKeyPath: "score", ascending: false)
         
         return Array(results)
@@ -306,7 +306,8 @@ class SharedDB {
                                  "name": newFile.name,
                                  "size": newFile.size,
                                  "mimeType": newFile.mimeType] as [String : Any]
-                if let cid = newFile.cid {
+                if let cid = newFile.cid,
+                    !cid.isEmpty {
                     fileparam["cid"] = cid
                 }
                 fileParams.append(fileparam)
@@ -396,6 +397,22 @@ class SharedDB {
         try! realm.write {
             realm.delete(draft.emailContacts)
             realm.delete(draft)
+        }
+    }
+    
+    class func uptickSpamCounter(_ senderContact: Contact){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            senderContact.spamScore += 1
+        }
+    }
+    
+    class func resetSpamCounter(_ senderContact: Contact){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            senderContact.spamScore = 0
         }
     }
     
