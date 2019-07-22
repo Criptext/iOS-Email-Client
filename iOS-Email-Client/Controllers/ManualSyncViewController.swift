@@ -123,7 +123,7 @@ class ManualSyncViewController: UIViewController{
         let restoreTask = RestoreDBAsyncTask(path: path, accountId: myAccount.compoundKey, initialProgress: 80)
         restoreTask.start(progressHandler: { (progress) in
             self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
-        }) {
+        }) {_ in 
             self.restoreSuccess()
         }
         

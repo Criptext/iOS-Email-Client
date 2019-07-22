@@ -456,6 +456,10 @@ enum StaticFile {
     case backupZip
     case backupRSA
     
+    case shareDB
+    case shareZip
+    case shareRSA
+    
     var name: String {
         switch self {
         case .encryptedDB:
@@ -473,7 +477,22 @@ enum StaticFile {
         case .backupZip:
             return "backup.gz"
         case .backupRSA:
-            return "backup.rsa"
+            return "backup.enc"
+        case .shareDB:
+            let now = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEEE dd MMMM YYYY HH:mm"
+            return "backup-\(formatter.string(from: now)).db"
+        case .shareZip:
+            let now = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEEE dd MMMM YYYY HH:mm"
+            return "backup-\(formatter.string(from: now)).gz"
+        case .shareRSA:
+            let now = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEEE dd MMMM YYYY HH:mm"
+            return "backup-\(formatter.string(from: now)).enc"
         }
     }
     

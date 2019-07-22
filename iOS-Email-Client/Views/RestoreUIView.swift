@@ -11,8 +11,9 @@ import Material
 
 protocol RestoreDelegate: class {
     func cancelRestore()
-    func retryRestore()
-    func restore()
+    func changeFile()
+    func retryRestore(password: String?)
+    func restore(password: String?)
 }
 
 class RestoreUIView: UIView {
@@ -24,14 +25,17 @@ class RestoreUIView: UIView {
         case missing
     }
     
+    @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var restoreButton: UIButton!
+    @IBOutlet weak var changeFileButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var cloudImageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var percentageContainerView: TipUIView!
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
+    @IBOutlet weak var passwordHeightConstraint: NSLayoutConstraint!
     weak var delegate: RestoreDelegate?
     var state = State.searching
     
@@ -39,7 +43,7 @@ class RestoreUIView: UIView {
         return ThemeManager.shared.theme
     }
     
-    func applyTheme() {
+    func applyTheme(view: UIView) {
         progressBar.layer.cornerRadius = 5
         progressBar.layer.sublayers![1].cornerRadius = 5
         progressBar.subviews[1].clipsToBounds = true
@@ -48,6 +52,37 @@ class RestoreUIView: UIView {
         
         cancelButton.setTitle(String.localize("RESTORE_CANCEL"), for: .normal)
         cancelButton.setTitleColor(theme.criptextBlue, for: .normal)
+        
+        passwordTextField.textColor = theme.mainText
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_PASSPHRASE"), attributes: [.foregroundColor: theme.placeholder, .font: 
+            Font.regular.size(passwordTextField.minimumFontSize)!])
+        passwordTextField.visibilityIconButton?.tintColor = theme.placeholder
+        
+        view.backgroundColor = theme.overallBackground
+    }
+    
+    @IBAction func onTextFieldChange(_ sender: TextField) {
+        switch(sender){
+        case passwordTextField:
+            guard passwordTextField.text!.count >= 3 else {
+                setValidField(passwordTextField, valid: false, error: String.localize("AT_LEAST_3_CHARS"))
+                break
+            }
+            setValidField(passwordTextField, valid: true)
+        default:
+            break
+        }
+        restoreButton.isEnabled = validateForm()
+        restoreButton.alpha = restoreButton.isEnabled ? 1.0 : 0.6
+    }
+    
+    func validateForm() -> Bool {
+        return passwordTextField.text!.count >= 3
+    }
+    
+    func setValidField(_ field: TextField, valid: Bool, error: String = "") {
+        field.detail = error
+        field.dividerActiveColor = valid ? .mainUI : .alert
     }
     
     func setSearching() {
@@ -65,12 +100,15 @@ class RestoreUIView: UIView {
         cloudImageView.image = UIImage(named: "cloud-big")
         
         restoreButton.isHidden = true
+        changeFileButton.isHidden = true
         progressBar.isHidden = true
         cancelButton.isHidden = false
         percentageContainerView.isHidden = true
+        passwordHeightConstraint.constant = 0
+        passwordTextField.isHidden = true
     }
     
-    func setFound(email: String, lastDate: Date, size: Int) {
+    func setFound(email: String, lastDate: Date, size: Int, isLocal: Bool, isEncrypted: Bool) {
         state = .found
         
         let attrText = NSMutableAttributedString(string: email, attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.markedText])
@@ -84,17 +122,29 @@ class RestoreUIView: UIView {
         messageLabel.attributedText = attrText
         titleLabel.text = String.localize("BACKUP_FOUND")
         titleLabel.textColor = theme.markedText
-        cloudImageView.image = UIImage(named: "cloud-big")
+        if(isLocal) {
+            cloudImageView.image = UIImage(named: "imgRestoremail")
+        } else {
+            cloudImageView.image = UIImage(named: "cloud-big")
+        }
         
         restoreButton.isHidden = false
+        changeFileButton.isHidden = false
         restoreButton.setTitle(String.localize("BACKUP_RESTORE"), for: .normal)
+        changeFileButton.setTitle(String.localize("BACKUP_RESTORE_CHANGE_FILE"), for: .normal)
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
-        
+        if(isEncrypted){
+            passwordHeightConstraint.constant = 30
+            passwordTextField.isHidden = false
+        } else {
+            passwordHeightConstraint.constant = 0
+            passwordTextField.isHidden = true
+        }
     }
     
-    func setMissing() {
+    func setMissing(isLocal: Bool) {
         state = .missing
         let attrText = NSMutableAttributedString(string: String.localize("BACKUP_NOT_FOUND_MESSAGE"), attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
         
@@ -105,13 +155,17 @@ class RestoreUIView: UIView {
         cloudImageView.image = UIImage(named: "cloud-fail")
         
         restoreButton.isHidden = false
+        changeFileButton.isHidden = false
         restoreButton.setTitle(String.localize("RETRY"), for: .normal)
+        changeFileButton.setTitle(String.localize("BACKUP_RESTORE_CHANGE_FILE"), for: .normal)
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
+        passwordHeightConstraint.constant = 0
+        passwordTextField.isHidden = true
     }
     
-    func setError() {
+    func setError(isLocal: Bool, isEncrypted: Bool) {
         state = .error
         
         let attrText = NSMutableAttributedString(string: String.localize("DELAYED_PROCESS"), attributes: [.font: Font.regular.size(16)!, .foregroundColor: theme.mainText])
@@ -123,27 +177,49 @@ class RestoreUIView: UIView {
         messageLabel.attributedText = attrText
         titleLabel.text = String.localize("ODD")
         titleLabel.textColor = theme.markedText
-        cloudImageView.image = UIImage(named: "cloud-rip")
+        if(isLocal) {
+            cloudImageView.image = UIImage(named: "imgRestorefail")
+        } else {
+            cloudImageView.image = UIImage(named: "cloud-rip")
+        }
         
         restoreButton.isHidden = false
-        restoreButton.setTitle(String.localize("Retry"), for: .normal)
+        changeFileButton.isHidden = false
+        restoreButton.setTitle(String.localize("RETRY"), for: .normal)
+        changeFileButton.setTitle(String.localize("BACKUP_RESTORE_CHANGE_FILE"), for: .normal)
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
+        if(isEncrypted){
+            passwordTextField.text = nil
+            passwordHeightConstraint.constant = 30
+            passwordTextField.isHidden = false
+        } else {
+            passwordHeightConstraint.constant = 0
+            passwordTextField.isHidden = true
+        }
     }
     
-    func setRestoring() {
+    func setRestoring(isLocal: Bool) {
         state = .restoring
         
         titleLabel.text = String.localize("BACKUP_RESTORING")
-        cloudImageView.image = UIImage(named: "cloud-big")
+        
+        if(isLocal){
+            cloudImageView.image = UIImage(named: "imgRestoremail")
+        } else {
+            cloudImageView.image = UIImage(named: "cloud-big")
+        }
         
         messageLabel.isHidden = true
         restoreButton.isHidden = true
+        changeFileButton.isHidden = true
         cancelButton.isHidden = true
         
         progressBar.isHidden = false
         percentageContainerView.isHidden = false
+        passwordHeightConstraint.constant = 0
+        passwordTextField.isHidden = true
     }
     
     func animateProgress(_ value: Double, _ duration: Double, completion: @escaping () -> Void){
@@ -158,10 +234,14 @@ class RestoreUIView: UIView {
     
     @IBAction func didPressRetry(_ sender: Any) {
         if state == .found {
-            delegate?.restore()
+            delegate?.restore(password: passwordTextField.text)
             return
         }
-        delegate?.retryRestore()
+        delegate?.retryRestore(password: passwordTextField.text)
+    }
+    
+    @IBAction func didPressChangeFile(_ sender: Any) {
+        delegate?.changeFile()
     }
     
     @IBAction func didPressCancel(_ sender: Any) {

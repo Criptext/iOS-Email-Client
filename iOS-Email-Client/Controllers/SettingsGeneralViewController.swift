@@ -320,6 +320,7 @@ class SettingsGeneralViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let backupVC = storyboard.instantiateViewController(withIdentifier: "backupViewController") as! BackupViewController
         backupVC.myAccount = myAccount
+        
         self.navigationController?.pushViewController(backupVC, animated: true)
     }
     

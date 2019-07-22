@@ -87,7 +87,7 @@ class ProfileEditorViewController: UIViewController {
         super.viewDidLoad()
         self.setupSections()
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
-        navigationItem.title = String.localize("PROFILE")
+        navigationItem.title = String.localize("PROFILE_TITLE")
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
             [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         tableView.delegate = self

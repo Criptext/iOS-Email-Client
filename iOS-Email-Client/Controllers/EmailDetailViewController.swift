@@ -196,12 +196,7 @@ class EmailDetailViewController: UIViewController {
         self.navigationController?.navigationBar.bringSubviewToFront(self.topToolbar)
         self.topToolbar.isHidden = true
         
-        let cancelButton = UIButton(type: .custom)
-        cancelButton.frame = CGRect(x: 0, y: 0, width: 31, height: 31)
-        cancelButton.setImage(#imageLiteral(resourceName: "menu-back"), for: .normal)
-        cancelButton.layer.backgroundColor = UIColor(red:0.31, green:0.32, blue:0.36, alpha:1.0).cgColor
-        cancelButton.tintColor = UIColor(red:0.56, green:0.56, blue:0.58, alpha:1.0)
-        cancelButton.layer.cornerRadius = 15.5
+        let cancelButton = UIUtils.createLeftBackButton(target: self)
         let cancelBarButton = UIBarButtonItem(customView: cancelButton)
         self.navigationItem.leftBarButtonItem = cancelBarButton
     }

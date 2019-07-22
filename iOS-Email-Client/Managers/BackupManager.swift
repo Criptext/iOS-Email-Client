@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 protocol BackupDelegate: class {
-    func progressUpdate(accountId: String, progress: Int)
+    func progressUpdate(accountId: String, progress: Int, isLocal: Bool)
 }
 
 final class BackupManager {
@@ -75,7 +75,7 @@ final class BackupManager {
             self.runningBackups.insert(accountId)
             let createDBTask = CreateCustomJSONFileAsyncTask(accountId: accountId, kind: .backup)
             createDBTask.start(progressHandler: { [weak self] progress in
-                self?.delegate?.progressUpdate(accountId: accountId, progress: progress)
+                self?.delegate?.progressUpdate(accountId: accountId, progress: progress, isLocal: false)
             }) { [weak self] (_, url) in
                 self?.queue.async {
                     self?.handleCustomFile(url: url, email: email, accountId: accountId)
@@ -86,9 +86,9 @@ final class BackupManager {
         workers[accountId] = BackupWorker(worker: workItem, frequency: executionTime.1)
     }
     
-    func handleCustomFile(url: URL?, email: String, accountId: String) {
+    func handleCustomFile(url: URL?, email: String, accountId: String, password: String? = nil) {
         DispatchQueue.main.async { [weak self] in
-            self?.delegate?.progressUpdate(accountId: accountId, progress: 100)
+            self?.delegate?.progressUpdate(accountId: accountId, progress: 100, isLocal: false)
         }
         guard let dbUrl = url,
             let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.backupZip.name, compress: true),
