@@ -685,7 +685,9 @@ extension InboxViewController{
             self.topToolbar.counterLabel.text = "1"
             self.topToolbar.isHidden = false
             refreshControl.isEnabled = false
+            buttonCompose.isHidden = true
         }else{
+            buttonCompose.isHidden = false
             self.topToolbar.isHidden = true
             self.navigationController?.navigationBar.isHidden = false
             self.navigationController?.navigationBar.frame = self.originalNavigationRect
@@ -1081,7 +1083,11 @@ extension InboxViewController: UITableViewDataSource{
         let attrs = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: Font.bold.size(17)!] as [NSAttributedString.Key : Any]
         navSettingsVC.navigationBar.titleTextAttributes = attrs
         
-        self.present(navSettingsVC, animated: true, completion: nil)
+        let paddingBottom = tableView?.safeAreaInsets.bottom ?? 0.0
+        let snackbarController = CriptextSnackbarController(rootViewController: navSettingsVC)
+        snackbarController.setBottomPadding(padding: paddingBottom)
+        
+        self.present(snackbarController, animated: true, completion: nil)
     }
     
     func goToProfile(){
@@ -1636,6 +1642,7 @@ extension InboxViewController: ComposerSendMailDelegate {
             return
         }
         self.refreshThreadRows()
+        self.showSendingSnackBar(message: String.localize("DRAFT_SAVED"), permanent: false)
     }
     
     func sendFailEmail(){

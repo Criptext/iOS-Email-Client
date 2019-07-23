@@ -15,6 +15,7 @@ class CreateCustomJSONFileAsyncTask {
     enum Kind {
         case link
         case backup
+        case share
         
         var url: URL {
             switch(self){
@@ -22,6 +23,8 @@ class CreateCustomJSONFileAsyncTask {
                 return StaticFile.emailDB.url
             case .backup:
                 return StaticFile.backupDB.url
+            case .share:
+                return StaticFile.shareDB.url
             }
         }
     }
@@ -47,6 +50,8 @@ class CreateCustomJSONFileAsyncTask {
         let account = DBManager.getAccountById(self.accountId)
         let results = DBManager.retrieveWholeDB(account: account!)
         var progress = handleProgress(progress: 0, total: results.total, step: results.step, progressHandler: progressHandler)
+        let metadata = LinkFileHeaderData(recipientId: account!.username, domain: account!.domain ?? Env.plainDomain)
+        handleRow(metadata.toDictionary())
         results.contacts.enumerated().forEach {
             contacts[$1.email] = $0 + 1
             let dictionary = $1.toDictionary(id: $0 + 1)

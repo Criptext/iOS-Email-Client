@@ -154,6 +154,7 @@
 "GUIDE_UNSEND" = "Abre este menu para encontrar \nla opción de retractar este correo.";
 "HAVE_NEW_EMAIL" = "Tienes un nuevo email";
 "PROFILE" = "Perfil";
+"PROFILE_TITLE" = "PERFIL";
 "PROFILE_NAME" = "Nombre";
 "SYNC_PHONEBOOK" = "Sincronizar Contactos del Teléfono";
 "SIGNATURE" = "Firma";
@@ -369,7 +370,7 @@
 "ADD_ACCOUNT" = "Agregar cuenta";
 "NOW_LOGGED" = "Has iniciado sesión como ";
 
-"BACKUP" = "Respaldo en la nube";
+"BACKUP" = "Respaldo de Buzón";
 "BACKUP_CLOUD" = "Respaldo en la nube";
 "BACKUP_NOW" = "Respaldar ahora";
 "BACKUP_AUTO" = "Respaldo automático";
@@ -424,3 +425,10 @@
 "ACCOUNT_SUSPENDED_BUTTON" = "Cambiar de Cuenta";
 "ACCOUNT_SUSPENDED_LOGIN" = "Esta cuenta está suspendida.";
 "PROFILE_SECTION_DANGER" = "ZONA DE PELIGRO";
+"LINK_FILE_METADATA_ERROR" = "El archivo seleccionado esta corrompido o le pertenece a otra cuenta de correo.";
+"BACKUP_EXPORT" = "Exportar Respaldo";
+"BACKUP_EXPORT_MESSAGE" = "Genera un archivo exportable a cualquier otro medio o disco";
+"BACKUP_RESTORE" = "Restaurar Respaldo";
+"BACKUP_RESTORE_MESSAGE" = "Restaura tu buzón desde un respaldo local o en la nube que hayas hecho anteriormente.";
+"BACKUP_RESTORE_CHANGE_FILE" = "Cambiar Archivo";
+"DRAFT_SAVED" = "Borrador Guardado";

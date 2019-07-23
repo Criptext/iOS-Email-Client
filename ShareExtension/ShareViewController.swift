@@ -412,8 +412,8 @@ extension ShareViewController {
     
     func sendMail(email: Email, password: String?) {
         let theme: Theme = ThemeManager.shared.theme
-        let alert = UIAlertController(title: nil, message: String.localize("SENDING_MAIL"), preferredStyle: .alert)
-        alert.setValue(NSAttributedString(string: String.localize("SENDING_MAIL"), attributes: [NSAttributedString.Key.foregroundColor : theme.mainText]), forKey: "attributedMessage")
+        let alert = UIAlertController(title: nil, message: String.localize("PREPARING_MAIL"), preferredStyle: .alert)
+        alert.setValue(NSAttributedString(string: String.localize("PREPARING_MAIL"), attributes: [NSAttributedString.Key.foregroundColor : theme.mainText]), forKey: "attributedMessage")
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.style = UIActivityIndicatorView.Style.gray

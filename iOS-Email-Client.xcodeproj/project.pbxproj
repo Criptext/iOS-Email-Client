@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A659822E126F1002D9151 /* LinkFileHeaderData.swift */; };
 		34C4173622BC20530095DF23 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */; };
 		34C4173722BC20530095DF23 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */; };
 		34C4173822BC20530095DF23 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173122BC20520095DF23 /* FirebaseNanoPB.framework */; };
@@ -517,6 +518,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		347A659822E126F1002D9151 /* LinkFileHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileHeaderData.swift; sourceTree = "<group>"; };
 		34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
 		34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
 		34C4173122BC20520095DF23 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseNanoPB.framework; sourceTree = "<group>"; };
@@ -1292,6 +1294,7 @@
 				A723254221CAFE20003CF78D /* Theme.swift */,
 				A70EAE5321DE6A9700FE6055 /* AcceptData.swift */,
 				A7385F422230852D005CB38D /* CRBundle.swift */,
+				347A659822E126F1002D9151 /* LinkFileHeaderData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2119,6 +2122,7 @@
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
 				A7385F3F2230272E005CB38D /* RequestManager.swift in Sources */,
+				347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
 				7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */,

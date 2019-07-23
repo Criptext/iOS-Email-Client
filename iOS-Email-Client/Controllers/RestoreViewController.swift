@@ -14,8 +14,19 @@ class RestoreViewController: UIViewController {
     }
     var myAccount: Account!
     var query: NSMetadataQuery!
+    var localUrl: URL!
     var containerUrl: URL? {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
+    }
+    var isLocal: Bool {
+        get {
+            return (localUrl != nil)
+        }
+    }
+    var isEncrypted: Bool {
+        get {
+            return (localUrl.pathExtension == Env.linkFileExtensions.encrypted.rawValue)
+        }
     }
     
     override func viewDidLoad() {
@@ -23,9 +34,19 @@ class RestoreViewController: UIViewController {
         
         contentView.delegate = self
         
-        contentView.applyTheme()
-        contentView.setRestoring()
-        restore()
+        contentView.applyTheme(view: self.view)
+        if(isLocal){
+            guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: self.localUrl.path) else {
+                contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+                return
+            }
+            let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
+            let lastDate = Date(timeIntervalSinceReferenceDate: (fileAttributes[.modificationDate] as! NSDate).timeIntervalSinceReferenceDate)
+            contentView.setFound(email: self.myAccount.email, lastDate: lastDate, size: fileSize, isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+        } else {
+            contentView.setRestoring(isLocal: isLocal)
+            restore(password: nil)
+        }
     }
 }
 
@@ -33,7 +54,7 @@ extension RestoreViewController: RestoreDelegate {
     
     func handleDownload() {
         guard let url = containerUrl?.appendingPathComponent("backup.db") else {
-            contentView.setError()
+            contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
             return
         }
         query = NSMetadataQuery()
@@ -55,7 +76,7 @@ extension RestoreViewController: RestoreDelegate {
         if !isDownloading {
             if downloadStatus == NSMetadataUbiquitousItemDownloadingStatusCurrent {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.restoreFile()
+                    self.restoreFile(password: nil)
                 }
                 self.query.stop()
             }
@@ -67,53 +88,87 @@ extension RestoreViewController: RestoreDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func retryRestore() {
-        contentView.setRestoring()
-        self.restore()
+    func retryRestore(password: String?) {
+        contentView.setRestoring(isLocal: self.isLocal)
+        self.restore(password: password)
     }
     
-    func restore() {
-        guard let myUrl = containerUrl?.appendingPathComponent("backup.db") else {
-            contentView.setError()
-            return
-        }
-        do {
-            var keys = Set<URLResourceKey>()
-            keys.insert(.ubiquitousItemDownloadingStatusKey)
-            
-            let resourceValues = try myUrl.resourceValues(forKeys: keys)
-            let downloadStatus = (resourceValues.allValues[.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus) ?? .notDownloaded
-            
-            contentView.setRestoring()
-            if downloadStatus == .current {
-                restoreFile()
-            } else {
-                try FileManager.default.startDownloadingUbiquitousItem(at: myUrl)
-                self.handleDownload()
+    func restore(password: String?) {
+        if(self.isLocal){
+            restoreFile(password: password)
+        } else {
+            guard let myUrl = containerUrl?.appendingPathComponent("backup.db") else {
+                contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+                return
             }
-        } catch {
-            self.contentView.setError()
+            do {
+                var keys = Set<URLResourceKey>()
+                keys.insert(.ubiquitousItemDownloadingStatusKey)
+                
+                let resourceValues = try myUrl.resourceValues(forKeys: keys)
+                let downloadStatus = (resourceValues.allValues[.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus) ?? .notDownloaded
+                
+                contentView.setRestoring(isLocal: self.isLocal)
+                if downloadStatus == .current {
+                    restoreFile(password: nil)
+                } else {
+                    try FileManager.default.startDownloadingUbiquitousItem(at: myUrl)
+                    self.handleDownload()
+                }
+            } catch {
+                self.contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+            }
         }
     }
     
-    func restoreFile() {
-        
-        guard let myUrl = containerUrl?.appendingPathComponent("backup.db") else {
-            contentView.setError()
-            return
+    func restoreFile(password: String?) {
+        if(self.isLocal){
+            var filePath = self.localUrl.path
+            if let pass = password,
+                let encryptPath = AESCipher.streamEncrypt(path: filePath, outputName: StaticFile.decryptedDB.name, bundle: AESCipher.KeyBundle(password: pass, salt: nil), ivData: nil, operation: kCCDecrypt) {
+                contentView.setRestoring(isLocal: self.isLocal)
+                self.contentView.animateProgress(Double(10), 3.0, completion: {})
+                filePath = encryptPath
+            }
+            guard let decompressedPath = try? AESCipher.compressFile(path: filePath, outputName: StaticFile.unzippedDB.name, compress: false) else {
+                contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+                return
+            }
+            
+            let restoreTask = RestoreDBAsyncTask(path: decompressedPath, accountId: myAccount.compoundKey, initialProgress: 10)
+            restoreTask.start(progressHandler: { (progress) in
+                self.contentView.animateProgress(Double(progress), 3.0, completion: {})
+            }) {_ in
+                self.restoreSuccess()
+            }
+        } else {
+            guard let myUrl = containerUrl?.appendingPathComponent("backup.db") else {
+                contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+                return
+            }
+            
+            guard let decompressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: StaticFile.unzippedDB.name, compress: false) else {
+                contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+                return
+            }
+            
+            let restoreTask = RestoreDBAsyncTask(path: decompressedPath, accountId: myAccount.compoundKey, initialProgress: 5)
+            restoreTask.start(progressHandler: { (progress) in
+                self.contentView.animateProgress(Double(progress), 0.5, completion: {})
+            }) {_ in
+                self.restoreSuccess()
+            }
         }
+    }
+    
+    func changeFile() {
+        let providerList = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
+        providerList.delegate = self;
+        providerList.allowsMultipleSelection = false
         
-        guard let decompressedPath = try? AESCipher.compressFile(path: myUrl.path, outputName: StaticFile.unzippedDB.name, compress: false) else {
-            contentView.setError()
-            return
-        }
-        
-        let restoreTask = RestoreDBAsyncTask(path: decompressedPath, accountId: myAccount.compoundKey, initialProgress: 5)
-        restoreTask.start(progressHandler: { (progress) in
-            self.contentView.animateProgress(Double(progress), 0.5, completion: {})
-        }) {
-            self.restoreSuccess()
-        }
+        providerList.popoverPresentationController?.sourceView = self.view
+        providerList.popoverPresentationController?.sourceRect = CGRect(x: Double(self.view.bounds.size.width / 2.0), y: Double(self.view.bounds.size.height-45), width: 1.0, height: 1.0)
+        self.present(providerList, animated: true, completion: nil)
     }
     
     func restoreSuccess() {
@@ -128,4 +183,39 @@ extension RestoreViewController: RestoreDelegate {
             }
         })
     }
+}
+
+extension RestoreViewController: UIDocumentPickerDelegate {
+    
+    func documentMenu(didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+        //show document picker
+        documentPicker.delegate = self;
+        
+        documentPicker.popoverPresentationController?.sourceView = self.view
+        documentPicker.popoverPresentationController?.sourceRect = CGRect(x: Double(self.view.bounds.size.width / 2.0), y: Double(self.view.bounds.size.height-45), width: 1.0, height: 1.0)
+        self.present(documentPicker, animated: true, completion: nil)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        let validExtensions = Env.linkFileExtensions.allValues
+        
+        if(!validExtensions.contains(url.pathExtension)) {
+            contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+        } else {
+            self.localUrl = url
+            if(self.isEncrypted){
+                guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: self.localUrl.path) else {
+                    contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+                    return
+                }
+                let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
+                let lastDate = Date(timeIntervalSinceReferenceDate: (fileAttributes[.modificationDate] as! NSDate).timeIntervalSinceReferenceDate)
+                contentView.setFound(email: self.myAccount.email, lastDate: lastDate, size: fileSize, isLocal: self.isLocal, isEncrypted: self.isEncrypted)
+            } else {
+                contentView.setRestoring(isLocal: self.isLocal)
+                restore(password: nil)
+            }
+        }
+    }
+    
 }

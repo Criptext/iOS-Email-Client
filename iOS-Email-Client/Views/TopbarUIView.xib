@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fy7-am-4BQ" customClass="CircleBackButton" customModule="iOS_Email_Client" customModuleProvider="target">
-                    <rect key="frame" x="16" y="7" width="31" height="31"/>
+                    <rect key="frame" x="16" y="6.5" width="31" height="31"/>
                     <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="0.12661761886503067" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="31" id="17O-Tc-DCu"/>
@@ -37,7 +37,7 @@
                     <state key="normal" image="arrow-back"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
-                            <color key="value" red="0.55686274509803924" green="0.5607843137254902" blue="0.58039215686274503" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
@@ -45,7 +45,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzR-h6-HXk">
-                    <rect key="frame" x="69" y="12" width="30" height="21"/>
+                    <rect key="frame" x="69" y="11.5" width="30" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="evk-dG-gcc"/>
                         <constraint firstAttribute="height" constant="21" id="gPC-ob-mOw"/>
@@ -55,7 +55,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nyi-gB-IcE">
-                    <rect key="frame" x="124" y="7" width="31" height="31"/>
+                    <rect key="frame" x="124" y="6.5" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="31" id="8rj-zq-k7o"/>
                         <constraint firstAttribute="height" constant="31" id="HMT-fV-3Rc"/>
@@ -72,7 +72,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t76-18-SGy">
-                    <rect key="frame" x="172" y="7" width="31" height="31"/>
+                    <rect key="frame" x="172" y="6.5" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="31" id="li9-VM-lL6"/>
                         <constraint firstAttribute="width" constant="31" id="paR-uu-iwc"/>
@@ -89,7 +89,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4A-wm-n7M">
-                    <rect key="frame" x="220" y="7" width="31" height="31"/>
+                    <rect key="frame" x="220" y="6.5" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="31" id="d5I-uO-ybY"/>
                         <constraint firstAttribute="height" constant="31" id="wRR-yL-NLQ"/>
@@ -106,7 +106,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XSx-oc-jIH" customClass="CircleBackButton" customModule="iOS_Email_Client" customModuleProvider="target">
-                    <rect key="frame" x="327" y="7" width="31" height="31"/>
+                    <rect key="frame" x="327" y="6.5" width="31" height="31"/>
                     <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="0.12661761890000001" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="31" id="1RG-53-tFF"/>
@@ -115,7 +115,7 @@
                     <state key="normal" image="dots"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="imageView.tintColor">
-                            <color key="value" red="0.5568627451" green="0.56078431370000004" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
@@ -145,7 +145,7 @@
     <resources>
         <image name="arrow-back" width="17" height="14"/>
         <image name="dots" width="16" height="4"/>
-        <image name="mark_read" width="17" height="18"/>
+        <image name="mark_read" width="17.5" height="18"/>
         <image name="toolbar-trash" width="38" height="41"/>
         <image name="toolbar_move" width="44" height="37"/>
     </resources>

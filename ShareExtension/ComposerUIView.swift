@@ -138,7 +138,7 @@ class ComposerUIView: UIView {
     
     func setFrom(account: Account, emails: [String]) {
         fromButton.isHidden = emails.count == 0
-        let attributedFrom = NSMutableAttributedString(string: "From: ", attributes: [.font: Font.bold.size(15)!])
+        let attributedFrom = NSMutableAttributedString(string: "\(String.localize("FROM")): ", attributes: [.font: Font.bold.size(15)!])
         let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
         attributedFrom.append(attributedEmail)
         fromMenuView.isUserInteractionEnabled = false
