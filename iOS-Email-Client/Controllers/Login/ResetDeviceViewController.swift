@@ -81,48 +81,90 @@ class ResetDeviceViewController: UIViewController{
         let email = loginData.email
         let username = String(email.split(separator: "@")[0])
         let domain = String(email.split(separator: "@")[1])
-        APIManager.loginRequest(username: username, domain: domain, password: password.sha256()!) { (responseData) in
-            self.showLoader(false)
-            if case .TooManyDevices = responseData {
-                self.showFeedback(true, String.localize("TOO_MANY_DEVICES"))
-                return
-            }
-            if case let .TooManyRequests(waitingTime) = responseData {
-                if waitingTime < 0 {
-                    self.showFeedback(true, String.localize("TOO_MANY_SIGNIN"))
-                } else {
-                    self.showFeedback(true, String.localize("ATTEMPTS_TIME_LEFT", arguments: Time.remaining(seconds: waitingTime)))
+        if(loginData.needToRemoveDevices){
+            APIManager.findDevices(username: username, domain: domain, password: password.sha256()!) { (responseData) in
+                self.showLoader(false)
+                if case let .TooManyRequests(waitingTime) = responseData {
+                    if waitingTime < 0 {
+                        self.showFeedback(true, String.localize("TOO_MANY_SIGNIN"))
+                    } else {
+                        self.showFeedback(true, String.localize("ATTEMPTS_TIME_LEFT", arguments: Time.remaining(seconds: waitingTime)))
+                    }
+                    return
                 }
-                return
-            }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.showFeedback(true, error.description)
-                return
-            }
-            if case .PreConditionFail = responseData {
+                if case let .Error(error) = responseData,
+                    error.code != .custom {
+                    self.showFeedback(true, error.description)
+                    return
+                }
+                guard case let .SuccessDictionary(data) = responseData,
+                    let devices = data["devices"] as? [[String: Any]],
+                    let token = data["token"] as? String else {
+                        self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
+                        return
+                }
                 let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let controller = storyboard.instantiateViewController(withIdentifier: "changePasswordLoginView")  as! ChangePasswordLoginViewController
+                let controller = storyboard.instantiateViewController(withIdentifier: "removeDevicesViewController")  as! RemoveDevicesViewController
                 self.loginData.password = password
                 controller.loginData = self.loginData
                 controller.multipleAccount = self.multipleAccount
-                self.navigationController?.pushViewController(controller, animated: true)
+                controller.tempToken = token
+                let myDevices = devices.map({Device.fromDictionary(data: $0, isLogin: true)}).sorted(by: {$0.safeDate > $1.safeDate})
+                controller.deviceData = DeviceSettingsData()
+                controller.deviceData.devices.append(contentsOf: myDevices)
+                let navSettingsVC = UINavigationController(rootViewController: controller)
+                navSettingsVC.navigationBar.isTranslucent = false
+                navSettingsVC.navigationBar.barTintColor = .charcoal
+                let attrs = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: Font.bold.size(17)!] as [NSAttributedString.Key : Any]
+                navSettingsVC.navigationBar.titleTextAttributes = attrs
+                self.present(navSettingsVC, animated: true, completion: nil)
                 self.showLoader(false)
-                return
+
             }
-            guard case let .SuccessString(dataString) = responseData,
-                let data = Utils.convertToDictionary(text: dataString) else {
-                    self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
+        } else {
+            APIManager.loginRequest(username: username, domain: domain, password: password.sha256()!) { (responseData) in
+                self.showLoader(false)
+                if case .TooManyDevices = responseData {
+                    self.showFeedback(true, String.localize("TOO_MANY_DEVICES"))
                     return
+                }
+                if case let .TooManyRequests(waitingTime) = responseData {
+                    if waitingTime < 0 {
+                        self.showFeedback(true, String.localize("TOO_MANY_SIGNIN"))
+                    } else {
+                        self.showFeedback(true, String.localize("ATTEMPTS_TIME_LEFT", arguments: Time.remaining(seconds: waitingTime)))
+                    }
+                    return
+                }
+                if case let .Error(error) = responseData,
+                    error.code != .custom {
+                    self.showFeedback(true, error.description)
+                    return
+                }
+                if case .PreConditionFail = responseData {
+                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                    let controller = storyboard.instantiateViewController(withIdentifier: "changePasswordLoginView")  as! ChangePasswordLoginViewController
+                    self.loginData.password = password
+                    controller.loginData = self.loginData
+                    controller.multipleAccount = self.multipleAccount
+                    self.navigationController?.pushViewController(controller, animated: true)
+                    self.showLoader(false)
+                    return
+                }
+                guard case let .SuccessString(dataString) = responseData,
+                    let data = Utils.convertToDictionary(text: dataString) else {
+                        self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
+                        return
+                }
+                let name = data["name"] as! String
+                let deviceId = data["deviceId"] as! Int
+                let token = data["token"] as! String
+                let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
+                signupData.deviceId = deviceId
+                signupData.token = token
+                signupData.comingFromLogin = true
+                self.jumpToCreatingAccount(signupData: signupData)
             }
-            let name = data["name"] as! String
-            let deviceId = data["deviceId"] as! Int
-            let token = data["token"] as! String
-            let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
-            signupData.deviceId = deviceId
-            signupData.token = token
-            signupData.comingFromLogin = true
-            self.jumpToCreatingAccount(signupData: signupData)
         }
     }
     

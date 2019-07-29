@@ -149,17 +149,17 @@ class UIUtils {
         
     }
     
-    class func createLeftBackButton(target: Any?) -> UIButton {
+    class func createLeftBackButton(target: Any?, image: UIImage? = #imageLiteral(resourceName: "arrow-back")) -> UIButton {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 31, height: 31))
         button.layer.cornerRadius = button.frame.width / 2
         button.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 0.13)
-        button.setImage(#imageLiteral(resourceName: "arrow-back").tint(with: .white), for: .normal)
+        button.setImage(image!.tint(with: .white), for: .normal)
         button.contentMode = .scaleAspectFit
         return button
     }
     
-    class func createLeftBackButton(target: Any?, action: Selector) -> UIBarButtonItem {
-        let button = createLeftBackButton(target: target)
+    class func createLeftBackButton(target: Any?, action: Selector, image: UIImage? = #imageLiteral(resourceName: "arrow-back")) -> UIBarButtonItem {
+        let button = createLeftBackButton(target: target, image: image)
         button.addTarget(target, action: action, for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }

@@ -432,3 +432,11 @@
 "BACKUP_RESTORE_MESSAGE" = "Restaura tu buzón desde un respaldo local o en la nube que hayas hecho anteriormente.";
 "BACKUP_RESTORE_CHANGE_FILE" = "Cambiar Archivo";
 "DRAFT_SAVED" = "Borrador Guardado";
+"DEVICE_LAST_ACTIVE" = "Última Actividad";
+"DEVICE_OVER_2_MONTHS" = "Hace más de 2 meses";
+"REMOVE_DEVICES_TITLE" = "REMOVER DISPOSITIVOS";
+"REMOVE_DEVICES_MESSAGE" = "Has llegado al límite de dispositivos (%i) conectados a tu cuenta. Debes eliminar al menos (%i) dispositivo para proceder. Al eliminarlo, tu sesion activa será cerrada en ese dispositivo.";
+"REMOVE_DEVICES_POPOVER_TITLE" = "Remover Dispositivos";
+"REMOVE_DEVICES_POPOVER_MESSAGE" = "Usted tiene aún (%i) dispositivos pendientes que eliminar, antes de poder iniciar su sesión.";
+"REMOVE_DEVICES_POPOVER_ERROR_TITLE" = "Sesión Expirada";
+"REMOVE_DEVICES_POPOVER_ERROR_MESSAGE" = "Lo sentimos tu sesión ha expirado, exediste el tiempo de inactividad permitido, vuelve a intentarlo.";

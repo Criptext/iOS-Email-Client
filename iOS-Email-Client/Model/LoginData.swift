@@ -15,6 +15,7 @@ class LoginData{
     var randomId: String?
     var isTwoFactor = false
     var password: String?
+    var needToRemoveDevices: Bool = false
     
     var email: String {
         return "\(username)@\(domain)"

@@ -18,6 +18,8 @@ class Device {
     var active = false
     var type = Kind.ios.rawValue
     var lastActivity: Date?
+    var isFromLogin = false
+    var checked = false
     var safeDate: Date {
         guard let myDate = lastActivity else {
             return Date(timeIntervalSinceNow: -(60 * 60 * 24 * 62))
@@ -45,7 +47,7 @@ class Device {
         ]
     }
     
-    class func fromDictionary(data: [String: Any]) -> Device {
+    class func fromDictionary(data: [String: Any], isLogin: Bool = false) -> Device {
         let lastActivity = data["lastActivity"] as? [String: Any]
         let dateString = lastActivity?["date"] as? String
         let location = lastActivity?["ip"] as? String
@@ -54,6 +56,7 @@ class Device {
         newDevice.id = data["deviceId"] as! Int
         newDevice.name = data["deviceName"] as! String
         newDevice.friendlyName = data["deviceFriendlyName"] as! String
+        newDevice.isFromLogin = isLogin
         
         newDevice.lastActivity = dateString != nil ? EventData.convertToDate(dateString: dateString!) : nil
         newDevice.location = location

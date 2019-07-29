@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A659822E126F1002D9151 /* LinkFileHeaderData.swift */; };
+		3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */; };
 		34C4173622BC20530095DF23 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */; };
 		34C4173722BC20530095DF23 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */; };
 		34C4173822BC20530095DF23 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173122BC20520095DF23 /* FirebaseNanoPB.framework */; };
@@ -519,6 +520,7 @@
 
 /* Begin PBXFileReference section */
 		347A659822E126F1002D9151 /* LinkFileHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileHeaderData.swift; sourceTree = "<group>"; };
+		3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevicesViewController.swift; sourceTree = "<group>"; };
 		34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
 		34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
 		34C4173122BC20520095DF23 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseNanoPB.framework; sourceTree = "<group>"; };
@@ -1502,6 +1504,7 @@
 				7C8D6C6D20362F8600AB96EF /* ResetDeviceViewController.swift */,
 				7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */,
 				48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */,
+				3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2019,6 +2022,7 @@
 				7C7F2FEF20B4BE6400A2CB32 /* LabelsLabelTableViewCell.swift in Sources */,
 				A72C185721AF165700D899EE /* MailboxNewsHeaderUIView.swift in Sources */,
 				7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */,
+				3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */,
 				7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */,
 				7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */,
 				7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */,
