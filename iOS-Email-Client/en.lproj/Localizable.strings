@@ -432,3 +432,11 @@
 "BACKUP_RESTORE_MESSAGE" = "Easily restore your mailbox from a local or cloud backup file.";
 "BACKUP_RESTORE_CHANGE_FILE" = "Change File";
 "DRAFT_SAVED" = "Draft Saved";
+"DEVICE_LAST_ACTIVE" = "Last Active";
+"DEVICE_OVER_2_MONTHS" = "Over 2 month ago";
+"REMOVE_DEVICES_TITLE" = "REMOVE DEVICES";
+"REMOVE_DEVICES_MESSAGE" = "You have reached the device limit (%i) on your account. Delete at least (%i) device in order to proceed. Once deleted, your active session on that device will be signed out.";
+"REMOVE_DEVICES_POPOVER_TITLE" = "Remove Devices";
+"REMOVE_DEVICES_POPOVER_MESSAGE" = "You still need to remove (%i) devices before you can continue login in.";
+"REMOVE_DEVICES_POPOVER_ERROR_TITLE" = "Expired Session";
+"REMOVE_DEVICES_POPOVER_ERROR_MESSAGE" = "We are sorry but your session has expired, this means that you exceeded the time permitted for inactivity, please try again.";

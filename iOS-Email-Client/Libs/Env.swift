@@ -87,6 +87,7 @@ struct Env {
     static let databaseVersion: UInt64 = 21
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 5
+    static let maxAllowedDevices = 10
     
     enum linkFileExtensions: String {
         case normal = "db"

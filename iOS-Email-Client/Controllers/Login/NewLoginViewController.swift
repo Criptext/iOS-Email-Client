@@ -236,7 +236,8 @@ class NewLoginViewController: UIViewController{
                 return
             }
             if case .TooManyDevices = responseData {
-                self.showLoginError(error: String.localize("TOO_MANY_DEVICES"))
+                loginData.needToRemoveDevices = true
+                self.jumpToLoginPasswordView(loginData: loginData)
                 return
             }
             if case let .Error(error) = responseData,
