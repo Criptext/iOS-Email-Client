@@ -36,6 +36,7 @@
                 <outlet property="successImage" destination="4rh-2l-H05" id="Gc2-WX-CEK"/>
                 <outlet property="titleLabel" destination="Zn2-S4-zxr" id="nsm-Ag-BpT"/>
                 <outlet property="view" destination="BjD-Bq-glM" id="g5Q-h8-GG4"/>
+                <outlet property="warningMessageLabel" destination="oyv-If-xy6" id="QEN-VK-6A8"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -185,9 +186,19 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do not leave the app or turn off your screen while this process is happening" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyv-If-xy6" userLabel="Warning Message Label">
+                    <rect key="frame" x="23" y="508" width="329" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="cfO-DK-bvP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                    <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="oyv-If-xy6" firstAttribute="top" secondItem="I2c-6Y-BuD" secondAttribute="bottom" constant="17" id="0Fg-Sx-tnf"/>
                 <constraint firstItem="Zn2-S4-zxr" firstAttribute="centerX" secondItem="sjD-Xh-tse" secondAttribute="centerX" id="1xN-MI-myb"/>
                 <constraint firstItem="4rh-2l-H05" firstAttribute="centerX" secondItem="p8P-Xu-AGe" secondAttribute="centerX" id="5lE-Ke-7FX"/>
                 <constraint firstItem="6n3-A1-hlj" firstAttribute="top" secondItem="BRJ-lk-cCl" secondAttribute="bottom" constant="12" id="8y1-Yh-Sn1"/>
@@ -196,11 +207,13 @@
                 <constraint firstItem="4rh-2l-H05" firstAttribute="top" secondItem="p8P-Xu-AGe" secondAttribute="bottom" constant="65" id="IKP-fy-9Wg"/>
                 <constraint firstItem="6n3-A1-hlj" firstAttribute="centerX" secondItem="sjD-Xh-tse" secondAttribute="centerX" id="JK9-p9-waY"/>
                 <constraint firstItem="DRm-qL-uYQ" firstAttribute="leading" secondItem="p8P-Xu-AGe" secondAttribute="trailing" constant="13" id="Ly9-Ys-q03"/>
+                <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="oyv-If-xy6" secondAttribute="trailing" constant="23" id="QAx-Rn-dVX"/>
                 <constraint firstItem="sjD-Xh-tse" firstAttribute="trailing" secondItem="I2c-6Y-BuD" secondAttribute="trailing" constant="23" id="UJU-1z-OmX"/>
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="centerX" secondItem="BjD-Bq-glM" secondAttribute="centerX" id="X8W-Pn-qVd"/>
                 <constraint firstItem="Arr-wh-3Qv" firstAttribute="centerX" secondItem="sjD-Xh-tse" secondAttribute="centerX" id="XcS-2r-9Dg"/>
                 <constraint firstItem="sjD-Xh-tse" firstAttribute="bottom" secondItem="Arr-wh-3Qv" secondAttribute="bottom" constant="30" id="ZkU-wB-L5e"/>
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="leading" secondItem="JNI-pY-rPy" secondAttribute="trailing" constant="13" id="agc-Bz-ZpV"/>
+                <constraint firstItem="oyv-If-xy6" firstAttribute="leading" secondItem="sjD-Xh-tse" secondAttribute="leading" constant="23" id="ahz-vQ-dFX"/>
                 <constraint firstItem="Ei6-qi-JLl" firstAttribute="centerY" secondItem="4rh-2l-H05" secondAttribute="centerY" id="alA-9s-NWr"/>
                 <constraint firstItem="p8P-Xu-AGe" firstAttribute="centerY" secondItem="sjD-Xh-tse" secondAttribute="centerY" multiplier="0.87" id="bhr-TN-aUD"/>
                 <constraint firstItem="I2c-6Y-BuD" firstAttribute="leading" secondItem="sjD-Xh-tse" secondAttribute="leading" constant="23" id="esQ-GO-eXd"/>

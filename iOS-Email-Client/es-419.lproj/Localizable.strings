@@ -67,7 +67,7 @@
 "NOT_VALID_EMAIL" = "Dirección de correo inválida.";
 "CONTINUE" = "Continuar";
 "TERMS_CONDITIONS" = "Términos & Condiciones";
-"ACCEPT_TERMS" = "Al hacer clic en crear cuenta, aceptas nuestros";
+"ACCEPT_TERMS" = "Al hacer clic en crear cuenta, aceptas nuestros ";
 "WARNING_RECOVERY_2" = " Correo de Recuperación ";
 "WARNING_RECOVERY_1" = "NO estableciste un";
 "WARNING_RECOVERY_3" = "por lo que la recuperación de la cuenta es imposible si olvidas tu contraseña.";
@@ -440,3 +440,6 @@
 "REMOVE_DEVICES_POPOVER_MESSAGE" = "Usted tiene aún (%i) dispositivos pendientes que eliminar, antes de poder iniciar su sesión.";
 "REMOVE_DEVICES_POPOVER_ERROR_TITLE" = "Sesión Expirada";
 "REMOVE_DEVICES_POPOVER_ERROR_MESSAGE" = "Lo sentimos tu sesión ha expirado, exediste el tiempo de inactividad permitido, vuelve a intentarlo.";
+"HAVING_TROUBLE" = "¿Necesitas ayuda? ";
+"CONTACT_SUPPORT" = "Contáctanos";
+"SYNC_WARNING_MESSAGE" = "No cierres la aplicación o apagues la pantalla hasta que termine este proceso";

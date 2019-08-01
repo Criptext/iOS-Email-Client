@@ -18,6 +18,7 @@ class ConnectUIView: UIView {
     @IBOutlet weak var successImage: UIImageView!
     @IBOutlet weak var backgroundCircle: UIView!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var warningMessageLabel: UILabel!
     @IBOutlet weak var goBackButton: UIButton!
     @IBOutlet weak var percentageView: TipUIView!
     @IBOutlet weak var leftDeviceImage: UIImageView!
@@ -35,6 +36,7 @@ class ConnectUIView: UIView {
     
     func initialLoad(email: String) {
         emailLabel.text = email
+        warningMessageLabel.text = String.localize("SYNC_WARNING_MESSAGE")
         progressAnimatedView.isHidden = false
         successImage.isHidden = true
         backgroundCircle.isHidden = true
@@ -88,6 +90,7 @@ class ConnectUIView: UIView {
         view.backgroundColor = .clear
         emailLabel.textColor = theme.secondText
         messageLabel.textColor = theme.mainText
+        warningMessageLabel.textColor = theme.secondText
         goBackButton.setTitleColor(theme.criptextBlue, for: .normal)
         percentageView.backgroundColor = .clear
         counterLabel.textColor = theme.overallBackground

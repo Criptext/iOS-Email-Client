@@ -39,6 +39,7 @@ class ManualSyncViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.isIdleTimerDisabled = true
         self.previousWebsocketDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = nil
         socket = SingleWebSocket()
@@ -78,6 +79,7 @@ class ManualSyncViewController: UIViewController{
     }
     
     func goBack(){
+        UIApplication.shared.isIdleTimerDisabled = false
         socket?.close()
         scheduleWorker.cancel()
         WebSocketManager.sharedInstance.delegate = previousWebsocketDelegate
@@ -162,6 +164,7 @@ class ManualSyncViewController: UIViewController{
         self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
             self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                UIApplication.shared.isIdleTimerDisabled = false
                 self.dismissToRoot()
             }
         }

@@ -94,6 +94,19 @@
                                     <action selector="didPressSignupWithSender:" destination="xiP-Yr-e9p" eventType="touchUpInside" id="ZBV-kU-rAy"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58C-Tv-8oi" userLabel="Contact Support Button">
+                                <rect key="frame" x="63" y="627" width="249" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="T4y-6S-mbn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                <state key="normal" title="Having trouble? Contact Support">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressContactSupportWithSender:" destination="xiP-Yr-e9p" eventType="touchUpInside" id="Pkn-B9-MQI"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mark-error" translatesAutoresizingMaskIntoConstraints="NO" id="0kC-sy-x2w">
                                 <rect key="frame" x="21" y="394.5" width="22" height="22"/>
                                 <constraints>
@@ -144,6 +157,7 @@
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="hQN-zb-RQx" secondAttribute="trailing" constant="22" id="Iw9-Nm-Xh2"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="uqv-px-110" secondAttribute="trailing" constant="22" id="LkO-oq-n1a"/>
                             <constraint firstItem="8h7-e5-yyo" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="20" id="MX3-Qx-9v4"/>
+                            <constraint firstItem="58C-Tv-8oi" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="MYv-AT-jhq"/>
                             <constraint firstItem="Ksj-Vf-DXI" firstAttribute="centerY" secondItem="Z38-EZ-ooJ" secondAttribute="centerY" id="Nay-Ce-J6A"/>
                             <constraint firstItem="hQN-zb-RQx" firstAttribute="top" secondItem="Z38-EZ-ooJ" secondAttribute="bottom" constant="16" id="QDH-Zl-HZ8"/>
                             <constraint firstItem="Kdd-Jg-Qc6" firstAttribute="centerY" secondItem="aRw-9s-cBf" secondAttribute="centerY" multiplier="0.6" id="RoQ-C3-CI8"/>
@@ -151,6 +165,7 @@
                             <constraint firstItem="hQN-zb-RQx" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="VzL-qi-Orq"/>
                             <constraint firstItem="gtO-CH-xJW" firstAttribute="trailing" secondItem="bWh-30-jzP" secondAttribute="trailing" constant="56" id="Yq7-e7-Jky"/>
                             <constraint firstItem="uqv-px-110" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="22" id="Z3c-n8-YwC"/>
+                            <constraint firstItem="gtO-CH-xJW" firstAttribute="bottom" secondItem="58C-Tv-8oi" secondAttribute="bottom" constant="10" id="c0W-sS-7hm"/>
                             <constraint firstItem="Kdd-Jg-Qc6" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="eAP-bD-gmh"/>
                             <constraint firstItem="bWh-30-jzP" firstAttribute="centerY" secondItem="gtO-CH-xJW" secondAttribute="centerY" multiplier="1.18" id="h1a-4o-g83"/>
                             <constraint firstItem="Z38-EZ-ooJ" firstAttribute="leading" secondItem="gtO-CH-xJW" secondAttribute="leading" constant="56" id="h2a-g1-dqz"/>
@@ -179,6 +194,7 @@
                         <outlet property="loginButton" destination="Z38-EZ-ooJ" id="KiT-1q-DaN"/>
                         <outlet property="loginErrorLabel" destination="3eC-DY-ikl" id="ToA-VM-DXU"/>
                         <outlet property="signupButton" destination="hQN-zb-RQx" id="Zc2-1y-9YR"/>
+                        <outlet property="supportButton" destination="58C-Tv-8oi" id="edW-YH-can"/>
                         <outlet property="usernameTextField" destination="bWh-30-jzP" id="Ovx-Zw-dtM"/>
                     </connections>
                 </viewController>
@@ -432,6 +448,9 @@
                                                 <state key="normal" title="Button">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="didPressTermsAndConditionsWithSender:" destination="OMZ-WS-rzb" eventType="touchUpInside" id="5id-eT-gbS"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwZ-3C-ekg">
                                                 <rect key="frame" x="38" y="562.5" width="299" height="44"/>
@@ -488,6 +507,19 @@
                                                     <constraint firstAttribute="height" constant="22" id="yAL-nO-e8Z"/>
                                                 </constraints>
                                             </imageView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0c4-qk-ZDM" userLabel="Contact Support Button">
+                                                <rect key="frame" x="63" y="641.5" width="249" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="zl1-CO-nc2"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                                <state key="normal" title="Having trouble? Contact Support">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didPressContactSupportWithSender:" destination="OMZ-WS-rzb" eventType="touchUpInside" id="4fa-V5-Xr3"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -502,6 +534,7 @@
                                             <constraint firstItem="Z8F-vI-hLI" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="56" id="D8e-jo-dTl"/>
                                             <constraint firstItem="SgK-nP-bnV" firstAttribute="centerY" secondItem="lKE-K8-r13" secondAttribute="centerY" id="DWy-bX-pv8"/>
                                             <constraint firstItem="sfj-a2-H3S" firstAttribute="top" secondItem="XJO-nj-02i" secondAttribute="top" constant="20" id="DYC-X7-Ucl"/>
+                                            <constraint firstItem="0c4-qk-ZDM" firstAttribute="top" secondItem="SwZ-3C-ekg" secondAttribute="bottom" constant="35" id="FVv-0e-KPC"/>
                                             <constraint firstAttribute="trailing" secondItem="Z8F-vI-hLI" secondAttribute="trailing" constant="54" id="Fju-oR-7eU"/>
                                             <constraint firstItem="SwZ-3C-ekg" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="38" id="Hja-fC-7tP"/>
                                             <constraint firstItem="ECp-md-B7C" firstAttribute="leading" secondItem="XJO-nj-02i" secondAttribute="leading" constant="20" id="LT7-CC-7xc"/>
@@ -529,6 +562,7 @@
                                             <constraint firstItem="MIl-CE-AOA" firstAttribute="top" secondItem="lKE-K8-r13" secondAttribute="bottom" constant="28" id="oWf-zz-CQI"/>
                                             <constraint firstAttribute="trailing" secondItem="S1o-cP-DdO" secondAttribute="trailing" constant="33" id="oyX-ed-bd6"/>
                                             <constraint firstItem="BJd-tc-Byi" firstAttribute="top" secondItem="Z8F-vI-hLI" secondAttribute="bottom" constant="25" id="rxi-WD-Jbz"/>
+                                            <constraint firstItem="0c4-qk-ZDM" firstAttribute="centerX" secondItem="XJO-nj-02i" secondAttribute="centerX" id="t0x-VR-Dof"/>
                                             <constraint firstItem="dOO-af-B6t" firstAttribute="centerY" secondItem="hMh-fe-2y4" secondAttribute="centerY" id="tge-88-I9P"/>
                                             <constraint firstItem="Z8F-vI-hLI" firstAttribute="leading" secondItem="MbI-dj-nco" secondAttribute="trailing" constant="13" id="wRl-iE-c8f"/>
                                             <constraint firstItem="Bwk-sb-baI" firstAttribute="centerY" secondItem="BJd-tc-Byi" secondAttribute="centerY" id="xsB-YH-wdq"/>
@@ -576,6 +610,7 @@
                         <outlet property="passwordMark" destination="MbI-dj-nco" id="K84-6U-xsX"/>
                         <outlet property="passwordTextField" destination="Z8F-vI-hLI" id="b6Y-pi-ank"/>
                         <outlet property="scrollView" destination="Rdq-Q8-Fdr" id="bOF-hX-i2N"/>
+                        <outlet property="supportButton" destination="0c4-qk-ZDM" id="vp0-Oj-9aA"/>
                         <outlet property="termsConditionsLabel" destination="MIl-CE-AOA" id="oSH-rD-mWL"/>
                         <outlet property="usernameMark" destination="AIa-vJ-eF7" id="rA4-K7-pKF"/>
                         <outlet property="usernameTextField" destination="hMh-fe-2y4" id="TA5-mX-TmP"/>
@@ -704,7 +739,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGe-4s-CNR">
-                                                <rect key="frame" x="33" y="111" width="309" height="37"/>
+                                                <rect key="frame" x="33" y="113.5" width="309" height="31.5"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-SemiBold" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -724,7 +759,7 @@ was rejected by a verified device</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="device-alert" translatesAutoresizingMaskIntoConstraints="NO" id="u04-Cm-YDi">
-                                                        <rect key="frame" x="162.5" y="299.5" width="50.000000000000014" height="50"/>
+                                                        <rect key="frame" x="162.5" y="299.5" width="50" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="50" id="LZr-Cj-ZWh"/>
                                                             <constraint firstAttribute="height" constant="50" id="a7m-S3-MgJ"/>

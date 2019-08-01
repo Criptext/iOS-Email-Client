@@ -440,3 +440,6 @@
 "REMOVE_DEVICES_POPOVER_MESSAGE" = "You still need to remove (%i) devices before you can continue login in.";
 "REMOVE_DEVICES_POPOVER_ERROR_TITLE" = "Expired Session";
 "REMOVE_DEVICES_POPOVER_ERROR_MESSAGE" = "We are sorry but your session has expired, this means that you exceeded the time permitted for inactivity, please try again.";
+"HAVING_TROUBLE" = "Having trouble? ";
+"CONTACT_SUPPORT" = "Contact Support";
+"SYNC_WARNING_MESSAGE" = "Do not leave the app or turn off your screen while this process is happening";

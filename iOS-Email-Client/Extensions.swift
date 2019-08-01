@@ -10,6 +10,7 @@ import Foundation
 import MobileCoreServices
 import RichEditorView
 import SignalProtocolFramework
+import SafariServices
 
 extension UIColor {
     convenience init(hex: String) {
@@ -31,6 +32,11 @@ extension UIColor {
 }
 
 extension UIViewController {
+    func goToUrl(url: String){
+        let svc = SFSafariViewController(url: URL(string: url)!)
+        self.present(svc, animated: true, completion: nil)
+    }
+    
     func getTopView() -> UIViewController {
         if let _ = self.presentedViewController as? BaseUIPopover {
             return self
