@@ -363,11 +363,6 @@ class SettingsGeneralViewController: UIViewController{
         profileVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(profileVC, animated: true)
     }
-    
-    func goToUrl(url: String){
-        let svc = SFSafariViewController(url: URL(string: url)!)
-        self.present(svc, animated: true, completion: nil)
-    }
 }
 
 extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSource {

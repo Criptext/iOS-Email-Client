@@ -28,7 +28,6 @@ class SecurityPrivacyViewController: UITableViewController {
         case biometric
         case twoFactor
         case receipts
-        case encryptToExternal
         
         var description: String {
             switch(self) {
@@ -42,8 +41,6 @@ class SecurityPrivacyViewController: UITableViewController {
                 return String.localize("TWO_FACTOR")
             case .receipts:
                 return String.localize("READ_RECEIPTS")
-            case .encryptToExternal:
-                return String.localize("ENCRYPT_TO_EXTERNAL")
             case .biometric:
                 return ""
             }
@@ -105,10 +102,8 @@ class SecurityPrivacyViewController: UITableViewController {
     func initializePrivacyOptions() {
         let twoFactor = PrivacyOption(label: .twoFactor, pick: nil, isOn: true, hasFlow: false, detail: String.localize("TWO_FACTOR_DETAIL"), isEnabled: true)
         let receipts = PrivacyOption(label: .receipts, pick: nil, isOn: true, hasFlow: false, detail: String.localize("RECEIPTS_DETAIL"), isEnabled: true)
-        let encrypt = PrivacyOption(label: .encryptToExternal, pick: nil, isOn: false, hasFlow: false, detail: String.localize("ENCRYPT_EXTERNALS_DETAIL"), isEnabled: true)
         options.append(receipts)
         options.append(twoFactor)
-        options.append(encrypt)
         toggleOptions()
     }
     
@@ -129,8 +124,6 @@ class SecurityPrivacyViewController: UITableViewController {
             case .receipts:
                 newOption.isEnabled = !generalData.loadingReceipts
                 newOption.isOn = generalData.hasEmailReceipts
-            case .encryptToExternal:
-                newOption.isOn = myAccount.encryptToExternal
             case .biometric:
                 newOption.isEnabled = defaults.hasPIN && biometricType != .none
                 newOption.isOn = defaults.hasFaceID || defaults.hasFingerPrint
@@ -183,9 +176,6 @@ class SecurityPrivacyViewController: UITableViewController {
         case .twoFactor:
             let isOn = !(option.isOn ?? false)
             self.setTwoFactor(enable: isOn)
-        case .encryptToExternal:
-            let isOn = !(option.isOn ?? false)
-            self.setEncryptToExternals(enable: isOn)
         case .biometric:
             let isOn = !(option.isOn ?? false)
             switch(self.biometricType) {
@@ -245,11 +235,6 @@ class SecurityPrivacyViewController: UITableViewController {
             }
             self.toggleOptions()
         }
-    }
-    
-    func setEncryptToExternals(enable: Bool){
-        SharedDB.update(account: self.myAccount, encryptToExternal: enable)
-        self.toggleOptions()
     }
     
     func setTwoFactor(enable: Bool){

@@ -15,6 +15,7 @@ class SignUpViewController: UIViewController{
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var termsConditionsLabel: UIButton!
     @IBOutlet weak var createAccountButton: UIButton!
+    @IBOutlet weak var supportButton: UIButton!
 
     @IBOutlet weak var usernameTextField: StatusTextField!
     @IBOutlet weak var fullnameTextField: StatusTextField!
@@ -37,6 +38,7 @@ class SignUpViewController: UIViewController{
         super.viewDidLoad()
         labelInit()
         fieldsInit()
+        supportButtonInit()
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -77,6 +79,19 @@ class SignUpViewController: UIViewController{
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         confirmPasswordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         emailTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
+    }
+    
+    func supportButtonInit(){
+        let boldText  = String.localize("CONTACT_SUPPORT")
+        let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.white]
+        let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
+        
+        let normalText = String.localize("HAVING_TROUBLE")
+        let normalAttrs = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.white]
+        let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
+        
+        normalString.append(attributedString)
+        supportButton.setAttributedTitle(normalString, for: .normal)
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -121,6 +136,14 @@ class SignUpViewController: UIViewController{
         default: return
         }
         checkToEnableDisableCreateButton()
+    }
+    
+    @IBAction func didPressContactSupport(sender: Any) {
+        goToUrl(url: "https://criptext.com/\(Env.language)/contact")
+    }
+    
+    @IBAction func didPressTermsAndConditions(sender: Any) {
+        goToUrl(url: "https://criptext.com/\(Env.language)/terms")
     }
     
     func checkUsername(){

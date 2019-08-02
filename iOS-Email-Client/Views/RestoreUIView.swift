@@ -28,6 +28,7 @@ class RestoreUIView: UIView {
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var warningMessageLabel: UILabel!
     @IBOutlet weak var restoreButton: UIButton!
     @IBOutlet weak var changeFileButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
@@ -57,6 +58,8 @@ class RestoreUIView: UIView {
         passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("ENTER_PASSPHRASE"), attributes: [.foregroundColor: theme.placeholder, .font: 
             Font.regular.size(passwordTextField.minimumFontSize)!])
         passwordTextField.visibilityIconButton?.tintColor = theme.placeholder
+        
+        warningMessageLabel.textColor = theme.secondText
         
         view.backgroundColor = theme.overallBackground
     }
@@ -104,6 +107,7 @@ class RestoreUIView: UIView {
         progressBar.isHidden = true
         cancelButton.isHidden = false
         percentageContainerView.isHidden = true
+        warningMessageLabel.isHidden = true
         passwordHeightConstraint.constant = 0
         passwordTextField.isHidden = true
     }
@@ -135,6 +139,7 @@ class RestoreUIView: UIView {
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
+        warningMessageLabel.isHidden = true
         if(isEncrypted){
             passwordHeightConstraint.constant = 30
             passwordTextField.isHidden = false
@@ -161,6 +166,7 @@ class RestoreUIView: UIView {
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
+        warningMessageLabel.isHidden = true
         passwordHeightConstraint.constant = 0
         passwordTextField.isHidden = true
     }
@@ -190,6 +196,7 @@ class RestoreUIView: UIView {
         cancelButton.isHidden = false
         progressBar.isHidden = true
         percentageContainerView.isHidden = true
+        warningMessageLabel.isHidden = true
         if(isEncrypted){
             passwordTextField.text = nil
             passwordHeightConstraint.constant = 30
@@ -210,6 +217,7 @@ class RestoreUIView: UIView {
         } else {
             cloudImageView.image = UIImage(named: "cloud-big")
         }
+        warningMessageLabel.text = String.localize("SYNC_WARNING_MESSAGE")
         
         messageLabel.isHidden = true
         restoreButton.isHidden = true
@@ -218,6 +226,7 @@ class RestoreUIView: UIView {
         
         progressBar.isHidden = false
         percentageContainerView.isHidden = false
+        warningMessageLabel.isHidden = false
         passwordHeightConstraint.constant = 0
         passwordTextField.isHidden = true
     }

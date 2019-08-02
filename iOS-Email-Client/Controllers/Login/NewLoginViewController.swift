@@ -13,6 +13,7 @@ class NewLoginViewController: UIViewController{
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
+    @IBOutlet weak var supportButton: UIButton!
     @IBOutlet weak var usernameTextField: TextField!
     @IBOutlet weak var errorImage: UIImageView!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
@@ -25,6 +26,7 @@ class NewLoginViewController: UIViewController{
     
         loginButtonInit()
         usernameTextFieldInit()
+        supportButtonInit()
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -76,6 +78,19 @@ class NewLoginViewController: UIViewController{
     
         normalString.append(attributedString)
         signupButton.setAttributedTitle(normalString, for: .normal)
+    }
+    
+    func supportButtonInit(){
+        let boldText  = String.localize("CONTACT_SUPPORT")
+        let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.white]
+        let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
+        
+        let normalText = String.localize("HAVING_TROUBLE")
+        let normalAttrs = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.white]
+        let normalString = NSMutableAttributedString(string:normalText, attributes: normalAttrs)
+        
+        normalString.append(attributedString)
+        supportButton.setAttributedTitle(normalString, for: .normal)
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -271,6 +286,10 @@ class NewLoginViewController: UIViewController{
     
     @IBAction func didPressSignup(sender: Any) {
         self.jumpToSignupDeviceView()
+    }
+    
+    @IBAction func didPressContactSupport(sender: Any) {
+        goToUrl(url: "https://criptext.com/\(Env.language)/contact")
     }
     
     @IBAction func didPressClose(sender: Any) {

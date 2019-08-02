@@ -589,27 +589,8 @@ class ComposeViewController: UIViewController {
     func prepareMail(){
         let draftEmail = saveDraft()
         composerData.emailDraft = draftEmail
-        
-        let containsNonCriptextEmail = draftEmail.getContacts(type: .to).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .cc).contains(where: {!$0.email.contains(Constants.domain)}) || draftEmail.getContacts(type: .bcc).contains(where: {!$0.email.contains(Constants.domain)})
-        
-        guard !(containsNonCriptextEmail && activeAccount.encryptToExternal) else {
-            self.presentPopover()
-            return
-        }
-        
         self.toggleInteraction(false)
         sendMailInMainController()
-    }
-    
-    func presentPopover(){
-        let setPassPopover = EmailSetPasswordViewController()
-        setPassPopover.delegate = self
-        setPassPopover.preferredContentSize = CGSize(width: Constants.popoverWidth, height: PASSWORD_POPUP_HEIGHT)
-        setPassPopover.popoverPresentationController?.sourceView = self.view
-        setPassPopover.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-        setPassPopover.popoverPresentationController?.permittedArrowDirections = []
-        setPassPopover.popoverPresentationController?.backgroundColor = ThemeManager.shared.theme.overallBackground
-        self.present(setPassPopover, animated: true)
     }
     
     @IBAction func didPressCC(_ sender: UIButton) {

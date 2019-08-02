@@ -21,6 +21,7 @@ protocol EmailTableViewCellDelegate: class {
     func tableViewCellDidTapLink(url: String)
     func tableViewCellDidTapEmail(email: String)
     func tableViewExpandViews()
+    func tableViewDeleteDraft(email: Email)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -37,6 +38,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var borderBGView: UIView!
     @IBOutlet weak var contactsCollapseLabel: UILabel!
     @IBOutlet weak var miniAttachmentIconView: UIImageView!
+    @IBOutlet weak var secureIconView: UIImageView!
     @IBOutlet weak var miniReadIconView: UIImageView!
     @IBOutlet weak var attachmentsTableView: UITableView!
     @IBOutlet weak var attachmentsTableHeightConstraint: NSLayoutConstraint!
@@ -54,6 +56,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var readStatusContentMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var circleLoaderUIView: CircleLoaderUIView!
     @IBOutlet weak var moreOptionsIcon: UIImageView!
+    @IBOutlet weak var deleteDraftButton: UIButton!
     let webView: WKWebView
     
     var email: Email!
@@ -206,6 +209,7 @@ class EmailTableViewCell: UITableViewCell{
         dateWidthConstraint.constant = size.width
         
         miniAttachmentIconView.isHidden = email.files.count == 0
+        secureIconView.isHidden = !email.secure
         webViewWrapperView.isHidden = !isExpanded
         attachmentsTableView.isHidden = !isExpanded
         previewLabel.isHidden = isExpanded
@@ -242,10 +246,12 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setCollapsedContent(_ email: Email){
+        deleteDraftButton.isHidden = true
         previewLabel.text = email.getPreview()
     }
     
     func setExpandedContent(_ email: Email, myEmail: String){
+        deleteDraftButton.isHidden = !email.isDraft
         moreOptionsIcon.image = email.isDraft ? #imageLiteral(resourceName: "icon-edit") : #imageLiteral(resourceName: "dots-options")
         let allContacts = Array(email.getContacts(type: .to)) + Array(email.getContacts(type: .cc)) + Array(email.getContacts(type: .bcc))
         contactsLabel.text = allContacts.reduce("", { (result, contact) -> String in
@@ -274,6 +280,9 @@ class EmailTableViewCell: UITableViewCell{
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
         guard contact.email != myEmail else {
             return String.localize("TO_ME")
+        }
+        guard contact.displayName != "" else {
+            return contact.displayName
         }
         guard contactsLength > 1 else {
             return contact.displayName
@@ -330,6 +339,10 @@ class EmailTableViewCell: UITableViewCell{
         } else {
             delegate.tableViewCellDidTap(self)
         }
+    }
+    
+    @IBAction func onDeleteDraftPressed(_ sender: Any) {
+        delegate?.tableViewDeleteDraft(email: email)
     }
     
     @IBAction func onMorePress(_ sender: Any) {

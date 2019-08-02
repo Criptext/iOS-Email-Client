@@ -45,6 +45,7 @@ class ConnectDeviceViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.isIdleTimerDisabled = true
         socket = SingleWebSocket()
         socket?.delegate = self
         connectUIView.initialLoad(email: "\(signupData.username)@\(signupData.domain)")
@@ -89,6 +90,7 @@ class ConnectDeviceViewController: UIViewController{
     }
     
     func goBack(){
+        UIApplication.shared.isIdleTimerDisabled = false
         socket?.close()
         scheduleWorker.cancel()
         cleanData()
@@ -187,6 +189,7 @@ class ConnectDeviceViewController: UIViewController{
         self.connectUIView.progressChange(value: self.PROGRESS_COMPLETE, message: String.localize("DECRYPTING_MAIL")) {
             self.connectUIView.messageLabel.text = String.localize("MAIL_RESTORED")
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                UIApplication.shared.isIdleTimerDisabled = false
                 if self.multipleAccount {
                     self.goBackToMailbox(account: myAccount)
                 } else {

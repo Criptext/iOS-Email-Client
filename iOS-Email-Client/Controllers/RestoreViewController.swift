@@ -31,6 +31,7 @@ class RestoreViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.isIdleTimerDisabled = true
         
         contentView.delegate = self
         
@@ -85,6 +86,7 @@ extension RestoreViewController: RestoreDelegate {
     }
     
     func cancelRestore() {
+        UIApplication.shared.isIdleTimerDisabled = false
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -173,6 +175,7 @@ extension RestoreViewController: RestoreDelegate {
     
     func restoreSuccess() {
         self.contentView.animateProgress(100, 2, completion: {
+            UIApplication.shared.isIdleTimerDisabled = false
             guard let inboxVC = (UIApplication.shared.delegate as? AppDelegate)?.getInboxVC() else {
                 self.dismiss(animated: true, completion: nil)
                 return

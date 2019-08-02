@@ -67,44 +67,42 @@ class EmailDetailViewController: UIViewController {
             guard let tableView = self?.emailsTableView else {
                 return
             }
+            guard let weakSelf = self else {
+                return
+            }
             switch(changes){
             case .initial:
                 tableView.reloadData()
             case .update(_, let deletions, let insertions, _):
                 insertions.forEach({ (position) in
-                    guard let email = self?.emailData.emails[position],
-                        self?.emailData.bodies[email.key] == nil,
-                        let myAccount = self?.myAccount else {
-                            return
+                    let email = weakSelf.emailData.emails[position]
+                    guard let myAccount = weakSelf.myAccount else {
+                        return
                     }
-                    self?.emailData.bodies[email.key] = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+                    if(weakSelf.emailData.bodies[email.key] == nil){
+                        weakSelf.emailData.bodies[email.key] = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+                    }
                 })
                 if deletions.count > 0 {
-                    self?.calculateCollapse()
+                    weakSelf.calculateCollapse()
                 }
+                weakSelf.emailData.rebuildLabels()
+                (weakSelf.myHeaderView as? EmailDetailHeaderCell)?.addLabels(weakSelf.emailData.labels)
                 tableView.reloadData()
-                self?.emailData.rebuildLabels()
                 let hasNewInboxEmail = insertions.contains(where: { (position) -> Bool in
-                    guard let email = self?.emailData.emails[position],
-                        email.labels.contains(where: {$0.id == SystemLabel.inbox.id}) else {
-                            return false
-                    }
-                    return true
+                    let email = weakSelf.emailData.emails[position]
+                    return email.labels.contains(where: {$0.id == SystemLabel.inbox.id})
                 })
                 if (hasNewInboxEmail) {
-                    self?.showSnackbar(String.localize("HAVE_NEW_EMAIL"), attributedText: nil, buttons: "", permanent: false)
+                    weakSelf.showSnackbar(String.localize("HAVE_NEW_EMAIL"), attributedText: nil, buttons: "", permanent: false)
                 }
             default:
                 break
             }
             
-            guard let myself = self else {
-                return
-            }
-            
-            if(myself.emailData.emails.isEmpty){
-                myself.mailboxData.removeSelectedRow = true
-                myself.navigationController?.popViewController(animated: true)
+            if(weakSelf.emailData.emails.isEmpty){
+                weakSelf.mailboxData.removeSelectedRow = true
+                weakSelf.navigationController?.popViewController(animated: true)
             }
         }
         applyTheme()
@@ -301,6 +299,10 @@ extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension EmailDetailViewController: EmailTableViewCellDelegate {
+    
+    func tableViewDeleteDraft(email: Email) {
+        DBManager.delete(email)
+    }
     
     func tableViewExpandViews() {
         isExpanded = true
