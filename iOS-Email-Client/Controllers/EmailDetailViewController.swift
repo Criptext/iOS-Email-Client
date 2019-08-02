@@ -87,7 +87,7 @@ class EmailDetailViewController: UIViewController {
                     weakSelf.calculateCollapse()
                 }
                 weakSelf.emailData.rebuildLabels()
-                (weakSelf.myHeaderView as! EmailDetailHeaderCell).addLabels(weakSelf.emailData.labels)
+                (weakSelf.myHeaderView as? EmailDetailHeaderCell)?.addLabels(weakSelf.emailData.labels)
                 tableView.reloadData()
                 let hasNewInboxEmail = insertions.contains(where: { (position) -> Bool in
                     let email = weakSelf.emailData.emails[position]
