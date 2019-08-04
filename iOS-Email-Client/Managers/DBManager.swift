@@ -170,6 +170,7 @@ class DBManager: SharedDB {
             if let uuid = object["uuid"]{
                 label.uuid = uuid as! String
             }
+            print("LABEL : \(label.text)")
             realm.add(label, update: true)
         case "email":
             let id = object["id"] as! Int

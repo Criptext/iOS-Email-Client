@@ -322,7 +322,7 @@ class ComposeViewController: UIViewController {
             self.thumbUpdated = true
         }
         
-        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
+        checkEnableSendButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -521,7 +521,7 @@ class ComposeViewController: UIViewController {
     }
     
     func toggleInteraction(_ flag:Bool){
-        self.navigationItem.rightBarButtonItem = flag ? self.enableSendButton : self.disableSendButton
+        self.navigationItem.rightBarButtonItem = self.disableSendButton
         
         self.view.isUserInteractionEnabled = flag
         self.navigationController?.navigationBar.layer.zPosition = flag ? 0 : -1
@@ -952,7 +952,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
     }
 
     func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
-        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
+        checkEnableSendButton()
         self.contactTableView.isHidden = true
         
         guard let text = view.text, text.count > 0 else {
@@ -970,8 +970,12 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
     }
     
-    func tokenInputView(_ view: CLTokenInputView, didRemove token: CLToken) {
+    func checkEnableSendButton() {
         self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
+    }
+    
+    func tokenInputView(_ view: CLTokenInputView, didRemove token: CLToken) {
+        checkEnableSendButton()
     }
     
     func tokenInputView(_ view: CLTokenInputView, didChangeHeightTo height: CGFloat) {
@@ -1047,6 +1051,7 @@ extension ComposeViewController: CNContactPickerDelegate {
             
             view.remove(token)
             view.add(token, highlight: textColor, background: bgColor)
+            self.checkEnableSendButton()
         }
         return checked
     }
@@ -1081,7 +1086,7 @@ extension ComposeViewController: CNContactPickerDelegate {
         
         view.add(token, highlight: textColor, background: bgColor)
         
-        self.navigationItem.rightBarButtonItem = (!self.toField.allTokens.isEmpty || !self.ccField.allTokens.isEmpty || !self.bccField.allTokens.isEmpty) ? self.enableSendButton : self.disableSendButton
+        checkEnableSendButton()
     }
 }
 
