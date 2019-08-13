@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftSoup
+import FirebaseAnalytics
 
 class NewEmailHandler {
     
@@ -75,16 +76,15 @@ class NewEmailHandler {
                         completion(Result(success: false))
                         return
                 }
-                guard let decryptedContent = self.handleContentByMessageType(
+                if let decryptedContent = self.handleContentByMessageType(
                     event.messageType, content: bodyString, account: myAccount,
                     recipientId: recipientId, senderDeviceId: event.senderDeviceId,
-                    isExternal: event.isExternal)
-                    else {
-                        completion(Result(success: true))
-                        return
+                    isExternal: event.isExternal) {
+                    content = decryptedContent
+                } else {
+                    content = "Content Unencrypted"
                 }
                 
-                content = decryptedContent
                 let headers = data["headers"] as? String
                 contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
             } else {
@@ -191,8 +191,11 @@ class NewEmailHandler {
             return content
         }
         var trueBody: String? = nil
-        tryBlock {
+        let err = tryBlock {
             trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
+        }
+        if let error = err {
+           Analytics.logEvent("content_unencrypted", parameters: ["reason" : error.callStackSymbols as NSObject])
         }
         return trueBody
     }

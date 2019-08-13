@@ -390,23 +390,6 @@ extension RichEditorView {
     }
 }
 
-extension UITableView {
-    
-    func performUpdate(_ update: ()->Void, completion: (()->Void)?) {
-        
-        CATransaction.begin()
-        CATransaction.setCompletionBlock(completion)
-        
-        // Table View update on row / section
-        beginUpdates()
-        update()
-        endUpdates()
-        
-        CATransaction.commit()
-    }
-    
-}
-
 extension Notification.Name {
     
     public static let onNewEmail = Notification.Name(rawValue: "com.criptext.email.onnewemail")

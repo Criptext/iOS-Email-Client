@@ -249,11 +249,6 @@ class InboxViewController: UIViewController {
         sendFailEmail()
         viewSetupNews()
         
-        if let account = myAccount,
-            !RequestManager.shared.isInQueue(accountId: account.compoundKey) {
-            self.refreshControl.endRefreshing()
-        }
-        
         if mailboxData.showRestore {
             mailboxData.showRestore = false
             fetchBackupData()
@@ -944,6 +939,9 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard !myAccount.isInvalidated else {
+            return 0
+        }
         return mailboxData.threads.count + 1
     }
     
@@ -1989,6 +1987,7 @@ extension InboxViewController {
     }
     
     func swapAccount(_ account: Account) {
+        loadViewIfNeeded()
         let defaults = CriptextDefaults()
         DBManager.swapAccount(current: self.myAccount, active: account)
         self.myAccount = account

@@ -2,7 +2,7 @@
 //  ThreadsLabelsAsyncTask.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 2/21/19.
+//  Created by Pedro Iniguez on 2/21/19.
 //  Copyright © 2019 Criptext Inc. All rights reserved.
 //
 

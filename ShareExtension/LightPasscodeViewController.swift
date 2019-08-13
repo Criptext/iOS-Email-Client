@@ -2,7 +2,7 @@
 //  LightPasscodeViewController.swift
 //  ShareExtension
 //
-//  Created by Allisson on 12/3/18.
+//  Created by Pedro Iniguez on 12/3/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 

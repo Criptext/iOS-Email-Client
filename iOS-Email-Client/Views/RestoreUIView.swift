@@ -2,7 +2,7 @@
 //  RestoreUIView.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 4/9/19.
+//  Created by Pedro Iniguez on 4/9/19.
 //  Copyright © 2019 Criptext Inc. All rights reserved.
 //
 

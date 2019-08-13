@@ -2,7 +2,7 @@
 //  SignalTests.swift
 //  iOS-Email-ClientTests
 //
-//  Created by Allisson on 2/25/19.
+//  Created by Pedro Iniguez on 2/25/19.
 //  Copyright © 2019 Criptext Inc. All rights reserved.
 //
 

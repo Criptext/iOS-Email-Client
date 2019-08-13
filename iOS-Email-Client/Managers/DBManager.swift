@@ -18,6 +18,10 @@ class DBManager: SharedDB {
     class func signout(account: Account){
         let realm = try! Realm()
         
+        guard !account.isInvalidated else {
+            return
+        }
+        
         try! realm.write {
             account.isLoggedIn = false
             account.isActive = false

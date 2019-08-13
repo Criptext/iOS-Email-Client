@@ -174,7 +174,7 @@ class SharedDB {
         let MAX_ADDRESS_LENGTH = 320
         let query = text.count > 320 ? String(text.prefix(MAX_ADDRESS_LENGTH)) : text
         
-        let predicate = NSPredicate(format: "email contains[c] '\(query)' OR displayName contains[c] '\(text)'")
+        let predicate = NSPredicate(format: "email contains[c] '\(query)' OR displayName contains[c] '\(query)'")
         let results = realm.objects(Contact.self).filter(predicate).sorted(byKeyPath: "score", ascending: false)
         
         return Array(results)

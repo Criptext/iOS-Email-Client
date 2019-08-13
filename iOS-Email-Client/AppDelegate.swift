@@ -623,6 +623,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let inboxVC = getInboxVC() else {
             return
         }
+        
         inboxVC.beginRefreshing()
         inboxVC.getPendingEvents(nil)
         inboxVC.dequeueEvents()
