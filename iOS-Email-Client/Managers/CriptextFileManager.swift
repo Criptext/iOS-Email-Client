@@ -300,7 +300,7 @@ class CriptextFileManager {
         if result {
             self.delegate?.finishRequest(file: file, success: true)
         } else {
-            self.delegate?.fileError(message: String.localize("FILE_NOT_FOUND"))
+            self.delegate?.fileError(message: String.localize("FILE_NOT_FOUND", arguments: file.name))
         }
     }
     

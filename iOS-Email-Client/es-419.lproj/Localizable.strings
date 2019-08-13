@@ -444,4 +444,5 @@
 "CONTACT_SUPPORT" = "Contáctanos";
 "SYNC_WARNING_MESSAGE" = "No cierres la aplicación o apagues la pantalla hasta que termine este proceso";
 
-"FILE_NOT_FOUND" = "Archivo no encontrado";
+"FILE_NOT_FOUND" = "El archivo %s no encontrado";
+"CONTENT_UNENCRYPTED" = "No se pudo decriptar el contenido";

@@ -82,7 +82,7 @@ class NewEmailHandler {
                     isExternal: event.isExternal) {
                     content = decryptedContent
                 } else {
-                    content = "Content Unencrypted"
+                    content = String.localize("CONTENT_UNENCRYPTED")
                 }
                 
                 let headers = data["headers"] as? String
