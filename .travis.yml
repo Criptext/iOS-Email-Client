@@ -1,6 +1,7 @@
 os: osx
 osx_image: xcode10.2
 language: swift
+xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
 warnings_are_errors: false
 
 cache:

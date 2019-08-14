@@ -2,7 +2,7 @@
 //  FindKeybundleSpyApiManager.swift
 //  iOS-Email-ClientTests
 //
-//  Created by Allisson on 4/30/19.
+//  Created by Pedro Iniguez on 4/30/19.
 //  Copyright © 2019 Criptext Inc. All rights reserved.
 //
 

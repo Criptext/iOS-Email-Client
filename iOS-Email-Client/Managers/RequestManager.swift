@@ -2,7 +2,7 @@
 //  RequestManager.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 3/6/19.
+//  Created by Pedro Iniguez on 3/6/19.
 //  Copyright © 2019 Criptext Inc. All rights reserved.
 //
 
@@ -33,7 +33,8 @@ final class RequestManager: NSObject {
         accountRequests.removeFirst()
         APIManager.getEvents(token: myAccount.jwt) { [weak self] (responseData) in
             guard let myAccount = DBManager.getAccountById(accountId),
-                let weakSelf = self else {
+                let weakSelf = self,
+                weakSelf.processingAccount == accountId else {
                     self?.accountCompletions[accountId] = nil
                     self?.processingAccount = nil
                     self?.getEvents()
@@ -120,5 +121,6 @@ final class RequestManager: NSObject {
     
     func clearPending() {
         accountRequests.removeAll()
+        accountCompletions.removeAll()
     }
 }

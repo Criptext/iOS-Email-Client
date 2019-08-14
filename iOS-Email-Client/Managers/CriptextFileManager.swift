@@ -181,7 +181,7 @@ class CriptextFileManager {
         handleFileTurn()
     }
     
-    private func getChunkData(file: File, index: Int) -> Data{
+    private func getChunkData(file: File, index: Int) -> Data {
         let fileHandle = FileHandle(forReadingAtPath: file.filepath)!
         fileHandle.seek(toFileOffset: UInt64(index * chunkSize))
         let data = fileHandle.readData(ofLength: chunkSize)
@@ -246,14 +246,16 @@ class CriptextFileManager {
         }
     }
     
-    private func mergeFileChunks(filetoken: String){
+    private func mergeFileChunks(filetoken: String) -> Bool {
         guard let file = registeredFiles.first(where: {$0.token == filetoken}) else {
-            return
+            return false
         }
         let fileURL = CriptextFileManager.getURLForFile(name: file.name)
         try? FileManager.default.removeItem(at: fileURL)
         for part in 1...file.chunksProgress.count {
-            let chunk = getChunk(file: file, part: part)
+            guard let chunk = getChunk(file: file, part: part) else {
+                return false
+            }
             if FileManager.default.fileExists(atPath: fileURL.path) {
                 let fileHandle = try! FileHandle(forUpdating: fileURL)
                 fileHandle.seekToEndOfFile()
@@ -264,11 +266,14 @@ class CriptextFileManager {
             }
         }
         file.filepath = fileURL.path
+        return true
     }
     
-    private func getChunk(file: File, part: Int) -> Data{
+    private func getChunk(file: File, part: Int) -> Data? {
         let chunkURL = CriptextFileManager.getURLForFile(name: "\(file.token).part\(part)")
-        let chunkData = try! Data(contentsOf: chunkURL)
+        guard let chunkData = try? Data(contentsOf: chunkURL) else {
+            return nil
+        }
         guard encryption,
             let keys = keyPairs[file.emailId] else {
             return chunkData
@@ -282,15 +287,20 @@ class CriptextFileManager {
     }
     
     private func checkCompleteUpload(filetoken: String){
-        guard let file = registeredFiles.first(where: {$0.token == filetoken}) else {
+        guard let file = registeredFiles.first(where: {$0.token == filetoken}),
+            !file.chunksProgress.contains(where: {$0 != COMPLETE}) else {
             return
         }
-        if !file.chunksProgress.contains(where: {$0 != COMPLETE}){
-            file.requestStatus = .finish
-            if(file.requestType == .download){
-                self.mergeFileChunks(filetoken: filetoken)
-            }
+        file.requestStatus = .finish
+        guard (file.requestType == .download) else {
             self.delegate?.finishRequest(file: file, success: true)
+            return
+        }
+        let result = self.mergeFileChunks(filetoken: filetoken)
+        if result {
+            self.delegate?.finishRequest(file: file, success: true)
+        } else {
+            self.delegate?.fileError(message: String.localize("FILE_NOT_FOUND", arguments: file.name))
         }
     }
     

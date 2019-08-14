@@ -2,7 +2,7 @@
 //  Theme.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 12/19/18.
+//  Created by Pedro Iniguez on 12/19/18.
 //  Copyright © 2018 Criptext Inc. All rights reserved.
 //
 

@@ -357,10 +357,7 @@ class ComposeViewController: UIViewController {
     func removeAttachment(at indexPath:IndexPath){
         _ = fileManager.registeredFiles.remove(at: indexPath.row)
         self.toggleAttachmentTable()
-        self.tableView.performUpdate({
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
-            
-        }, completion: nil)
+        self.tableView.reloadData()
         
     }
     
@@ -677,9 +674,7 @@ extension ComposeViewController: CICropPickerDelegate {
             
             self.isEdited = true
             self.fileManager.registerFile(filepath: fileURL.path, name: filename, mimeType: mimeType)
-            self.tableView.performUpdate({
-                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-            }, completion: nil)
+            self.tableView.reloadData()
             self.toggleAttachmentTable()
         }
     }
@@ -702,9 +697,7 @@ extension ComposeViewController: UIDocumentPickerDelegate {
         let filename = url.lastPathComponent
         self.isEdited = true
         self.fileManager.registerFile(filepath: url.path, name: filename, mimeType: File.mimeTypeForPath(path: filename))
-        self.tableView.performUpdate({
-            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-        }, completion: nil)
+        self.tableView.reloadData()
         self.toggleAttachmentTable()
     }
 }
