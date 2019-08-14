@@ -307,12 +307,6 @@ extension ShareViewController {
         let draftEmail = saveDraft()
         self.emailDraft = draftEmail
         
-        let containsNonCriptextEmail = draftEmail.getContacts(type: .to).contains(where: {!$0.email.contains(Env.domain)}) || draftEmail.getContacts(type: .cc).contains(where: {!$0.email.contains(Env.domain)}) || draftEmail.getContacts(type: .bcc).contains(where: {!$0.email.contains(Env.domain)})
-        
-        guard !containsNonCriptextEmail else {
-            presentPopover()
-            return
-        }
         updateAndMail()
     }
     
