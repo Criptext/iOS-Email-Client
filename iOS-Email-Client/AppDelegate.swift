@@ -382,6 +382,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newAccount["refreshToken"] = rToken
                     }
                 }
+                if(oldSchemaVersion < 23) {
+                    migration.enumerateObjects(ofType: Account.className()){ (oldObject, newObject) in
+                        guard let newAccount = newObject else {
+                            return
+                        }
+                        newAccount["showCriptextFooter"] = true
+                    }
+                    migration.enumerateObjects(ofType: Label.className()){ (oldObject, newObject) in
+                        guard let newLabel = newObject,
+                        let labelId = newLabel["id"] as? Int else {
+                            return
+                        }
+                        if(labelId < 8) {
+                            newLabel["account"] = nil
+                        }
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm

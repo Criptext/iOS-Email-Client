@@ -446,3 +446,4 @@
 
 "FILE_NOT_FOUND" = "El archivo %s no encontrado";
 "CONTENT_UNENCRYPTED" = "No se pudo decriptar el contenido";
+"FOOTER" = "Mostrar “Enviado con Criptext”";

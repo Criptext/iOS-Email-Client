@@ -28,6 +28,7 @@ class ProfileEditorViewController: UIViewController {
         enum Option {
             case name
             case signature
+            case footer
             case password
             case recovery
             case reply
@@ -40,6 +41,8 @@ class ProfileEditorViewController: UIViewController {
                     return String.localize("PROFILE_NAME")
                 case .signature:
                     return String.localize("SIGNATURE")
+                case .footer:
+                    return String.localize("FOOTER")
                 case .password:
                     return String.localize("PASSWORD")
                 case .recovery:
@@ -114,7 +117,7 @@ class ProfileEditorViewController: UIViewController {
         if self.myAccount.domain == nil {
             sections = [.profile, .danger] as [Section]
             options = [
-                .profile: [.name, .signature, .password, .recovery, .reply, .logout],
+                .profile: [.name, .signature, .footer, .password, .recovery, .reply, .logout],
                 .danger: [.deleteAccount]
             ] as [Section: [Section.Option]]
         } else {
@@ -397,18 +400,30 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let option = options[sections[indexPath.section]]![indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
-        cell.backgroundColor = .clear
-        cell.optionLabel.text = option.name
+        
         switch(option) {
         case .logout, .deleteAccount:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
+            cell.backgroundColor = .clear
+            cell.optionLabel.text = option.name
             cell.messageLabel.text = ""
             cell.loader.isHidden = true
             cell.goImageView.isHidden = true
             cell.optionLabel.textColor = option == .deleteAccount ? theme.alert : theme.mainText
             cell.loader.stopAnimating()
             return cell
+        case .footer:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralSwitch") as! GeneralSwitchTableViewCell
+            cell.optionLabel.text = option.name
+            cell.availableSwitch.isOn = self.myAccount.showCriptextFooter
+            cell.switchToggle = { isOn in
+                DBManager.update(account: self.myAccount, showCriptextFooter: isOn)
+            }
+            return cell
         case .recovery:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
+            cell.backgroundColor = .clear
+            cell.optionLabel.text = option.name
             cell.optionLabel.textColor = theme.mainText
             cell.messageLabel.text = generalData.recoveryEmailStatus.description
             cell.messageLabel.textColor = generalData.recoveryEmailStatus.color
@@ -423,6 +438,9 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
             cell.goImageView.isHidden = false
             return cell
         default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "optionCell") as! GeneralTapTableCellView
+            cell.backgroundColor = .clear
+            cell.optionLabel.text = option.name
             cell.optionLabel.textColor = theme.mainText
             cell.goImageView.isHidden = false
             cell.messageLabel.text = ""
@@ -454,6 +472,8 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
             showWarningLogout()
         case .deleteAccount:
             showDeleteAccount()
+        default:
+            break
         }
     }
     
