@@ -313,6 +313,14 @@ class DBManager: SharedDB {
         }
     }
     
+    class func update(account: Account, showCriptextFooter: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.showCriptextFooter = showCriptextFooter
+        }
+    }
+    
     class func activateAccount(_ account: Account) {
         let realm = try! Realm()
         

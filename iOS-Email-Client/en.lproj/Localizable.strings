@@ -446,3 +446,4 @@
 
 "FILE_NOT_FOUND" = "File %s not found";
 "CONTENT_UNENCRYPTED" = "Content Unencrypted";
+"FOOTER" = "Show “Sent with Criptext”";

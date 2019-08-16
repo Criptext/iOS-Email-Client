@@ -381,8 +381,48 @@
                                                             <outlet property="optionLabel" destination="VP3-8g-pra" id="aGi-dc-OeD"/>
                                                         </connections>
                                                     </tableViewCell>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralHeader" id="3fm-8w-gPC" customClass="GeneralHeaderTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralSwitch" id="AHT-qI-y0k" customClass="GeneralSwitchTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="98" width="375" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AHT-qI-y0k" id="Sex-sL-tZR">
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v00-sr-Yfq">
+                                                                    <rect key="frame" x="27" y="11.333333333333336" width="143.66666666666666" height="21"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="21" id="wex-tu-j82"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
+                                                                    <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="arU-gF-3Ok">
+                                                                    <rect key="frame" x="308" y="8" width="45" height="28"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="43" id="SNs-gS-hFu"/>
+                                                                        <constraint firstAttribute="height" constant="28" id="qUE-Ia-yNM"/>
+                                                                    </constraints>
+                                                                    <color key="onTintColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <connections>
+                                                                        <action selector="onSwitchToggle:" destination="AHT-qI-y0k" eventType="valueChanged" id="rBy-su-4cJ"/>
+                                                                    </connections>
+                                                                </switch>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="v00-sr-Yfq" firstAttribute="leading" secondItem="Sex-sL-tZR" secondAttribute="leading" constant="27" id="8Xk-ls-WgI"/>
+                                                                <constraint firstItem="v00-sr-Yfq" firstAttribute="centerY" secondItem="Sex-sL-tZR" secondAttribute="centerY" id="VfY-eL-biC"/>
+                                                                <constraint firstAttribute="trailing" secondItem="arU-gF-3Ok" secondAttribute="trailing" constant="24" id="j8X-Ce-iCr"/>
+                                                                <constraint firstItem="arU-gF-3Ok" firstAttribute="centerY" secondItem="Sex-sL-tZR" secondAttribute="centerY" id="oFl-Bg-3UK"/>
+                                                            </constraints>
+                                                        </tableViewCellContentView>
+                                                        <connections>
+                                                            <outlet property="availableSwitch" destination="arU-gF-3Ok" id="ZCL-1b-JOY"/>
+                                                            <outlet property="optionLabel" destination="v00-sr-Yfq" id="wIR-RV-P4U"/>
+                                                        </connections>
+                                                    </tableViewCell>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsGeneralHeader" id="3fm-8w-gPC" customClass="GeneralHeaderTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="142" width="375" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3fm-8w-gPC" id="NKl-o8-1bf">
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
@@ -2070,7 +2110,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recovery Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5uP-t7-uw8">
-                                                    <rect key="frame" x="27" y="12" width="118" height="20"/>
+                                                    <rect key="frame" x="27.000000000000007" y="10.333333333333334" width="116.66666666666669" height="23.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                     <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2131,7 +2171,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oia-Yg-nVZ">
-                                                    <rect key="frame" x="27" y="11.333333333333336" width="141" height="21"/>
+                                                    <rect key="frame" x="27" y="11.333333333333336" width="143.66666666666666" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="KM9-WR-75r"/>
                                                     </constraints>
@@ -2210,7 +2250,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACCOUNT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ux7-oI-npn">
-                                                    <rect key="frame" x="27" y="12.666666666666666" width="316" height="18.666666666666671"/>
+                                                    <rect key="frame" x="27" y="11" width="316" height="22"/>
                                                     <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2878,16 +2918,16 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ihN-It-mOc">
-                                                    <rect key="frame" x="61" y="13" width="196" height="40"/>
+                                                    <rect key="frame" x="61" y="16" width="196" height="34"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Samsung Galaxy S8" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W2V-ek-PEc">
-                                                            <rect key="frame" x="0.0" y="0.0" width="196" height="22"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="196" height="18.666666666666668"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guayaquil - 12 hours ago" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bk9-Eh-HeG">
-                                                            <rect key="frame" x="0.0" y="22" width="196" height="18"/>
+                                                            <rect key="frame" x="0.0" y="18.666666666666664" width="196" height="15.333333333333336"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2934,7 +2974,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cryptext System Version 1.3.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tcn-qz-XOX">
-                                                    <rect key="frame" x="27" y="21" width="321" height="23.666666666666671"/>
+                                                    <rect key="frame" x="27" y="23" width="321" height="20"/>
                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                     <color key="textColor" red="0.72549019609999998" green="0.72549019609999998" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
