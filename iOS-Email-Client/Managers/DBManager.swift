@@ -768,6 +768,13 @@ class DBManager: SharedDB {
                 guard let email = realm.objects(Email.self).filter("key == \(key)").first else {
                     continue
                 }
+                if(addedLabelNames.contains(SystemLabel.spam.nameId)){
+                    let predicate = NSPredicate(format: "email == '\(email.fromContact.email)'")
+                    let contact = realm.objects(Contact.self).filter(predicate).first
+                    if(contact != nil){
+                        contact?.spamScore += 1
+                    }
+                }
                 self.addRemoveLabels(realm: realm, email: email, addedLabelNames: addedLabelNames, removedLabelNames: removedLabelNames)
             }
         }
@@ -781,6 +788,13 @@ class DBManager: SharedDB {
                 let predicate = NSPredicate(format: "threadId == %@", threadId)
                 let emails = realm.objects(Email.self).filter(predicate)
                 for email in emails {
+                    if(addedLabelNames.contains(SystemLabel.spam.nameId)){
+                        let predicate = NSPredicate(format: "email == '\(email.fromContact.email)'")
+                        let contact = realm.objects(Contact.self).filter(predicate).first
+                        if(contact != nil){
+                            contact?.spamScore += 1
+                        }
+                    }
                     self.addRemoveLabels(realm: realm, email: email, addedLabelNames: addedLabelNames, removedLabelNames: removedLabelNames)
                 }
             }

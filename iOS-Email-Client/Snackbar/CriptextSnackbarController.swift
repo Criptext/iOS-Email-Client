@@ -72,6 +72,7 @@ class CriptextSnackbarController : SnackbarController {
     }
     
     override func reload() {
+        super.reload()
         customSnackbar.frame.origin.x = snackbarEdgeInsets.left
         customSnackbar.frame.size.width = view.bounds.width - snackbarEdgeInsets.left - snackbarEdgeInsets.right
         rootViewController.view.frame = view.bounds

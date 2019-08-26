@@ -81,6 +81,11 @@ class SignUpViewController: UIViewController{
         emailTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        self.view.setNeedsDisplay()
+    }
+    
     func supportButtonInit(){
         let boldText  = String.localize("CONTACT_SUPPORT")
         let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.white]
@@ -139,7 +144,8 @@ class SignUpViewController: UIViewController{
     }
     
     @IBAction func didPressContactSupport(sender: Any) {
-        goToUrl(url: "https://criptext.com/\(Env.language)/contact")
+        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        goToUrl(url: "https://criptext.com/\(Env.language)/contact?version=\(appVersionString)&device=\(UIDevice.modelName)&os=\(UIDevice.current.systemVersion)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
     }
     
     @IBAction func didPressTermsAndConditions(sender: Any) {
