@@ -162,6 +162,13 @@ class NewEmailHandler {
                 from = (from.isEmpty ? ContactUtils.parseFromContact(contact: $0, account: myAccount) : "\(from), \(ContactUtils.parseFromContact(contact: $0, account: myAccount))")
             }
             email.fromAddress = from
+            let fromContact = self.database.getContact(ContactUtils.parseContact(from, account: myAccount).email)
+            if(fromContact != nil){
+                if(fromContact?.spamScore ?? 0 >= 2){
+                    let spamLabel = SharedDB.getLabel(SystemLabel.spam.id)
+                    email.labels.append(spamLabel!)
+                }
+            }
             guard self.database.store(email) else {
                 completion(Result(success: true))
                 return

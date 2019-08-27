@@ -45,6 +45,11 @@ class NewLoginViewController: UIViewController{
         }
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        self.view.setNeedsDisplay()
+    }
+    
     @objc func hideKeyboard(){
         self.usernameTextField.endEditing(true)
     }
@@ -289,7 +294,8 @@ class NewLoginViewController: UIViewController{
     }
     
     @IBAction func didPressContactSupport(sender: Any) {
-        goToUrl(url: "https://criptext.com/\(Env.language)/contact")
+        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        goToUrl(url: "https://criptext.com/\(Env.language)/contact?version=\(appVersionString.trimmed)&device=\(UIDevice.modelName)&os=\(UIDevice.current.systemVersion)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
     }
     
     @IBAction func didPressClose(sender: Any) {
