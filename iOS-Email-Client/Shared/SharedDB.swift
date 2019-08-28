@@ -166,6 +166,12 @@ class SharedDB {
         return counter
     }
     
+    class func getDraftCounter(account: Account) -> Int {
+        let realm = try! Realm()
+        let rejectedLabels = [SystemLabel.trash.id, SystemLabel.spam.id]
+        return realm.objects(Email.self).filter("ANY labels.id = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", SystemLabel.draft.id, rejectedLabels).count
+    }
+    
     //MARK: - Contacts related
     
     class func getContacts(_ text:String, account: Account) -> [Contact]{

@@ -22,7 +22,7 @@ class InboxViewController: UIViewController {
     let BOTTOM_PADDING : CGFloat = 18.0
     let SNACKBAR_PADDING : CGFloat = 83.0
     
-    @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
+    @IBOutlet weak var generalOptionsContainerView: MoreOptionsUIView!
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var topToolbar: TopbarUIView!
@@ -66,6 +66,7 @@ class InboxViewController: UIViewController {
     var currentGuide = "guideComposer"
     var controllerMessage: ControllerMessage?
     var selectLabel = String.localize("SHOW_ALL")
+    var mailboxOptionsInterface: MailboxOptionsInterface?
 
     var containerUrl: URL? {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
@@ -216,14 +217,15 @@ class InboxViewController: UIViewController {
         self.titleBarButton.title = SystemLabel.inbox.description.uppercased()
 
         topToolbar.delegate = self
-        self.generalOptionsContainerView.delegate = self
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
-        self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
-        self.generalOptionsContainerView.printallButton.isHidden = true
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
+        
+        mailboxOptionsInterface = MailboxOptionsInterface(currentLabel: mailboxData.selectedLabel)
+        mailboxOptionsInterface?.delegate = self
+        self.generalOptionsContainerView.setDelegate(newDelegate: mailboxOptionsInterface!)
     }
     
     func applyTheme() {
@@ -731,10 +733,13 @@ extension InboxViewController{
         
         self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.viewSetupNews()
-        self.generalOptionsContainerView.handleCurrentLabel(currentLabel: mailboxData.selectedLabel)
         self.showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
         self.tableView.reloadData()
         self.navigationDrawerController?.closeLeftView()
+        
+        mailboxOptionsInterface = MailboxOptionsInterface(currentLabel: mailboxData.selectedLabel)
+        mailboxOptionsInterface?.delegate = self
+        self.generalOptionsContainerView.setDelegate(newDelegate: mailboxOptionsInterface!)
     }
     
     func swapMarkIcon(){
@@ -1713,8 +1718,8 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
 }
 
-extension InboxViewController: GeneralMoreOptionsViewDelegate{
-    func onDismissPress() {
+extension InboxViewController: MailboxOptionsInterfaceDelegate {
+    func onClose() {
         self.toggleMoreOptions()
     }
     

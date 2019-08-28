@@ -1,4 +1,4 @@
-binary "./realm-cocoa.json" "3.15.0"
+binary "./realm-cocoa.json" "3.17.1"
 github "1024jp/GzipSwift" "5.0.0"
 github "Alamofire/Alamofire" "4.8.2"
 github "CosmicMind/Material" "3.1.1"

@@ -69,6 +69,7 @@ class NewEmailHandler {
                 completion(Result(success: false))
                 return
             }
+            print("DECRYPTING FOR EMAIL : \(event.metadataKey)")
             if case .Missing = responseData {
                 unsent = true
             } else if case let .SuccessDictionary(data) = responseData {
@@ -202,7 +203,8 @@ class NewEmailHandler {
             trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
         if let error = err {
-           Analytics.logEvent("content_unencrypted", parameters: ["reason" : error.callStackSymbols as NSObject])
+            print(error)
+            Analytics.logEvent("content_unencrypted", parameters: ["reason" : error.callStackSymbols as NSObject])
         }
         return trueBody
     }
