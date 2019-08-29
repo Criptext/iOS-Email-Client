@@ -45,9 +45,9 @@ class SharedDB {
         return realm?.object(ofType: Account.self, forPrimaryKey: id)
     }
     
-    class func getAccounts(ignore username: String) -> Results<Account> {
+    class func getAccounts(ignore accountId: String) -> Results<Account> {
         let realm = try! Realm()
-        return realm.objects(Account.self).filter("isLoggedIn == true AND username != '\(username)'")
+        return realm.objects(Account.self).filter("isLoggedIn == true AND compoundKey != '\(accountId)'")
     }
     
     class func getAllAccounts() -> [Account] {

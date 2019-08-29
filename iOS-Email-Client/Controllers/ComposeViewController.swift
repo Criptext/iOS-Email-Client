@@ -233,7 +233,7 @@ class ComposeViewController: UIViewController {
     }
     
     func setFrom(account: Account) {
-        let accounts = Array(DBManager.getAccounts(ignore: account.username))
+        let accounts = Array(DBManager.getAccounts(ignore: account.compoundKey))
         fromButton.isHidden = accounts.count == 0 || (composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description)
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
         activeAccount = account

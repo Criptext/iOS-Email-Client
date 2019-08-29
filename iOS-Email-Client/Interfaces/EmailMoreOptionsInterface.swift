@@ -29,6 +29,7 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
         case forward
         case delete
         case mark
+        case notSpam
         case spam
         case unsend
         case print
@@ -47,8 +48,10 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
                 return String.localize("DELETE")
             case .mark:
                 return String.localize("MARK_FROM_HERE")
+            case .notSpam:
+                return String.localize("REMOVE_SPAM")
             case .spam:
-                return String.localize("SPAM")
+                return String.localize("MARK_SPAM")
             case .unsend:
                 return String.localize("UNSEND")
             case .print:
@@ -66,8 +69,15 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
     var delegate: EmailMoreOptionsInterfaceDelegate?
     
     init(email: Email) {
-        options = [.reply, .replyAll, .delete, .mark, .spam]
-        optionsCount = 5
+        options = [.reply, .replyAll, .delete, .mark]
+        optionsCount = 4
+        if (email.isSpam) {
+            options.append(.notSpam)
+            optionsCount += 1
+        } else {
+            options.append(.spam)
+            optionsCount += 1
+        }
         if (email.secure && email.status != .unsent && email.status != .none && email.status != .sending && email.status != .fail) {
             options.append(.unsend)
             optionsCount += 1
@@ -106,6 +116,8 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
             delegate?.onDeletePress()
         case .mark:
             delegate?.onMarkPress()
+        case .notSpam:
+            delegate?.onSpamPress()
         case .spam:
             delegate?.onSpamPress()
         case .unsend:

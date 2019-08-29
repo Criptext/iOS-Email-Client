@@ -137,7 +137,7 @@ class ComposerUIView: UIView {
     }
     
     func setFrom(account: Account) {
-        let accounts = Array(SharedDB.getAccounts(ignore: account.username))
+        let accounts = Array(SharedDB.getAccounts(ignore: account.compoundKey))
         fromButton.isHidden = accounts.count == 0
         let attributedFrom = NSMutableAttributedString(string: "\(String.localize("FROM")): ", attributes: [.font: Font.bold.size(15)!])
         let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])

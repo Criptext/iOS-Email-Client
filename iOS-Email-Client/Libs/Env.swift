@@ -49,7 +49,7 @@ struct Env {
         guard !Env.isProduction else {
             return "wss://socket.criptext.com"
         }
-        return "wss://windowsocket.criptext.com"
+        return "wss://socket.criptext.com"
     }
     
     static var domain: String {
