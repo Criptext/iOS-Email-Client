@@ -19,6 +19,11 @@ class AccountTableCell: UITableViewCell {
         applyTheme()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        applyTheme()
+    }
+    
     func applyTheme() {
         let theme = ThemeManager.shared.theme
         nameLabel.textColor = theme.markedText

@@ -53,6 +53,7 @@ class MoreOptionsUIView : UIView {
     
     func applyTheme() {
         let theme = ThemeManager.shared.theme
+        tableView.backgroundColor = .clear
         optionsContainerView.backgroundColor = theme.background
     }
     
