@@ -387,11 +387,6 @@ class DBManager: SharedDB {
             let rejectedLabels = SystemLabel.init(rawValue: label)?.rejectedLabelIds ?? [SystemLabel.spam.id, SystemLabel.trash.id]
             let predicate = NSPredicate(format: "!(ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)' AND date < %@", rejectedLabels, date as NSDate)
             let emails = realm.objects(Email.self).filter(predicate).sorted(byKeyPath: "date", ascending: false).distinct(by: ["threadId"])
-            print("threadid clear : \(threadIds)")
-            emails.forEach({ (myt) in
-                print("threadId = \(myt.threadId) inside array -> \(threadIds.contains(myt.threadId))")
-                print("threadid = \(myt.threadId), subject = \(myt.subject), preview = \(myt.preview)")
-            })
             threads = customDistinctEmailThreads(emails: emails, label: label, limit: emailsLimit, threadIds: threadIds, myEmail: account.email, emailFilter: { (email) -> NSPredicate in
                 guard label != SystemLabel.trash.id && label != SystemLabel.spam.id && label != SystemLabel.draft.id else {
                     return NSPredicate(format: "!(threadId IN %@) AND ANY labels.id = %d AND threadId = %@ AND account.compoundKey == '\(account.compoundKey)'", threadIds, label, email.threadId)

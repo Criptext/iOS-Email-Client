@@ -2,7 +2,7 @@
 //  MailboxOptionsInterface.swift
 //  iOS-Email-Client
 //
-//  Created by Allisson on 8/28/19.
+//  Created by Pedro Iñiguez on 8/28/19.
 //  Copyright © 2019 Criptext Inc. All rights reserved.
 //
 

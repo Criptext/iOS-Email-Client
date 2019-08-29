@@ -250,6 +250,7 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         viewSetupNews()
+        generalOptionsContainerView.refreshView()
         
         if mailboxData.showRestore {
             mailboxData.showRestore = false

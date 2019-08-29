@@ -33,7 +33,7 @@ class ComposerUIView: UIView {
     
     @IBOutlet weak var fromField: UILabel!
     @IBOutlet weak var fromButton: UIButton!
-    @IBOutlet weak var fromMenuView: BottomMenuView!
+    @IBOutlet weak var accountOptionsView: MoreOptionsUIView!
     
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var arrowButton: UIButton!
@@ -61,6 +61,7 @@ class ComposerUIView: UIView {
     var collapsed = false
     weak var myAccount: Account!
     var checkedDomains: [String: Bool] = Utils.defaultDomains
+    var accountOptionsInterface: AccountOptionsInterface?
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -98,7 +99,6 @@ class ComposerUIView: UIView {
         
         toField.becomeFirstResponder()
         
-        fromMenuView.delegate = self
         applyTheme()
     }
     
@@ -121,7 +121,7 @@ class ComposerUIView: UIView {
         subjectTextField.backgroundColor = theme.background
         subjectTextField.textColor = theme.mainText
         subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(subjectTextField.minimumFontSize)!])
-        scrollView.backgroundColor = theme.background
+        scrollView.backgroundColor = UIColor.red
         attachmentsTableView.backgroundColor = theme.background
         contactsTableView.backgroundColor = theme.background
         editorView.webView.backgroundColor = theme.background
@@ -136,22 +136,25 @@ class ComposerUIView: UIView {
         navigationBar.isTranslucent = false
     }
     
-    func setFrom(account: Account, emails: [String]) {
-        fromButton.isHidden = emails.count == 0
+    func setFrom(account: Account) {
+        let accounts = Array(SharedDB.getAccounts(ignore: account.username))
+        fromButton.isHidden = accounts.count == 0
         let attributedFrom = NSMutableAttributedString(string: "\(String.localize("FROM")): ", attributes: [.font: Font.bold.size(15)!])
         let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
         attributedFrom.append(attributedEmail)
-        fromMenuView.isUserInteractionEnabled = false
-        fromMenuView.initialLoad(options: emails)
+        
         fromField.attributedText = attributedFrom
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        
+        accountOptionsInterface = AccountOptionsInterface(accounts: accounts)
+        accountOptionsInterface?.delegate = self
+        accountOptionsView.setDelegate(newDelegate: accountOptionsInterface!)
         self.myAccount = account
     }
     
     @IBAction func didPressFrom(_ sender: Any) {
-        fromMenuView.isUserInteractionEnabled = true
-        fromMenuView.toggleMenu(true)
         fromButton.setImage(UIImage(named: "icon-up"), for: .normal)
+        accountOptionsView.showMoreOptions()
         
         self.toField.endEditing()
         self.ccField.endEditing()
@@ -325,7 +328,7 @@ extension ComposerUIView: CLTokenInputViewDelegate {
     
     func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
         
-        //self.contactTableView.isHidden = true
+        self.contactsTableView.isHidden = true
         
         guard let text = view.text, text.count > 0 else {
             return
@@ -343,14 +346,18 @@ extension ComposerUIView: CLTokenInputViewDelegate {
     }
 }
 
-extension ComposerUIView: BottomMenuDelegate {
-    func didPressOption(_ option: String) {
-        delegate?.setAccount(accountId: option)
+extension ComposerUIView: AccountOptionsInterfaceDelegate {
+    func onClose() {
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        accountOptionsView.closeMoreOptions()
     }
     
-    func didPressBackground() {
-        fromMenuView.isUserInteractionEnabled = false
-        self.fromMenuView.toggleMenu(false)
+    func accountSelected(account: Account) {
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        accountOptionsView.closeMoreOptions()
+        guard !account.isInvalidated else {
+            return
+        }
+        self.setFrom(account: account)
     }
 }

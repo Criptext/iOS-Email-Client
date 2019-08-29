@@ -69,7 +69,6 @@ class NewEmailHandler {
                 completion(Result(success: false))
                 return
             }
-            print("DECRYPTING FOR EMAIL : \(event.metadataKey)")
             if case .Missing = responseData {
                 unsent = true
             } else if case let .SuccessDictionary(data) = responseData {

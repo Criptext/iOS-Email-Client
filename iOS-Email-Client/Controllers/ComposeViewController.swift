@@ -237,6 +237,7 @@ class ComposeViewController: UIViewController {
         fromButton.isHidden = accounts.count == 0 || (composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description)
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
         activeAccount = account
+        fileManager.myAccount = activeAccount
         
         accountOptionsInterface = AccountOptionsInterface(accounts: accounts)
         accountOptionsInterface.delegate = self
@@ -1256,6 +1257,7 @@ extension ComposeViewController: AccountOptionsInterfaceDelegate {
     
     func accountSelected(account: Account) {
         accountOptionsView.closeMoreOptions()
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
         guard !account.isInvalidated else {
             return
         }

@@ -67,7 +67,8 @@ class MoreOptionsUIView : UIView {
     }
     
     func refreshView() {
-        let height = CGFloat(self.delegate?.optionsCount ?? 0) * self.OPTION_HEIGHT
+        let bottomPadding = window?.safeAreaInsets.bottom ?? 0.0
+        let height = CGFloat(self.delegate?.optionsCount ?? 0) * self.OPTION_HEIGHT + bottomPadding
         optionsContainerOffsetConstraint.constant = -height
         optionsHeightConstraint.constant = height
         tableView.reloadData()
