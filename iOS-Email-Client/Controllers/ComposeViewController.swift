@@ -327,6 +327,7 @@ class ComposeViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        accountOptionsView.refreshView()
         IQKeyboardManager.shared.enable = false
         if let popover = popoverToPresent {
             self.presentPopover(popover: popover, height: 205)

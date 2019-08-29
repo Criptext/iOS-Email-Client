@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MoreOptionsUIView" customModule="ShareExtension" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundOverlayView" destination="RKg-ih-58I" id="gNY-9F-Nsn"/>
                 <outlet property="optionsContainerOffsetConstraint" destination="Nia-Ea-Iem" id="qz0-Lk-2Li"/>
@@ -34,7 +34,7 @@
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" bouncesZoom="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cvd-Do-TlH">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="247"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

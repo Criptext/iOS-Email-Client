@@ -1973,6 +1973,10 @@ extension InboxViewController: ThemeDelegate {
     func swapTheme(_ theme: Theme) {
         applyTheme()
         tableView.reloadData()
+        generalOptionsContainerView.refreshView()
+        if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
+            menuViewController.reloadView()
+        }
     }
 }
 

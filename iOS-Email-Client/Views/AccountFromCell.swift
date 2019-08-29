@@ -13,6 +13,15 @@ class AccountFromCell: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        applyTheme()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        applyTheme()
+    }
+    
+    func applyTheme() {
         let theme = ThemeManager.shared.theme
         emailLabel.textColor = theme.mainText
         backgroundColor = .clear

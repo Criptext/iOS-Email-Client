@@ -24,6 +24,11 @@ class AccountsFooterCell: UITableViewHeaderFooterView {
         self.applyLocalization()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.applyTheme()
+    }
+    
     func applyLocalization() {
         existingLabel.text = String.localize("ADD_ACCOUNT")
     }
