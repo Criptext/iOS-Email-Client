@@ -33,7 +33,7 @@ class GetBadgeCountersAsyncTask {
             }
             var counter = Counter()
             counter.inbox = DBManager.getUnreadMailsCounter(from: SystemLabel.inbox.id, account: myAccount)
-            counter.draft = DBManager.getThreads(from: SystemLabel.draft.id, since: Date(), limit: 100, account: myAccount).count
+            counter.draft = DBManager.getDraftCounter(account: myAccount)
             counter.spam = DBManager.getUnreadMailsCounter(from: SystemLabel.spam.id, account: myAccount)
             
             let accounts = DBManager.getInactiveAccounts()

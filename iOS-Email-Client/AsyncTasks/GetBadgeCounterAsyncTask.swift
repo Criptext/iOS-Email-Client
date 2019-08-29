@@ -29,7 +29,7 @@ class GetBadgeCounterAsyncTask {
                 }
                 let label =  SystemLabel(rawValue: self.label) ?? .all
                 let mailboxCounter = label == .draft
-                    ? DBManager.getThreads(from: self.label, since: Date(), limit: 100, account: myAccount).count
+                    ? DBManager.getDraftCounter(account: myAccount)
                     : DBManager.getUnreadMailsCounter(from: self.label, account: myAccount)
                 counter = mailboxCounter > 0 ? "(\(mailboxCounter.description))" : ""
             }

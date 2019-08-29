@@ -249,9 +249,12 @@
 "THE_FILE_EXCEEDS" = "The file %@ exceeds %@";
 "EXCEEDS_MAX_SIZE" = "The email has surpassed the attachment limit of %@";
 "MARK_READ" = "Mark as Read";
+"MARK_FROM_HERE" = "Mark as Unread from here";
+"SHOW_SOURCE" = "Show source";
 "APPROVE" = "Approve";
 "REJECT" = "Reject";
 "REPLY" = "Reply";
+"REPLY_ALL" = "Reply All";
 "DELETE" = "Delete";
 "DELETE_PERMANENTLY" = "Delete Permanently";
 "PRIVACY_SECURITY" = "Privacy and Security";
@@ -287,7 +290,8 @@
 "TO_SENT" = "To: ";
 "SINGLE_DRAFT" = "Draft";
 "UNSENT" = "Unsent";
-
+"UNSEND" = "Unsend";
+"ARCHIVE" = "Archive";
 "PIN_SIGN_OUT" = "Sign Out";
 "PIN_CANCEL" = "Cancel";
 "USE_PIN" = "Use PIN Code";
@@ -348,6 +352,7 @@
 "SYNC_MAIL" = "Sync Request";
 "PRINT" = "Print";
 "PRINT_ALL" = "Print All";
+"RECOVER_TRASH" = "Recover from Trash";
 "update_now_title" = "Update Available!";
 "update_now_message" = "Tap here to update Criptext to it\'s latest version and enjoy it\'s new features.";
 "REPLY_TO" = "Change Reply To Email";

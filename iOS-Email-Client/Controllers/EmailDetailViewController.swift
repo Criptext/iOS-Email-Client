@@ -27,11 +27,12 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var emailsTableView: UITableView!
     @IBOutlet weak var topToolbar: TopbarUIView!
-    @IBOutlet weak var moreOptionsContainerView: DetailMoreOptionsUIView!
-    @IBOutlet weak var generalOptionsContainerView: GeneralMoreOptionsUIView!
+    @IBOutlet weak var generalOptionsContainerView: MoreOptionsUIView!
     
     weak var myHeaderView : UIView?
     weak var target: UIView?
+    var emailDetailOptionsInterface: EmailDetailOptionsInterface?
+    var emailMoreOptionsInterface: EmailMoreOptionsInterface?
     let fileManager = CriptextFileManager()
     let coachMarksController = CoachMarksController()
     
@@ -43,19 +44,18 @@ class EmailDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.webView.delegate = self
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         self.setupToolbar()
-        self.setupMoreOptionsViews()
+        self.setupTableView()
         
         self.registerCellNibs()
         self.topToolbar.delegate = self
-        self.generalOptionsContainerView.delegate = self
         fileManager.delegate = self
         fileManager.myAccount = myAccount
         
         displayMarkIcon(asRead: false)
-        generalOptionsContainerView.handleCurrentLabel(currentLabel: emailData.selectedLabel)
         
         self.coachMarksController.overlay.allowTap = true
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
@@ -199,13 +199,9 @@ class EmailDetailViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = cancelBarButton
     }
     
-    func setupMoreOptionsViews(){
+    func setupTableView(){
         emailsTableView.sectionHeaderHeight = UITableView.automaticDimension;
         emailsTableView.estimatedSectionHeaderHeight = ESTIMATED_SECTION_HEADER_HEIGHT;
-        if emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.spam.id {
-            moreOptionsContainerView.deleteButton.setTitle(String.localize("DELETE_PERMANENTLY"), for: .normal)
-        }
-        moreOptionsContainerView.delegate = self
     }
     
     func registerCellNibs(){
@@ -462,13 +458,13 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         guard let indexPath = emailsTableView.indexPath(for: cell) else {
             return
         }
-        moreOptionsContainerView.spamButton.setTitle(emailData.selectedLabel == SystemLabel.spam.id ? String.localize("REMOVE_SPAM") : String.localize("MARK_SPAM"), for: .normal)
+        
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         let email = getMail(index: indexPath.row)
-        moreOptionsContainerView.showRetry((email.status == .fail || email.status == .sending) ? true : false)
-        moreOptionsContainerView.showUnsend(email.secure && email.status != .unsent && email.status != .none && email.status != .sending && email.status != .fail)
-        moreOptionsContainerView.showSourceButton(!email.boundary.isEmpty)
-        toggleMoreOptionsView()
+        emailMoreOptionsInterface = EmailMoreOptionsInterface(email: email)
+        emailMoreOptionsInterface?.delegate = self
+        generalOptionsContainerView.setDelegate(newDelegate: emailMoreOptionsInterface!)
+        toggleGeneralOptionsView()
     }
     
     func deselectSelectedRow(){
@@ -478,24 +474,12 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         emailsTableView.deselectRow(at: indexPath, animated: false)
     }
     
-    @objc func toggleMoreOptionsView(){
-        self.coachMarksController.stop(immediately: true)
-        guard moreOptionsContainerView.isHidden else {
-            moreOptionsContainerView.closeMoreOptions()
-            deselectSelectedRow()
-            return
-        }
-        moreOptionsContainerView.showMoreOptions()
-    }
-    
     @objc func toggleGeneralOptionsView(){
         guard generalOptionsContainerView.isHidden else {
             generalOptionsContainerView.closeMoreOptions()
             return
         }
         generalOptionsContainerView.showMoreOptions()
-        let title = (emailData.emails.count) > 1 ? String.localize("PRINT_ALL") : String.localize("PRINT")
-        generalOptionsContainerView.printallButton.setTitle(title, for: .normal)
     }
 }
 
@@ -638,6 +622,10 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
     
     func onMoreOptions() {
+        emailDetailOptionsInterface = EmailDetailOptionsInterface(currentLabel: emailData.selectedLabel)
+        emailDetailOptionsInterface?.delegate = self
+        generalOptionsContainerView.setDelegate(newDelegate: emailDetailOptionsInterface!)
+        
         toggleGeneralOptionsView()
     }
     
@@ -652,13 +640,13 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
 }
 
-extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
+extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
     func onRetryPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleMoreOptionsView()
+            self.toggleGeneralOptionsView()
             return
         }
-        moreOptionsContainerView.closeMoreOptions()
+        generalOptionsContainerView.closeMoreOptions()
         let email = getMail(index: indexPath.row)
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
@@ -667,10 +655,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onReplyPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            moreOptionsContainerView.closeMoreOptions()
+            generalOptionsContainerView.closeMoreOptions()
             return
         }
-        moreOptionsContainerView.closeMoreOptions()
+        generalOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
         let email = getMail(index: indexPath.row)
         let fromContact = email.fromContact
@@ -684,10 +672,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onReplyAllPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            moreOptionsContainerView.closeMoreOptions()
+            generalOptionsContainerView.closeMoreOptions()
             return
         }
-        moreOptionsContainerView.closeMoreOptions()
+        generalOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
         let email = getMail(index: indexPath.row)
         var contactsTo = [Contact]()
@@ -709,10 +697,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onForwardPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            moreOptionsContainerView.closeMoreOptions()
+            generalOptionsContainerView.closeMoreOptions()
             return
         }
-        moreOptionsContainerView.closeMoreOptions()
+        generalOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
         let email = getMail(index: indexPath.row)
         let ccContacts: List<Contact> = email.getContacts(type: ContactType.cc)
@@ -726,10 +714,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onDeletePress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleMoreOptionsView()
+            self.toggleGeneralOptionsView()
             return
         }
-        self.toggleMoreOptionsView()
+        self.toggleGeneralOptionsView()
         let email = getMail(index: indexPath.row)
         guard emailData.selectedLabel == SystemLabel.trash.id || emailData.selectedLabel == SystemLabel.spam.id || emailData.selectedLabel == SystemLabel.draft.id else {
             self.moveSingleEmailToTrash(email)
@@ -773,7 +761,7 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onMarkPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleMoreOptionsView()
+            self.toggleGeneralOptionsView()
             return
         }
         let thresholdDate = getMail(index: indexPath.row).date
@@ -802,10 +790,10 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     
     func onSpamPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleMoreOptionsView()
+            self.toggleGeneralOptionsView()
             return
         }
-        self.toggleMoreOptionsView()
+        self.toggleGeneralOptionsView()
         let isSpam = emailData.selectedLabel == SystemLabel.spam.id
         let isTrash = emailData.selectedLabel == SystemLabel.trash.id
         let removeLabel = isSpam ? [SystemLabel.spam.id] : isTrash ? [SystemLabel.trash.id] : []
@@ -829,11 +817,11 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     func onUnsendPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow,
             let cell = emailsTableView.cellForRow(at: indexPath) as? EmailTableViewCell else {
-            self.toggleMoreOptionsView()
+            self.toggleGeneralOptionsView()
             return
         }
         let email = getMail(index: indexPath.row)
-        self.toggleMoreOptionsView()
+        self.toggleGeneralOptionsView()
         guard email.status != .unsent && email.isSent else {
             return
         }
@@ -893,15 +881,15 @@ extension EmailDetailViewController: DetailMoreOptionsViewDelegate {
     }
     
     func onOverlayPress() {
-        self.toggleMoreOptionsView()
+        self.toggleGeneralOptionsView()
     }
     
     func onShowSourcePress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            moreOptionsContainerView.closeMoreOptions()
+            generalOptionsContainerView.closeMoreOptions()
             return
         }
-        moreOptionsContainerView.closeMoreOptions()
+        generalOptionsContainerView.closeMoreOptions()
         deselectSelectedRow()
         let email = getMail(index: indexPath.row)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -934,8 +922,8 @@ extension EmailDetailViewController: UIWebViewDelegate {
     }
 }
 
-extension EmailDetailViewController : GeneralMoreOptionsViewDelegate {
-    func onDismissPress() {
+extension EmailDetailViewController: EmailDetailOptionsInterfaceDelegate {
+    func onClose() {
         toggleGeneralOptionsView()
     }
     

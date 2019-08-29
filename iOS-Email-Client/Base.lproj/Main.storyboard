@@ -1233,7 +1233,7 @@
                                     <outlet property="separatorView" destination="K8C-MD-Pik" id="lqy-dL-Zwj"/>
                                 </connections>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRm-m6-8UE" customClass="BottomMenuView" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRm-m6-8UE" customClass="MoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="46" width="375" height="678"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -1274,6 +1274,7 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="accountOptionsView" destination="SRm-m6-8UE" id="Nke-6j-jAh"/>
                         <outlet property="attachmentButtonContainerView" destination="dFZ-Fr-BI7" id="u48-Jm-AJL"/>
                         <outlet property="attachmentContainerBottomConstraint" destination="0ak-fH-kxr" id="lJr-5a-jtL"/>
                         <outlet property="attachmentTableHeightConstraint" destination="eZa-xH-KTJ" id="x2C-K7-DJb"/>
@@ -1290,7 +1291,6 @@
                         <outlet property="editorView" destination="qY5-rJ-Nng" id="r68-MJ-6ki"/>
                         <outlet property="fromButton" destination="hWa-Dv-ykY" id="Gvj-Qu-1Pt"/>
                         <outlet property="fromField" destination="mss-ZG-FkL" id="6dc-Do-Wzw"/>
-                        <outlet property="fromMenuView" destination="SRm-m6-8UE" id="RuX-OP-vgo"/>
                         <outlet property="scrollView" destination="f2A-K4-V0b" id="8pX-QZ-yVL"/>
                         <outlet property="subjectField" destination="bHd-ea-XYJ" id="clm-LB-wjy"/>
                         <outlet property="tableView" destination="6ds-2h-iBT" id="WD9-x0-hvK"/>
@@ -1566,7 +1566,7 @@
                                     <action selector="didPressComposer:" destination="gA0-rr-zOr" eventType="touchUpInside" id="UoB-v5-Ekm"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhP-Ga-19D" customClass="GeneralMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhP-Ga-19D" customClass="MoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                             </view>
@@ -1864,11 +1864,7 @@
                                     <outlet property="delegate" destination="bgc-oZ-Vag" id="cw1-Bm-v29"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1su-18-smw" customClass="DetailMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="680"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ffn-LR-DMI" customClass="GeneralMoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ffn-LR-DMI" customClass="MoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -1884,19 +1880,15 @@
                             <constraint firstAttribute="trailing" secondItem="ffn-LR-DMI" secondAttribute="trailing" id="5uI-A7-d3B"/>
                             <constraint firstItem="ffn-LR-DMI" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="75f-7q-mV4"/>
                             <constraint firstItem="wXO-Xa-Eh9" firstAttribute="trailing" secondItem="1IY-4b-rl0" secondAttribute="trailingMargin" id="88J-g2-wIw"/>
-                            <constraint firstAttribute="trailing" secondItem="1su-18-smw" secondAttribute="trailing" id="Bdi-g2-4n8"/>
                             <constraint firstItem="pwm-FM-Cnc" firstAttribute="top" secondItem="VSO-Q5-KSa" secondAttribute="bottom" id="M6O-0g-bIu"/>
                             <constraint firstAttribute="bottom" secondItem="H88-ZN-H4B" secondAttribute="bottom" id="Opd-je-6sj"/>
                             <constraint firstItem="wXO-Xa-Eh9" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leadingMargin" id="PZK-Tr-rvp"/>
                             <constraint firstItem="wXO-Xa-Eh9" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="topMargin" id="S6N-m6-H3d"/>
                             <constraint firstItem="fO0-l9-ymc" firstAttribute="top" secondItem="wXO-Xa-Eh9" secondAttribute="bottom" id="Ycs-ER-Btl"/>
                             <constraint firstAttribute="bottom" secondItem="ffn-LR-DMI" secondAttribute="bottom" id="a5u-AK-jAH"/>
-                            <constraint firstAttribute="bottom" secondItem="1su-18-smw" secondAttribute="bottom" constant="44" id="cbH-kQ-uUh"/>
                             <constraint firstItem="H88-ZN-H4B" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="ksC-OI-i28"/>
-                            <constraint firstItem="1su-18-smw" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="sqT-eC-RNj"/>
                             <constraint firstAttribute="trailing" secondItem="H88-ZN-H4B" secondAttribute="trailing" id="t1V-pA-6iO"/>
                             <constraint firstAttribute="trailing" secondItem="pwm-FM-Cnc" secondAttribute="trailing" id="tUW-lC-Ckj"/>
-                            <constraint firstItem="1su-18-smw" firstAttribute="top" secondItem="1IY-4b-rl0" secondAttribute="top" id="wqb-Jz-RUE"/>
                             <constraint firstItem="H88-ZN-H4B" firstAttribute="leading" secondItem="1IY-4b-rl0" secondAttribute="leading" id="zoe-f9-WJc"/>
                         </constraints>
                     </view>
@@ -1905,7 +1897,6 @@
                     <connections>
                         <outlet property="emailsTableView" destination="H88-ZN-H4B" id="roC-Vf-CEU"/>
                         <outlet property="generalOptionsContainerView" destination="ffn-LR-DMI" id="B4L-yX-5ZG"/>
-                        <outlet property="moreOptionsContainerView" destination="1su-18-smw" id="2GV-Cz-5pz"/>
                         <outlet property="topToolbar" destination="pwm-FM-Cnc" id="gzS-4q-XjA"/>
                         <outlet property="webView" destination="wXO-Xa-Eh9" id="Jbs-nr-4zV"/>
                     </connections>

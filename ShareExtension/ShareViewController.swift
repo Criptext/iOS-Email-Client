@@ -60,12 +60,15 @@ class ShareViewController: UIViewController {
         self.view.backgroundColor = theme.overallBackground
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        composerUIView.accountOptionsView.refreshView()
+    }
+    
     func setFrom(account: Account) {
-        let accounts = SharedDB.getAccounts(ignore: account.username)
-        let emails = Array(accounts.map({$0.email}))
         myAccount = account
-        
-        composerUIView.setFrom(account: account, emails: emails)
+        fileManager.myAccount = myAccount
+        composerUIView.setFrom(account: account)
     }
     
     func shouldShowPinLock() -> Bool {

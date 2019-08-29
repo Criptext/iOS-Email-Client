@@ -45,9 +45,9 @@ class SharedDB {
         return realm?.object(ofType: Account.self, forPrimaryKey: id)
     }
     
-    class func getAccounts(ignore username: String) -> Results<Account> {
+    class func getAccounts(ignore accountId: String) -> Results<Account> {
         let realm = try! Realm()
-        return realm.objects(Account.self).filter("isLoggedIn == true AND username != '\(username)'")
+        return realm.objects(Account.self).filter("isLoggedIn == true AND compoundKey != '\(accountId)'")
     }
     
     class func getAllAccounts() -> [Account] {
@@ -164,6 +164,12 @@ class SharedDB {
             counter += realm.objects(Email.self).filter("ANY labels.id = %@ AND unread = true AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", SystemLabel.inbox.id, rejectedLabels).distinct(by: ["threadId"]).count
         }
         return counter
+    }
+    
+    class func getDraftCounter(account: Account) -> Int {
+        let realm = try! Realm()
+        let rejectedLabels = [SystemLabel.trash.id, SystemLabel.spam.id]
+        return realm.objects(Email.self).filter("ANY labels.id = %@ AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", SystemLabel.draft.id, rejectedLabels).count
     }
     
     //MARK: - Contacts related

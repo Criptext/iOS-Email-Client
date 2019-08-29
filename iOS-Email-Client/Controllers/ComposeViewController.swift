@@ -39,7 +39,7 @@ class ComposeViewController: UIViewController {
     
     @IBOutlet weak var fromField: UILabel!
     @IBOutlet weak var fromButton: UIButton!
-    @IBOutlet weak var fromMenuView: BottomMenuView!
+    @IBOutlet weak var accountOptionsView: MoreOptionsUIView!
     
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
@@ -109,6 +109,8 @@ class ComposeViewController: UIViewController {
     var composerEditorHeight: CGFloat = 0.0
     
     var checkedDomains: [String: Bool] = Utils.defaultDomains
+    
+    var accountOptionsInterface: AccountOptionsInterface!
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -226,20 +228,20 @@ class ComposeViewController: UIViewController {
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
         
-        fromMenuView.delegate = self
         setFrom(account: activeAccount)
-        
         applyTheme()
     }
     
     func setFrom(account: Account) {
-        let accounts = DBManager.getAccounts(ignore: account.username)
+        let accounts = Array(DBManager.getAccounts(ignore: account.compoundKey))
         fromButton.isHidden = accounts.count == 0 || (composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description)
-        let emails = Array(accounts.map({$0.email}))
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
-        fromMenuView.isUserInteractionEnabled = false
-        fromMenuView.initialLoad(options: emails)
         activeAccount = account
+        fileManager.myAccount = activeAccount
+        
+        accountOptionsInterface = AccountOptionsInterface(accounts: accounts)
+        accountOptionsInterface.delegate = self
+        accountOptionsView.setDelegate(newDelegate: accountOptionsInterface)
         
         let attributedFrom = NSMutableAttributedString(string: "\(String.localize("FROM")): ", attributes: [.font: Font.bold.size(15)!])
         let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
@@ -286,8 +288,7 @@ class ComposeViewController: UIViewController {
     
     @IBAction func didPressFrom(_ sender: Any) {
         fromButton.setImage(UIImage(named: "icon-up"), for: .normal)
-        fromMenuView.isUserInteractionEnabled = true
-        fromMenuView.toggleMenu(true)
+        accountOptionsView.showMoreOptions()
         resignKeyboard()
     }
     
@@ -1248,18 +1249,18 @@ extension ComposeViewController: TLPhotosPickerViewControllerDelegate {
     }
 }
 
-extension ComposeViewController: BottomMenuDelegate {
-    func didPressOption(_ option: String) {
-        let accountId = option.replacingOccurrences(of: Env.domain, with: "")
-        guard let account = DBManager.getAccountById(accountId) else {
+extension ComposeViewController: AccountOptionsInterfaceDelegate {
+    func onClose() {
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        accountOptionsView.closeMoreOptions()
+    }
+    
+    func accountSelected(account: Account) {
+        accountOptionsView.closeMoreOptions()
+        fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
+        guard !account.isInvalidated else {
             return
         }
         self.setFrom(account: account)
-    }
-    
-    func didPressBackground() {
-        fromMenuView.isUserInteractionEnabled = false
-        self.fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
-        self.fromMenuView.toggleMenu(false)
     }
 }

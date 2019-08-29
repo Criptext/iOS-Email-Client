@@ -249,9 +249,12 @@
 "THE_FILE_EXCEEDS" = "El archivo %@ excede %@";
 "EXCEEDS_MAX_SIZE" = "El correo ha excedido el limite de %@ por archivos";
 "MARK_READ" = "Marcar como Leído";
+"MARK_FROM_HERE" = "Marcar como no leído desde aquí";
+"SHOW_SOURCE" = "Mostrar Original";
 "APPROVE" = "Aprobar";
 "REJECT" = "Rechazar";
 "REPLY" = "Responder";
+"REPLY_ALL" = "Responder a todos";
 "DELETE" = "Eliminar";
 "DELETE_PERMANENTLY" = "Eliminar Permanentemente";
 "PRIVACY_SECURITY" = "Seguridad y Privacidad";
@@ -287,7 +290,8 @@
 "TO_SENT" = "Para: ";
 "SINGLE_DRAFT" = "Borrador";
 "UNSENT" = "Retractado";
-
+"UNSEND" = "Retractar";
+"ARCHIVE" = "Archivar";
 "PIN_SIGN_OUT" = "Cerrar Sesión";
 "PIN_CANCEL" = "Cancelar";
 "USE_PIN" = "Usar PIN";
@@ -348,6 +352,7 @@
 "SYNC_MAIL" = "Sincronización de Buzón";
 "PRINT" = "Imprimir";
 "PRINT_ALL" = "Imprimir Todo";
+"RECOVER_TRASH" = "Recuperar de la papelera";
 "update_now_title" = "¡Actualiza Ahora!";
 "update_now_message" = "Presiona aquí para actualizar Criptext a su última versión y disfrutar de  sus nuevas características.";
 "REPLY_TO" = "Cambiar Correo de respuesta";
