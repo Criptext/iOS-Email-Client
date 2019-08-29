@@ -121,7 +121,7 @@ class ComposerUIView: UIView {
         subjectTextField.backgroundColor = theme.background
         subjectTextField.textColor = theme.mainText
         subjectTextField.attributedPlaceholder = NSAttributedString(string: String.localize("SUBJECT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(subjectTextField.minimumFontSize)!])
-        scrollView.backgroundColor = UIColor.red
+        scrollView.backgroundColor = theme.background
         attachmentsTableView.backgroundColor = theme.background
         contactsTableView.backgroundColor = theme.background
         editorView.webView.backgroundColor = theme.background
