@@ -1186,8 +1186,7 @@ extension ComposeViewController: RichEditorDelegate {
         self.collapseCC(true)
         let defaults = CriptextDefaults()
         if !defaults.guideAttachments {
-            let presentationContext = PresentationContext.viewController(self)
-            self.coachMarksController.start(in: presentationContext)
+            self.coachMarksController.start(on: self)
             defaults.guideAttachments = true
         }
     }
