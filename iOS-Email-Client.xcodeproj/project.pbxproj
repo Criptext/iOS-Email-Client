@@ -75,6 +75,7 @@
 		41F3A276207C6466004BDF90 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A275207C6466004BDF90 /* Crashlytics.framework */; };
 		41F3A278207C6470004BDF90 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F3A277207C6470004BDF90 /* Fabric.framework */; };
 		48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */; };
+		5BBA9D2A232F68D100277C48 /* ValidateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBA9D29232F68D100277C48 /* ValidateString.swift */; };
 		7C049F8920879CD5007A6213 /* LabelsUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */; };
 		7C049F8D2087AB5F007A6213 /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */; };
 		7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */; };
@@ -598,6 +599,7 @@
 		41F3A275207C6466004BDF90 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		41F3A277207C6470004BDF90 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordLoginViewController.swift; sourceTree = "<group>"; };
+		5BBA9D29232F68D100277C48 /* ValidateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateString.swift; sourceTree = "<group>"; };
 		7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsUIPopover.swift; sourceTree = "<group>"; };
 		7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelTableViewCell.xib; sourceTree = "<group>"; };
@@ -1176,6 +1178,7 @@
 				A718BE6A22272970008CAA72 /* UIUtils.swift */,
 				A741B9F52268DD00001BB19C /* DateString.swift */,
 				A7B96A71228E1A4F00C636D4 /* EventParser.swift */,
+				5BBA9D29232F68D100277C48 /* ValidateString.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1982,6 +1985,7 @@
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
+				5BBA9D2A232F68D100277C48 /* ValidateString.swift in Sources */,
 				950AFF3021FA6A7E003115E7 /* EmailSourceViewController.swift in Sources */,
 				A70E39D72239BBF0005D610B /* AccountTableCell.swift in Sources */,
 				7CCA060D210B687200BC4CEF /* Dummy.swift in Sources */,
