@@ -120,6 +120,8 @@ class ProfileEditorViewController: UIViewController {
                 .profile: [.name, .signature, .footer, .password, .recovery, .reply, .logout],
                 .danger: [.deleteAccount]
             ] as [Section: [Section.Option]]
+            tableViewHeightConstraint.constant += ROW_HEIGHT
+            scrollContentViewHeightConstraint.constant += ROW_HEIGHT
         } else {
             sections = [.profile] as [Section]
             options = [

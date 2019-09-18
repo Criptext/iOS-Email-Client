@@ -15,7 +15,7 @@ github "Criptext/MIBadgeButton-Swift" ~> 0.8
 github "cjwirth/RichEditorView"
 github "hackiftekhar/IQKeyboardManager"
 github "Criptext/UIImageView-Letters" ~> 1.1.5
-github "ephread/Instructions" ~> 1.2.0
+git "https://github.com/ephread/Instructions.git" "ab42e21382b571d43839a2c7187647e59c6cae55"
 github "malcommac/UIWindowTransitions"
 github "airbnb/lottie-ios" "master"
 github "1024jp/GzipSwift"
