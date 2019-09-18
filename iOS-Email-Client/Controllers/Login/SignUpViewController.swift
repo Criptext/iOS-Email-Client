@@ -33,7 +33,7 @@ class SignUpViewController: UIViewController{
     var loadingAccount = false
     var apiRequest : DataRequest?
     var multipleAccount = false
-    let signUpValidator: ValidateString = Validators.createSignUp()
+    let signUpValidator: ValidateString = ValidateString.signUp
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -194,9 +194,7 @@ class SignUpViewController: UIViewController{
         passwordTextField.setStatus(.none)
         confirmPasswordTextField.setStatus(.none)
       
-        guard let password = passwordTextField.text else {
-          return
-        }
+        guard let password = passwordTextField.text else { return }
         let inputErrors = signUpValidator.run(password)
         guard inputErrors.isEmpty else {
           if let inputError = inputErrors.first?.rawValue {

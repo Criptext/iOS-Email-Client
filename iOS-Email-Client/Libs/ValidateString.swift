@@ -11,8 +11,27 @@ import Foundation
 struct ValidateString {
   let run: (String) -> [ValidateStringError]
   
+  typealias CharRule = (Character) -> ValidateStringError?
+  
   init(with run: @escaping (String) -> [ValidateStringError]) {
     self.run = run
+  }
+  
+  static func createWith(inclusionRules:[ValidateString.CharRule]) -> ValidateString {
+    return ValidateString { string in
+      var errorDictionary = [ValidateStringError: Int]()
+      for char in string {
+        for applyRule in inclusionRules {
+          guard let error = applyRule(char) else { continue }
+          incrementValue(of: &errorDictionary, forKey: error)
+        }
+      }
+      return getKeysFrom(dictionary: errorDictionary, whereValueIs: string.count)
+    }
+  }
+  
+  static var signUp: ValidateString {
+    return ValidateString(with: hasMinLengthRule)
   }
 }
 
@@ -26,6 +45,7 @@ func zip(_ a: ValidateString, _ b: ValidateString) -> ValidateString {
 
 enum ValidateStringError: Error {
   case passwordLength
+  case maxPasswordLength
   case noSpecialChar
   case noNumber
   case noLowerCase
@@ -36,6 +56,7 @@ enum ValidateStringError: Error {
   var rawValue: String {
     switch self {
     case .passwordLength: return "PASSWORD_LENGTH"
+    case .maxPasswordLength: return "MAX_PASSWORD_LENGTH"
     case .noSpecialChar: return "NO_SPECIAL_CHARS"
     case .noNumber: return "NO_NUMBER"
     case .noLowerCase: return "NO_LOWERCASE"
@@ -46,98 +67,52 @@ enum ValidateStringError: Error {
   }
 }
 
-typealias hasCharRule = (Character) -> ValidateStringError?
-
-func hasUppercase(char: Character) -> ValidateStringError? {
+func includeUppercase(char: Character) -> ValidateStringError? {
   if !char.isUppercase { return .noUpperCase }
   else { return nil }
 }
 
-func hasLowercase(char: Character) -> ValidateStringError? {
+func includeLowercase(char: Character) -> ValidateStringError? {
   if !char.isLowercase { return .noLowerCase }
   else { return nil }
 }
 
-func hasSpecial(char: Character) -> ValidateStringError? {
+func includeSpecial(char: Character) -> ValidateStringError? {
   let chosenSpecialChars = "/*!@#$%^&*()\"{}_[]|\\?/<>,."
   if !chosenSpecialChars.contains(char) { return .noSpecialChar }
   else { return nil }
 }
 
-func hasNumber(char: Character) -> ValidateStringError? {
+func includeNumber(char: Character) -> ValidateStringError? {
   if !char.isNumber { return .noNumber }
   else { return nil }
 }
 
-func hasMinLengthRule(_ string: String) -> [ValidateStringError] {
-  if string.count < Constants.MinCharactersPassword { return [.passwordLength] }
-  else { return [] }
-}
-
-func hasMaxLengthRule(_ string: String) -> [ValidateStringError] {
-  if string.count > 80 { return [.passwordLength] }
-  else { return [] }
-}
-
-func hasWhiteSpace(char: Character) -> ValidateStringError? {
+func includeWhitespace(char: Character) -> ValidateStringError? {
   if !char.isWhitespace { return .noWhitespace }
   else { return nil }
 }
 
-func apply(rules: [hasCharRule]) -> (String) -> [ValidateStringError] {
-  return { string in
-    var errorDictionary = [ValidateStringError: Int]()
-    for char in string {
-      for applyRule in rules {
-        if let error = applyRule(char) {
-          update(dictionary: &errorDictionary, with: error)
-        }
-      }
-    }
-    return getValidErrorsFrom(dictionary: errorDictionary, matching: string.count)
-  }
+func hasMinLengthRule(_ string: String) -> [ValidateStringError] {
+  if string.count < 9 { return [.passwordLength] }
+  else { return [] }
 }
 
-fileprivate func update(dictionary: inout [ValidateStringError: Int], with error: ValidateStringError) {
-  if let errorCount = dictionary[error] {
-    dictionary[error] = errorCount + 1
-  } else { dictionary[error] = 1 }
+func hasMaxLengthRule(_ string: String) -> [ValidateStringError] {
+  if string.count > 80 { return [.maxPasswordLength] }
+  else { return [] }
 }
 
-fileprivate func getValidErrorsFrom(dictionary: [ValidateStringError: Int], matching count: Int) -> [ValidateStringError] {
-  var errors = [ValidateStringError]()
-  dictionary.forEach({ (error, errorCount) in
-    if (errorCount == count) {
-      errors.append(error)
-    }
+func incrementValue<K>(of dictionary: inout [K: Int], forKey key: K) {
+  if let count = dictionary[key] {
+    dictionary[key] = count + 1
+  } else { dictionary[key] = 1 }
+}
+
+func getKeysFrom<K>(dictionary: [K: Int], whereValueIs count: Int) -> [K] {
+  var keys = [K]()
+  dictionary.forEach({ (key, keyCount) in
+    if (keyCount == count) { keys.append(key) }
   })
-  return errors
+  return keys
 }
-
-struct Validators {
-  static func createSignUp() -> ValidateString {
-//    let signUpCharRules = apply(rules: [hasUppercase,
-//                                        hasLowercase,
-//                                        hasSpecial,
-//                                        hasNumber])
-    
-//    let signUpValidator = zip(ValidateString(with: signUpCharRules),
-//                              ValidateString(with: hasMinLengthRule))
-    
-    let signUpValidator = ValidateString(with: hasMinLengthRule)
-    return signUpValidator
-  }
-  
-  static func alwaysSuccess() -> ValidateString {
-    return ValidateString { _ in
-      return []
-    }
-  }
-  
-  static func neverSuccess() -> ValidateString {
-    return ValidateString { _ in
-      return [.none]
-    }
-  }
-}
-
