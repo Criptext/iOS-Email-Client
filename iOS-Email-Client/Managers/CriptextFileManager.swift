@@ -42,7 +42,8 @@ class CriptextFileManager {
             return false
         }
         let fileSize = Int(truncating: fileAttributes[.size] as! NSNumber)
-        guard self.availableSize(addedSize: fileSize) else {
+        guard self.availableSize(addedSize: fileSize),
+            fileSize != 0 else {
             self.delegate?.fileError(message: String.localize("EXCEEDS_MAX_SIZE", arguments: File.prettyPrintSize(size: MAX_SIZE)))
             return false
         }

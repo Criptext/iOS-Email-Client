@@ -602,11 +602,6 @@ class ComposeViewController: UIViewController {
     }
     
     @IBAction func didPressAttachment(_ sender: UIButton) {
-        //derpo
-        guard fileManager.registeredFiles.count < 5 else {
-            self.showAlert(String.localize("ATTACHMENT_CAP"), message: String.localize("ATTACHMENT_CAP_SIZE"), style: .alert)
-            return
-        }
         self.showAttachmentDrawer(true)
     }
     
