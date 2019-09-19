@@ -94,7 +94,7 @@ func includeWhitespace(char: Character) -> ValidateStringError? {
 }
 
 func hasMinLengthRule(_ string: String) -> [ValidateStringError] {
-  if string.count < 9 { return [.passwordLength] }
+  if string.count < Constants.MinCharactersPassword { return [.passwordLength] }
   else { return [] }
 }
 
