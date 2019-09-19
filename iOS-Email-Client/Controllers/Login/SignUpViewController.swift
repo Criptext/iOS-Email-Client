@@ -33,6 +33,7 @@ class SignUpViewController: UIViewController{
     var loadingAccount = false
     var apiRequest : DataRequest?
     var multipleAccount = false
+    let signUpValidator = ValidateString.signUp
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -192,12 +193,16 @@ class SignUpViewController: UIViewController{
     func checkPassword(){
         passwordTextField.setStatus(.none)
         confirmPasswordTextField.setStatus(.none)
-        guard let password = passwordTextField.text,
-            password.count >= Constants.MinCharactersPassword else {
-            let inputError = String.localize("PASSWORD_LENGTH")
-            passwordTextField.setStatus(.invalid, inputError)
-            return
+      
+        guard let password = passwordTextField.text else { return }
+        let inputErrors = signUpValidator.run(password)
+        guard inputErrors.isEmpty else {
+          if let inputError = inputErrors.first?.rawValue {
+            passwordTextField.setStatus(.invalid, String.localize(inputError))
+          }
+          return
         }
+      
         passwordTextField.setStatus(.valid)
         
         guard let confirmPassword = confirmPasswordTextField.text, confirmPassword == password else {
