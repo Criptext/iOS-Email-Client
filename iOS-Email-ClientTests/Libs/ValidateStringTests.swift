@@ -211,7 +211,7 @@ class ValidateStringTests: XCTestCase {
     XCTAssertEqual(errors, []) // no error included
   }
   
-  func testEmptyStringWithInclusionCharRulesReturnsEmptySet() {
+  func testEmptyStringWithInclusionCharRulesReturnsEmptyCollection() {
     let sut = ValidateString.createWith(inclusionRules: [includeWhitespace,
                                                          includeSpecial,
                                                          includeLowercase,

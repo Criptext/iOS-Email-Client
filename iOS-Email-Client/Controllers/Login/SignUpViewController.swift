@@ -33,7 +33,7 @@ class SignUpViewController: UIViewController{
     var loadingAccount = false
     var apiRequest : DataRequest?
     var multipleAccount = false
-    let signUpValidator: ValidateString = ValidateString.signUp
+    let signUpValidator = ValidateString.signUp
     
     override func viewDidLoad(){
         super.viewDidLoad()
