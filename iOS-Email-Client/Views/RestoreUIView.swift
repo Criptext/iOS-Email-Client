@@ -45,6 +45,7 @@ class RestoreUIView: UIView {
     }
     
     func applyTheme(view: UIView) {
+        titleLabel.textColor = theme.markedText
         progressBar.layer.cornerRadius = 5
         progressBar.layer.sublayers![1].cornerRadius = 5
         progressBar.subviews[1].clipsToBounds = true
@@ -59,7 +60,12 @@ class RestoreUIView: UIView {
             Font.regular.size(passwordTextField.minimumFontSize)!])
         passwordTextField.visibilityIconButton?.tintColor = theme.placeholder
         
+        percentageContainerView.backgroundColor = .clear
+        percentageContainerView.tipColor = theme.mainText
+        percentageContainerView.layoutIfNeeded()
+        
         warningMessageLabel.textColor = theme.secondText
+        messageLabel.textColor = theme.secondText
         
         view.backgroundColor = theme.overallBackground
     }
