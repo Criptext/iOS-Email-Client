@@ -69,7 +69,7 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
     var delegate: EmailMoreOptionsInterfaceDelegate?
     
     init(email: Email) {
-        options = [.reply, .replyAll, .delete, .mark]
+        options = [.reply, .replyAll, .forward, .delete, .mark]
         optionsCount = 4
         if (email.isSpam) {
             options.append(.notSpam)
