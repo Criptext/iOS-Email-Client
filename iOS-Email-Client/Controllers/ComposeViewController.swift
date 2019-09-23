@@ -616,6 +616,9 @@ class ComposeViewController: UIViewController {
                     configure.allowedVideoRecording = false
                     picker.configure = configure
                     self.present(picker, animated: true, completion: nil)
+                    let isSystemDarkMode = UIUtils.isSystemDarlkModeEnabled(controller: self)
+                    picker.doneButton.tintColor = isSystemDarkMode ? .white : .black
+                    picker.cancelButton.tintColor = isSystemDarkMode ? .white : .black
                     break
                 default:
                     self.showAlert(String.localize("ACCESS_DENIED"), message: String.localize("NEED_ENABLE_ACCESS"), style: .alert)

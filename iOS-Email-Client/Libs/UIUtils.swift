@@ -163,4 +163,17 @@ class UIUtils {
         button.addTarget(target, action: action, for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }
+    
+    class func isSystemDarlkModeEnabled(controller: UIViewController) -> Bool {
+        if #available(iOS 12.0, *) {
+            switch controller.traitCollection.userInterfaceStyle {
+            case .dark:
+                return true
+            default:
+                return false
+            }
+        } else {
+            return false
+        }
+    }
 }
