@@ -1362,22 +1362,23 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         }
         return 79.0
     }
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        guard mailboxData.selectedLabel != SystemLabel.trash.id && mailboxData.selectedLabel != SystemLabel.spam.id && mailboxData.selectedLabel != SystemLabel.draft.id else {
-            return []
+  
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard mailboxData.selectedLabel != SystemLabel.trash.id && mailboxData.selectedLabel !=         SystemLabel.spam.id && mailboxData.selectedLabel != SystemLabel.draft.id else {
+            return nil
         }
-        
-        let trashAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: "         ") { [weak self] (action, index) in
+
+        let deleteAction = UIContextualAction(style: .destructive, title: "Trash") { [weak self] (_, _, completion) in
             guard let weakSelf = self else {
+                completion(false)
                 return
             }
             weakSelf.moveSingleThreadTrash(indexPath: indexPath)
+            completion(true)
         }
-        trashAction.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "trash-action"))
-        
-        return [trashAction];
+      
+        deleteAction.image = #imageLiteral(resourceName: "toolbar-trash")
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
     func moveSingleThreadTrash(indexPath: IndexPath){
