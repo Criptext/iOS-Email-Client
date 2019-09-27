@@ -255,6 +255,7 @@
 "REJECT" = "Reject";
 "REPLY" = "Reply";
 "REPLY_ALL" = "Reply All";
+"FORWARD" = "Forward";
 "DELETE" = "Delete";
 "DELETE_PERMANENTLY" = "Delete Permanently";
 "PRIVACY_SECURITY" = "Privacy and Security";

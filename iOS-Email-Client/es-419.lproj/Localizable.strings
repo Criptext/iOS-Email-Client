@@ -255,6 +255,7 @@
 "REJECT" = "Rechazar";
 "REPLY" = "Responder";
 "REPLY_ALL" = "Responder a todos";
+"FORWARD" = "Reenviar";
 "DELETE" = "Eliminar";
 "DELETE_PERMANENTLY" = "Eliminar Permanentemente";
 "PRIVACY_SECURITY" = "Seguridad y Privacidad";
