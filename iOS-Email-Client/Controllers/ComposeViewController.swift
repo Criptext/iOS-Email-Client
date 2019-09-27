@@ -1127,7 +1127,7 @@ extension ComposeViewController: RichEditorDelegate {
     
     func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
         let cgheight = CGFloat(height)
-        let diff = cgheight - self.editorHeightConstraint.constant
+        let diff = cgheight - composerEditorHeight
         let offset = self.scrollView.contentOffset
         
         if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) > self.toolbarView.frame.origin.y {

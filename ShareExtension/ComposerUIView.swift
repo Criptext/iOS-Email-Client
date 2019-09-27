@@ -62,6 +62,7 @@ class ComposerUIView: UIView {
     weak var myAccount: Account!
     var checkedDomains: [String: Bool] = Utils.defaultDomains
     var accountOptionsInterface: AccountOptionsInterface?
+    var composerEditorHeight: CGFloat = 0.0
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -230,7 +231,7 @@ extension ComposerUIView: RichEditorDelegate {
     
     func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
         let cgheight = CGFloat(height)
-        let diff = cgheight - self.editorHeightConstraint.constant
+        let diff = cgheight - composerEditorHeight
         let offset = self.scrollView.contentOffset
         
         if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) > self.view.frame.origin.y + self.view.frame.width {
@@ -247,7 +248,7 @@ extension ComposerUIView: RichEditorDelegate {
         guard height > COMPOSER_MIN_HEIGHT else {
             return
         }
-        
+        composerEditorHeight = cgheight
         self.editorHeightConstraint.constant = cgheight
     }
 }

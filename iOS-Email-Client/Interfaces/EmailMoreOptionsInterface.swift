@@ -43,7 +43,7 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
             case .replyAll:
                 return String.localize("REPLY_ALL")
             case .forward:
-                return String.localize("FORWARD")
+                return String.localize("FORWARD_MAIL")
             case .delete:
                 return String.localize("DELETE")
             case .mark:
