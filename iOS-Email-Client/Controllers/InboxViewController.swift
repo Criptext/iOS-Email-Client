@@ -403,6 +403,8 @@ class InboxViewController: UIViewController {
         self.tableView.reloadRows(at: [indexPath], with: .none)
         updateBadges()
         showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+        
+        AppStoreReviewManager.requestReviewIfAppropriate(viewController: self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
