@@ -77,6 +77,11 @@
 		48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */; };
 		5BBA9D2A232F68D100277C48 /* ValidateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBA9D29232F68D100277C48 /* ValidateString.swift */; };
 		5BBA9DBD2332E62000277C48 /* ValidateStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBA9DBC2332E62000277C48 /* ValidateStringTests.swift */; };
+		70D965312340E5AC006D7E95 /* Analytics in Resources */ = {isa = PBXBuildFile; fileRef = 70D965302340E5AC006D7E95 /* Analytics */; };
+		70D965332340E5B6006D7E95 /* Messaging in Resources */ = {isa = PBXBuildFile; fileRef = 70D965322340E5B6006D7E95 /* Messaging */; };
+		70D965352340E5CA006D7E95 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70D965342340E5CA006D7E95 /* FirebaseMessaging.framework */; };
+		70D965372340E5D2006D7E95 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70D965362340E5D2006D7E95 /* FirebaseAnalytics.framework */; };
+		70D965392340E839006D7E95 /* AppStoreReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D965382340E839006D7E95 /* AppStoreReviewManager.swift */; };
 		7C049F8920879CD5007A6213 /* LabelsUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */; };
 		7C049F8D2087AB5F007A6213 /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */; };
 		7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */; };
@@ -533,8 +538,6 @@
 		34C4173522BC20530095DF23 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
 		34C4173D22BC20660095DF23 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Protobuf.framework; sourceTree = "<group>"; };
 		34C4173E22BC20660095DF23 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = "<group>"; };
-		34C4174122BC20800095DF23 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
-		34C4174222BC20800095DF23 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		411FDF70204CF93300BCD787 /* InitialsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsImageView.swift; sourceTree = "<group>"; };
 		412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Black.ttf"; sourceTree = "<group>"; };
 		412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -602,6 +605,13 @@
 		48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordLoginViewController.swift; sourceTree = "<group>"; };
 		5BBA9D29232F68D100277C48 /* ValidateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateString.swift; sourceTree = "<group>"; };
 		5BBA9DBC2332E62000277C48 /* ValidateStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateStringTests.swift; sourceTree = "<group>"; };
+		70D9652E2340E538006D7E95 /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		70D9652F2340E554006D7E95 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		70D965302340E5AC006D7E95 /* Analytics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Analytics; sourceTree = "<group>"; };
+		70D965322340E5B6006D7E95 /* Messaging */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Messaging; sourceTree = "<group>"; };
+		70D965342340E5CA006D7E95 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Messaging/FirebaseMessaging.framework; sourceTree = "<group>"; };
+		70D965362340E5D2006D7E95 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Analytics/FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		70D965382340E839006D7E95 /* AppStoreReviewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStoreReviewManager.swift; sourceTree = "<group>"; };
 		7C049F8820879CD4007A6213 /* LabelsUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsUIPopover.swift; sourceTree = "<group>"; };
 		7C049F8C2087AB5F007A6213 /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		7C049F8E2087AB8A007A6213 /* LabelTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelTableViewCell.xib; sourceTree = "<group>"; };
@@ -993,6 +1003,8 @@
 				34C4173822BC20530095DF23 /* FirebaseNanoPB.framework in Frameworks */,
 				41C9CBBC20769AA500B8994F /* SwiftyJSON.framework in Frameworks */,
 				41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */,
+				70D965352340E5CA006D7E95 /* FirebaseMessaging.framework in Frameworks */,
+				70D965372340E5D2006D7E95 /* FirebaseAnalytics.framework in Frameworks */,
 				A7EBB11022CABFD000689760 /* Starscream.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1069,6 +1081,8 @@
 				7C5FD82720602244000E5F14 /* TagListView.framework */,
 				7C147B42203C9676004823DE /* SignalProtocolFramework.framework */,
 				41E229B12076923E00C32998 /* Alamofire.framework */,
+				70D965342340E5CA006D7E95 /* FirebaseMessaging.framework */,
+				70D965362340E5D2006D7E95 /* FirebaseAnalytics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1188,6 +1202,8 @@
 		41B6AAA32017987500D428B7 = {
 			isa = PBXGroup;
 			children = (
+				70D965322340E5B6006D7E95 /* Messaging */,
+				70D965302340E5AC006D7E95 /* Analytics */,
 				34C4173E22BC20660095DF23 /* FirebaseMessaging.framework */,
 				34C4173D22BC20660095DF23 /* Protobuf.framework */,
 				34C4173522BC20530095DF23 /* FirebaseAnalytics.framework */,
@@ -1222,9 +1238,9 @@
 		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
 			isa = PBXGroup;
 			children = (
+				70D9652F2340E554006D7E95 /* module.modulemap */,
+				70D9652E2340E538006D7E95 /* Firebase.h */,
 				A765FD882315C9A500AF9EA2 /* Interfaces */,
-				34C4174122BC20800095DF23 /* Firebase.h */,
-				34C4174222BC20800095DF23 /* module.modulemap */,
 				A7CC387721939B7700C8355A /* Shared */,
 				7CF93F522146E3D700361837 /* Lottie */,
 				7CB60A7520F7E75F00C9090C /* Snackbar */,
@@ -1594,6 +1610,7 @@
 				A7CC387F21939E8800C8355A /* ContactUtils.swift */,
 				A7CC3885219496E600C8355A /* SharedUtils.swift */,
 				A7CC38882194979A00C8355A /* SharedExtensions.swift */,
+				70D965382340E839006D7E95 /* AppStoreReviewManager.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1763,6 +1780,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */,
+				70D965332340E5B6006D7E95 /* Messaging in Resources */,
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
@@ -1779,6 +1797,7 @@
 				A7FFCF39217A912800FFFDFF /* SignInWarningUIPopover.xib in Resources */,
 				A721B34B225E9418004528B4 /* RestoreUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
+				70D965312340E5AC006D7E95 /* Analytics in Resources */,
 				A7D2DEB021C852A6002ED6F8 /* PasscodeLock.strings in Resources */,
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
@@ -2123,6 +2142,7 @@
 				7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
+				70D965392340E839006D7E95 /* AppStoreReviewManager.swift in Sources */,
 				A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */,
 				A741B9F62268DD00001BB19C /* DateString.swift in Sources */,
 				7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */,
@@ -2764,6 +2784,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Messaging",
+					"$(PROJECT_DIR)/Analytics",
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -2803,6 +2825,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Messaging",
+					"$(PROJECT_DIR)/Analytics",
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -2948,6 +2972,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Messaging",
+					"$(PROJECT_DIR)/Analytics",
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
