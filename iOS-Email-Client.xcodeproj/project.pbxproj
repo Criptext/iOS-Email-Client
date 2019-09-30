@@ -77,8 +77,6 @@
 		48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */; };
 		5BBA9D2A232F68D100277C48 /* ValidateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBA9D29232F68D100277C48 /* ValidateString.swift */; };
 		5BBA9DBD2332E62000277C48 /* ValidateStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBA9DBC2332E62000277C48 /* ValidateStringTests.swift */; };
-		70D965312340E5AC006D7E95 /* Analytics in Resources */ = {isa = PBXBuildFile; fileRef = 70D965302340E5AC006D7E95 /* Analytics */; };
-		70D965332340E5B6006D7E95 /* Messaging in Resources */ = {isa = PBXBuildFile; fileRef = 70D965322340E5B6006D7E95 /* Messaging */; };
 		70D965352340E5CA006D7E95 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70D965342340E5CA006D7E95 /* FirebaseMessaging.framework */; };
 		70D965372340E5D2006D7E95 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70D965362340E5D2006D7E95 /* FirebaseAnalytics.framework */; };
 		70D965392340E839006D7E95 /* AppStoreReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D965382340E839006D7E95 /* AppStoreReviewManager.swift */; };
@@ -1780,7 +1778,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */,
-				70D965332340E5B6006D7E95 /* Messaging in Resources */,
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
@@ -1797,7 +1794,6 @@
 				A7FFCF39217A912800FFFDFF /* SignInWarningUIPopover.xib in Resources */,
 				A721B34B225E9418004528B4 /* RestoreUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
-				70D965312340E5AC006D7E95 /* Analytics in Resources */,
 				A7D2DEB021C852A6002ED6F8 /* PasscodeLock.strings in Resources */,
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
