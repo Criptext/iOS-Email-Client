@@ -43,7 +43,7 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
             case .replyAll:
                 return String.localize("REPLY_ALL")
             case .forward:
-                return String.localize("FORWARD_MAIL")
+                return String.localize("FORWARD")
             case .delete:
                 return String.localize("DELETE")
             case .mark:
@@ -70,7 +70,7 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
     
     init(email: Email) {
         options = [.reply, .replyAll, .forward, .delete, .mark]
-        optionsCount = 4
+        optionsCount = options.count
         if (email.isSpam) {
             options.append(.notSpam)
             optionsCount += 1
