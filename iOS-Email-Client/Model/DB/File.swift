@@ -74,26 +74,28 @@ class File : Object {
 extension File{
     func toDictionary(id: Int, emailId: Int) -> [String: Any] {
         let dateString = DateUtils().date(toServerString: date)!
-        var data = [
-            "table": "file",
-            "object": [
-                "id": id,
-                "token": token,
-                "name": name,
-                "size": size,
-                "status": status,
-                "date": dateString,
-                "readOnly": readOnly == 0 ? false : true,
-                "emailId": emailId,
-                "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType,
-                "cid": cid != nil ? cid! : "",
-            ]
+        var object = [
+            "id": id,
+            "token": token,
+            "name": name,
+            "size": size,
+            "status": status,
+            "date": dateString,
+            "readOnly": readOnly == 0 ? false : true,
+            "emailId": emailId,
+            "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType
         ] as [String: Any]
-        if (!fileKey.isEmpty) {
-            data["key"] = String(fileKey.split(separator: ":").first!)
-            data["iv"] = String(fileKey.split(separator: ":").last!)
+        if(cid != nil && cid != ""){
+            object["cid"] = cid
         }
-        return data
+        if (!fileKey.isEmpty && fileKey != "null:null") {
+            object["key"] = String(fileKey.split(separator: ":").first!)
+            object["iv"] = String(fileKey.split(separator: ":").last!)
+        }
+        return [
+            "table": "file",
+            "object": object
+        ]
     }
     
     class func mimeTypeForPath(path: String) -> String {
