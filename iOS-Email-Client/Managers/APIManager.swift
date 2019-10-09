@@ -545,6 +545,36 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func linkCancel(token: String, recipientId: String, domain: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/link/cancel"
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = [
+            "recipientId": recipientId,
+            "domain": domain
+            ] as [String : Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
+    class func syncCancel(token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/sync/cancel"
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        Alamofire.request(url, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
     class func getNews(code: String, completion: @escaping ((ResponseData) -> Void)) {
         let url = "https://news.criptext.com/news/\(NSLocale.preferredLanguages.first!)/\(code)"
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in

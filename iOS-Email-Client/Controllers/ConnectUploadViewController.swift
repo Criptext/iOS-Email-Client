@@ -67,6 +67,7 @@ class ConnectUploadViewController: UIViewController{
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        APIManager.linkCancel(token: self.myAccount.jwt, recipientId: self.myAccount.username, domain: self.myAccount.domain ?? Env.plainDomain, completion: {_ in })
         super.dismiss(animated: flag, completion: completion)
         scheduleWorker.cancel()
         WebSocketManager.sharedInstance.delegate = mailboxDelegate

@@ -93,9 +93,12 @@ class ConnectDeviceViewController: UIViewController{
         UIApplication.shared.isIdleTimerDisabled = false
         socket?.close()
         scheduleWorker.cancel()
-        cleanData()
-        presentingViewController?.navigationController?.popToRootViewController(animated: false)
-        dismiss(animated: true, completion: nil)
+        guard let myAccount = account else {
+            presentingViewController?.navigationController?.popToRootViewController(animated: false)
+            dismiss(animated: true, completion: nil)
+            return
+        }
+        goToMailbox(myAccount.compoundKey)
     }
     
     func cleanData(){
