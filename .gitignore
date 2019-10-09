@@ -114,6 +114,10 @@ Carthage/
 Carthage/*
 
 # Firebase
+Messaging
+Messaging/*
+Analytics
+Analytics/*
 iOS-Email-Client/Firebase.h
 iOS-Email-Client/module.modulemap
 Firebase*.framework/

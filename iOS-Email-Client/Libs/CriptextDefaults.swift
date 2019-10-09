@@ -256,6 +256,22 @@ extension CriptextDefaults {
     
 }
 
+class UserDefaultsKeys {
+    
+    class var reviewWorthyActionCount: String {
+        return "reviewWorthyActionCount"
+    }
+    
+    class var processCompletedCountKey: String {
+        return "processCompletedCount"
+    }
+    
+    class var lastVersionPromptedForReviewKey: String {
+        return "lastVersionPromptedForReview"
+    }
+    
+}
+
 enum ThemeMode: String {
     case themeMode = "Default"
 }
