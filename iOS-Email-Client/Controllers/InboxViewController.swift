@@ -535,7 +535,7 @@ extension InboxViewController: WebSocketManagerDelegate {
             self.handleLinkStart(linkData: data, account: account)
         case .LinkDismiss( _, _), .SyncDismiss( _, _):
             let topView = self.getTopView().presentedViewController
-            if(topView is SignInVerificationUIPopover){
+            if(topView is SignInVerificationUIPopover || topView is GenericDualAnswerUIPopover){
                 topView?.dismiss(animated: false, completion: nil)
             }
         case .NewEvent(let username, let domain):

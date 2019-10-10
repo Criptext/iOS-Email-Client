@@ -30,12 +30,13 @@ class ComposeViewController: UIViewController {
     let DEFAULT_ATTACHMENTS_HEIGHT = 303
     let MAX_ROWS_BEFORE_CALC_HEIGHT = 3
     let ATTACHMENT_ROW_HEIGHT = 65
-    let MARGIN_TOP = 20
+    let MARGIN_TOP = 5
     let CONTACT_FIELDS_HEIGHT = 90
     let ENTER_LINE_HEIGHT : CGFloat = 28.0
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
     let PASSWORD_POPUP_HEIGHT = 295
+    let ATTACHMENT_BUTTON_HEIGHT = 32.0
     
     @IBOutlet weak var fromField: UILabel!
     @IBOutlet weak var fromButton: UIButton!
@@ -189,7 +190,7 @@ class ComposeViewController: UIViewController {
         
         let activityButton = MIBadgeButton(type: .custom)
         activityButton.badgeString = ""
-        activityButton.frame = CGRect(x:14, y:8, width:18, height:32)
+        activityButton.frame = CGRect(x:14, y:8, width:18, height: ATTACHMENT_BUTTON_HEIGHT)
         activityButton.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 5, right: 2)
         activityButton.badgeEdgeInsets = UIEdgeInsets(top: 5, left: 12, bottom: 0, right: 13)
         activityButton.tintColor = Icon.enabled.color
@@ -1130,7 +1131,8 @@ extension ComposeViewController: RichEditorDelegate {
         let diff = cgheight - composerEditorHeight
         let offset = self.scrollView.contentOffset
         
-        if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) > self.toolbarView.frame.origin.y {
+        let calcHeight = self.attachmentButtonContainerView.layer.borderWidth + CGFloat(ATTACHMENT_BUTTON_HEIGHT)
+        if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) + calcHeight > self.toolbarView.frame.origin.y {
             var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
             if diff == -ENTER_LINE_HEIGHT  {
                 newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
@@ -1146,7 +1148,7 @@ extension ComposeViewController: RichEditorDelegate {
         }
         
         composerEditorHeight = cgheight
-        self.editorHeightConstraint.constant = cgheight + composerKeyboardOffset
+        self.editorHeightConstraint.constant = cgheight + self.attachmentButtonContainerView.layer.borderWidth + CGFloat(ATTACHMENT_BUTTON_HEIGHT) + composerKeyboardOffset
     }
     
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {

@@ -49,6 +49,9 @@ class LoginDeviceViewController: UIViewController{
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
+        if(loginData.jwt != nil){
+            APIManager.linkCancel(token: loginData.jwt!, recipientId: loginData.username, domain: loginData.domain, completion: {_ in })
+        }
         self.navigationController?.popToRootViewController(animated: true)
     }
     

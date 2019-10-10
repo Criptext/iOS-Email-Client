@@ -276,6 +276,10 @@ class SettingsGeneralViewController: UIViewController{
         popover.rightOption = String.localize("CONTINUE")
         popover.onResponse = { [weak self] accept in
             guard accept else {
+                guard let weakSelf = self else {
+                    return
+                }
+                APIManager.syncCancel(token: weakSelf.myAccount.jwt, completion: {_ in})
                 return
             }
             self?.showManualSyncPopup()
