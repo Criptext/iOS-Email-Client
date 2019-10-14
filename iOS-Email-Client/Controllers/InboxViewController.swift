@@ -599,6 +599,7 @@ extension InboxViewController {
     }
     
     @objc func getPendingEvents(_ refreshControl: UIRefreshControl?, completion: ((Bool) -> Void)? = nil) {
+        self.dequeueEvents()
         RequestManager.shared.getAccountEvents(accountId: myAccount.compoundKey, get: false)
         RequestManager.shared.getAccountsEvents()
     }
