@@ -72,7 +72,7 @@ class NotificationService: UNNotificationServiceExtension {
             let contentHandler = contentHandler,
             let bestAttemptContent =  bestAttemptContent {
             bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
-            bestAttemptContent.title = "\(activeAccount)\(Env.domain)"
+            bestAttemptContent.title = Utils.validateEmail(activeAccount) ? activeAccount : "\(activeAccount)\(Env.domain)"
             bestAttemptContent.body = String.localize("You may have new emails")
             bestAttemptContent.badge = NSNumber(value: SharedDB.getUnreadCounters() + 1)
             contentHandler(bestAttemptContent)

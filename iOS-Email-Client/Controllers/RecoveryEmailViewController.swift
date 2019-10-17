@@ -136,7 +136,7 @@ class RecoveryEmailViewController: UIViewController {
         guard let email = emailTextField.text else {
             return
         }
-        guard email != "\(myAccount.username)\(Constants.domain)" else {
+        guard email != myAccount.email else {
             emailTextField.detail = String.localize("SAME_ACCOUNT")
             return
         }
