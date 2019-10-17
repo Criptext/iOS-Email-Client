@@ -200,7 +200,7 @@ class EmailTableViewCell: UITableViewCell{
         contactsCollapseLabel.text = fromContactName
         contactsCollapseLabel.textColor = email.isDraft ? theme.alert : theme.mainText
         let emailContact = email.isDraft ? "" : email.fromContact.email
-        self.initialsImageView.setImageForName(string: fromContactName, circular: true, textAttributes: nil)
+        self.initialsImageView.setImageForName(string: email.fromAddress.isEmpty ? email.fromContact.displayName : ContactUtils.getStringEmailName(contact: email.fromAddress).1, circular: true, textAttributes: nil)
         self.initialsImageView.layer.borderWidth = 0.0
         if(!emailContact.isEmpty){
             UIUtils.setProfilePictureImage(imageView: self.initialsImageView, contact: email.fromContact)

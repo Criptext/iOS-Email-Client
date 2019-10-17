@@ -393,7 +393,7 @@ class ComposeViewController: UIViewController {
         draft.threadId = composerData.threadId ?? "\(draft.key)"
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
-        draft.fromAddress = "\(activeAccount.name) <\(activeAccount.username)\(Constants.domain)>"
+        draft.fromAddress = "\(activeAccount.name) <\(activeAccount.email)>"
         draft.buildCompoundKey()
         DBManager.store(draft)
         
@@ -410,7 +410,7 @@ class ComposeViewController: UIViewController {
         self.bccField.allTokens.forEach { (token) in
             self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: draft, type: ContactType.bcc)
         }
-        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: "\(activeAccount.username)\(Constants.domain)", context: nil), emailDetail: draft, type: ContactType.from)
+        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: activeAccount.email, context: nil), emailDetail: draft, type: ContactType.from)
         
         DBManager.store(emailContacts)
         
@@ -435,7 +435,7 @@ class ComposeViewController: UIViewController {
         emailContact.compoundKey = "\(emailDetail.key):\(email):\(type.rawValue)"
         if let contact = DBManager.getContact(email) {
             emailContact.contact = contact
-            if(contact.email != "\(activeAccount.username)\(Env.domain)"){
+            if(contact.email != activeAccount.email){
                 DBManager.updateScore(contact: contact)
             }
         } else {

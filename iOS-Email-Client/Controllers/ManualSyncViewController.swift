@@ -44,7 +44,7 @@ class ManualSyncViewController: UIViewController{
         WebSocketManager.sharedInstance.delegate = nil
         socket = SingleWebSocket()
         socket?.delegate = self
-        connectUIView.initialLoad(email: "\(myAccount.username)\(Constants.domain)")
+        connectUIView.initialLoad(email: myAccount.email)
         self.applyTheme()
         scheduleWorker.delegate = self
         connectUIView.goBack = {

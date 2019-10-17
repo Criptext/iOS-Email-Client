@@ -1228,7 +1228,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             emailDetailData.selectedLabel = selectedLabel
             emailDetailData.labels = Array(labelsSet)
             emailDetailData.subject = subject
-            emailDetailData.accountEmail = "\(myAccount.username)\(Constants.domain)"
+            emailDetailData.accountEmail = self.myAccount.email
             var emailState = Email.State()
             emailState.isExpanded = true
             emailDetailData.emailStates[lastEmailKey] = emailState

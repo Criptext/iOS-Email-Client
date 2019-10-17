@@ -20,7 +20,7 @@ class FeedTableViewCell: UITableViewCell{
     }
     
     func fillFields(feed: FeedItem, account: Account, lastSeen: Date) {
-        let headline = feed.contact.email == "\(account.username)\(Constants.domain)" ? String.localize("EMAIL_OPENED") : feed.header
+        let headline = feed.contact.email == account.email ? String.localize("EMAIL_OPENED") : feed.header
         setLabels(headline, feed.subject, feed.formattedDate)
         setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
         handleViewed(isNew: feed.date > lastSeen)

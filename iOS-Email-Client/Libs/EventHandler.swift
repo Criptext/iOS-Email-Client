@@ -199,8 +199,8 @@ class EventHandler {
             return
         }
         let actionType: FeedItem.Action = event.fileId == nil ? .open : .download
-        guard !DBManager.feedExists(emailId: event.emailId, type: actionType.rawValue, contactId: "\(event.from)\(Constants.domain)"),
-            let contact = DBManager.getContact("\(event.from)\(Constants.domain)"),
+        guard !DBManager.feedExists(emailId: event.emailId, type: actionType.rawValue, contactId: event.from),
+            let contact = DBManager.getContact(event.from),
             let email = DBManager.getMail(key: event.emailId, account: myAccount) else {
             finishCallback(true, .Empty)
             return

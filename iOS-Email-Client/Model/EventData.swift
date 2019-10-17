@@ -95,8 +95,14 @@ class EventData {
         let type: Int
         
         init(params: [String: Any]){
+            var recipientId = params["from"] as! String
+            var domain = Constants.domain
+            if let fromObject = params["fromDomain"] as? [String: Any] {
+                recipientId = fromObject["recipientId"] as! String
+                domain = fromObject["domain"] as! String
+            }
             emailId = params["metadataKey"] as! Int
-            from = params["from"] as! String
+            from = "\(recipientId)@\(domain)"
             fileId = params["file"] as? String
             type = params["type"] as! Int
             
