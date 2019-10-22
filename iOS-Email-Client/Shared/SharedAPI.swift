@@ -133,20 +133,21 @@ class SharedAPI {
             versionHeader: apiVersion
         ]
         
-        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { (response) in
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { (response) in
             let refreshResponseData = handleResponse(response)
             switch (refreshResponseData) {
-                case .SuccessString(let newJwt):
-                    SharedDB.update(oldJwt: token, jwt: newJwt)
-                    SharedDB.refresh()
-                    completionHandler(nil, newJwt)
-                    break
-                case .SuccessDictionary(let data):
-                    let newJwt = data["token"] as! String
-                    let newRefreshToken = data["refreshToken"] as! String
-                    SharedDB.update(oldJwt: token, jwt: newJwt, refreshToken: newRefreshToken)
-                    SharedDB.refresh()
-                    completionHandler(nil, newJwt)
+                case .SuccessString(let data):
+                    if let jsonData = Utils.convertToDictionary(text: data) {
+                        let newJwt = jsonData["token"] as! String
+                        let newRefreshToken = jsonData["refreshToken"] as! String
+                        SharedDB.update(oldJwt: token, jwt: newJwt, refreshToken: newRefreshToken)
+                        SharedDB.refresh()
+                        completionHandler(nil, newJwt)
+                    } else {
+                        SharedDB.update(oldJwt: token, jwt: data)
+                        SharedDB.refresh()
+                        completionHandler(nil, data)
+                    }
                     break
                 default:
                     completionHandler(refreshResponseData, token)
