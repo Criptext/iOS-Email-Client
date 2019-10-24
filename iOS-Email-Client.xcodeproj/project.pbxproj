@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A659822E126F1002D9151 /* LinkFileHeaderData.swift */; };
 		34857664235918BC002E2049 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD825205C857C000E5F14 /* Utils.swift */; };
+		348DD9DA2361FF1C000DC704 /* GenericSingleInputPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */; };
+		348DD9DD23620C59000DC704 /* GenericSingleInputPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 348DD9DB23620C59000DC704 /* GenericSingleInputPopover.xib */; };
 		3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */; };
 		34C4173622BC20530095DF23 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */; };
 		34C4173722BC20530095DF23 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */; };
@@ -527,6 +529,8 @@
 
 /* Begin PBXFileReference section */
 		347A659822E126F1002D9151 /* LinkFileHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileHeaderData.swift; sourceTree = "<group>"; };
+		348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSingleInputPopover.swift; sourceTree = "<group>"; };
+		348DD9DC23620C59000DC704 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "iOS-Email-Client/Views/Base.lproj/GenericSingleInputPopover.xib"; sourceTree = "<group>"; };
 		3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevicesViewController.swift; sourceTree = "<group>"; };
 		34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
 		34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
@@ -1144,6 +1148,7 @@
 				7CFF2EE720766532002B19DB /* MenuViewController.swift */,
 				A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */,
 				7C4D33C6212C7B8400045B09 /* PasswordUIPopover.swift */,
+				348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */,
 				D643394F22013C4C00B74C1D /* ProfileEditorViewController.swift */,
 				7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */,
 				7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */,
@@ -1365,6 +1370,7 @@
 				7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */,
 				7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */,
 				7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */,
+				348DD9DB23620C59000DC704 /* GenericSingleInputPopover.xib */,
 				7CBD20C42025141F00D70B87 /* GradientUIView.swift */,
 				7C1E82C32116BDF2007CA853 /* HintUIView.swift */,
 				7C1E82C12116BD43007CA853 /* HintUIView.xib */,
@@ -1839,6 +1845,7 @@
 				A76D303622565C64004F8747 /* SettingsOptionTableCell.xib in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
 				A7FFCF30217A910A00FFFDFF /* LabelsFooterTableViewCell.xib in Resources */,
+				348DD9DD23620C59000DC704 /* GenericSingleInputPopover.xib in Resources */,
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
 				A7FFCF1E217A90B300FFFDFF /* ContactsDetailUIPopover.xib in Resources */,
 				7C63AB56205330A00053219F /* AccountFromCell.xib in Resources */,
@@ -2016,6 +2023,7 @@
 				950AFF3021FA6A7E003115E7 /* EmailSourceViewController.swift in Sources */,
 				A70E39D72239BBF0005D610B /* AccountTableCell.swift in Sources */,
 				7CCA060D210B687200BC4CEF /* Dummy.swift in Sources */,
+				348DD9DA2361FF1C000DC704 /* GenericSingleInputPopover.swift in Sources */,
 				7CAC1CEE20F6AE7B004A50C6 /* PaddingUILabel.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,
@@ -2357,6 +2365,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		348DD9DB23620C59000DC704 /* GenericSingleInputPopover.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				348DD9DC23620C59000DC704 /* Base */,
+			);
+			name = GenericSingleInputPopover.xib;
+			sourceTree = "<group>";
+		};
 		41B6AAB32017987500D428B7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

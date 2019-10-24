@@ -453,3 +453,9 @@
 "FILE_NOT_FOUND" = "El archivo %s no encontrado";
 "CONTENT_UNENCRYPTED" = "No se pudo decriptar el contenido";
 "FOOTER" = "Mostrar “Enviado con Criptext”";
+"SEND_RECOVERY_CODE" = "Enviar Código de Recuperación";
+"RECOVERY_CODE_DIALOG_TITLE" = "Código de Recuperación";
+"RECOVERY_CODE_DIALOG_MESSAGE" = "Por favor revisa tu correo de recuperación e introduce el código que te hemos enviado.";
+"RECOVERY_CODE_DIALOG_ERROR" = "Código de Recuperación no es correcto.";
+"RECOVERY_CODE_VALIDATION_ERROR" = "El código de recuperación debe tener 6 caracteres.";
+"RECOVERY_CODE_VALIDATION_ERROR_EMPTY" = "El código de recuperación no puede estar vacío.";

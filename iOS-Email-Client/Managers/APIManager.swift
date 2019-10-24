@@ -983,4 +983,33 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
+    
+    class func generateRecoveryCode(recipientId: String, domain: String,token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/user/2fa/generatecode"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "recipientId": recipientId,
+            "domain": domain
+        ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
+    
+    class func validateRecoveryCode(recipientId: String, domain: String, code: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/user/2fa/validatecode"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "code": code,
+            "recipientId": recipientId,
+            "domain": domain
+            ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
 }
