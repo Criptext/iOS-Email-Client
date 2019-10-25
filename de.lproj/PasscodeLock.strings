@@ -1,0 +1,14 @@
+"PasscodeLockEnterTitle" = "Passcode eingeben";
+"PasscodeLockEnterDescription" = "Geben Sie Ihren Passcode ein, um fortzufahren.";
+"PasscodeLockSetTitle" = "Geben Sie einen Passcode ein";
+"PasscodeLockSetDescription" = "Wählen Sie Ihren Passcode aus.";
+"PasscodeLockConfirmTitle" = "Passcode bestätigen";
+"PasscodeLockConfirmDescription" = "Geben Sie den Passcode erneut ein.";
+"PasscodeLockChangeTitle" = "Alten Passcode eingeben";
+"PasscodeLockChangeDescription" = "Geben Sie Ihren alten Passcode ein.";
+"PasscodeLockMismatchTitle" = "Versuchen Sie es nochmal";
+"PasscodeLockMismatchDescription" = "Die Passcodes stimmen nicht überein.";
+"PasscodeLockCancelButtonTitle" = "Abbrechen";
+"PasscodeLockDeleteButtonTitle" = "Löschen";
+"PasscodeLockTouchIDReason" = "Authentifizierung erforderlich, um fortzufahren";
+"PasscodeLockTouchIDButton" = "Passcode eingeben";
