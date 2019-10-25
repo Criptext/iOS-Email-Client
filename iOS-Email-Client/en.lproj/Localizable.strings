@@ -459,3 +459,5 @@
 "RECOVERY_CODE_DIALOG_ERROR" = "Incorrect Recovery Code";
 "RECOVERY_CODE_VALIDATION_ERROR" = "Recovery Code is at least 6 characters long.";
 "RECOVERY_CODE_VALIDATION_ERROR_EMPTY" = "Recovery Code cannot be empty.";
+"DELETE_LABEL_DIALOG_TITLE" = "Delete Label";
+"DELETE_LABEL_DIALOG_MESSAGE" = "Are you sure you want to delete label: (%@)?";

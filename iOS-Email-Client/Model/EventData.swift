@@ -261,6 +261,18 @@ extension EventData {
             }
         }
         
+        struct DeleteLabel: Dictionarify {
+            let uuid: String
+
+            init(params: [String: Any]){
+                uuid = params["uuid"] as! String
+            }
+            
+            init(uuid: String){
+                self.uuid = uuid
+            }
+        }
+        
         struct NameChanged: Dictionarify {
             let name: String
             

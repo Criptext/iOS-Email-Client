@@ -666,6 +666,14 @@ class DBManager: SharedDB {
         return settableLabels
     }
     
+    class func deleteLabel(label: Label){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.delete(label)
+        }
+    }
+    
     //MARK: - File
     
     class func delete(_ files: [File]){
