@@ -1,0 +1,14 @@
+"PasscodeLockEnterTitle" = "Ввести Код Доступа";
+"PasscodeLockEnterDescription" = "Для продолжения введите код доступа.";
+"PasscodeLockSetTitle" = "Ввести Код Доступа";
+"PasscodeLockSetDescription" = "Выберите код доступа.";
+"PasscodeLockConfirmTitle" = "Подтвердить Пароль.";
+"PasscodeLockConfirmDescription" = "Введите код доступа повторно.";
+"PasscodeLockChangeTitle" = "Ввести Старый Код Доступа";
+"PasscodeLockChangeDescription" = "Введите старый пароль.";
+"PasscodeLockMismatchTitle" = "Повторите попытку";
+"PasscodeLockMismatchDescription" = "Коды доступа не совпадают.";
+"PasscodeLockCancelButtonTitle" = "Отмена";
+"PasscodeLockDeleteButtonTitle" = "Удалить";
+"PasscodeLockTouchIDReason" = "Для продолжения требуется аутентификация";
+"PasscodeLockTouchIDButton" = "Ввести Код Доступа";
