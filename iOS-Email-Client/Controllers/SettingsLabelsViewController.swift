@@ -74,6 +74,31 @@ class SettingsLabelsViewController: UIViewController {
         DBManager.createQueueItem(params: ["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], account: myAccount)
     }
     
+    func createDeleteLabelPopover(label: Label, row: Int){
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("DELETE_LABEL_DIALOG_TITLE")
+        popover.initialMessage = String.localize("DELETE_LABEL_DIALOG_MESSAGE", arguments: label.text)
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("YES")
+        popover.onResponse = { [weak self] accept in
+            guard accept,
+                let weakSelf = self else {
+                    return
+            }
+            if(accept){
+                guard let account = weakSelf.myAccount else {
+                    return
+                }
+                let params = EventData.Peer.DeleteLabel(uuid: label.uuid)
+                DBManager.createQueueItem(params: ["cmd": Event.Peer.deleteLabel.rawValue, "params": params.asDictionary()], account: account)
+                DBManager.deleteLabel(label: label)
+                weakSelf.labels.remove(at: row)
+                weakSelf.tableView.reloadData()
+            }
+        }
+        self.presentPopover(popover: popover, height: 200)
+    }
+    
     @objc func goBack(){
         navigationController?.popViewController(animated: true)
     }
@@ -88,6 +113,13 @@ extension SettingsLabelsViewController: UITableViewDelegate, UITableViewDataSour
         let label = labels[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsLabelCell") as! LabelsLabelTableViewCell
         cell.fillFields(label: label)
+        cell.clickTrash = { [weak self] in
+            guard let weakSelf = self else {
+                    return
+            }
+            weakSelf.createDeleteLabelPopover(label: label, row: indexPath.row)
+        }
+        cell.delegate = self
         return cell
     }
     
@@ -114,12 +146,14 @@ extension SettingsLabelsViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return tableView.dequeueReusableHeaderFooterView(withIdentifier: "settingsHeaderLabel")
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let label = labels[indexPath.row]
-        guard label.id != SystemLabel.starred.id else {
+}
+
+extension SettingsLabelsViewController: LabelTableViewCellDelegate {
+    func tableViewCellDidTapCheck(_ cell: LabelsLabelTableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
             return
         }
+        let label = labels[indexPath.row]
         DBManager.updateLabel(label, visible: !label.visible)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }

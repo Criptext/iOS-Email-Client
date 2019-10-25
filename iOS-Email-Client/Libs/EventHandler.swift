@@ -350,6 +350,7 @@ enum Event: Int32 {
         case recoveryChange = 311
         case recoveryVerify = 312
         case updateProfilePic = 313
+        case deleteLabel = 320
     }
     
     enum Server: Int32 {

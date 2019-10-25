@@ -8,11 +8,20 @@
 
 import Foundation
 
+protocol LabelTableViewCellDelegate: class {
+    func tableViewCellDidTapCheck(_ cell: LabelsLabelTableViewCell)
+}
+
 class LabelsLabelTableViewCell: UITableViewCell{
     @IBOutlet weak var checkMarkView: CheckMarkUIView!
+    @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var labelLabel: UILabel!
     @IBOutlet weak var colorDotsContainer: UIView!
     @IBOutlet weak var colorDotsView: UIView!
+    
+    weak var delegate: LabelTableViewCellDelegate?
+    
+    var clickTrash: (() -> Void)? = nil
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -21,6 +30,8 @@ class LabelsLabelTableViewCell: UITableViewCell{
     override func awakeFromNib() {
         super.awakeFromNib()
         applyTheme()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        checkMarkView.addGestureRecognizer(tap)
     }
     
     override func prepareForReuse() {
@@ -35,8 +46,20 @@ class LabelsLabelTableViewCell: UITableViewCell{
     
     func fillFields(label: Label) {
         let isDisabled = label.id == SystemLabel.starred.id
+        trashButton.isHidden = isDisabled
         labelLabel.text = label.localized
         checkMarkView.setChecked(label.visible, disabled: isDisabled)
         colorDotsView.backgroundColor = UIColor(hex: label.color)
+    }
+    
+    @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
+        guard let delegate = self.delegate else {
+            return
+        }
+        delegate.tableViewCellDidTapCheck(self)
+    }
+    
+    @IBAction func didTapButton(sender: UIButton) {
+        clickTrash?()
     }
 }

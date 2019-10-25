@@ -459,3 +459,5 @@
 "RECOVERY_CODE_DIALOG_ERROR" = "Código de Recuperación no es correcto.";
 "RECOVERY_CODE_VALIDATION_ERROR" = "El código de recuperación debe tener 6 caracteres.";
 "RECOVERY_CODE_VALIDATION_ERROR_EMPTY" = "El código de recuperación no puede estar vacío.";
+"DELETE_LABEL_DIALOG_TITLE" = "Borrar Etiqueta";
+"DELETE_LABEL_DIALOG_MESSAGE" = "¿Estás seguro que quieres borrar la etiqueta: (%@)?";
