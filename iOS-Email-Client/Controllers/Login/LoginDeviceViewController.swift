@@ -39,7 +39,7 @@ class LoginDeviceViewController: UIViewController{
             self.sendLinkAuthRequest()
             return
         }
-        signWithPasswordButton.isHidden = true
+        signWithPasswordButton.setTitle(String.localize("SEND_RECOVERY_CODE"), for: .normal)
         self.scheduleWorker.start()
     }
     
@@ -71,26 +71,56 @@ class LoginDeviceViewController: UIViewController{
     }
     
     func presentLoginPasswordPopover() {
-        let popover = GenericDualAnswerUIPopover()
-        popover.leftOption = String.localize("CANCEL")
-        popover.rightOption = String.localize("YES")
-        popover.initialTitle = String.localize("WARNING")
-        let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
-        let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
-        let attrText = NSMutableAttributedString(string: String.localize("IF_YOU_SIGN_IN"), attributes: regularAttrs)
-        let attrBold = NSAttributedString(string: String.localize("MAILBOX_HISTORY"), attributes: boldAttrs)
-        let attrText2 = NSMutableAttributedString(string: String.localize("ON_THIS_DEVICE"), attributes: regularAttrs)
-        attrText.append(attrBold)
-        attrText.append(attrText2)
-        popover.attributedMessage = attrText
-        popover.onResponse = { [weak self] ok in
-            guard ok,
-                let weakSelf = self else {
-                    return
+        if(loginData.isTwoFactor){
+            APIManager.generateRecoveryCode(recipientId: loginData.username, domain: loginData.domain, token: loginData.jwt!){ (responseData) in
+                switch(responseData){
+                case .Success, .BadRequest:
+                    self.scheduleWorker.cancel()
+                    var popover: GenericSingleInputPopover? = nil
+                    popover = GenericSingleInputPopover()
+                    popover?.answerShouldDismiss = false
+                    popover?.canDismiss = false
+                    popover?.leftOption = String.localize("CANCEL")
+                    popover?.rightOption = String.localize("SEND")
+                    popover?.initialTitle = String.localize("RECOVERY_CODE_DIALOG_TITLE")
+                    popover?.initialMessage = String.localize("RECOVERY_CODE_DIALOG_MESSAGE")
+                    popover?.keyboardType = UIKeyboardType.decimalPad
+                    popover?.onOkPress = { [weak self] text in
+                        guard let weakSelf = self else {
+                            return
+                        }
+                        weakSelf.sendRecoveryCode(popover: popover, code: text)
+                    }
+                    popover?.onCancelPress = {
+                        popover = nil
+                    }
+                    self.presentPopover(popover: popover!, height: 245)
+                default:
+                     return
+                }
             }
-            weakSelf.jumpToResetDevice()
+        } else {
+            let popover = GenericDualAnswerUIPopover()
+            popover.leftOption = String.localize("CANCEL")
+            popover.rightOption = String.localize("YES")
+            popover.initialTitle = String.localize("WARNING")
+            let regularAttrs = [NSAttributedString.Key.font: Font.regular.size(14)!]
+            let boldAttrs = [NSAttributedString.Key.font: Font.bold.size(14)!]
+            let attrText = NSMutableAttributedString(string: String.localize("IF_YOU_SIGN_IN"), attributes: regularAttrs)
+            let attrBold = NSAttributedString(string: String.localize("MAILBOX_HISTORY"), attributes: boldAttrs)
+            let attrText2 = NSMutableAttributedString(string: String.localize("ON_THIS_DEVICE"), attributes: regularAttrs)
+            attrText.append(attrBold)
+            attrText.append(attrText2)
+            popover.attributedMessage = attrText
+            popover.onResponse = { [weak self] ok in
+                guard ok,
+                    let weakSelf = self else {
+                        return
+                }
+                weakSelf.jumpToResetDevice()
+            }
+            presentPopover(popover: popover, height: 205)
         }
-        presentPopover(popover: popover, height: 205)
     }
     
     func jumpToResetDevice(){
@@ -99,6 +129,45 @@ class LoginDeviceViewController: UIViewController{
         controller.loginData = self.loginData
         controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func sendRecoveryCode(popover: GenericSingleInputPopover?, code: String){
+        if(code == ""){
+            popover?.showLoader(false)
+            popover?.inputTextField.detail = String.localize("RECOVERY_CODE_VALIDATION_ERROR_EMPTY")
+        } else if (code.count < 6){
+            popover?.showLoader(false)
+            popover?.inputTextField.detail = String.localize("RECOVERY_CODE_VALIDATION_ERROR")
+        } else {
+            guard let jwt = loginData.jwt else {
+                self.navigationController?.popViewController(animated: true)
+                return
+            }
+            APIManager.validateRecoveryCode(recipientId: loginData.username, domain: loginData.domain, code: code, token: jwt) { (responseData) in
+                guard case let .SuccessDictionary(data) = responseData else {
+                    popover?.inputTextField.detail = String.localize("RECOVERY_CODE_DIALOG_ERROR")
+                    popover?.showLoader(false)
+                    return
+                }
+                let name = data["name"] as! String
+                let deviceId = data["deviceId"] as! Int
+                let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
+                signupData.deviceId = deviceId
+                signupData.token = jwt
+                signupData.comingFromLogin = true
+                popover?.showLoader(false)
+                popover?.dismiss(animated: true, completion: nil)
+                self.jumpToCreatingAccount(signupData: signupData)
+            }
+        }
+    }
+    
+    func jumpToCreatingAccount(signupData: SignUpData){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "creatingaccountview") as! CreatingAccountViewController
+        controller.signupData = signupData
+        controller.multipleAccount = self.multipleAccount
+        self.present(controller, animated: true, completion: nil)
     }
     
     func onFailure(){

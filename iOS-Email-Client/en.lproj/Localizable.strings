@@ -453,3 +453,9 @@
 "FILE_NOT_FOUND" = "File %s not found";
 "CONTENT_UNENCRYPTED" = "Content Unencrypted";
 "FOOTER" = "Show “Sent with Criptext”";
+"SEND_RECOVERY_CODE" = "Send Recovery Code";
+"RECOVERY_CODE_DIALOG_TITLE" = "Recovery Code";
+"RECOVERY_CODE_DIALOG_MESSAGE" = "Please check your recovery email and enter the code that was sent to you.";
+"RECOVERY_CODE_DIALOG_ERROR" = "Incorrect Recovery Code";
+"RECOVERY_CODE_VALIDATION_ERROR" = "Recovery Code is at least 6 characters long.";
+"RECOVERY_CODE_VALIDATION_ERROR_EMPTY" = "Recovery Code cannot be empty.";
