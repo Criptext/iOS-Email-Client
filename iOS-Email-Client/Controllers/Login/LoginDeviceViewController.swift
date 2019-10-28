@@ -73,29 +73,17 @@ class LoginDeviceViewController: UIViewController{
     func presentLoginPasswordPopover() {
         if(loginData.isTwoFactor){
             APIManager.generateRecoveryCode(recipientId: loginData.username, domain: loginData.domain, token: loginData.jwt!){ (responseData) in
-                switch(responseData){
-                case .Success, .BadRequest:
+                if case let .SuccessDictionary(data) = responseData {
                     self.scheduleWorker.cancel()
                     var popover: GenericSingleInputPopover? = nil
-                    popover = GenericSingleInputPopover()
-                    popover?.answerShouldDismiss = false
-                    popover?.canDismiss = false
-                    popover?.leftOption = String.localize("CANCEL")
-                    popover?.rightOption = String.localize("SEND")
-                    popover?.initialTitle = String.localize("RECOVERY_CODE_DIALOG_TITLE")
-                    popover?.initialMessage = String.localize("RECOVERY_CODE_DIALOG_MESSAGE")
-                    popover?.keyboardType = UIKeyboardType.decimalPad
-                    popover?.onOkPress = { [weak self] text in
-                        guard let weakSelf = self else {
-                            return
-                        }
-                        weakSelf.sendRecoveryCode(popover: popover, code: text)
-                    }
-                    popover?.onCancelPress = {
-                        popover = nil
-                    }
+                    popover = self.recoveryCodePopover(emailAddress: data["address"] as? String)
                     self.presentPopover(popover: popover!, height: 245)
-                default:
+                } else if case .BadRequest = responseData {
+                    self.scheduleWorker.cancel()
+                    var popover: GenericSingleInputPopover? = nil
+                    popover = self.recoveryCodePopover(emailAddress: nil)
+                    self.presentPopover(popover: popover!, height: 245)
+                } else {
                      return
                 }
             }
@@ -121,6 +109,31 @@ class LoginDeviceViewController: UIViewController{
             }
             presentPopover(popover: popover, height: 205)
         }
+    }
+    
+    func recoveryCodePopover(emailAddress: String?) -> GenericSingleInputPopover? {
+        var popover: GenericSingleInputPopover? =  GenericSingleInputPopover()
+        popover?.answerShouldDismiss = false
+        popover?.canDismiss = false
+        popover?.leftOption = String.localize("CANCEL")
+        popover?.rightOption = String.localize("SEND")
+        popover?.initialTitle = String.localize("RECOVERY_CODE_DIALOG_TITLE")
+        if(emailAddress == nil){
+            popover?.initialMessage = String.localize("RECOVERY_CODE_DIALOG_MESSAGE")
+        } else {
+            popover?.initialMessage = String.localize("RECOVERY_CODE_DIALOG_MESSAGE_WITH_EMAIL", arguments: emailAddress!)
+        }
+        popover?.keyboardType = UIKeyboardType.decimalPad
+        popover?.onOkPress = { [weak self] text in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.sendRecoveryCode(popover: popover, code: text)
+        }
+        popover?.onCancelPress = {
+            popover = nil
+        }
+        return popover
     }
     
     func jumpToResetDevice(){

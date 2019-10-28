@@ -529,6 +529,96 @@
 
 /* Begin PBXFileReference section */
 		347A659822E126F1002D9151 /* LinkFileHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileHeaderData.swift; sourceTree = "<group>"; };
+		347CC8012367A14A00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ConnectView.strings; sourceTree = "<group>"; };
+		347CC8022367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
+		347CC8032367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
+		347CC8042367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
+		347CC8052367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
+		347CC8062367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
+		347CC8072367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "iOS-Email-Client/Views/de.lproj/GenericSingleInputPopover.strings"; sourceTree = "<group>"; };
+		347CC8082367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
+		347CC8092367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
+		347CC80A2367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
+		347CC80B2367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MailboxHeaderUITableCell.strings; sourceTree = "<group>"; };
+		347CC80C2367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ManualSyncUIPopover.strings; sourceTree = "<group>"; };
+		347CC80D2367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/OptionsPickerUIPopover.strings; sourceTree = "<group>"; };
+		347CC80E2367A14D00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		347CC80F2367A14D00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasswordUIPopover.strings; sourceTree = "<group>"; };
+		347CC8102367A14D00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/RemoveDeviceUIPopover.strings; sourceTree = "<group>"; };
+		347CC8112367A14D00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SignInVerificationUIPopover.strings; sourceTree = "<group>"; };
+		347CC8122367A14D00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SignInWarningUIPopover.strings; sourceTree = "<group>"; };
+		347CC8132367A14D00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SingleTextInputUIPopover.strings; sourceTree = "<group>"; };
+		347CC8142367A14D00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/WelcomeTourView.strings; sourceTree = "<group>"; };
+		347CC8152367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BackupHeaderView.strings; sourceTree = "<group>"; };
+		347CC8162367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/RestoreUIPopover.strings; sourceTree = "<group>"; };
+		347CC8172367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		347CC8182367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		347CC8192367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Login.strings; sourceTree = "<group>"; };
+		347CC81A2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainInterface.strings; sourceTree = "<group>"; };
+		347CC81B2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
+		347CC81C2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		347CC81D2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		347CC81E2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
+		347CC81F2367A7B300A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ConnectView.strings; sourceTree = "<group>"; };
+		347CC8202367A7B300A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
+		347CC8212367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
+		347CC8222367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
+		347CC8232367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
+		347CC8242367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
+		347CC8252367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "iOS-Email-Client/Views/fr.lproj/GenericSingleInputPopover.strings"; sourceTree = "<group>"; };
+		347CC8262367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
+		347CC8272367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
+		347CC8282367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
+		347CC8292367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MailboxHeaderUITableCell.strings; sourceTree = "<group>"; };
+		347CC82A2367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ManualSyncUIPopover.strings; sourceTree = "<group>"; };
+		347CC82B2367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/OptionsPickerUIPopover.strings; sourceTree = "<group>"; };
+		347CC82C2367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		347CC82D2367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasswordUIPopover.strings; sourceTree = "<group>"; };
+		347CC82E2367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/RemoveDeviceUIPopover.strings; sourceTree = "<group>"; };
+		347CC82F2367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SignInVerificationUIPopover.strings; sourceTree = "<group>"; };
+		347CC8302367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SignInWarningUIPopover.strings; sourceTree = "<group>"; };
+		347CC8312367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SingleTextInputUIPopover.strings; sourceTree = "<group>"; };
+		347CC8322367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WelcomeTourView.strings; sourceTree = "<group>"; };
+		347CC8332367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BackupHeaderView.strings; sourceTree = "<group>"; };
+		347CC8342367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/RestoreUIPopover.strings; sourceTree = "<group>"; };
+		347CC8352367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		347CC8362367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		347CC8372367A7B600A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Login.strings; sourceTree = "<group>"; };
+		347CC8382367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MainInterface.strings; sourceTree = "<group>"; };
+		347CC8392367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
+		347CC83A2367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		347CC83B2367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		347CC83C2367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
+		347CC83D2367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ConnectView.strings; sourceTree = "<group>"; };
+		347CC83E2367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
+		347CC83F2367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
+		347CC8402367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
+		347CC8412367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
+		347CC8422367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
+		347CC8432367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "iOS-Email-Client/Views/ru.lproj/GenericSingleInputPopover.strings"; sourceTree = "<group>"; };
+		347CC8442367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
+		347CC8452367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
+		347CC8462367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
+		347CC8472367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MailboxHeaderUITableCell.strings; sourceTree = "<group>"; };
+		347CC8482367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ManualSyncUIPopover.strings; sourceTree = "<group>"; };
+		347CC8492367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/OptionsPickerUIPopover.strings; sourceTree = "<group>"; };
+		347CC84A2367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		347CC84B2367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasswordUIPopover.strings; sourceTree = "<group>"; };
+		347CC84C2367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/RemoveDeviceUIPopover.strings; sourceTree = "<group>"; };
+		347CC84D2367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/SignInVerificationUIPopover.strings; sourceTree = "<group>"; };
+		347CC84E2367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/SignInWarningUIPopover.strings; sourceTree = "<group>"; };
+		347CC84F2367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/SingleTextInputUIPopover.strings; sourceTree = "<group>"; };
+		347CC8502367A91500A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WelcomeTourView.strings; sourceTree = "<group>"; };
+		347CC8512367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BackupHeaderView.strings; sourceTree = "<group>"; };
+		347CC8522367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/RestoreUIPopover.strings; sourceTree = "<group>"; };
+		347CC8532367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		347CC8542367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		347CC8552367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Login.strings; sourceTree = "<group>"; };
+		347CC8562367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MainInterface.strings; sourceTree = "<group>"; };
+		347CC8572367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
+		347CC8582367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		347CC8592367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		347CC85A2367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSingleInputPopover.swift; sourceTree = "<group>"; };
 		348DD9DC23620C59000DC704 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "iOS-Email-Client/Views/Base.lproj/GenericSingleInputPopover.xib"; sourceTree = "<group>"; };
 		3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevicesViewController.swift; sourceTree = "<group>"; };
@@ -1765,6 +1855,9 @@
 				en,
 				Base,
 				"es-419",
+				de,
+				fr,
+				ru,
 			);
 			mainGroup = 41B6AAA32017987500D428B7;
 			productRefGroup = 41B6AAAD2017987500D428B7 /* Products */;
@@ -2369,6 +2462,9 @@
 			isa = PBXVariantGroup;
 			children = (
 				348DD9DC23620C59000DC704 /* Base */,
+				347CC8072367A14C00A2FA99 /* de */,
+				347CC8252367A7B400A2FA99 /* fr */,
+				347CC8432367A91400A2FA99 /* ru */,
 			);
 			name = GenericSingleInputPopover.xib;
 			sourceTree = "<group>";
@@ -2379,6 +2475,9 @@
 				41B6AAB42017987500D428B7 /* Base */,
 				A7FFCF5E217A920600FFFDFF /* es-419 */,
 				A7D2DE9E21C47178002ED6F8 /* en */,
+				347CC8172367A14E00A2FA99 /* de */,
+				347CC8352367A7B600A2FA99 /* fr */,
+				347CC8532367A91600A2FA99 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -2389,6 +2488,9 @@
 				41B6AAB92017987500D428B7 /* Base */,
 				A7FFCF5F217A920600FFFDFF /* es-419 */,
 				A7D2DEA021C4717D002ED6F8 /* en */,
+				347CC8182367A14E00A2FA99 /* de */,
+				347CC8362367A7B600A2FA99 /* fr */,
+				347CC8542367A91600A2FA99 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -2399,6 +2501,9 @@
 				A703FAF221F925760080769A /* Base */,
 				A703FAF421F925900080769A /* en */,
 				A703FAF521F9259D0080769A /* es-419 */,
+				347CC81C2367A14E00A2FA99 /* de */,
+				347CC83A2367A7B700A2FA99 /* fr */,
+				347CC8582367A91600A2FA99 /* ru */,
 			);
 			name = PasscodeLockView.xib;
 			sourceTree = "<group>";
@@ -2409,6 +2514,9 @@
 				A70EAE5621E000A000FE6055 /* Base */,
 				A70EAE5921E000A700FE6055 /* en */,
 				A70EAE5B21E000AC00FE6055 /* es-419 */,
+				347CC80C2367A14C00A2FA99 /* de */,
+				347CC82A2367A7B500A2FA99 /* fr */,
+				347CC8482367A91400A2FA99 /* ru */,
 			);
 			name = ManualSyncUIPopover.xib;
 			sourceTree = "<group>";
@@ -2419,6 +2527,9 @@
 				A721B34C225E9418004528B4 /* Base */,
 				A721B34F225E9426004528B4 /* es-419 */,
 				A721B351225E9428004528B4 /* en */,
+				347CC8162367A14E00A2FA99 /* de */,
+				347CC8342367A7B600A2FA99 /* fr */,
+				347CC8522367A91600A2FA99 /* ru */,
 			);
 			name = RestoreUIPopover.xib;
 			sourceTree = "<group>";
@@ -2429,6 +2540,9 @@
 				A723253A21C94E69003CF78D /* Base */,
 				A723253D21C94E6B003CF78D /* en */,
 				A723253F21C94E6C003CF78D /* es-419 */,
+				347CC8032367A14B00A2FA99 /* de */,
+				347CC8212367A7B400A2FA99 /* fr */,
+				347CC83F2367A91300A2FA99 /* ru */,
 			);
 			name = EmailDetailTableCell.xib;
 			sourceTree = "<group>";
@@ -2439,6 +2553,9 @@
 				A741B9EF2264E60D001BB19C /* Base */,
 				A741B9F22264E610001BB19C /* en */,
 				A741B9F42264E612001BB19C /* es-419 */,
+				347CC8152367A14E00A2FA99 /* de */,
+				347CC8332367A7B600A2FA99 /* fr */,
+				347CC8512367A91600A2FA99 /* ru */,
 			);
 			name = BackupHeaderView.xib;
 			sourceTree = "<group>";
@@ -2449,6 +2566,9 @@
 				A77C30B321A5055A0031E219 /* Base */,
 				A7D2DEA421C83EDE002ED6F8 /* en */,
 				A7D2DEA621C83EE3002ED6F8 /* es-419 */,
+				347CC81A2367A14E00A2FA99 /* de */,
+				347CC8382367A7B700A2FA99 /* fr */,
+				347CC8562367A91600A2FA99 /* ru */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -2459,6 +2579,9 @@
 				A7D2DE7021C42BB6002ED6F8 /* Base */,
 				A7D2DE7321C42BBF002ED6F8 /* es-419 */,
 				A7D2DE9A21C4712B002ED6F8 /* en */,
+				347CC80D2367A14C00A2FA99 /* de */,
+				347CC82B2367A7B500A2FA99 /* fr */,
+				347CC8492367A91500A2FA99 /* ru */,
 			);
 			name = OptionsPickerUIPopover.xib;
 			sourceTree = "<group>";
@@ -2469,6 +2592,9 @@
 				A7D2DE7521C42BC8002ED6F8 /* Base */,
 				A7D2DE7821C42BCB002ED6F8 /* es-419 */,
 				A7D2DE9C21C47131002ED6F8 /* en */,
+				347CC80E2367A14D00A2FA99 /* de */,
+				347CC82C2367A7B500A2FA99 /* fr */,
+				347CC84A2367A91500A2FA99 /* ru */,
 			);
 			name = PasscodeLockView.xib;
 			sourceTree = "<group>";
@@ -2479,6 +2605,9 @@
 				A7D2DEA821C83EEE002ED6F8 /* Base */,
 				A7D2DEAB21C83EF0002ED6F8 /* en */,
 				A7D2DEAD21C83EF1002ED6F8 /* es-419 */,
+				347CC81B2367A14E00A2FA99 /* de */,
+				347CC8392367A7B700A2FA99 /* fr */,
+				347CC8572367A91600A2FA99 /* ru */,
 			);
 			name = ComposerUIView.xib;
 			sourceTree = "<group>";
@@ -2488,6 +2617,9 @@
 			children = (
 				A7D2DEB121C852A7002ED6F8 /* en */,
 				A7D2DEB321C852AE002ED6F8 /* es-419 */,
+				347CC81E2367A14E00A2FA99 /* de */,
+				347CC83C2367A7B700A2FA99 /* fr */,
+				347CC85A2367A91700A2FA99 /* ru */,
 			);
 			name = PasscodeLock.strings;
 			sourceTree = "<group>";
@@ -2498,6 +2630,9 @@
 				A7FFCF1C217A8FE300FFFDFF /* Base */,
 				A7FFCF60217A920600FFFDFF /* es-419 */,
 				A7D2DEA221C47184002ED6F8 /* en */,
+				347CC8192367A14E00A2FA99 /* de */,
+				347CC8372367A7B600A2FA99 /* fr */,
+				347CC8552367A91600A2FA99 /* ru */,
 			);
 			name = Login.storyboard;
 			sourceTree = "<group>";
@@ -2508,6 +2643,9 @@
 				A7FFCF1F217A90B300FFFDFF /* Base */,
 				A7FFCF4E217A920400FFFDFF /* es-419 */,
 				A7D2DE7A21C470D8002ED6F8 /* en */,
+				347CC8022367A14B00A2FA99 /* de */,
+				347CC8202367A7B300A2FA99 /* fr */,
+				347CC83E2367A91300A2FA99 /* ru */,
 			);
 			name = ContactsDetailUIPopover.xib;
 			sourceTree = "<group>";
@@ -2518,6 +2656,9 @@
 				A7FFCF22217A90D100FFFDFF /* Base */,
 				A7FFCF4F217A920400FFFDFF /* es-419 */,
 				A7D2DE7C21C470F3002ED6F8 /* en */,
+				347CC80A2367A14C00A2FA99 /* de */,
+				347CC8282367A7B500A2FA99 /* fr */,
+				347CC8462367A91400A2FA99 /* ru */,
 			);
 			name = LabelsUIPopover.xib;
 			sourceTree = "<group>";
@@ -2528,6 +2669,9 @@
 				A7FFCF28217A90E500FFFDFF /* Base */,
 				A7FFCF51217A920400FFFDFF /* es-419 */,
 				A7D2DE8021C470FA002ED6F8 /* en */,
+				347CC8062367A14B00A2FA99 /* de */,
+				347CC8242367A7B400A2FA99 /* fr */,
+				347CC8422367A91400A2FA99 /* ru */,
 			);
 			name = MoreOptionsUIView.xib;
 			sourceTree = "<group>";
@@ -2538,6 +2682,9 @@
 				A7FFCF2B217A90FA00FFFDFF /* Base */,
 				A7FFCF52217A920400FFFDFF /* es-419 */,
 				A7D2DE8221C470FE002ED6F8 /* en */,
+				347CC8132367A14D00A2FA99 /* de */,
+				347CC8312367A7B600A2FA99 /* fr */,
+				347CC84F2367A91500A2FA99 /* ru */,
 			);
 			name = SingleTextInputUIPopover.xib;
 			sourceTree = "<group>";
@@ -2548,6 +2695,9 @@
 				A7FFCF2E217A910100FFFDFF /* Base */,
 				A7FFCF53217A920400FFFDFF /* es-419 */,
 				A7D2DE8421C47101002ED6F8 /* en */,
+				347CC8042367A14B00A2FA99 /* de */,
+				347CC8222367A7B400A2FA99 /* fr */,
+				347CC8402367A91300A2FA99 /* ru */,
 			);
 			name = EmailSetPasswordUIPopover.xib;
 			sourceTree = "<group>";
@@ -2558,6 +2708,9 @@
 				A7FFCF31217A910A00FFFDFF /* Base */,
 				A7FFCF54217A920400FFFDFF /* es-419 */,
 				A7D2DE8621C47104002ED6F8 /* en */,
+				347CC8082367A14C00A2FA99 /* de */,
+				347CC8262367A7B400A2FA99 /* fr */,
+				347CC8442367A91400A2FA99 /* ru */,
 			);
 			name = LabelsFooterTableViewCell.xib;
 			sourceTree = "<group>";
@@ -2568,6 +2721,9 @@
 				A7FFCF34217A911400FFFDFF /* Base */,
 				A7FFCF55217A920500FFFDFF /* es-419 */,
 				A7D2DE8821C4710A002ED6F8 /* en */,
+				347CC8052367A14B00A2FA99 /* de */,
+				347CC8232367A7B400A2FA99 /* fr */,
+				347CC8412367A91300A2FA99 /* ru */,
 			);
 			name = EmailTableFooterView.xib;
 			sourceTree = "<group>";
@@ -2578,6 +2734,9 @@
 				A7FFCF37217A911B00FFFDFF /* Base */,
 				A7FFCF56217A920500FFFDFF /* es-419 */,
 				A7D2DE8A21C4710D002ED6F8 /* en */,
+				347CC8092367A14C00A2FA99 /* de */,
+				347CC8272367A7B400A2FA99 /* fr */,
+				347CC8452367A91400A2FA99 /* ru */,
 			);
 			name = LabelsHeaderTableViewCell.xib;
 			sourceTree = "<group>";
@@ -2588,6 +2747,9 @@
 				A7FFCF3A217A912800FFFDFF /* Base */,
 				A7FFCF57217A920500FFFDFF /* es-419 */,
 				A7D2DE8C21C47110002ED6F8 /* en */,
+				347CC8122367A14D00A2FA99 /* de */,
+				347CC8302367A7B600A2FA99 /* fr */,
+				347CC84E2367A91500A2FA99 /* ru */,
 			);
 			name = SignInWarningUIPopover.xib;
 			sourceTree = "<group>";
@@ -2598,6 +2760,9 @@
 				A7FFCF3D217A913900FFFDFF /* Base */,
 				A7FFCF58217A920500FFFDFF /* es-419 */,
 				A7D2DE8E21C47114002ED6F8 /* en */,
+				347CC80F2367A14D00A2FA99 /* de */,
+				347CC82D2367A7B500A2FA99 /* fr */,
+				347CC84B2367A91500A2FA99 /* ru */,
 			);
 			name = PasswordUIPopover.xib;
 			sourceTree = "<group>";
@@ -2608,6 +2773,9 @@
 				A7FFCF40217A914000FFFDFF /* Base */,
 				A7FFCF59217A920500FFFDFF /* es-419 */,
 				A7D2DE9021C47117002ED6F8 /* en */,
+				347CC8102367A14D00A2FA99 /* de */,
+				347CC82E2367A7B500A2FA99 /* fr */,
+				347CC84C2367A91500A2FA99 /* ru */,
 			);
 			name = RemoveDeviceUIPopover.xib;
 			sourceTree = "<group>";
@@ -2618,6 +2786,9 @@
 				A7FFCF43217A91C300FFFDFF /* Base */,
 				A7FFCF5A217A920600FFFDFF /* es-419 */,
 				A7D2DE9221C4711C002ED6F8 /* en */,
+				347CC8142367A14D00A2FA99 /* de */,
+				347CC8322367A7B600A2FA99 /* fr */,
+				347CC8502367A91500A2FA99 /* ru */,
 			);
 			name = WelcomeTourView.xib;
 			sourceTree = "<group>";
@@ -2628,6 +2799,9 @@
 				A7FFCF46217A91C900FFFDFF /* Base */,
 				A7FFCF5B217A920600FFFDFF /* es-419 */,
 				A7D2DE9421C4711F002ED6F8 /* en */,
+				347CC80B2367A14C00A2FA99 /* de */,
+				347CC8292367A7B500A2FA99 /* fr */,
+				347CC8472367A91400A2FA99 /* ru */,
 			);
 			name = MailboxHeaderUITableCell.xib;
 			sourceTree = "<group>";
@@ -2638,6 +2812,9 @@
 				A7FFCF49217A91D600FFFDFF /* Base */,
 				A7FFCF5C217A920600FFFDFF /* es-419 */,
 				A7D2DE9621C47123002ED6F8 /* en */,
+				347CC8112367A14D00A2FA99 /* de */,
+				347CC82F2367A7B500A2FA99 /* fr */,
+				347CC84D2367A91500A2FA99 /* ru */,
 			);
 			name = SignInVerificationUIPopover.xib;
 			sourceTree = "<group>";
@@ -2648,6 +2825,9 @@
 				A7FFCF4C217A91E200FFFDFF /* Base */,
 				A7FFCF5D217A920600FFFDFF /* es-419 */,
 				A7D2DE9821C47127002ED6F8 /* en */,
+				347CC8012367A14A00A2FA99 /* de */,
+				347CC81F2367A7B300A2FA99 /* fr */,
+				347CC83D2367A91300A2FA99 /* ru */,
 			);
 			name = ConnectView.xib;
 			sourceTree = "<group>";
@@ -2657,6 +2837,9 @@
 			children = (
 				A7FFCF64217A93E600FFFDFF /* en */,
 				A7FFCF66217A93E900FFFDFF /* es-419 */,
+				347CC81D2367A14E00A2FA99 /* de */,
+				347CC83B2367A7B700A2FA99 /* fr */,
+				347CC8592367A91700A2FA99 /* ru */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -2793,7 +2976,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2835,7 +3018,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2982,7 +3165,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3047,7 +3230,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3078,7 +3261,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3108,7 +3291,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3141,7 +3324,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3175,7 +3358,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3208,7 +3391,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
