@@ -1,0 +1,14 @@
+"PasscodeLockEnterTitle" = "Enter Passcode";
+"PasscodeLockEnterDescription" = "Enter your passcode to proceed.";
+"PasscodeLockSetTitle" = "Enter a Passcode";
+"PasscodeLockSetDescription" = "Choose your passcode.";
+"PasscodeLockConfirmTitle" = "Confirm Passcode";
+"PasscodeLockConfirmDescription" = "Enter the passcode again.";
+"PasscodeLockChangeTitle" = "Enter Old Passcode";
+"PasscodeLockChangeDescription" = "Enter your old passcode.";
+"PasscodeLockMismatchTitle" = "Try again";
+"PasscodeLockMismatchDescription" = "Passcodes didn't match.";
+"PasscodeLockCancelButtonTitle" = "Cancel";
+"PasscodeLockDeleteButtonTitle" = "Delete";
+"PasscodeLockTouchIDReason" = "Authentication required to proceed";
+"PasscodeLockTouchIDButton" = "Enter Passcode";
