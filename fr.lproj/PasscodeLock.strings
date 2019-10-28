@@ -1,0 +1,14 @@
+"PasscodeLockEnterTitle" = "Saisissez le code secret";
+"PasscodeLockEnterDescription" = "Saisissez votre code secret pour continuer.";
+"PasscodeLockSetTitle" = "Tapez un code secret";
+"PasscodeLockSetDescription" = "Choisissez votre code secret.";
+"PasscodeLockConfirmTitle" = "Confirmez le code secret.";
+"PasscodeLockConfirmDescription" = "Tapez à nouveau le code secret.";
+"PasscodeLockChangeTitle" = "Tapez l'ancien code secret.";
+"PasscodeLockChangeDescription" = "Tapez votre ancien code secret.";
+"PasscodeLockMismatchTitle" = "Veuillez réessayer";
+"PasscodeLockMismatchDescription" = "Les codes ne correspondent pas.";
+"PasscodeLockCancelButtonTitle" = "Annuler";
+"PasscodeLockDeleteButtonTitle" = "Supprimer";
+"PasscodeLockTouchIDReason" = "Authentification requise pour continuer";
+"PasscodeLockTouchIDButton" = "Tapez votre code secret";
