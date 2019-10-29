@@ -10,7 +10,6 @@
 		347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A659822E126F1002D9151 /* LinkFileHeaderData.swift */; };
 		34857664235918BC002E2049 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD825205C857C000E5F14 /* Utils.swift */; };
 		348DD9DA2361FF1C000DC704 /* GenericSingleInputPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */; };
-		348DD9DD23620C59000DC704 /* GenericSingleInputPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 348DD9DB23620C59000DC704 /* GenericSingleInputPopover.xib */; };
 		3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */; };
 		34C4173622BC20530095DF23 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */; };
 		34C4173722BC20530095DF23 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */; };
@@ -229,6 +228,7 @@
 		7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */; };
 		7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFF2EE720766532002B19DB /* MenuViewController.swift */; };
 		950AFF3021FA6A7E003115E7 /* EmailSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950AFF2F21FA6A7E003115E7 /* EmailSourceViewController.swift */; };
+		95145BA92368E8A200E4EB72 /* GenericSingleInputPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95145BA82368E8A200E4EB72 /* GenericSingleInputPopover.xib */; };
 		9539F99321FBBA4900A4C813 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9539F99221FBBA4900A4C813 /* FileUtils.swift */; };
 		9539F99421FBC71F00A4C813 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9539F99221FBBA4900A4C813 /* FileUtils.swift */; };
 		9539F99521FBC72000A4C813 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9539F99221FBBA4900A4C813 /* FileUtils.swift */; };
@@ -535,7 +535,6 @@
 		347CC8042367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
 		347CC8052367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
 		347CC8062367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
-		347CC8072367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "iOS-Email-Client/Views/de.lproj/GenericSingleInputPopover.strings"; sourceTree = "<group>"; };
 		347CC8082367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
 		347CC8092367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
 		347CC80A2367A14C00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
@@ -565,7 +564,6 @@
 		347CC8222367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
 		347CC8232367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
 		347CC8242367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
-		347CC8252367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "iOS-Email-Client/Views/fr.lproj/GenericSingleInputPopover.strings"; sourceTree = "<group>"; };
 		347CC8262367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
 		347CC8272367A7B400A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
 		347CC8282367A7B500A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
@@ -595,7 +593,6 @@
 		347CC8402367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
 		347CC8412367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
 		347CC8422367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
-		347CC8432367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "iOS-Email-Client/Views/ru.lproj/GenericSingleInputPopover.strings"; sourceTree = "<group>"; };
 		347CC8442367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
 		347CC8452367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
 		347CC8462367A91400A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
@@ -620,7 +617,6 @@
 		347CC8592367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		347CC85A2367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSingleInputPopover.swift; sourceTree = "<group>"; };
-		348DD9DC23620C59000DC704 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "iOS-Email-Client/Views/Base.lproj/GenericSingleInputPopover.xib"; sourceTree = "<group>"; };
 		3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevicesViewController.swift; sourceTree = "<group>"; };
 		34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
 		34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
@@ -856,6 +852,36 @@
 		7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		7CFF2EE720766532002B19DB /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		950AFF2F21FA6A7E003115E7 /* EmailSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSourceViewController.swift; sourceTree = "<group>"; };
+		95145B8B2368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ConnectView.strings; sourceTree = "<group>"; };
+		95145B8C2368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
+		95145B8D2368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
+		95145B8E2368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/EmailSetPasswordUIPopover.strings; sourceTree = "<group>"; };
+		95145B8F2368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/EmailTableFooterView.strings; sourceTree = "<group>"; };
+		95145B902368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
+		95145B912368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LabelsFooterTableViewCell.strings; sourceTree = "<group>"; };
+		95145B922368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LabelsHeaderTableViewCell.strings; sourceTree = "<group>"; };
+		95145B932368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
+		95145B942368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MailboxHeaderUITableCell.strings; sourceTree = "<group>"; };
+		95145B952368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ManualSyncUIPopover.strings; sourceTree = "<group>"; };
+		95145B962368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/OptionsPickerUIPopover.strings; sourceTree = "<group>"; };
+		95145B972368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		95145B982368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasswordUIPopover.strings; sourceTree = "<group>"; };
+		95145B992368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/RemoveDeviceUIPopover.strings; sourceTree = "<group>"; };
+		95145B9A2368E26E00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SignInVerificationUIPopover.strings; sourceTree = "<group>"; };
+		95145B9B2368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SignInWarningUIPopover.strings; sourceTree = "<group>"; };
+		95145B9C2368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SingleTextInputUIPopover.strings; sourceTree = "<group>"; };
+		95145B9D2368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WelcomeTourView.strings; sourceTree = "<group>"; };
+		95145B9E2368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BackupHeaderView.strings; sourceTree = "<group>"; };
+		95145B9F2368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/RestoreUIPopover.strings; sourceTree = "<group>"; };
+		95145BA02368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		95145BA12368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		95145BA22368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Login.strings; sourceTree = "<group>"; };
+		95145BA32368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		95145BA42368E27000E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
+		95145BA52368E27000E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainInterface.strings; sourceTree = "<group>"; };
+		95145BA62368E27000E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
+		95145BA72368E27000E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
+		95145BA82368E8A200E4EB72 /* GenericSingleInputPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenericSingleInputPopover.xib; sourceTree = "<group>"; };
 		9539F99221FBBA4900A4C813 /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
 		954BDB0320486AF9009ED8F1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		95661FCA205C2B9A006DF852 /* EmailContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailContact.swift; sourceTree = "<group>"; };
@@ -866,7 +892,6 @@
 		A703FAE121F90E260080769A /* LightPasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightPasscodeViewController.swift; sourceTree = "<group>"; };
 		A703FAF221F925760080769A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
 		A703FAF421F925900080769A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
-		A703FAF521F9259D0080769A /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLockView.strings"; sourceTree = "<group>"; };
 		A70609F721A72F770066BFA4 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPickerUIPopover.swift; sourceTree = "<group>"; };
 		A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPasscodeViewController.swift; sourceTree = "<group>"; };
@@ -877,7 +902,6 @@
 		A70EAE5321DE6A9700FE6055 /* AcceptData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptData.swift; sourceTree = "<group>"; };
 		A70EAE5621E000A000FE6055 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ManualSyncUIPopover.xib; sourceTree = "<group>"; };
 		A70EAE5921E000A700FE6055 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ManualSyncUIPopover.strings; sourceTree = "<group>"; };
-		A70EAE5B21E000AC00FE6055 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/ManualSyncUIPopover.strings"; sourceTree = "<group>"; };
 		A7115E9A2315CA2F00EBECE7 /* EmailDetailOptionsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailOptionsInterface.swift; sourceTree = "<group>"; };
 		A7115E9C2316D32500EBECE7 /* MailboxOptionsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxOptionsInterface.swift; sourceTree = "<group>"; };
 		A7115E9E2316DC4000EBECE7 /* EmailMoreOptionsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailMoreOptionsInterface.swift; sourceTree = "<group>"; };
@@ -892,11 +916,9 @@
 		A721B347225D2DA5004528B4 /* RestoreUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreUIView.swift; sourceTree = "<group>"; };
 		A721B349225E43CE004528B4 /* RestoreDBAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreDBAsyncTask.swift; sourceTree = "<group>"; };
 		A721B34C225E9418004528B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RestoreUIPopover.xib; sourceTree = "<group>"; };
-		A721B34F225E9426004528B4 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/RestoreUIPopover.strings"; sourceTree = "<group>"; };
 		A721B351225E9428004528B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RestoreUIPopover.strings; sourceTree = "<group>"; };
 		A723253A21C94E69003CF78D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EmailDetailTableCell.xib; sourceTree = "<group>"; };
 		A723253D21C94E6B003CF78D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EmailDetailTableCell.strings; sourceTree = "<group>"; };
-		A723253F21C94E6C003CF78D /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailDetailTableCell.strings"; sourceTree = "<group>"; };
 		A723254221CAFE20003CF78D /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		A723254421CBE257003CF78D /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		A723254621CBF901003CF78D /* LabelsHeaderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsHeaderCellView.swift; sourceTree = "<group>"; };
@@ -914,7 +936,6 @@
 		A73ACB9A2280CAB500B0CF91 /* GetThreadsAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetThreadsAsyncTask.swift; sourceTree = "<group>"; };
 		A741B9EF2264E60D001BB19C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BackupHeaderView.xib; sourceTree = "<group>"; };
 		A741B9F22264E610001BB19C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BackupHeaderView.strings; sourceTree = "<group>"; };
-		A741B9F42264E612001BB19C /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/BackupHeaderView.strings"; sourceTree = "<group>"; };
 		A741B9F52268DD00001BB19C /* DateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateString.swift; sourceTree = "<group>"; };
 		A742720422550A1F006D10C9 /* BackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupViewController.swift; sourceTree = "<group>"; };
 		A74B972921DD0C68008136D7 /* ManualSyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSyncViewController.swift; sourceTree = "<group>"; };
@@ -967,9 +988,7 @@
 		A7CC3885219496E600C8355A /* SharedUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUtils.swift; sourceTree = "<group>"; };
 		A7CC38882194979A00C8355A /* SharedExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedExtensions.swift; sourceTree = "<group>"; };
 		A7D2DE7021C42BB6002ED6F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/OptionsPickerUIPopover.xib; sourceTree = "<group>"; };
-		A7D2DE7321C42BBF002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/OptionsPickerUIPopover.strings"; sourceTree = "<group>"; };
 		A7D2DE7521C42BC8002ED6F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PasscodeLockView.xib; sourceTree = "<group>"; };
-		A7D2DE7821C42BCB002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLockView.strings"; sourceTree = "<group>"; };
 		A7D2DE7A21C470D8002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
 		A7D2DE7C21C470F3002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LabelsUIPopover.strings; sourceTree = "<group>"; };
 		A7D2DE8021C470FA002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MoreOptionsUIView.strings; sourceTree = "<group>"; };
@@ -991,12 +1010,9 @@
 		A7D2DEA021C4717D002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		A7D2DEA221C47184002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Login.strings; sourceTree = "<group>"; };
 		A7D2DEA421C83EDE002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainInterface.strings; sourceTree = "<group>"; };
-		A7D2DEA621C83EE3002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/MainInterface.strings"; sourceTree = "<group>"; };
 		A7D2DEA821C83EEE002ED6F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ComposerUIView.xib; sourceTree = "<group>"; };
 		A7D2DEAB21C83EF0002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
-		A7D2DEAD21C83EF1002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/ComposerUIView.strings"; sourceTree = "<group>"; };
 		A7D2DEB121C852A7002ED6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
-		A7D2DEB321C852AE002ED6F8 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasscodeLock.strings"; sourceTree = "<group>"; };
 		A7E399F4219F61CD007EEC1C /* GoogleService-Info-Support.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Support.plist"; sourceTree = "<group>"; };
 		A7EBB10F22CABFCF00689760 /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
 		A7F3026C216679D800676DD2 /* ScheduleWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleWorker.swift; sourceTree = "<group>"; };
@@ -1021,26 +1037,7 @@
 		A7FFCF46217A91C900FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MailboxHeaderUITableCell.xib; sourceTree = "<group>"; };
 		A7FFCF49217A91D600FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignInVerificationUIPopover.xib; sourceTree = "<group>"; };
 		A7FFCF4C217A91E200FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConnectView.xib; sourceTree = "<group>"; };
-		A7FFCF4E217A920400FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/ContactsDetailUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF4F217A920400FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/LabelsUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF51217A920400FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/MoreOptionsUIView.strings"; sourceTree = "<group>"; };
-		A7FFCF52217A920400FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/SingleTextInputUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF53217A920400FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailSetPasswordUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF54217A920400FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/LabelsFooterTableViewCell.strings"; sourceTree = "<group>"; };
-		A7FFCF55217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/EmailTableFooterView.strings"; sourceTree = "<group>"; };
-		A7FFCF56217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/LabelsHeaderTableViewCell.strings"; sourceTree = "<group>"; };
-		A7FFCF57217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/SignInWarningUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF58217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/PasswordUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF59217A920500FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/RemoveDeviceUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF5A217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/WelcomeTourView.strings"; sourceTree = "<group>"; };
-		A7FFCF5B217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/MailboxHeaderUITableCell.strings"; sourceTree = "<group>"; };
-		A7FFCF5C217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/SignInVerificationUIPopover.strings"; sourceTree = "<group>"; };
-		A7FFCF5D217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/ConnectView.strings"; sourceTree = "<group>"; };
-		A7FFCF5E217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Main.strings"; sourceTree = "<group>"; };
-		A7FFCF5F217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		A7FFCF60217A920600FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Login.strings"; sourceTree = "<group>"; };
 		A7FFCF64217A93E600FFFDFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A7FFCF66217A93E900FFFDFF /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerMessage.swift; sourceTree = "<group>"; };
 		A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueItem.swift; sourceTree = "<group>"; };
 		A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TLPhotoPicker.framework; path = Carthage/Build/iOS/TLPhotoPicker.framework; sourceTree = "<group>"; };
@@ -1460,7 +1457,7 @@
 				7C4D33C0212C733700045B09 /* GenericAlertUIPopover.xib */,
 				7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */,
 				7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */,
-				348DD9DB23620C59000DC704 /* GenericSingleInputPopover.xib */,
+				95145BA82368E8A200E4EB72 /* GenericSingleInputPopover.xib */,
 				7CBD20C42025141F00D70B87 /* GradientUIView.swift */,
 				7C1E82C32116BDF2007CA853 /* HintUIView.swift */,
 				7C1E82C12116BD43007CA853 /* HintUIView.xib */,
@@ -1854,10 +1851,10 @@
 			knownRegions = (
 				en,
 				Base,
-				"es-419",
 				de,
 				fr,
 				ru,
+				es,
 			);
 			mainGroup = 41B6AAA32017987500D428B7;
 			productRefGroup = 41B6AAAD2017987500D428B7 /* Products */;
@@ -1938,7 +1935,7 @@
 				A76D303622565C64004F8747 /* SettingsOptionTableCell.xib in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
 				A7FFCF30217A910A00FFFDFF /* LabelsFooterTableViewCell.xib in Resources */,
-				348DD9DD23620C59000DC704 /* GenericSingleInputPopover.xib in Resources */,
+				95145BA92368E8A200E4EB72 /* GenericSingleInputPopover.xib in Resources */,
 				412CB0422037402D005D1B3F /* NunitoSans-SemiBold.ttf in Resources */,
 				A7FFCF1E217A90B300FFFDFF /* ContactsDetailUIPopover.xib in Resources */,
 				7C63AB56205330A00053219F /* AccountFromCell.xib in Resources */,
@@ -2458,26 +2455,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		348DD9DB23620C59000DC704 /* GenericSingleInputPopover.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				348DD9DC23620C59000DC704 /* Base */,
-				347CC8072367A14C00A2FA99 /* de */,
-				347CC8252367A7B400A2FA99 /* fr */,
-				347CC8432367A91400A2FA99 /* ru */,
-			);
-			name = GenericSingleInputPopover.xib;
-			sourceTree = "<group>";
-		};
 		41B6AAB32017987500D428B7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				41B6AAB42017987500D428B7 /* Base */,
-				A7FFCF5E217A920600FFFDFF /* es-419 */,
 				A7D2DE9E21C47178002ED6F8 /* en */,
 				347CC8172367A14E00A2FA99 /* de */,
 				347CC8352367A7B600A2FA99 /* fr */,
 				347CC8532367A91600A2FA99 /* ru */,
+				95145BA02368E26F00E4EB72 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -2486,11 +2472,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				41B6AAB92017987500D428B7 /* Base */,
-				A7FFCF5F217A920600FFFDFF /* es-419 */,
 				A7D2DEA021C4717D002ED6F8 /* en */,
 				347CC8182367A14E00A2FA99 /* de */,
 				347CC8362367A7B600A2FA99 /* fr */,
 				347CC8542367A91600A2FA99 /* ru */,
+				95145BA12368E26F00E4EB72 /* es */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -2500,10 +2486,10 @@
 			children = (
 				A703FAF221F925760080769A /* Base */,
 				A703FAF421F925900080769A /* en */,
-				A703FAF521F9259D0080769A /* es-419 */,
 				347CC81C2367A14E00A2FA99 /* de */,
 				347CC83A2367A7B700A2FA99 /* fr */,
 				347CC8582367A91600A2FA99 /* ru */,
+				95145BA72368E27000E4EB72 /* es */,
 			);
 			name = PasscodeLockView.xib;
 			sourceTree = "<group>";
@@ -2513,10 +2499,10 @@
 			children = (
 				A70EAE5621E000A000FE6055 /* Base */,
 				A70EAE5921E000A700FE6055 /* en */,
-				A70EAE5B21E000AC00FE6055 /* es-419 */,
 				347CC80C2367A14C00A2FA99 /* de */,
 				347CC82A2367A7B500A2FA99 /* fr */,
 				347CC8482367A91400A2FA99 /* ru */,
+				95145B952368E26E00E4EB72 /* es */,
 			);
 			name = ManualSyncUIPopover.xib;
 			sourceTree = "<group>";
@@ -2525,11 +2511,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A721B34C225E9418004528B4 /* Base */,
-				A721B34F225E9426004528B4 /* es-419 */,
 				A721B351225E9428004528B4 /* en */,
 				347CC8162367A14E00A2FA99 /* de */,
 				347CC8342367A7B600A2FA99 /* fr */,
 				347CC8522367A91600A2FA99 /* ru */,
+				95145B9F2368E26F00E4EB72 /* es */,
 			);
 			name = RestoreUIPopover.xib;
 			sourceTree = "<group>";
@@ -2539,10 +2525,10 @@
 			children = (
 				A723253A21C94E69003CF78D /* Base */,
 				A723253D21C94E6B003CF78D /* en */,
-				A723253F21C94E6C003CF78D /* es-419 */,
 				347CC8032367A14B00A2FA99 /* de */,
 				347CC8212367A7B400A2FA99 /* fr */,
 				347CC83F2367A91300A2FA99 /* ru */,
+				95145B8D2368E26D00E4EB72 /* es */,
 			);
 			name = EmailDetailTableCell.xib;
 			sourceTree = "<group>";
@@ -2552,10 +2538,10 @@
 			children = (
 				A741B9EF2264E60D001BB19C /* Base */,
 				A741B9F22264E610001BB19C /* en */,
-				A741B9F42264E612001BB19C /* es-419 */,
 				347CC8152367A14E00A2FA99 /* de */,
 				347CC8332367A7B600A2FA99 /* fr */,
 				347CC8512367A91600A2FA99 /* ru */,
+				95145B9E2368E26F00E4EB72 /* es */,
 			);
 			name = BackupHeaderView.xib;
 			sourceTree = "<group>";
@@ -2565,10 +2551,10 @@
 			children = (
 				A77C30B321A5055A0031E219 /* Base */,
 				A7D2DEA421C83EDE002ED6F8 /* en */,
-				A7D2DEA621C83EE3002ED6F8 /* es-419 */,
 				347CC81A2367A14E00A2FA99 /* de */,
 				347CC8382367A7B700A2FA99 /* fr */,
 				347CC8562367A91600A2FA99 /* ru */,
+				95145BA52368E27000E4EB72 /* es */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -2577,11 +2563,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7D2DE7021C42BB6002ED6F8 /* Base */,
-				A7D2DE7321C42BBF002ED6F8 /* es-419 */,
 				A7D2DE9A21C4712B002ED6F8 /* en */,
 				347CC80D2367A14C00A2FA99 /* de */,
 				347CC82B2367A7B500A2FA99 /* fr */,
 				347CC8492367A91500A2FA99 /* ru */,
+				95145B962368E26E00E4EB72 /* es */,
 			);
 			name = OptionsPickerUIPopover.xib;
 			sourceTree = "<group>";
@@ -2590,11 +2576,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7D2DE7521C42BC8002ED6F8 /* Base */,
-				A7D2DE7821C42BCB002ED6F8 /* es-419 */,
 				A7D2DE9C21C47131002ED6F8 /* en */,
 				347CC80E2367A14D00A2FA99 /* de */,
 				347CC82C2367A7B500A2FA99 /* fr */,
 				347CC84A2367A91500A2FA99 /* ru */,
+				95145B972368E26E00E4EB72 /* es */,
 			);
 			name = PasscodeLockView.xib;
 			sourceTree = "<group>";
@@ -2604,10 +2590,10 @@
 			children = (
 				A7D2DEA821C83EEE002ED6F8 /* Base */,
 				A7D2DEAB21C83EF0002ED6F8 /* en */,
-				A7D2DEAD21C83EF1002ED6F8 /* es-419 */,
 				347CC81B2367A14E00A2FA99 /* de */,
 				347CC8392367A7B700A2FA99 /* fr */,
 				347CC8572367A91600A2FA99 /* ru */,
+				95145BA62368E27000E4EB72 /* es */,
 			);
 			name = ComposerUIView.xib;
 			sourceTree = "<group>";
@@ -2616,10 +2602,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7D2DEB121C852A7002ED6F8 /* en */,
-				A7D2DEB321C852AE002ED6F8 /* es-419 */,
 				347CC81E2367A14E00A2FA99 /* de */,
 				347CC83C2367A7B700A2FA99 /* fr */,
 				347CC85A2367A91700A2FA99 /* ru */,
+				95145BA42368E27000E4EB72 /* es */,
 			);
 			name = PasscodeLock.strings;
 			sourceTree = "<group>";
@@ -2628,11 +2614,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF1C217A8FE300FFFDFF /* Base */,
-				A7FFCF60217A920600FFFDFF /* es-419 */,
 				A7D2DEA221C47184002ED6F8 /* en */,
 				347CC8192367A14E00A2FA99 /* de */,
 				347CC8372367A7B600A2FA99 /* fr */,
 				347CC8552367A91600A2FA99 /* ru */,
+				95145BA22368E26F00E4EB72 /* es */,
 			);
 			name = Login.storyboard;
 			sourceTree = "<group>";
@@ -2641,11 +2627,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF1F217A90B300FFFDFF /* Base */,
-				A7FFCF4E217A920400FFFDFF /* es-419 */,
 				A7D2DE7A21C470D8002ED6F8 /* en */,
 				347CC8022367A14B00A2FA99 /* de */,
 				347CC8202367A7B300A2FA99 /* fr */,
 				347CC83E2367A91300A2FA99 /* ru */,
+				95145B8C2368E26D00E4EB72 /* es */,
 			);
 			name = ContactsDetailUIPopover.xib;
 			sourceTree = "<group>";
@@ -2654,11 +2640,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF22217A90D100FFFDFF /* Base */,
-				A7FFCF4F217A920400FFFDFF /* es-419 */,
 				A7D2DE7C21C470F3002ED6F8 /* en */,
 				347CC80A2367A14C00A2FA99 /* de */,
 				347CC8282367A7B500A2FA99 /* fr */,
 				347CC8462367A91400A2FA99 /* ru */,
+				95145B932368E26E00E4EB72 /* es */,
 			);
 			name = LabelsUIPopover.xib;
 			sourceTree = "<group>";
@@ -2667,11 +2653,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF28217A90E500FFFDFF /* Base */,
-				A7FFCF51217A920400FFFDFF /* es-419 */,
 				A7D2DE8021C470FA002ED6F8 /* en */,
 				347CC8062367A14B00A2FA99 /* de */,
 				347CC8242367A7B400A2FA99 /* fr */,
 				347CC8422367A91400A2FA99 /* ru */,
+				95145B902368E26D00E4EB72 /* es */,
 			);
 			name = MoreOptionsUIView.xib;
 			sourceTree = "<group>";
@@ -2680,11 +2666,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF2B217A90FA00FFFDFF /* Base */,
-				A7FFCF52217A920400FFFDFF /* es-419 */,
 				A7D2DE8221C470FE002ED6F8 /* en */,
 				347CC8132367A14D00A2FA99 /* de */,
 				347CC8312367A7B600A2FA99 /* fr */,
 				347CC84F2367A91500A2FA99 /* ru */,
+				95145B9C2368E26F00E4EB72 /* es */,
 			);
 			name = SingleTextInputUIPopover.xib;
 			sourceTree = "<group>";
@@ -2693,11 +2679,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF2E217A910100FFFDFF /* Base */,
-				A7FFCF53217A920400FFFDFF /* es-419 */,
 				A7D2DE8421C47101002ED6F8 /* en */,
 				347CC8042367A14B00A2FA99 /* de */,
 				347CC8222367A7B400A2FA99 /* fr */,
 				347CC8402367A91300A2FA99 /* ru */,
+				95145B8E2368E26D00E4EB72 /* es */,
 			);
 			name = EmailSetPasswordUIPopover.xib;
 			sourceTree = "<group>";
@@ -2706,11 +2692,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF31217A910A00FFFDFF /* Base */,
-				A7FFCF54217A920400FFFDFF /* es-419 */,
 				A7D2DE8621C47104002ED6F8 /* en */,
 				347CC8082367A14C00A2FA99 /* de */,
 				347CC8262367A7B400A2FA99 /* fr */,
 				347CC8442367A91400A2FA99 /* ru */,
+				95145B912368E26D00E4EB72 /* es */,
 			);
 			name = LabelsFooterTableViewCell.xib;
 			sourceTree = "<group>";
@@ -2719,11 +2705,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF34217A911400FFFDFF /* Base */,
-				A7FFCF55217A920500FFFDFF /* es-419 */,
 				A7D2DE8821C4710A002ED6F8 /* en */,
 				347CC8052367A14B00A2FA99 /* de */,
 				347CC8232367A7B400A2FA99 /* fr */,
 				347CC8412367A91300A2FA99 /* ru */,
+				95145B8F2368E26D00E4EB72 /* es */,
 			);
 			name = EmailTableFooterView.xib;
 			sourceTree = "<group>";
@@ -2732,11 +2718,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF37217A911B00FFFDFF /* Base */,
-				A7FFCF56217A920500FFFDFF /* es-419 */,
 				A7D2DE8A21C4710D002ED6F8 /* en */,
 				347CC8092367A14C00A2FA99 /* de */,
 				347CC8272367A7B400A2FA99 /* fr */,
 				347CC8452367A91400A2FA99 /* ru */,
+				95145B922368E26E00E4EB72 /* es */,
 			);
 			name = LabelsHeaderTableViewCell.xib;
 			sourceTree = "<group>";
@@ -2745,11 +2731,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF3A217A912800FFFDFF /* Base */,
-				A7FFCF57217A920500FFFDFF /* es-419 */,
 				A7D2DE8C21C47110002ED6F8 /* en */,
 				347CC8122367A14D00A2FA99 /* de */,
 				347CC8302367A7B600A2FA99 /* fr */,
 				347CC84E2367A91500A2FA99 /* ru */,
+				95145B9B2368E26F00E4EB72 /* es */,
 			);
 			name = SignInWarningUIPopover.xib;
 			sourceTree = "<group>";
@@ -2758,11 +2744,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF3D217A913900FFFDFF /* Base */,
-				A7FFCF58217A920500FFFDFF /* es-419 */,
 				A7D2DE8E21C47114002ED6F8 /* en */,
 				347CC80F2367A14D00A2FA99 /* de */,
 				347CC82D2367A7B500A2FA99 /* fr */,
 				347CC84B2367A91500A2FA99 /* ru */,
+				95145B982368E26E00E4EB72 /* es */,
 			);
 			name = PasswordUIPopover.xib;
 			sourceTree = "<group>";
@@ -2771,11 +2757,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF40217A914000FFFDFF /* Base */,
-				A7FFCF59217A920500FFFDFF /* es-419 */,
 				A7D2DE9021C47117002ED6F8 /* en */,
 				347CC8102367A14D00A2FA99 /* de */,
 				347CC82E2367A7B500A2FA99 /* fr */,
 				347CC84C2367A91500A2FA99 /* ru */,
+				95145B992368E26E00E4EB72 /* es */,
 			);
 			name = RemoveDeviceUIPopover.xib;
 			sourceTree = "<group>";
@@ -2784,11 +2770,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF43217A91C300FFFDFF /* Base */,
-				A7FFCF5A217A920600FFFDFF /* es-419 */,
 				A7D2DE9221C4711C002ED6F8 /* en */,
 				347CC8142367A14D00A2FA99 /* de */,
 				347CC8322367A7B600A2FA99 /* fr */,
 				347CC8502367A91500A2FA99 /* ru */,
+				95145B9D2368E26F00E4EB72 /* es */,
 			);
 			name = WelcomeTourView.xib;
 			sourceTree = "<group>";
@@ -2797,11 +2783,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF46217A91C900FFFDFF /* Base */,
-				A7FFCF5B217A920600FFFDFF /* es-419 */,
 				A7D2DE9421C4711F002ED6F8 /* en */,
 				347CC80B2367A14C00A2FA99 /* de */,
 				347CC8292367A7B500A2FA99 /* fr */,
 				347CC8472367A91400A2FA99 /* ru */,
+				95145B942368E26E00E4EB72 /* es */,
 			);
 			name = MailboxHeaderUITableCell.xib;
 			sourceTree = "<group>";
@@ -2810,11 +2796,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF49217A91D600FFFDFF /* Base */,
-				A7FFCF5C217A920600FFFDFF /* es-419 */,
 				A7D2DE9621C47123002ED6F8 /* en */,
 				347CC8112367A14D00A2FA99 /* de */,
 				347CC82F2367A7B500A2FA99 /* fr */,
 				347CC84D2367A91500A2FA99 /* ru */,
+				95145B9A2368E26E00E4EB72 /* es */,
 			);
 			name = SignInVerificationUIPopover.xib;
 			sourceTree = "<group>";
@@ -2823,11 +2809,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF4C217A91E200FFFDFF /* Base */,
-				A7FFCF5D217A920600FFFDFF /* es-419 */,
 				A7D2DE9821C47127002ED6F8 /* en */,
 				347CC8012367A14A00A2FA99 /* de */,
 				347CC81F2367A7B300A2FA99 /* fr */,
 				347CC83D2367A91300A2FA99 /* ru */,
+				95145B8B2368E26D00E4EB72 /* es */,
 			);
 			name = ConnectView.xib;
 			sourceTree = "<group>";
@@ -2836,10 +2822,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF64217A93E600FFFDFF /* en */,
-				A7FFCF66217A93E900FFFDFF /* es-419 */,
 				347CC81D2367A14E00A2FA99 /* de */,
 				347CC83B2367A7B700A2FA99 /* fr */,
 				347CC8592367A91700A2FA99 /* ru */,
+				95145BA32368E26F00E4EB72 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
