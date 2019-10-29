@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "4eA-Dz-ykm"; */
+"4eA-Dz-ykm.normalTitle" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = "Ok"; ObjectID = "8Am-j6-j6B"; */
+"8Am-j6-j6B.normalTitle" = "Ok";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "DcC-Ol-XCj"; */
+"DcC-Ol-XCj.text" = "Label";
+
+/* Class = "UILabel"; text = "Enter your password to continue"; ObjectID = "bew-fc-r8k"; */
+"bew-fc-r8k.text" = "Enter your password to continue";
