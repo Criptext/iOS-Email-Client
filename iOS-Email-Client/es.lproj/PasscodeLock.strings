@@ -1,11 +1,3 @@
-/* 
-  PasscodeLock.strings
-  iOS-Email-Client
-
-  Created by Pedro Iniguez on 12/17/18.
-  Copyright © 2018 Criptext Inc. All rights reserved.
-*/
-
 "PasscodeLockEnterTitle" = "Ingrese Codigo PIN";
 "PasscodeLockEnterDescription" = "Ingrese su Codigo PIN para continuar";
 "PasscodeLockSetTitle" = "Ingrese Codigo PIN";
