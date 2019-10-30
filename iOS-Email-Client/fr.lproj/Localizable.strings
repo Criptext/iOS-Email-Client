@@ -113,7 +113,6 @@
 "NO_SENTS" = "Vous n'avez aucun e-mail envoyé,";
 "LETS_SEND" = "envoyez-en un !";
 "NO_DRAFTS" = "Il n'y a aucun brouillon";
-"THATS_OK" = "Aucun problème";
 "NO_SPAM" = "Il n'y a aucun courrier indésirable";
 "COOL" = "Cool !";
 "NO_TRASHES" = "La corbeille est vide";
@@ -170,7 +169,6 @@
 "NEXT_TIME_2FA" = "La prochaine fois que vous vous connecterez à votre compte sur un autre appareil, vous devrez saisir votre mot de passe puis valider la connexion à partir d'un appareil existant.";
 "ADD_LABEL" = "Ajouter un Marqueur";
 "REPEATED_LABEL" = "Marqueur Dupliqué";
-"Label_EXISTS" = "Le marqueur '%s' existe déjà !";
 "UNABLE_REMOVE_DEVICE" = "Impossible de supprimer le périphérique %@";
 "ON" = "On";
 "OFF" = "Désactiver";
@@ -216,10 +214,6 @@
 "UNABLE_RECEIPTS" = "Impossible de définir des accusés de lecture. Veuillez réessayer.";
 "UNLOCK_FACE" = "Déverrouiller avec FaceID";
 "UNLOCK_TOUCH" = "Déverrouiller avec vos empreintes digitales";
-"Use PIN Code" = "Utiliser le code PIN";
-"Change PIN Code" = "Changer le code PIN";
-"Auto-Lock" = "Verrouillage automatique";
-"Read Receipts" = "Accusés de Lecture";
 "UNABLE_HANDLE_MAIL" = "Impossible de gérer les e-mails";
 "UNABLE_HANDLE_DUPLICATE" = "Impossible de gérer les doublons de fichiers";
 "EMAIL_CAP_MAX" = "Échec de l'envoi de l'e-mail : limite d'e-mails atteinte. Il sera envoyé plus tard.";
@@ -247,7 +241,7 @@
 "MENU_SETTINGS" = "Paramètres";
 "INVITE_FRIEND" = "Inviter un ami";
 "SUPPORT" = "Support";
-"USE_PIN" = "Utiliser le code PIN";
+"USE_PIN" = "[%key_id:29777217%]";
 "CHANGE_PIN" = "Changer le code PIN";
 "AUTO_LOCK" = "Verrouillage automatique";
 "NOTIFICATION_PREVIEW" = "Aperçu des notifications";
@@ -450,3 +444,16 @@
 "RECOVERY_CODE_VALIDATION_ERROR_EMPTY" = "Code de récupération ne peut pas être vide.";
 "DELETE_LABEL_DIALOG_TITLE" = "Supprimer l'étiquette";
 "DELETE_LABEL_DIALOG_MESSAGE" = "Etes-vous sûr que vous voulez supprimer l'étiquette: (%@)?";
+"SIGNED_OUT" = "Signé de sortie !";
+"Off" = "Désactiver";
+"THATS_OK" = "Aucun problème";
+"Label_EXISTS" = "Le marqueur '%s' existe déjà !";
+"Use PIN Code" = "Utiliser le code PIN";
+"Change PIN Code" = "Changer le code PIN";
+"Auto-Lock" = "Verrouillage automatique";
+"Read Receipts" = "Accusés de Lecture";
+"Add Label" = "";
+"Repeated Label" = "";
+"Label" = "";
+"already exist!" = "";
+"Unable to add label" = "";
