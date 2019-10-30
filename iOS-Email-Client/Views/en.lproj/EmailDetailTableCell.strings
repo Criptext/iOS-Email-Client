@@ -1,15 +1,5 @@
-
-/* Class = "UILabel"; text = "To me, Allison, Daniel"; ObjectID = "7fU-IW-zLs"; */
 "7fU-IW-zLs.text" = "To me, Allison, Daniel";
-
-/* Class = "UILabel"; text = "Yesterday"; ObjectID = "LGD-VD-w1C"; */
-"LGD-VD-w1C.text" = "Yesterday";
-
-/* Class = "UIButton"; normalTitle = "more"; ObjectID = "SNm-dQ-TeE"; */
+"LGD-VD-w1C.text" = "Yesterday ";
 "SNm-dQ-TeE.normalTitle" = "more";
-
-/* Class = "UILabel"; text = "Pepe Le Pew"; ObjectID = "XDx-eF-08j"; */
 "XDx-eF-08j.text" = "Pepe Le Pew";
-
-/* Class = "UILabel"; text = "Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el…"; ObjectID = "uDR-zl-Siw"; */
 "uDR-zl-Siw.text" = "Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el…";

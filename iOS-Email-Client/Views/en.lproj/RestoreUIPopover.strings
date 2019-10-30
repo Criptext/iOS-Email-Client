@@ -1,12 +1,5 @@
-
-/* Class = "UIButton"; normalTitle = "Restore from Cloud"; ObjectID = "CDQ-w1-eqI"; */
 "CDQ-w1-eqI.normalTitle" = "Restore from Cloud";
-
-/* Class = "UILabel"; text = "Something about how to restore from Drive  you should give us permissions, and you can always restore later.\n\n"; ObjectID = "WNQ-UH-w8G"; */
-"WNQ-UH-w8G.text" = "To restore from iCloud, you should enable iCloud Drive for Criptext";
-
-/* Class = "UIButton"; normalTitle = "skip restore"; ObjectID = "aSo-nM-JLw"; */
 "aSo-nM-JLw.normalTitle" = "skip restore";
-
-/* Class = "UILabel"; text = "Restore Backup"; ObjectID = "xWM-63-wNw"; */
 "xWM-63-wNw.text" = "Restore Backup";
+"WNQ-UH-w8G.text" = "To restore from iCloud, you should enable iCloud Drive for Criptext";
+"gwu-Fs-0od.text" = "";
