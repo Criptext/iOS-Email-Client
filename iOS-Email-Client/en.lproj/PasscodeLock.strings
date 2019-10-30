@@ -1,11 +1,3 @@
-/* 
-  PasscodeLock.strings
-  iOS-Email-Client
-
-  Created by Pedro Iniguez on 12/17/18.
-  Copyright © 2018 Criptext Inc. All rights reserved.
-*/
-
 "PasscodeLockEnterTitle" = "Enter Passcode";
 "PasscodeLockEnterDescription" = "Enter your passcode to proceed.";
 "PasscodeLockSetTitle" = "Enter a Passcode";
@@ -15,7 +7,7 @@
 "PasscodeLockChangeTitle" = "Enter Old Passcode";
 "PasscodeLockChangeDescription" = "Enter your old passcode.";
 "PasscodeLockMismatchTitle" = "Try again";
-"PasscodeLockMismatchDescription" = "Passcodes didn\'t match.";
+"PasscodeLockMismatchDescription" = "Passcodes didn't match.";
 "PasscodeLockCancelButtonTitle" = "Cancel";
 "PasscodeLockDeleteButtonTitle" = "Delete";
 "PasscodeLockTouchIDReason" = "Authentication required to proceed";
