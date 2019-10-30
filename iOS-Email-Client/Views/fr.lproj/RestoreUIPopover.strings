@@ -1,12 +1,5 @@
-
-/* Class = "UIButton"; normalTitle = "Restore from Cloud"; ObjectID = "CDQ-w1-eqI"; */
 "CDQ-w1-eqI.normalTitle" = "Restore from Cloud";
-
-/* Class = "UIButton"; normalTitle = "skip restore"; ObjectID = "aSo-nM-JLw"; */
 "aSo-nM-JLw.normalTitle" = "skip restore";
-
-/* Class = "UILabel"; text = "Last Backup: Mar 16, 2018\nSize: 125 MB"; ObjectID = "gwu-Fs-0od"; */
-"gwu-Fs-0od.text" = "Last Backup: Mar 16, 2018\nSize: 125 MB";
-
-/* Class = "UILabel"; text = "Backup Found!"; ObjectID = "xWM-63-wNw"; */
 "xWM-63-wNw.text" = "Backup Found!";
+"WNQ-UH-w8G.text" = "Pour restaurer depuis iCloud, vous devez activer iCloud Drive for Criptext.";
+"gwu-Fs-0od.text" = "Last Backup: Mar 16, 2018\nSize: 125 MB";
