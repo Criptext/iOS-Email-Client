@@ -1,42 +1,14 @@
-
-/* Class = "UIButton"; normalTitle = "1"; ObjectID = "3RA-R3-c6e"; */
 "3RA-R3-c6e.normalTitle" = "1";
-
-/* Class = "UIButton"; normalTitle = "Delete"; ObjectID = "8tb-fB-RLr"; */
 "8tb-fB-RLr.normalTitle" = "Borrar";
-
-/* Class = "UIButton"; normalTitle = "7"; ObjectID = "CsI-Rf-OpM"; */
 "CsI-Rf-OpM.normalTitle" = "7";
-
-/* Class = "UIButton"; normalTitle = "9"; ObjectID = "Fbn-cP-FSc"; */
 "Fbn-cP-FSc.normalTitle" = "9";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "KOL-HQ-Pp5"; */
 "KOL-HQ-Pp5.normalTitle" = "Cancelar";
-
-/* Class = "UIButton"; normalTitle = "0"; ObjectID = "MgE-1a-SN7"; */
-"MgE-1a-SN7.normalTitle" = "0";
-
-/* Class = "UIButton"; normalTitle = "5"; ObjectID = "YAx-LG-H1B"; */
+"MgE-1a-SN7.normalTitle" = "";
 "YAx-LG-H1B.normalTitle" = "5";
-
-/* Class = "UIButton"; normalTitle = "6"; ObjectID = "YDL-Gm-0Np"; */
 "YDL-Gm-0Np.normalTitle" = "6";
-
-/* Class = "UILabel"; text = "Enter PIN Code to unlock Inbox"; ObjectID = "dbF-GF-mtZ"; */
 "dbF-GF-mtZ.text" = "Enter PIN Code to unlock Inbox";
-
-/* Class = "UIButton"; normalTitle = "4"; ObjectID = "fLe-Pg-H7X"; */
 "fLe-Pg-H7X.normalTitle" = "4";
-
-/* Class = "UIButton"; normalTitle = "2"; ObjectID = "kCF-cV-3H6"; */
 "kCF-cV-3H6.normalTitle" = "2";
-
-/* Class = "UILabel"; text = "Incorrect PIN, 5 attempts remaining"; ObjectID = "l31-50-fkY"; */
 "l31-50-fkY.text" = "Incorrect PIN, 5 attempts remaining";
-
-/* Class = "UIButton"; normalTitle = "8"; ObjectID = "tm6-HC-xwZ"; */
 "tm6-HC-xwZ.normalTitle" = "8";
-
-/* Class = "UIButton"; normalTitle = "3"; ObjectID = "vDo-ob-1QV"; */
 "vDo-ob-1QV.normalTitle" = "3";
