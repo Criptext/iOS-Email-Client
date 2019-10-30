@@ -1,18 +1,6 @@
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "PNQ-16-Pa4"; */
 "PNQ-16-Pa4.normalTitle" = "Cancel";
-
-/* Class = "UIButton"; normalTitle = "Resend it"; ObjectID = "Qde-jj-NHE"; */
 "Qde-jj-NHE.normalTitle" = "Resend it";
-
-/* Class = "UILabel"; text = "Warning: Multiple rejections could lead your device to be blacklisted from Criptext"; ObjectID = "VWn-kk-PDH"; */
 "VWn-kk-PDH.text" = "Warning: Multiple rejections could lead your device to be blacklisted from Criptext";
-
-/* Class = "UILabel"; text = "Check and approve this sync from your existing Criptext devices."; ObjectID = "eGr-Ft-an2"; */
 "eGr-Ft-an2.text" = "Check and approve this sync from your existing Criptext devices.";
-
-/* Class = "UILabel"; text = "Didn’t get the prompt?"; ObjectID = "emM-j0-ngB"; */
 "emM-j0-ngB.text" = "Didn’t get the prompt?";
-
-/* Class = "UILabel"; text = "Manual Sync"; ObjectID = "fur-Fh-cfM"; */
 "fur-Fh-cfM.text" = "Manual Sync";
