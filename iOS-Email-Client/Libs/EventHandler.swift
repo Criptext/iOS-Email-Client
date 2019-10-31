@@ -62,7 +62,7 @@ class EventHandler {
             result.modifiedThreadIds.append(contentsOf: threads)
         case .ModifiedEmails(let emails):
             result.modifiedEmailKeys.append(contentsOf: emails)
-        case .NameChanged, .LabelCreated:
+        case .NameChanged, .LabelCreated, .LabelDeleted, .LabelEdited:
             result.updateSideMenu = true
         case .LinkData(let linkData):
             result.linkStartData = linkData
@@ -115,6 +115,10 @@ class EventHandler {
             handleThreadDeleteCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.newLabel.rawValue:
             handleCreateLabelCommand(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.editLabel.rawValue:
+            handleEditLabelCommand(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.deleteLabel.rawValue:
+            handleDeleteLabelCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.changeName.rawValue:
             handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.updateProfilePic.rawValue:
@@ -276,9 +280,30 @@ extension EventHandler {
         let label = Label()
         label.text = event.text
         label.color = event.color
+        label.uuid = event.uuid
         label.account = myAccount
         DBManager.store(label, incrementId: true)
         finishCallback(true, .LabelCreated)
+    }
+    
+    func handleDeleteLabelCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
+            finishCallback(false, .Empty)
+            return
+        }
+        let event = EventData.Peer.DeleteLabel.init(params: params)
+        DBManager.deleteLabelByUUID(uuid: event.uuid, account: myAccount)
+        finishCallback(true, .LabelDeleted)
+    }
+    
+    func handleEditLabelCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
+            finishCallback(false, .Empty)
+            return
+        }
+        let event = EventData.Peer.EditLabel.init(params: params)
+        DBManager.updateLabelNameByUUID(uuid: event.uuid, newName: event.text, account: myAccount)
+        finishCallback(true, .LabelEdited)
     }
     
     func handleChangeNameCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
@@ -350,6 +375,7 @@ enum Event: Int32 {
         case recoveryChange = 311
         case recoveryVerify = 312
         case updateProfilePic = 313
+        case editLabel = 319
         case deleteLabel = 320
     }
     
@@ -374,6 +400,8 @@ enum Event: Int32 {
         case ModifiedEmails([Int])
         case NameChanged
         case LabelCreated
+        case LabelDeleted
+        case LabelEdited
         case Empty
         case News(MailboxData.Feature)
         case UpdateProfilePic

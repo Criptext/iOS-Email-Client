@@ -605,6 +605,22 @@ class DBManager: SharedDB {
         }
     }
     
+    class func updateLabelName(_ label: Label, newName: String){
+        let realm = try! Realm()
+        try! realm.write {
+            label.text = newName
+        }
+    }
+    
+    class func updateLabelNameByUUID(uuid: String, newName: String, account: Account){
+        let realm = try! Realm()
+        if let label = realm.objects(Label.self).filter(NSPredicate(format: "uuid = '\(uuid)' AND (account.compoundKey = '\(account.compoundKey)' OR account = nil)")).first {
+            try! realm.write {
+                label.text = newName
+            }
+        }
+    }
+    
     class func getLabels(type: String) -> [Label]{
         let realm = try! Realm()
         
@@ -671,6 +687,15 @@ class DBManager: SharedDB {
         
         try! realm.write {
             realm.delete(label)
+        }
+    }
+    
+    class func deleteLabelByUUID(uuid: String, account: Account){
+        let realm = try! Realm()
+        if let label = realm.objects(Label.self).filter(NSPredicate(format: "uuid = '\(uuid)' AND (account.compoundKey = '\(account.compoundKey)' OR account = nil)")).first {
+            try! realm.write {
+                realm.delete(label)
+            }
         }
     }
     

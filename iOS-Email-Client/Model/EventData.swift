@@ -261,6 +261,24 @@ extension EventData {
             }
         }
         
+        struct EditLabel: Dictionarify {
+            let text: String
+            let color: String
+            let uuid: String
+
+            init(params: [String: Any]){
+                text = params["text"] as! String
+                color = params["color"] as! String
+                uuid = params["uuid"] as! String
+            }
+            
+            init(text: String, color: String, uuid: String){
+                self.text = text
+                self.color = color
+                self.uuid = uuid
+            }
+        }
+        
         struct DeleteLabel: Dictionarify {
             let uuid: String
 

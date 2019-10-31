@@ -457,3 +457,5 @@
 "Label" = "";
 "already exist!" = "";
 "Unable to add label" = "";
+"EDIT" = "Editar";
+"EDIT_LABEL_DIALOG_TITLE" = "Editar Etiqueta";

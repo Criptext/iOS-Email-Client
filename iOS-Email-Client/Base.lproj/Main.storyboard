@@ -1466,7 +1466,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment_inbox" translatesAutoresizingMaskIntoConstraints="NO" id="UIJ-IR-1G9">
-                                                    <rect key="frame" x="184" y="17.666666666666671" width="18" height="17.000000000000004"/>
+                                                    <rect key="frame" x="184" y="17.666666666666668" width="18" height="17.000000000000004"/>
                                                     <color key="tintColor" red="0.83520287275314331" green="0.83534681797027588" blue="0.8351936936378479" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="Rc6-0l-C0F"/>
@@ -1474,7 +1474,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icSecinb" translatesAutoresizingMaskIntoConstraints="NO" id="tVm-NQ-hk4" userLabel="Secure Email Lock">
-                                                    <rect key="frame" x="206" y="18.666666666666671" width="15" height="15.000000000000004"/>
+                                                    <rect key="frame" x="206" y="18.666666666666668" width="15" height="15.000000000000004"/>
                                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="GIw-Zu-pN0"/>
@@ -1988,39 +1988,40 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="80.333335876464844"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="90.333335876464844"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="80.333335876464844"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90.333335876464844"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                    <rect key="frame" x="300" y="32.333333333333336" width="16" height="16"/>
+                                                    <rect key="frame" x="300" y="37.333333333333336" width="16" height="16"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="16" id="6m0-09-ggS"/>
                                                         <constraint firstAttribute="height" constant="16" id="azr-OE-ZcM"/>
                                                     </constraints>
                                                 </view>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6n-ID-26a" userLabel="Delete Label Button">
-                                                    <rect key="frame" x="340" y="30.333333333333329" width="18" height="20"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6n-ID-26a" userLabel="More Label Button">
+                                                    <rect key="frame" x="340" y="35.333333333333336" width="18" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="MBK-5z-3XB"/>
                                                         <constraint firstAttribute="height" constant="20" id="pgR-MU-Koc"/>
                                                     </constraints>
-                                                    <state key="normal" image="toolbar-trash"/>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <state key="normal" image="dots-options"/>
                                                     <connections>
                                                         <action selector="didTapButtonWithSender:" destination="82W-dO-Eio" eventType="touchUpInside" id="Pye-16-ueQ"/>
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="276" height="80.333333333333329"/>
+                                                    <rect key="frame" x="27" y="0.0" width="276" height="90.333333333333329"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="80.333333333333329"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="90.333333333333329"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
-                                                                    <rect key="frame" x="2" y="37.333333333333336" width="6" height="6"/>
+                                                                    <rect key="frame" x="2" y="42.333333333333336" width="6" height="6"/>
                                                                     <color key="backgroundColor" red="0.0" green="1" blue="0.017805179300000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="6" id="LiT-aA-huk"/>
@@ -2041,7 +2042,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="254" height="80.333333333333329"/>
+                                                            <rect key="frame" x="22" y="0.0" width="254" height="90.333333333333329"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -2070,22 +2071,31 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jnd-MV-Ttg" customClass="MoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Tow-u3-cdw" firstAttribute="leading" secondItem="35t-Al-6jz" secondAttribute="leading" id="5t2-m1-0Hd"/>
+                            <constraint firstItem="jnd-MV-Ttg" firstAttribute="top" secondItem="35t-Al-6jz" secondAttribute="top" id="YFz-TJ-WjC"/>
+                            <constraint firstAttribute="trailing" secondItem="jnd-MV-Ttg" secondAttribute="trailing" id="ap6-gu-418"/>
                             <constraint firstItem="Tow-u3-cdw" firstAttribute="top" secondItem="sgC-Xr-44U" secondAttribute="bottom" id="c3s-E0-W3J"/>
                             <constraint firstAttribute="trailing" secondItem="Tow-u3-cdw" secondAttribute="trailing" id="caF-UP-Mt3"/>
+                            <constraint firstAttribute="bottom" secondItem="jnd-MV-Ttg" secondAttribute="bottom" id="hAG-3D-pye"/>
+                            <constraint firstItem="jnd-MV-Ttg" firstAttribute="leading" secondItem="35t-Al-6jz" secondAttribute="leading" id="mU9-bQ-vch"/>
                             <constraint firstAttribute="bottom" secondItem="Tow-u3-cdw" secondAttribute="bottom" id="tqd-4i-rsV"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="generalOptionsContainerView" destination="jnd-MV-Ttg" id="Ww5-fa-bOT"/>
                         <outlet property="tableView" destination="Tow-u3-cdw" id="Lww-JB-BkT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gyg-yk-5bz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3703" y="842"/>
+            <point key="canvasLocation" x="-3703.1999999999998" y="841.62561576354688"/>
         </scene>
         <!--Settings General View Controller-->
         <scene sceneID="9sd-QT-Kv1">
@@ -3648,6 +3658,7 @@
         <image name="composer" width="32" height="30"/>
         <image name="delete-icon" width="16.333333969116211" height="17.666666030883789"/>
         <image name="device-desktop" width="52" height="45"/>
+        <image name="dots-options" width="24" height="6"/>
         <image name="double-check" width="18.666666030883789" height="10.666666984558105"/>
         <image name="envelope" width="112" height="112"/>
         <image name="formatting" width="18.333333969116211" height="22.333333969116211"/>
@@ -3667,6 +3678,5 @@
         <image name="new-arrow-up" width="16" height="9"/>
         <image name="send" width="26.333333969116211" height="23"/>
         <image name="switch_locked_on" width="10.666666984558105" height="12.666666984558105"/>
-        <image name="toolbar-trash" width="38" height="41"/>
     </resources>
 </document>

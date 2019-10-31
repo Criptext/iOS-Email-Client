@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A659822E126F1002D9151 /* LinkFileHeaderData.swift */; };
+		347CC85C236B43D900A2FA99 /* LabelOptionsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */; };
 		34857664235918BC002E2049 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD825205C857C000E5F14 /* Utils.swift */; };
 		348DD9DA2361FF1C000DC704 /* GenericSingleInputPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */; };
 		3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */; };
@@ -616,6 +617,7 @@
 		347CC8582367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
 		347CC8592367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		347CC85A2367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
+		347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelOptionsInterface.swift; sourceTree = "<group>"; };
 		348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSingleInputPopover.swift; sourceTree = "<group>"; };
 		3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevicesViewController.swift; sourceTree = "<group>"; };
 		34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
@@ -1657,6 +1659,7 @@
 				A7115E9C2316D32500EBECE7 /* MailboxOptionsInterface.swift */,
 				A7115E9E2316DC4000EBECE7 /* EmailMoreOptionsInterface.swift */,
 				A7115EA02316F84600EBECE7 /* AccountOptionsInterface.swift */,
+				347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -2181,6 +2184,7 @@
 				A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */,
 				7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */,
+				347CC85C236B43D900A2FA99 /* LabelOptionsInterface.swift in Sources */,
 				7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
 				48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */,
@@ -2974,7 +2978,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3016,7 +3020,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3164,7 +3168,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3225,7 +3229,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
@@ -3256,7 +3260,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3287,7 +3291,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3319,7 +3323,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
@@ -3353,7 +3357,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3387,7 +3391,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.25;
+				MARKETING_VERSION = 1.1.26;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
