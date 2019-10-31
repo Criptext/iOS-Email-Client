@@ -457,3 +457,5 @@
 "Label" = "Label";
 "already exist!" = "existiert bereits!";
 "Unable to add label" = "Label kann nicht hinzugefügt werden";
+"EDIT" = "Bearbeiten";
+"EDIT_LABEL_DIALOG_TITLE" = "Label Name Bearbeiten";

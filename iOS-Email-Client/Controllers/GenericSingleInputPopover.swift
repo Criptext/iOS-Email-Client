@@ -22,7 +22,9 @@ class GenericSingleInputPopover: BaseUIPopover {
     var buttonTextColor: UIColor?
     var initialAttrMessage: NSAttributedString?
     var initialMessage: String?
+    var attributedPlaceholder: NSAttributedString?
     var keyboardType: UIKeyboardType = UIKeyboardType.default
+    var startingText: String?
     @IBOutlet weak var titleHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var messageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var okButton: UIButton!
@@ -45,6 +47,9 @@ class GenericSingleInputPopover: BaseUIPopover {
         shouldDismiss = canDismiss
         let _ = inputTextField.becomeFirstResponder()
         inputTextField.keyboardType = keyboardType
+        if let input = startingText {
+            inputTextField.text = input
+        }
         if let title = initialTitle {
             titleLabel.text = title
         }
@@ -78,7 +83,11 @@ class GenericSingleInputPopover: BaseUIPopover {
         inputTextField.detailColor = theme.alert
         inputTextField.textColor = theme.mainText
         inputTextField.placeholderLabel.textColor = theme.mainText
-        inputTextField.attributedPlaceholder = NSAttributedString(string: String.localize("RECOVERY_CODE_DIALOG_TITLE"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
+        if let placeHolder = attributedPlaceholder {
+            inputTextField.attributedPlaceholder = placeHolder
+        } else {
+            inputTextField.attributedPlaceholder = NSAttributedString(string: String.localize("RECOVERY_CODE_DIALOG_TITLE"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
+        }
         okButton.backgroundColor = theme.popoverButton
         cancelButton.backgroundColor = theme.popoverButton
         okButton.setTitleColor(buttonTextColor ?? theme.mainText, for: .normal)

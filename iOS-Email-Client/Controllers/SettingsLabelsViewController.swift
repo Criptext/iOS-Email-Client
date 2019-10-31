@@ -10,11 +10,14 @@ import Foundation
 
 class SettingsLabelsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var generalOptionsContainerView: MoreOptionsUIView!
     var labels = [Label]()
     var myAccount: Account!
     var theme: Theme {
         return ThemeManager.shared.theme
     }
+    
+    var labelOptionsInterface: LabelOptionsInterface?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +77,28 @@ class SettingsLabelsViewController: UIViewController {
         DBManager.createQueueItem(params: ["cmd": Event.Peer.newLabel.rawValue, "params": params.asDictionary()], account: myAccount)
     }
     
+    func createEditLabelPopover(label: Label, row: Int){
+        let popover = GenericSingleInputPopover()
+        popover.initialTitle = String.localize("EDIT_LABEL_DIALOG_TITLE")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("CHANGE")
+        popover.startingText = label.text
+        popover.attributedPlaceholder = NSAttributedString(string: String.localize("CHANGE_NAME"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
+        popover.onOkPress = { [weak self] text in
+            guard let weakSelf = self else {
+                return
+            }
+            guard let account = weakSelf.myAccount else {
+                return
+            }
+            DBManager.updateLabelName(label, newName: text)
+            let params = EventData.Peer.EditLabel(text: label.text, color: label.color, uuid: label.uuid)
+            DBManager.createQueueItem(params: ["cmd": Event.Peer.editLabel.rawValue, "params": params.asDictionary()], account: account)
+            weakSelf.tableView.reloadData()
+        }
+        self.presentPopover(popover: popover, height: 200)
+    }
+    
     func createDeleteLabelPopover(label: Label, row: Int){
         let popover = GenericDualAnswerUIPopover()
         popover.initialTitle = String.localize("DELETE_LABEL_DIALOG_TITLE")
@@ -113,11 +138,15 @@ extension SettingsLabelsViewController: UITableViewDelegate, UITableViewDataSour
         let label = labels[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsLabelCell") as! LabelsLabelTableViewCell
         cell.fillFields(label: label)
-        cell.clickTrash = { [weak self] in
+        cell.clickMore = { [weak self] in
             guard let weakSelf = self else {
                     return
             }
-            weakSelf.createDeleteLabelPopover(label: label, row: indexPath.row)
+            weakSelf.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            weakSelf.labelOptionsInterface = LabelOptionsInterface(label: label)
+            weakSelf.labelOptionsInterface?.delegate = weakSelf
+            weakSelf.generalOptionsContainerView.setDelegate(newDelegate: weakSelf.labelOptionsInterface!)
+            weakSelf.toggleGeneralOptionsView()
         }
         cell.delegate = self
         return cell
@@ -145,6 +174,14 @@ extension SettingsLabelsViewController: UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return tableView.dequeueReusableHeaderFooterView(withIdentifier: "settingsHeaderLabel")
+    }
+    
+    @objc func toggleGeneralOptionsView(){
+        guard generalOptionsContainerView.isHidden else {
+            generalOptionsContainerView.closeMoreOptions()
+            return
+        }
+        generalOptionsContainerView.showMoreOptions()
     }
 }
 
@@ -175,5 +212,31 @@ extension SettingsLabelsViewController: UIGestureRecognizerDelegate {
             return true
         }
         return false
+    }
+}
+
+extension SettingsLabelsViewController: LabelOptionsInterfaceDelegate {
+    func onEditPress() {
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        self.toggleGeneralOptionsView()
+        let label = labels[indexPath.row]
+        self.createEditLabelPopover(label: label, row: indexPath.row)
+    }
+    
+    func onDeletePress() {
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        self.toggleGeneralOptionsView()
+        let label = labels[indexPath.row]
+        self.createDeleteLabelPopover(label: label, row: indexPath.row)
+    }
+    
+    func onClose() {
+        self.toggleGeneralOptionsView()
     }
 }

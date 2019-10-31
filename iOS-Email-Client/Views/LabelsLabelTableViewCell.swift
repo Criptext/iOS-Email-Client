@@ -21,7 +21,7 @@ class LabelsLabelTableViewCell: UITableViewCell{
     
     weak var delegate: LabelTableViewCellDelegate?
     
-    var clickTrash: (() -> Void)? = nil
+    var clickMore: (() -> Void)? = nil
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -60,6 +60,6 @@ class LabelsLabelTableViewCell: UITableViewCell{
     }
     
     @IBAction func didTapButton(sender: UIButton) {
-        clickTrash?()
+        clickMore?()
     }
 }
