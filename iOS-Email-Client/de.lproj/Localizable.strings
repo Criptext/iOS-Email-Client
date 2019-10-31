@@ -1,4 +1,3 @@
-"SIGNED_OUT" = "Abgemeldet!";
 "UNABLE_FILE" = "Datei kann nicht abgerufen werden. Bitte versuchen Sie es erneut";
 "SIGNOUT" = "Abmelden";
 "Q_SURE_LOGOUT" = "Sind Sie sicher, dass Sie sich abmelden möchten?";
@@ -17,11 +16,6 @@
 "DELETE_NO_LONGER" = "und wird diesen Benutzernamen nicht mehr verfügbar machen. Sind Sie sicher?";
 "DELETE_ACCOUNT_SUCCESS" = "\n Konto wurde erfolgreich gelöscht.";
 "LABELS" = "LABELS";
-"Add Label" = "Label hinzufügen";
-"Repeated Label" = "Wiederholtes Label";
-"Label" = "Label";
-"already exist!" = "existiert bereits!";
-"Unable to add label" = "Label kann nicht hinzugefügt werden";
 "DEVICES" = "GERÄTE";
 "SETTINGS" = "EINSTELLUNGEN";
 "Immediately" = "Sofort";
@@ -119,7 +113,6 @@
 "NO_SENTS" = "Sie haben keine E-Mails gesendet";
 "LETS_SEND" = "Lasst uns eine schicken!";
 "NO_DRAFTS" = "Es gibt keine Entwürfe";
-"THATS_OK" = "Das ist in Ordnung";
 "NO_SPAM" = "Es gibt keinen Spam";
 "COOL" = "Cool!";
 "NO_TRASHES" = "Es gibt keinen Müll";
@@ -176,7 +169,6 @@
 "NEXT_TIME_2FA" = "Wenn Sie sich das nächste Mal auf einem anderen Gerät in Ihrem Konto anmelden, müssen Sie Ihr Kennwort eingeben und die Anmeldung von einem vorhandenen Gerät aus bestätigen.";
 "ADD_LABEL" = "Label hinzufügen";
 "REPEATED_LABEL" = "Wiederholtes Label";
-"Label_EXISTS" = "Label '%s' existiert bereits!";
 "UNABLE_REMOVE_DEVICE" = "Gerät kann nicht entfernt werden %@";
 "ON" = "An";
 "OFF" = "Aus";
@@ -222,10 +214,6 @@
 "UNABLE_RECEIPTS" = "Lesebestätigungen können nicht festgelegt werden. Bitte versuche es erneut.";
 "UNLOCK_FACE" = "Mit FaceID entsperren";
 "UNLOCK_TOUCH" = "Mit Fingerabdruck entsperren";
-"Use PIN Code" = "Verwenden Sie den PIN-Code";
-"Change PIN Code" = "PIN Code ändern";
-"Auto-Lock" = "Automatische Sperre";
-"Read Receipts" = "Belege lesen";
 "UNABLE_HANDLE_MAIL" = "E-Mail kann nicht verarbeitet werden";
 "UNABLE_HANDLE_DUPLICATE" = "Datei-Duplikate können nicht verarbeitet werden";
 "EMAIL_CAP_MAX" = "Fehler beim Senden von E-Mails: E-Mail-Obergrenze erreicht. Es wird später gesendet.";
@@ -456,3 +444,16 @@
 "RECOVERY_CODE_VALIDATION_ERROR_EMPTY" = "Der Wiederherstellungscode darf nicht leer sein.";
 "DELETE_LABEL_DIALOG_TITLE" = "Label löschen";
 "DELETE_LABEL_DIALOG_MESSAGE" = "Möchten Sie das Label ( %@ ) wirklich löschen?";
+"SIGNED_OUT" = "Abgemeldet!";
+"Off" = "Aus";
+"THATS_OK" = "Das ist in Ordnung";
+"Label_EXISTS" = "Label '%s' existiert bereits!";
+"Use PIN Code" = "Verwenden Sie den PIN-Code";
+"Change PIN Code" = "PIN Code ändern";
+"Auto-Lock" = "Automatische Sperre";
+"Read Receipts" = "Belege lesen";
+"Add Label" = "Label hinzufügen";
+"Repeated Label" = "Wiederholtes Label";
+"Label" = "Label";
+"already exist!" = "existiert bereits!";
+"Unable to add label" = "Label kann nicht hinzugefügt werden";
