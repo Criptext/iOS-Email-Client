@@ -55,7 +55,11 @@ class ConnectUploadViewController: UIViewController{
         self.connectUIView.goBackButton.isHidden = true
         self.connectUIView.setDeviceIcons(leftType: Device.Kind.current, rightType: Device.Kind(rawValue: linkData.deviceType) ?? .pc)
         connectUIView.goBack = { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+            guard let weakSelf = self else {
+                return
+            }
+            APIManager.linkCancel(token: weakSelf.myAccount.jwt, recipientId: weakSelf.myAccount.username, domain: weakSelf.myAccount.domain ?? Env.plainDomain, completion: {_ in })
+            weakSelf.dismiss(animated: true, completion: nil)
         }
         handleState()
     }
@@ -67,7 +71,6 @@ class ConnectUploadViewController: UIViewController{
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        APIManager.linkCancel(token: self.myAccount.jwt, recipientId: self.myAccount.username, domain: self.myAccount.domain ?? Env.plainDomain, completion: {_ in })
         super.dismiss(animated: flag, completion: completion)
         scheduleWorker.cancel()
         WebSocketManager.sharedInstance.delegate = mailboxDelegate

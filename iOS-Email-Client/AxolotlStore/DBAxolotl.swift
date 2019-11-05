@@ -14,7 +14,7 @@ class DBAxolotl {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(keyRecord, update: true)
+            realm.add(keyRecord, update: .all)
         }
     }
     
@@ -22,7 +22,7 @@ class DBAxolotl {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(keyRecords, update: true)
+            realm.add(keyRecords, update: .all)
         }
     }
     
@@ -56,7 +56,7 @@ class DBAxolotl {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(keyRecord, update: true)
+            realm.add(keyRecord, update: .all)
         }
     }
     
@@ -64,7 +64,7 @@ class DBAxolotl {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(keyRecords, update: true)
+            realm.add(keyRecords, update: .all)
         }
     }
     
@@ -98,7 +98,7 @@ class DBAxolotl {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(sessionRecord, update: true)
+            realm.add(sessionRecord, update: .all)
         }
     }
     
@@ -154,7 +154,7 @@ class DBAxolotl {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(trustedDevice, update: true)
+            realm.add(trustedDevice, update: .all)
         }
     }
     

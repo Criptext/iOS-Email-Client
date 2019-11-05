@@ -245,5 +245,27 @@ extension SharedAPI {
             uploadDataArray.forEach { $0.cancel() }
         }
     }
+    class func postReportContact(emails: [String], type: ContactUtils.ReportType, token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/contact/report"
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = [
+        "emails": emails,
+        "type": type.rawValue
+        ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.postReportContact(emails: emails, type: type, token: newToken, completion: completion)
+            }
+        }
+    }
 }
 

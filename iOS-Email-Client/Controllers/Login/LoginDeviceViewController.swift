@@ -198,6 +198,7 @@ class LoginDeviceViewController: UIViewController{
         controller.signupData = signupData
         controller.linkData = data
         controller.multipleAccount = self.multipleAccount
+        controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true, completion: {
             self.navigationController?.popViewController(animated: false)
         })
