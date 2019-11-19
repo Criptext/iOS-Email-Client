@@ -459,3 +459,6 @@
 "Unable to add label" = "";
 "EDIT" = "редактировать";
 "EDIT_LABEL_DIALOG_TITLE" = "Изменить имя ярлыка";
+"REPORT_BUG" = "Report a Bug";
+"REPORT_ABUSE" = "Report Abuse";
+"REPORT_PHISHING" = "Mark as Phishing";

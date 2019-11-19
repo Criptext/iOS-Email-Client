@@ -112,9 +112,9 @@ class ContactUtils {
         for email in emails {
             if(email.fromContact.email != account.email) {
                 if(addedLabelIds.contains(SystemLabel.spam.id)){
-                    SharedAPI.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.spam, token: account.jwt, completion:{_ in })
+                    SharedAPI.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.spam, data: nil, token: account.jwt, completion:{_ in })
                 } else if (removedLabelIds.contains(SystemLabel.spam.id)) {
-                    SharedAPI.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.notSpam, token: account.jwt, completion:{_ in })
+                    SharedAPI.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.notSpam, data: nil, token: account.jwt, completion:{_ in })
                 }
             }
         }
