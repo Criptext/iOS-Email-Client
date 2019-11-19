@@ -162,7 +162,7 @@ class DBManager: SharedDB {
             if let spamScore = object["spamScore"]{
                 contact.spamScore = spamScore as! Int
             }
-            realm.add(contact, update: true)
+            realm.add(contact, update: .all)
             maps.contacts[contactId] = contact.email
         case "label":
             let label = Label()
@@ -174,7 +174,7 @@ class DBManager: SharedDB {
             if let uuid = object["uuid"]{
                 label.uuid = uuid as! String
             }
-            realm.add(label, update: true)
+            realm.add(label, update: .all)
         case "email":
             let id = object["id"] as! Int
             let email = Email()
@@ -209,7 +209,7 @@ class DBManager: SharedDB {
                 email.boundary = boundary as! String
             }
             email.buildCompoundKey()
-            realm.add(email, update: true)
+            realm.add(email, update: .all)
             maps.emails[id] = email.key
         case "email_label":
             let labelId = object["labelId"] as! Int
@@ -234,7 +234,7 @@ class DBManager: SharedDB {
             emailContact.email = email
             emailContact.type = (object["type"] as! String).lowercased()
             emailContact.compoundKey = emailContact.buildCompoundKey()
-            realm.add(emailContact, update: true)
+            realm.add(emailContact, update: .all)
         case "file":
             let emailId = object["emailId"] as! Int
             guard let emailKey = maps.emails[emailId],
@@ -255,7 +255,7 @@ class DBManager: SharedDB {
             let iv = object["iv"] as? String
             let fileKey = key != nil && iv != nil ? "\(key!):\(iv!)" : ""
             file.fileKey = fileKey
-            realm.add(file, update: true)
+            realm.add(file, update: .all)
             email.files.append(file)
         default:
             return
@@ -268,7 +268,7 @@ class DBManager: SharedDB {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(account, update: true)
+            realm.add(account, update: .all)
         }
     }
     
@@ -365,7 +365,7 @@ class DBManager: SharedDB {
                 if realm.object(ofType: Email.self, forPrimaryKey: email.compoundKey) != nil {
                     return
                 }
-                realm.add(email, update: update)
+                realm.add(email, update: update ? .all : .error)
             }
             return true
         } catch {
@@ -594,7 +594,7 @@ class DBManager: SharedDB {
             if(incrementId){
                 label.incrementID()
             }
-            realm.add(label, update: true)
+            realm.add(label, update: .all)
         }
     }
     
@@ -655,7 +655,7 @@ class DBManager: SharedDB {
         }
     }
     
-    class func  addRemoveLabelsForThreads(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int, account: Account){
+    class func addRemoveLabelsForThreads(_ threadId: String, addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int, account: Account){
         let emails = getThreadEmails(threadId, label: currentLabel, account: account)
         for email in emails {
             addRemoveLabelsFromEmail(email, addedLabelIds: addedLabelIds, removedLabelIds: removedLabelIds)
@@ -721,7 +721,7 @@ class DBManager: SharedDB {
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(feed, update: true)
+            realm.add(feed, update: .all)
         }
     }
     

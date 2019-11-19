@@ -34,6 +34,8 @@ class ThreadsLabelsAsyncTask {
             }
             for threadId in self.threadIds {
                 DBManager.addRemoveLabelsForThreads(threadId, addedLabelIds: self.added, removedLabelIds: self.removed, currentLabel: self.currentLabel, account: myAccount)
+                let emails = Array(DBManager.getThreadEmails(threadId, label: self.currentLabel, account: myAccount))
+                ContactUtils.reportContactToServer(emails: emails, addedLabelIds: self.added, removedLabelIds: self.removed, currentLabel: self.currentLabel, account: myAccount)
             }
             
             let changedLabels = self.getLabelNames(added: self.added, removed: self.removed)

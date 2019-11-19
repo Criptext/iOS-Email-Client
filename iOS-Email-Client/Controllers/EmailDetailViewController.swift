@@ -805,8 +805,10 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         if(email.fromContact.email != self.myAccount.email) {
             if(addLabel.contains(SystemLabel.spam.id)){
                 DBManager.uptickSpamCounter(email.fromContact)
+                APIManager.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.spam, token: self.myAccount.jwt, completion:{_ in })
             } else if (removeLabel.contains(SystemLabel.spam.id)) {
                 DBManager.resetSpamCounter(email.fromContact)
+                APIManager.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.notSpam, token: self.myAccount.jwt, completion:{_ in })
             }
         }
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
@@ -1007,6 +1009,8 @@ extension EmailDetailViewController : LabelsUIPopoverDelegate{
     func setLabels(added: [Int], removed: [Int], forceRemove: Bool){
         let changedLabels = getLabelNames(added: added, removed: removed)
         DBManager.addRemoveLabelsForThreads(self.emailData.threadId, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.emailData.selectedLabel, account: self.myAccount)
+        let emails = Array(DBManager.getThreadEmails(self.emailData.threadId, label: self.emailData.selectedLabel, account: self.myAccount))
+        ContactUtils.reportContactToServer(emails: emails, addedLabelIds: added, removedLabelIds: removed, currentLabel: self.emailData.selectedLabel, account: self.myAccount)
         self.emailData.rebuildLabels()
         if(forceRemove){
             self.mailboxData.removeSelectedRow = true

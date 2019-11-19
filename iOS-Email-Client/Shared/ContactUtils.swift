@@ -9,6 +9,12 @@
 import Foundation
 
 class ContactUtils {
+    enum ReportType: String {
+        case spam = "spam"
+        case notSpam = "notspam"
+        case phishing = "phishing"
+    }
+    
     class func parseContact(_ contactString: String, account: Account) -> Contact {
         let contactMetadata = self.getStringEmailName(contact: contactString);
         guard let existingContact = SharedDB.getContact(contactMetadata.0) else {
@@ -100,5 +106,17 @@ class ContactUtils {
         let domain = email.split(separator: "@")[1]
         let username = email.split(separator: "@")[0]
         return (username.description, domain.description)
+    }
+    
+    class func reportContactToServer(emails: [Email], addedLabelIds: [Int], removedLabelIds: [Int], currentLabel: Int, account: Account) {
+        for email in emails {
+            if(email.fromContact.email != account.email) {
+                if(addedLabelIds.contains(SystemLabel.spam.id)){
+                    SharedAPI.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.spam, token: account.jwt, completion:{_ in })
+                } else if (removedLabelIds.contains(SystemLabel.spam.id)) {
+                    SharedAPI.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.notSpam, token: account.jwt, completion:{_ in })
+                }
+            }
+        }
     }
 }

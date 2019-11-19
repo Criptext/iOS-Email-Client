@@ -1093,6 +1093,7 @@ extension InboxViewController: UITableViewDataSource{
         let paddingBottom = tableView?.safeAreaInsets.bottom ?? 0.0
         let snackbarController = CriptextSnackbarController(rootViewController: navSettingsVC)
         snackbarController.setBottomPadding(padding: paddingBottom)
+        snackbarController.modalPresentationStyle = .fullScreen
         
         self.present(snackbarController, animated: true, completion: nil)
     }
@@ -1110,6 +1111,7 @@ extension InboxViewController: UITableViewDataSource{
         navProfileVC.navigationBar.barTintColor = .charcoal
         let attrs = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: Font.bold.size(17)!] as [NSAttributedString.Key : Any]
         navProfileVC.navigationBar.titleTextAttributes = attrs
+        navProfileVC.modalPresentationStyle = .fullScreen
         self.present(navProfileVC, animated: true, completion: nil)
     }
 }
@@ -1989,6 +1991,7 @@ extension InboxViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "loginNavController") as! UINavigationController
         let loginVC = controller.topViewController as! NewLoginViewController
         loginVC.multipleAccount = true
+        controller.modalPresentationStyle = .fullScreen
         self.present(controller, animated: true, completion: nil)
     }
     

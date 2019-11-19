@@ -130,7 +130,7 @@ class SharedDB {
                 if realm.object(ofType: Email.self, forPrimaryKey: email.compoundKey) != nil {
                     return
                 }
-                realm.add(email, update: false)
+                realm.add(email, update: .error)
             }
             return true
         } catch {
@@ -191,12 +191,12 @@ class SharedDB {
         
         try! realm.write {
             contacts.forEach({ (contact) in
-                realm.add(contacts, update: true)
+                realm.add(contacts, update: .all)
                 let accountContact = AccountContact()
                 accountContact.account = account
                 accountContact.contact = contact
                 accountContact.buildCompoundKey()
-                realm.add(accountContact, update: true)
+                realm.add(accountContact, update: .all)
             })
         }
     }
@@ -233,7 +233,7 @@ class SharedDB {
         
         try! realm.write {
             for emailContact in emailContacts {
-                realm.add(emailContact, update: true)
+                realm.add(emailContact, update: .all)
             }
         }
     }
@@ -247,7 +247,7 @@ class SharedDB {
     class func store(_ file: File){
         let realm = try! Realm()
         try! realm.write {
-            realm.add(file, update: true)
+            realm.add(file, update: .all)
         }
     }
     
@@ -256,7 +256,7 @@ class SharedDB {
         
         try! realm.write {
             files.forEach({ (file) in
-                realm.add(files, update: true)
+                realm.add(files, update: .all)
             })
         }
     }
@@ -296,7 +296,7 @@ class SharedDB {
                 let newFile = file.duplicate()
                 newFile.shouldDuplicate = false
                 newFile.token = token
-                realm.add(newFile, update: true)
+                realm.add(newFile, update: .all)
                 email.files.remove(at: fileIndex)
                 realm.delete(file)
                 email.files.append(newFile)
