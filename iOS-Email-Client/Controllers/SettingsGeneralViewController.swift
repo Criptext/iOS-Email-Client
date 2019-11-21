@@ -16,6 +16,7 @@ class SettingsGeneralViewController: UIViewController{
     internal enum Section {
         case account
         case general
+        case support
         case about
         case version
         
@@ -25,6 +26,8 @@ class SettingsGeneralViewController: UIViewController{
                 return String.localize("ACCOUNT")
             case .general:
                 return String.localize("GENERAL")
+            case .support:
+                return String.localize("SUPPORT").uppercased()
             case .about:
                 return String.localize("ABOUT")
             case .version:
@@ -44,6 +47,9 @@ class SettingsGeneralViewController: UIViewController{
             case syncContact
             case preview
             case pin
+            
+            case reportBug
+            case reportAbuse
             
             case faq
             case policies
@@ -78,6 +84,10 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("LABELS_OPTION")
                 case .preview:
                     return String.localize("SHOW_PREVIEW")
+                case .reportBug:
+                    return String.localize("REPORT_BUG")
+                case .reportAbuse:
+                    return String.localize("REPORT_ABUSE")
                 case .pin:
                     return String.localize("PIN_LOCK")
                 case .faq:
@@ -92,12 +102,13 @@ class SettingsGeneralViewController: UIViewController{
     @IBOutlet weak var tableView: UITableView!
     
     let STATUS_NOT_CONFIRMED = 0
-    let SECTION_VERSION = 3
+    let SECTION_VERSION = 4
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .general, .about, .version] as [Section]
+    let sections = [.account, .general, .support, .about, .version] as [Section]
     let menus = [
         .account: [.account, .privacy, .devices, .labels, .manualSync, .backup],
         .general: [.night, .syncContact, .preview, .pin],
+        .support: [.reportBug, .reportAbuse],
         .about: [.faq, .policies, .terms, .openSource],
         .version : [.version]] as [Section: [Section.SubSection]
     ]
@@ -249,6 +260,16 @@ class SettingsGeneralViewController: UIViewController{
         }
     }
     
+    func renderSupportCells(subsection: Section.SubSection) -> GeneralTapTableCellView {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        cell.messageLabel.text = ""
+        cell.loader.isHidden = true
+        cell.goImageView.isHidden = false
+        cell.optionLabel.textColor = theme.mainText
+        cell.optionLabel.text = subsection.name
+        return cell
+    }
+    
     func renderAboutCells(subsection: Section.SubSection) -> GeneralTapTableCellView {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
         cell.messageLabel.text = ""
@@ -367,6 +388,101 @@ class SettingsGeneralViewController: UIViewController{
         profileVC.myAccount = self.myAccount
         self.navigationController?.pushViewController(profileVC, animated: true)
     }
+    
+    func goToReportComposer(isPhishing: Bool){
+        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let supportContact = Contact()
+        let composerData = ComposerData()
+        if(!isPhishing){
+            supportContact.displayName = "Criptext Support"
+            supportContact.email = "support@criptext.com"
+            composerData.initSubject = "Customer Support - iOS"
+        } else {
+            supportContact.displayName = "Criptext Report Abuse"
+            supportContact.email = "abuse@criptext.com"
+            composerData.initSubject = "Report Abuse - iOS"
+        }
+        composerData.initContent = "<br/><br/><span>\(String.localize("DONT_WRITE_BELOW"))</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(UIDevice.modelName) [\(systemIdentifier())]</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
+        composerData.initToContacts = [supportContact]
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
+        let snackVC = SnackbarController(rootViewController: navComposeVC)
+        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
+        composerVC.composerData = composerData
+        composerVC.delegate = self
+        self.present(snackVC, animated: true, completion: { [weak self] in
+            self?.navigationDrawerController?.closeLeftView()
+        })
+    }
+}
+
+extension SettingsGeneralViewController: ComposerSendMailDelegate {
+    func newDraft(draft: Email) {
+        self.showSendingSnackBar(message: String.localize("DRAFT_SAVED"), permanent: false)
+    }
+    
+    func sendFailEmail(){
+        guard let email = DBManager.getEmailFailed(account: self.myAccount) else {
+            return
+        }
+        DBManager.updateEmail(email, status: .sending)
+        let bodyFromFile = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
+        sendMail(email: email,
+                 emailBody: bodyFromFile.isEmpty ? email.content : bodyFromFile,
+                 password: nil)
+    }
+    
+    func sendMail(email: Email, emailBody: String, password: String?) {
+        showSendingSnackBar(message: String.localize("SENDING_MAIL"), permanent: true)
+        reloadIfSentMailbox(email: email)
+        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: emailBody, password: password)
+        sendMailAsyncTask.start { [weak self] responseData in
+            guard let weakSelf = self else {
+                return
+            }
+            if case .Unauthorized = responseData {
+                weakSelf.logout(account: weakSelf.myAccount)
+                return
+            }
+            if case .Forbidden = responseData {
+                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
+                return
+            }
+            if case let .Error(error) = responseData {
+                weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            guard case let .SuccessInt(key) = responseData else {
+                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            let sentEmail = DBManager.getMail(key: key, account: weakSelf.myAccount)
+            guard sentEmail != nil else {
+                weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
+                return
+            }
+            let message = sentEmail!.secure ? String.localize("EMAIL_SENT_SECURE") : String.localize("EMAIL_SENT")
+            weakSelf.showSendingSnackBar(message: message, permanent: false)
+            weakSelf.sendFailEmail()
+        }
+    }
+    
+    func reloadIfSentMailbox(email: Email){
+        
+    }
+    
+    func showSendingSnackBar(message: String, permanent: Bool) {
+        let fullString = NSMutableAttributedString(string: "")
+        let attrs = [NSAttributedString.Key.font : Font.regular.size(15)!, NSAttributedString.Key.foregroundColor : UIColor.white]
+        fullString.append(NSAttributedString(string: message, attributes: attrs))
+        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
+    }
+    
+    func deleteDraft(draftId: Int) {
+        
+    }
 }
 
 extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSource {
@@ -385,6 +501,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             return renderAccountCells(subsection: subsection)
         case .general:
             return renderGeneralCells(subsection: subsection)
+        case .support:
+            return renderSupportCells(subsection: subsection)
         case .about:
             return renderAboutCells(subsection: subsection)
         default:
@@ -434,6 +552,10 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             syncContacts()
         case .pin:
             goToPinLock()
+        case .reportBug:
+            goToReportComposer(isPhishing: false)
+        case .reportAbuse:
+            goToReportComposer(isPhishing: true)
         case .faq:
             goToUrl(url: "https://criptext.com/\(Env.language)/faq")
         case .policies:

@@ -223,6 +223,42 @@ class EmailDetailViewController: UIViewController {
         let email = getMail(index: indexPath.row)
         return emailData.getState(email.key).cellHeight < ESTIMATED_ROW_HEIGHT ? ESTIMATED_ROW_HEIGHT : emailData.getState(email.key).cellHeight
     }
+    
+    func reportContact(type: ContactUtils.ReportType){
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        self.toggleGeneralOptionsView()
+        let isSpam = emailData.selectedLabel == SystemLabel.spam.id
+        let isTrash = emailData.selectedLabel == SystemLabel.trash.id
+        let removeLabel = isSpam ? [SystemLabel.spam.id] : isTrash ? [SystemLabel.trash.id] : []
+        let addLabel = isSpam ? [] : [SystemLabel.spam.id]
+        let email = getMail(index: indexPath.row)
+        let emailKey = email.key
+        
+        let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
+        if(email.fromContact.email != self.myAccount.email) {
+            if(addLabel.contains(SystemLabel.spam.id)){
+                DBManager.uptickSpamCounter(email.fromContact)
+                var data: String? = nil
+                if(type == ContactUtils.ReportType.phishing){
+                    if(email.boundary != ""){
+                        data = FileUtils.getHeaderFromFile(account: myAccount, metadataKey: "\(email.key)")
+                    } else {
+                        data = email.content
+                    }
+                }
+                APIManager.postReportContact(emails: [email.fromContact.email], type: type, data: data, token: self.myAccount.jwt, completion:{_ in })
+            } else if (removeLabel.contains(SystemLabel.spam.id)) {
+                DBManager.resetSpamCounter(email.fromContact)
+                APIManager.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.notSpam, data: nil, token: self.myAccount.jwt, completion:{_ in })
+            }
+        }
+        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
+        let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()], account: myAccount)
+    }
 }
 
 extension EmailDetailViewController: UITableViewDelegate, UITableViewDataSource{
@@ -789,31 +825,11 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
     }
     
     func onSpamPress() {
-        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
-            self.toggleGeneralOptionsView()
-            return
-        }
-        self.toggleGeneralOptionsView()
-        let isSpam = emailData.selectedLabel == SystemLabel.spam.id
-        let isTrash = emailData.selectedLabel == SystemLabel.trash.id
-        let removeLabel = isSpam ? [SystemLabel.spam.id] : isTrash ? [SystemLabel.trash.id] : []
-        let addLabel = isSpam ? [] : [SystemLabel.spam.id]
-        let email = getMail(index: indexPath.row)
-        let emailKey = email.key
-        
-        let changedLabels = getLabelNames(added: addLabel, removed: removeLabel)
-        if(email.fromContact.email != self.myAccount.email) {
-            if(addLabel.contains(SystemLabel.spam.id)){
-                DBManager.uptickSpamCounter(email.fromContact)
-                APIManager.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.spam, token: self.myAccount.jwt, completion:{_ in })
-            } else if (removeLabel.contains(SystemLabel.spam.id)) {
-                DBManager.resetSpamCounter(email.fromContact)
-                APIManager.postReportContact(emails: [email.fromContact.email], type: ContactUtils.ReportType.notSpam, token: self.myAccount.jwt, completion:{_ in })
-            }
-        }
-        DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: addLabel, removedLabelIds: removeLabel)
-        let eventData = EventData.Peer.EmailLabels(metadataKeys: [emailKey], labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-        DBManager.createQueueItem(params: ["cmd": Event.Peer.emailsLabels.rawValue, "params": eventData.asDictionary()], account: myAccount)
+        self.reportContact(type: ContactUtils.ReportType.spam)
+    }
+    
+    func onPhishingPress() {
+        self.reportContact(type: ContactUtils.ReportType.phishing)
     }
     
     func onUnsendPress() {

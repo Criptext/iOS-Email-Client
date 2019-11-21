@@ -15,6 +15,7 @@ protocol EmailMoreOptionsInterfaceDelegate: class {
     func onDeletePress()
     func onMarkPress()
     func onSpamPress()
+    func onPhishingPress()
     func onUnsendPress()
     func onPrintPress()
     func onRetryPress()
@@ -31,6 +32,7 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
         case mark
         case notSpam
         case spam
+        case phishing
         case unsend
         case print
         case retry
@@ -52,6 +54,8 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
                 return String.localize("REMOVE_SPAM")
             case .spam:
                 return String.localize("MARK_SPAM")
+            case .phishing:
+                return String.localize("REPORT_PHISHING")
             case .unsend:
                 return String.localize("UNSEND")
             case .print:
@@ -76,7 +80,8 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
             optionsCount += 1
         } else {
             options.append(.spam)
-            optionsCount += 1
+            options.append(.phishing)
+            optionsCount += 2
         }
         if (email.secure && email.status != .unsent && email.status != .none && email.status != .sending && email.status != .fail) {
             options.append(.unsend)
@@ -120,6 +125,8 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
             delegate?.onSpamPress()
         case .spam:
             delegate?.onSpamPress()
+        case .phishing:
+            delegate?.onPhishingPress()
         case .unsend:
             delegate?.onUnsendPress()
         case .print:

@@ -459,3 +459,6 @@
 "Unable to add label" = "";
 "EDIT" = "Editar";
 "EDIT_LABEL_DIALOG_TITLE" = "Editar Etiqueta";
+"REPORT_BUG" = "Reportar Error";
+"REPORT_ABUSE" = "Reportar Abuso";
+"REPORT_PHISHING" = "Reportar como Phishing";
