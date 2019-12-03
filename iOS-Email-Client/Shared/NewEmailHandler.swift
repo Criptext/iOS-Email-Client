@@ -203,7 +203,7 @@ class NewEmailHandler {
         }
         if let error = err {
             print(error)
-            Analytics.logEvent("content_unencrypted", parameters: ["reason" : error.callStackSymbols as NSObject])
+            Analytics.logEvent("content_unencrypted", parameters: ["reason" : error.description])
         }
         return trueBody
     }

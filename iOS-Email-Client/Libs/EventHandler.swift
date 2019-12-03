@@ -344,6 +344,10 @@ enum Event: Int32 {
     case preKeys = 107
     case newEvent = 400
     
+    enum UserEvent: Int32 {
+        case openComposer = 23
+    }
+    
     enum Link: Int32 {
         case start = 201
         case accept = 202

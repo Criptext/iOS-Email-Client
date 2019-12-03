@@ -13,6 +13,7 @@ import Motion
 class CriptextSnackbarController : SnackbarController {    
     let customSnackbar = CriptextSnackbar()
     var isMyAnimating = false
+    var duration = 0.25
     
     override func animate(snackbar status: SnackbarStatus, delay: TimeInterval = 0, animations: ((Snackbar) -> Void)? = nil, completion: ((Snackbar) -> Void)? = nil) -> MotionCancelBlock? {
         return Motion.delay(delay) { [weak self, status = status, animations = animations, completion = completion] in
@@ -29,7 +30,7 @@ class CriptextSnackbarController : SnackbarController {
             s.isMyAnimating = true
             s.isUserInteractionEnabled = false
             
-            UIView.animate(withDuration: 0.25, animations: { [weak self, status = status, animations = animations] in
+            UIView.animate(withDuration: self?.duration ?? 0.25, animations: { [weak self, status = status, animations = animations] in
                 guard let s = self else {
                     return
                 }
