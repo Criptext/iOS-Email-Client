@@ -295,11 +295,11 @@ static NSString *completeDateFormat = @"E, d MMM yyyy 'at' h:mm a";
         else if ([difference day]<7 && [difference day]>0)
         fechaFinal=[[DateUtils instance] stringFromTimestampConv2:date];
         else
-        fechaFinal=[[DateUtils instance] stringFromTimestamp:date format:@"MMM d"];
+        fechaFinal=[[DateUtils instance] stringFromTimestamp:date format:@"MM/dd/yyyy"];
     }else if(month-month0 < 12){
-        fechaFinal=[[DateUtils instance] stringFromTimestamp:date format:@"MMM d"];
+        fechaFinal=[[DateUtils instance] stringFromTimestamp:date format:@"MM/dd/yyyy"];
     } else {
-    fechaFinal=[[DateUtils instance] stringFromTimestampConv1:date];
+        fechaFinal=[[DateUtils instance] stringFromTimestampConv1:date];
     }
     
     fechaFinal=[fechaFinal stringByReplacingOccurrencesOfString:@"a.m." withString:@"AM"];

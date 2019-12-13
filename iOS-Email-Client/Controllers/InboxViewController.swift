@@ -712,6 +712,8 @@ extension InboxViewController{
         let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         composerVC.delegate = self
         
+        APIManager.postUserEvent(event: Int(Event.UserEvent.openComposer.rawValue), token: myAccount.jwt, completion: {_ in })
+        
         self.present(snackVC, animated: true, completion: nil)
     }
     
@@ -1092,6 +1094,7 @@ extension InboxViewController: UITableViewDataSource{
         
         let paddingBottom = tableView?.safeAreaInsets.bottom ?? 0.0
         let snackbarController = CriptextSnackbarController(rootViewController: navSettingsVC)
+        snackbarController.duration = 0.5
         snackbarController.setBottomPadding(padding: paddingBottom)
         snackbarController.modalPresentationStyle = .fullScreen
         
@@ -2035,6 +2038,14 @@ extension InboxViewController: RequestDelegate {
         guard myAccount.compoundKey == accountId else {
             if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
                 menuViewController.refreshBadges()
+            }
+            let topView = self.getTopView().presentedViewController
+            if(!(topView is SignInVerificationUIPopover || topView is GenericDualAnswerUIPopover)){
+                guard let data = result.linkStartData,
+                    let account = DBManager.getAccountById(accountId) else {
+                    return
+                }
+                self.handleLinkStart(linkData: data, account: account)
             }
             return
         }

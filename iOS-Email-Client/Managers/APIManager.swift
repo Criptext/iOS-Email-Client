@@ -130,6 +130,28 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func postUserEvent(event: Int, token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/event"
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = [
+            "event": event
+        ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.postPeerEvent(params, token: newToken, completion: completion)
+            }
+        }
+    }
+    
     class func acknowledgeEvents(eventIds: [Int32], token: String){
         let parameters = ["ids": eventIds] as [String : Any]
         let url = "\(self.baseUrl)/event/ack"
