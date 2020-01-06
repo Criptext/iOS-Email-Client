@@ -149,26 +149,82 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
                 popover.myMessage = String.localize("REMOVE_DEVICES_POPOVER_MESSAGE", arguments: remainingRemovals)
                 self.presentPopover(popover: popover, height: 220)
             } else {
-                APIManager.loginRequest(username: self.loginData.username, domain: self.loginData.domain, password: self.loginData.password!.sha256()!) { (responseData) in
-                    guard case let .SuccessString(dataString) = responseData,
-                        let data = Utils.convertToDictionary(text: dataString) else {
-                            return
-                    }
-                    let name = data["name"] as! String
-                    let deviceId = data["deviceId"] as! Int
-                    let token = data["token"] as! String
-                    let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
-                    signupData.deviceId = deviceId
-                    signupData.token = token
-                    signupData.comingFromLogin = true
-                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                    let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
-                    controller.loginData = self.loginData
-                    controller.multipleAccount = self.multipleAccount
-                    self.present(controller, animated: true)
-                }
+                self.linkBegin(username: self.loginData.username, domain: self.loginData.domain)
             }
         }
+    }
+    
+    func linkBegin(username: String, domain: String){
+        APIManager.linkBegin(username: username, domain: domain) { (responseData) in
+            if case .Missing = responseData {
+                self.showPopoverError(error: String.localize("USERNAME_NOT"))
+                return
+            }
+            if case .BadRequest = responseData {
+                self.loginToMailbox()
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.showPopoverError(error: error.description)
+                return
+            }
+            guard case let .SuccessDictionary(data) = responseData,
+                let isTwoFactor = data["twoFactorAuth"] as? Bool,
+                let jwtTemp = data["token"] as? String else {
+                self.showPopoverError(error: String.localize("FALLBACK_ERROR"))
+                return
+            }
+            self.loginData.jwt = jwtTemp
+            self.loginData.isTwoFactor = isTwoFactor
+            self.jumpToLoginDeviceView()
+        }
+    }
+    
+    func jumpToLoginDeviceView(){
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
+        controller.loginData = self.loginData
+        controller.multipleAccount = self.multipleAccount
+        controller.showPasswordButton = false
+        self.present(controller, animated: true)
+    }
+    
+    func loginToMailbox(){
+        APIManager.loginRequest(username: self.loginData.username, domain: self.loginData.domain, password: self.loginData.password!.sha256()!) { (responseData) in
+            guard case let .SuccessString(dataString) = responseData,
+                let data = Utils.convertToDictionary(text: dataString) else {
+                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                    let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
+                    let loginVC = initialVC.topViewController as! NewLoginViewController
+                    loginVC.loggedOutRemotely = String.localize("FALLBACK_ERROR")
+                    var options = UIWindow.TransitionOptions()
+                    options.direction = .toTop
+                    options.duration = 0.4
+                    options.style = .easeOut
+                    UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
+                    return
+            }
+            let name = data["name"] as! String
+            let deviceId = data["deviceId"] as! Int
+            let token = data["token"] as! String
+            let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
+            signupData.deviceId = deviceId
+            signupData.token = token
+            signupData.comingFromLogin = true
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
+            controller.loginData = self.loginData
+            controller.multipleAccount = self.multipleAccount
+            self.present(controller, animated: true)
+        }
+    }
+    
+    func showPopoverError(error: String){
+        let alertVC = GenericAlertUIPopover()
+        alertVC.myTitle = String.localize("WARNING")
+        alertVC.myMessage = error
+        self.presentPopover(popover: alertVC, height: 220)
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {

@@ -12,6 +12,15 @@ class CriptextDefaults {
     let defaults = UserDefaults.standard
     let groupDefaults = UserDefaults.init(suiteName: Env.groupApp) ?? UserDefaults.standard
     
+    var lastTimeAppResume: TimeInterval {
+        get {
+            return defaults.double(forKey: "lastTimeAppResume")
+        }
+        set (value) {
+            defaults.set(value, forKey: "lastTimeAppResume")
+        }
+    }
+    
     var lastTimeResent: Double {
         get {
             return defaults.double(forKey: "lastTimeResent")

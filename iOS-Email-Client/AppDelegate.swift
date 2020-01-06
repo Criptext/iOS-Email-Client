@@ -22,6 +22,8 @@ import PasscodeLock
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    static let RESUME_APP_TIMER: Double = 180000.0
+    
     var window: UIWindow?
     var goneTimestamp: TimeInterval {
         get {
@@ -31,6 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         set (value) {
             let defaults = CriptextDefaults()
             defaults.goneTimestamp = value
+        }
+    }
+    var shouldSendResumeEvent: Bool {
+        get {
+            let defaults = CriptextDefaults()
+            let lastResume = defaults.lastTimeAppResume
+            let currentTimestamp = Date().timeIntervalSince1970
+            return (currentTimestamp - lastResume) > AppDelegate.RESUME_APP_TIMER
         }
     }
     
@@ -415,6 +425,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (defaults.themeMode == "Dark") {
             UITextField.appearance().keyboardAppearance = .dark
         }
+        
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().tintColor = ThemeManager.shared.theme.criptextBlue
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
                 
         if let activeAccount = defaults.activeAccount {
             //Go to inbox
@@ -648,6 +662,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        let defaults = CriptextDefaults()
+        guard let accountId = defaults.activeAccount,
+            let activeAccount = DBManager.getAccountById(accountId) else {
+            return
+        }
+        if(shouldSendResumeEvent){
+            APIManager.postUserEvent(event: Int(Event.UserEvent.resumeApp.rawValue), token: activeAccount.jwt, completion: {_ in })
+        }
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

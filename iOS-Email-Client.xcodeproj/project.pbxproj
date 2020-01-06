@@ -269,7 +269,7 @@
 		A718BE6C22272989008CAA72 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A718BE6A22272970008CAA72 /* UIUtils.swift */; };
 		A718BE6D22272A02008CAA72 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C185221AEEB1F00D899EE /* Time.swift */; };
 		A718BE6F22273646008CAA72 /* ThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A718BE6E22273646008CAA72 /* ThreadTests.swift */; };
-		A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
+		A71F8BAB219B1CAD002D93CB /* CriptextLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */; };
 		A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F8BAC219B2239002D93CB /* DummySession.swift */; };
 		A721B344225CFC89004528B4 /* RestoreUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721B343225CFC89004528B4 /* RestoreUIPopover.swift */; };
 		A721B346225D2D5F004528B4 /* RestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721B345225D2D5F004528B4 /* RestoreViewController.swift */; };
@@ -325,7 +325,7 @@
 		A77C30B421A5055A0031E219 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A77C30B221A5055A0031E219 /* MainInterface.storyboard */; };
 		A77C30B821A5055A0031E219 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A77C30AE21A5055A0031E219 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A789B23F21B5E4A700F89DF3 /* PasscodeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77C30A621A4DE720031E219 /* PasscodeConfig.swift */; };
-		A789B24021B8228800F89DF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
+		A789B24021B8228800F89DF3 /* CriptextLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */; };
 		A78D27A12238084200B3ECD6 /* APIManagerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78D27A02238084200B3ECD6 /* APIManagerSpy.swift */; };
 		A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
@@ -465,7 +465,7 @@
 		A7FFCF45217A91C900FFFDFF /* MailboxHeaderUITableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF47217A91C900FFFDFF /* MailboxHeaderUITableCell.xib */; };
 		A7FFCF48217A91D600FFFDFF /* SignInVerificationUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF4A217A91D600FFFDFF /* SignInVerificationUIPopover.xib */; };
 		A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF4D217A91E200FFFDFF /* ConnectView.xib */; };
-		A7FFCF63217A93E600FFFDFF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* Localizable.strings */; };
+		A7FFCF63217A93E600FFFDFF /* CriptextLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */; };
 		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
 		A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
 		A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */; };
@@ -557,7 +557,7 @@
 		347CC81A2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		347CC81B2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
 		347CC81C2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
-		347CC81D2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		347CC81D2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/CriptextLocalizable.strings; sourceTree = "<group>"; };
 		347CC81E2367A14E00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		347CC81F2367A7B300A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ConnectView.strings; sourceTree = "<group>"; };
 		347CC8202367A7B300A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
@@ -586,7 +586,7 @@
 		347CC8382367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		347CC8392367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
 		347CC83A2367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
-		347CC83B2367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		347CC83B2367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CriptextLocalizable.strings; sourceTree = "<group>"; };
 		347CC83C2367A7B700A2FA99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		347CC83D2367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ConnectView.strings; sourceTree = "<group>"; };
 		347CC83E2367A91300A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
@@ -615,7 +615,7 @@
 		347CC8562367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		347CC8572367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
 		347CC8582367A91600A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLockView.strings; sourceTree = "<group>"; };
-		347CC8592367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		347CC8592367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/CriptextLocalizable.strings; sourceTree = "<group>"; };
 		347CC85A2367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelOptionsInterface.swift; sourceTree = "<group>"; };
 		348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSingleInputPopover.swift; sourceTree = "<group>"; };
@@ -878,7 +878,7 @@
 		95145BA02368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
 		95145BA12368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		95145BA22368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Login.strings; sourceTree = "<group>"; };
-		95145BA32368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		95145BA32368E26F00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/CriptextLocalizable.strings; sourceTree = "<group>"; };
 		95145BA42368E27000E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		95145BA52368E27000E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		95145BA62368E27000E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ComposerUIView.strings; sourceTree = "<group>"; };
@@ -1039,7 +1039,7 @@
 		A7FFCF46217A91C900FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MailboxHeaderUITableCell.xib; sourceTree = "<group>"; };
 		A7FFCF49217A91D600FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SignInVerificationUIPopover.xib; sourceTree = "<group>"; };
 		A7FFCF4C217A91E200FFFDFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConnectView.xib; sourceTree = "<group>"; };
-		A7FFCF64217A93E600FFFDFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A7FFCF64217A93E600FFFDFF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CriptextLocalizable.strings; sourceTree = "<group>"; };
 		A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerMessage.swift; sourceTree = "<group>"; };
 		A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueItem.swift; sourceTree = "<group>"; };
 		A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TLPhotoPicker.framework; path = Carthage/Build/iOS/TLPhotoPicker.framework; sourceTree = "<group>"; };
@@ -1364,7 +1364,7 @@
 				A7627D9B223C3233007A26F6 /* showmore-light-opened.png */,
 				A7FFCF1D217A8FE300FFFDFF /* Login.storyboard */,
 				7C8D6C73203735E000AB96EF /* Constants.swift */,
-				A7FFCF65217A93E600FFFDFF /* Localizable.strings */,
+				A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */,
 				A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */,
 			);
 			path = "iOS-Email-Client";
@@ -1910,7 +1910,7 @@
 				A7627D9C223C3234007A26F6 /* showmore-light-opened.png in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				A7D2DE7421C42BC8002ED6F8 /* PasscodeLockView.xib in Resources */,
-				A7FFCF63217A93E600FFFDFF /* Localizable.strings in Resources */,
+				A7FFCF63217A93E600FFFDFF /* CriptextLocalizable.strings in Resources */,
 				7CF93F582146E41700361837 /* Email.json in Resources */,
 				A7FFCF27217A90E500FFFDFF /* MoreOptionsUIView.xib in Resources */,
 				A713109E2159762100534F13 /* Assets.xcassets in Resources */,
@@ -1984,7 +1984,7 @@
 				A7115EA323172DD400EBECE7 /* MoreOptionsUIView.xib in Resources */,
 				A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */,
 				A7ADA14F21A61A1B0027FC1C /* NunitoSans-BoldItalic.ttf in Resources */,
-				A789B24021B8228800F89DF3 /* Localizable.strings in Resources */,
+				A789B24021B8228800F89DF3 /* CriptextLocalizable.strings in Resources */,
 				A7ADA15821A61A1B0027FC1C /* NunitoSans-SemiBold.ttf in Resources */,
 				A7ADA15221A61A1B0027FC1C /* NunitoSans-ExtraLight.ttf in Resources */,
 				A7C3589F21B19AF700386295 /* GenericAlertUIPopover.xib in Resources */,
@@ -2004,7 +2004,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A71F8BAB219B1CAD002D93CB /* Localizable.strings in Resources */,
+				A71F8BAB219B1CAD002D93CB /* CriptextLocalizable.strings in Resources */,
 				A7D2DEB521C85329002ED6F8 /* PasscodeLock.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2822,7 +2822,7 @@
 			name = ConnectView.xib;
 			sourceTree = "<group>";
 		};
-		A7FFCF65217A93E600FFFDFF /* Localizable.strings */ = {
+		A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A7FFCF64217A93E600FFFDFF /* en */,
@@ -2831,7 +2831,7 @@
 				347CC8592367A91700A2FA99 /* ru */,
 				95145BA32368E26F00E4EB72 /* es */,
 			);
-			name = Localizable.strings;
+			name = CriptextLocalizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -2978,7 +2978,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3020,7 +3020,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3168,7 +3168,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3229,7 +3229,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
@@ -3260,7 +3260,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3291,7 +3291,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3323,7 +3323,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
@@ -3357,7 +3357,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3391,7 +3391,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.28;
+				MARKETING_VERSION = 1.1.30;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

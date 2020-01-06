@@ -54,7 +54,7 @@ extension UIColor {
 
 extension String {
     static func localize(_ text: String) -> String {
-        return NSLocalizedString(text, comment: "")
+        return NSLocalizedString(text, tableName: "CriptextLocalizable", comment: "")
     }
     
     static func localize(_ text: String, arguments: CVarArg...) -> String {

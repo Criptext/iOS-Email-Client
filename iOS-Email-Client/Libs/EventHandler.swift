@@ -346,6 +346,7 @@ enum Event: Int32 {
     
     enum UserEvent: Int32 {
         case openComposer = 23
+        case resumeApp = 24
     }
     
     enum Link: Int32 {
