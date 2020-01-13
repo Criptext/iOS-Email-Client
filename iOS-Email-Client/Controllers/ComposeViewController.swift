@@ -647,6 +647,8 @@ class ComposeViewController: UIViewController {
         
         providerList.popoverPresentationController?.sourceView = self.view
         providerList.popoverPresentationController?.sourceRect = CGRect(x: Double(self.view.bounds.size.width / 2.0), y: Double(self.view.bounds.size.height-45), width: 1.0, height: 1.0)
+        let isSystemDarkMode = UIUtils.isSystemDarlkModeEnabled(controller: self)
+        providerList.popoverPresentationController?.barButtonItem?.tintColor = isSystemDarkMode ? .white : .black
         self.present(providerList, animated: true, completion: nil)
     }
     

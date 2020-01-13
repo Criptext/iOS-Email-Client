@@ -14,6 +14,7 @@ class LoginDeviceViewController: UIViewController{
     var multipleAccount = false
     var socket : SingleWebSocket?
     var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
+    var showPasswordButton = true
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
@@ -35,11 +36,15 @@ class LoginDeviceViewController: UIViewController{
         socket?.delegate = self
         socket?.connect(jwt: jwt)
         scheduleWorker.delegate = self
+        if !showPasswordButton {
+            signWithPasswordButton.isHidden = true
+        }
         guard loginData.isTwoFactor else {
             self.sendLinkAuthRequest()
             return
         }
         signWithPasswordButton.setTitle(String.localize("SEND_RECOVERY_CODE"), for: .normal)
+        
         self.scheduleWorker.start()
     }
     

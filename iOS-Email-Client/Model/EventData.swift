@@ -268,7 +268,7 @@ extension EventData {
 
             init(params: [String: Any]){
                 text = params["text"] as! String
-                color = params["color"] as! String
+                color = params["color"] as? String ?? ""
                 uuid = params["uuid"] as! String
             }
             
