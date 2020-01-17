@@ -203,7 +203,7 @@ class NewEmailHandler {
         }
         if let error = err {
             print(error)
-            Analytics.logEvent("content_unencrypted", parameters: ["reason" : error.description])
+            Analytics.logEvent("decryption_error", parameters: ["error_description" : error.description as NSObject])
         }
         return trueBody
     }

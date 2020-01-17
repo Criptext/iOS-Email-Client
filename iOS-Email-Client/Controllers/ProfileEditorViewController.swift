@@ -112,6 +112,16 @@ class ProfileEditorViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        RequestManager.shared.delegates.append(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        RequestManager.shared.delegates.removeLast()
+    }
+    
     func setupSections() {
         tableView.tableFooterView = UIView()
         if self.myAccount.domain == nil {
@@ -209,14 +219,6 @@ class ProfileEditorViewController: UIViewController {
         editButton.backgroundColor = color
         editButton.layer.masksToBounds =  false
         editButton.layer.shadowPath = shadowPath.cgPath
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
     }
     
     @objc func goBack(){
@@ -325,8 +327,33 @@ class ProfileEditorViewController: UIViewController {
             DBManager.createQueueItem(params: ["cmd": Event.Peer.changeName.rawValue, "params": params.asDictionary()], account: self.myAccount)
         }
     }
+    
+    func didReceiveEvents(result: EventData.Result) {
+        if(result.updateSideMenu){
+            DBManager.refresh()
+            self.reloadView()
+        }
+    }
 }
 
+extension ProfileEditorViewController: RequestDelegate {
+    func finishRequest(accountId: String, result: EventData.Result) {
+        self.didReceiveEvents(result: result)
+    }
+    
+    func errorRequest(accountId: String, response: ResponseData) {
+        guard !myAccount.isInvalidated && myAccount.compoundKey == accountId else {
+            return
+        }
+    }
+}
+
+extension ProfileEditorViewController: CustomTabsChildController {
+    func reloadView() {
+        nameLabel.text = myAccount.name
+        tableView.reloadData()
+    }
+}
 
 extension ProfileEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
