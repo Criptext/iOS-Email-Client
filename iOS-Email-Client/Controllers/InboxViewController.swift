@@ -82,7 +82,7 @@ class InboxViewController: UIViewController {
         viewSetup()
         WebSocketManager.sharedInstance.delegate = self
         ThemeManager.shared.addListener(id: "mailbox", delegate: self)
-        RequestManager.shared.delegate = self
+        RequestManager.shared.delegates.append(self)
         emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
@@ -634,6 +634,7 @@ extension InboxViewController {
             guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
                 return
             }
+            DBManager.refresh()
             menuViewController.reloadView()
         }
         

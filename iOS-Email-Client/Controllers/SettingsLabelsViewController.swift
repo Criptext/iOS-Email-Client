@@ -25,7 +25,6 @@ class SettingsLabelsViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
-        
         labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
         labels.append(contentsOf: DBManager.getUserLabels(account: myAccount, visible: false))
         self.tableView.delegate = self
@@ -34,6 +33,16 @@ class SettingsLabelsViewController: UIViewController {
         self.tableView.register(UINib(nibName: "LabelsHeaderTableViewCell", bundle: nil ), forHeaderFooterViewReuseIdentifier: "settingsHeaderLabel")
         self.applyTheme()
         definesPresentationContext = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        RequestManager.shared.delegates.append(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        RequestManager.shared.delegates.removeLast()
     }
     
     func applyTheme() {
@@ -183,6 +192,15 @@ extension SettingsLabelsViewController: UITableViewDelegate, UITableViewDataSour
         }
         generalOptionsContainerView.showMoreOptions()
     }
+    
+    func didReceiveEvents(result: EventData.Result) {
+        if(result.updateSideMenu){
+            labels.removeAll()
+            labels.append(DBManager.getLabel(SystemLabel.starred.id)!)
+            labels.append(contentsOf: DBManager.getUserLabels(account: myAccount, visible: false))
+            self.reloadView()
+        }
+    }
 }
 
 extension SettingsLabelsViewController: LabelTableViewCellDelegate {
@@ -193,6 +211,18 @@ extension SettingsLabelsViewController: LabelTableViewCellDelegate {
         let label = labels[indexPath.row]
         DBManager.updateLabel(label, visible: !label.visible)
         tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+}
+
+extension SettingsLabelsViewController: RequestDelegate {
+    func finishRequest(accountId: String, result: EventData.Result) {
+        self.didReceiveEvents(result: result)
+    }
+    
+    func errorRequest(accountId: String, response: ResponseData) {
+        guard !myAccount.isInvalidated && myAccount.compoundKey == accountId else {
+            return
+        }
     }
 }
 

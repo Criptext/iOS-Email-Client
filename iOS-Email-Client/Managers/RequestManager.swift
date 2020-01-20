@@ -15,7 +15,7 @@ protocol RequestDelegate: class {
 
 final class RequestManager: NSObject {
     static let shared = RequestManager()
-    weak var delegate: RequestDelegate?
+    var delegates: [RequestDelegate?] = []
     private var accountRequests = [String]()
     var accountCompletions = [String: ((Bool) -> Void)]()
     private var processingAccount: String? = nil
@@ -49,14 +49,18 @@ final class RequestManager: NSObject {
                 result.removed = true
                 weakSelf.accountCompletions[accountId]?(true)
                 weakSelf.accountCompletions[accountId] = nil
-                weakSelf.delegate?.finishRequest(accountId: accountId, result: result)
+                weakSelf.delegates.forEach { delegate in
+                    delegate?.finishRequest(accountId: accountId, result: result)
+                }
                 weakSelf.getEvents()
             case .EnterpriseSuspended:
                 var result = EventData.Result()
                 result.suspended = true
                 weakSelf.accountCompletions[accountId]?(true)
                 weakSelf.accountCompletions[accountId] = nil
-                weakSelf.delegate?.finishRequest(accountId: accountId, result: result)
+                weakSelf.delegates.forEach { delegate in
+                    delegate?.finishRequest(accountId: accountId, result: result)
+                }
                 weakSelf.getEvents()
             case .SuccessAndRepeat(let responseEvents):
                 events = responseEvents
@@ -71,7 +75,9 @@ final class RequestManager: NSObject {
                 weakSelf.processingAccount = nil
                 weakSelf.accountCompletions[accountId]?(false)
                 weakSelf.accountCompletions[accountId] = nil
-                weakSelf.delegate?.errorRequest(accountId: accountId, response: responseData)
+                weakSelf.delegates.forEach { delegate in
+                    delegate?.errorRequest(accountId: accountId, response: responseData)
+                }
                 weakSelf.getEvents()
                 return
             }
@@ -89,7 +95,9 @@ final class RequestManager: NSObject {
                 } else {
                     weakSelf.accountCompletions[accountId]?(true)
                     weakSelf.accountCompletions[accountId] = nil
-                    weakSelf.delegate?.finishRequest(accountId: accountId, result: result)
+                    weakSelf.delegates.forEach { delegate in
+                        delegate?.finishRequest(accountId: accountId, result: result)
+                    }
                 }
                 weakSelf.getEvents()
             }

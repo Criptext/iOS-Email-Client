@@ -133,7 +133,7 @@
 "OLDER" = "ANTIGUO";
 "UNMUTE" = "Desilenciar";
 "MUTE" = "Silenciar";
-"REMOVE_SPAM" = "Remover de Spam";
+"REMOVE_SPAM" = "No es Spam";
 "MARK_SPAM" = "Marcar como spam";
 "THESE_DELETED_PERMANENTLY" = "Esto será borrado PERMANENTEMENTE";
 "DELETE_EMAIL" = "Eliminar Email";

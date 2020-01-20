@@ -133,7 +133,7 @@
 "OLDER" = "PRÉCÉDENTS";
 "UNMUTE" = "Rétablir";
 "MUTE" = "Ignorer";
-"REMOVE_SPAM" = "Retirer du spam";
+"REMOVE_SPAM" = "Non-spam";
 "MARK_SPAM" = "Marquer comme spam";
 "THESE_DELETED_PERMANENTLY" = "Cela va être supprimé DÉFINITIVEMENT";
 "DELETE_EMAIL" = "Supprimer l'e-mail";
