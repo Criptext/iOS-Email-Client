@@ -62,7 +62,7 @@ class EventHandler {
             result.modifiedThreadIds.append(contentsOf: threads)
         case .ModifiedEmails(let emails):
             result.modifiedEmailKeys.append(contentsOf: emails)
-        case .NameChanged, .LabelCreated, .LabelDeleted, .LabelEdited:
+        case .NameChanged, .UpdateProfilePic, .LabelCreated, .LabelDeleted, .LabelEdited:
             result.updateSideMenu = true
         case .LinkData(let linkData):
             result.linkStartData = linkData
@@ -199,7 +199,7 @@ class EventHandler {
             }
             FileUtils.deleteDirectoryFromEmail(account: myAccount, metadataKey: "\(email.key)")
             DBManager.unsendEmail(email, date: event.date)
-            finishCallback(true, .Email(email))
+            finishCallback(true, .ModifiedEmails([email.key]))
             return
         }
         let actionType: FeedItem.Action = event.fileId == nil ? .open : .download
