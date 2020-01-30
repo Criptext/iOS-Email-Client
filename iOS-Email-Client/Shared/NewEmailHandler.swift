@@ -9,6 +9,7 @@
 import Foundation
 import SwiftSoup
 import FirebaseAnalytics
+import Crashlytics
 
 class NewEmailHandler {
     
@@ -201,9 +202,9 @@ class NewEmailHandler {
         let err = tryBlock {
             trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
-        if let error = err {
+        if let error = err as? Error {
             print(error)
-            Analytics.logEvent("decryption_error", parameters: ["error_description" : error.description as NSObject])
+            Crashlytics.sharedInstance().recordError(error)
         }
         return trueBody
     }

@@ -351,6 +351,9 @@ extension ProfileEditorViewController: RequestDelegate {
 extension ProfileEditorViewController: CustomTabsChildController {
     func reloadView() {
         nameLabel.text = myAccount.name
+        UIUtils.deleteSDWebImageCache()
+        self.resetProfileImage()
+        self.setProfileImage()
         tableView.reloadData()
     }
 }

@@ -635,6 +635,8 @@ extension InboxViewController {
                 return
             }
             DBManager.refresh()
+            UIUtils.deleteSDWebImageCache()
+            UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
             menuViewController.reloadView()
         }
         
@@ -1327,7 +1329,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             }
             Analytics.logEvent("invite_friend", parameters: ["app_source" : (activity?.rawValue ?? "Unknown") as NSObject])
         }
+        activityVC.modalPresentationStyle = .popover
         activityVC.popoverPresentationController?.sourceView = self.view
+        activityVC.popoverPresentationController?.sourceRect = CGRect.zero
         self.present(activityVC, animated: true)
     }
     
@@ -1841,6 +1845,7 @@ extension InboxViewController: LinkDeviceDelegate {
         let linkDeviceVC = storyboard.instantiateViewController(withIdentifier: "connectUploadViewController") as! ConnectUploadViewController
         linkDeviceVC.linkData = linkData
         linkDeviceVC.myAccount = account
+        linkDeviceVC.modalPresentationStyle = .fullScreen
         self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
         self.getTopView().present(linkDeviceVC, animated: true, completion: nil)
     }

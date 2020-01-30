@@ -143,6 +143,9 @@ class BackupViewController: UIViewController {
                     }
                     self.showSnackbarMessage(message: String.localize("BACKUP_SUCCESS"), permanent: false)
                 }
+                activityVC.modalPresentationStyle = .popover
+                activityVC.popoverPresentationController?.sourceView = self.view
+                activityVC.popoverPresentationController?.sourceRect = CGRect.zero
                 self.present(activityVC, animated: true, completion: nil)
             }
         } else {

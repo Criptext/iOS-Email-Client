@@ -427,6 +427,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().backgroundColor = ThemeManager.shared.theme.toolbar
         UINavigationBar.appearance().tintColor = ThemeManager.shared.theme.criptextBlue
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
                 
