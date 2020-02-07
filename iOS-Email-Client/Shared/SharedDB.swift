@@ -337,7 +337,6 @@ class SharedDB {
             newEmail.preview = email.preview
             newEmail.date = email.date
             newEmail.unsentDate = email.unsentDate
-            newEmail.isMuted = email.isMuted
             newEmail.labels.append(objectsIn: email.labels)
             newEmail.files.append(objectsIn: email.files)
             newEmail.fromAddress = email.fromAddress

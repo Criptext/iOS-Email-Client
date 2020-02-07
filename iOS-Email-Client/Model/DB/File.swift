@@ -17,7 +17,6 @@ class File : Object {
     @objc dynamic var size = 0
     @objc dynamic var status = 1
     @objc dynamic var date = Date()
-    @objc dynamic var readOnly = 0 //bool
     @objc dynamic var emailId = 0
     @objc dynamic var mimeType = ""
     @objc dynamic var shouldDuplicate = false
@@ -81,7 +80,6 @@ extension File{
             "size": size,
             "status": status,
             "date": dateString,
-            "readOnly": readOnly == 0 ? false : true,
             "emailId": emailId,
             "mimeType": mimeType.isEmpty ? File.mimeTypeForPath(path: name) : mimeType
         ] as [String: Any]
@@ -116,7 +114,6 @@ extension File{
         newFile.size = self.size
         newFile.status = self.status
         newFile.date = self.date
-        newFile.readOnly = self.readOnly
         newFile.mimeType = self.mimeType
         newFile.cid = self.cid
         newFile.shouldDuplicate = true

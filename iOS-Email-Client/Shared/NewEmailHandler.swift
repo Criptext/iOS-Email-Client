@@ -242,7 +242,6 @@ class NewEmailHandler {
         file.fileKey = fileKeyIv
         file.mimeType = attachment["mimeType"] as? String ?? File.mimeTypeForPath(path: file.name)
         file.date = email.date
-        file.readOnly = attachment["read_only"] as? Int ?? 0
         file.emailId = email.key
         if let fileCid = cid,
             body.contains("cid:\(fileCid)") && (UIUtils.getExternalImage(file.mimeType) == "fileimage") {
