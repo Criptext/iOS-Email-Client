@@ -48,7 +48,6 @@ class Email: Object {
     @objc dynamic var date = Date()
     @objc dynamic var unsentDate: Date?
     @objc dynamic var trashDate: Date?
-    @objc dynamic var isMuted = false
     @objc dynamic var fromAddress = ""
     @objc dynamic var replyTo = ""
     @objc dynamic var boundary = ""
@@ -184,7 +183,6 @@ extension Email {
             "status": delivered,
             "date": dateString,
             "key": key,
-            "isMuted": isMuted,
             "fromAddress": fromAddress,
             "replyTo": replyTo,
             "boundary": boundary,

@@ -21,13 +21,7 @@ class FeedItem: Object {
     @objc dynamic var contact : Contact!
     @objc dynamic var fileId: String?
     //seen: Bool
-    
-    var isMuted: Bool {
-        guard let muted = email?.isMuted else {
-            return false
-        }
-        return muted
-    }
+
     var subject: String {
         guard let subject = email?.subject else {
             return ""

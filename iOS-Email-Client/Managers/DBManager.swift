@@ -182,7 +182,6 @@ class DBManager: SharedDB {
             FileUtils.saveEmailToFile(email: account.email, metadataKey: "\(key)", body: object["content"] as! String, headers: object["headers"] as? String)
             email.account = account
             email.messageId = (object["messageId"] as? Int)?.description ?? object["messageId"] as! String
-            email.isMuted = object["isMuted"] as! Bool
             email.threadId = object["threadId"] as! String
             email.unread = object["unread"] as! Bool
             email.secure = object["secure"] as! Bool
@@ -246,7 +245,6 @@ class DBManager: SharedDB {
             file.status = object["status"] as! Int
             file.emailId = emailKey
             file.token = object["token"] as! String
-            file.readOnly = (object["readOnly"] as! Bool) ? 1 : 0
             file.size = object["size"] as! Int
             file.mimeType = object["mimeType"] as! String
             file.date = EventData.convertToDate(dateString: object["date"] as! String)
@@ -501,14 +499,6 @@ class DBManager: SharedDB {
                 let email = realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(key)")
                 email?.unread = unread
             }
-        }
-    }
-    
-    class func updateEmail(_ email: Email, muted: Bool){
-        let realm = try! Realm()
-        
-        try! realm.write() {
-            email.isMuted = muted
         }
     }
     

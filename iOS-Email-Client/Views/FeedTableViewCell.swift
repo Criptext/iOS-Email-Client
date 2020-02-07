@@ -13,7 +13,6 @@ class FeedTableViewCell: UITableViewCell{
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var mutedIconImage: UIImageView!
 
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -22,7 +21,7 @@ class FeedTableViewCell: UITableViewCell{
     func fillFields(feed: FeedItem, account: Account, lastSeen: Date) {
         let headline = feed.contact.email == account.email ? String.localize("EMAIL_OPENED") : feed.header
         setLabels(headline, feed.subject, feed.formattedDate)
-        setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue, isMuted: feed.isMuted)
+        setIcons(isOpen: feed.type == FeedItem.Action.open.rawValue)
         handleViewed(isNew: feed.date > lastSeen)
     }
     
@@ -32,7 +31,7 @@ class FeedTableViewCell: UITableViewCell{
         dateLabel.text = myDate
     }
     
-    func setIcons(isOpen: Bool, isMuted: Bool){
+    func setIcons(isOpen: Bool){
         if(isOpen){
             typeIconImage.image = UIImage(named: "read")
             typeIconImage.tintColor = UIColor(red: 0, green: 145/255, blue: 1, alpha: 1)
@@ -40,8 +39,6 @@ class FeedTableViewCell: UITableViewCell{
             typeIconImage.image = UIImage(named: "attachment")
             typeIconImage.tintColor = UIColor(red: 212/255, green: 212/255, blue: 212/255, alpha: 1)
         }
-        
-        mutedIconImage.isHidden = !isMuted
     }
     
     func handleViewed(isNew: Bool){

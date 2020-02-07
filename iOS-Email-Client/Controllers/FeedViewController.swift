@@ -154,19 +154,6 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource{
         return UISwipeActionsConfiguration(actions: [delete])
     }
     
-    func muteAction(_ tableView: UITableView, indexPath: IndexPath) -> UIContextualAction{
-        let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
-        let action = UIContextualAction(style: .normal, title: feed.isMuted ? String.localize("UNMUTE") : String.localize("MUTE")){
-            (action, view, completion) in
-            DBManager.updateEmail(feed.email, muted: !feed.isMuted)
-            tableView.reloadRows(at: [indexPath], with: .fade)
-            completion(true)
-        }
-        action.image = feed.isMuted ? #imageLiteral(resourceName: "unmuted") : #imageLiteral(resourceName: "muted")
-        action.backgroundColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
-        return action
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let feed = (indexPath.section == 0 ? feedsData.newFeeds[indexPath.row] : feedsData.oldFeeds[indexPath.row])
         let workingLabel = feed.email.isSpam ? SystemLabel.spam.id : (feed.email.isTrash ? SystemLabel.trash.id : SystemLabel.sent.id)
