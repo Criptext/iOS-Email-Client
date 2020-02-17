@@ -714,6 +714,7 @@ extension InboxViewController{
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         composerVC.delegate = self
+        snackVC.modalPresentationStyle = .fullScreen
         
         APIManager.postUserEvent(event: Int(Event.UserEvent.openComposer.rawValue), token: myAccount.jwt, completion: {_ in })
         
@@ -1314,6 +1315,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             file.requestStatus = .finish
             composerVC.fileManager.registeredFiles.append(file)
         }
+        snackVC.modalPresentationStyle = .fullScreen
         self.present(snackVC, animated: true, completion: { [weak self] in
             self?.navigationDrawerController?.closeLeftView()
         })

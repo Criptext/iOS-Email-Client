@@ -2966,7 +2966,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2978,7 +2978,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3008,7 +3008,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3020,7 +3020,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3155,7 +3155,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3168,7 +3168,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3220,7 +3220,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3229,7 +3229,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
@@ -3251,7 +3251,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3260,7 +3260,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3281,7 +3281,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3291,7 +3291,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3314,7 +3314,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3323,7 +3323,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
@@ -3348,7 +3348,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3357,7 +3357,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3381,7 +3381,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3391,7 +3391,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.1.32;
+				MARKETING_VERSION = 1.1.34;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
