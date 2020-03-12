@@ -908,4 +908,58 @@ class DBManager: SharedDB {
             realm.delete(queueItems)
         }
     }
+    
+    //MARK: - Alias
+    
+    class func store(_ alias: Alias){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(alias, update: .all)
+        }
+    }
+    
+    class func getAliases(account: Account) -> Results<Alias> {
+        let realm = try! Realm()
+        return realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'")
+    }
+    
+    class func update(alias: Alias, active: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            alias.active = active
+        }
+    }
+    
+    class func deleteAlias(_ alias: Alias) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            realm.delete(alias)
+        }
+    }
+    
+    //MARK: - CustomDomain
+    
+    class func store(_ customDomain: CustomDomain){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(customDomain, update: .all)
+        }
+    }
+    
+    class func getCustomDomains(account: Account) -> Results<CustomDomain> {
+        let realm = try! Realm()
+        return realm.objects(CustomDomain.self).filter("account.compoundKey == '\(account.compoundKey)'")
+    }
+    
+    class func deleteCustomDomain(_ customDomain: CustomDomain) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            realm.delete(customDomain)
+        }
+    }
 }
