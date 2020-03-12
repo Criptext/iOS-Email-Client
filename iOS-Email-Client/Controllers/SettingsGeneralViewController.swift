@@ -15,6 +15,7 @@ class SettingsGeneralViewController: UIViewController{
     
     internal enum Section {
         case account
+        case addresses
         case general
         case support
         case about
@@ -24,6 +25,8 @@ class SettingsGeneralViewController: UIViewController{
             switch(self){
             case .account:
                 return String.localize("ACCOUNT")
+            case .addresses:
+                return String.localize("ADRESSES")
             case .general:
                 return String.localize("GENERAL")
             case .support:
@@ -42,6 +45,9 @@ class SettingsGeneralViewController: UIViewController{
             case labels
             case manualSync
             case backup
+            
+            case customDomain
+            case aliases
             
             case night
             case syncContact
@@ -94,6 +100,10 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("FAQ")
                 case .policies:
                     return String.localize("POLICY")
+                case .customDomain:
+                    return String.localize("CUSTOM_DOMAIN")
+                case .aliases:
+                    return String.localize("ALIASES")
                 }
             }
         }
@@ -102,11 +112,12 @@ class SettingsGeneralViewController: UIViewController{
     @IBOutlet weak var tableView: UITableView!
     
     let STATUS_NOT_CONFIRMED = 0
-    let SECTION_VERSION = 4
+    let SECTION_VERSION = 5
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .general, .support, .about, .version] as [Section]
+    let sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
     let menus = [
         .account: [.account, .privacy, .devices, .labels, .manualSync, .backup],
+        .addresses: [.customDomain, .aliases],
         .general: [.night, .syncContact, .preview, .pin],
         .support: [.reportBug, .reportAbuse],
         .about: [.faq, .policies, .terms, .openSource],
@@ -114,6 +125,7 @@ class SettingsGeneralViewController: UIViewController{
     ]
     var generalData = GeneralSettingsData()
     var devicesData = DeviceSettingsData()
+    var aliasesData = AliasSettingsData()
     var myAccount : Account!
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -122,6 +134,7 @@ class SettingsGeneralViewController: UIViewController{
     override func viewDidLoad() {
         ThemeManager.shared.addListener(id: "settings", delegate: self)
         self.devicesData.devices.append(Device.createActiveDevice(deviceId: myAccount.deviceId))
+        //self.aliasesData.aliases =
         self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
         
@@ -146,10 +159,19 @@ class SettingsGeneralViewController: UIViewController{
             }
             guard case let .SuccessDictionary(settings) = responseData,
                 let devices = settings["devices"] as? [[String: Any]],
+                let addresses = settings["addresses"] as? [[String: Any]],
                 let general = settings["general"] as? [String: Any] else {
                     return
             }
+            print(settings)
             let myDevices = devices.map({Device.fromDictionary(data: $0)}).filter({$0.id != myDevice.id}).sorted(by: {$0.safeDate > $1.safeDate})
+            let aliasesPairArray = addresses.map({Alias.fromDictionary(data: $0, account: self.myAccount)})
+            var myAliases = [String:[Alias]]()
+            for pair in aliasesPairArray {
+                myAliases[pair.0] = pair.1
+            }
+            print(myAliases)
+            self.aliasesData.domainAndAliasData = myAliases
             self.devicesData.devices.append(contentsOf: myDevices)
             let email = general["recoveryEmail"] as! String
             let status = general["recoveryEmailConfirmed"] as! Int
@@ -202,6 +224,16 @@ class SettingsGeneralViewController: UIViewController{
         default:
             cell.goImageView.isHidden = false
         }
+        return cell
+    }
+    
+    func renderAddressesCells(subsection: Section.SubSection) -> GeneralTapTableCellView {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        cell.messageLabel.text = ""
+        cell.loader.isHidden = true
+        cell.goImageView.isHidden = false
+        cell.optionLabel.textColor = theme.mainText
+        cell.optionLabel.text = subsection.name
         return cell
     }
     
@@ -347,6 +379,23 @@ class SettingsGeneralViewController: UIViewController{
         backupVC.myAccount = myAccount
         
         self.navigationController?.pushViewController(backupVC, animated: true)
+    }
+    
+    func goToCustomDomains() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let backupVC = storyboard.instantiateViewController(withIdentifier: "backupViewController") as! BackupViewController
+        backupVC.myAccount = myAccount
+        
+        self.navigationController?.pushViewController(backupVC, animated: true)
+    }
+    
+    func goToAliases() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let aliasVC = storyboard.instantiateViewController(withIdentifier: "aliasViewController") as! AliasViewController
+        aliasVC.myAccount = myAccount
+        aliasVC.aliasData = aliasesData
+        
+        self.navigationController?.pushViewController(aliasVC, animated: true)
     }
     
     func syncContacts(){
@@ -499,6 +548,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
         switch(sections[indexPath.section]){
         case .account:
             return renderAccountCells(subsection: subsection)
+        case .addresses:
+            return renderAddressesCells(subsection: subsection)
         case .general:
             return renderGeneralCells(subsection: subsection)
         case .support:
@@ -548,6 +599,10 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             showManualSyncWarning()
         case .backup:
             goToBackup()
+        case .customDomain:
+            goToCustomDomains()
+        case .aliases:
+            goToAliases()
         case .syncContact:
             syncContacts()
         case .pin:

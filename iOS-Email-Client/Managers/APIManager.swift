@@ -1034,4 +1034,58 @@ class APIManager: SharedAPI {
             completion(responseData)
         }
     }
+    
+    class func createAlias(alias: String, domain: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/user/address"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "addressName": alias,
+            "addressDomain": domain
+            ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
+    class func activateAlias(rowId: Int, activate: Bool, token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/user/address/activate"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "addressId": rowId,
+            "activate": activate
+            ] as [String: Any]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
+    
+    class func deleteAlias(rowId: Int, token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/user/address"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "addressId": rowId
+            ] as [String: Any]
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
+    class func deleteCustomDomain(customDomain: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
+        let url = "\(self.baseUrl)/domain"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        let params = [
+            "customDomain": customDomain
+            ] as [String: Any]
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
 }
