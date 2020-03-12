@@ -11,6 +11,16 @@
 		347CC85C236B43D900A2FA99 /* LabelOptionsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */; };
 		34857664235918BC002E2049 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD825205C857C000E5F14 /* Utils.swift */; };
 		348DD9DA2361FF1C000DC704 /* GenericSingleInputPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */; };
+		348F1ED3241198DD0095BCBB /* AliasTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED2241198DD0095BCBB /* AliasTableViewCell.swift */; };
+		348F1ED52411B8150095BCBB /* CustomDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED42411B8150095BCBB /* CustomDomain.swift */; };
+		348F1ED72411B8210095BCBB /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED62411B8210095BCBB /* Alias.swift */; };
+		348F1ED92412B3F70095BCBB /* AliasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED82412B3F70095BCBB /* AliasViewController.swift */; };
+		348F1EDB241679540095BCBB /* AliasSettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1EDA241679540095BCBB /* AliasSettingsData.swift */; };
+		348F1EDD24167CC80095BCBB /* RemoveAliasUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1EDC24167CC80095BCBB /* RemoveAliasUIPopover.swift */; };
+		348F1EE0241680420095BCBB /* RemoveAliasUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 348F1EDE241680420095BCBB /* RemoveAliasUIPopover.xib */; };
+		348F1EEC241850ED0095BCBB /* AddAliasTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1EEB241850ED0095BCBB /* AddAliasTableViewCell.swift */; };
+		348F1EEE24198E5C0095BCBB /* AddAliasUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */; };
+		348F1EF12419B8030095BCBB /* AddAliasUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 348F1EEF2419B8030095BCBB /* AddAliasUIPopover.xib */; };
 		3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */; };
 		34C4173622BC20530095DF23 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */; };
 		34C4173722BC20530095DF23 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */; };
@@ -621,6 +631,16 @@
 		347CC85A2367A91700A2FA99 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelOptionsInterface.swift; sourceTree = "<group>"; };
 		348DD9D92361FF1C000DC704 /* GenericSingleInputPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericSingleInputPopover.swift; sourceTree = "<group>"; };
+		348F1ED2241198DD0095BCBB /* AliasTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasTableViewCell.swift; sourceTree = "<group>"; };
+		348F1ED42411B8150095BCBB /* CustomDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDomain.swift; sourceTree = "<group>"; };
+		348F1ED62411B8210095BCBB /* Alias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alias.swift; sourceTree = "<group>"; };
+		348F1ED82412B3F70095BCBB /* AliasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasViewController.swift; sourceTree = "<group>"; };
+		348F1EDA241679540095BCBB /* AliasSettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSettingsData.swift; sourceTree = "<group>"; };
+		348F1EDC24167CC80095BCBB /* RemoveAliasUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAliasUIPopover.swift; sourceTree = "<group>"; };
+		348F1EDF241680420095BCBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "iOS-Email-Client/Views/Base.lproj/RemoveAliasUIPopover.xib"; sourceTree = "<group>"; };
+		348F1EEB241850ED0095BCBB /* AddAliasTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAliasTableViewCell.swift; sourceTree = "<group>"; };
+		348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAliasUIPopover.swift; sourceTree = "<group>"; };
+		348F1EF02419B8030095BCBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/Base.lproj/AddAliasUIPopover.xib"; sourceTree = "<group>"; };
 		3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevicesViewController.swift; sourceTree = "<group>"; };
 		34C4172F22BC20520095DF23 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
 		34C4173022BC20520095DF23 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
@@ -1258,6 +1278,9 @@
 				A742720422550A1F006D10C9 /* BackupViewController.swift */,
 				A721B343225CFC89004528B4 /* RestoreUIPopover.swift */,
 				A721B345225D2D5F004528B4 /* RestoreViewController.swift */,
+				348F1ED82412B3F70095BCBB /* AliasViewController.swift */,
+				348F1EDC24167CC80095BCBB /* RemoveAliasUIPopover.swift */,
+				348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1415,6 +1438,7 @@
 				A70EAE5321DE6A9700FE6055 /* AcceptData.swift */,
 				A7385F422230852D005CB38D /* CRBundle.swift */,
 				347A659822E126F1002D9151 /* LinkFileHeaderData.swift */,
+				348F1EDA241679540095BCBB /* AliasSettingsData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1496,8 +1520,12 @@
 				7C63AB55205330A00053219F /* AccountFromCell.xib */,
 				7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */,
 				A7FFCF41217A914000FFFDFF /* RemoveDeviceUIPopover.xib */,
+				348F1EDE241680420095BCBB /* RemoveAliasUIPopover.xib */,
+				348F1EEF2419B8030095BCBB /* AddAliasUIPopover.xib */,
 				7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */,
 				7C7F2FF220B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift */,
+				348F1ED2241198DD0095BCBB /* AliasTableViewCell.swift */,
+				348F1EEB241850ED0095BCBB /* AddAliasTableViewCell.swift */,
 				A700F59621D3E59900792B4A /* SettingsGeneralHeaderView.swift */,
 				A700F59421D3E28800792B4A /* SettingsGeneralHeaderView.xib */,
 				A7FFCF4A217A91D600FFFDFF /* SignInVerificationUIPopover.xib */,
@@ -1571,6 +1599,8 @@
 			isa = PBXGroup;
 			children = (
 				7C154FD2204DEBAF00D72F6E /* Account.swift */,
+				348F1ED42411B8150095BCBB /* CustomDomain.swift */,
+				348F1ED62411B8210095BCBB /* Alias.swift */,
 				41AAC530201A9FCD00809C4D /* Contact.swift */,
 				41AAC52E201A9FCC00809C4D /* Email.swift */,
 				41AAC535201A9FCD00809C4D /* FeedItem.swift */,
@@ -1923,6 +1953,7 @@
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */,
 				D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */,
+				348F1EE0241680420095BCBB /* RemoveAliasUIPopover.xib in Resources */,
 				412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */,
 				7C1E82C22116BD43007CA853 /* HintUIView.xib in Resources */,
 				41AAC553201AA06F00809C4D /* MCOMessageViewScript.js in Resources */,
@@ -1950,6 +1981,7 @@
 				A7FFCF33217A911400FFFDFF /* EmailTableFooterView.xib in Resources */,
 				A7D2DE6F21C42BB6002ED6F8 /* OptionsPickerUIPopover.xib in Resources */,
 				7C4D33C1212C733700045B09 /* GenericAlertUIPopover.xib in Resources */,
+				348F1EF12419B8030095BCBB /* AddAliasUIPopover.xib in Resources */,
 				A7FFCF3C217A913900FFFDFF /* PasswordUIPopover.xib in Resources */,
 				A72FBF31223962A0002A710D /* AccountsFooterCell.xib in Resources */,
 				7C1E987A20C9B96A003205F8 /* showmore.png in Resources */,
@@ -2129,6 +2161,7 @@
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
+				348F1EEC241850ED0095BCBB /* AddAliasTableViewCell.swift in Sources */,
 				A72C185321AEEB1F00D899EE /* Time.swift in Sources */,
 				A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */,
 				7C2D803A209A02D500B213F1 /* ComposerData.swift in Sources */,
@@ -2142,6 +2175,7 @@
 				D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */,
 				7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */,
 				7C1E82C42116BDF2007CA853 /* HintUIView.swift in Sources */,
+				348F1EEE24198E5C0095BCBB /* AddAliasUIPopover.swift in Sources */,
 				7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */,
 				A764443421768AB7005304DA /* ProgressAnimatedUIView.swift in Sources */,
 				7C4D33CD212CA23100045B09 /* GeneralSettingsData.swift in Sources */,
@@ -2156,6 +2190,7 @@
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
+				348F1EDB241679540095BCBB /* AliasSettingsData.swift in Sources */,
 				A71F8BAD219B2239002D93CB /* DummySession.swift in Sources */,
 				A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */,
 				CF96000221FA7D65001FD5A3 /* CIDSchemeHandler.swift in Sources */,
@@ -2182,6 +2217,7 @@
 				A7CC387A21939C3D00C8355A /* SharedDB.swift in Sources */,
 				7CAC1CF020F6AF58004A50C6 /* CriptextSnackbarController.swift in Sources */,
 				7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */,
+				348F1ED52411B8150095BCBB /* CustomDomain.swift in Sources */,
 				A758E2E9221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */,
@@ -2203,6 +2239,7 @@
 				A7065E6121CC62E200F8292A /* AttachmentOptionsContainerView.swift in Sources */,
 				A7065E5D21CC1A4200F8292A /* FeedHeaderTitleUIView.swift in Sources */,
 				A7F30280216F9DCF00676DD2 /* SignInVerificationUIPopover.swift in Sources */,
+				348F1ED92412B3F70095BCBB /* AliasViewController.swift in Sources */,
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,
@@ -2218,6 +2255,7 @@
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
 				A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */,
+				348F1EDD24167CC80095BCBB /* RemoveAliasUIPopover.swift in Sources */,
 				7C4D33C3212C745A00045B09 /* GenericAlertUIPopover.swift in Sources */,
 				7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */,
 				D652A07621C0369C005EC3E1 /* ContactShareTableViewCell.swift in Sources */,
@@ -2253,6 +2291,7 @@
 				7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */,
 				A7B5B572223B0CD20083E467 /* AccountCollectionCell.swift in Sources */,
 				A77C30A721A4DE720031E219 /* PasscodeConfig.swift in Sources */,
+				348F1ED3241198DD0095BCBB /* AliasTableViewCell.swift in Sources */,
 				7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */,
 				A758E2EB221F48E4007ECC21 /* MarkThreadsAsyncTask.swift in Sources */,
 				7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */,
@@ -2303,6 +2342,7 @@
 				7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */,
 				7C46BED72153F71E00282182 /* SingleWebSocket.swift in Sources */,
 				7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */,
+				348F1ED72411B8210095BCBB /* Alias.swift in Sources */,
 				A7385F432230852D005CB38D /* CRBundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2465,6 +2505,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		348F1EDE241680420095BCBB /* RemoveAliasUIPopover.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				348F1EDF241680420095BCBB /* Base */,
+			);
+			name = RemoveAliasUIPopover.xib;
+			sourceTree = "<group>";
+		};
+		348F1EEF2419B8030095BCBB /* AddAliasUIPopover.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				348F1EF02419B8030095BCBB /* Base */,
+			);
+			name = AddAliasUIPopover.xib;
+			sourceTree = "<group>";
+		};
 		41B6AAB32017987500D428B7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
