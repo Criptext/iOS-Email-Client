@@ -453,3 +453,16 @@
 "CUSTOM_DOMAIN" = "Custom Domain";
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Create a secondary address for your existing inbox. You can add up to 3 aliases per domain.";
+"DELETE_DOMAIN" = "Delete Domain";
+"DELETE_DOMAIN_MESSAGE" = "Are you sure you want to delete your domain? Your mails will not disapear, but aliases with this domain will be deleted.";
+"DELETE_DOMAIN_ERROR" = "Error deleting custom domain.";
+"DELETE_DOMAIN_SUCCESS" = "Domain deleted successfully! 🗑";
+"CUSTOM_DOMAIN_INFO_MESSAGE_1" = "By adding a custom domain you will be able to add a custom alias allowing you to send and receive emails from your custom domain.";
+"CUSTOM_DOMAIN_ENTRY_ERROR" = "This domain is already in use";
+"STEP_2_INFO_TITLE" = "TTL Field?";
+"STEP_2_INFO_MESSAGE" = "If you see the field Time To Live, enter 3600 seconds (1hour). Your host may not include a field called \"Name\",\"Host\", or \"Alias\".";
+"STEP_1_HEADER" = "STEP 1 OF 3";
+"STEP_2_HEADER" = "STEP 2 OF 3";
+"STEP_3_HEADER" = "STEP 3 OF 3";
+"DOMAIN_ALREADY_REGISTERED" = "This domain is already registered.";
+"DOMAIN_LIMIT_REACHED" = "Custom domain limit reached.";

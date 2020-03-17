@@ -32,4 +32,8 @@ class Alias: Object {
         newAlias.domainName = domainName == Env.plainDomain ? nil : domainName
         return newAlias
     }
+    
+    override static func primaryKey() -> String? {
+        return "rowId"
+    }
 }
