@@ -141,7 +141,6 @@ extension AliasViewController: AliasTableViewCellDelegate {
             return
         }
         let alias = table[domains[indexPath.section]]![indexPath.row]
-        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         presentRemoveAliasPopover(alias: alias)
     }
     

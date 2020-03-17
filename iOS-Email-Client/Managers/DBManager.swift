@@ -940,6 +940,15 @@ class DBManager: SharedDB {
         }
     }
     
+    class func deleteAlias(_ domainName: String?, account: Account) {
+        let realm = try! Realm()
+        let aliasesToDelete = getAliases(account: account).filter { $0.domainName == domainName }
+        
+        try! realm.write() {
+            realm.delete(aliasesToDelete)
+        }
+    }
+    
     //MARK: - CustomDomain
     
     class func store(_ customDomain: CustomDomain){
@@ -947,6 +956,14 @@ class DBManager: SharedDB {
         
         try! realm.write {
             realm.add(customDomain, update: .all)
+        }
+    }
+    
+    class func update(customDomain: CustomDomain, validated: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            customDomain.validated = validated
         }
     }
     

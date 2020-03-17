@@ -125,6 +125,7 @@ class SettingsGeneralViewController: UIViewController{
     ]
     var generalData = GeneralSettingsData()
     var devicesData = DeviceSettingsData()
+    var customDomainsData = CustomDomainSettingsData()
     var aliasesData = AliasSettingsData()
     var myAccount : Account!
     var theme: Theme {
@@ -382,11 +383,38 @@ class SettingsGeneralViewController: UIViewController{
     }
     
     func goToCustomDomains() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let backupVC = storyboard.instantiateViewController(withIdentifier: "backupViewController") as! BackupViewController
-        backupVC.myAccount = myAccount
-        
-        self.navigationController?.pushViewController(backupVC, animated: true)
+        let customDomains = DBManager.getCustomDomains(account: myAccount)
+        if(customDomains.count > 0){
+            if(customDomains.first!.validated){
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let customDomainVC = storyboard.instantiateViewController(withIdentifier: "customDomaindViewController") as! CustomDomainViewController
+                customDomainVC.myAccount = myAccount
+                customDomainsData.domains.append(contentsOf: customDomains)
+                customDomainVC.customDomainData = customDomainsData
+                
+                self.navigationController?.pushViewController(customDomainVC, animated: true)
+            } else {
+                APIManager.getMXCustomDomain(customDomainName: customDomains.first!.name, token: myAccount.jwt) { (responseData) in
+                    guard case let .SuccessDictionary(data) = responseData,
+                        let mx = data["mx"] as? [[String: Any]] else {
+                            return
+                    }
+                    let myMXRecords = mx.map({MXRecord.fromDictionary(data: $0)})
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let step2VC = storyboard.instantiateViewController(withIdentifier: "registerDomainStepTwoViewController") as! RegisterDomainStepTwoViewController
+                    step2VC.myAccount = self.myAccount
+                    step2VC.customDomain = customDomains.first!
+                    step2VC.mxRecords = myMXRecords
+                    self.navigationController?.pushViewController(step2VC, animated: true)
+                }
+            }
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let customEntryVC = storyboard.instantiateViewController(withIdentifier: "customDomainEntryViewController") as! CustomDomainEntryViewController
+            customEntryVC.myAccount = myAccount
+            
+            self.navigationController?.pushViewController(customEntryVC, animated: true)
+        }
     }
     
     func goToAliases() {
