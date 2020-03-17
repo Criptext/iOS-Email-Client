@@ -27,11 +27,6 @@ class AddAliasTableViewCell: UITableViewCell {
         applyTheme()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        applyTheme()
-    }
-    
     func applyTheme() {
         self.tintColor = theme.criptextBlue
         let selectedView = UIView()
