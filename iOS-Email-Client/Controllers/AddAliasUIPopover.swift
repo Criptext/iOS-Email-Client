@@ -22,6 +22,9 @@ class AddAliasUIPopover: BaseUIPopover {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     var onSuccess: ((Alias) -> Void)?
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
     
     init(){
         super.init("AddAliasUIPopover")
@@ -41,6 +44,8 @@ class AddAliasUIPopover: BaseUIPopover {
         } else {
             domainPicker.isHidden = false
             criptextDomainLabel.isHidden = true
+            domainPicker.dataSource = self
+            domainPicker.delegate = self
         }
         applyTheme()
     }
@@ -69,7 +74,7 @@ class AddAliasUIPopover: BaseUIPopover {
     
     @IBAction func onConfirmPress(_ sender: Any) {
         showLoader(true)
-        let domainName = domains.count == 0 ? Env.plainDomain : domains.first!
+        let domainName = domains.count == 0 ? Env.plainDomain : domains[domainPicker.selectedRow(inComponent: 0)]
         APIManager.createAlias(alias: aliasTextInput.text!, domain: domainName, token: myAccount.jwt){ (responseData) in
             if case .BadRequest = responseData {
                 self.showLoader(false)
@@ -105,4 +110,23 @@ class AddAliasUIPopover: BaseUIPopover {
         loader.startAnimating()
     }
     
+}
+
+extension AddAliasUIPopover: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return domains.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "@\(domains[row])"
+    }
+    
+    func pickerView(_: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let titleData = "@\(domains[row])"
+        return NSAttributedString(string: titleData, attributes: [NSAttributedString.Key.foregroundColor:theme.mainText])
+    }
 }

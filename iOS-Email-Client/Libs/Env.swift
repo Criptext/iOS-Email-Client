@@ -49,7 +49,7 @@ struct Env {
         guard !Env.isProduction else {
             return "wss://socket.criptext.com"
         }
-        return "wss://stagesocket.criptext.com"
+        return "wss://socket.criptext.com"
     }
     
     static var domain: String {
@@ -63,28 +63,28 @@ struct Env {
         guard !Env.isProduction else {
             return "criptext.com"
         }
-        return "jigl.com"
+        return "criptext.com"
     }
     
     static var apiURL: String {
         guard !Env.isProduction else {
             return "https://api.criptext.com"
         }
-        return "https://stage.mail.criptext.com"
+        return "https://api.criptext.com"
     }
     
     static var transferURL: String {
         guard !Env.isProduction else {
             return "https://transfer.criptext.com"
         }
-        return "https://stagetransfer.criptext.com"
+        return "https://transfer.criptext.com"
     }
     
     static var language: String {
         return Locale.current.languageCode ?? "en"
     }
     
-    static let databaseVersion: UInt64 = 25
+    static let databaseVersion: UInt64 = 26
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 6
     static let maxAllowedDevices = 10

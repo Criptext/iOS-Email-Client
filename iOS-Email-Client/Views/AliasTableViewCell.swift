@@ -34,11 +34,6 @@ class AliasTableViewCell: UITableViewCell {
         applyTheme()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        applyTheme()
-    }
-    
     func applyTheme() {
         trashButton.tintColor = theme.secondText
         aliasNameLabel.textColor = theme.mainText
