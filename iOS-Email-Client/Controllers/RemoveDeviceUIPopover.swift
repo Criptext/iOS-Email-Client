@@ -18,6 +18,7 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     @IBOutlet weak var continueTitleLabel: UILabel!
     @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     var onSuccess: ((Int) -> Void)?
@@ -35,6 +36,9 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         passwordTextField.isVisibilityIconButtonEnabled = true
         showLoader(false)
         applyTheme()
+        titleLabel.text = String.localize("ALIASES_DELETE")
+        subTitleLabel.text = String.localize("ALIASES_DELETE_DESC", arguments: alias.email)
+        dismissButton.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,6 +86,10 @@ class RemoveDeviceUIPopover: BaseUIPopover {
             if case .Missing = responseData {
                 self.showLoader(false)
                 self.passwordTextField.detail = String.localize("WRONG_PASS_RETRY")
+                return
+            }
+            if case .BadRequest = responseData {
+                self.setFailContent(message: String.localize("ALIASES_DELETE_ERROR_UNABLE"))
                 return
             }
             guard case .Success = responseData else {

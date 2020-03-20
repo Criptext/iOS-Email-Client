@@ -31,11 +31,14 @@ class AliasTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        activeSwitch.transform = CGAffineTransform(scaleX: 0.74, y: 0.74)
+        activeSwitch.isUserInteractionEnabled = true
         applyTheme()
     }
     
     func applyTheme() {
         trashButton.tintColor = theme.secondText
+        trashButton.imageView?.tintColor = theme.secondText
         aliasNameLabel.textColor = theme.mainText
         self.tintColor = theme.criptextBlue
         let selectedView = UIView()
@@ -46,9 +49,6 @@ class AliasTableViewCell: UITableViewCell {
     
     func setContent(alias: Alias){
         aliasNameLabel.text = alias.name
-        if(alias.domainName == nil){
-            self.trashButton.isHidden = true
-        }
         activeSwitch.isOn = alias.active
     }
     
