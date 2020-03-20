@@ -74,15 +74,15 @@ class AddAliasUIPopover: BaseUIPopover {
     
     @IBAction func onConfirmPress(_ sender: Any) {
         showLoader(true)
-        let domainName = domains.count == 0 ? Env.plainDomain : domains[domainPicker.selectedRow(inComponent: 0)]
+        let domainName = domains.count == 0 ? Env.plainDomain : domains[domainPicker.selectedRow(inComponent: 0)].replacingOccurrences(of: "@", with: "")
         APIManager.createAlias(alias: aliasTextInput.text!, domain: domainName, token: myAccount.jwt){ (responseData) in
             if case .BadRequest = responseData {
-                self.showLoader(false)
+                self.showLoader(false, error: String.localize("ALIASES_ALREADY_EXISTS"))
                 return
             }
             guard case let .SuccessDictionary(data) = responseData,
                 let rowId = data["addressId"] as? Int else {
-                self.showLoader(false)
+                    self.showLoader(false, error: String.localize("ALIASES_UKNOWN_ERROR"))
                 return
             }
             let alias = Alias()
@@ -96,18 +96,26 @@ class AddAliasUIPopover: BaseUIPopover {
         }
     }
     
-    func showLoader(_ show: Bool){
+    func showLoader(_ show: Bool, error: String? = nil){
         self.shouldDismiss = !show
         confirmButton.isEnabled = !show
         cancelButton.isEnabled = !show
         cancelButton.setTitle(show ? "" : String.localize("CANCEL"), for: .normal)
         confirmButton.setTitle(show ? "" : String.localize("CONFIRM"), for: .normal)
         loader.isHidden = !show
-        guard show else {
+        if show {
+            loader.startAnimating()
+        } else {
             loader.stopAnimating()
-            return
         }
-        loader.startAnimating()
+        if let errorMessage = error {
+            aliasTextInput.dividerActiveColor = theme.alert
+            aliasTextInput.detailColor = theme.alert
+            aliasTextInput.detail = errorMessage
+        } else {
+            aliasTextInput.detail = ""
+            aliasTextInput.dividerActiveColor = theme.criptextBlue
+        }
     }
     
 }
@@ -122,11 +130,11 @@ extension AddAliasUIPopover: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "@\(domains[row])"
+        return domains[row]
     }
     
     func pickerView(_: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let titleData = "@\(domains[row])"
+        let titleData = domains[row]
         return NSAttributedString(string: titleData, attributes: [NSAttributedString.Key.foregroundColor:theme.mainText])
     }
 }

@@ -10,7 +10,6 @@ import Material
 import Foundation
 
 class RegisterDomainStepOneViewController: UIViewController {
-    @IBOutlet weak var customDomainTextInput: TextField!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     var myAccount: Account!
@@ -25,6 +24,7 @@ class RegisterDomainStepOneViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icHelp").tint(with: .white), style: .plain, target: self, action: #selector(showInfo))
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
+        self.loader.isHidden = true
         self.applyTheme()
     }
     
@@ -53,6 +53,7 @@ class RegisterDomainStepOneViewController: UIViewController {
     }
     
     func getMXRecordsAndStepTwo(){
+        showLoader(true)
         APIManager.getMXCustomDomain(customDomainName: customDomain.name, token: myAccount.jwt) { (responseData) in
             guard case let .SuccessDictionary(data) = responseData,
                 let mx = data["mx"] as? [[String: Any]] else {

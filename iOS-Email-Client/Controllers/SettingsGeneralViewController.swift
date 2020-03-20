@@ -125,8 +125,6 @@ class SettingsGeneralViewController: UIViewController{
     ]
     var generalData = GeneralSettingsData()
     var devicesData = DeviceSettingsData()
-    var customDomainsData = CustomDomainSettingsData()
-    var aliasesData = AliasSettingsData()
     var myAccount : Account!
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -135,7 +133,6 @@ class SettingsGeneralViewController: UIViewController{
     override func viewDidLoad() {
         ThemeManager.shared.addListener(id: "settings", delegate: self)
         self.devicesData.devices.append(Device.createActiveDevice(deviceId: myAccount.deviceId))
-        //self.aliasesData.aliases =
         self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
         
@@ -164,15 +161,8 @@ class SettingsGeneralViewController: UIViewController{
                 let general = settings["general"] as? [String: Any] else {
                     return
             }
-            print(settings)
+            self.parseAddresses(addresses: addresses)
             let myDevices = devices.map({Device.fromDictionary(data: $0)}).filter({$0.id != myDevice.id}).sorted(by: {$0.safeDate > $1.safeDate})
-            let aliasesPairArray = addresses.map({Alias.fromDictionary(data: $0, account: self.myAccount)})
-            var myAliases = [String:[Alias]]()
-            for pair in aliasesPairArray {
-                myAliases[pair.0] = pair.1
-            }
-            print(myAliases)
-            self.aliasesData.domainAndAliasData = myAliases
             self.devicesData.devices.append(contentsOf: myDevices)
             let email = general["recoveryEmail"] as! String
             let status = general["recoveryEmailConfirmed"] as! Int
@@ -199,6 +189,20 @@ class SettingsGeneralViewController: UIViewController{
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         super.dismiss(animated: flag, completion: completion)
         ThemeManager.shared.removeListener(id: "settings")
+    }
+    
+    func parseAddresses(addresses: [[String: Any]]) {
+        let aliasesPairArray = addresses.map({Alias.fromDictionary(data: $0, account: self.myAccount)})
+        for pair in aliasesPairArray {
+            if (pair.0 != Env.plainDomain) {
+                let customDomain =  CustomDomain()
+                customDomain.name = pair.0
+                customDomain.validated = true
+                customDomain.account = self.myAccount
+                DBManager.store(customDomain)
+            }
+            DBManager.store(aliases: pair.1)
+        }
     }
     
     func applyTheme(){
@@ -387,11 +391,9 @@ class SettingsGeneralViewController: UIViewController{
         if(customDomains.count > 0){
             if(customDomains.first!.validated){
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let customDomainVC = storyboard.instantiateViewController(withIdentifier: "customDomaindViewController") as! CustomDomainViewController
+                let customDomainVC = storyboard.instantiateViewController(withIdentifier: "customDomainViewController") as! CustomDomainViewController
                 customDomainVC.myAccount = myAccount
-                customDomainsData.domains.append(contentsOf: customDomains)
-                customDomainVC.customDomainData = customDomainsData
-                
+                customDomainVC.domains.append(contentsOf: customDomains)
                 self.navigationController?.pushViewController(customDomainVC, animated: true)
             } else {
                 APIManager.getMXCustomDomain(customDomainName: customDomains.first!.name, token: myAccount.jwt) { (responseData) in
@@ -421,8 +423,6 @@ class SettingsGeneralViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let aliasVC = storyboard.instantiateViewController(withIdentifier: "aliasViewController") as! AliasViewController
         aliasVC.myAccount = myAccount
-        aliasVC.aliasData = aliasesData
-        
         self.navigationController?.pushViewController(aliasVC, animated: true)
     }
     
