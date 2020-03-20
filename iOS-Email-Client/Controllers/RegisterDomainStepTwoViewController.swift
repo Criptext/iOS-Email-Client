@@ -11,7 +11,6 @@ import Foundation
 
 class RegisterDomainStepTwoViewController: UIViewController {
     @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var loader: UIActivityIndicatorView!
     @IBOutlet weak var pageOption1: UIButton!
     @IBOutlet weak var pageOption2: UIButton!
     @IBOutlet weak var pageOption3: UIButton!
@@ -19,44 +18,19 @@ class RegisterDomainStepTwoViewController: UIViewController {
     @IBOutlet weak var pageOption5: UIButton!
     @IBOutlet weak var pagesContainerView: UIView!
     //View One
-    @IBOutlet weak var oneView: UIView!
-    @IBOutlet weak var typeOne: UILabel!
-    @IBOutlet weak var priorityOne: UILabel!
-    @IBOutlet weak var nameOne: UILabel!
-    @IBOutlet weak var valueOne: UILabel!
-    @IBOutlet weak var copyButtonOne: UIButton!
+    @IBOutlet weak var oneView: MXRecordsUIView!
     
     //View Two
-    @IBOutlet weak var twoView: UIView!
-    @IBOutlet weak var typeTwo: UILabel!
-    @IBOutlet weak var priorityTwo: UILabel!
-    @IBOutlet weak var nameTwo: UILabel!
-    @IBOutlet weak var valueTwo: UILabel!
-    @IBOutlet weak var copyButtonTwo: UIButton!
+    @IBOutlet weak var twoView: MXRecordsUIView!
     
     //View Three
-    @IBOutlet weak var threeView: UIView!
-    @IBOutlet weak var typeThree: UILabel!
-    @IBOutlet weak var priorityThree: UILabel!
-    @IBOutlet weak var nameThree: UILabel!
-    @IBOutlet weak var valueThree: UILabel!
-    @IBOutlet weak var copyButtonThree: UIButton!
+    @IBOutlet weak var threeView: MXRecordsUIView!
     
     //View Four
-    @IBOutlet weak var fourthView: UIView!
-    @IBOutlet weak var typeFour: UILabel!
-    @IBOutlet weak var priorityFour: UILabel!
-    @IBOutlet weak var nameFour: UILabel!
-    @IBOutlet weak var valueFour: UILabel!
-    @IBOutlet weak var copyButtonFour: UIButton!
+    @IBOutlet weak var fourthView: MXRecordsUIView!
     
     //View Five
-    @IBOutlet weak var fifthView: UIView!
-    @IBOutlet weak var typeFive: UILabel!
-    @IBOutlet weak var priorityFive: UILabel!
-    @IBOutlet weak var nameFive: UILabel!
-    @IBOutlet weak var valueFive: UILabel!
-    @IBOutlet weak var copyButtonFive: UIButton!
+    @IBOutlet weak var fifthView: MXRecordsUIView!
     
     let spacing: CGFloat = 300
     let pageOptionColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 0.58)
@@ -90,38 +64,37 @@ class RegisterDomainStepTwoViewController: UIViewController {
     
     func setupMXRecords(){
         //1
-        typeOne.text = mxRecords[0].type
-        priorityOne.text = "\(mxRecords[0].priority)"
-        nameOne.text = mxRecords[0].host
-        valueOne.text = mxRecords[0].destination
+        oneView.setLabels(type: mxRecords[0].type, priority: "\(mxRecords[0].priority)", host: mxRecords[0].host, value: mxRecords[0].destination)
+        oneView.onCopy = { text in
+            UIPasteboard.general.string = text
+        }
         
         //2
-        typeTwo.text = mxRecords[1].type
-        priorityTwo.text = "\(mxRecords[1].priority)"
-        nameTwo.text = mxRecords[1].host
-        valueTwo.text = mxRecords[1].destination
+        twoView.setLabels(type: mxRecords[1].type, priority: "\(mxRecords[1].priority)", host: mxRecords[1].host, value: mxRecords[1].destination)
+        twoView.onCopy = { text in
+            UIPasteboard.general.string = text
+        }
         
-        //1
-        typeThree.text = mxRecords[2].type
-        priorityThree.text = "\(mxRecords[2].priority)"
-        nameThree.text = mxRecords[2].host
-        valueThree.text = mxRecords[2].destination
+        //3
+        threeView.setLabels(type: mxRecords[2].type, priority: "\(mxRecords[2].priority)", host: mxRecords[2].host, value: mxRecords[2].destination)
+        threeView.onCopy = { text in
+            UIPasteboard.general.string = text
+        }
         
-        //1
-        typeFour.text = mxRecords[3].type
-        priorityFour.text = "\(mxRecords[3].priority)"
-        nameFour.text = mxRecords[3].host
-        valueFour.text = mxRecords[3].destination
+        //4
+        fourthView.setLabels(type: mxRecords[3].type, priority: "\(mxRecords[3].priority)", host: mxRecords[3].host, value: mxRecords[3].destination)
+        fourthView.onCopy = { text in
+            UIPasteboard.general.string = text
+        }
         
-        //1
-        typeFive.text = mxRecords[4].type
-        priorityFive.text = "\(mxRecords[4].priority)"
-        nameFive.text = mxRecords[4].host
-        valueFive.text = mxRecords[4].destination
+        //5
+        fifthView.setLabels(type: mxRecords[4].type, priority: "\(mxRecords[4].priority)", host: mxRecords[4].host, value: mxRecords[4].destination)
+        fifthView.onCopy = { text in
+            UIPasteboard.general.string = text
+        }
     }
     
     @objc func draggedView(_ sender: UIPanGestureRecognizer) {
-        
         switch(sender.state) {
         case .changed:
             let translation = sender.translation(in: self.view)
@@ -225,43 +198,11 @@ class RegisterDomainStepTwoViewController: UIViewController {
     }
     
     @IBAction func onNextPress(_ sender: Any) {
-        showLoader(true)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let step3VC = storyboard.instantiateViewController(withIdentifier: "registerDomainStepThreeViewController") as! RegisterDomainStepThreeViewController
         step3VC.myAccount = self.myAccount
+        step3VC.newDomain = self.customDomain
         self.navigationController?.pushViewController(step3VC, animated: true)
-    }
-    
-    @IBAction func onCopyPressed(_ sender: Any) {
-        switch(sender as? UIButton){
-        case copyButtonOne:
-            UIPasteboard.general.string = valueOne.text
-        case copyButtonTwo:
-            UIPasteboard.general.string = valueTwo.text
-        case copyButtonThree:
-            UIPasteboard.general.string = valueThree.text
-        case copyButtonFour:
-            UIPasteboard.general.string = valueFour.text
-        case copyButtonFive:
-            UIPasteboard.general.string = valueFive.text
-        default:
-            break
-        }
-    }
-    
-    func showLoader(_ show: Bool){
-        guard show else {
-            loader.isHidden = true
-            loader.stopAnimating()
-            nextButton.isEnabled = true
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            return
-        }
-        
-        loader.isHidden = false
-        loader.startAnimating()
-        nextButton.isEnabled = false
-        nextButton.setTitle("", for: .normal)
     }
 }
 

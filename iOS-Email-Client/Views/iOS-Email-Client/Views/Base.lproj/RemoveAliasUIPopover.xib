@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,11 +16,11 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RemoveDeviceUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RemoveAliasUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="a8Y-Hp-xEf" id="uqt-wX-ouB"/>
                 <outlet property="confirmButton" destination="EdO-lF-0Uj" id="RXv-oq-goi"/>
-                <outlet property="continueTitleLabel" destination="i86-cp-5B3" id="qzh-Oh-kpr"/>
+                <outlet property="dismissButton" destination="Pbz-cy-VKS" id="vHT-pW-xA0"/>
                 <outlet property="loader" destination="Sxd-DO-Lp8" id="948-AY-IXu"/>
                 <outlet property="subTitleLabel" destination="Fda-ty-K22" id="7VD-f3-d5q"/>
                 <outlet property="titleLabel" destination="Imi-Xj-i4d" id="tF1-dq-ukU"/>
@@ -33,7 +33,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Alias" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Imi-Xj-i4d">
-                    <rect key="frame" x="23" y="26" width="224" height="39"/>
+                    <rect key="frame" x="88" y="26" width="94" height="39"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="39" id="uZG-tl-n1G"/>
                     </constraints>
@@ -41,19 +41,10 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fda-ty-K22">
-                    <rect key="frame" x="23" y="73" width="224" height="112"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="112" id="lEp-ok-aWE"/>
-                    </constraints>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fda-ty-K22">
+                    <rect key="frame" x="21" y="73" width="228" height="183"/>
                     <string key="text">If you delete this Alias your emails will remain intact, but you will no longer be able to send or receive emails under that address. </string>
-                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure you want to delete byleth@liknaru.com?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i86-cp-5B3">
-                    <rect key="frame" x="23" y="193" width="224" height="41"/>
-                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -85,6 +76,20 @@
                         <action selector="onCancelPress:" destination="-1" eventType="touchUpInside" id="gY4-nK-7BQ"/>
                     </connections>
                 </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pbz-cy-VKS" userLabel="Dismiss Button">
+                    <rect key="frame" x="0.0" y="264" width="270" height="46"/>
+                    <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="nmr-yG-2sp"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                    <state key="normal" title="Ok">
+                        <color key="titleColor" red="0.18823529410000001" green="0.1960784314" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onCancelPress:" destination="-1" eventType="touchUpInside" id="Y6B-ix-dGQ"/>
+                    </connections>
+                </button>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Sxd-DO-Lp8">
                     <rect key="frame" x="112" y="264" width="46" height="46"/>
                     <constraints>
@@ -94,23 +99,23 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="i86-cp-5B3" firstAttribute="top" secondItem="Fda-ty-K22" secondAttribute="bottom" constant="8" id="0PN-hh-cxl"/>
                 <constraint firstItem="Sxd-DO-Lp8" firstAttribute="height" secondItem="EdO-lF-0Uj" secondAttribute="height" id="4hq-kO-p4q"/>
+                <constraint firstItem="Fda-ty-K22" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="6cy-3M-px9"/>
                 <constraint firstItem="Sxd-DO-Lp8" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="99J-Jq-abj"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="EdO-lF-0Uj" secondAttribute="bottom" id="Dzd-yq-ikX"/>
-                <constraint firstItem="i86-cp-5B3" firstAttribute="leading" secondItem="Imi-Xj-i4d" secondAttribute="leading" id="FjU-8R-HOR"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="a8Y-Hp-xEf" secondAttribute="bottom" id="GYE-2p-iei"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Imi-Xj-i4d" secondAttribute="trailing" constant="23" id="I7A-tr-zto"/>
-                <constraint firstItem="Imi-Xj-i4d" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="23" id="JBZ-f6-1tE"/>
+                <constraint firstItem="Fda-ty-K22" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="21" id="Joc-wL-1IQ"/>
                 <constraint firstItem="Sxd-DO-Lp8" firstAttribute="centerY" secondItem="EdO-lF-0Uj" secondAttribute="centerY" id="QN2-S7-YqH"/>
                 <constraint firstItem="Fda-ty-K22" firstAttribute="top" secondItem="Imi-Xj-i4d" secondAttribute="bottom" constant="8" id="QV7-jB-ZBU"/>
                 <constraint firstItem="EdO-lF-0Uj" firstAttribute="leading" secondItem="a8Y-Hp-xEf" secondAttribute="trailing" id="Rf3-kw-XS5"/>
-                <constraint firstItem="i86-cp-5B3" firstAttribute="trailing" secondItem="Imi-Xj-i4d" secondAttribute="trailing" id="Tds-49-63d"/>
+                <constraint firstItem="Pbz-cy-VKS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Xrk-17-eug"/>
                 <constraint firstItem="EdO-lF-0Uj" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="YNR-VN-btV"/>
+                <constraint firstAttribute="trailing" secondItem="Fda-ty-K22" secondAttribute="trailing" constant="21" id="aiX-tu-ttN"/>
                 <constraint firstItem="a8Y-Hp-xEf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gLd-N4-pNW"/>
-                <constraint firstItem="Fda-ty-K22" firstAttribute="trailing" secondItem="Imi-Xj-i4d" secondAttribute="trailing" id="h6S-pZ-wto"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Pbz-cy-VKS" secondAttribute="bottom" id="iZh-yv-4hA"/>
                 <constraint firstItem="Imi-Xj-i4d" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="26" id="nni-Df-hDh"/>
-                <constraint firstItem="Fda-ty-K22" firstAttribute="leading" secondItem="Imi-Xj-i4d" secondAttribute="leading" id="pMT-lE-vwI"/>
+                <constraint firstItem="EdO-lF-0Uj" firstAttribute="top" secondItem="Fda-ty-K22" secondAttribute="bottom" constant="8" id="sbw-BS-uyP"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Pbz-cy-VKS" secondAttribute="trailing" id="skh-a4-aTi"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="EdO-lF-0Uj" secondAttribute="trailing" id="ug2-7K-oD5"/>
                 <constraint firstItem="Imi-Xj-i4d" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="xVm-8a-XE6"/>
             </constraints>

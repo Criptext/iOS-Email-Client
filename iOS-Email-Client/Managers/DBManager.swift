@@ -919,9 +919,22 @@ class DBManager: SharedDB {
         }
     }
     
+    class func store(aliases: [Alias]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(aliases, update: .modified)
+        }
+    }
+    
     class func getAliases(account: Account) -> Results<Alias> {
         let realm = try! Realm()
         return realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'")
+    }
+    
+    class func getAlias(rowId: Int, account: Account) -> Alias? {
+        let realm = try! Realm()
+        return realm.objects(Alias.self).filter("rowId == \(rowId) AND account.compoundKey == '\(account.compoundKey)'").first
     }
     
     class func update(alias: Alias, active: Bool){
@@ -970,6 +983,11 @@ class DBManager: SharedDB {
     class func getCustomDomains(account: Account) -> Results<CustomDomain> {
         let realm = try! Realm()
         return realm.objects(CustomDomain.self).filter("account.compoundKey == '\(account.compoundKey)'")
+    }
+    
+    class func getCustomDomain(name: String, account: Account) -> CustomDomain? {
+        let realm = try! Realm()
+        return realm.objects(CustomDomain.self).filter("name == '\(name)' AND account.compoundKey == '\(account.compoundKey)'").first
     }
     
     class func deleteCustomDomain(_ customDomain: CustomDomain) {

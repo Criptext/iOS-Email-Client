@@ -15,8 +15,8 @@ class RemoveAliasUIPopover: BaseUIPopover {
     var myAccount: Account!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
-    @IBOutlet weak var continueTitleLabel: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     var onSuccess: ((String, Int) -> Void)?
@@ -33,6 +33,9 @@ class RemoveAliasUIPopover: BaseUIPopover {
         super.viewDidLoad()
         showLoader(false)
         applyTheme()
+        titleLabel.text = String.localize("ALIASES_DELETE")
+        subTitleLabel.text = String.localize("ALIASES_DELETE_DESC", arguments: alias.email)
+        dismissButton.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,7 +48,6 @@ class RemoveAliasUIPopover: BaseUIPopover {
         view.backgroundColor = theme.background
         titleLabel.textColor = theme.mainText
         subTitleLabel.textColor = theme.mainText
-        continueTitleLabel.textColor = theme.mainText
         confirmButton.backgroundColor = theme.popoverButton
         cancelButton.backgroundColor = theme.popoverButton
         confirmButton.setTitleColor(theme.mainText, for: .normal)
@@ -59,15 +61,19 @@ class RemoveAliasUIPopover: BaseUIPopover {
     
     @IBAction func onConfirmPress(_ sender: Any) {
         let aliasId = alias.rowId
-        let domainName = alias.domainName!
+        let domainName = alias.domainName ?? Env.plainDomain
         showLoader(true)
         APIManager.deleteAlias(rowId: aliasId, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
                 self.logout(account: self.myAccount)
                 return
             }
+            if case .BadRequest = responseData {
+                self.setFailContent(message: String.localize("ALIASES_DELETE_ERROR_UNABLE"))
+                return
+            }
             guard case .Success = responseData else {
-                self.showLoader(false)
+                self.setFailContent(message: String.localize("ALIASES_DELETE_ERROR_UNKNOWN"))
                 return
             }
             self.onSuccess?(domainName, aliasId)
@@ -87,6 +93,16 @@ class RemoveAliasUIPopover: BaseUIPopover {
             return
         }
         loader.startAnimating()
+    }
+    
+    func setFailContent(message: String) {
+        self.showLoader(false)
+        self.confirmButton.isHidden = true
+        self.cancelButton.isHidden = true
+        self.dismissButton.isHidden = false
+        self.titleLabel.text = String.localize("ALIASES_DELETE_ERROR_TITLE")
+        self.subTitleLabel.text = message
+        self.subTitleLabel.fontSize = 16.0
     }
     
 }

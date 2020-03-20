@@ -11,13 +11,9 @@ import Foundation
 class AliasViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var myAccount: Account!
-    var aliasData: AliasSettingsData!
-    var domains: [String] {
-        return aliasData.domainAndAliasData.map { $0.key }
-    }
-    var table: [String : [Alias]] {
-        return aliasData.domainAndAliasData
-    }
+    var domains: [String] = []
+    var tableDomains: [String] = []
+    var table: [String : [Alias]] = [:]
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -29,9 +25,28 @@ class AliasViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icHelp").tint(with: .white), style: .plain, target: self, action: #selector(showInfo))
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         
+        self.loadAliasesAndCustomDomains()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.tableFooterView = UIView()
+        self.tableView.reloadData()
         self.applyTheme()
+    }
+    
+    func loadAliasesAndCustomDomains() {
+        let aliases = DBManager.getAliases(account: myAccount)
+        let customDomains = DBManager.getCustomDomains(account: myAccount)
+        aliases.forEach { (alias) in
+            let domain = "@\(alias.domainName ?? Env.plainDomain)"
+            if (table[domain] == nil) {
+                tableDomains.append(domain)
+                table[domain] = [Alias]()
+            }
+            table[domain]?.append(alias)
+        }
+        
+        domains.append(Env.domain)
+        domains.append(contentsOf: customDomains.map {"@\($0.name)"})
     }
     
     func applyTheme() {
@@ -58,32 +73,33 @@ class AliasViewController: UIViewController {
 
 extension AliasViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return domains.count + 1
+        return tableDomains.count + 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(domains.count == 0 || section == domains.count) {
+        if(section == table.keys.count) {
             return 0
         } else {
-            return table[domains[section]]!.count
+            return table[tableDomains[section]]!.count
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if(section == domains.count){
+        if(section == table.keys.count){
             let cell = tableView.dequeueReusableCell(withIdentifier: "aliasAddCell") as! AddAliasTableViewCell
             cell.delegate = self
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralHeader") as! GeneralHeaderTableViewCell
-            let mySection = domains[section]
+            let mySection = tableDomains[section]
             cell.titleLabel.text = mySection
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let alias = table[domains[indexPath.section]]![indexPath.row]
+        let mySection = tableDomains[indexPath.section]
+        let alias = table[mySection]![indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "aliasCell") as! AliasTableViewCell
         cell.delegate = self
         cell.setContent(alias: alias)
@@ -101,11 +117,11 @@ extension AliasViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40.0
+        return 60.0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 66.0
+        return 60.0
     }
 }
 
@@ -121,17 +137,26 @@ extension AliasViewController: AddAliasTableViewCellDelegate {
         let popoverHeight = 350
         let addAliasPopover = AddAliasUIPopover()
         addAliasPopover.myAccount = myAccount
-        addAliasPopover.domains = domains.map { "@\($0)" }
+        addAliasPopover.domains = self.domains
         addAliasPopover.onSuccess = { [weak self] alias in
-            DBManager.store(alias)
-            let domainName = alias.domainName == nil ? Env.plainDomain : alias.domainName!
-            self?.aliasData.domainAndAliasData[domainName]?.append(alias)
+            self?.addAlias(alias)
         }
         guard let tabsController = self.tabsController else {
             self.presentPopover(popover: addAliasPopover, height: popoverHeight)
             return
         }
         tabsController.presentPopover(popover: addAliasPopover, height: popoverHeight)
+    }
+    
+    func addAlias(_ alias: Alias) {
+        DBManager.store(alias)
+        let domainName = "@\(alias.domainName ?? Env.plainDomain)"
+        if (table[domainName] == nil) {
+            tableDomains.append(domainName)
+            table[domainName] = [Alias]()
+        }
+        table[domainName]?.append(alias)
+        self.tableView.reloadData()
     }
 }
 
@@ -160,12 +185,19 @@ extension AliasViewController: AliasTableViewCellDelegate {
     }
     
     func removeAlias(_ domain: String, aliasId: Int){
-        guard let index = aliasData.domainAndAliasData[domain]?.firstIndex(where: {$0.rowId == aliasId}),
-            let sectionIndex = domains.firstIndex(of: domain) else {
+        guard let domainIndex = tableDomains.firstIndex(where: {"@\(domain)" == $0}),
+            let aliasIndex = table[tableDomains[domainIndex]]?.firstIndex(where: {$0.rowId == aliasId}) else {
             return
         }
-        aliasData.domainAndAliasData[domain]!.remove(at: index)
-        tableView.deleteRows(at: [IndexPath(row: index, section: sectionIndex)], with: .automatic)
+        let alias = table[tableDomains[domainIndex]]![aliasIndex]
+        let domainSelected = tableDomains[domainIndex]
+        DBManager.deleteAlias(alias)
+        table[domainSelected]?.remove(at: aliasIndex)
+        if (table[domainSelected]!.count == 0) {
+            tableDomains.remove(at: domainIndex)
+            table.removeValue(forKey: domainSelected)
+        }
+        tableView.reloadData()
     }
 }
 
