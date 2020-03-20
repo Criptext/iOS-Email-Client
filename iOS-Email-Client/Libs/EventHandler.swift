@@ -141,6 +141,16 @@ class EventHandler {
             handleEventResponse(successfulEvent: true, result: .LinkData(linkData))
         case Event.Link.success.rawValue:
             finishCallback(rowId, .Empty)
+        case Event.Peer.addressCreated.rawValue:
+            handleAddressCreated(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.addressStatusUpdate.rawValue:
+            handleAddressStatusUpdate(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.addressDeleted.rawValue:
+            handleAddressDeleted(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.domainCreated.rawValue:
+            handleDomainCreated(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.domainDeleted.rawValue:
+            handleDomainDeleted(params: params, finishCallback: handleEventResponse)
         default:
             finishCallback(nil, .Empty)
             break
@@ -321,6 +331,74 @@ extension EventHandler {
         finishCallback(true, .UpdateProfilePic)
     }
     
+    func handleAddressCreated(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
+        let event = EventData.Peer.AddressCreated.init(params: params)
+        guard let myAccount = DBManager.getAccountById(self.accountId),
+            DBManager.getAlias(rowId: event.id, account: myAccount) == nil else {
+            finishCallback(true, .Empty)
+            return
+        }
+        let alias = Alias();
+        alias.name = event.name
+        alias.rowId = event.id
+        alias.domainName = event.domain == Env.plainDomain ? nil : event.domain
+        alias.account = myAccount
+        DBManager.store(alias)
+        finishCallback(true, .Empty)
+    }
+    
+    func handleAddressStatusUpdate(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
+        let event = EventData.Peer.AddressStatusUpdate.init(params: params)
+        guard let myAccount = DBManager.getAccountById(self.accountId),
+            let existingAlias = DBManager.getAlias(rowId: event.id, account: myAccount) else {
+            finishCallback(true, .Empty)
+            return
+        }
+        DBManager.update(alias: existingAlias, active: event.active)
+        finishCallback(true, .Empty)
+    }
+    
+    func handleAddressDeleted(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
+        let event = EventData.Peer.AddressDeleted.init(params: params)
+        guard let myAccount = DBManager.getAccountById(self.accountId),
+            let existingAlias = DBManager.getAlias(rowId: event.id, account: myAccount) else {
+            finishCallback(true, .Empty)
+            return
+        }
+        DBManager.deleteAlias(existingAlias)
+        finishCallback(true, .Empty)
+    }
+    
+    func handleDomainCreated(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
+        let event = EventData.Peer.DomainCreated.init(params: params)
+        guard let myAccount = DBManager.getAccountById(self.accountId),
+            DBManager.getCustomDomain(name: event.name, account: myAccount) == nil else {
+            finishCallback(true, .Empty)
+            return
+        }
+        let customDomain = CustomDomain()
+        customDomain.name = event.name
+        customDomain.account = myAccount
+        DBManager.store(customDomain)
+        finishCallback(true, .Empty)
+    }
+    
+    func handleDomainDeleted(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
+        let event = EventData.Peer.DomainDelete.init(params: params)
+        guard let myAccount = DBManager.getAccountById(self.accountId),
+            let existingDomain = DBManager.getCustomDomain(name: event.name, account: myAccount) else {
+            finishCallback(true, .Empty)
+            return
+        }
+        DBManager.deleteCustomDomain(existingDomain)
+        finishCallback(true, .Empty)
+    }
+    
     func handleNewsCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         let event = EventData.Server.News(params: params)
         APIManager.getNews(code: event.code) { (responseData) in
@@ -382,6 +460,12 @@ enum Event: Int32 {
         case updateProfilePic = 313
         case editLabel = 319
         case deleteLabel = 320
+        
+        case addressCreated = 701
+        case addressStatusUpdate = 702
+        case addressDeleted = 703
+        case domainCreated = 704
+        case domainDeleted = 705
     }
     
     enum Server: Int32 {

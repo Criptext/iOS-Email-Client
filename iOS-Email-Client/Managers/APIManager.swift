@@ -1071,7 +1071,7 @@ class APIManager: SharedAPI {
             "addressId": rowId
             ] as [String: Any]
         Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            let responseData = handleResponse(response)
+            let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }
     }
@@ -1085,13 +1085,13 @@ class APIManager: SharedAPI {
             "domain": customDomain
             ] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            let responseData = handleResponse(response)
+            let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }
     }
     
     class func registerCustomDomainAvailability(customDomainName: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
-        let url = "\(self.baseUrl)/user/customdomaint"
+        let url = "\(self.baseUrl)/user/customdomain"
         let headers = ["Authorization": "Bearer \(token)",
             versionHeader: apiVersion]
         let params = [
@@ -1121,20 +1121,20 @@ class APIManager: SharedAPI {
             "customDomain": customDomainName
             ] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            let responseData = handleResponse(response)
+            let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }
     }
     
     class func deleteCustomDomain(customDomain: String, token: String, completion: @escaping ((ResponseData) -> Void)) {
-        let url = "\(self.baseUrl)/domain"
+        let url = "\(self.baseUrl)/user/customdomain"
         let headers = ["Authorization": "Bearer \(token)",
             versionHeader: apiVersion]
         let params = [
             "customDomain": customDomain
             ] as [String: Any]
         Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            let responseData = handleResponse(response)
+            let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }
     }

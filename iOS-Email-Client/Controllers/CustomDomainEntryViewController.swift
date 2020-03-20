@@ -47,48 +47,70 @@ class CustomDomainEntryViewController: UIViewController {
         self.presentPopover(popover: popover, height: 220)
     }
     
+    @IBAction func onInputChange(_ sender: Any) {
+        self.clearInput()
+    }
+    
     @IBAction func onNextPress(_ sender: Any) {
         showLoader(true)
+        clearInput()
         guard let domainName = customDomainTextInput.text else {
             showLoader(false)
             return
         }
         APIManager.checkCustomDomainAvailability(customDomainName: domainName, token: myAccount.jwt) { (responseData) in
+            if case .BadRequest = responseData {
+                self.showLoader(false)
+                self.setError(message: String.localize("CUSTOM_DOMAIN_ENTRY_ERROR"))
+                return
+            }
             guard case .Success = responseData else {
                 self.showLoader(false)
-                self.customDomainTextInput.detail = String.localize("CUSTOM_DOMAIN_ENTRY_ERROR")
+                self.setError(message: String.localize("CUSTOM_DOMAIN_ERROR_UNKNOWN"))
                 return
             }
             self.resgisterDomain(customDomain: domainName)
         }
     }
     
+    func setError(message: String) {
+        self.customDomainTextInput.detail = message
+        self.customDomainTextInput.detailColor = theme.alert
+        self.customDomainTextInput.dividerActiveColor = theme.alert
+        self.customDomainTextInput.dividerNormalColor = theme.alert
+    }
+    
+    func clearInput() {
+        self.customDomainTextInput.detail = nil
+        self.customDomainTextInput.dividerActiveColor = theme.criptextBlue
+        self.customDomainTextInput.dividerNormalColor = theme.secondText
+    }
+    
     func resgisterDomain(customDomain: String){
         APIManager.registerCustomDomainAvailability(customDomainName: customDomain, token: myAccount.jwt) { (responseData) in
             if case .BadRequest = responseData {
                 self.showLoader(false)
-                self.customDomainTextInput.detail = String.localize("DOMAIN_ALREADY_REGISTERED")
+                self.setError(message: String.localize("DOMAIN_ALREADY_REGISTERED"))
                 return
             }
             if case .ServerError = responseData {
                 self.showLoader(false)
-                self.customDomainTextInput.detail = String.localize("SERVER_ERROR_RETRY")
+                self.setError(message: String.localize("SERVER_ERROR_RETRY"))
                 return
             }
             if case .TooManyDevices = responseData {
                 self.showLoader(false)
-                self.customDomainTextInput.detail = String.localize("DOMAIN_LIMIT_REACHED")
+                self.setError(message: String.localize("DOMAIN_LIMIT_REACHED"))
                 return
             }
             guard case let .SuccessDictionary(data) = responseData else {
                 self.showLoader(false)
-                self.customDomainTextInput.detail = String.localize("CUSTOM_DOMAIN_ENTRY_ERROR")
+                self.setError(message: String.localize("CUSTOM_DOMAIN_ENTRY_ERROR"))
                 return
             }
             let newDomain = CustomDomain()
             newDomain.account = self.myAccount
             newDomain.name = customDomain
-            newDomain.rowId = data["domainKey"] as! Int
             newDomain.validated = false
             DBManager.store(newDomain)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
