@@ -11,10 +11,7 @@ import Foundation
 class CustomDomainViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var myAccount: Account!
-    var customDomainData: CustomDomainSettingsData!
-    var domains: [CustomDomain] {
-        return customDomainData.domains
-    }
+    var domains: [CustomDomain] = []
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -28,6 +25,7 @@ class CustomDomainViewController: UIViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.tableFooterView = UIView()
         self.applyTheme()
     }
     
@@ -65,6 +63,10 @@ extension CustomDomainViewController: UITableViewDelegate, UITableViewDataSource
         cell.setContent(customDomain: domain)
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
 }
 
 extension CustomDomainViewController: CustomTabsChildController {
@@ -85,25 +87,23 @@ extension CustomDomainViewController: CustomDomainTableViewCellDelegate {
     }
     
     func presentRemoveCustomDomainPopover(customDomain: CustomDomain){
-        let popoverHeight = 290
+        let popoverHeight = 250
         let removeCustomDomainPopover = GenericDualAnswerUIPopover()
-        removeCustomDomainPopover.title = String.localize("DELETE_DOMAIN")
+        removeCustomDomainPopover.initialTitle = String.localize("DELETE_DOMAIN")
         removeCustomDomainPopover.initialMessage = String.localize("DELETE_DOMAIN_MESSAGE")
         removeCustomDomainPopover.onResponse = { (doDelete) in
-            if(doDelete){
-                APIManager.deleteCustomDomain(customDomain: customDomain.name, token: self.myAccount.jwt) { (responseData) in
-                    guard case .Success = responseData else {
-                        self.showSnackbarMessage(message: String.localize("DELETE_DOMAIN_ERROR"), permanent: false)
-                        return
-                    }
-                    self.removeCustomDomain(customDomain)
-                    if(self.domains.count == 0) {
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let entryCV = storyboard.instantiateViewController(withIdentifier: "customDomainEntryViewController") as! CustomDomainEntryViewController
-                        entryCV.myAccount = self.myAccount
-                        
-                        self.navigationController?.pushViewController(entryCV, animated: true)
-                    }
+            if (!doDelete) {
+                return
+            }
+            
+            APIManager.deleteCustomDomain(customDomain: customDomain.name, token: self.myAccount.jwt) { (responseData) in
+                guard case .Success = responseData else {
+                    self.showSnackbarMessage(message: String.localize("DELETE_DOMAIN_ERROR"), permanent: false)
+                    return
+                }
+                self.removeCustomDomain(customDomain)
+                if(self.domains.count == 0) {
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
         }
@@ -115,15 +115,14 @@ extension CustomDomainViewController: CustomDomainTableViewCellDelegate {
     }
     
     func removeCustomDomain(_ customDomain: CustomDomain){
-        guard let index = customDomainData.domains.firstIndex(where: {$0.rowId == customDomain.rowId}) else {
+        guard let index = domains.firstIndex(where: {$0.name == customDomain.name}) else {
             return
         }
         let domainName = customDomain.name == Env.plainDomain ? nil : customDomain.name
         DBManager.deleteCustomDomain(customDomain)
         DBManager.deleteAlias(domainName, account: myAccount)
-        customDomainData.domains.remove(at: index)
-        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-        self.showSnackbarMessage(message: String.localize("DELETE_DOMAIN_ERROR"), permanent: false)
+        domains.remove(at: index)
+        tableView.reloadData()
     }
     
     func showSnackbarMessage(message: String, permanent: Bool) {

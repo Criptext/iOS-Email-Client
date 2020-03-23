@@ -16,6 +16,11 @@ class Alias: Object {
     @objc dynamic var active = true
     @objc dynamic var account : Account!
     
+    var email: String {
+        let domain = domainName ?? Env.plainDomain
+        return "\(name)@\(domain)"
+    }
+    
     class func fromDictionary(data: [String: Any], account: Account) -> (String, [Alias]) {
         let aliases = data["aliases"] as! [[String: Any]]
         let domainName = data["domain"] as! String

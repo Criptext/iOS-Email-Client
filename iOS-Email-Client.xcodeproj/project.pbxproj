@@ -130,6 +130,8 @@
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
 		7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */; };
 		7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */; };
+		7C38774924252E55002B98D4 /* MXRecordsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C38774824252E55002B98D4 /* MXRecordsUIView.xib */; };
+		7C38774B242531C4002B98D4 /* MXRecordsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */; };
 		7C394E7E210BD5DB00AE3297 /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
@@ -770,6 +772,8 @@
 		7C34E5FA20470D2100E71906 /* EmailDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailData.swift; sourceTree = "<group>"; };
 		7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyDetailUIView.swift; sourceTree = "<group>"; };
 		7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailFooterCell.swift; sourceTree = "<group>"; };
+		7C38774824252E55002B98D4 /* MXRecordsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MXRecordsUIView.xib; sourceTree = "<group>"; };
+		7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRecordsUIView.swift; sourceTree = "<group>"; };
 		7C394E84210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+KeyPairOpenPrivate.m"; sourceTree = "<group>"; };
 		7C394E87210CC8E700AE3297 /* SendEmailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailData.swift; sourceTree = "<group>"; };
@@ -1571,6 +1575,8 @@
 				A76D3039225671DC004F8747 /* BackupHeaderView.swift */,
 				A721B34D225E9418004528B4 /* RestoreUIPopover.xib */,
 				A721B347225D2DA5004528B4 /* RestoreUIView.swift */,
+				7C38774824252E55002B98D4 /* MXRecordsUIView.xib */,
+				7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1935,6 +1941,7 @@
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
+				7C38774924252E55002B98D4 /* MXRecordsUIView.xib in Resources */,
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				A7FFCF36217A911B00FFFDFF /* LabelsHeaderTableViewCell.xib in Resources */,
 				A7FFCF2A217A90FA00FFFDFF /* SingleTextInputUIPopover.xib in Resources */,
@@ -2160,6 +2167,7 @@
 				7C63AB5C2056D1170053219F /* ContactsDetailUIPopover.swift in Sources */,
 				7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */,
 				A700F59721D3E59900792B4A /* SettingsGeneralHeaderView.swift in Sources */,
+				7C38774B242531C4002B98D4 /* MXRecordsUIView.swift in Sources */,
 				A72FBF3322396683002A710D /* AccountsFooterCell.swift in Sources */,
 				A7CC38892194979A00C8355A /* SharedExtensions.swift in Sources */,
 				7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */,

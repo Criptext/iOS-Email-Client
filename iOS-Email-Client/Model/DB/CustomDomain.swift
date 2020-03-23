@@ -11,11 +11,10 @@ import RealmSwift
 
 class CustomDomain: Object {
     @objc dynamic var name = ""
-    @objc dynamic var rowId = 0
     @objc dynamic var validated = false
     @objc dynamic var account : Account!
     
     override static func primaryKey() -> String? {
-        return "rowId"
+        return "name"
     }
 }
