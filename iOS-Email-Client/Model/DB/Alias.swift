@@ -23,7 +23,8 @@ class Alias: Object {
     
     class func fromDictionary(data: [String: Any], account: Account) -> (String, [Alias]) {
         let aliases = data["aliases"] as! [[String: Any]]
-        let domainName = data["domain"] as! String
+        let domain = data["domain"] as! [String: Any]
+        let domainName = domain["name"] as! String
         let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
         return (domainName, aliasesArray)
     }
