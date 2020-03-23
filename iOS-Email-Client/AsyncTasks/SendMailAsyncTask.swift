@@ -38,13 +38,15 @@ class SendMailAsyncTask {
     let preview: String
     let emailRef: ThreadSafeReference<Object>
     let recipients: Recipients
+    var recipientIdDevices: [String: Set<Int32>] = [:]
+    var aliasOrigin: [String: String] = [:]
     
     init(email: Email, emailBody: String, password: String?){
         let fileParams = SendMailAsyncTask.getFilesRequestData(email: email)
         let files = fileParams.0
         let duplicates = fileParams.1
         let fileKey: String? = email.files.first(where: {!$0.fileKey.isEmpty})?.fileKey
-        let domain = email.account.domain ?? Env.domain.replacingOccurrences(of: "@", with: "")
+        let domain = email.account.domain ?? Env.plainDomain
         let recipients = SendMailAsyncTask.getRecipientEmails(username: email.account.username, domain: domain, email: email)
         self.recipients = recipients
         self.fileKeys = !fileParams.2.isEmpty ? fileParams.2 : nil
@@ -199,13 +201,41 @@ class SendMailAsyncTask {
         }
     }
     
+    private func buildAliasesOrigins(addresses: [[String: Any]], myAccount: Account){
+        for address in addresses {
+            let domain = address["domain"] as! String
+            let users = address["users"] as! [[String: Any]]
+            
+            for user in users {
+                let username = user["username"] as! String
+                let alias = user["alias"] as! String
+                let originalDomain = user["originalDomain"] as! String
+                let aliasRecipientId = domain == Env.plainDomain ? alias : "\(alias)@\(domain)"
+                let originalRecipientId = originalDomain == Env.plainDomain ? username : "\(username)@\(originalDomain)"
+                
+                aliasOrigin[aliasRecipientId] = originalRecipientId
+                
+                if (recipientIdDevices[originalRecipientId] == nil) {
+                    let recipientSessions = DBAxolotl.getSessionRecords(recipientId: originalRecipientId, account: myAccount)
+                    recipientIdDevices[originalRecipientId] = Set(recipientSessions.map { $0.deviceId })
+                }
+                recipientIdDevices.removeValue(forKey: aliasRecipientId)
+            }
+        }
+    }
+    
     private func buildSessions(keysData: [String: Any], myAccount: Account) -> [String] {
         let keyBundles = keysData["keyBundles"] as! [[String:Any]]
         let blackListedDevices = keysData["blacklistedKnownDevices"] as! [[String:Any]]
         let guestDomains = keysData["guestDomains"] as! [String]
+        let addresses = keysData["addresses"] as! [[String: Any]]
+        
+        buildAliasesOrigins(addresses: addresses, myAccount: myAccount)
+        
         if(guestDomains.count > 0 && password == nil){
             self.isSecure = false
         }
+        
         let store: CriptextSessionStore = CriptextSessionStore(account: myAccount)
         for blackDevice in blackListedDevices {
             guard let devices = blackDevice["devices"] as? [Int32],
@@ -214,10 +244,11 @@ class SendMailAsyncTask {
                     continue
             }
             let recipientId = "@\(domain)" == Env.domain ? username : "\(username)@\(domain)"
-            devices.forEach{
+            for device in devices {
+                recipientIdDevices[recipientId]?.remove(device)
                 store.deleteSession(
                     forContact: recipientId,
-                    deviceId: $0
+                    deviceId: device
                 )
             }
         }
@@ -228,6 +259,14 @@ class SendMailAsyncTask {
                     continue
             }
             let recipientId = "@\(domain)" == Env.domain ? username : "\(username)@\(domain)"
+            if let devicesIds = recipientIdDevices[recipientId],
+                devicesIds.contains(deviceId) {
+                continue
+            }
+            if (recipientIdDevices[recipientId] == nil) {
+                recipientIdDevices[recipientId] = Set<Int32>()
+            }
+            recipientIdDevices[recipientId]?.insert(deviceId)
             SignalHandler.buildSession(recipientId: recipientId, deviceId: deviceId, keys: keys, account: myAccount)
         }
         
@@ -273,6 +312,7 @@ class SendMailAsyncTask {
                 let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
                 let deviceIds = recipientSessions.map { $0.deviceId }
                 recipients.append(username)
+                recipientIdDevices[recipientId] = Set(deviceIds)
                 knownAddresses[username] = deviceIds
             }
             if allRecipients.count > 0 {
@@ -347,10 +387,16 @@ class SendMailAsyncTask {
                     emptyEmails.append("\(username)@\(domain)")
                     continue
                 }
-                let recipientId = "@\(domain)" == Env.domain ? username : "\(username)@\(domain)"
-                let recipientSessions = DBAxolotl.getSessionRecords(recipientId: recipientId, account: myAccount)
-                let deviceIds = recipientSessions.map { $0.deviceId }
+                var domainToSend = domain
+                var isAlias = false
+                var recipientId = "@\(domain)" == Env.domain ? username : "\(username)@\(domain)"
+                if let originalRecipientId = aliasOrigin[recipientId] {
+                    recipientId = originalRecipientId
+                    domainToSend = recipientId.contains("@") ? recipientId.split(separator: "@")[1].description : Env.plainDomain
+                    isAlias = true
+                }
                 
+                let deviceIds = recipientIdDevices[recipientId]!
                 var emailsData = [[String: Any]]()
                 for deviceId in deviceIds {
                     guard !(contactType == "peer" && recipientId == myAccount.username && deviceId == myAccount.deviceId) else {
@@ -362,10 +408,22 @@ class SendMailAsyncTask {
                 if recipientId == myAccount.username && emailsData.isEmpty {
                     continue
                 }
+                guard isAlias else {
+                    criptextEmailData.append([
+                        "type": contactType,
+                        "username": username,
+                        "domain": domainToSend,
+                        "emails": emailsData
+                        ] as [String : Any])
+                    continue
+                }
+                let aliasUsername = username
+                let originalUsername = recipientId.contains("@") ? recipientId.split(separator: "@").first!.description : recipientId
                 criptextEmailData.append([
                     "type": contactType,
-                    "username": username,
-                    "domain": domain,
+                    "username": originalUsername,
+                    "domain": domainToSend,
+                    "alias": aliasUsername,
                     "emails": emailsData
                     ] as [String : Any])
             }
