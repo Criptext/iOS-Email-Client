@@ -50,6 +50,11 @@ class SharedDB {
         return realm.objects(Account.self).filter("isLoggedIn == true AND compoundKey != '\(accountId)'")
     }
     
+    class func getLoggedAccounts() -> Results<Account> {
+        let realm = try! Realm()
+        return realm.objects(Account.self).filter("isLoggedIn == true")
+    }
+    
     class func getAllAccounts() -> [Account] {
         let realm = try? Realm()
         
@@ -519,5 +524,22 @@ class SharedDB {
         try! realm.write() {
             realm.delete(dummySession)
         }
+    }
+    
+    //MARK: - Alias
+    
+    class func getAlias(rowId: Int, account: Account) -> Alias? {
+        let realm = try! Realm()
+        return realm.objects(Alias.self).filter("rowId == \(rowId) AND account.compoundKey == '\(account.compoundKey)'").first
+    }
+    
+    class func getAliases(account: Account) -> Results<Alias> {
+        let realm = try! Realm()
+        return realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'")
+    }
+    
+    class func getAlias(username: String, domain: String?, account: Account) -> Alias? {
+        let realm = try! Realm()
+        return realm.objects(Alias.self).filter("name == %@ AND domainName == %@ AND account.compoundKey == %@", username, domain, account.compoundKey).first
     }
 }

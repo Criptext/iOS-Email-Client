@@ -21,6 +21,7 @@ class ShareViewController: UIViewController {
     @IBOutlet weak var composerUIView: ComposerUIView!
     var account: Account?
     var myAccount: Account!
+    var myAlias: Alias? = nil
     var fileManager = CriptextFileManager()
     var emailDraft: Email?
     var contacts = [Contact]()
@@ -65,10 +66,11 @@ class ShareViewController: UIViewController {
         composerUIView.accountOptionsView.refreshView()
     }
     
-    func setFrom(account: Account) {
+    func setFrom(account: Account, alias: Alias? = nil) {
         myAccount = account
+        myAlias = alias
         fileManager.myAccount = myAccount
-        composerUIView.setFrom(account: account)
+        composerUIView.setFrom(account: account, alias: alias)
     }
     
     func shouldShowPinLock() -> Bool {
@@ -201,11 +203,12 @@ extension ShareViewController: ComposerDelegate {
         self.presentPopover(popover: popover, height: 150)
     }
     
-    func setAccount(accountId: String) {
+    func setAccount(accountId: String, aliasId: Int?) {
         guard let account = SharedDB.getAccountById(accountId) else {
             return
         }
-        self.setFrom(account: account)
+        let alias = SharedDB.getAlias(rowId: aliasId ?? 0, account: account)
+        self.setFrom(account: account, alias: alias)
     }
 }
 
@@ -344,6 +347,11 @@ extension ShareViewController {
         draft.labels.append(SharedDB.getLabel(SystemLabel.draft.id)!)
         draft.files.append(objectsIn: fileManager.registeredFiles)
         draft.buildCompoundKey()
+        if let alias = myAlias {
+            draft.fromAddress = "\(myAccount.name) <\(alias.email)>"
+        } else {
+            draft.fromAddress = "\(myAccount.name) <\(myAccount.email)>"
+        }
         SharedDB.store(draft)
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -356,7 +364,7 @@ extension ShareViewController {
         self.composerUIView.bccField.allTokens.forEach { (token) in
             self.fillEmailContacts(emailContacts: &emailContacts, token: token, emailDetail: draft, type: ContactType.bcc)
         }
-        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: myAccount.email, context: nil), emailDetail: draft, type: ContactType.from)
+        self.fillEmailContacts(emailContacts: &emailContacts, token: CLToken(displayText: myAlias == nil ? myAccount.email : myAlias!.email, context: nil), emailDetail: draft, type: ContactType.from)
         
         SharedDB.store(emailContacts)
         

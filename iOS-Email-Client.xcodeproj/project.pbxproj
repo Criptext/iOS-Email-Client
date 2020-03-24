@@ -194,6 +194,10 @@
 		7C92104820FFD5690081C048 /* AESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104720FFD5690081C048 /* AESCipher.swift */; };
 		7C92104A210141380081C048 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C921049210141380081C048 /* EventData.swift */; };
 		7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104B21022B290081C048 /* CircleLoaderUIView.swift */; };
+		7CA607B9242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
+		7CA607BA242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
+		7CA607BB242A62150086D6B4 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED62411B8210095BCBB /* Alias.swift */; };
+		7CA607BC242A71EC0086D6B4 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED62411B8210095BCBB /* Alias.swift */; };
 		7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
 		7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
 		7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */; };
@@ -837,6 +841,7 @@
 		7C92104720FFD5690081C048 /* AESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipher.swift; sourceTree = "<group>"; };
 		7C921049210141380081C048 /* EventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventData.swift; sourceTree = "<group>"; };
 		7C92104B21022B290081C048 /* CircleLoaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleLoaderUIView.swift; sourceTree = "<group>"; };
+		7CA607B8242A5E120086D6B4 /* AccountAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAlias.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
 		7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSnackbar.swift; sourceTree = "<group>"; };
@@ -1463,6 +1468,7 @@
 				347A659822E126F1002D9151 /* LinkFileHeaderData.swift */,
 				348F1EDA241679540095BCBB /* AliasSettingsData.swift */,
 				34A56A47241AD66700120984 /* CustomDomainSettingsData.swift */,
+				7CA607B8242A5E120086D6B4 /* AccountAlias.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2258,6 +2264,7 @@
 				347CC85C236B43D900A2FA99 /* LabelOptionsInterface.swift in Sources */,
 				7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */,
 				34A56A46241AD23F00120984 /* CustomDomainViewController.swift in Sources */,
+				7CA607B9242A5E120086D6B4 /* AccountAlias.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
 				48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */,
 				7C1E884C208D1193003FA304 /* MoreOptionsUIView.swift in Sources */,
@@ -2418,6 +2425,7 @@
 			files = (
 				A718BE6D22272A02008CAA72 /* Time.swift in Sources */,
 				A7ADA12921A5F1CD0027FC1C /* Contact.swift in Sources */,
+				7CA607BB242A62150086D6B4 /* Alias.swift in Sources */,
 				A7ADA14321A5F3EE0027FC1C /* CriptextError.swift in Sources */,
 				A74CF31E21B5BD0800559490 /* CriptextDefaults.swift in Sources */,
 				A7ADA15D21A729E10027FC1C /* SendEmailData.swift in Sources */,
@@ -2445,6 +2453,7 @@
 				A7ADA12C21A5F1DA0027FC1C /* CRPreKeyRecord.swift in Sources */,
 				A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */,
 				A7ADA13B21A5F2100027FC1C /* CriptextPreKeyStore.swift in Sources */,
+				7CA607BA242A5E120086D6B4 /* AccountAlias.swift in Sources */,
 				A7ADA15C21A729A10027FC1C /* Constants.swift in Sources */,
 				A7ADA13D21A5F2100027FC1C /* CriptextIdentityKeyStore.swift in Sources */,
 				9539F99521FBC72000A4C813 /* FileUtils.swift in Sources */,
@@ -2514,6 +2523,7 @@
 				A7CC385E21934E1200C8355A /* DBAxolotl.swift in Sources */,
 				A7CC387E21939D6500C8355A /* SharedAPI.swift in Sources */,
 				D6E1E64321E5347A00FA968A /* File.swift in Sources */,
+				7CA607BC242A71EC0086D6B4 /* Alias.swift in Sources */,
 				A7CC384E219247B400C8355A /* Label.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

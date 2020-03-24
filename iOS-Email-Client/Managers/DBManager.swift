@@ -87,11 +87,6 @@ class DBManager: SharedDB {
         return realm.objects(Account.self).filter("isLoggedIn == false")
     }
     
-    class func getLoggedAccounts() -> Results<Account> {
-        let realm = try! Realm()
-        return realm.objects(Account.self).filter("isLoggedIn == true")
-    }
-    
     class func delete(account: Account){
         let realm = try! Realm()
         
@@ -925,16 +920,6 @@ class DBManager: SharedDB {
         try! realm.write {
             realm.add(aliases, update: .modified)
         }
-    }
-    
-    class func getAliases(account: Account) -> Results<Alias> {
-        let realm = try! Realm()
-        return realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'")
-    }
-    
-    class func getAlias(rowId: Int, account: Account) -> Alias? {
-        let realm = try! Realm()
-        return realm.objects(Alias.self).filter("rowId == \(rowId) AND account.compoundKey == '\(account.compoundKey)'").first
     }
     
     class func update(alias: Alias, active: Bool){
