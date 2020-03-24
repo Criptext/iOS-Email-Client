@@ -144,7 +144,7 @@ extension CustomDomainViewController: CustomDomainTableViewCellDelegate {
         APIManager.getMXCustomDomain(customDomainName: customDomain.name, token: myAccount.jwt) { (responseData) in
             guard case let .SuccessDictionary(data) = responseData,
                 let mx = data["mx"] as? [[String: Any]] else {
-                    self.showSnackbarMessage(message: String.localize("CUSTOM_DOMAIN_ERROR_UKNOWN"), permanent: false)
+                    self.showSnackbarMessage(message: String.localize("CUSTOM_DOMAIN_ERROR_UNKNOWN"), permanent: false)
                     return
             }
             let myMXRecords = mx.map({MXRecord.fromDictionary(data: $0)})
