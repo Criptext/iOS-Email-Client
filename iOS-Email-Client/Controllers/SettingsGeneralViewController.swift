@@ -389,27 +389,11 @@ class SettingsGeneralViewController: UIViewController{
     func goToCustomDomains() {
         let customDomains = DBManager.getCustomDomains(account: myAccount)
         if(customDomains.count > 0){
-            if(customDomains.first!.validated){
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let customDomainVC = storyboard.instantiateViewController(withIdentifier: "customDomainViewController") as! CustomDomainViewController
-                customDomainVC.myAccount = myAccount
-                customDomainVC.domains.append(contentsOf: customDomains)
-                self.navigationController?.pushViewController(customDomainVC, animated: true)
-            } else {
-                APIManager.getMXCustomDomain(customDomainName: customDomains.first!.name, token: myAccount.jwt) { (responseData) in
-                    guard case let .SuccessDictionary(data) = responseData,
-                        let mx = data["mx"] as? [[String: Any]] else {
-                            return
-                    }
-                    let myMXRecords = mx.map({MXRecord.fromDictionary(data: $0)})
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let step2VC = storyboard.instantiateViewController(withIdentifier: "registerDomainStepTwoViewController") as! RegisterDomainStepTwoViewController
-                    step2VC.myAccount = self.myAccount
-                    step2VC.customDomain = customDomains.first!
-                    step2VC.mxRecords = myMXRecords
-                    self.navigationController?.pushViewController(step2VC, animated: true)
-                }
-            }
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let customDomainVC = storyboard.instantiateViewController(withIdentifier: "customDomainViewController") as! CustomDomainViewController
+            customDomainVC.myAccount = myAccount
+            customDomainVC.domains.append(contentsOf: customDomains)
+            self.navigationController?.pushViewController(customDomainVC, animated: true)
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let customEntryVC = storyboard.instantiateViewController(withIdentifier: "customDomainEntryViewController") as! CustomDomainEntryViewController

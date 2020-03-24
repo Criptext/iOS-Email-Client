@@ -78,7 +78,15 @@ extension CustomDomainViewController: CustomTabsChildController {
 
 
 extension CustomDomainViewController: CustomDomainTableViewCellDelegate {
-    func tableViewCellDidLongPress(_ cell: CustomDomainTableViewCell) {
+    func didPressVerify(_ cell: CustomDomainTableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
+            return
+        }
+        let domain = domains[indexPath.row]
+        goToValidate(customDomain: domain)
+    }
+    
+    func didPressDelete(_ cell: CustomDomainTableViewCell) {
         guard let indexPath = self.tableView.indexPath(for: cell) else {
             return
         }
@@ -130,6 +138,23 @@ extension CustomDomainViewController: CustomDomainTableViewCellDelegate {
         let attrs = [NSAttributedString.Key.font : Font.regular.size(15)!, NSAttributedString.Key.foregroundColor : UIColor.white]
         fullString.append(NSAttributedString(string: message, attributes: attrs))
         self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
+    }
+    
+    func goToValidate(customDomain: CustomDomain) {
+        APIManager.getMXCustomDomain(customDomainName: customDomain.name, token: myAccount.jwt) { (responseData) in
+            guard case let .SuccessDictionary(data) = responseData,
+                let mx = data["mx"] as? [[String: Any]] else {
+                    self.showSnackbarMessage(message: String.localize("CUSTOM_DOMAIN_ERROR_UKNOWN"), permanent: false)
+                    return
+            }
+            let myMXRecords = mx.map({MXRecord.fromDictionary(data: $0)})
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let step2VC = storyboard.instantiateViewController(withIdentifier: "registerDomainStepTwoViewController") as! RegisterDomainStepTwoViewController
+            step2VC.myAccount = self.myAccount
+            step2VC.customDomain = customDomain
+            step2VC.mxRecords = myMXRecords
+            self.navigationController?.pushViewController(step2VC, animated: true)
+        }
     }
 }
 

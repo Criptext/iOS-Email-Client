@@ -247,7 +247,7 @@
 "NOTIFICATION_PREVIEW" = "Notification Preview";
 "READ_RECEIPTS" = "Read Receipts";
 "YESTERDAY" = "Yesterday ";
-"NOT_CONFIRMED" = "Not Confirmed";
+"NOT_CONFIRMED" = "Not Verified";
 "VERIFIED" = "Verified";
 "TO" = "To";
 "CC" = "Cc";

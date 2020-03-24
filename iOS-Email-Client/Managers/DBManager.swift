@@ -994,6 +994,11 @@ class DBManager: SharedDB {
         return realm.objects(CustomDomain.self).filter("account.compoundKey == '\(account.compoundKey)'")
     }
     
+    class func getVerifiedCustomDomains(account: Account) -> Results<CustomDomain> {
+        let realm = try! Realm()
+        return realm.objects(CustomDomain.self).filter("validated == true AND account.compoundKey == '\(account.compoundKey)'")
+    }
+    
     class func getCustomDomain(name: String, account: Account) -> CustomDomain? {
         let realm = try! Realm()
         return realm.objects(CustomDomain.self).filter("name == '\(name)' AND account.compoundKey == '\(account.compoundKey)'").first
