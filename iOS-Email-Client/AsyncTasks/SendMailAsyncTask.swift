@@ -33,8 +33,8 @@ class SendMailAsyncTask {
     var isSecure: Bool
     let accountId: String
     let emailKey: Int
-    let from: String
     let replyTo: String?
+    let fromAddressId: Int?
     let preview: String
     let emailRef: ThreadSafeReference<Object>
     let recipients: Recipients
@@ -62,8 +62,17 @@ class SendMailAsyncTask {
         self.emailRef = SharedDB.getReference(email)
         self.fileKey = fileKey
         self.password = password
-        self.from = email.fromAddress
         self.replyTo = email.replyTo
+        
+        if let fromContact = email.getContacts(type: .from).first,
+            fromContact.email != email.account.email {
+            let emailSplit = fromContact.email.split(separator: "@").map({$0.description})
+            let domain = emailSplit.last! == Env.plainDomain ? nil : emailSplit.last!
+            let alias = SharedDB.getAlias(username: emailSplit.first!, domain: domain, account: email.account)
+            fromAddressId = alias?.rowId
+        } else {
+            fromAddressId = nil
+        }
     }
     
     private class func getFilesRequestData(email: Email) -> ([[String: Any]], [String], [String]){
@@ -197,6 +206,7 @@ class SendMailAsyncTask {
             sendEmailData.files = self.files
             sendEmailData.subject = self.subject
             sendEmailData.threadId = self.threadId
+            sendEmailData.fromAddressId = self.fromAddressId
             self.sendMail(myAccount: myAccount, sendEmailData: sendEmailData, queue: queue, completion: completion)
         }
     }
