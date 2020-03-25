@@ -132,8 +132,11 @@ class NewEmailHandler {
             
             self.handleAttachments(recipientId: recipientId, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
             
+            email.fromAddress = event.from
+            var fromMe = false
             if self.isFromMe(email: email, account: myAccount, event: event),
                 let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
+                fromMe = true
                 if !unsent {
                     email.delivered = Email.Status.sent.rawValue
                 }
@@ -146,30 +149,26 @@ class NewEmailHandler {
                 }
             } else if let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
                 email.labels.append(inboxLabel)
+                let fromContact = self.database.getContact(ContactUtils.parseContact(event.from, account: myAccount).email)
+                if(fromContact != nil){
+                    if(fromContact?.spamScore ?? 0 >= 2){
+                        let spamLabel = SharedDB.getLabel(SystemLabel.spam.id)
+                        email.labels.append(spamLabel!)
+                    }
+                }
             }
             
             if(!event.labels.isEmpty){
                 let labels = event.labels.reduce([Label](), { (labelsArray, labelText) -> [Label] in
-                    guard let label = SharedDB.getLabel(text: labelText) else {
+                    guard let label = SharedDB.getLabel(text: labelText),
+                        (!fromMe || label.id != SystemLabel.spam.id) else {
                         return labelsArray
                     }
                     return labelsArray.appending(label)
                 })
                 email.labels.append(objectsIn: labels)
             }
-            let contacts = [event.from]
-            var from = String()
-            contacts.forEach{
-                from = (from.isEmpty ? ContactUtils.parseFromContact(contact: $0, account: myAccount) : "\(from), \(ContactUtils.parseFromContact(contact: $0, account: myAccount))")
-            }
-            email.fromAddress = from
-            let fromContact = self.database.getContact(ContactUtils.parseContact(from, account: myAccount).email)
-            if(fromContact != nil){
-                if(fromContact?.spamScore ?? 0 >= 2){
-                    let spamLabel = SharedDB.getLabel(SystemLabel.spam.id)
-                    email.labels.append(spamLabel!)
-                }
-            }
+            
             guard self.database.store(email) else {
                 completion(Result(success: true))
                 return
@@ -261,11 +260,6 @@ class NewEmailHandler {
             || toContacts.contains(where: {$0.email == accountEmail})
     }
     
-    func isFromMe(email: Email, account: Account) -> Bool {
-        let accountEmail = account.email
-        return accountEmail == email.fromContact.email
-    }
-    
     func isMeARecipient(email: Email, account: Account, event: NewEmail) -> Bool {
         let accountEmail = account.email
         let isInBcc = event.bcc.contains(where: {ContactUtils.getStringEmailName(contact: $0).0 == accountEmail})
@@ -275,7 +269,17 @@ class NewEmailHandler {
     }
     
     func isFromMe(email: Email, account: Account, event: NewEmail) -> Bool {
-        return account.email == ContactUtils.getStringEmailName(contact: event.from).0
+        let fromEmail = ContactUtils.getStringEmailName(contact: event.from).0
+        if (account.email == fromEmail) {
+            return true
+        }
+        let emailSplit = fromEmail.split(separator: "@").map({$0.description})
+        let username = emailSplit.first!
+        let domain = emailSplit.last! == Env.plainDomain ? nil : emailSplit.last!
+        if DBManager.getAlias(username: username, domain: domain, account: account) != nil {
+            return true
+        }
+        return false
     }
     
     func getContentPreview(content: String) -> (String, String) {
