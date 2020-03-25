@@ -18,3 +18,16 @@ class CustomDomain: Object {
         return "name"
     }
 }
+
+extension CustomDomain {
+    func toDictionary(id: Int) -> [String: Any] {
+        return [
+            "table": "customDomain",
+            "object": [
+                "id": id,
+                "validated": validated,
+                "name": name
+            ]
+        ]
+    }
+}
