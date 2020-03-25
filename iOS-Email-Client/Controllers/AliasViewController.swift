@@ -35,7 +35,7 @@ class AliasViewController: UIViewController {
     
     func loadAliasesAndCustomDomains() {
         let aliases = DBManager.getAliases(account: myAccount)
-        let customDomains = DBManager.getCustomDomains(account: myAccount)
+        let customDomains = DBManager.getVerifiedCustomDomains(account: myAccount)
         aliases.forEach { (alias) in
             let domain = "@\(alias.domainName ?? Env.plainDomain)"
             if (table[domain] == nil) {

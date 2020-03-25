@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -93,6 +93,7 @@ this new address.</string>
                     <rect key="frame" x="112" y="294" width="46" height="46"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="46" id="LXe-5k-pPA"/>
+                        <constraint firstAttribute="height" constant="46" id="RH6-At-87A"/>
                     </constraints>
                 </activityIndicatorView>
                 <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQc-4o-Heu" userLabel="Domain Picker">
@@ -110,29 +111,27 @@ this new address.</string>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Sxd-DO-Lp8" firstAttribute="height" secondItem="EdO-lF-0Uj" secondAttribute="height" id="4hq-kO-p4q"/>
                 <constraint firstItem="Sxd-DO-Lp8" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="99J-Jq-abj"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="EdO-lF-0Uj" secondAttribute="bottom" id="Dzd-yq-ikX"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="a8Y-Hp-xEf" secondAttribute="bottom" id="GYE-2p-iei"/>
+                <constraint firstItem="a8Y-Hp-xEf" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="GlA-oF-wfS"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Imi-Xj-i4d" secondAttribute="trailing" constant="23" id="I7A-tr-zto"/>
                 <constraint firstItem="Imi-Xj-i4d" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="23" id="JBZ-f6-1tE"/>
                 <constraint firstItem="JmK-jm-qYU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="78" id="KIh-vx-Yz5"/>
                 <constraint firstItem="HQc-4o-Heu" firstAttribute="top" secondItem="wJN-Iy-jFh" secondAttribute="bottom" constant="18" id="M92-qS-MB2"/>
-                <constraint firstItem="Sxd-DO-Lp8" firstAttribute="centerY" secondItem="EdO-lF-0Uj" secondAttribute="centerY" id="QN2-S7-YqH"/>
                 <constraint firstItem="Fda-ty-K22" firstAttribute="top" secondItem="Imi-Xj-i4d" secondAttribute="bottom" constant="8" id="QV7-jB-ZBU"/>
                 <constraint firstItem="EdO-lF-0Uj" firstAttribute="leading" secondItem="a8Y-Hp-xEf" secondAttribute="trailing" id="Rf3-kw-XS5"/>
-                <constraint firstItem="EdO-lF-0Uj" firstAttribute="top" secondItem="JmK-jm-qYU" secondAttribute="bottom" constant="38" id="SDM-4e-ye3"/>
-                <constraint firstItem="EdO-lF-0Uj" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="YNR-VN-btV"/>
                 <constraint firstItem="HQc-4o-Heu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="23" id="Ygg-UI-3oK"/>
-                <constraint firstItem="a8Y-Hp-xEf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gLd-N4-pNW"/>
+                <constraint firstItem="EdO-lF-0Uj" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.5" id="eZZ-EW-kca"/>
                 <constraint firstItem="Fda-ty-K22" firstAttribute="trailing" secondItem="Imi-Xj-i4d" secondAttribute="trailing" id="h6S-pZ-wto"/>
                 <constraint firstItem="wJN-Iy-jFh" firstAttribute="top" secondItem="Fda-ty-K22" secondAttribute="bottom" constant="8" id="j2p-Lb-QOE"/>
+                <constraint firstItem="Sxd-DO-Lp8" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="kl4-w1-gCv"/>
                 <constraint firstItem="Imi-Xj-i4d" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="26" id="nni-Df-hDh"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="HQc-4o-Heu" secondAttribute="trailing" constant="23" id="oRb-m3-yZW"/>
                 <constraint firstItem="Fda-ty-K22" firstAttribute="leading" secondItem="Imi-Xj-i4d" secondAttribute="leading" id="pMT-lE-vwI"/>
                 <constraint firstItem="JmK-jm-qYU" firstAttribute="centerY" secondItem="HQc-4o-Heu" secondAttribute="centerY" id="sf3-PS-2qg"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="JmK-jm-qYU" secondAttribute="trailing" constant="78" id="svN-6d-Jb3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="EdO-lF-0Uj" secondAttribute="trailing" id="ug2-7K-oD5"/>
+                <constraint firstItem="EdO-lF-0Uj" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="wlD-LL-hXY"/>
                 <constraint firstItem="Imi-Xj-i4d" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="xVm-8a-XE6"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

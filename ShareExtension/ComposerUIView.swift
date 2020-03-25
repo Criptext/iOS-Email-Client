@@ -141,10 +141,10 @@ class ComposerUIView: UIView {
     }
     
     func setFrom(account: Account, alias: Alias? = nil) {
-        let accountAliases = buildAccountAliases(currentAccount: account)
         myAccount = account
         myAlias = alias
         
+        let accountAliases = buildAccountAliases(currentAccount: account, currentAlias: alias)
         accountOptionsInterface = AccountOptionsInterface(accounts: accountAliases)
         accountOptionsInterface!.delegate = self
         accountOptionsView.setDelegate(newDelegate: accountOptionsInterface!)
@@ -173,17 +173,19 @@ class ComposerUIView: UIView {
         }
     }
     
-    func buildAccountAliases(currentAccount: Account) -> [AccountAlias] {
+    func buildAccountAliases(currentAccount: Account, currentAlias: Alias?) -> [AccountAlias] {
         let accounts = SharedDB.getLoggedAccounts()
         var accountAliases: [AccountAlias] = []
         
         for account in accounts {
-            if (account.compoundKey != currentAccount.compoundKey) {
+            if (currentAlias != nil || account.compoundKey != currentAccount.compoundKey) {
                 accountAliases.append(AccountAlias(account: account))
             }
             let aliases = SharedDB.getAliases(account: account)
             for alias in aliases {
-                accountAliases.append(AccountAlias(account: account, alias: alias))
+                if (currentAlias == nil || currentAlias!.rowId != alias.rowId) {
+                    accountAliases.append(AccountAlias(account: account, alias: alias))
+                }
             }
         }
         return accountAliases

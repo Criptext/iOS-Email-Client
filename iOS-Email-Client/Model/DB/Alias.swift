@@ -43,3 +43,21 @@ class Alias: Object {
         return "rowId"
     }
 }
+
+extension Alias {
+    func toDictionary(id: Int) -> [String: Any] {
+        var obj = [
+                "id": id,
+                "active": active,
+                "name": name,
+                "rowId": rowId
+            ] as [String : Any]
+        if let domain = domainName {
+            obj["domainName"] = domain
+        }
+        return [
+            "table": "alias",
+            "object": obj
+        ]
+    }
+}
