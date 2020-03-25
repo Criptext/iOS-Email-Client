@@ -68,8 +68,11 @@ class RegisterDomainStepThreeViewController: UIViewController {
             let customDomainVC = storyboard.instantiateViewController(withIdentifier: "customDomainViewController") as! CustomDomainViewController
             customDomainVC.myAccount = myAccount
             customDomainVC.domains = [newDomain]
-            self.navigationController?.popToRootViewController(animated: false)
-            self.navigationController?.pushViewController(customDomainVC, animated: true)
+            guard let navController = self.navigationController else {
+                return;
+            }
+            navController.popToRootViewController(animated: false)
+            navController.pushViewController(customDomainVC, animated: true)
         }
     }
     
