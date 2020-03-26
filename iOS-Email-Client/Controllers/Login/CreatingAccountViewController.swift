@@ -90,12 +90,39 @@ class CreatingAccountViewController: UIViewController{
         }
         let account = SignUpData.createAccount(from: self.signupData)
         DBManager.store(account)
-        
+        if let myAddresses = signupData.addresses {
+            parseAddresses(addresses: myAddresses, account: account)
+        }
         let bundle = CRBundle(account: account)
         let keys = bundle.generateKeys()
         self.account = account
         self.bundle = bundle
         return (account, keys)
+    }
+    
+    func parseAddresses(addresses: [[String: Any]], account: Account) {
+        let aliasesPairArray = addresses.map({aliasesDomainFromDictionary(data: $0, account: account)})
+        for pair in aliasesPairArray {
+            if pair.0.name != Env.plainDomain {
+                DBManager.store(pair.0)
+            }
+            DBManager.store(aliases: pair.1)
+        }
+    }
+    
+    func aliasesDomainFromDictionary(data: [String: Any], account: Account) -> (CustomDomain, [Alias]) {
+        let aliases = data["aliases"] as! [[String: Any]]
+        let domainData = data["domain"] as! [String: Any]
+        let domainName = domainData["name"] as! String
+        let domainVerified = domainData["confirmed"] as! Int
+        
+        let domain = CustomDomain()
+        domain.name = domainName
+        domain.validated = domainVerified == 1 ? true : false
+        
+        let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
+        
+        return (domain, aliasesArray)
     }
     
     func sendKeysRequest(){

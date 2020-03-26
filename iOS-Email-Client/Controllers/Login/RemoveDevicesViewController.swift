@@ -192,8 +192,7 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
     
     func loginToMailbox(){
         APIManager.loginRequest(username: self.loginData.username, domain: self.loginData.domain, password: self.loginData.password!.sha256()!) { (responseData) in
-            guard case let .SuccessString(dataString) = responseData,
-                let data = Utils.convertToDictionary(text: dataString) else {
+            guard case .SuccessString = responseData else {
                     let storyboard = UIStoryboard(name: "Login", bundle: nil)
                     let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
                     let loginVC = initialVC.topViewController as! NewLoginViewController
@@ -205,13 +204,6 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
                     UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
                     return
             }
-            let name = data["name"] as! String
-            let deviceId = data["deviceId"] as! Int
-            let token = data["token"] as! String
-            let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
-            signupData.deviceId = deviceId
-            signupData.token = token
-            signupData.comingFromLogin = true
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
             controller.loginData = self.loginData

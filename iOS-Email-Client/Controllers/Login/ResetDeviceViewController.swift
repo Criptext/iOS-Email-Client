@@ -159,7 +159,9 @@ class ResetDeviceViewController: UIViewController{
                 let name = data["name"] as! String
                 let deviceId = data["deviceId"] as! Int
                 let token = data["token"] as! String
+                let addresses = data["addresses"] as? [[String: Any]]
                 let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
+                signupData.addresses = addresses
                 signupData.deviceId = deviceId
                 signupData.token = token
                 signupData.comingFromLogin = true

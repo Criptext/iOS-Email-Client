@@ -22,6 +22,7 @@ class SignUpData{
     var token: String = ""
     var refreshToken: String?
     var comingFromLogin = false
+    var addresses: [[String: Any]]?
     
     init(username: String, password: String, domain: String, fullname: String, optionalEmail: String?){
         self.username = username
