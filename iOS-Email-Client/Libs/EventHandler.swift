@@ -395,6 +395,7 @@ extension EventHandler {
             finishCallback(true, .Empty)
             return
         }
+        DBManager.deleteAlias(existingDomain.name, account: myAccount)
         DBManager.deleteCustomDomain(existingDomain)
         finishCallback(true, .Empty)
     }
