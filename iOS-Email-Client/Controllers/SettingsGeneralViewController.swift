@@ -192,17 +192,40 @@ class SettingsGeneralViewController: UIViewController{
     }
     
     func parseAddresses(addresses: [[String: Any]]) {
-        let aliasesPairArray = addresses.map({Alias.fromDictionary(data: $0, account: self.myAccount)})
+        let aliasesPairArray = addresses.map({aliasesDomainFromDictionary(data: $0, account: self.myAccount)})
+        var ignoreDeleteAliasIds: [Int] = []
+        var ignoreDeleteDomainNames: [String] = []
         for pair in aliasesPairArray {
-            if (pair.0 != Env.plainDomain) {
-                let customDomain =  CustomDomain()
-                customDomain.name = pair.0
-                customDomain.validated = true
-                customDomain.account = self.myAccount
-                DBManager.store(customDomain)
+            if pair.0.name != Env.plainDomain ,
+                DBManager.getCustomDomain(name: pair.0.name, account: myAccount) == nil {
+                DBManager.store(pair.0)
             }
-            DBManager.store(aliases: pair.1)
+            ignoreDeleteDomainNames.append(pair.0.name)
+            for alias in pair.1 {
+                if DBManager.getAlias(rowId: alias.rowId, account: self.myAccount) == nil {
+                    DBManager.store(alias)
+                }
+                ignoreDeleteAliasIds.append(alias.rowId)
+            }
         }
+        
+        DBManager.deleteAlias(ignore: ignoreDeleteAliasIds, account: self.myAccount)
+        DBManager.deleteCustomDomains(ignore: ignoreDeleteDomainNames, account: self.myAccount)
+    }
+    
+    func aliasesDomainFromDictionary(data: [String: Any], account: Account) -> (CustomDomain, [Alias]) {
+        let aliases = data["aliases"] as! [[String: Any]]
+        let domainData = data["domain"] as! [String: Any]
+        let domainName = domainData["name"] as! String
+        let domainVerified = domainData["confirmed"] as! Int
+        
+        let domain = CustomDomain()
+        domain.name = domainName
+        domain.validated = domainVerified == 1 ? true : false
+        
+        let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
+        
+        return (domain, aliasesArray)
     }
     
     func applyTheme(){

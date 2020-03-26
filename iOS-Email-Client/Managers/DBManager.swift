@@ -971,6 +971,15 @@ class DBManager: SharedDB {
         }
     }
     
+    class func deleteAlias(ignore: [Int], account: Account) {
+        let realm = try! Realm()
+        let aliasesToDelete = realm.objects(Alias.self).filter("!(rowId IN %@) AND account.compoundKey == %@", ignore, account.compoundKey)
+        
+        try! realm.write {
+            realm.delete(aliasesToDelete)
+        }
+    }
+    
     //MARK: - CustomDomain
     
     class func store(_ customDomain: CustomDomain){
@@ -1009,6 +1018,15 @@ class DBManager: SharedDB {
         
         try! realm.write() {
             realm.delete(customDomain)
+        }
+    }
+    
+    class func deleteCustomDomains(ignore: [String], account: Account) {
+        let realm = try! Realm()
+        let customDomainsToDelete = realm.objects(CustomDomain.self).filter("!(name IN %@) AND account.compoundKey == %@", ignore, account.compoundKey)
+        
+        try! realm.write {
+            realm.delete(customDomainsToDelete)
         }
     }
 }
