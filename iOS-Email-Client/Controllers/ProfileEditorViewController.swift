@@ -146,7 +146,7 @@ class ProfileEditorViewController: UIViewController {
         let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
+                self.logout(account: self.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {
@@ -310,7 +310,7 @@ class ProfileEditorViewController: UIViewController {
         let params = EventData.Peer.NameChanged(name: name)
         APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
+                self.logout(account: self.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {
@@ -652,7 +652,7 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     func confirmLogout(){
         APIManager.logout(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
+                self.logout(account: self.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {

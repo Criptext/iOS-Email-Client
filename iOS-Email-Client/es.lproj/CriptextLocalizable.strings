@@ -303,7 +303,7 @@
 "ENTER_NEW_PASS" = "Introduce la nueva contraseña";
 "CONFIRM_NEW_PASS" = "Repite la nueva contraseña";
 "ENTER_NEW_RECOVERY" = "Introduce nuevo correo de recuperación";
-"MANUAL_SYNC" = "Sincronización de Buzón";
+"MANUAL_SYNC" = "Solicitar Sincronización de Buzón";
 "SYNC_WARNING" = "Advertencia";
 "SYNC_WARNING_1" = "Todos los datos de tu bandeja de correos será borrada y reemplazada con los datos de tu otro dispositivo.\n\n";
 "SYNC_WARNING_2" = "¿Estás seguro que deseas continuar?";

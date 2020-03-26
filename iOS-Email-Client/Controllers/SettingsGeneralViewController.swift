@@ -137,7 +137,7 @@ class SettingsGeneralViewController: UIViewController{
         let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
+                self.logout(account: self.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {
@@ -442,7 +442,7 @@ extension SettingsGeneralViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.logout(account: weakSelf.myAccount)
+                weakSelf.logout(account: weakSelf.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {
