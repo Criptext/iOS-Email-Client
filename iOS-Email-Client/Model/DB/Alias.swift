@@ -21,14 +21,6 @@ class Alias: Object {
         return "\(name)@\(domain)"
     }
     
-    class func fromDictionary(data: [String: Any], account: Account) -> (String, [Alias]) {
-        let aliases = data["aliases"] as! [[String: Any]]
-        let domain = data["domain"] as! [String: Any]
-        let domainName = domain["name"] as! String
-        let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
-        return (domainName, aliasesArray)
-    }
-    
     class func aliasFromDictionary(aliasData: [String : Any], domainName: String, account: Account) -> Alias {
         let newAlias = Alias()
         newAlias.name = aliasData["name"] as! String
