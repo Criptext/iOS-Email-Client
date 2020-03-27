@@ -852,7 +852,7 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
             }
             weakSelf.emailData.setState(email.key, isUnsending: false)
             if case .Unauthorized = responseData {
-                weakSelf.logout(account: weakSelf.myAccount)
+                weakSelf.logout(account: weakSelf.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {

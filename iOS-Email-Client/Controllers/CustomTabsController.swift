@@ -41,7 +41,7 @@ class CustomTabsController: TabsController {
         let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
+                self.logout(account: self.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {

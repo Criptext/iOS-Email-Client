@@ -164,7 +164,7 @@ class NewEmailHandler {
             }
             email.fromAddress = from
             let fromContact = self.database.getContact(ContactUtils.parseContact(from, account: myAccount).email)
-            if(fromContact != nil){
+            if(fromContact != nil  && fromContact?.email != myAccount.email){
                 if(fromContact?.spamScore ?? 0 >= 2){
                     let spamLabel = SharedDB.getLabel(SystemLabel.spam.id)
                     email.labels.append(spamLabel!)

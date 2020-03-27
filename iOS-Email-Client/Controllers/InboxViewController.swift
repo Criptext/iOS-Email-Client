@@ -1435,7 +1435,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             switch(responseData) {
             case .Unauthorized:
                 completion?()
-                weakSelf.logout(account: weakSelf.myAccount)
+                weakSelf.logout(account: weakSelf.myAccount, manually: true)
             case .Forbidden:
                 completion?()
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
@@ -1684,7 +1684,7 @@ extension InboxViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.logout(account: weakSelf.myAccount)
+                weakSelf.logout(account: weakSelf.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {
@@ -2070,7 +2070,7 @@ extension InboxViewController: RequestDelegate {
         
         switch response {
             case .Unauthorized:
-                self.logout(account: self.myAccount)
+                self.logout(account: self.myAccount, manually: true)
                 return
             case .Error(let error):
                 if(error.code != .custom) {

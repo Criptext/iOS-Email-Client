@@ -105,7 +105,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.forceOut(account: account)
+                weakSelf.forceOut(account: account, manually: true)
                 return
             }
             if case .Forbidden = responseData {

@@ -70,7 +70,7 @@ class ReplyToEditorViewController: UIViewController {
         APIManager.updateReplyTo(email: email, enable: enable, token: myAccount.jwt) { (responseData) in
             self.replyToEnableSwitch.isEnabled = true
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
+                self.logout(account: self.myAccount, manually: true)
                 return
             }
             if case .Forbidden = responseData {
