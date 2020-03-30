@@ -1,0 +1,15 @@
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "EdO-lF-0Uj"; */
+"EdO-lF-0Uj.normalTitle" = "Crear";
+
+/* Class = "UILabel"; text = "You will be able to send \nand receive emails from \nthis new address."; ObjectID = "Fda-ty-K22"; */
+"Fda-ty-K22.text" = "Podras enviar y recibir correos con esta nueva dirección.";
+
+/* Class = "UILabel"; text = "New Alias"; ObjectID = "Imi-Xj-i4d"; */
+"Imi-Xj-i4d.text" = "Nuevo Alias";
+
+/* Class = "UILabel"; text = "@criptext.com"; ObjectID = "JmK-jm-qYU"; */
+"JmK-jm-qYU.text" = "@criptext.com";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "a8Y-Hp-xEf"; */
+"a8Y-Hp-xEf.normalTitle" = "Cancelar";

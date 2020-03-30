@@ -12,13 +12,13 @@ import RealmSwift
 class Alias: Object {
     @objc dynamic var name = ""
     @objc dynamic var rowId = 0
-    @objc dynamic var domainName : String? = nil
+    @objc dynamic var domain : String? = nil
     @objc dynamic var active = true
     @objc dynamic var account : Account!
     
     var email: String {
-        let domain = domainName ?? Env.plainDomain
-        return "\(name)@\(domain)"
+        let myDomain = domain ?? Env.plainDomain
+        return "\(name)@\(myDomain)"
     }
     
     class func aliasFromDictionary(aliasData: [String : Any], domainName: String, account: Account) -> Alias {
@@ -27,7 +27,7 @@ class Alias: Object {
         newAlias.account = account
         newAlias.active = aliasData["status"] as! Bool
         newAlias.rowId = aliasData["addressId"] as! Int
-        newAlias.domainName = domainName == Env.plainDomain ? nil : domainName
+        newAlias.domain = domainName == Env.plainDomain ? nil : domainName
         return newAlias
     }
     
@@ -44,8 +44,8 @@ extension Alias {
                 "name": name,
                 "rowId": rowId
             ] as [String : Any]
-        if let domain = domainName {
-            obj["domainName"] = domain
+        if let myDomain = domain {
+            obj["domain"] = myDomain
         }
         return [
             "table": "alias",

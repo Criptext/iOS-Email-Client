@@ -10,6 +10,9 @@ import Material
 import Foundation
 
 class RegisterDomainStepOneViewController: UIViewController {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var stepOneLabel: UILabel!
+    @IBOutlet weak var stepTwoLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
     var myAccount: Account!
@@ -26,6 +29,14 @@ class RegisterDomainStepOneViewController: UIViewController {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         self.loader.isHidden = true
         self.applyTheme()
+        self.applyLocalization()
+    }
+    
+    func applyLocalization() {
+        titleLabel.text = String.localize("ADD_DOMAIN_STEPS")
+        stepOneLabel.text = String.localize("ADD_DOMAIN_STEPS_ONE")
+        stepTwoLabel.text = String.localize("ADD_DOMAIN_STEPS_TWO")
+        nextButton.setTitle(String.localize("NEXT"), for: .normal)
     }
     
     func applyTheme() {
@@ -34,6 +45,10 @@ class RegisterDomainStepOneViewController: UIViewController {
         let attributed2Title = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.criptextBlue])
         tabItem.setAttributedTitle(attributed2Title, for: .selected)
         self.view.backgroundColor = theme.overallBackground
+        
+        titleLabel.textColor = theme.mainText
+        stepOneLabel.textColor = theme.secondText
+        stepTwoLabel.textColor = theme.secondText
     }
     
     @objc func goBack(){

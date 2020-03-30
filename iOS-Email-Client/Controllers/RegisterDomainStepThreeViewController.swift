@@ -45,12 +45,28 @@ class RegisterDomainStepThreeViewController: UIViewController {
         errorLabel.isHidden = true
     }
     
+    func applyLocalization() {
+        nextButton.setTitle(String.localize("BACK"), for: .normal)
+        titleLabel.text = String.localize("VERIFY_DOMAIN")
+        errorLabel.text = String.localize("VERIFY_DOMAIN_ERROR", arguments: "@\(newDomain.name)")
+        messageLabel.text = String.localize("VERIFY_DOMAIN_MESSAGE")
+    }
+    
     func applyTheme() {
         let attributedTitle = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)
         let attributed2Title = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.criptextBlue])
         tabItem.setAttributedTitle(attributed2Title, for: .selected)
         self.view.backgroundColor = theme.overallBackground
+        
+        titleLabel.textColor = theme.markedText
+        errorLabel.textColor = theme.mainText
+        messageLabel.textColor = theme.mainText
+        percentageLabel.textColor = theme.overallBackground
+        percentageLabel.backgroundColor = theme.mainText
+        percentageContainerView.backgroundColor = .clear
+        percentageContainerView.tipColor = theme.mainText
+        percentageContainerView.layoutIfNeeded()
     }
     
     @objc func goBack(){
@@ -99,7 +115,7 @@ class RegisterDomainStepThreeViewController: UIViewController {
             break
         case 513:
             titleLabel.text = String.localize("DNS_NOT_FOUND_TITLE")
-            errorLabel.text = String.localize("DNS_NOT_FOUND_MESSAGE")
+            errorLabel.text = String.localize("DNS_NOT_FOUND_MESSAGE", arguments: "@\(newDomain.name)")
             break
         default:
             titleLabel.text = String.localize("CUSTOM_DOMAIN_SOMETHING_WRONG_TITLE")
