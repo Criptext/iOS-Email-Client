@@ -181,7 +181,7 @@ class ComposerUIView: UIView {
             if (currentAlias != nil || account.compoundKey != currentAccount.compoundKey) {
                 accountAliases.append(AccountAlias(account: account))
             }
-            let aliases = SharedDB.getAliases(account: account)
+            let aliases = SharedDB.getActiveAliases(account: account)
             for alias in aliases {
                 if (currentAlias == nil || currentAlias!.rowId != alias.rowId) {
                     accountAliases.append(AccountAlias(account: account, alias: alias))
