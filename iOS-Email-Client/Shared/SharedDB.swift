@@ -539,6 +539,11 @@ class SharedDB {
         return realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'")
     }
     
+    class func getActiveAliases(account: Account) -> Results<Alias> {
+        let realm = try! Realm()
+        return realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)' AND active == true")
+    }
+    
     class func getAlias(username: String, domain: String?, account: Account) -> Alias? {
         let realm = try! Realm()
         return realm.objects(Alias.self).filter("name == %@ AND domainName == %@ AND account.compoundKey == %@", username, domain, account.compoundKey).first
