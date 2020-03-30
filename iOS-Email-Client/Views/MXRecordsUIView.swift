@@ -54,6 +54,7 @@ class MXRecordsUIView: UIView {
         valueLabel.textColor = theme.mainText
         
         copyButton.setTitleColor(theme.criptextBlue, for: .normal)
+        view.backgroundColor = theme.overallBackground
     }
     
     func setLabels(type: String, priority: String, host: String, value: String) {

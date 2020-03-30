@@ -24,6 +24,7 @@ class AddAliasTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        addButton.setTitle(String.localize("ADD_ALIAS"), for: .normal)
         applyTheme()
     }
     

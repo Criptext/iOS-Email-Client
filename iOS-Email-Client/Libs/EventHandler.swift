@@ -342,7 +342,7 @@ extension EventHandler {
         let alias = Alias();
         alias.name = event.name
         alias.rowId = event.id
-        alias.domainName = event.domain == Env.plainDomain ? nil : event.domain
+        alias.domain = event.domain == Env.plainDomain ? nil : event.domain
         alias.account = myAccount
         DBManager.store(alias)
         finishCallback(true, .Empty)

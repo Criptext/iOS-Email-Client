@@ -38,7 +38,7 @@ class CustomDomainViewController: UIViewController {
         self.view.backgroundColor = theme.overallBackground
         tableView.separatorColor = theme.separator
     }
-    
+        
     @objc func goBack(){
         navigationController?.popViewController(animated: true)
     }
@@ -47,7 +47,7 @@ class CustomDomainViewController: UIViewController {
         let popover = GenericAlertUIPopover()
         popover.myTitle = String.localize("CUSTOM_DOMAIN")
         popover.myMessage = String.localize("CUSTOM_DOMAIN_INFO_MESSAGE_1")
-        self.presentPopover(popover: popover, height: 220)
+        self.presentPopover(popover: popover, height: 240)
     }
 }
 

@@ -10,6 +10,9 @@ import Material
 import Foundation
 
 class RegisterDomainStepTwoViewController: UIViewController {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var pageOption1: UIButton!
     @IBOutlet weak var pageOption2: UIButton!
@@ -57,9 +60,17 @@ class RegisterDomainStepTwoViewController: UIViewController {
         
         initialX = oneView.center.x
         nextButton.isEnabled = false
+        nextButton.alpha = 0.6
         setupMXRecords()
         
         jumpToPage(1)
+        self.applyLocalization()
+    }
+    
+    func applyLocalization() {
+        titleLabel.text = String.localize("ADD_RECORDS")
+        descriptionLabel.text = String.localize("ADD_FOLLOWING_RECORDS")
+        nextButton.setTitle(String.localize("NEXT"), for: .normal)
     }
     
     func setupMXRecords(){
@@ -113,7 +124,6 @@ class RegisterDomainStepTwoViewController: UIViewController {
     }
     
     func repositionItems() {
-        nextButton.isEnabled = false
         let oneDistance = abs(Int32(initialX - oneView.center.x))
         let twoDistance = abs(Int32(initialX - twoView.center.x))
         let threeDistance = abs(Int32(initialX - threeView.center.x))
@@ -134,6 +144,7 @@ class RegisterDomainStepTwoViewController: UIViewController {
         } else if (fifthDistance < oneDistance && fifthDistance < twoDistance
             && fifthDistance < threeDistance && fifthDistance < fourthDistance){
             nextButton.isEnabled = true
+            nextButton.alpha = 1
             jumpToPage(5)
             return
         }
@@ -184,6 +195,9 @@ class RegisterDomainStepTwoViewController: UIViewController {
         let attributed2Title = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.criptextBlue])
         tabItem.setAttributedTitle(attributed2Title, for: .selected)
         self.view.backgroundColor = theme.overallBackground
+        
+        titleLabel.textColor = theme.mainText
+        descriptionLabel.textColor = theme.secondText
     }
     
     @objc func goBack(){
@@ -194,7 +208,7 @@ class RegisterDomainStepTwoViewController: UIViewController {
         let popover = GenericAlertUIPopover()
         popover.myTitle = String.localize("STEP_2_INFO_TITLE")
         popover.myMessage = String.localize("STEP_2_INFO_MESSAGE")
-        self.presentPopover(popover: popover, height: 220)
+        self.presentPopover(popover: popover, height: 240)
     }
     
     @IBAction func onNextPress(_ sender: Any) {

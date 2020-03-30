@@ -35,6 +35,8 @@ class RemoveAliasUIPopover: BaseUIPopover {
         applyTheme()
         titleLabel.text = String.localize("ALIASES_DELETE")
         subTitleLabel.text = String.localize("ALIASES_DELETE_DESC", arguments: alias.email)
+        confirmButton.setTitle(String.localize("DELETE"), for: .normal)
+        cancelButton.setTitle(String.localize("CANCEL"), for: .normal)
         dismissButton.isHidden = true
     }
     
@@ -50,8 +52,10 @@ class RemoveAliasUIPopover: BaseUIPopover {
         subTitleLabel.textColor = theme.mainText
         confirmButton.backgroundColor = theme.popoverButton
         cancelButton.backgroundColor = theme.popoverButton
+        dismissButton.backgroundColor = theme.popoverButton
         confirmButton.setTitleColor(theme.mainText, for: .normal)
         cancelButton.setTitleColor(theme.mainText, for: .normal)
+        dismissButton.setTitleColor(theme.mainText, for: .normal)
         loader.color = theme.loader
     }
     
@@ -61,7 +65,7 @@ class RemoveAliasUIPopover: BaseUIPopover {
     
     @IBAction func onConfirmPress(_ sender: Any) {
         let aliasId = alias.rowId
-        let domainName = alias.domainName ?? Env.plainDomain
+        let domainName = alias.domain ?? Env.plainDomain
         showLoader(true)
         APIManager.deleteAlias(rowId: aliasId, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {

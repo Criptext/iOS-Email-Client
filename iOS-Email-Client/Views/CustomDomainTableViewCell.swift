@@ -30,6 +30,7 @@ class CustomDomainTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         applyTheme()
+        validateButton.setTitle(String.localize("VERIFY"), for: .normal)
     }
     
     func applyTheme() {

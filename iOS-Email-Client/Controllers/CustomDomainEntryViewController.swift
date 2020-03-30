@@ -10,6 +10,8 @@ import Material
 import Foundation
 
 class CustomDomainEntryViewController: UIViewController {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var customDomainTextInput: TextField!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
@@ -25,15 +27,27 @@ class CustomDomainEntryViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icHelp").tint(with: .white), style: .plain, target: self, action: #selector(showInfo))
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         self.applyTheme()
+        self.applyLocalization()
         self.showLoader(false)
     }
     
+    func applyLocalization() {
+        titleLabel.text = String.localize("ADD_DOMAIN_TITLE")
+        subtitleLabel.text = String.localize("ADD_DOMAIN_SUBTITLE")
+        nextButton.setTitle(String.localize("NEXT"), for: .normal)
+    }
+    
     func applyTheme() {
+        customDomainTextInput.textColor = theme.mainText
+        customDomainTextInput.tintColor = theme.mainText
         let attributedTitle = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)
         let attributed2Title = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.criptextBlue])
         tabItem.setAttributedTitle(attributed2Title, for: .selected)
         self.view.backgroundColor = theme.overallBackground
+        titleLabel.textColor = theme.mainText
+        subtitleLabel.textColor = theme.secondText
+
     }
     
     @objc func goBack(){
