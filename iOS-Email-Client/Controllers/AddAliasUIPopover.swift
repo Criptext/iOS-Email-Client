@@ -58,6 +58,8 @@ class AddAliasUIPopover: BaseUIPopover {
         let theme: Theme = ThemeManager.shared.theme
         navigationController?.navigationBar.barTintColor = theme.toolbar
         view.backgroundColor = theme.background
+        aliasTextInput.textColor = theme.mainText
+        aliasTextInput.tintColor = theme.mainText
         titleLabel.textColor = theme.mainText
         subTitleLabel.textColor = theme.mainText
         criptextDomainLabel.textColor = theme.mainText
@@ -90,7 +92,7 @@ class AddAliasUIPopover: BaseUIPopover {
             alias.active = true
             alias.name = self.aliasTextInput.text!
             alias.rowId = rowId
-            alias.domainName = domainName == Env.domain ? nil : domainName
+            alias.domain = domainName == Env.domain ? nil : domainName
             self.onSuccess?(alias)
             self.dismiss(animated: true)
         }

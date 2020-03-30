@@ -1973,10 +1973,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="93.666664123535156"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="93.666664123535156"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -2000,10 +2000,10 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="276" height="93.666666666666671"/>
+                                                    <rect key="frame" x="27" y="0.0" width="276" height="94"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="93.666666666666671"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="94"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
                                                                     <rect key="frame" x="2" y="44" width="6" height="6"/>
@@ -2027,7 +2027,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="254" height="93.666666666666671"/>
+                                                            <rect key="frame" x="22" y="0.0" width="254" height="94"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -3819,6 +3819,8 @@
                         <outlet property="customDomainTextInput" destination="4uE-o8-ZTZ" id="AgJ-2u-kjx"/>
                         <outlet property="loader" destination="Rrn-mr-WF4" id="urb-5s-AqJ"/>
                         <outlet property="nextButton" destination="4iI-xq-DY3" id="Ufw-do-usR"/>
+                        <outlet property="subtitleLabel" destination="9YM-bO-Pjg" id="keq-dR-Ghq"/>
+                        <outlet property="titleLabel" destination="Mfc-vr-NmJ" id="Kte-Ww-B8j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IW5-UU-98q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4037,6 +4039,9 @@
                     <connections>
                         <outlet property="loader" destination="OlH-Gb-zKc" id="2gX-Ih-LEN"/>
                         <outlet property="nextButton" destination="JYa-6Y-cAO" id="gRV-qJ-gu1"/>
+                        <outlet property="stepOneLabel" destination="b3T-te-o1V" id="aHH-FT-DUR"/>
+                        <outlet property="stepTwoLabel" destination="sjP-ic-wfR" id="aRk-pk-nnI"/>
+                        <outlet property="titleLabel" destination="MN0-YZ-sx9" id="K2Z-WG-ZSP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aIv-WW-9bW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4056,13 +4061,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Records for Criptext" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lZt-Eg-Gbe" userLabel="Title">
-                                <rect key="frame" x="27" y="68" width="321" height="23.333333333333329"/>
+                                <rect key="frame" x="27" y="68" width="321" height="20"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qi-LN-zNZ" userLabel="Message One">
-                                <rect key="frame" x="27" y="106.33333333333334" width="284.66666666666669" height="87.333333333333343"/>
+                                <rect key="frame" x="27" y="103" width="285" height="74.666666666666686"/>
                                 <string key="text">Add the following records in your DNS Manager. This will verify your domain ownership and configure Criptext email settings. Need help? </string>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                                 <color key="textColor" red="0.42352941179999998" green="0.44705882349999998" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4090,7 +4095,7 @@
                                 </connections>
                             </button>
                             <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wpg-N6-evx" userLabel="Pages Container View">
-                                <rect key="frame" x="37.666666666666657" y="195.66666666666663" width="300" height="388"/>
+                                <rect key="frame" x="37.666666666666657" y="179.66666666666663" width="300" height="388"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBx-zp-6Wj" userLabel="One" customClass="MXRecordsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="15" y="21" width="269" height="309"/>
@@ -4211,7 +4216,7 @@
                                                 </connections>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="Qx7-Fx-ON7" firstAttribute="centerY" secondItem="A1I-AK-USr" secondAttribute="centerY" id="1tV-Gk-ucZ"/>
                                             <constraint firstItem="yPb-k8-yHJ" firstAttribute="centerX" secondItem="A1I-AK-USr" secondAttribute="centerX" constant="-24" id="7Z6-gH-OWl"/>
@@ -4227,7 +4232,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="DBx-zp-6Wj" secondAttribute="bottom" constant="58" id="70O-Pd-SsP"/>
                                     <constraint firstItem="YMr-lY-CZv" firstAttribute="top" secondItem="Ofo-pm-uUO" secondAttribute="top" id="8Od-PB-s6D"/>
@@ -4272,6 +4277,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="descriptionLabel" destination="3qi-LN-zNZ" id="sZC-r6-vP2"/>
                         <outlet property="fifthView" destination="YsL-Mt-cIC" id="HdO-l3-eJX"/>
                         <outlet property="fourthView" destination="YMr-lY-CZv" id="f6t-Nt-ix4"/>
                         <outlet property="nextButton" destination="aUh-LV-hXl" id="RbP-SY-wCy"/>
@@ -4283,6 +4289,7 @@
                         <outlet property="pageOption5" destination="2Ay-hG-xHW" id="j2w-Z6-lEg"/>
                         <outlet property="pagesContainerView" destination="Wpg-N6-evx" id="46Q-3R-35P"/>
                         <outlet property="threeView" destination="Ofo-pm-uUO" id="4X0-Gd-mQ1"/>
+                        <outlet property="titleLabel" destination="lZt-Eg-Gbe" id="UUt-0g-Ba0"/>
                         <outlet property="twoView" destination="RRz-pn-mOt" id="k4o-6E-TLK"/>
                     </connections>
                 </viewController>

@@ -130,11 +130,11 @@
 		7C34E5FB20470D2100E71906 /* EmailDetailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FA20470D2100E71906 /* EmailDetailData.swift */; };
 		7C34E5FF2048BCBA00E71906 /* ReplyDetailUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */; };
 		7C34E6052049E84500E71906 /* EmailDetailFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */; };
-		7C38774924252E55002B98D4 /* MXRecordsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C38774824252E55002B98D4 /* MXRecordsUIView.xib */; };
 		7C38774B242531C4002B98D4 /* MXRecordsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */; };
 		7C394E7E210BD5DB00AE3297 /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
+		7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */; };
 		7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */; };
 		7C46BED72153F71E00282182 /* SingleWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED62153F71E00282182 /* SingleWebSocket.swift */; };
 		7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */; };
@@ -776,11 +776,18 @@
 		7C34E5FA20470D2100E71906 /* EmailDetailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailData.swift; sourceTree = "<group>"; };
 		7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyDetailUIView.swift; sourceTree = "<group>"; };
 		7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailFooterCell.swift; sourceTree = "<group>"; };
-		7C38774824252E55002B98D4 /* MXRecordsUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MXRecordsUIView.xib; sourceTree = "<group>"; };
 		7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRecordsUIView.swift; sourceTree = "<group>"; };
 		7C394E84210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+KeyPairOpenPrivate.m"; sourceTree = "<group>"; };
 		7C394E87210CC8E700AE3297 /* SendEmailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailData.swift; sourceTree = "<group>"; };
+		7C3C35BB2432598A001A8C9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MXRecordsUIView.xib; sourceTree = "<group>"; };
+		7C3C35BE2432598C001A8C9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MXRecordsUIView.strings; sourceTree = "<group>"; };
+		7C3C35C02432598F001A8C9F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MXRecordsUIView.strings; sourceTree = "<group>"; };
+		7C3C35C224329D20001A8C9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/en.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
+		7C3C35C424329D22001A8C9F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/fr.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
+		7C3C35C624329D22001A8C9F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/de.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
+		7C3C35C824329D23001A8C9F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/ru.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
+		7C3C35CA24329D23001A8C9F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/es.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
 		7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUploadViewController.swift; sourceTree = "<group>"; };
 		7C46BED62153F71E00282182 /* SingleWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWebSocket.swift; sourceTree = "<group>"; };
 		7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryEmailViewController.swift; sourceTree = "<group>"; };
@@ -1581,7 +1588,7 @@
 				A76D3039225671DC004F8747 /* BackupHeaderView.swift */,
 				A721B34D225E9418004528B4 /* RestoreUIPopover.xib */,
 				A721B347225D2DA5004528B4 /* RestoreUIView.swift */,
-				7C38774824252E55002B98D4 /* MXRecordsUIView.xib */,
+				7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */,
 				7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */,
 			);
 			path = Views;
@@ -1947,7 +1954,7 @@
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
-				7C38774924252E55002B98D4 /* MXRecordsUIView.xib in Resources */,
+				7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */,
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				A7FFCF36217A911B00FFFDFF /* LabelsHeaderTableViewCell.xib in Resources */,
 				A7FFCF2A217A90FA00FFFDFF /* SingleTextInputUIPopover.xib in Resources */,
@@ -2561,6 +2568,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				348F1EF02419B8030095BCBB /* Base */,
+				7C3C35C224329D20001A8C9F /* en */,
+				7C3C35C424329D22001A8C9F /* fr */,
+				7C3C35C624329D22001A8C9F /* de */,
+				7C3C35C824329D23001A8C9F /* ru */,
+				7C3C35CA24329D23001A8C9F /* es */,
 			);
 			name = AddAliasUIPopover.xib;
 			sourceTree = "<group>";
@@ -2589,6 +2601,16 @@
 				95145BA12368E26F00E4EB72 /* es */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7C3C35BB2432598A001A8C9F /* Base */,
+				7C3C35BE2432598C001A8C9F /* en */,
+				7C3C35C02432598F001A8C9F /* es */,
+			);
+			name = MXRecordsUIView.xib;
 			sourceTree = "<group>";
 		};
 		A703FAF121F925760080769A /* PasscodeLockView.xib */ = {
