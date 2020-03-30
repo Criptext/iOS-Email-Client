@@ -276,7 +276,7 @@ class ComposeViewController: UIViewController {
             if (currentAlias != nil || account.compoundKey != currentAccount.compoundKey) {
                 accountAliases.append(AccountAlias(account: account))
             }
-            let aliases = DBManager.getAliases(account: account)
+            let aliases = DBManager.getActiveAliases(account: account)
             for alias in aliases {
                 if (currentAlias == nil || currentAlias!.rowId != alias.rowId) {
                     accountAliases.append(AccountAlias(account: account, alias: alias))

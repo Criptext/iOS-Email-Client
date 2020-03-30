@@ -46,6 +46,8 @@ class DBManager: SharedDB {
             realm.delete(realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)'"))
             realm.delete(realm.objects(Label.self).filter("account.compoundKey == '\(account.compoundKey)'"))
             realm.delete(realm.objects(QueueItem.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(CustomDomain.self).filter("account.compoundKey == '\(account.compoundKey)'"))
         }
     }
     
@@ -265,7 +267,7 @@ class DBManager: SharedDB {
             alias.name = name
             alias.domainName = domainName
             alias.rowId = rowId
-            realm.add(alias)
+            realm.add(alias, update: .all)
         case "customDomain":
             let name = object["name"] as! String
             let validated  = object["validated"] as! Bool
@@ -273,7 +275,7 @@ class DBManager: SharedDB {
             customDomain.account = account
             customDomain.validated = validated
             customDomain.name = name
-            realm.add(customDomain)
+            realm.add(customDomain, update: .all)
         default:
             return
         }
