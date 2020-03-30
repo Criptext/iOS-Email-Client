@@ -196,13 +196,18 @@ class SettingsGeneralViewController: UIViewController{
         var ignoreDeleteAliasIds: [Int] = []
         var ignoreDeleteDomainNames: [String] = []
         for pair in aliasesPairArray {
-            if pair.0.name != Env.plainDomain ,
-                DBManager.getCustomDomain(name: pair.0.name, account: myAccount) == nil {
-                DBManager.store(pair.0)
+            if pair.0.name != Env.plainDomain {
+                if let existingDomain = DBManager.getCustomDomain(name: pair.0.name, account: myAccount) {
+                    DBManager.update(customDomain: existingDomain, validated: pair.0.validated)
+                } else {
+                    DBManager.store(pair.0)
+                }
             }
             ignoreDeleteDomainNames.append(pair.0.name)
             for alias in pair.1 {
-                if DBManager.getAlias(rowId: alias.rowId, account: self.myAccount) == nil {
+                if let existingAlias = DBManager.getAlias(rowId: alias.rowId, account: self.myAccount) {
+                    DBManager.update(alias: existingAlias, active: alias.active)
+                } else {
                     DBManager.store(alias)
                 }
                 ignoreDeleteAliasIds.append(alias.rowId)

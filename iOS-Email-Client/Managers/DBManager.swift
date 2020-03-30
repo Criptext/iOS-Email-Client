@@ -260,12 +260,12 @@ class DBManager: SharedDB {
             let rowId = object["rowId"] as! Int
             let name = object["name"] as! String
             let active = object["active"] as! Bool
-            let domainName = object["domainName"] as? String
+            let domain = object["domain"] as? String
             let alias = Alias()
             alias.account = account
             alias.active = active
             alias.name = name
-            alias.domainName = domainName
+            alias.domain = domain
             alias.rowId = rowId
             realm.add(alias, update: .all)
         case "customDomain":
@@ -966,7 +966,7 @@ class DBManager: SharedDB {
     
     class func deleteAlias(_ domainName: String?, account: Account) {
         let realm = try! Realm()
-        let aliasesToDelete = getAliases(account: account).filter { $0.domainName == domainName }
+        let aliasesToDelete = getAliases(account: account).filter { $0.domain == domainName }
         
         try! realm.write() {
             realm.delete(aliasesToDelete)

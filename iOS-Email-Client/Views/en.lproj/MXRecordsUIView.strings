@@ -1,0 +1,27 @@
+
+/* Class = "UILabel"; text = "100"; ObjectID = "1X8-Vh-Qk6"; */
+"1X8-Vh-Qk6.text" = "100";
+
+/* Class = "UILabel"; text = "Type"; ObjectID = "MrA-ip-ww6"; */
+"MrA-ip-ww6.text" = "Type";
+
+/* Class = "UILabel"; text = "Value/Destination"; ObjectID = "b4t-79-dZy"; */
+"b4t-79-dZy.text" = "Value/Destination";
+
+/* Class = "UILabel"; text = "Name/Host/Alias"; ObjectID = "beM-Nq-RsU"; */
+"beM-Nq-RsU.text" = "Name/Host/Alias";
+
+/* Class = "UILabel"; text = "dg9rzw50b2tlbnrva2vudg9rzw4.liknaru.com"; ObjectID = "e3k-R9-6lt"; */
+"e3k-R9-6lt.text" = "dg9rzw50b2tlbnrva2vudg9rzw4.liknaru.com";
+
+/* Class = "UILabel"; text = "MX"; ObjectID = "jCQ-hD-08T"; */
+"jCQ-hD-08T.text" = "MX";
+
+/* Class = "UILabel"; text = "Priority"; ObjectID = "oau-6h-74l"; */
+"oau-6h-74l.text" = "Priority";
+
+/* Class = "UILabel"; text = "@"; ObjectID = "pZ2-ZT-Kik"; */
+"pZ2-ZT-Kik.text" = "@";
+
+/* Class = "UIButton"; normalTitle = "Copy"; ObjectID = "qYR-98-DD5"; */
+"qYR-98-DD5.normalTitle" = "Copy";

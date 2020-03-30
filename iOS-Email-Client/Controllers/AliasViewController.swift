@@ -37,7 +37,7 @@ class AliasViewController: UIViewController {
         let aliases = DBManager.getAliases(account: myAccount)
         let customDomains = DBManager.getVerifiedCustomDomains(account: myAccount)
         aliases.forEach { (alias) in
-            let domain = "@\(alias.domainName ?? Env.plainDomain)"
+            let domain = "@\(alias.domain ?? Env.plainDomain)"
             if (table[domain] == nil) {
                 tableDomains.append(domain)
                 table[domain] = [Alias]()
@@ -150,7 +150,7 @@ extension AliasViewController: AddAliasTableViewCellDelegate {
     
     func addAlias(_ alias: Alias) {
         DBManager.store(alias)
-        let domainName = "@\(alias.domainName ?? Env.plainDomain)"
+        let domainName = "@\(alias.domain ?? Env.plainDomain)"
         if (table[domainName] == nil) {
             tableDomains.append(domainName)
             table[domainName] = [Alias]()

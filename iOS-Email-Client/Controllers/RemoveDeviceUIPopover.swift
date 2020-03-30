@@ -38,6 +38,8 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         applyTheme()
         titleLabel.text = String.localize("ALIASES_DELETE")
         subTitleLabel.text = String.localize("ALIASES_DELETE_DESC", arguments: alias.email)
+        confirmButton.setTitle(String.localize("DELETE"), for: .normal)
+        cancelButton.setTitle(String.localize("CANCEL"), for: .normal)
         dismissButton.isHidden = true
     }
     
@@ -60,8 +62,10 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
         confirmButton.backgroundColor = theme.popoverButton
         cancelButton.backgroundColor = theme.popoverButton
+        dismissButton.backgroundColor = theme.popoverButton
         confirmButton.setTitleColor(theme.mainText, for: .normal)
         cancelButton.setTitleColor(theme.mainText, for: .normal)
+        dismissButton.setTitleColor(theme.mainText, for: .normal)
         loader.color = theme.loader
     }
     

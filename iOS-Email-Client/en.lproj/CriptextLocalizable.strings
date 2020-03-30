@@ -478,6 +478,7 @@
 "STEP_3_HEADER" = "STEP 3 OF 3";
 "DOMAIN_ALREADY_REGISTERED" = "This domain is already registered.";
 "DOMAIN_LIMIT_REACHED" = "Custom domain limit reached.";
+"DOMAIN_LIMIT_REACHED" = "Custom domain limit reached.";
 "MX_DONT_MATCH_TITLE" = "MX Records Don\’t Match";
 "MX_DONT_MATCH_MESSAGE" = "Go back and verify that you've added the right information into your DNS records.";
 "DNS_NOT_FOUND_TITLE" = "DNS Records For This Domain Were Not Found";
@@ -485,3 +486,16 @@
 "CUSTOM_DOMAIN_SOMETHING_WRONG_TITLE" = "Something Went Wrong";
 "CUSTOM_DOMAIN_SOMETHING_WRONG_MESSAGE" = "Try again in a couple of minutes. Need help? ";
 "CUSTOM_DOMAIN_VERIFICATION_SUCCESS" = "Your Domain Was Verified Succesfully";
+
+"ADD_ALIAS" = "+ Create new Alias";
+"VERIFY" = "Verify";
+"ADD_DOMAIN_TITLE" = "Let's set up your domain";
+"ADD_DOMAIN_SUBTITLE" = "Enter the custom domain you wish to add";
+"ADD_DOMAIN_STEPS" = "Visit your DNS Manager";
+"ADD_DOMAIN_STEPS_ONE" = "1. Go to Go Daddy or whomever your domain provider is and access the DNS Manager where you can add MX and text records.";
+"ADD_DOMAIN_STEPS_ONE" = "2. Delete any existing MX records before proceeding.";
+"ADD_RECORDS" = "Add Records for Criptext";
+"ADD_FOLLOWING_RECORDS" = "Add the following records in your DNS Manager. This will verify your domain ownership and configure Criptext email settings. Need help?";
+"VERIFY_DOMAIN" = "Verifying Domain\nOwnership";
+"VERIFY_DOMAIN_ERROR" = "%@ is listed as your domain, make sure this is right; otherwise correct the domain on your Company Profile. Need help?\n\nAlso check that the DNS records on your domain are not empty; otherwise go back and add them from the previous steps.";
+"VERIFY_DOMAIN_MESSAGE" = "Do not close the app or put in the background until this process ends.";

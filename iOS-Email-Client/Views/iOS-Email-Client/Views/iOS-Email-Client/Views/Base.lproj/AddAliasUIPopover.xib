@@ -56,7 +56,7 @@ this new address.</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@criptext.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JmK-jm-qYU" userLabel="Criptext Domain">
-                    <rect key="frame" x="78" y="235" width="114" height="21"/>
+                    <rect key="frame" x="78" y="222" width="114" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -97,7 +97,7 @@ this new address.</string>
                     </constraints>
                 </activityIndicatorView>
                 <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQc-4o-Heu" userLabel="Domain Picker">
-                    <rect key="frame" x="23" y="213" width="224" height="65"/>
+                    <rect key="frame" x="23" y="200" width="224" height="65"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="65" id="HYy-6u-e8a"/>
                     </constraints>
@@ -117,7 +117,7 @@ this new address.</string>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Imi-Xj-i4d" secondAttribute="trailing" constant="23" id="I7A-tr-zto"/>
                 <constraint firstItem="Imi-Xj-i4d" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="23" id="JBZ-f6-1tE"/>
                 <constraint firstItem="JmK-jm-qYU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="78" id="KIh-vx-Yz5"/>
-                <constraint firstItem="HQc-4o-Heu" firstAttribute="top" secondItem="wJN-Iy-jFh" secondAttribute="bottom" constant="18" id="M92-qS-MB2"/>
+                <constraint firstItem="HQc-4o-Heu" firstAttribute="top" secondItem="wJN-Iy-jFh" secondAttribute="bottom" constant="5" id="M92-qS-MB2"/>
                 <constraint firstItem="Fda-ty-K22" firstAttribute="top" secondItem="Imi-Xj-i4d" secondAttribute="bottom" constant="8" id="QV7-jB-ZBU"/>
                 <constraint firstItem="EdO-lF-0Uj" firstAttribute="leading" secondItem="a8Y-Hp-xEf" secondAttribute="trailing" id="Rf3-kw-XS5"/>
                 <constraint firstItem="HQc-4o-Heu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="23" id="Ygg-UI-3oK"/>
