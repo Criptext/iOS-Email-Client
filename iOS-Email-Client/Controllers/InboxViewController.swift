@@ -65,7 +65,6 @@ class InboxViewController: UIViewController {
     let coachMarksController = CoachMarksController()
     var currentGuide = "guideComposer"
     var controllerMessage: ControllerMessage?
-    var selectLabel = String.localize("SHOW_ALL")
     var mailboxOptionsInterface: MailboxOptionsInterface?
 
     var containerUrl: URL? {
@@ -251,7 +250,7 @@ class InboxViewController: UIViewController {
         sendFailEmail()
         viewSetupNews()
         generalOptionsContainerView.refreshView()
-        
+
         if mailboxData.showRestore {
             mailboxData.showRestore = false
             fetchBackupData()
@@ -734,7 +733,7 @@ extension InboxViewController{
         let fallbackLabel = DBManager.getUserLabel(labelId, account: myAccount) ?? DBManager.getLabel(SystemLabel.inbox.id)!
         let myLabelId = isAllMail ? -1 : fallbackLabel.id
         mailboxData.selectedLabel = myLabelId
-        selectLabel = String.localize("SHOW_ALL")
+        mailboxData.filterUnread = false
         mailboxData.cancelFetchAsyncTask()
         mailboxData.reachedEnd = false
         mailboxData.threads.removeAll()
@@ -796,25 +795,10 @@ extension InboxViewController {
     }
     
     @IBAction func didPressFilter(_ sender: UIBarButtonItem) {
+        let selectLabel = mailboxData.filterUnread ? String.localize("SHOW_UNREAD") : String.localize("SHOW_ALL")
         let filterPopover = FilterUIPopover.instantiate(initLabel: selectLabel)
         filterPopover.delegate = self
         self.presentPopover(popover: filterPopover, height: Constants.basePopoverHeight + filterPopover.labels.count * Constants.labelPopoverHeight)
-    }
-    
-    func getUnreadThreads(clear: Bool, since: Date){
-        let threads : [Thread]
-        let fetchedThreads = mailboxData.threads.map({$0.threadId})
-        threads = DBManager.getUnreadThreads(from: mailboxData.selectedLabel, since: since, threadIds: fetchedThreads, account: self.myAccount)
-        if(clear){
-            mailboxData.threads = threads
-        } else {
-            mailboxData.threads.append(contentsOf: threads)
-        }
-        mailboxData.reachedEnd = threads.isEmpty
-        mailboxData.cancelFetchAsyncTask()
-        self.tableView.reloadData()
-        updateBadges()
-        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
     }
 }
 
@@ -840,7 +824,7 @@ extension InboxViewController{
             return
         }
         let searchText = searchController.searchBar.text
-        let threadsAsyncTask = GetThreadsAsyncTask(accountId: myAccount.compoundKey, since: date, threads: clear ? [] : mailboxData.threads, limit: limit, searchText: mailboxData.searchMode ? searchText : nil, showAll: selectLabel == String.localize("SHOW_ALL"), selectedLabel: mailboxData.selectedLabel)
+        let threadsAsyncTask = GetThreadsAsyncTask(accountId: myAccount.compoundKey, since: date, threads: clear ? [] : mailboxData.threads, limit: limit, searchText: mailboxData.searchMode ? searchText : nil, showAll: mailboxData.searchMode || !mailboxData.filterUnread, selectedLabel: mailboxData.selectedLabel)
         mailboxData.fetchAsyncTask = threadsAsyncTask
         threadsAsyncTask.start { [weak self] (threads) in
             guard let weakSelf = self else {
@@ -885,14 +869,14 @@ extension InboxViewController{
 extension InboxViewController: FilterUIPopoverDelegate {
 
     func didAcceptPressed(label: String) {
-        selectLabel = label
-        if(selectLabel == String.localize("SHOW_ALL")){
-            self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
-            self.loadMails(since: Date(), clear: true, limit: 0)
-        }else if (selectLabel == String.localize("SHOW_UNREAD")){
-            self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .white)
-            self.getUnreadThreads(clear: true, since: Date())
+        let isFilterUnread = label == String.localize("SHOW_UNREAD")
+        guard isFilterUnread != mailboxData.filterUnread else {
+            return
         }
+        mailboxData.filterUnread = isFilterUnread
+        self.filterBarButton.image = isFilterUnread ? #imageLiteral(resourceName: "filter").tint(with: .white)
+            : #imageLiteral(resourceName: "filter").tint(with: .lightGray)
+        self.loadMails(since: Date(), clear: true, limit: 0)
     }
 }
 
