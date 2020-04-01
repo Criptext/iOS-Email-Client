@@ -16,12 +16,12 @@ class FindKeybundleSpyApiManager: APIManager {
     static var requestParams: [String: Any]? = nil
     
     override class func getKeysRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        handleExpectation(params: params)
         completion(ResponseData.SuccessDictionary([
             "keyBundles": [[String: Any]](),
             "blacklistedKnownDevices": [[String: Any]](),
             "guestDomains": [String]()
             ]))
+        handleExpectation(params: params)
     }
     
     override class func postMailRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){

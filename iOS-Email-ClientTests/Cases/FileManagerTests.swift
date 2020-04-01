@@ -23,6 +23,10 @@ class FileManagerTests: XCTestCase {
         account.jwt = token
     }
     
+    override func tearDown() {
+        DBManager.destroy()
+    }
+    
     func testSuccessfullyUploadFile(){
         
         account.jwt = token

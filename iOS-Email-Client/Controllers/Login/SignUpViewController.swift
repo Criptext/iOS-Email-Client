@@ -320,7 +320,7 @@ class SignUpViewController: UIViewController{
     }
     
     func checkToEnableDisableCreateButton(){
-        createAccountButton.isEnabled = (usernameTextField.isValid && fullnameTextField.isValid && passwordTextField.isValid && confirmPasswordTextField.isValid && emailTextField.isNotInvalid)
+        createAccountButton.isEnabled = (usernameTextField.isValid && fullnameTextField.isValid && passwordTextField.isValid && confirmPasswordTextField.isValid && emailTextField.isValid)
         if(createAccountButton.isEnabled){
             createAccountButton.alpha = 1.0
         }else{
