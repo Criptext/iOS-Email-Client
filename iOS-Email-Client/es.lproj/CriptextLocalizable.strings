@@ -59,6 +59,7 @@
 "VALID_EMAIL_CONDITION" = "Al menos 3 caracteres. Debe comenzar con las letras A-Z.";
 "USERNAME_EXISTS" = "Usuario ya existente";
 "ENTER_NAME" = "Introduce tu nombre";
+"ENTER_RECOVERY_EMAIL" = "El correo de recuperación es obligatorio!";
 "PASSWORD_LENGTH" = "La contraseña debe contener al menos 8 caracteres.";
 "PASSWORD_NOT_MATCH" = "Las contraseñas no coinciden.";
 "NOT_VALID_EMAIL" = "Dirección de correo inválida.";

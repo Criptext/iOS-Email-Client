@@ -216,7 +216,7 @@ class SignUpViewController: UIViewController{
     
     func checkOptionalEmail(){
         guard !emailTextField.isEmpty else {
-            emailTextField.setStatus(.none)
+            emailTextField.setStatus(.invalid, String.localize("ENTER_RECOVERY_EMAIL"))
             return
         }
         guard Utils.validateEmail(emailTextField.text!) else {

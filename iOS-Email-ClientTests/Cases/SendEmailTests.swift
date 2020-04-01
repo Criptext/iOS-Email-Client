@@ -35,7 +35,7 @@ class SendEmailTests: XCTestCase {
         draft.key = Int("\(account.deviceId)\(Int(draft.date.timeIntervalSince1970))")!
         draft.threadId = "\(draft.key)"
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
-        draft.fromAddress = "\(account.name) <\(account.username)\(Constants.domain)>"
+        draft.fromAddress = "\(account.name) <\(account.username)\(Env.domain)>"
         draft.secure = true
         draft.account = account
         DBManager.store(draft)
@@ -82,7 +82,7 @@ class SendEmailTests: XCTestCase {
         draft.key = Int("\(account.deviceId)\(Int(draft.date.timeIntervalSince1970))")!
         draft.threadId = "\(draft.key)"
         draft.labels.append(DBManager.getLabel(SystemLabel.draft.id)!)
-        draft.fromAddress = "\(account.name) <\(account.username)\(Constants.domain)>"
+        draft.fromAddress = "\(account.name) <\(account.username)\(Env.domain)>"
         draft.secure = true
         draft.account = account
         DBManager.store(draft)

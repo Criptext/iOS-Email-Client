@@ -17,15 +17,17 @@ class CreateCustomJSONFileTests: XCTestCase {
     var account: Account!
     
     let desiredDBText = """
-    {"object":{"email":"test1@criptext.com","isTrusted":false,"id":1,"name":"Test 1"},"table":"contact"}
-    {"object":{"email":"test2@criptext.com","isTrusted":false,"id":2,"name":"Test 2"},"table":"contact"}
-    {"object":{"type":"custom","uuid":"00000000-0000-0000-0000-00000000001","visible":true,"color":"fff000","id":1,"text":"Test 1"},"table":"label"}
-    {"object":{"type":"custom","uuid":"00000000-0000-0000-0000-00000000002","visible":true,"color":"ff00ff","id":2,"text":"Test 2"},"table":"label"}
-    {"object":{"fromAddress":"","headers":"","date":"2018-07-17 15:09:36","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"id":1,"status":3,"key":123,"secure":true,"isMuted":false,"content":"test 1","subject":"","replyTo":"","preview":"test 1","boundary":""},"table":"email"}
+    {"fileVersion":6,"domain":"criptext.com","recipientId":"test"}
+    {"object":{"email":"test1@criptext.com","isTrusted":false,"id":1,"name":"Test 1","spamScore":0},"table":"contact"}
+    {"object":{"email":"test2@criptext.com","isTrusted":false,"id":2,"name":"Test 2","spamScore":0},"table":"contact"}
+    {"object":{"type":"custom","uuid":"430A9A0B-8028-4907-827C-11D6AEFD5803","visible":true,"color":"fff000","id":1,"text":"Test 1"},"table":"label"}
+    {"object":{"type":"custom","uuid":"430A9A0B-8028-4907-827C-11D6AEFD5802","visible":true,"color":"ff00ff","id":2,"text":"Test 2"},"table":"label"}
+    {"object":{"fromAddress":"","headers":"","date":"2018-07-17 15:09:36","messageId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","threadId":"<dsfsfd.dsfsdfs@ddsfs.fsdfs>","unread":true,"id":1,"status":3,"key":123,"secure":true,"content":"test 1","subject":"","replyTo":"","preview":"test 1","boundary":""},"table":"email"}
     {"object":{"emailId":1,"labelId":1},"table":"email_label"}
     {"object":{"emailId":1,"contactId":2,"id":1,"type":"from"},"table":"email_contact"}
     {"object":{"emailId":1,"contactId":1,"id":2,"type":"to"},"table":"email_contact"}
-    {"object":{"date":"2018-07-17 15:09:36","id":1,"name":"test.pdf","cid":"","size":0,"emailId":1,"mimeType":"application/pdf","status":"1","readOnly":"false","token":""},"table":"file","iv":"afdsfsagdfgsdf","key":"fgsfgfgsfdafa"}
+    {"object":{"date":"2018-07-17 15:09:36","id":1,"name":"test.pdf","size":0,"emailId":1,"mimeType":"application\\/pdf","status":1,"token":"","iv":"afdsfsagdfgsdf","key":"fgsfgfgsfdafa"},"table":"file"}
+
     """
     
     override func setUp() {
@@ -61,6 +63,7 @@ class CreateCustomJSONFileTests: XCTestCase {
         file.name = "test.pdf"
         file.emailId = 123
         file.date = Date(timeIntervalSince1970: 1531840176)
+        file.mimeType = "application/pdf"
         DBManager.store(file)
         
         let email = Email()

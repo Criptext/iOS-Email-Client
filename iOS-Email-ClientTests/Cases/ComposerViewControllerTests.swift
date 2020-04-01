@@ -59,7 +59,7 @@ class ComposerViewControllerTests: XCTestCase {
             return
         }
         
-        XCTAssert(email.fromContact.email == "myself\(Constants.domain)")
+        XCTAssert(email.fromContact.email == "myself\(Env.domain)")
         XCTAssert(email.subject == "test subject")
     }
     

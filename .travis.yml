@@ -14,8 +14,8 @@ before_install:
   - brew outdated carthage || brew upgrade carthage
 
 before_script:
-  - sh ./scripts/bootstrap.sh
   - sh ./scripts/firebase.sh
+  - sh ./scripts/intelligent-bootstrap.sh
 
 script: xcodebuild clean build test -project iOS-Email-Client.xcodeproj -destination 'platform=iOS Simulator,name=iPhone X,OS=11.2' -scheme iOS-Email-Client -sdk iphonesimulator -quiet ONLY_ACTIVE_ARCH=NO
 
