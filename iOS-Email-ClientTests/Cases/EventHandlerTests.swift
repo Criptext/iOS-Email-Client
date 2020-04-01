@@ -31,7 +31,7 @@ class EventHandlerTests: XCTestCase {
     
     @discardableResult func createExistingEmail() -> Email {
         let newEmail = DBFactory.createAndStoreEmail(key: 243, preview: "test", subject: "test", fromAddress: "test <test@criptext>", account: self.myAccount)
-        DBFactory.createAndStoreContact(email: "velvet\(Constants.domain)", name: "The Velvet", account: self.myAccount)
+        DBFactory.createAndStoreContact(email: "velvet\(Env.domain)", name: "The Velvet", account: self.myAccount)
         return newEmail
     }
     

@@ -34,7 +34,7 @@ class Account: Object{
     
     var email: String {
         guard let myDomain = domain else {
-            return "\(username)\(Constants.domain)"
+            return "\(username)\(Env.domain)"
         }
         return "\(username)@\(myDomain)"
     }

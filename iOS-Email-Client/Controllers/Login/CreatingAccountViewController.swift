@@ -172,7 +172,7 @@ class CreatingAccountViewController: UIViewController{
         DBManager.update(account: myAccount, jwt: signupData.token, refreshToken: refreshToken, regId: regId, identityB64: identityB64)
         let myContact = Contact()
         myContact.displayName = myAccount.name
-        myContact.email = "\(myAccount.username)\(Constants.domain)"
+        myContact.email = "\(myAccount.username)\(Env.domain)"
         DBManager.store([myContact], account: myAccount)
         let defaults = CriptextDefaults()
         defaults.activeAccount = myAccount.compoundKey

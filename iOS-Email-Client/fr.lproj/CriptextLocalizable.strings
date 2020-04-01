@@ -59,6 +59,7 @@
 "VALID_EMAIL_CONDITION" = "min. 3 lettres, commence/termine par a-z, 0-9 valide, . _ -";
 "USERNAME_EXISTS" = "Le nom d'utilisateur existe déjà";
 "ENTER_NAME" = "veuillez saisir votre nom";
+"ENTER_RECOVERY_EMAIL" = "A recovery email is required!";
 "PASSWORD_LENGTH" = "le mot de passe doit compter un minimum de 8 caractères";
 "PASSWORD_NOT_MATCH" = "Les mots de passe ne sont pas identiques";
 "NOT_VALID_EMAIL" = "cet email n'est pas valide";

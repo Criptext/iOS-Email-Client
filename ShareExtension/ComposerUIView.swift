@@ -298,7 +298,7 @@ extension ComposerUIView: CLTokenInputViewDelegate {
     
     func addToken(display: String, value: String, view: CLTokenInputView) {
         let theme = ThemeManager.shared.theme
-        var isFromCriptext = value.contains(Constants.domain)
+        var isFromCriptext = value.contains(Env.domain)
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
         
@@ -336,7 +336,7 @@ extension ComposerUIView: CLTokenInputViewDelegate {
         }
         
         guard text.contains("@") else {
-            addToken(display: "\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)", view: view)
+            addToken(display: "\(text)\(Env.domain)", value: "\(text)\(Env.domain)", view: view)
             return
         }
         if Utils.validateEmail(text) {

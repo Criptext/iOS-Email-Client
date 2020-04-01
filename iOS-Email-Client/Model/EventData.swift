@@ -96,7 +96,7 @@ class EventData {
         
         init(params: [String: Any]){
             var recipientId = params["from"] as! String
-            var domain = Constants.domain
+            var domain = Env.plainDomain
             if let fromObject = params["fromDomain"] as? [String: Any] {
                 recipientId = fromObject["recipientId"] as! String
                 domain = fromObject["domain"] as! String

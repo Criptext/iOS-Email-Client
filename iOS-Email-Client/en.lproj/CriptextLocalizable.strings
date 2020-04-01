@@ -59,6 +59,7 @@
 "VALID_EMAIL_CONDITION" = "At least 3 characters. Must begin with letters A-Z.";
 "USERNAME_EXISTS" = "Username already exists";
 "ENTER_NAME" = "please enter your name";
+"ENTER_RECOVERY_EMAIL" = "A recovery email is required!";
 "PASSWORD_LENGTH" = "password must be at least 8 characters";
 "PASSWORD_NOT_MATCH" = "Passwords don't match";
 "NOT_VALID_EMAIL" = "this is not a valid email";

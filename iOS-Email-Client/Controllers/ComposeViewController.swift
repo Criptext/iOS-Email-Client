@@ -906,7 +906,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
             
             guard name.contains("@") else {
-                addToken("\(name)\(Constants.domain)", value: "\(name)\(Constants.domain)".lowercased(), to: view)
+                addToken("\(name)\(Env.domain)", value: "\(name)\(Env.domain)".lowercased(), to: view)
                 return
             }
             if Utils.validateEmail(name) {
@@ -957,7 +957,7 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         guard text.contains("@") else {
-            addToken("\(text)\(Constants.domain)", value: "\(text)\(Constants.domain)".lowercased(), to: view)
+            addToken("\(text)\(Env.domain)", value: "\(text)\(Env.domain)".lowercased(), to: view)
             return
         }
         if Utils.validateEmail(text) {
@@ -1062,8 +1062,8 @@ extension ComposeViewController: CNContactPickerDelegate {
         guard value.contains("@") else {
             let textColor = UIColor(red: 0, green:0.23, blue: 0.41, alpha: 1.0)
             let bgColor = UIColor(red: 0.90, green:0.96, blue: 1.0, alpha: 1.0)
-            let valueObject = NSString(string: "\(value)\(Constants.domain)")
-            let token = CLToken(displayText: "\(value)\(Constants.domain)", context: valueObject)
+            let valueObject = NSString(string: "\(value)\(Env.domain)")
+            let token = CLToken(displayText: "\(value)\(Env.domain)", context: valueObject)
             view.add(token, highlight: textColor, background: bgColor)
             return
         }
@@ -1071,7 +1071,7 @@ extension ComposeViewController: CNContactPickerDelegate {
             self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
             return
         }
-        var isFromCriptext = value.contains(Constants.domain)
+        var isFromCriptext = value.contains(Env.domain)
         let valueObject = NSString(string: value)
         let token = CLToken(displayText: display, context: valueObject)
         if(Utils.validateEmail(value)){

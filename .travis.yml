@@ -1,7 +1,7 @@
 os: osx
-osx_image: xcode11.2
+osx_image: xcode11.1
 language: swift
-xcode_destination: platform=iOS Simulator,OS=13.2,name=iPhone X
+xcode_destination: platform=iOS Simulator,OS=11.2,name=iPhone X
 warnings_are_errors: false
 
 cache:
@@ -14,10 +14,10 @@ before_install:
   - brew outdated carthage || brew upgrade carthage
 
 before_script:
-  - sh ./scripts/intelligent-bootstrap.sh
   - sh ./scripts/firebase.sh
+  - sh ./scripts/intelligent-bootstrap.sh
 
-script: xcodebuild clean build test -project iOS-Email-Client.xcodeproj -scheme iOS-Email-Client -sdk iphonesimulator -quiet ONLY_ACTIVE_ARCH=NO
+script: xcodebuild clean build test -project iOS-Email-Client.xcodeproj -destination 'platform=iOS Simulator,name=iPhone X,OS=11.2' -scheme iOS-Email-Client -sdk iphonesimulator -quiet ONLY_ACTIVE_ARCH=NO
 
 notifications:
   email: false

@@ -59,6 +59,7 @@
 "VALID_EMAIL_CONDITION" = "не менее 3 букв, начало/конец с a-z, действительно 0-9,. _ -";
 "USERNAME_EXISTS" = "Имя пользователя уже существует";
 "ENTER_NAME" = "пожалуйста, введите ваше имя";
+"ENTER_RECOVERY_EMAIL" = "A recovery email is required!";
 "PASSWORD_LENGTH" = "пароль должен содержать не менее 8 символов";
 "PASSWORD_NOT_MATCH" = "Пароли не совпадают";
 "NOT_VALID_EMAIL" = "это недействительный адрес электронной почты";
