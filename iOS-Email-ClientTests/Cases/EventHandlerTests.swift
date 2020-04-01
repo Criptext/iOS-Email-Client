@@ -22,11 +22,14 @@ class EventHandlerTests: XCTestCase {
         """
     
     override func setUp() {
-        DBManager.destroy()
         DBManager.createSystemLabels()
         
         myAccount = DBFactory.createAndStoreAccount(username: "test", deviceId: 1, name: "Test")
         FileUtils.deleteAccountDirectory(account: myAccount)
+    }
+    
+    override func tearDown() {
+        DBManager.destroy()
     }
     
     @discardableResult func createExistingEmail() -> Email {

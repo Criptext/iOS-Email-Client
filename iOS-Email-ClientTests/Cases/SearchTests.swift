@@ -49,6 +49,10 @@ class SearchTests: XCTestCase {
         DBFactory.createAndStoreEmailContact(email: email5, contact: contact1, type: "to")
     }
     
+    override func tearDown() {
+        DBManager.destroy()
+    }
+    
     func testEncryptedAndDecryptMessageSuccessfully() {
         let searchText = "test A"
         let threadResults = DBManager.getThreads(since: Date(), searchParam: searchText, account: self.account)

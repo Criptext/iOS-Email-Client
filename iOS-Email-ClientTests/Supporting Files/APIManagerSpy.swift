@@ -24,12 +24,12 @@ class APIManagerSpy: APIManager {
     }
     
     override class func postMailRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
-        handleExpectation(params: params)
         completion(ResponseData.SuccessDictionary([
             "metadataKey": 1,
             "messageId": "<message_id>",
             "threadId": "<thread_id>"
         ]))
+        handleExpectation(params: params)
     }
     
     class func handleExpectation(params: [String: Any]) {

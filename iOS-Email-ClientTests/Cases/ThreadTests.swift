@@ -42,6 +42,10 @@ class ThreadTests: XCTestCase {
         DBFactory.createAndStoreEmailContact(email: email3, contact: contact4, type: "to")
     }
     
+    override func tearDown() {
+        DBManager.destroy()
+    }
+    
     func testBuildThreadParticipants() {
         DBManager.refresh()
         guard let thread = DBManager.getThread(threadId: "1", label: SystemLabel.all.id, account: account) else {
