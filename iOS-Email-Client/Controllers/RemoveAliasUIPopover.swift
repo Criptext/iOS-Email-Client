@@ -72,8 +72,8 @@ class RemoveAliasUIPopover: BaseUIPopover {
                 self.logout(account: self.myAccount)
                 return
             }
-            if case .BadRequest = responseData {
-                self.setFailContent(message: String.localize("ALIASES_DELETE_ERROR_UNABLE"))
+            if case let .PreConditionRequired(daysLeft) = responseData {
+                self.setFailContent(message: String.localize("ALIASES_DELETE_ERROR_UNABLE", arguments: daysLeft.description))
                 return
             }
             guard case .Success = responseData else {
