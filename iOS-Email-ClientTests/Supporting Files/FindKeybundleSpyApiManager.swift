@@ -19,7 +19,8 @@ class FindKeybundleSpyApiManager: APIManager {
         completion(ResponseData.SuccessDictionary([
             "keyBundles": [[String: Any]](),
             "blacklistedKnownDevices": [[String: Any]](),
-            "guestDomains": [String]()
+            "guestDomains": [String](),
+            "addresses": [[String: Any]]()
             ]))
         handleExpectation(params: params)
     }

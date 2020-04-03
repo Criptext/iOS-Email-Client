@@ -546,6 +546,6 @@ class SharedDB {
     
     class func getAlias(username: String, domain: String?, account: Account) -> Alias? {
         let realm = try! Realm()
-        return realm.objects(Alias.self).filter("name == %@ AND domainName == %@ AND account.compoundKey == %@", username, domain, account.compoundKey).first
+        return realm.objects(Alias.self).filter("name == %@ AND domain == %@ AND account.compoundKey == %@", username, domain, account.compoundKey).first
     }
 }
