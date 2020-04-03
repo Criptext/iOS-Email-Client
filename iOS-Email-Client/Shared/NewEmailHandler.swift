@@ -202,9 +202,12 @@ class NewEmailHandler {
         let err = tryBlock {
             trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
-        if let error = err as? Error {
-            print(error)
-            Crashlytics.sharedInstance().recordError(error)
+        if let error = err {
+            let payload = [
+                "name": error.name.rawValue,
+                "reason": error.reason ?? "Unknown Signal Error"
+                ] as [String : Any]
+            Crashlytics.sharedInstance().recordError(CriptextError(message: error.name.rawValue), withAdditionalUserInfo: payload)
         }
         return trueBody
     }
