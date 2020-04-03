@@ -460,7 +460,7 @@
 "ALIASES_DELETE" = "Eliminar Alias";
 "ALIASES_DELETE_DESC" = "Si eliminas este alias tus correos permanecerán intactos, pero no podrás enviar ni recibir correos a esa dirección.\n\nEstás seguro que quieres eliminar %@?";
 "ALIASES_DELETE_ERROR_TITLE" = "Ups...";
-"ALIASES_DELETE_ERROR_UNABLE" = "Aliases que terminan en @criptext.com no pueden ser eliminados los primeros 15 días desde su creación.";
+"ALIASES_DELETE_ERROR_UNABLE" = "Aliases que terminan en @criptext.com no pueden ser eliminados los primeros 15 días desde su creación.\n\nDías restantes: %@";
 "ALIASES_DELETE_ERROR_UNKNOWN" = "Error desconocido. Por favor intenta de nuevo";
 "NEXT" = "Siguiente";
 "DELETE_DOMAIN" = "Remover Dominio";

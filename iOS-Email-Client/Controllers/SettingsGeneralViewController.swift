@@ -227,6 +227,7 @@ class SettingsGeneralViewController: UIViewController{
         let domain = CustomDomain()
         domain.name = domainName
         domain.validated = domainVerified == 1 ? true : false
+        domain.account = account
         
         let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
         

@@ -427,13 +427,13 @@ class SendMailAsyncTask {
                         ] as [String : Any])
                     continue
                 }
-                let aliasUsername = username
                 let originalUsername = recipientId.contains("@") ? recipientId.split(separator: "@").first!.description : recipientId
                 criptextEmailData.append([
                     "type": contactType,
                     "username": originalUsername,
                     "domain": domainToSend,
-                    "alias": aliasUsername,
+                    "aliasUsername": username,
+                    "aliasDomain": domain,
                     "emails": emailsData
                     ] as [String : Any])
             }

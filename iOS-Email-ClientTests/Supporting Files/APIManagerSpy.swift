@@ -19,7 +19,8 @@ class APIManagerSpy: APIManager {
         completion(ResponseData.SuccessDictionary([
             "keyBundles": [[String: Any]](),
             "blacklistedKnownDevices": [[String: Any]](),
-            "guestDomains": [String]()
+            "guestDomains": [String](),
+            "addresses": [[String: Any]]()
         ]))
     }
     
