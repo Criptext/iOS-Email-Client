@@ -55,7 +55,7 @@
 "USERNAME_NOT" = "Der Benutzername existiert nicht";
 "TOO_MANY_DEVICES" = "Zu viele Geräte sind bereits angemeldet.";
 "FALLBACK_ERROR" = "Benutzer kann nicht validiert werden. Bitte versuchen Sie es erneut";
-"RECOVERY_OPT" = "Wiederherstellungs-E-Mail (optional)";
+"RECOVERY_OPT" = "Wiederherstellungs-E-Mail";
 "VALID_EMAIL_CONDITION" = "Mindestens 3 Buchstaben, Start/Ende mit a-z, gültig 0-9, . _ - -";
 "USERNAME_EXISTS" = "Benutzername existiert bereits";
 "ENTER_NAME" = "Bitte geben Sie Ihren Namen ein";

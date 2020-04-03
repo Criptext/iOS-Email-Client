@@ -55,7 +55,7 @@
 "USERNAME_NOT" = "Nombre de Usuario no existe";
 "TOO_MANY_DEVICES" = "Demasiados dispositivos autorizados.";
 "FALLBACK_ERROR" = "No se puede validar al usuario. Inténtalo de nuevo";
-"RECOVERY_OPT" = "Email de Confirmación (opcional)";
+"RECOVERY_OPT" = "Email de Confirmación";
 "VALID_EMAIL_CONDITION" = "Al menos 3 caracteres. Debe comenzar con las letras A-Z.";
 "USERNAME_EXISTS" = "Usuario ya existente";
 "ENTER_NAME" = "Introduce tu nombre";

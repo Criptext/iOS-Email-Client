@@ -55,7 +55,7 @@
 "USERNAME_NOT" = "Username does not exist";
 "TOO_MANY_DEVICES" = "Too many devices already logged in.";
 "FALLBACK_ERROR" = "Unable to validate user. Please try again";
-"RECOVERY_OPT" = "Recovery Email (Optional)";
+"RECOVERY_OPT" = "Recovery Email";
 "VALID_EMAIL_CONDITION" = "At least 3 characters. Must begin with letters A-Z.";
 "USERNAME_EXISTS" = "Username already exists";
 "ENTER_NAME" = "please enter your name";

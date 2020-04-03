@@ -55,7 +55,7 @@
 "USERNAME_NOT" = "Le nom d'utilisateur n'existe pas";
 "TOO_MANY_DEVICES" = "Trop de dispositifs connectés.";
 "FALLBACK_ERROR" = "Validation de l'utilisateur impossible. Veuillez réessayer";
-"RECOVERY_OPT" = "Email de Récupération (facultatif)";
+"RECOVERY_OPT" = "Email de Récupération";
 "VALID_EMAIL_CONDITION" = "min. 3 lettres, commence/termine par a-z, 0-9 valide, . _ -";
 "USERNAME_EXISTS" = "Le nom d'utilisateur existe déjà";
 "ENTER_NAME" = "veuillez saisir votre nom";
