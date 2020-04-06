@@ -154,11 +154,9 @@ class ShareViewController: UIViewController {
     }
     
     func getAccount() {
-        let defaults = CriptextDefaults()
-        guard let accountId = defaults.activeAccount,
-            let account = SharedDB.getAccountById(accountId) else {
-                self.close()
-                return
+        guard let account = SharedDB.getActiveAccount() else {
+            self.close()
+            return
         }
         myAccount = account
     }

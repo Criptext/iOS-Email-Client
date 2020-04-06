@@ -175,7 +175,6 @@ class CreatingAccountViewController: UIViewController{
         myContact.email = "\(myAccount.username)\(Env.domain)"
         DBManager.store([myContact], account: myAccount)
         let defaults = CriptextDefaults()
-        defaults.activeAccount = myAccount.compoundKey
         if signupData.deviceId != 1 {
             defaults.welcomeTour = true
         }
@@ -185,7 +184,7 @@ class CreatingAccountViewController: UIViewController{
             if self.multipleAccount {
                 self.goBackToMailbox(account: myAccount, showRestore: !hasEmails)
             } else {
-                self.goToMailbox(myAccount.compoundKey, showRestore: !hasEmails)
+                self.goToMailbox(myAccount, showRestore: !hasEmails)
             }
         }
     }
@@ -212,7 +211,7 @@ class CreatingAccountViewController: UIViewController{
         self.present(alert, animated: true, completion: nil)
     }
     
-    func goToMailbox(_ activeAccount: String, showRestore: Bool){
+    func goToMailbox(_ activeAccount: Account, showRestore: Bool){
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }

@@ -120,8 +120,7 @@ class ComposeViewController: UIViewController {
         let textField = UITextField.appearance(whenContainedInInstancesOf: [CLTokenInputView.self])
         textField.font = Font.regular.size(14)
         
-        let defaults = CriptextDefaults()
-        activeAccount = DBManager.getAccountById(defaults.activeAccount!)
+        activeAccount = DBManager.getActiveAccount()
         fileManager.myAccount = activeAccount
         
         let sendImage = Icon.send.image?.tint(with: .white)

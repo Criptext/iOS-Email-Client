@@ -39,6 +39,11 @@ class SharedDB {
         return realm.objects(Account.self).first
     }
     
+    class func getActiveAccount() -> Account? {
+        let realm = try! Realm()
+        return realm.objects(Account.self).filter("isActive == true AND isLoggedIn == true").first
+    }
+    
     class func getAccountById(_ id: String) -> Account? {
         let realm = try? Realm()
         
@@ -180,7 +185,7 @@ class SharedDB {
         let MAX_ADDRESS_LENGTH = 320
         let query = text.count > 320 ? String(text.prefix(MAX_ADDRESS_LENGTH)) : text
         
-        let predicate = NSPredicate(format: "email contains[c] '\(query)' OR displayName contains[c] '\(query)'")
+        let predicate = NSPredicate(format: "email contains[c] %@ OR displayName contains[c] %@", query, query)
         let results = realm.objects(Contact.self).filter(predicate).sorted(byKeyPath: "score", ascending: false)
         
         return Array(results)

@@ -34,8 +34,6 @@ class CreateCustomJSONFileTests: XCTestCase {
         super.setUp()
         
         self.account = DBFactory.createAndStoreAccount(username: "test", deviceId: 1, name: "Test")
-        let defaults = CriptextDefaults()
-        defaults.activeAccount = account.compoundKey
         
         let newLabel = Label("Test 1")
         newLabel.id = 1
@@ -95,8 +93,6 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        let defaults = CriptextDefaults()
-        defaults.removeConfig()
         DBManager.destroy()
     }
     
