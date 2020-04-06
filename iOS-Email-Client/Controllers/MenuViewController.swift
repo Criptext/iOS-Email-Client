@@ -124,9 +124,10 @@ class MenuViewController: UIViewController{
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.email
         avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.domain ?? Env.plainDomain)/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
-            if error != nil {
+            if error != nil,
+                !myAccount.isInvalidated {
                 self.avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
-            }else{
+            } else {
                 self.avatarImage.contentMode = .scaleAspectFill
                 self.avatarImage.layer.masksToBounds = false
                 self.avatarImage.layer.cornerRadius = self.avatarImage.frame.size.width / 2
@@ -230,7 +231,9 @@ class MenuViewController: UIViewController{
                 weakSelf.accountsTableView.reloadData()
                 weakSelf.accountsCollectionView.reloadData()
             }
-            weakSelf.mailboxVC.circleBadgeView.isHidden = !weakSelf.menuData.accountBadge.contains(where: {$0.value > 0})
+            if (weakSelf.mailboxVC != nil) {
+                weakSelf.mailboxVC.circleBadgeView.isHidden = !weakSelf.menuData.accountBadge.contains(where: {$0.value > 0})
+            }
         }
     }
     

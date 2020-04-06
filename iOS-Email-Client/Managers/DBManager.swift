@@ -71,6 +71,11 @@ class DBManager: SharedDB {
         }
     }
     
+    class func getActiveAccounts() -> Results<Account> {
+        let realm = try! Realm()
+        return realm.objects(Account.self).filter("isActive == true AND isLoggedIn == true")
+    }
+    
     class func getInactiveAccounts() -> Results<Account> {
         let realm = try! Realm()
         return realm.objects(Account.self).filter("isActive == false AND isLoggedIn == true")
