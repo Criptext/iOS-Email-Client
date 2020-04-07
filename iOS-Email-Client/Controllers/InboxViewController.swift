@@ -1999,10 +1999,8 @@ extension InboxViewController {
     
     func swapAccount(_ account: Account) {
         loadViewIfNeeded()
-        let defaults = CriptextDefaults()
         DBManager.swapAccount(current: self.myAccount, active: account)
         self.myAccount = account
-        defaults.activeAccount = account.compoundKey
         WebSocketManager.sharedInstance.connect(accounts: [account])
         self.invalidateObservers()
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)

@@ -58,8 +58,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
             return
         }
         let defaults = CriptextDefaults()
-        guard let accountId = defaults.activeAccount,
-            let account = SharedDB.getAccountById(accountId) else {
+        guard let account = SharedDB.getActiveAccount() else {
                 return
         }
         forceOut(account: account, manually: false, message: String.localize("MAX_PIN_ACCOUNT_DELETE"))
@@ -95,8 +94,7 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     
     func confirmLogout(){
         let defaults = CriptextDefaults()
-        guard let accountId = defaults.activeAccount,
-            let account = SharedDB.getAccountById(accountId) else {
+        guard let account = SharedDB.getActiveAccount() else {
             self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("RESTART_APP"), style: .alert)
             return
         }

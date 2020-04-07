@@ -431,11 +431,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = ThemeManager.shared.theme.criptextBlue
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
                 
-        if let activeAccount = defaults.activeAccount {
+        if let myAccount = DBManager.getActiveAccount() {
             //Go to inbox
-            initialVC = initMailboxRootVC(launchOptions, activeAccount)
+            initialVC = initMailboxRootVC(launchOptions, myAccount)
             BackupManager.shared.checkAccounts()
-        }else{
+        } else if DBManager.getLoggedAccounts().count > 0 {
+            //Go to inbox
+            let loggedAccounts = DBManager.getLoggedAccounts()
+            initialVC = initMailboxRootVC(launchOptions, loggedAccounts.first!)
+            BackupManager.shared.checkAccounts()
+        } else {
             //Go to login
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let loginVC = storyboard.instantiateInitialViewController()!
@@ -535,8 +540,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WebSocketManager.sharedInstance.delegate = nil
         if let activateAccount = DBManager.getInactiveAccounts().first,
             let inboxVC = getInboxVC() {
-            let defaults = CriptextDefaults()
-            defaults.activeAccount = activateAccount.compoundKey
             DBManager.activateAccount(activateAccount)
             inboxVC.swapAccount(activateAccount)
             inboxVC.dismiss(animated: true)
@@ -577,8 +580,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func swapAccount(account: Account, showRestore: Bool = false) {
-        let defaults = CriptextDefaults()
-        defaults.activeAccount = account.compoundKey
         guard let inboxVC = getInboxVC() else {
             return
         }
@@ -593,8 +594,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
     }
     
-    func initMailboxRootVC(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?, _ activeAccount: String, showRestore: Bool = false) -> UIViewController{
-        let myAccount = DBManager.getAccountById(activeAccount)!
+    func initMailboxRootVC(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?, _ myAccount: Account, showRestore: Bool = false) -> UIViewController{
         let accounts = DBManager.getLoggedAccounts()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController
@@ -663,9 +663,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        let defaults = CriptextDefaults()
-        guard let accountId = defaults.activeAccount,
-            let activeAccount = DBManager.getAccountById(accountId) else {
+        guard let activeAccount = DBManager.getActiveAccount() else {
             return
         }
         if(shouldSendResumeEvent){
@@ -837,9 +835,7 @@ extension AppDelegate: MessagingDelegate {
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        let defaults = CriptextDefaults()
-        guard defaults.hasActiveAccount,
-            let inboxVC = getInboxVC() else {
+        guard let inboxVC = getInboxVC() else {
             return
         }
         inboxVC.registerToken(fcmToken: fcmToken)

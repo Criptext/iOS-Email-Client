@@ -37,6 +37,12 @@ class CriptextFileManager {
         return overallSize + addedSize <= MAX_SIZE
     }
     
+    enum MergeResult {
+        case success
+        case notFound
+        case unableToMerge
+    }
+    
     @discardableResult func registerFile(filepath: String, name: String, mimeType: String) -> Bool {
         guard let fileAttributes = try? FileManager.default.attributesOfItem(atPath: filepath) else {
             return false
@@ -247,15 +253,15 @@ class CriptextFileManager {
         }
     }
     
-    private func mergeFileChunks(filetoken: String) -> Bool {
+    private func mergeFileChunks(filetoken: String) -> MergeResult {
         guard let file = registeredFiles.first(where: {$0.token == filetoken}) else {
-            return false
+            return .notFound
         }
         let fileURL = CriptextFileManager.getURLForFile(name: file.name)
         try? FileManager.default.removeItem(at: fileURL)
         for part in 1...file.chunksProgress.count {
             guard let chunk = getChunk(file: file, part: part) else {
-                return false
+                return .notFound
             }
             if FileManager.default.fileExists(atPath: fileURL.path) {
                 let fileHandle = try! FileHandle(forUpdating: fileURL)
@@ -263,11 +269,15 @@ class CriptextFileManager {
                 fileHandle.write(chunk)
                 fileHandle.closeFile()
             } else {
-                try! chunk.write(to: fileURL, options: Data.WritingOptions.atomic)
+                do {
+                    try chunk.write(to: fileURL, options: Data.WritingOptions.atomic)
+                } catch {
+                    return .unableToMerge
+                }
             }
         }
         file.filepath = fileURL.path
-        return true
+        return .success
     }
     
     private func getChunk(file: File, part: Int) -> Data? {
@@ -298,10 +308,13 @@ class CriptextFileManager {
             return
         }
         let result = self.mergeFileChunks(filetoken: filetoken)
-        if result {
-            self.delegate?.finishRequest(file: file, success: true)
-        } else {
-            self.delegate?.fileError(message: String.localize("FILE_NOT_FOUND", arguments: file.name))
+        switch result {
+            case .success:
+                self.delegate?.finishRequest(file: file, success: true)
+            case .notFound:
+                self.delegate?.fileError(message: String.localize("FILE_NOT_FOUND", arguments: file.name))
+            case .unableToMerge:
+                self.delegate?.fileError(message: String.localize("FILE_NOT_MERGED", arguments: file.name))
         }
     }
     

@@ -428,6 +428,7 @@
 "CONTACT_SUPPORT" = "Contacter le support";
 "SYNC_WARNING_MESSAGE" = "Ne quittez pas l'application et n'éteignez pas votre écran pendant ce processus";
 "FILE_NOT_FOUND" = "Fichier %s non trouvé";
+"FILE_NOT_MERGED" = "Unable to process File %s";
 "CONTENT_UNENCRYPTED" = "Contenu non crypté";
 "FOOTER" = "Montrer “Envoyé avec Criptext”";
 "MARK_FROM_HERE" = "Marquer comme non lu à partir d'ici";

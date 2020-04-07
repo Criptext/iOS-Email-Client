@@ -21,17 +21,15 @@ class ComposerViewControllerTests: XCTestCase {
         account.username = "myself"
         account.deviceId = 1
         account.jwt = "<test_jwt>"
+        account.isActive = true
+        account.isLoggedIn = true
         account.buildCompoundKey()
         DBManager.store(account)
         self.account = account
-        let defaults = CriptextDefaults()
-        defaults.activeAccount = account.compoundKey
     }
     
     override func tearDown() {
-        super.tearDown()
-        
-        CriptextDefaults().removeConfig()
+        super.tearDown()        
         DBManager.destroy()
     }
     

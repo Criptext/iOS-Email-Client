@@ -98,7 +98,7 @@ class ConnectDeviceViewController: UIViewController{
             dismiss(animated: true, completion: nil)
             return
         }
-        goToMailbox(myAccount.compoundKey)
+        goToMailbox(myAccount)
     }
     
     func cleanData(){
@@ -196,7 +196,7 @@ class ConnectDeviceViewController: UIViewController{
                 if self.multipleAccount {
                     self.goBackToMailbox(account: myAccount)
                 } else {
-                    self.goToMailbox(myAccount.compoundKey)
+                    self.goToMailbox(myAccount)
                 }
                 self.registerFirebaseToken(jwt: myAccount.jwt)
             }
@@ -219,7 +219,6 @@ class ConnectDeviceViewController: UIViewController{
         DBManager.store([myContact], account: myAccount)
         DBManager.createSystemLabels()
         let defaults = CriptextDefaults()
-        defaults.activeAccount = myAccount.compoundKey
         defaults.welcomeTour = true
     }
     
@@ -233,7 +232,7 @@ class ConnectDeviceViewController: UIViewController{
         delegate.swapAccount(account: account)
     }
     
-    func goToMailbox(_ activeAccount: String){
+    func goToMailbox(_ activeAccount: Account){
         self.socket?.close()
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
             return

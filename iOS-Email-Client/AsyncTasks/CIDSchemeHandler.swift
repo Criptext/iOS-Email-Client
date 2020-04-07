@@ -22,7 +22,7 @@ class CIDSchemeHandler : NSObject,WKURLSchemeHandler {
     override init() {
         super.init()
         fileManager.delegate = self
-        activeAccount = DBManager.getAccountById(defaults.activeAccount!)
+        activeAccount = DBManager.getActiveAccount()
         fileManager.myAccount = activeAccount
     }
     

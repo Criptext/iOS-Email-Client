@@ -68,11 +68,11 @@ class NotificationService: UNNotificationServiceExtension {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
         let defaults = CriptextDefaults()
-        if let activeAccount = defaults.activeAccount,
+        if let activeAccount = SharedDB.getActiveAccount(),
             let contentHandler = contentHandler,
             let bestAttemptContent =  bestAttemptContent {
             bestAttemptContent.categoryIdentifier = "GENERIC_PUSH"
-            bestAttemptContent.title = Utils.validateEmail(activeAccount) ? activeAccount : "\(activeAccount)\(Env.domain)"
+            bestAttemptContent.title = activeAccount.email
             bestAttemptContent.body = String.localize("You may have new emails")
             bestAttemptContent.badge = NSNumber(value: SharedDB.getUnreadCounters() + 1)
             contentHandler(bestAttemptContent)

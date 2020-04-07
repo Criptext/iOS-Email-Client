@@ -428,6 +428,7 @@
 "CONTACT_SUPPORT" = "Contact Support";
 "SYNC_WARNING_MESSAGE" = "Do not leave the app or turn off your screen while this process is happening";
 "FILE_NOT_FOUND" = "File %s not found";
+"FILE_NOT_MERGED" = "Unable to process File %s";
 "CONTENT_UNENCRYPTED" = "Content Unencrypted";
 "FOOTER" = "Show “Sent with Criptext”";
 "MARK_FROM_HERE" = "Mark as Unread from here";

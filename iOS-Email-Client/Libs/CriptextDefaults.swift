@@ -85,20 +85,6 @@ class CriptextDefaults {
     }
     
     //SHARED DEFAULTS
-    
-    var hasActiveAccount: Bool {
-        return groupDefaults.string(forKey: "activeAccount") != nil
-    }
-    
-    var activeAccount: String? {
-        get {
-            return groupDefaults.string(forKey: "activeAccount")
-        }
-        set (value) {
-            groupDefaults.set(value, forKey: "activeAccount")
-        }
-    }
-    
     var hasPIN : Bool {
         return groupDefaults.string(forKey: PIN.lock.rawValue) != nil
     }
@@ -214,16 +200,12 @@ class CriptextDefaults {
 }
 
 extension CriptextDefaults {
-    func removeActiveAccount(){
-        groupDefaults.removeObject(forKey: "activeAccount")
-    }
     
     func removePasscode() {
         groupDefaults.removeObject(forKey: PIN.lock.rawValue)
     }
     
     func removeConfig() {
-        groupDefaults.removeObject(forKey: "activeAccount")
         groupDefaults.removeObject(forKey: PIN.lock.rawValue)
         groupDefaults.removeObject(forKey: PIN.fingerprint.rawValue)
         groupDefaults.removeObject(forKey: PIN.faceid.rawValue)
@@ -240,11 +222,6 @@ extension CriptextDefaults {
     }
     
     func migrate(){
-        if let activeAccount = defaults.string(forKey: "activeAccount"),
-            groupDefaults.string(forKey: "activeAccount") == nil {
-            defaults.removeObject(forKey: "activeAccount")
-            groupDefaults.setValue(activeAccount, forKey: "activeAccount")
-        }
         if let pin = defaults.string(forKey: PIN.lock.rawValue) {
             let fingerprint = defaults.bool(forKey: PIN.fingerprint.rawValue)
             let faceid = defaults.bool(forKey: PIN.faceid.rawValue)

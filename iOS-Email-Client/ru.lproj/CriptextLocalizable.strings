@@ -428,6 +428,7 @@
 "CONTACT_SUPPORT" = "Связаться со службой поддержки";
 "SYNC_WARNING_MESSAGE" = "Не покидайте приложение и не выключайте экран во время этого процесса";
 "FILE_NOT_FOUND" = "Файл %s не найден";
+"FILE_NOT_MERGED" = "Unable to process File %s";
 "CONTENT_UNENCRYPTED" = "Содержимое незашифрованное";
 "FOOTER" = "Шоу «Отправлено с криптекстом»";
 "MARK_FROM_HERE" = "Отметить как непрочитанное отсюда";
