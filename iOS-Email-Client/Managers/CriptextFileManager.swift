@@ -153,6 +153,9 @@ class CriptextFileManager {
     
     func handleFileTurn(){
         for file in registeredFiles.reversed() {
+            if (file.token.isEmpty) {
+                continue
+            }
             if(file.requestStatus == .pending){
                 startRequest(file.token)
                 break
