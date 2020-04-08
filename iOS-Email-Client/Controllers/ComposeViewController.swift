@@ -110,6 +110,7 @@ class ComposeViewController: UIViewController {
     var composerEditorHeight: CGFloat = 0.0
     
     var checkedDomains: [String: Bool] = Utils.defaultDomains
+    var inputFailed: [CLTokenInputView: Bool] = [:]
     
     var accountOptionsInterface: AccountOptionsInterface!
     
@@ -901,25 +902,14 @@ extension ComposeViewController: CLTokenInputViewDelegate {
             return
         }
         
-        if input.contains(",") || input.contains(" ") {
-            let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
-            
-            guard name.contains("@") else {
-                addToken("\(name)\(Env.domain)", value: "\(name)\(Env.domain)".lowercased(), to: view)
-                return
-            }
-            if Utils.validateEmail(name) {
-                addToken(name, value: name.lowercased(), to: view)
-            } else {
-                self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
-            }
-        }
+        handleRecipientsInput(input: input, tokenView: view, onExit: false)
         
-        self.contactTableView.isHidden = (view.text?.isEmpty)!
-        self.toolbarHeightConstraint.constant = (view.text?.isEmpty)! ? self.toolbarHeightConstraintInitialValue! : 0
-        self.toolbarView.isHidden = (view.text?.isEmpty)! ? false : true
+        let isInputEmpty = view.text?.isEmpty ?? true
+        self.contactTableView.isHidden = isInputEmpty
+        self.toolbarHeightConstraint.constant = isInputEmpty ? self.toolbarHeightConstraintInitialValue! : 0
+        self.toolbarView.isHidden = !isInputEmpty
         
-        if !(text?.isEmpty)! {
+        if !isInputEmpty {
             composerData.contactArray = DBManager.getContacts(text ?? "", account: self.activeAccount)
             self.contactTableView.isHidden = composerData.contactArray.isEmpty
             self.toolbarHeightConstraint.constant = composerData.contactArray.isEmpty ? self.toolbarHeightConstraintInitialValue! : 0
@@ -929,6 +919,60 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         }
         
         self.view.layoutIfNeeded()
+    }
+    
+    func handleRecipientsInput(input: String, tokenView: CLTokenInputView, onExit: Bool) {
+        guard input.count > 0 else {
+            inputFailed[tokenView] = false
+            return
+        }
+        
+        let hasFailed = inputFailed[tokenView] ?? false
+        let inputCondition = hasFailed ? (input.last == " " || input.last == ",") : input.contains(",") || input.contains(" ")
+        
+        guard onExit || inputCondition else {
+            return
+        }
+        
+        let inputText = input.replacingOccurrences(of: ",", with: "")
+        let recipients = inputText.split(separator: " ").map( {$0.description} )
+        
+        var invalidNames = ""
+        for recipient in recipients {
+            if !recipient.contains("@") {
+                addToken("\(recipient)\(Env.domain)", value: "\(recipient)\(Env.domain)".lowercased(), to: tokenView)
+            } else if Utils.validateEmail(recipient) {
+                addToken(recipient, value: recipient.lowercased(), to: tokenView)
+            } else {
+                if (invalidNames.isEmpty) {
+                    invalidNames = recipient
+                } else {
+                    invalidNames += " \(recipient)"
+                }
+            }
+        }
+        
+        inputFailed[tokenView] = !invalidNames.isEmpty
+        
+        guard !onExit else {
+            if !invalidNames.isEmpty {
+                self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
+            }
+            return
+        }
+        
+        if let lastCharacter = inputText.last,
+            !invalidNames.isEmpty && lastCharacter == " " {
+            if let lastCharacter = inputText.last,
+                !invalidNames.isEmpty && lastCharacter == " " {
+                self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
+            }
+        }
+        
+        if !invalidNames.isEmpty {
+            tokenView.text = invalidNames
+            tokenView.beginEditing()
+        }
     }
     
     func tokenInputViewDidBeginEditing(_ view: CLTokenInputView) {
@@ -951,19 +995,11 @@ extension ComposeViewController: CLTokenInputViewDelegate {
         checkEnableSendButton()
         self.contactTableView.isHidden = true
         
-        guard let text = view.text, text.count > 0 else {
+        guard let text = view.text else {
             return
         }
         
-        guard text.contains("@") else {
-            addToken("\(text)\(Env.domain)", value: "\(text)\(Env.domain)".lowercased(), to: view)
-            return
-        }
-        if Utils.validateEmail(text) {
-            addToken(text, value: text.lowercased(), to: view)
-        } else {
-            self.showAlert(String.localize("BAD_RECIPIENT"), message: String.localize("ENTER_VALID_EMAIL"), style: .alert)
-        }
+        handleRecipientsInput(input: text, tokenView: view, onExit: true)
     }
     
     func checkEnableSendButton() {
