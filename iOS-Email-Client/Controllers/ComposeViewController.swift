@@ -1228,6 +1228,17 @@ extension ComposeViewController: RichEditorDelegate {
             self.coachMarksController.start(in: presentationContext)
             defaults.guideAttachments = true
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            guard let focusPoint = (self.editorView as? RichEditorWrapperView)?.lastFocus else {
+                return
+            }
+            self.editorView.focus(at: focusPoint)
+        }
+    }
+    
+    func richEditorLostFocus(_ editor: RichEditorView) {
+        (editorView as? RichEditorWrapperView)?.lastFocus = nil
     }
 }
 

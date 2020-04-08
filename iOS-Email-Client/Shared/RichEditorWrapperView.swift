@@ -32,11 +32,5 @@ class RichEditorWrapperView: RichEditorView {
     
     @objc private func wasTapped() {
         lastFocus = tap.location(in: super.webView)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            guard let focusPoint = self.lastFocus else {
-                return
-            }
-            self.focus(at: focusPoint)
-        }
     }
 }
