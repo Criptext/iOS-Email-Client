@@ -34,6 +34,7 @@ class SharedAPI {
         case authPending = 491
         case authDenied = 493
         case tooManyDevices = 439
+        case preConditionRequired = 428
         case tooManyRequests = 429
         case preConditionFail = 412
         case entityTooLarge = 413
@@ -84,6 +85,12 @@ class SharedAPI {
             return .Conflicts
         case .success, .successAndRepeat, .successAccepted, .successNoContent, .notModified:
             break
+        case .preConditionRequired:
+            guard let resultObj = responseRequest.result.value as? [String: Any],
+                let daysLeft = resultObj["daysLeft"] as? Int else {
+                return .Error(CriptextError(message: responseRequest.result.description))
+            }
+            return .PreConditionRequired(daysLeft)
         case .preConditionFail:
             return .PreConditionFail
         case .enterpriseSuspended:

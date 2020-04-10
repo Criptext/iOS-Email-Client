@@ -27,6 +27,7 @@ enum ResponseData {
     case EntityTooLarge(Int64)
     case TooManyRequests(Int64)
     case ServerError
+    case PreConditionRequired(Int)
     case PreConditionFail
     case EnterpriseSuspended
 }

@@ -1070,7 +1070,7 @@ class APIManager: SharedAPI {
         let params = [
             "addressId": rowId
             ] as [String: Any]
-        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }

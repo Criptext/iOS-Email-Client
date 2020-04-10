@@ -461,7 +461,7 @@
 "ALIASES_DELETE" = "Delete Alias";
 "ALIASES_DELETE_DESC" = "If you delete this Alias your emails will remain intact, but you will no longer be able to send or receive emails under that address.\n\nAre you sure you want to delete %@?";
 "ALIASES_DELETE_ERROR_TITLE" = "Oops";
-"ALIASES_DELETE_ERROR_UNABLE" = "Aliases ending in @criptext.com cannot be deleted within 15 days from the day they were created.";
+"ALIASES_DELETE_ERROR_UNABLE" = "Aliases ending in @criptext.com cannot be deleted within 15 days from the day they were created.\n\nDays remaining: %@";
 "ALIASES_DELETE_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
 "NEXT" = "Next";
 "DELETE_DOMAIN" = "Delete Domain";
