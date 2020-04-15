@@ -209,7 +209,9 @@ class ComposeViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(didPressCancel(_:)))
         
         subjectField.text = composerData.initSubject
-        editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
+        var initContent = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
+
+        editorView.html = initContent
         
         fileManager.delegate = self
         if fileManager.registeredFiles.count > 0{
@@ -1218,6 +1220,16 @@ extension ComposeViewController: RichEditorDelegate {
         let theme = ThemeManager.shared.theme
         editorView.setEditorFontColor(theme.mainText)
         editorView.setEditorBackgroundColor(theme.overallBackground)
+        
+        let disableImages = """
+        document.addEventListener('paste', e => {
+            var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+            if (items[0] && items[0].kind === 'file') {
+                e.preventDefault();
+            }
+        });
+        """
+        let _ = editorView.webView.stringByEvaluatingJavaScript(from: disableImages)
     }
     
     func richEditorTookFocus(_ editor: RichEditorView) {
