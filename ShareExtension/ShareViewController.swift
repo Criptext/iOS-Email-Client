@@ -179,6 +179,9 @@ class ShareViewController: UIViewController {
 
 extension ShareViewController: ComposerDelegate {
     func typingRecipient(text: String) {
+        if text.isEmpty {
+            self.composerUIView.contactsTableView.isHidden = true
+        }
         contacts = SharedDB.getContacts(text, account: myAccount)
         self.composerUIView.contactsTableView.isHidden = contacts.isEmpty
         self.composerUIView.contactsTableView.reloadData()
