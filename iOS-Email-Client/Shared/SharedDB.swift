@@ -214,13 +214,9 @@ class SharedDB {
     }
     
     class func updateScore(contact: Contact){
-        do {
-            let realm = try Realm()
-            try realm.write {
-                contact.score = contact.score + 1
-            }
-        } catch {
-            
+        let realm = try! Realm()
+        try? realm.write {
+            contact.score = contact.score + 1
         }
     }
     

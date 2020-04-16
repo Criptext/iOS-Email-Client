@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Fabric
 import Crashlytics
 import Material
 import UserNotifications
@@ -92,7 +91,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Initialize sign-in
-        Fabric.with([Crashlytics.self])
         
         let realmURL = self.relocateDatabase()
         
@@ -595,6 +593,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func initMailboxRootVC(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?, _ myAccount: Account, showRestore: Bool = false) -> UIViewController{
+        Crashlytics.sharedInstance().recordError(CriptextError.init(message: "GG"), withAdditionalUserInfo: ["Test": "Test"] as [String: Any])
         let accounts = DBManager.getLoggedAccounts()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let rootVC = storyboard.instantiateViewController(withIdentifier: "InboxNavigationController") as! UINavigationController

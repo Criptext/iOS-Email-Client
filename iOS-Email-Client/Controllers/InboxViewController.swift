@@ -756,6 +756,9 @@ extension InboxViewController{
     }
     
     func updateBadges(){
+        guard !myAccount.isInvalidated else {
+            return
+        }
         let badgeGetterAsyncTask = GetBadgeCounterAsyncTask(accountId: myAccount.compoundKey, label: mailboxData.selectedLabel)
         badgeGetterAsyncTask.start { [weak self] (label, counter) in
             guard let weakSelf = self,
