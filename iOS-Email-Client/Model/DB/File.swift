@@ -62,6 +62,9 @@ class File : Object {
     
     class func getKeyAndIv(key: String) -> (Data, Data){
         let keys = key.split(separator: ":")
+        if (keys.count != 2) {
+            return (Data.init(), Data.init())
+        }
         return (Data(base64Encoded: String(keys[0]), options: .ignoreUnknownCharacters)!, Data(base64Encoded: String(keys[1]), options: .ignoreUnknownCharacters)!)
     }
     
