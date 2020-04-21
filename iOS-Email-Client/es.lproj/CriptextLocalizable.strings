@@ -496,3 +496,5 @@
 "VERIFY_DOMAIN" = "Validando Dominio";
 "VERIFY_DOMAIN_ERROR" = "Ingresaste %@ como tu dominio. Verifica que esto este correcto.\n\nTambién verifica que los DNS Records de tu dominio no estén vacíos.";
 "VERIFY_DOMAIN_MESSAGE" = "No cierres el app hasta que este proceso termine.";
+
+"PLUS_MEMBERSHIP" = "Billing";

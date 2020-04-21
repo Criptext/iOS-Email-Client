@@ -68,6 +68,8 @@ class EventHandler {
             result.linkStartData = linkData
         case .News(let feature):
             result.feature = feature
+        case .CustomerType(let newType):
+            result.newCustomerType = newType
         default:
             break
         }
@@ -141,6 +143,8 @@ class EventHandler {
             handleEventResponse(successfulEvent: true, result: .LinkData(linkData))
         case Event.Link.success.rawValue:
             finishCallback(rowId, .Empty)
+        case Event.Acc.customerType.rawValue:
+            handleAccountCustomerType(params: params, finishCallback: handleEventResponse)
         case Event.Peer.addressCreated.rawValue:
             handleAddressCreated(params: params, finishCallback: handleEventResponse)
         case Event.Peer.addressStatusUpdate.rawValue:
@@ -331,6 +335,17 @@ extension EventHandler {
         finishCallback(true, .UpdateProfilePic)
     }
     
+    func handleAccountCustomerType(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        let event = EventData.Acc.CustomerType.init(params: params)
+        let recipientId = event.domain == Env.plainDomain ? event.recipientId : "\(event.recipientId)@\(event.domain)"
+        guard let myAccount = DBManager.getAccountById(recipientId) else {
+            finishCallback(true, .Empty)
+            return
+        }
+        DBManager.update(account: myAccount, customerType: event.customerType)
+        finishCallback(true, .CustomerType(event.customerType))
+    }
+    
     func handleAddressCreated(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.AddressCreated.init(params: params)
@@ -469,6 +484,10 @@ enum Event: Int32 {
         case domainDeleted = 705
     }
     
+    enum Acc: Int32 {
+        case customerType = 700
+    }
+    
     enum Server: Int32 {
         case news = 401
     }
@@ -495,5 +514,6 @@ enum Event: Int32 {
         case Empty
         case News(MailboxData.Feature)
         case UpdateProfilePic
+        case CustomerType(Int)
     }
 }

@@ -1973,14 +1973,14 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="94"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="94.333335876464844"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="94.333335876464844"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                    <rect key="frame" x="300" y="39" width="16" height="16"/>
+                                                    <rect key="frame" x="300" y="39.333333333333336" width="16" height="16"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="16" id="6m0-09-ggS"/>
@@ -1988,7 +1988,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6n-ID-26a" userLabel="More Label Button">
-                                                    <rect key="frame" x="340" y="37" width="18" height="20"/>
+                                                    <rect key="frame" x="340" y="37.333333333333336" width="18" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="MBK-5z-3XB"/>
                                                         <constraint firstAttribute="height" constant="20" id="pgR-MU-Koc"/>
@@ -2000,13 +2000,13 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="276" height="94"/>
+                                                    <rect key="frame" x="27" y="0.0" width="276" height="94.333333333333329"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="94"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="94.333333333333329"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
-                                                                    <rect key="frame" x="2" y="44" width="6" height="6"/>
+                                                                    <rect key="frame" x="2" y="44.333333333333336" width="6" height="6"/>
                                                                     <color key="backgroundColor" red="0.0" green="1" blue="0.017805179300000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="6" id="LiT-aA-huk"/>
@@ -2027,7 +2027,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="254" height="94"/>
+                                                            <rect key="frame" x="22" y="0.0" width="254" height="94.333333333333329"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -3626,6 +3626,53 @@
             </objects>
             <point key="canvasLocation" x="25" y="1173"/>
         </scene>
+        <!--Membership Web View Controller-->
+        <scene sceneID="Bb8-ES-bPP">
+            <objects>
+                <viewController storyboardIdentifier="membershipViewController" id="BTJ-46-cfy" customClass="MembershipWebViewController" customModule="iOS_Email_Client" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QFr-Vq-kJF"/>
+                        <viewControllerLayoutGuide type="bottom" id="cdm-zy-3UR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Na5-ax-6nT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ago-Vo-qwN">
+                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="W4b-Nd-6fr">
+                                <rect key="frame" x="177.66666666666666" y="396" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="5Py-iS-mpr"/>
+                                    <constraint firstAttribute="height" constant="20" id="wlM-bC-dUR"/>
+                                </constraints>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ago-Vo-qwN" firstAttribute="leading" secondItem="Na5-ax-6nT" secondAttribute="leading" id="PTf-fC-6xm"/>
+                            <constraint firstItem="ago-Vo-qwN" firstAttribute="top" secondItem="QFr-Vq-kJF" secondAttribute="bottom" id="QbF-Xy-nEu"/>
+                            <constraint firstItem="W4b-Nd-6fr" firstAttribute="centerY" secondItem="Na5-ax-6nT" secondAttribute="centerY" id="XQU-UF-5I4"/>
+                            <constraint firstAttribute="trailing" secondItem="ago-Vo-qwN" secondAttribute="trailing" id="azk-Np-pXc"/>
+                            <constraint firstItem="W4b-Nd-6fr" firstAttribute="centerX" secondItem="Na5-ax-6nT" secondAttribute="centerX" id="bf9-Uy-23c"/>
+                            <constraint firstItem="cdm-zy-3UR" firstAttribute="top" secondItem="ago-Vo-qwN" secondAttribute="bottom" id="j5c-4m-sCJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="loaderView" destination="W4b-Nd-6fr" id="SZJ-AF-cXz"/>
+                        <outlet property="webview" destination="ago-Vo-qwN" id="CBZ-vj-JWg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eaC-JS-uz3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="912.79999999999995" y="1172.6600985221676"/>
+        </scene>
         <!--Custom Domain Controller Scene-->
         <scene sceneID="aoL-Oj-ejo">
             <objects>
@@ -4061,13 +4108,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Records for Criptext" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lZt-Eg-Gbe" userLabel="Title">
-                                <rect key="frame" x="27" y="68" width="321" height="20"/>
+                                <rect key="frame" x="27" y="68" width="321" height="23.333333333333329"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="17"/>
                                 <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qi-LN-zNZ" userLabel="Message One">
-                                <rect key="frame" x="27" y="103" width="285" height="74.666666666666686"/>
+                                <rect key="frame" x="27" y="106.33333333333334" width="284.66666666666669" height="87.333333333333343"/>
                                 <string key="text">Add the following records in your DNS Manager. This will verify your domain ownership and configure Criptext email settings. Need help? </string>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                                 <color key="textColor" red="0.42352941179999998" green="0.44705882349999998" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4095,7 +4142,7 @@
                                 </connections>
                             </button>
                             <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wpg-N6-evx" userLabel="Pages Container View">
-                                <rect key="frame" x="37.666666666666657" y="179.66666666666663" width="300" height="388"/>
+                                <rect key="frame" x="37.666666666666657" y="195.66666666666663" width="300" height="388"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBx-zp-6Wj" userLabel="One" customClass="MXRecordsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="15" y="21" width="269" height="309"/>

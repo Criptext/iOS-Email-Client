@@ -167,7 +167,7 @@ extension RegisterDomainStepThreeViewController: ScheduleWorkerDelegate {
     }
 }
 
-extension RegisterDomainStepThreeViewController: CustomTabsChildController {
+extension RegisterDomainStepThreeViewController {
     func reloadView() {
         self.applyTheme()
     }

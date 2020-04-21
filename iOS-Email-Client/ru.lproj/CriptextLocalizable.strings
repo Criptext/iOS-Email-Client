@@ -496,3 +496,5 @@
 "VERIFY_DOMAIN" = "Verifying Domain\nOwnership";
 "VERIFY_DOMAIN_ERROR" = "%@ is listed as your domain, make sure this is right; otherwise correct the domain on your Company Profile. Need help?\n\nAlso check that the DNS records on your domain are not empty; otherwise go back and add them from the previous steps.";
 "VERIFY_DOMAIN_MESSAGE" = "Do not close the app or put in the background until this process ends.";
+
+"PLUS_MEMBERSHIP" = "Billing";

@@ -220,7 +220,7 @@ class RegisterDomainStepTwoViewController: UIViewController {
     }
 }
 
-extension RegisterDomainStepTwoViewController: CustomTabsChildController {
+extension RegisterDomainStepTwoViewController {
     func reloadView() {
         self.applyTheme()
     }
