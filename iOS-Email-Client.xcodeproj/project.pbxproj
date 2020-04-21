@@ -132,9 +132,9 @@
 		7C394E7E210BD5DB00AE3297 /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
+		7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */; };
 		7C3C35D0243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */; };
 		7C3C35D1243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */; };
-		7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */; };
 		7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */; };
 		7C46BED72153F71E00282182 /* SingleWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED62153F71E00282182 /* SingleWebSocket.swift */; };
 		7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */; };
@@ -150,7 +150,6 @@
 		7C5322122111394000C78981 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C5322112111394000C78981 /* GoogleService-Info.plist */; };
 		7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */; };
 		7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
-		7C5E404020B706860027C61F /* CustomTabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5E403F20B706860027C61F /* CustomTabsController.swift */; };
 		7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */; };
 		7C5F38CE2448D5B600123452 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5F38CC2448D5B600123452 /* Crashlytics.framework */; };
 		7C5F38CF2448D5B600123452 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5F38CD2448D5B600123452 /* Fabric.framework */; };
@@ -167,6 +166,9 @@
 		7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C63AB5F205816470053219F /* UnsentUIPopover.swift */; };
 		7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69BADC20DC4A2E001ABD5B /* Thread.swift */; };
 		7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
+		7C6CA869244E12BF00181703 /* MembershipWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */; };
+		7C6CA86B244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6CA86A244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib */; };
+		7C6CA86D244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6CA86C244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift */; };
 		7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */; };
 		7C6DB468215173D0001B3749 /* GenericDualAnswerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */; };
 		7C6DB46B2152B910001B3749 /* LinkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB46A2152B910001B3749 /* LinkData.swift */; };
@@ -776,7 +778,6 @@
 		7C394E84210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+KeyPairOpenPrivate.m"; sourceTree = "<group>"; };
 		7C394E87210CC8E700AE3297 /* SendEmailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEmailData.swift; sourceTree = "<group>"; };
-		7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichEditorWrapperView.swift; sourceTree = "<group>"; };
 		7C3C35BB2432598A001A8C9F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MXRecordsUIView.xib; sourceTree = "<group>"; };
 		7C3C35BE2432598C001A8C9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MXRecordsUIView.strings; sourceTree = "<group>"; };
 		7C3C35C02432598F001A8C9F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MXRecordsUIView.strings; sourceTree = "<group>"; };
@@ -785,6 +786,7 @@
 		7C3C35C624329D22001A8C9F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/de.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
 		7C3C35C824329D23001A8C9F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/ru.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
 		7C3C35CA24329D23001A8C9F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/es.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
+		7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichEditorWrapperView.swift; sourceTree = "<group>"; };
 		7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUploadViewController.swift; sourceTree = "<group>"; };
 		7C46BED62153F71E00282182 /* SingleWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWebSocket.swift; sourceTree = "<group>"; };
 		7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryEmailViewController.swift; sourceTree = "<group>"; };
@@ -800,7 +802,6 @@
 		7C5322112111394000C78981 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWarningPopoverViewController.swift; sourceTree = "<group>"; };
 		7C55B88B20863D7900BA96E8 /* CriptextError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextError.swift; sourceTree = "<group>"; };
-		7C5E403F20B706860027C61F /* CustomTabsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabsController.swift; sourceTree = "<group>"; };
 		7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureEditorViewController.swift; sourceTree = "<group>"; };
 		7C5F38CC2448D5B600123452 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		7C5F38CD2448D5B600123452 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -818,6 +819,9 @@
 		7C63AB5F205816470053219F /* UnsentUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsentUIPopover.swift; sourceTree = "<group>"; };
 		7C69BADC20DC4A2E001ABD5B /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIPopover.swift; sourceTree = "<group>"; };
+		7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipWebViewController.swift; sourceTree = "<group>"; };
+		7C6CA86A244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RemoveDeviceGetPlusUIPopover.xib; sourceTree = "<group>"; };
+		7C6CA86C244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDeviceGetPlusUIPopover.swift; sourceTree = "<group>"; };
 		7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericDualAnswerUIPopover.swift; sourceTree = "<group>"; };
 		7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericDualAnswerUIPopover.xib; sourceTree = "<group>"; };
 		7C6DB46A2152B910001B3749 /* LinkData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkData.swift; sourceTree = "<group>"; };
@@ -1273,7 +1277,6 @@
 				7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */,
 				7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */,
 				A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */,
-				7C5E403F20B706860027C61F /* CustomTabsController.swift */,
 				7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */,
 				7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */,
 				950AFF2F21FA6A7E003115E7 /* EmailSourceViewController.swift */,
@@ -1312,6 +1315,7 @@
 				34A56A4F241EE19600120984 /* RegisterDomainStepThreeViewController.swift */,
 				348F1EDC24167CC80095BCBB /* RemoveAliasUIPopover.swift */,
 				348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */,
+				7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1585,6 +1589,7 @@
 				A721B347225D2DA5004528B4 /* RestoreUIView.swift */,
 				7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */,
 				7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */,
+				7C6CA86A244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1693,6 +1698,7 @@
 				7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */,
 				48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */,
 				3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */,
+				7C6CA86C244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1981,6 +1987,7 @@
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				A7D2DE7421C42BC8002ED6F8 /* PasscodeLockView.xib in Resources */,
 				A7FFCF63217A93E600FFFDFF /* CriptextLocalizable.strings in Resources */,
+				7C6CA86B244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib in Resources */,
 				7CF93F582146E41700361837 /* Email.json in Resources */,
 				A7FFCF27217A90E500FFFDFF /* MoreOptionsUIView.xib in Resources */,
 				A713109E2159762100534F13 /* Assets.xcassets in Resources */,
@@ -2208,6 +2215,7 @@
 				A73151C321B9F2FA00D20B72 /* SettingsOptionCell.swift in Sources */,
 				A7115E9D2316D32500EBECE7 /* MailboxOptionsInterface.swift in Sources */,
 				34A56A48241AD66700120984 /* CustomDomainSettingsData.swift in Sources */,
+				7C6CA86D244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift in Sources */,
 				7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */,
 				A7CC387D21939D6500C8355A /* SharedAPI.swift in Sources */,
 				D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */,
@@ -2254,6 +2262,7 @@
 				7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */,
 				7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */,
 				A7CC387A21939C3D00C8355A /* SharedDB.swift in Sources */,
+				7C6CA869244E12BF00181703 /* MembershipWebViewController.swift in Sources */,
 				7CAC1CF020F6AF58004A50C6 /* CriptextSnackbarController.swift in Sources */,
 				7C4D4FEB203DDEF400DF6E4E /* CRPreKeyRecord.swift in Sources */,
 				348F1ED52411B8150095BCBB /* CustomDomain.swift in Sources */,
@@ -2293,7 +2302,6 @@
 				A7115EA12316F84600EBECE7 /* AccountOptionsInterface.swift in Sources */,
 				7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */,
 				7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */,
-				7C5E404020B706860027C61F /* CustomTabsController.swift in Sources */,
 				A7CC387821939BA600C8355A /* NewEmail.swift in Sources */,
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,

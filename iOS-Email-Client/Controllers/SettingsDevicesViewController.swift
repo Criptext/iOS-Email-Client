@@ -63,7 +63,7 @@ extension SettingsDevicesViewController: UITableViewDelegate, UITableViewDataSou
     }
 }
 
-extension SettingsDevicesViewController: CustomTabsChildController {
+extension SettingsDevicesViewController {
     func reloadView() {
         self.applyTheme()
         tableView.reloadData()

@@ -277,7 +277,7 @@ class RecoveryEmailViewController: UIViewController {
     }
 }
 
-extension RecoveryEmailViewController: CustomTabsChildController {
+extension RecoveryEmailViewController {
     func reloadView() {
         recoveryEmailLabel.text = recoveryEmail
         statusLabel.text = recoveryEmailStatus.description

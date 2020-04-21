@@ -42,6 +42,7 @@ class EventData {
         var updateSideMenu = false
         var linkStartData: LinkData? = nil
         var feature: MailboxData.Feature? = nil
+        var newCustomerType: Int? = nil
     }
     
     struct NewEmail {
@@ -346,6 +347,20 @@ extension EventData {
             
             init(params: [String: Any]){
                 name = params["customDomain"] as! String
+            }
+        }
+    }
+    
+    class Acc {
+        struct CustomerType {
+            let recipientId: String
+            let domain: String
+            let customerType: Int
+            
+            init(params: [String: Any]) {
+                recipientId = params["recipientId"] as! String
+                domain = params["domain"] as! String
+                customerType = params["newCustomerType"] as! Int
             }
         }
     }

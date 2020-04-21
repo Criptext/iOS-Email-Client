@@ -29,6 +29,12 @@ class CustomDomainEntryViewController: UIViewController {
         self.applyTheme()
         self.applyLocalization()
         self.showLoader(false)
+        
+        if (myAccount.customerType == 0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.askUpgradePlus()
+            }
+        }
     }
     
     func applyLocalization() {
@@ -117,7 +123,7 @@ class CustomDomainEntryViewController: UIViewController {
                 self.setError(message: String.localize("DOMAIN_LIMIT_REACHED"))
                 return
             }
-            guard case let .SuccessDictionary(data) = responseData else {
+            guard case .SuccessDictionary = responseData else {
                 self.showLoader(false)
                 self.setError(message: String.localize("CUSTOM_DOMAIN_ENTRY_ERROR"))
                 return
@@ -149,9 +155,35 @@ class CustomDomainEntryViewController: UIViewController {
         nextButton.isEnabled = false
         nextButton.setTitle("", for: .normal)
     }
+    
+    func askUpgradePlus() {
+        let popover = RemoveDeviceGetPlusUIPopover()
+        popover.onResponse = { upgrade in
+            if (upgrade) {
+                self.goToUpgradePlus()
+            } else {
+                self.goBack()
+            }
+        }
+        self.presentPopover(popover: popover, height: 435)
+    }
+    
+    func goToUpgradePlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.accountJWT = self.myAccount.jwt
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
 }
 
-extension CustomDomainEntryViewController: CustomTabsChildController {
+extension CustomDomainEntryViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        self.navigationController?.popViewController(animated: true)
+    }
+}
+
+extension CustomDomainEntryViewController {
     func reloadView() {
         self.applyTheme()
     }

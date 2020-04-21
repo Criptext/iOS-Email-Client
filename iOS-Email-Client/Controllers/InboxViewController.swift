@@ -549,20 +549,18 @@ extension InboxViewController: WebSocketManagerDelegate {
             delegate.logout(account: myAccount)
         case .RecoveryChanged(let address):
             guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.children.first as? CustomTabsController else {
+                let settings = nav.children.first as? SettingsGeneralViewController else {
                 return
             }
             settings.generalData.recoveryEmail = address
             settings.generalData.recoveryEmailStatus = .pending
             settings.generalData.isTwoFactor = false
-            settings.reloadChildViews()
         case .RecoveryVerified:
             guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.children.first as? CustomTabsController else {
+                let settings = nav.children.first as? SettingsGeneralViewController else {
                     return
             }
             settings.generalData.recoveryEmailStatus = .verified
-            settings.reloadChildViews()
         case .EnterpriseSuspended(let recipientId, let domain):
             if(myAccount.email == (recipientId + "@\(domain)")){
                 let accounts = DBManager.getLoggedAccounts()
