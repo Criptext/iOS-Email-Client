@@ -31,6 +31,12 @@ class AliasViewController: UIViewController {
         self.tableView.tableFooterView = UIView()
         self.tableView.reloadData()
         self.applyTheme()
+        
+        if (myAccount.customerType == 0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.askUpgradePlus()
+            }
+        }
     }
     
     func loadAliasesAndCustomDomains() {
@@ -68,6 +74,32 @@ class AliasViewController: UIViewController {
         popover.myTitle = String.localize("ALIASES")
         popover.myMessage = String.localize("ALIASES_INFO_MESSAGE")
         self.presentPopover(popover: popover, height: 220)
+    }
+    
+    func askUpgradePlus() {
+        let popover = RemoveDeviceGetPlusUIPopover()
+        popover.onResponse = { upgrade in
+            if (upgrade) {
+                self.goToUpgradePlus()
+            } else {
+                self.goBack()
+            }
+        }
+        self.presentPopover(popover: popover, height: 435)
+    }
+    
+    func goToUpgradePlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.accountJWT = self.myAccount.jwt
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+}
+
+extension AliasViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -125,7 +157,7 @@ extension AliasViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension AliasViewController: CustomTabsChildController {
+extension AliasViewController {
     func reloadView() {
         self.applyTheme()
         tableView.reloadData()

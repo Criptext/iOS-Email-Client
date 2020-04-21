@@ -40,6 +40,7 @@ class SettingsGeneralViewController: UIViewController{
         
         enum SubSection {
             case account
+            case plus
             case privacy
             case devices
             case labels
@@ -84,6 +85,8 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("MANUAL_SYNC")
                 case .account:
                     return String.localize("ACCOUNT_OPTION")
+                case .plus:
+                    return String.localize("PLUS_MEMBERSHIP")
                 case .devices:
                     return String.localize("DEVICES_OPTION")
                 case .labels:
@@ -116,7 +119,7 @@ class SettingsGeneralViewController: UIViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     let sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
     let menus = [
-        .account: [.account, .privacy, .devices, .labels, .manualSync, .backup],
+        .account: [.account, .privacy, .devices, .labels, .manualSync, .backup, .plus],
         .addresses: [.customDomain, .aliases],
         .general: [.night, .syncContact, .preview, .pin],
         .support: [.reportBug, .reportAbuse],
@@ -174,6 +177,12 @@ class SettingsGeneralViewController: UIViewController{
             self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
             self.generalData.isTwoFactor = isTwoFactor == 1 ? true : false
             self.generalData.hasEmailReceipts = hasEmailReceipts == 1 ? true : false
+            
+            let customerType = general["customerType"] as! Int
+            
+            if (customerType != self.myAccount.customerType) {
+                DBManager.update(account: self.myAccount, customerType: customerType)
+            }
         }
     }
     
@@ -439,6 +448,14 @@ class SettingsGeneralViewController: UIViewController{
         self.navigationController?.pushViewController(aliasVC, animated: true)
     }
     
+    func goToUpgradePlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.accountJWT = self.myAccount.jwt
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+    
     func syncContacts(){
         generalData.syncStatus = .syncing
         tableView.reloadData()
@@ -504,6 +521,12 @@ class SettingsGeneralViewController: UIViewController{
         self.present(snackVC, animated: true, completion: { [weak self] in
             self?.navigationDrawerController?.closeLeftView()
         })
+    }
+}
+
+extension SettingsGeneralViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        
     }
 }
 
@@ -630,6 +653,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
         switch(subsection){
         case .account:
             goToProfile()
+        case .plus:
+            goToUpgradePlus()
         case .privacy:
             goToPrivacyAndSecurity()
         case .devices:
@@ -667,7 +692,7 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
     }
 }
 
-extension SettingsGeneralViewController: CustomTabsChildController {
+extension SettingsGeneralViewController {
     func reloadView() {
         applyTheme()
         tableView.reloadData()

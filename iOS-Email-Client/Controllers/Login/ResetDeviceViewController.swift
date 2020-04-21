@@ -156,6 +156,7 @@ class ResetDeviceViewController: UIViewController{
                         self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
                         return
                 }
+                let customerType = data["customerType"] as! Int
                 let name = data["name"] as! String
                 let deviceId = data["deviceId"] as! Int
                 let token = data["token"] as! String
@@ -165,6 +166,7 @@ class ResetDeviceViewController: UIViewController{
                 signupData.deviceId = deviceId
                 signupData.token = token
                 signupData.comingFromLogin = true
+                signupData.customerType = customerType
                 self.jumpToCreatingAccount(signupData: signupData)
             }
         }

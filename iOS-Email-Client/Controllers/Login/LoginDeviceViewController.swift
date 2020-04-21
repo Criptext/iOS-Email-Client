@@ -169,10 +169,12 @@ class LoginDeviceViewController: UIViewController{
                 }
                 let name = data["name"] as! String
                 let deviceId = data["deviceId"] as! Int
+                let customerType = data["customerType"] as! Int
                 let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
                 signupData.deviceId = deviceId
                 signupData.token = jwt
                 signupData.comingFromLogin = true
+                signupData.customerType = customerType
                 popover?.showLoader(false)
                 popover?.dismiss(animated: true, completion: nil)
                 self.jumpToCreatingAccount(signupData: signupData)
