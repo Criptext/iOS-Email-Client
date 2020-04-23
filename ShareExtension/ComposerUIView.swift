@@ -64,6 +64,8 @@ class ComposerUIView: UIView {
     var accountOptionsInterface: AccountOptionsInterface?
     var composerEditorHeight: CGFloat = 0.0
     
+    var inputFailed: [CLTokenInputView: Bool] = [:]
+    
     var theme: Theme {
         return ThemeManager.shared.theme
     }
@@ -223,6 +225,16 @@ extension ComposerUIView: RichEditorDelegate {
         editorView.setEditorFontColor(theme.mainText)
         editorView.setEditorBackgroundColor(theme.background)
         toField.beginEditing()
+        
+        let disableImages = """
+        document.addEventListener('paste', e => {
+            var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+            if (items[0] && items[0].kind === 'file') {
+                e.preventDefault();
+            }
+        });
+        """
+        let _ = editorView.webView.stringByEvaluatingJavaScript(from: disableImages)
     }
     
     func addToContent(text: String) {
@@ -251,6 +263,19 @@ extension ComposerUIView: RichEditorDelegate {
         composerEditorHeight = cgheight
         self.editorHeightConstraint.constant = cgheight
     }
+    
+    func richEditorTookFocus(_ editor: RichEditorView) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            guard let focusPoint = (self.editorView as? RichEditorWrapperView)?.lastFocus else {
+                return
+            }
+            self.editorView.focus(at: focusPoint)
+        }
+    }
+    
+    func richEditorLostFocus(_ editor: RichEditorView) {
+        (editorView as? RichEditorWrapperView)?.lastFocus = nil
+    }
 }
 
 extension ComposerUIView: CLTokenInputViewDelegate {
@@ -259,20 +284,7 @@ extension ComposerUIView: CLTokenInputViewDelegate {
             return
         }
         
-        if input.contains(",") || input.contains(" ") {
-            let name = input.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: " ", with: "")
-            
-            guard name.contains("@") else {
-                addToken(display: "\(name)\(Env.domain)", value: "\(name)\(Env.domain)", view: view)
-                return
-            }
-            
-            if Utils.validateEmail(name) {
-                
-            } else {
-                self.delegate?.badRecipient()
-            }
-        }
+        handleRecipientsInput(input: input, tokenView: view, onExit: false)
         
         self.delegate?.typingRecipient(text: input)
     }
@@ -327,23 +339,69 @@ extension ComposerUIView: CLTokenInputViewDelegate {
         }
     }
     
-    func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
+    func handleRecipientsInput(input: String, tokenView: CLTokenInputView, onExit: Bool) {
+        guard input.count > 0 else {
+            inputFailed[tokenView] = false
+            return
+        }
         
+        let hasFailed = inputFailed[tokenView] ?? false
+        let inputCondition = hasFailed ? (input.last == " " || input.last == ",") : input.contains(",") || input.contains(" ")
+        
+        guard onExit || inputCondition else {
+            return
+        }
+        
+        let inputText = input.replacingOccurrences(of: ",", with: "")
+        let recipients = inputText.split(separator: " ").map( {$0.description} )
+        
+        var invalidNames = ""
+        for recipient in recipients {
+            if !recipient.contains("@") {
+                addToken(display: "\(recipient)\(Env.domain)", value: "\(recipient)\(Env.domain)".lowercased(), view: tokenView)
+            } else if Utils.validateEmail(recipient) {
+                addToken(display: recipient, value: recipient.lowercased(), view: tokenView)
+            } else {
+                if (invalidNames.isEmpty) {
+                    invalidNames = recipient
+                } else {
+                    invalidNames += " \(recipient)"
+                }
+            }
+        }
+        
+        inputFailed[tokenView] = !invalidNames.isEmpty
+        
+        guard !onExit else {
+            if !invalidNames.isEmpty {
+                delegate?.badRecipient()
+            }
+            return
+        }
+        
+        if let lastCharacter = inputText.last,
+            !invalidNames.isEmpty && lastCharacter == " " {
+            if let lastCharacter = inputText.last,
+                !invalidNames.isEmpty && lastCharacter == " " {
+                delegate?.badRecipient()
+            }
+        }
+        
+        if !invalidNames.isEmpty {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                tokenView.text = invalidNames
+            }
+        }
+    }
+    
+    func tokenInputViewDidEndEditing(_ view: CLTokenInputView) {
         self.contactsTableView.isHidden = true
         
-        guard let text = view.text, text.count > 0 else {
+        guard let text = view.text else {
             return
         }
         
-        guard text.contains("@") else {
-            addToken(display: "\(text)\(Env.domain)", value: "\(text)\(Env.domain)", view: view)
-            return
-        }
-        if Utils.validateEmail(text) {
-            addToken(display: text, value: text, view: view)
-        } else {
-            self.delegate?.badRecipient()
-        }
+        handleRecipientsInput(input: text, tokenView: view, onExit: true)
     }
 }
 
