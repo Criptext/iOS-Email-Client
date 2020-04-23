@@ -11,6 +11,8 @@ import Foundation
 class RemoveDevicesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var textMessage: UILabel!
+    @IBOutlet weak var upgradeButton: UIButton!
+    @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
     var loginData: LoginData!
     var multipleAccount = false
     var deviceData: DeviceSettingsData!
@@ -35,7 +37,15 @@ class RemoveDevicesViewController: UIViewController {
         self.tableView.allowsMultipleSelectionDuringEditing = true
         self.tableView.setEditing(!tableView.isEditing, animated: true)
         self.applyTheme()
+        self.showUpgradeButton()
         checkTrashButton()
+    }
+    
+    func showUpgradeButton() {
+        let attrString1 = NSMutableAttributedString(string: "Or you can", attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(15.0)!])
+        let attrString2 = NSAttributedString(string: " Upgrade to Plus", attributes: [.foregroundColor: theme.criptextBlue, .font: Font.bold.size(15.0)!])
+        attrString1.append(attrString2)
+        upgradeButton.setAttributedTitle(attrString1, for: .normal)
     }
     
     func applyTheme() {
@@ -64,6 +74,30 @@ class RemoveDevicesViewController: UIViewController {
     
     @objc func goBack(){
         navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func askUpgradeToPlus(_ sender: Any) {
+        let popover = RemoveDeviceGetPlusUIPopover()
+        popover.onResponse = { upgrade in
+            if (upgrade) {
+                self.goToUpgradePlus()
+            }
+        }
+        self.presentPopover(popover: popover, height: 435)
+    }
+
+    func goToUpgradePlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.accountJWT = self.tempToken
+        webviewVC.delegate = self
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+}
+
+extension RemoveDevicesViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -95,7 +129,7 @@ extension RemoveDevicesViewController: UITableViewDelegate, UITableViewDataSourc
     }
 }
 
-extension RemoveDevicesViewController: CustomTabsChildController {
+extension RemoveDevicesViewController {
     func reloadView() {
         self.applyTheme()
         tableView.reloadData()

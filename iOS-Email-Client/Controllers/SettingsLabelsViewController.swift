@@ -226,7 +226,7 @@ extension SettingsLabelsViewController: RequestDelegate {
     }
 }
 
-extension SettingsLabelsViewController: CustomTabsChildController {
+extension SettingsLabelsViewController {
     func reloadView() {
         self.applyTheme()
         tableView.reloadData()

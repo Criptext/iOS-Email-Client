@@ -101,7 +101,7 @@ class RegisterDomainStepOneViewController: UIViewController {
     }
 }
 
-extension RegisterDomainStepOneViewController: CustomTabsChildController {
+extension RegisterDomainStepOneViewController {
     func reloadView() {
         self.applyTheme()
     }

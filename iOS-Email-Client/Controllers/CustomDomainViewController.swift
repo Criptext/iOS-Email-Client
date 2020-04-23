@@ -27,6 +27,12 @@ class CustomDomainViewController: UIViewController {
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
         self.applyTheme()
+        
+        if (myAccount.customerType == 0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.askUpgradePlus()
+            }
+        }
     }
     
     func applyTheme() {
@@ -49,6 +55,32 @@ class CustomDomainViewController: UIViewController {
         popover.myMessage = String.localize("CUSTOM_DOMAIN_INFO_MESSAGE_1")
         self.presentPopover(popover: popover, height: 240)
     }
+    
+    func askUpgradePlus() {
+        let popover = RemoveDeviceGetPlusUIPopover()
+        popover.onResponse = { upgrade in
+            if (upgrade) {
+                self.goToUpgradePlus()
+            } else {
+                self.goBack()
+            }
+        }
+        self.presentPopover(popover: popover, height: 435)
+    }
+    
+    func goToUpgradePlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.accountJWT = self.myAccount.jwt
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+}
+
+extension CustomDomainViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
 extension CustomDomainViewController: UITableViewDelegate, UITableViewDataSource {
@@ -69,7 +101,7 @@ extension CustomDomainViewController: UITableViewDelegate, UITableViewDataSource
     }
 }
 
-extension CustomDomainViewController: CustomTabsChildController {
+extension CustomDomainViewController {
     func reloadView() {
         self.applyTheme()
         tableView.reloadData()

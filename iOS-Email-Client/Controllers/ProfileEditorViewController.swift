@@ -165,11 +165,17 @@ class ProfileEditorViewController: UIViewController {
             let isTwoFactor = general["twoFactorAuth"] as! Int
             let hasEmailReceipts = general["trackEmailRead"] as! Int
             let replyTo = general["replyTo"] as? String ?? ""
+            let customerType = general["customerType"] as! Int
             self.generalData.replyTo = replyTo
             self.generalData.recoveryEmail = email
             self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
             self.generalData.isTwoFactor = isTwoFactor == 1 ? true : false
             self.generalData.hasEmailReceipts = hasEmailReceipts == 1 ? true : false
+            
+            if (customerType != self.myAccount.customerType) {
+                DBManager.update(account: self.myAccount, customerType: customerType)
+            }
+            
             self.tableView.reloadData()
         }
     }
@@ -348,7 +354,7 @@ extension ProfileEditorViewController: RequestDelegate {
     }
 }
 
-extension ProfileEditorViewController: CustomTabsChildController {
+extension ProfileEditorViewController {
     func reloadView() {
         nameLabel.text = myAccount.name
         UIUtils.deleteSDWebImageCache()

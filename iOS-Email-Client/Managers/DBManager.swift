@@ -299,6 +299,14 @@ class DBManager: SharedDB {
         }
     }
     
+    class func update(account: Account, customerType: Int){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.customerType = customerType
+        }
+    }
+    
     class func update(account: Account, jwt: String, refreshToken: String, regId: Int32, identityB64: String) {
         let realm = try! Realm()
         
