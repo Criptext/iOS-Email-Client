@@ -77,7 +77,8 @@ class RemoveDevicesViewController: UIViewController {
     }
     
     @IBAction func askUpgradeToPlus(_ sender: Any) {
-        let popover = RemoveDeviceGetPlusUIPopover()
+        let popover = GetPlusUIPopover()
+        popover.plusType = .devices
         popover.onResponse = { upgrade in
             if (upgrade) {
                 self.goToUpgradePlus()

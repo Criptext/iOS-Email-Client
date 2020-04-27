@@ -502,7 +502,9 @@
 
 "PLUS_MEMBERSHIP" = "Billing";
 
-"DEVICE_LIMIT_REACHED" = "Device Limit Reached";
+"DEVICE_LIMIT_REACHED" = "You need Plus for this";
 "DEVICE_LIMIT_PLUS" = "You've reached your maximum devices allowed (%i). Upgrade to Plus to get up to %i devices connected on your account. Otherwise, remove an existing device in order to continue logging in.";
+"CUSTOM_DOMAINS_PLUS" = "Add custom email addresses with a Domain that you already own like you@company.com\n\nGet this and more when you upgrade to Criptext Plus.";
+"ALIAS_PLUS" = "With Aliases you can manage multiple addresses in one inbox\n\nGet this and more when you upgrade to Criptext Plus.";
 "GET_PLUS" = "Get Plus";
-"MAYBE_LATER" = "Maybe Later";
+"MAYBE_LATER" = "No, Thanks";

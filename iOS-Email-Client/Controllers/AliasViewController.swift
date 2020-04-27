@@ -77,7 +77,8 @@ class AliasViewController: UIViewController {
     }
     
     func askUpgradePlus() {
-        let popover = RemoveDeviceGetPlusUIPopover()
+        let popover = GetPlusUIPopover()
+        popover.plusType = .alias
         popover.onResponse = { upgrade in
             if (upgrade) {
                 self.goToUpgradePlus()

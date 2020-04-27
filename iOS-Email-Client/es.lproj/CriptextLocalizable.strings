@@ -498,3 +498,10 @@
 "VERIFY_DOMAIN_MESSAGE" = "No cierres el app hasta que este proceso termine.";
 
 "PLUS_MEMBERSHIP" = "Billing";
+
+"DEVICE_LIMIT_REACHED" = "Necesitas Plus para esto";
+"DEVICE_LIMIT_PLUS" = "Has alcanzado el maximo numero de dispositivos (%i). Subscribete a Plus para poder vincular %i dispositivos. Si no lo deseas, deberas remover un dispositivo para continuar.";
+"CUSTOM_DOMAINS_PLUS" = "Agrega direcciones de correo con un dominio que te pertenezca como tu@compania.com\n\nObten esto y mas cuando te subscribas a Plus!";
+"ALIAS_PLUS" = "Con Aliases puedes manejar multiples direcciones de correo en un solo buzón\n\nObten esto y mas cuando te subscribas a Plus!";
+"GET_PLUS" = "Obtener Plus";
+"MAYBE_LATER" = "No, Gracias";
