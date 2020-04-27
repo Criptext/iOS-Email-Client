@@ -39,6 +39,15 @@ class RemoveDevicesViewController: UIViewController {
         self.applyTheme()
         self.showUpgradeButton()
         checkTrashButton()
+        
+        if (loginData.customerType != 0) {
+            upgradeButton.isHidden = true
+            upgradeButtonHeightConstraint.constant = 0
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.askUpgradeToPlus(0)
+            }
+        }
     }
     
     func showUpgradeButton() {
@@ -195,7 +204,7 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
                 self.showPopoverError(error: String.localize("USERNAME_NOT"))
                 return
             }
-            if case .BadRequest = responseData {
+            if case .BadRequestDictionary = responseData {
                 self.loginToMailbox()
                 return
             }

@@ -251,7 +251,9 @@ class NewLoginViewController: UIViewController{
                 self.showLoginError(error: String.localize("USERNAME_NOT"))
                 return
             }
-            if case .BadRequest = responseData {
+            if case let .BadRequestDictionary(data) = responseData,
+                let customerType = data["customerType"] as? Int {
+                loginData.customerType = customerType
                 self.jumpToLoginPasswordView(loginData: loginData)
                 return
             }

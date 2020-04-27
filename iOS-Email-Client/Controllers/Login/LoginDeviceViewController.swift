@@ -202,6 +202,7 @@ class LoginDeviceViewController: UIViewController{
         let signupData = SignUpData(username: loginData.username, password: "no password", domain: loginData.domain, fullname: data.name, optionalEmail: nil)
         signupData.deviceId = data.deviceId
         signupData.token = loginData.jwt ?? ""
+        signupData.customerType = loginData.customerType
         controller.signupData = signupData
         controller.linkData = data
         controller.multipleAccount = self.multipleAccount
