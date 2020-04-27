@@ -19,7 +19,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RemoveDeviceGetPlusUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GetPlusUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="PSN-if-sSz" id="TPe-Tu-GpR"/>
                 <outlet property="confirmButton" destination="ccx-Xa-bFG" id="BMI-7J-Yke"/>
@@ -105,6 +105,6 @@
         </view>
     </objects>
     <resources>
-        <image name="plus-devices" width="144" height="114"/>
+        <image name="plus-devices" width="151" height="110"/>
     </resources>
 </document>

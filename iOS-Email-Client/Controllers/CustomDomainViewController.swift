@@ -57,7 +57,8 @@ class CustomDomainViewController: UIViewController {
     }
     
     func askUpgradePlus() {
-        let popover = RemoveDeviceGetPlusUIPopover()
+        let popover = GetPlusUIPopover()
+        popover.plusType = .domains
         popover.onResponse = { upgrade in
             if (upgrade) {
                 self.goToUpgradePlus()
