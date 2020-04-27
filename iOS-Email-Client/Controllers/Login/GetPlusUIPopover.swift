@@ -8,7 +8,13 @@
 
 import Foundation
 
-class RemoveDeviceGetPlusUIPopover: BaseUIPopover {
+class GetPlusUIPopover: BaseUIPopover {
+    
+    enum PlusType{
+        case alias
+        case domains
+        case devices
+    }
     
     var domains: [String]!
     @IBOutlet weak var titleLabel: UILabel!
@@ -16,6 +22,8 @@ class RemoveDeviceGetPlusUIPopover: BaseUIPopover {
     @IBOutlet weak var plusImage: UIImageView!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    
+    var plusType : PlusType = .devices
     var maxDevices = 2
     var upToDevices = 5
     var onResponse: ((Bool) -> Void)?
@@ -24,7 +32,7 @@ class RemoveDeviceGetPlusUIPopover: BaseUIPopover {
     }
     
     init(){
-        super.init("RemoveDeviceGetPlusUIPopover")
+        super.init("GetPlusUIPopover")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -56,8 +64,18 @@ class RemoveDeviceGetPlusUIPopover: BaseUIPopover {
     }
     
     func applyLocalization() {
+        switch(plusType) {
+            case .alias:
+                messageLabel.text = String.localize("ALIAS_PLUS")
+                plusImage.image = UIImage(named: "plus-alias")
+            case .domains:
+                messageLabel.text = String.localize("CUSTOM_DOMAINS_PLUS")
+                plusImage.image = UIImage(named: "plus-domains")
+            case .devices:
+                messageLabel.text = String.localize("DEVICE_LIMIT_PLUS", arguments: maxDevices, upToDevices)
+                plusImage.image = UIImage(named: "plus-devices")
+        }
         titleLabel.text = String.localize("DEVICE_LIMIT_REACHED")
-        messageLabel.text = String.localize("DEVICE_LIMIT_PLUS", arguments: maxDevices, upToDevices)
         confirmButton.setTitle(String.localize("GET_PLUS"), for: .normal)
         cancelButton.setTitle(String.localize("MAYBE_LATER"), for: .normal)
     }
