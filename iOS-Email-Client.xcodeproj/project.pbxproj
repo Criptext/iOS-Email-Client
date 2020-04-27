@@ -167,8 +167,8 @@
 		7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C69BADC20DC4A2E001ABD5B /* Thread.swift */; };
 		7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
 		7C6CA869244E12BF00181703 /* MembershipWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */; };
-		7C6CA86B244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6CA86A244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib */; };
-		7C6CA86D244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6CA86C244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift */; };
+		7C6CA86B244F4FD100181703 /* GetPlusUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6CA86A244F4FD100181703 /* GetPlusUIPopover.xib */; };
+		7C6CA86D244F545300181703 /* GetPlusUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6CA86C244F545300181703 /* GetPlusUIPopover.swift */; };
 		7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */; };
 		7C6DB468215173D0001B3749 /* GenericDualAnswerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */; };
 		7C6DB46B2152B910001B3749 /* LinkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB46A2152B910001B3749 /* LinkData.swift */; };
@@ -824,8 +824,8 @@
 		7C69BADC20DC4A2E001ABD5B /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIPopover.swift; sourceTree = "<group>"; };
 		7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipWebViewController.swift; sourceTree = "<group>"; };
-		7C6CA86A244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RemoveDeviceGetPlusUIPopover.xib; sourceTree = "<group>"; };
-		7C6CA86C244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDeviceGetPlusUIPopover.swift; sourceTree = "<group>"; };
+		7C6CA86A244F4FD100181703 /* GetPlusUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GetPlusUIPopover.xib; sourceTree = "<group>"; };
+		7C6CA86C244F545300181703 /* GetPlusUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPlusUIPopover.swift; sourceTree = "<group>"; };
 		7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericDualAnswerUIPopover.swift; sourceTree = "<group>"; };
 		7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericDualAnswerUIPopover.xib; sourceTree = "<group>"; };
 		7C6DB46A2152B910001B3749 /* LinkData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkData.swift; sourceTree = "<group>"; };
@@ -1597,7 +1597,7 @@
 				A721B347225D2DA5004528B4 /* RestoreUIView.swift */,
 				7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */,
 				7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */,
-				7C6CA86A244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib */,
+				7C6CA86A244F4FD100181703 /* GetPlusUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1706,7 +1706,7 @@
 				7C8D6C7120371FA500AB96EF /* ConnectDeviceViewController.swift */,
 				48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */,
 				3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */,
-				7C6CA86C244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift */,
+				7C6CA86C244F545300181703 /* GetPlusUIPopover.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1995,7 +1995,7 @@
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				A7D2DE7421C42BC8002ED6F8 /* PasscodeLockView.xib in Resources */,
 				A7FFCF63217A93E600FFFDFF /* CriptextLocalizable.strings in Resources */,
-				7C6CA86B244F4FD100181703 /* RemoveDeviceGetPlusUIPopover.xib in Resources */,
+				7C6CA86B244F4FD100181703 /* GetPlusUIPopover.xib in Resources */,
 				7CF93F582146E41700361837 /* Email.json in Resources */,
 				A7FFCF27217A90E500FFFDFF /* MoreOptionsUIView.xib in Resources */,
 				A713109E2159762100534F13 /* Assets.xcassets in Resources */,
@@ -2223,7 +2223,7 @@
 				A73151C321B9F2FA00D20B72 /* SettingsOptionCell.swift in Sources */,
 				A7115E9D2316D32500EBECE7 /* MailboxOptionsInterface.swift in Sources */,
 				34A56A48241AD66700120984 /* CustomDomainSettingsData.swift in Sources */,
-				7C6CA86D244F545300181703 /* RemoveDeviceGetPlusUIPopover.swift in Sources */,
+				7C6CA86D244F545300181703 /* GetPlusUIPopover.swift in Sources */,
 				7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */,
 				A7CC387D21939D6500C8355A /* SharedAPI.swift in Sources */,
 				D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */,
