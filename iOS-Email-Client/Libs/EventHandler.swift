@@ -69,6 +69,7 @@ class EventHandler {
         case .News(let feature):
             result.feature = feature
         case .CustomerType(let newType):
+            result.updateSideMenu = true
             result.newCustomerType = newType
         default:
             break
