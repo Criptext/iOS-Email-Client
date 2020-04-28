@@ -923,6 +923,17 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func maxDevices(token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/device/max"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
+            (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
     class func deleteDevices(username: String, domain: String, token: String, deviceIds: [Int], completion: @escaping ((ResponseData) -> Void)){
         let url = "\(Env.apiURL)/device/\(username)/\(domain)/\(token)?\(deviceIds.map {"deviceId=\($0)"}.joined(separator: "&"))"
         let headers = [

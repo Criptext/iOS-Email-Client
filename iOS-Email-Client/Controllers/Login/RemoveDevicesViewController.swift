@@ -17,6 +17,7 @@ class RemoveDevicesViewController: UIViewController {
     var multipleAccount = false
     var deviceData: DeviceSettingsData!
     var tempToken: String!
+    var maxAllowedDevices = Env.maxAllowedDevices
     var devices: [Device] {
         return deviceData.devices
     }
@@ -25,12 +26,7 @@ class RemoveDevicesViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        navigationItem.title = String.localize("REMOVE_DEVICES_TITLE")
-        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(dismissViewController))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
-        textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: Env.maxAllowedDevices, (devices.count - (Env.maxAllowedDevices - 1)))
+        applyLocalization()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -48,6 +44,50 @@ class RemoveDevicesViewController: UIViewController {
                 self.askUpgradeToPlus(0)
             }
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkForMaxDevices()
+    }
+    
+    func applyLocalization() {
+        navigationItem.title = String.localize("REMOVE_DEVICES_TITLE")
+        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(dismissViewController))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
+        
+        let devicesToRemove = devices.count - maxAllowedDevices - devices.filter { $0.checked }.count + 1
+        textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: maxAllowedDevices, devicesToRemove < 0 ? 0 : devicesToRemove)
+    }
+    
+    func checkForMaxDevices() {
+        APIManager.maxDevices(token: tempToken) { [weak self] (responseData) in
+            self?.handleMaxDeviceRequest(responseData: responseData)
+        }
+    }
+    
+    func handleMaxDeviceRequest(responseData: ResponseData) {
+        switch (responseData) {
+            case .SuccessDictionary(let data):
+                guard let maxDevices = data["maxDevices"] as? Int else {
+                    return
+                }
+                maxAllowedDevices = maxDevices
+                let devicesToRemove = devices.count - maxAllowedDevices - devices.filter { $0.checked }.count + 1
+                textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: maxAllowedDevices, devicesToRemove < 0 ? 0 : devicesToRemove)
+                checkDevicesToContinue()
+            default:
+                break
+        }
+    }
+    
+    func checkDevicesToContinue() {
+        guard maxAllowedDevices >= devices.count else {
+            return
+        }
+        self.linkBegin(username: self.loginData.username, domain: self.loginData.domain)
     }
     
     func showUpgradeButton() {
@@ -71,7 +111,7 @@ class RemoveDevicesViewController: UIViewController {
     private func checkTrashButton(){
         let checkedDevices = devices.filter { $0.checked }.count
         if(checkedDevices > 0){
-            navigationItem.title = "\(checkedDevices)"
+            navigationItem.title = "\(String.localize("REMOVE_DEVICES_TITLE")) (\(checkedDevices))"
             navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(uncheckAllDevices), image: #imageLiteral(resourceName: "close-rounded"))
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(removeSelectedDevices))
         } else {
@@ -79,6 +119,8 @@ class RemoveDevicesViewController: UIViewController {
             navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(dismissViewController))
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .gray), style: .plain, target: self, action: nil)
         }
+        let devicesToRemove = devices.count - maxAllowedDevices - devices.filter { $0.checked }.count + 1
+        textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: maxAllowedDevices, devicesToRemove < 0 ? 0 : devicesToRemove)
     }
     
     @objc func goBack(){
