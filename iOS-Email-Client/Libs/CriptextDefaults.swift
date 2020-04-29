@@ -178,6 +178,19 @@ class CriptextDefaults {
         }
     }
     
+    func addEmailStrike(id: String) {
+        let newValue = defaults.integer(forKey: id) + 1
+        defaults.set(newValue, forKey: id)
+    }
+    
+    func getEmailStrike(id: String) -> Int {
+        return defaults.integer(forKey: id)
+    }
+    
+    func deleteEmailStrike(id: String) {
+        defaults.removeObject(forKey: id)
+    }
+    
     enum Guide: String {
         case welcomeTour = "welcomeTour"
         case attachments = "guideAttachments"

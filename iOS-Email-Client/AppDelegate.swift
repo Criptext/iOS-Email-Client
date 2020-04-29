@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Fabric
 import Crashlytics
 import Material
 import UserNotifications
@@ -92,8 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // Initialize sign-in
-        Fabric.with([Crashlytics.self])
-        
+                
         let realmURL = self.relocateDatabase()
         
         let config = Realm.Configuration(

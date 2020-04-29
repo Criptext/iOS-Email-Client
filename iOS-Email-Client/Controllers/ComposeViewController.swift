@@ -209,9 +209,8 @@ class ComposeViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(didPressCancel(_:)))
         
         subjectField.text = composerData.initSubject
-        var initContent = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
 
-        editorView.html = initContent
+        editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
         
         fileManager.delegate = self
         if fileManager.registeredFiles.count > 0{

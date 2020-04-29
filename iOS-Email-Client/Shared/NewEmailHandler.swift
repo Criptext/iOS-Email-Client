@@ -58,6 +58,8 @@ class NewEmailHandler {
                 completion(Result(email: email))
                 return
             }
+            let defaults = CriptextDefaults()
+            defaults.deleteEmailStrike(id: email.compoundKey)
             completion(Result(success: true))
             return
         }
@@ -77,17 +79,33 @@ class NewEmailHandler {
                         completion(Result(success: false))
                         return
                 }
-                if let decryptedContent = self.handleContentByMessageType(
+                let decryptedContentResult = self.handleContentByMessageType(
                     event.messageType, content: bodyString, account: myAccount,
                     recipientId: recipientId, senderDeviceId: event.senderDeviceId,
-                    isExternal: event.isExternal) {
-                    content = decryptedContent
-                } else {
-                    content = String.localize("CONTENT_UNENCRYPTED")
+                    isExternal: event.isExternal)
+                switch(decryptedContentResult) {
+                    case .Content(let decryptedContent):
+                        content = decryptedContent
+                    case .Duplicated, .NoSession:
+                        let emailId = "\(myAccount.compoundKey):\(event.metadataKey)"
+                        let defaults = CriptextDefaults()
+                        if defaults.getEmailStrike(id: emailId) > 2 {
+                            content = String.localize("CONTENT_UNENCRYPTED")
+                            defaults.deleteEmailStrike(id: emailId)
+                        } else {
+                            defaults.addEmailStrike(id: emailId)
+                            completion(Result(success: false))
+                            return
+                        }
+                    default:
+                        content = String.localize("CONTENT_UNENCRYPTED")
                 }
                 
                 let headers = data["headers"] as? String
-                contentHeader = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                let contentHeaderResult = self.handleContentByMessageType(event.messageType, content: headers, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                if case let .Content(headersResult) = contentHeaderResult {
+                    contentHeader = headersResult
+                }
             } else {
                 completion(Result(success: false))
                 return
@@ -189,16 +207,23 @@ class NewEmailHandler {
         }
     }
     
-    func handleContentByMessageType(_ messageType: MessageType, content: String?, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> String? {
+    enum DecryptResult {
+        case Content(String)
+        case Duplicated
+        case NoSession
+        case Uknown
+    }
+    
+    func handleContentByMessageType(_ messageType: MessageType, content: String?, account: Account, recipientId: String, senderDeviceId: Int32?, isExternal: Bool) -> DecryptResult {
         guard let myContent = content else {
-            return nil
+            return .Uknown
         }
         let recipient = isExternal ? "bob" : recipientId
         guard messageType != .none,
             let deviceId = senderDeviceId else {
-            return content
+                return .Content(myContent)
         }
-        var trueBody: String? = nil
+        var trueBody = myContent
         let err = tryBlock {
             trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
@@ -208,8 +233,15 @@ class NewEmailHandler {
                 "reason": error.reason ?? "Unknown Signal Error"
                 ] as [String : Any]
             Crashlytics.sharedInstance().recordError(CriptextError(message: error.name.rawValue), withAdditionalUserInfo: payload)
+            if (error.name.rawValue == "AxolotlDuplicateMessage") {
+                return .Duplicated
+            } else if (error.name.rawValue == "AxolotlNoSessionException") {
+                return .NoSession
+            } else {
+                return .Uknown
+            }
         }
-        return trueBody
+        return .Content(trueBody)
     }
     
     func handleAttachments(recipientId: String, event: NewEmail, email: Email, myAccount: Account, body: String) {
@@ -218,13 +250,19 @@ class NewEmailHandler {
             if let fileKeys = event.fileKeys {
                 for (index, attachment) in attachments.enumerated() {
                     var fileKey = fileKeys[index]
-                    fileKey = handleContentByMessageType(event.messageType, content: fileKey, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) ?? fileKey
+                    let result = handleContentByMessageType(event.messageType, content: fileKey, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                    if case let .Content(keys) = result {
+                        fileKey = keys
+                    }
                     let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: body)
                     email.files.append(file)
                 }
             } else  {
                 var fileKey = event.fileKey ?? ""
-                fileKey = handleContentByMessageType(event.messageType, content: fileKey, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal) ?? fileKey
+                let result = handleContentByMessageType(event.messageType, content: fileKey, account: myAccount, recipientId: recipientId, senderDeviceId: event.senderDeviceId, isExternal: event.isExternal)
+                if case let .Content(keys) = result {
+                    fileKey = keys
+                }
                 for attachment in attachments {
                     let file = self.handleAttachment(attachment, email: email, fileKey: fileKey, body: body)
                     email.files.append(file)
