@@ -106,6 +106,7 @@ class ResetDeviceViewController: UIViewController{
                 let storyboard = UIStoryboard(name: "Login", bundle: nil)
                 let controller = storyboard.instantiateViewController(withIdentifier: "removeDevicesViewController")  as! RemoveDevicesViewController
                 self.loginData.password = password
+                controller.maxAllowedDevices = self.loginData.maxDevices
                 controller.loginData = self.loginData
                 controller.multipleAccount = self.multipleAccount
                 controller.tempToken = token

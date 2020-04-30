@@ -31,11 +31,12 @@ class AliasViewController: UIViewController {
         self.tableView.tableFooterView = UIView()
         self.tableView.reloadData()
         self.applyTheme()
-        
-        if (myAccount.customerType == 0) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.askUpgradePlus()
-            }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if (!Constants.isPlus(customerType: myAccount.customerType)) {
+            self.askUpgradePlus()
         }
     }
     

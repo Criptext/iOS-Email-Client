@@ -86,7 +86,7 @@ class SettingsGeneralViewController: UIViewController{
                 case .account:
                     return String.localize("ACCOUNT_OPTION")
                 case .plus:
-                    return String.localize("PLUS_MEMBERSHIP")
+                    return String.localize("UPGRADE_TO_PLUS")
                 case .devices:
                     return String.localize("DEVICES_OPTION")
                 case .labels:
@@ -264,6 +264,8 @@ class SettingsGeneralViewController: UIViewController{
         switch(subsection){
         case .manualSync:
             cell.goImageView.isHidden = true
+        case .plus:
+            cell.optionLabel.text = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("UPGRADE_TO_PLUS")
         default:
             cell.goImageView.isHidden = false
         }
@@ -452,6 +454,7 @@ class SettingsGeneralViewController: UIViewController{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
         webviewVC.delegate = self
+        webviewVC.initialTitle = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("UPGRADE_TO_PLUS")
         webviewVC.accountJWT = self.myAccount.jwt
         self.navigationController?.pushViewController(webviewVC, animated: true)
     }

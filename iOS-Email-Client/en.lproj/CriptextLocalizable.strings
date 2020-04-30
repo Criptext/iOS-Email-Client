@@ -500,7 +500,10 @@
 "VERIFY_DOMAIN_ERROR" = "%@ is listed as your domain, make sure this is right; otherwise correct the domain on your Company Profile. Need help?\n\nAlso check that the DNS records on your domain are not empty; otherwise go back and add them from the previous steps.";
 "VERIFY_DOMAIN_MESSAGE" = "Do not close the app or put in the background until this process ends.";
 
-"PLUS_MEMBERSHIP" = "Billing";
+"BILLING" = "Billing";
+"UPGRADE_TO_PLUS" = "Upgrade to Plus";
+
+"CONNECTION_LOST" = "Looks like you have lost connections with Wifi or other Internet connection";
 
 "DEVICE_LIMIT_REACHED" = "You need Plus for this";
 "DEVICE_LIMIT_PLUS" = "You've reached your maximum devices allowed (%i). Upgrade to Plus to get up to %i devices connected on your account. Otherwise, remove an existing device in order to continue logging in.";
