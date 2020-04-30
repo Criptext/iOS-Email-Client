@@ -20,11 +20,11 @@ enum ResponseData {
     case Forbidden
     case Missing
     case BadRequest
-    case BadRequestDictionary([String: Any])
     case AuthPending
     case AuthDenied
     case Conflicts
     case TooManyDevices
+    case TooManyDevicesDictionary([String: Any])
     case EntityTooLarge(Int64)
     case TooManyRequests(Int64)
     case ServerError

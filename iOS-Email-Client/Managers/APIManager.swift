@@ -778,12 +778,12 @@ class APIManager: SharedAPI {
         ] as [String : Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response)
-            guard case .BadRequest = responseData,
+            guard case .TooManyDevices = responseData,
                 let data = response.result.value as? [String: Any] else {
                 completion(responseData)
                 return
             }
-            completion(.BadRequestDictionary(data))
+            completion(.TooManyDevicesDictionary(data))
         }
     }
     

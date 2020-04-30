@@ -76,8 +76,8 @@ class MenuViewController: UIViewController{
         avatarPlusBadgeView.backgroundColor = UIColor.plusStatus
         avatarPlusBadgeView.layer.masksToBounds = true
         
-        avatarImageWrapperView.isHidden = mailboxVC.myAccount.customerType == 0
-        avatarPlusBadgeWrapperView.isHidden = mailboxVC.myAccount.customerType == 0
+        avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
     }
     
     @objc func openProfile(){
@@ -158,8 +158,8 @@ class MenuViewController: UIViewController{
         labelsTableView.reloadData()
         accountsCollectionView.reloadData()
         accountsTableView.reloadData()
-        avatarImageWrapperView.isHidden = mailboxVC.myAccount.customerType == 0
-        avatarPlusBadgeWrapperView.isHidden = mailboxVC.myAccount.customerType == 0
+        avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
     }
     
     func applyTheme() {

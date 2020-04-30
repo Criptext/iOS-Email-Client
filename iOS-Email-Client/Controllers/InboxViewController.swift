@@ -227,7 +227,7 @@ class InboxViewController: UIViewController {
         mailboxOptionsInterface?.delegate = self
         self.generalOptionsContainerView.setDelegate(newDelegate: mailboxOptionsInterface!)
         
-        avatarBorderView.isHidden = myAccount.customerType == 0
+        avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
     }
     
     func applyTheme() {
@@ -645,7 +645,7 @@ extension InboxViewController {
             DBManager.refresh()
             UIUtils.deleteSDWebImageCache()
             UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-            avatarBorderView.isHidden = myAccount.customerType == 0
+            avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
             menuViewController.reloadView()
         }
         
@@ -1986,6 +1986,7 @@ extension InboxViewController: ThemeDelegate {
     func swapTheme(_ theme: Theme) {
         applyTheme()
         tableView.reloadData()
+        avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
         generalOptionsContainerView.refreshView()
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.reloadView()
@@ -2017,6 +2018,7 @@ extension InboxViewController {
         WebSocketManager.sharedInstance.connect(accounts: [account])
         self.invalidateObservers()
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
+        avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.reloadView()
             menuViewController.hideAccounts()
