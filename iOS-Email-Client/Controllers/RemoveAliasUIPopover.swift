@@ -1,28 +1,27 @@
 //
-//  RemoveDeviceUIPopover.swift
+//  RemoveAliasUIPopover.swift
 //  iOS-Email-Client
 //
-//  Created by Pedro Aim on 8/22/18.
-//  Copyright © 2018 Criptext Inc. All rights reserved.
+//  Created by Jorge Blacio on 3/9/20.
+//  Copyright © 2020 Criptext Inc. All rights reserved.
 //
 import Foundation
 import Material
 
-class RemoveDeviceUIPopover: BaseUIPopover {
+class RemoveAliasUIPopover: BaseUIPopover {
     
-    var device: Device!
+    var alias: Alias!
     var myAccount: Account!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
-    @IBOutlet weak var continueTitleLabel: UILabel!
-    @IBOutlet weak var passwordTextField: TextField!
     @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var loader: UIActivityIndicatorView!
-    var onSuccess: ((Int) -> Void)?
+    var onSuccess: ((String, Int) -> Void)?
     
     init(){
-        super.init("RemoveDeviceUIPopover")
+        super.init("RemoveAliasUIPopover")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,14 +30,17 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        passwordTextField.isVisibilityIconButtonEnabled = true
         showLoader(false)
         applyTheme()
+        titleLabel.text = String.localize("ALIASES_DELETE")
+        subTitleLabel.text = String.localize("ALIASES_DELETE_DESC", arguments: alias.email)
+        confirmButton.setTitle(String.localize("DELETE"), for: .normal)
+        cancelButton.setTitle(String.localize("CANCEL"), for: .normal)
+        dismissButton.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let _ = passwordTextField.becomeFirstResponder()
     }
     
     func applyTheme() {
@@ -47,16 +49,12 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         view.backgroundColor = theme.background
         titleLabel.textColor = theme.mainText
         subTitleLabel.textColor = theme.mainText
-        continueTitleLabel.textColor = theme.mainText
-        passwordTextField.detailColor = theme.alert
-        passwordTextField.textColor = theme.mainText
-        passwordTextField.placeholderLabel.textColor = theme.mainText
-        passwordTextField.visibilityIconButton?.tintColor = theme.mainText
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [NSAttributedString.Key.foregroundColor: theme.placeholder])
         confirmButton.backgroundColor = theme.popoverButton
         cancelButton.backgroundColor = theme.popoverButton
+        dismissButton.backgroundColor = theme.popoverButton
         confirmButton.setTitleColor(theme.mainText, for: .normal)
         cancelButton.setTitleColor(theme.mainText, for: .normal)
+        dismissButton.setTitleColor(theme.mainText, for: .normal)
         loader.color = theme.loader
     }
     
@@ -65,37 +63,29 @@ class RemoveDeviceUIPopover: BaseUIPopover {
     }
     
     @IBAction func onConfirmPress(_ sender: Any) {
-        passwordTextField.detail = ""
-        guard let password = passwordTextField.text,
-            password.count > 7 else {
-            passwordTextField.detail = String.localize("PASSWORD_LENGTH")
-            return
-        }
-        let deviceId = device.id
+        let aliasId = alias.rowId
+        let domainName = alias.domain ?? Env.plainDomain
         showLoader(true)
-        APIManager.removeDevice(deviceId: deviceId, password: password.sha256()!, token: myAccount.jwt) { (responseData) in
+        APIManager.deleteAlias(rowId: aliasId, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
+                self.logout(account: self.myAccount)
                 return
             }
-            if case .Missing = responseData {
-                self.showLoader(false)
-                self.passwordTextField.detail = String.localize("WRONG_PASS_RETRY")
+            if case let .PreConditionRequired(daysLeft) = responseData {
+                self.setFailContent(message: String.localize("ALIASES_DELETE_ERROR_UNABLE", arguments: daysLeft.description))
                 return
             }
             guard case .Success = responseData else {
-                self.showLoader(false)
-                self.passwordTextField.detail = String.localize("UNABLE_REMOVE_DEVICE", arguments: self.device.friendlyName)
+                self.setFailContent(message: String.localize("ALIASES_DELETE_ERROR_UNKNOWN"))
                 return
             }
-            self.onSuccess?(deviceId)
+            self.onSuccess?(domainName, aliasId)
             self.dismiss(animated: true)
         }
     }
     
     func showLoader(_ show: Bool){
         self.shouldDismiss = !show
-        passwordTextField.isEnabled = !show
         confirmButton.isEnabled = !show
         cancelButton.isEnabled = !show
         cancelButton.setTitle(show ? "" : String.localize("CANCEL"), for: .normal)
@@ -106,6 +96,16 @@ class RemoveDeviceUIPopover: BaseUIPopover {
             return
         }
         loader.startAnimating()
+    }
+    
+    func setFailContent(message: String) {
+        self.showLoader(false)
+        self.confirmButton.isHidden = true
+        self.cancelButton.isHidden = true
+        self.dismissButton.isHidden = false
+        self.titleLabel.text = String.localize("ALIASES_DELETE_ERROR_TITLE")
+        self.subTitleLabel.text = message
+        self.subTitleLabel.fontSize = 16.0
     }
     
 }
