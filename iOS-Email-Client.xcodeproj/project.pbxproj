@@ -198,6 +198,7 @@
 		7C92104820FFD5690081C048 /* AESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104720FFD5690081C048 /* AESCipher.swift */; };
 		7C92104A210141380081C048 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C921049210141380081C048 /* EventData.swift */; };
 		7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104B21022B290081C048 /* CircleLoaderUIView.swift */; };
+		7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */; };
 		7CA607B9242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
 		7CA607BA242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
 		7CA607BB242A62150086D6B4 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED62411B8210095BCBB /* Alias.swift */; };
@@ -851,6 +852,7 @@
 		7C92104720FFD5690081C048 /* AESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESCipher.swift; sourceTree = "<group>"; };
 		7C921049210141380081C048 /* EventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventData.swift; sourceTree = "<group>"; };
 		7C92104B21022B290081C048 /* CircleLoaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleLoaderUIView.swift; sourceTree = "<group>"; };
+		7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAliasUIPopover.swift; sourceTree = "<group>"; };
 		7CA607B8242A5E120086D6B4 /* AccountAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAlias.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
@@ -1316,6 +1318,7 @@
 				348F1EDC24167CC80095BCBB /* RemoveAliasUIPopover.swift */,
 				348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */,
 				7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */,
+				7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2325,6 +2328,7 @@
 				7CF93F5C214963A500361837 /* GeneralVersionTableViewCell.swift in Sources */,
 				A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */,
 				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
+				7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */,
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C7F2FF120B4D2C400A2CB32 /* SettingsDevicesViewController.swift in Sources */,
