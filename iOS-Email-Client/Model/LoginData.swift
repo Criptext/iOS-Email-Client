@@ -16,6 +16,8 @@ class LoginData{
     var isTwoFactor = false
     var password: String?
     var needToRemoveDevices: Bool = false
+    var customerType = 0
+    var maxDevices = Env.maxAllowedDevices
     
     var email: String {
         return "\(username)@\(domain)"

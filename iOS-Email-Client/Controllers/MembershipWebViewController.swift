@@ -16,32 +16,59 @@ protocol MembershipWebViewControllerDelegate: class {
 class MembershipWebViewController: UIViewController {
     @IBOutlet weak var webview: WKWebView!
     @IBOutlet weak var loaderView: UIActivityIndicatorView!
+    @IBOutlet weak var failureWrapperView: UIView!
+    @IBOutlet weak var failureTitleView: UILabel!
+    @IBOutlet weak var failureDescView: UILabel!
+    
     var delegate: MembershipWebViewControllerDelegate? = nil
+    var initialTitle = String.localize("UPGRADE_TO_PLUS")
+    var sectionDescription = String.localize("SOMETHING_WRONG")
     var accountJWT: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        applyTheme()
+        
+        failureWrapperView.isHidden = true
         loaderView.isHidden = false
         loaderView.startAnimating()
         webview.isHidden = true
         
-        navigationItem.title = String.localize("PLUS_MEMBERSHIP")
+        navigationItem.title = initialTitle
         navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(goBack))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         
         webview.navigationDelegate = self
         
-        let url = URL(string: "https://admin.criptext.com/?#/account/billing?token=\(accountJWT)")!
+        let url = URL(string: "https://admin.criptext.com/?#/account/billing?lang=\(Env.language)&token=\(accountJWT)")!
         webview.load(URLRequest(url: url))
         
         webview.allowsBackForwardNavigationGestures = true
         webview.configuration.userContentController.add(self, name: "iosListener")
+        
+        webview.scrollView.maximumZoomScale = 1
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        failureTitleView.textColor = theme.markedText
+        failureDescView.textColor = theme.mainText
+        view.backgroundColor = theme.overallBackground
     }
     
     @objc func goBack(){
         navigationController?.popViewController(animated: true)
+    }
+    
+    func showFailureView() {
+        loaderView.isHidden = true
+        loaderView.stopAnimating()
+        failureTitleView.text = sectionDescription
+        failureDescView.text = String.localize("LOST_CONNECTION")
+        failureWrapperView.isHidden = false
+        webview.isHidden = true
     }
 }
 
@@ -50,6 +77,18 @@ extension MembershipWebViewController: WKNavigationDelegate {
         loaderView.isHidden = true
         loaderView.stopAnimating()
         webview.isHidden = false
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        showFailureView()
+    }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        showFailureView()
+    }
+    
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        showFailureView()
     }
 }
 

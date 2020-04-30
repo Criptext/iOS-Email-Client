@@ -778,7 +778,12 @@ class APIManager: SharedAPI {
         ] as [String : Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response)
-            completion(responseData)
+            guard case .TooManyDevices = responseData,
+                let data = response.result.value as? [String: Any] else {
+                completion(responseData)
+                return
+            }
+            completion(.TooManyDevicesDictionary(data))
         }
     }
     
@@ -912,6 +917,17 @@ class APIManager: SharedAPI {
         let url = "\(self.baseUrl)/device/find"
         let headers = [versionHeader: apiVersion]
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON {
+            (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
+    class func maxDevices(token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/device/max"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
             (response) in
             let responseData = handleResponse(response)
             completion(responseData)

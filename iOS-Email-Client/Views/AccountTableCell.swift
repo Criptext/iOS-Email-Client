@@ -9,6 +9,7 @@
 import Foundation
 
 class AccountTableCell: UITableViewCell {
+    @IBOutlet weak var plusBorderView: UIView!
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
@@ -39,5 +40,11 @@ class AccountTableCell: UITableViewCell {
         emailLabel.text = account.email
         badgeLabel.text = counter > 100 ? "99+" : counter.description
         badgeLabel.isHidden = counter == 0
+        
+        plusBorderView.layer.cornerRadius = 29
+        plusBorderView.layer.borderWidth = 1
+        plusBorderView.layer.borderColor = UIColor.plusStatus.cgColor
+        
+        plusBorderView.isHidden = !Constants.isPlus(customerType: account.customerType)
     }
 }
