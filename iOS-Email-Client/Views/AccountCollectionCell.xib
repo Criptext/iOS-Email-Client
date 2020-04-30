@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,15 +22,23 @@
                 <rect key="frame" x="0.0" y="0.0" width="57" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="buf-yw-B9j">
+                        <rect key="frame" x="0.5" y="2" width="46" height="46"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="46" id="0Gb-x0-tzC"/>
+                            <constraint firstAttribute="height" constant="46" id="YHe-lJ-BUX"/>
+                        </constraints>
+                    </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tuf-7I-Gfl">
-                        <rect key="frame" x="1" y="4.5" width="41" height="41"/>
+                        <rect key="frame" x="3" y="4.5" width="41" height="41"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="OmW-Fe-erN"/>
                             <constraint firstAttribute="width" constant="41" id="RIk-JC-fkc"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99+" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X3q-SW-StO">
-                        <rect key="frame" x="28" y="4.5" width="28" height="19"/>
+                        <rect key="frame" x="29" y="4.5" width="28" height="19"/>
                         <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="19" id="7t8-d8-ASp"/>
@@ -50,16 +56,19 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="Tuf-7I-Gfl" firstAttribute="centerX" secondItem="5Hd-Dq-S5B" secondAttribute="centerX" constant="-7" id="jAj-bi-KVV"/>
+                <constraint firstItem="buf-yw-B9j" firstAttribute="centerX" secondItem="Tuf-7I-Gfl" secondAttribute="centerX" id="F6B-rz-UJc"/>
+                <constraint firstItem="buf-yw-B9j" firstAttribute="centerY" secondItem="Tuf-7I-Gfl" secondAttribute="centerY" id="apx-Vc-w7b"/>
+                <constraint firstItem="Tuf-7I-Gfl" firstAttribute="centerX" secondItem="5Hd-Dq-S5B" secondAttribute="centerX" constant="-5" id="jAj-bi-KVV"/>
                 <constraint firstItem="X3q-SW-StO" firstAttribute="top" secondItem="Tuf-7I-Gfl" secondAttribute="top" id="mWe-ao-1Pe"/>
                 <constraint firstItem="Tuf-7I-Gfl" firstAttribute="centerY" secondItem="5Hd-Dq-S5B" secondAttribute="centerY" id="y6M-Ux-eiZ"/>
-                <constraint firstItem="X3q-SW-StO" firstAttribute="trailing" secondItem="Tuf-7I-Gfl" secondAttribute="trailing" constant="14" id="ziU-yN-f0L"/>
+                <constraint firstItem="X3q-SW-StO" firstAttribute="trailing" secondItem="Tuf-7I-Gfl" secondAttribute="trailing" constant="13" id="ziU-yN-f0L"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="5Hd-Dq-S5B"/>
             <size key="customSize" width="95" height="91"/>
             <connections>
                 <outlet property="avatarImage" destination="Tuf-7I-Gfl" id="kJe-en-fsT"/>
                 <outlet property="badgeLabel" destination="X3q-SW-StO" id="h9d-g5-pqt"/>
+                <outlet property="plusBorderView" destination="buf-yw-B9j" id="L0t-K2-ZwJ"/>
             </connections>
             <point key="canvasLocation" x="-5.5999999999999996" y="41.379310344827587"/>
         </collectionViewCell>

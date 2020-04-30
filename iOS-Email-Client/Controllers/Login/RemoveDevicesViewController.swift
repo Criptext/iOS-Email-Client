@@ -36,7 +36,7 @@ class RemoveDevicesViewController: UIViewController {
         self.showUpgradeButton()
         checkTrashButton()
         
-        if (loginData.customerType != 0) {
+        if (Constants.isPlus(customerType: loginData.customerType)) {
             upgradeButton.isHidden = true
             upgradeButtonHeightConstraint.constant = 0
         } else {
@@ -84,7 +84,7 @@ class RemoveDevicesViewController: UIViewController {
     }
     
     func checkDevicesToContinue() {
-        guard maxAllowedDevices >= devices.count else {
+        guard maxAllowedDevices > devices.count else {
             return
         }
         self.linkBegin(username: self.loginData.username, domain: self.loginData.domain)
@@ -246,7 +246,7 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
                 self.showPopoverError(error: String.localize("USERNAME_NOT"))
                 return
             }
-            if case .BadRequestDictionary = responseData {
+            if case .TooManyDevicesDictionary = responseData {
                 self.loginToMailbox()
                 return
             }

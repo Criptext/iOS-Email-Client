@@ -497,7 +497,10 @@
 "VERIFY_DOMAIN_ERROR" = "Ingresaste %@ como tu dominio. Verifica que esto este correcto.\n\nTambién verifica que los DNS Records de tu dominio no estén vacíos.";
 "VERIFY_DOMAIN_MESSAGE" = "No cierres el app hasta que este proceso termine.";
 
-"PLUS_MEMBERSHIP" = "Billing";
+"BILLING" = "Billing";
+"UPGRADE_TO_PLUS" = "Upgrade to Plus";
+
+"CONNECTION_LOST" = "Parece que has perdido tu connección a internet";
 
 "DEVICE_LIMIT_REACHED" = "Necesitas Plus para esto";
 "DEVICE_LIMIT_PLUS" = "Has alcanzado el maximo numero de dispositivos (%i). Subscribete a Plus para poder vincular %i dispositivos. Si no lo deseas, deberas remover un dispositivo para continuar.";
