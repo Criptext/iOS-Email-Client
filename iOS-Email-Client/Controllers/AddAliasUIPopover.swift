@@ -92,7 +92,7 @@ class AddAliasUIPopover: BaseUIPopover {
             alias.active = true
             alias.name = self.aliasTextInput.text!
             alias.rowId = rowId
-            alias.domain = domainName == Env.domain ? nil : domainName
+            alias.domain = domainName == Env.plainDomain ? nil : domainName
             self.onSuccess?(alias)
             self.dismiss(animated: true)
         }

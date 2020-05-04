@@ -117,8 +117,8 @@ class SettingsGeneralViewController: UIViewController{
     let STATUS_NOT_CONFIRMED = 0
     let SECTION_VERSION = 5
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
-    let menus = [
+    var sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
+    var menus = [
         .account: [.account, .privacy, .devices, .labels, .manualSync, .backup, .plus],
         .addresses: [.customDomain, .aliases],
         .general: [.night, .syncContact, .preview, .pin],
@@ -135,6 +135,13 @@ class SettingsGeneralViewController: UIViewController{
     
     override func viewDidLoad() {
         ThemeManager.shared.addListener(id: "settings", delegate: self)
+        
+        if (myAccount.customerType == Constants.enterprise) {
+            sections.remove(at: 1);
+            menus.removeValue(forKey: .addresses)
+            menus[.account]?.remove(at: 6)
+        }
+        
         self.devicesData.devices.append(Device.createActiveDevice(deviceId: myAccount.deviceId))
         self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))

@@ -43,6 +43,11 @@ class RegisterDomainStepThreeViewController: UIViewController {
         percentageContainerView.isHidden = false
         messageLabel.isHidden = false
         errorLabel.isHidden = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.currentProgress += 5
+            self.animateProgress(Double(self.currentProgress), 3.0, completion: {})
+        }
     }
     
     func applyLocalization() {
@@ -96,7 +101,12 @@ class RegisterDomainStepThreeViewController: UIViewController {
         nextButton.isHidden = false
         nextButton.setTitle(String.localize("DONE"), for: .normal)
         isValidating = false
-        animateProgress(Double(100), 3.0, completion: {})
+        animateProgress(Double(100), 3.0, completion: {
+            self.progressBar.progressTintColor = .success
+            self.titleLabel.text = String.localize("CUSTOM_DOMAIN_VERIFICATION_SUCCESS")
+            self.messageLabel.text = ""
+            self.errorLabel.text = ""
+        })
     }
     
     func validationError(errorCode: Int){

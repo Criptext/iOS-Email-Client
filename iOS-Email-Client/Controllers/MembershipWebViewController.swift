@@ -46,9 +46,12 @@ class MembershipWebViewController: UIViewController {
         webview.load(URLRequest(url: url))
         
         webview.allowsBackForwardNavigationGestures = true
+        webview.allowsLinkPreview = true
         webview.configuration.userContentController.add(self, name: "iosListener")
         
         webview.scrollView.maximumZoomScale = 1
+        
+        webview.uiDelegate = self
     }
     
     func applyTheme() {
@@ -66,9 +69,18 @@ class MembershipWebViewController: UIViewController {
         loaderView.isHidden = true
         loaderView.stopAnimating()
         failureTitleView.text = sectionDescription
-        failureDescView.text = String.localize("LOST_CONNECTION")
+        failureDescView.text = String.localize("CONNECTION_LOST")
         failureWrapperView.isHidden = false
         webview.isHidden = true
+    }
+}
+
+extension MembershipWebViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if !(navigationAction.targetFrame?.isMainFrame ?? false) {
+            webview.load(navigationAction.request)
+        }
+        return nil
     }
 }
 
@@ -90,6 +102,14 @@ extension MembershipWebViewController: WKNavigationDelegate {
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         showFailureView()
     }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        decisionHandler(.allow)
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        decisionHandler(.allow)
+    }
 }
 
 extension MembershipWebViewController: UIGestureRecognizerDelegate {
@@ -107,7 +127,6 @@ extension MembershipWebViewController: UIGestureRecognizerDelegate {
 extension MembershipWebViewController: WKScriptMessageHandler{
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("DICTIONARY : \(message.body)")
         guard let dict = message.body as? [String: Any],
             let messageType = dict["type"] as? String else {
             return
