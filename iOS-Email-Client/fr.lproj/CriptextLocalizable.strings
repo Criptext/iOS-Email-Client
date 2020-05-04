@@ -482,7 +482,7 @@
 "DNS_NOT_FOUND_MESSAGE" = "%@ is listed as your domain, make sure this is right; otherwise correct the domain on your Company Profile. Need help? \n\nAlso check that the DNS records on your domain are not empty; otherwise go back and add them from the previous steps.";
 "CUSTOM_DOMAIN_SOMETHING_WRONG_TITLE" = "Something Went Wrong";
 "CUSTOM_DOMAIN_SOMETHING_WRONG_MESSAGE" = "Try again in a couple of minutes. Need help? ";
-"CUSTOM_DOMAIN_VERIFICATION_SUCCESS" = "Your Domain Was Verified Succesfully";
+"CUSTOM_DOMAIN_VERIFICATION_SUCCESS" = "Your Domain\nWas Verified Succesfully";
 
 "ADD_ALIAS" = "+ Add Alias";
 "VERIFY" = "Verify";

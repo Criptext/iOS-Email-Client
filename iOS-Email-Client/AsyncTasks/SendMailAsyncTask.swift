@@ -67,8 +67,8 @@ class SendMailAsyncTask {
         if let fromContact = email.getContacts(type: .from).first,
             fromContact.email != email.account.email {
             let emailSplit = fromContact.email.split(separator: "@").map({$0.description})
-            let domain = emailSplit.last! == Env.plainDomain ? nil : emailSplit.last!
-            let alias = SharedDB.getAlias(username: emailSplit.first!, domain: domain, account: email.account)
+            let aliasDomain = emailSplit.last! == Env.plainDomain ? nil : emailSplit.last!
+            let alias = SharedDB.getAlias(username: emailSplit.first!, domain: aliasDomain, account: email.account)
             fromAddressId = alias?.rowId
         } else {
             fromAddressId = nil
