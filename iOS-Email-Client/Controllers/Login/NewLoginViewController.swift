@@ -251,6 +251,10 @@ class NewLoginViewController: UIViewController{
                 self.showLoginError(error: String.localize("USERNAME_NOT"))
                 return
             }
+            if case .BadRequest = responseData {
+                self.jumpToLoginPasswordView(loginData: loginData)
+                return
+            }
             if case let .TooManyDevicesDictionary(data) = responseData,
                 let customerType = data["customerType"] as? Int,
                 let maxDevices = data["maxDevices"] as? Int {
