@@ -33,6 +33,7 @@ class EmailDetailViewController: UIViewController {
     weak var target: UIView?
     var emailDetailOptionsInterface: EmailDetailOptionsInterface?
     var emailMoreOptionsInterface: EmailMoreOptionsInterface?
+    var emailDetailContentOptionsInterface: EmailDetailContentOptionsInterface?
     let fileManager = CriptextFileManager()
     let coachMarksController = CoachMarksController()
     
@@ -530,6 +531,19 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         generalOptionsContainerView.showMoreOptions()
     }
+    
+    func tableViewTrustRecipient(cell: EmailTableViewCell, email: Email) {
+        guard let indexPath = emailsTableView.indexPath(for: cell) else {
+            return
+        }
+        
+        emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        let email = getMail(index: indexPath.row)
+        emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface()
+        emailDetailContentOptionsInterface?.delegate = self
+        generalOptionsContainerView.setDelegate(newDelegate: emailDetailContentOptionsInterface!)
+        toggleGeneralOptionsView()
+    }
 }
 
 extension EmailDetailViewController: MembershipWebViewControllerDelegate {
@@ -722,6 +736,30 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     func restoreThreads(){
         toggleGeneralOptionsView()
         setLabels(added: [], removed: [emailData.selectedLabel])
+    }
+}
+
+extension EmailDetailViewController: EmailContentOptionsDelegate {
+    func onOncePress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow,
+            let cell = emailsTableView.cellForRow(at: indexPath) as? EmailTableViewCell else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        cell.enableImages()
+        self.toggleGeneralOptionsView()
+    }
+    
+    func onAlwaysPress() {
+        //TODO
+    }
+    
+    func onDisablePress() {
+        //TODO
+    }
+    
+    func onContentOptionsClose() {
+        self.toggleGeneralOptionsView()
     }
 }
 

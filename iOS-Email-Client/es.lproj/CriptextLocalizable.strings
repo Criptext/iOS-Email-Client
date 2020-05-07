@@ -525,3 +525,14 @@
 
 "PLUS_SETTINGS_TITLE" = "Estas buscando los\nDatos de Facturación?";
 "PLUS_SETTINGS_MESSAGE" = "Abre el App de Criptext en tu PC para administar tus datos de Facturación";
+
+"DEVICE_LIMIT_REACHED" = "Necesitas Plus para esto";
+"DEVICE_LIMIT_PLUS" = "Has alcanzado el máximo número de dispositivos (%i). Subscribete a Plus para poder vincular %i dispositivos. Caso contrario deberas remover dispositivos para continuar.";
+"CUSTOM_DOMAINS_PLUS" = "Agrega direcciones de correo con un dominio que te pertenezca como tu@compania.com\n\nObtén esto y más cuando te subscribas a Plus!";
+"ALIAS_PLUS" = "Con Aliases puedes manejar multiples direcciones de correo en un solo buzón\n\nObtén esto y más cuando te subscribas a Plus!";
+"GET_PLUS" = "Obtener Plus";
+"MAYBE_LATER" = "No, Gracias";
+
+"CONTENT_BLOCK_ONCE" = "Una vez";
+"CONTENT_BLOCK_ALWAYS" = "Siempre para este contacto";
+"CONTENT_BLOCK_TURN_OFF" = "Deshabilitar bloqueo de contenido";

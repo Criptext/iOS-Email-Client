@@ -525,3 +525,14 @@
 
 "PLUS_SETTINGS_TITLE" = "Looking for your\nBilling Settings?";
 "PLUS_SETTINGS_MESSAGE" = "Open Criptext App on desktop to manage your Billing Settings";
+
+"DEVICE_LIMIT_REACHED" = "You need Plus for this";
+"DEVICE_LIMIT_PLUS" = "You've reached your maximum devices allowed (%i). Upgrade to Plus to get up to %i devices connected on your account. Otherwise, remove an existing device in order to continue logging in.";
+"CUSTOM_DOMAINS_PLUS" = "Add custom email addresses with a Domain that you already own like you@company.com\n\nGet this and more when you upgrade to Criptext Plus.";
+"ALIAS_PLUS" = "With Aliases you can manage multiple addresses in one inbox\n\nGet this and more when you upgrade to Criptext Plus.";
+"GET_PLUS" = "Get Plus";
+"MAYBE_LATER" = "No, Thanks";
+
+"CONTENT_BLOCK_ONCE" = "Once";
+"CONTENT_BLOCK_ALWAYS" = "Always from this sender";
+"CONTENT_BLOCK_TURN_OFF" = "Turn off image blocking";
