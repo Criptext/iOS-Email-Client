@@ -22,6 +22,7 @@ protocol EmailTableViewCellDelegate: class {
     func tableViewCellDidTapEmail(email: String)
     func tableViewExpandViews()
     func tableViewDeleteDraft(email: Email)
+    func tableViewTrustRecipient(cell: EmailTableViewCell, email: Email)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -57,7 +58,10 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var circleLoaderUIView: CircleLoaderUIView!
     @IBOutlet weak var moreOptionsIcon: UIImageView!
     @IBOutlet weak var deleteDraftButton: UIButton!
+    @IBOutlet weak var showImagesButton: UIButton!
+    
     let webView: WKWebView
+    var isTrusted = false
     
     var email: Email!
     var emailState: Email.State!
@@ -72,6 +76,28 @@ class EmailTableViewCell: UITableViewCell{
     let ATTATCHMENT_CELL_HEIGHT : CGFloat = 68.0
     let RECIPIENTS_MAX_WIDTH: CGFloat = 190.0
     let READ_STATUS_MARGIN: CGFloat = 5.0
+    
+    let blockRules = """
+    [
+      {
+        "trigger": {
+          "url-filter": ".*",
+          "resource-type": ["image"]
+        },
+        "action": {
+          "type": "block"
+        }
+      },
+      {
+        "trigger": {
+          "url-filter": "file://.*"
+      },
+        "action": {
+          "type": "ignore-previous-rules"
+        }
+      }
+    ]
+    """
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         let config = WKWebViewConfiguration()
@@ -168,6 +194,8 @@ class EmailTableViewCell: UITableViewCell{
         contactsCollapseLabel.textColor = theme.mainText
         backgroundColor = .clear
         circleLoaderUIView.backgroundColor = .clear
+        
+        showImagesButton.setTitleColor(theme.criptextBlue, for: .normal)
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -246,11 +274,13 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func setCollapsedContent(_ email: Email){
+        showImagesButton.isHidden = true
         deleteDraftButton.isHidden = true
         previewLabel.text = email.getPreview()
     }
     
     func setExpandedContent(_ email: Email, myEmail: String){
+        showImagesButton.isHidden = false
         deleteDraftButton.isHidden = !email.isDraft
         moreOptionsIcon.image = email.isDraft ? #imageLiteral(resourceName: "icon-edit") : #imageLiteral(resourceName: "dots-options")
         let allContacts = Array(email.getContacts(type: .to)) + Array(email.getContacts(type: .cc)) + Array(email.getContacts(type: .bcc))
@@ -274,7 +304,24 @@ class EmailTableViewCell: UITableViewCell{
         let script = Constants.quoteScript(theme: theme.name, isFwd: isFwd)
         let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(script)"
         webView.scrollView.maximumZoomScale = 2.0
-        webView.loadHTMLString(content, baseURL: bundleUrl)
+        
+        if (isTrusted) {
+            self.webView.configuration.userContentController.removeAllContentRuleLists()
+            self.webView.loadHTMLString(content, baseURL: bundleUrl)
+        } else {
+            WKContentRuleListStore.default()?.compileContentRuleList(forIdentifier: "ContentBlockingRules", encodedContentRuleList: blockRules, completionHandler: { (contentRuleList, error) in
+                
+                if let myError = error {
+                    print("Rules error :", myError)
+                    return
+                }
+
+                let configuration = self.webView.configuration
+                configuration.userContentController.add(contentRuleList!)
+                
+                self.webView.loadHTMLString(content, baseURL: bundleUrl)
+            })
+        }
     }
     
     func parseContact(_ contact: Contact, myEmail: String, contactsLength: Int) -> String {
@@ -349,6 +396,16 @@ class EmailTableViewCell: UITableViewCell{
         delegate?.tableViewCellDidTapIcon(self, self.moreInfoContainerView, .contacts)
     }
     
+    @IBAction func onShowImagesPress(_ sender: Any) {
+        self.delegate?.tableViewTrustRecipient(cell: self, email: self.email)
+    }
+    
+    func enableImages() {
+        isTrusted = true
+        
+        webView.configuration.userContentController.removeAllContentRuleLists()
+        webView.evaluateJavaScript("replaceSrc();", completionHandler: nil)
+    }
 }
 
 extension EmailTableViewCell{

@@ -508,3 +508,7 @@
 "ALIAS_PLUS" = "Con Aliases puedes manejar multiples direcciones de correo en un solo buzón\n\nObtén esto y más cuando te subscribas a Plus!";
 "GET_PLUS" = "Obtener Plus";
 "MAYBE_LATER" = "No, Gracias";
+
+"CONTENT_BLOCK_ONCE" = "Una vez";
+"CONTENT_BLOCK_ALWAYS" = "Siempre para este contacto";
+"CONTENT_BLOCK_TURN_OFF" = "Deshabilitar bloqueo de contenido";

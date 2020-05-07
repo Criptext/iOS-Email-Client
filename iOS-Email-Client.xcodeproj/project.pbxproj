@@ -199,6 +199,7 @@
 		7C92104A210141380081C048 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C921049210141380081C048 /* EventData.swift */; };
 		7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104B21022B290081C048 /* CircleLoaderUIView.swift */; };
 		7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */; };
+		7C9F572224621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9F572124621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift */; };
 		7CA607B9242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
 		7CA607BA242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
 		7CA607BB242A62150086D6B4 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED62411B8210095BCBB /* Alias.swift */; };
@@ -853,6 +854,7 @@
 		7C921049210141380081C048 /* EventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventData.swift; sourceTree = "<group>"; };
 		7C92104B21022B290081C048 /* CircleLoaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleLoaderUIView.swift; sourceTree = "<group>"; };
 		7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAliasUIPopover.swift; sourceTree = "<group>"; };
+		7C9F572124621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailContentOptionsInterface.swift; sourceTree = "<group>"; };
 		7CA607B8242A5E120086D6B4 /* AccountAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAlias.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
@@ -1737,6 +1739,7 @@
 				A7115E9E2316DC4000EBECE7 /* EmailMoreOptionsInterface.swift */,
 				A7115EA02316F84600EBECE7 /* AccountOptionsInterface.swift */,
 				347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */,
+				7C9F572124621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -2390,6 +2393,7 @@
 				A758E2E7221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift in Sources */,
 				34A56A50241EE19600120984 /* RegisterDomainStepThreeViewController.swift in Sources */,
 				7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */,
+				7C9F572224621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift in Sources */,
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				A7CC388021939E8800C8355A /* ContactUtils.swift in Sources */,
 				7C5FD82B2060259C000E5F14 /* EmailDetailHeaderCell.swift in Sources */,

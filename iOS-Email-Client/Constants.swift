@@ -178,7 +178,24 @@ struct Constants {
             "newNode.src = \"file://\(expandedPath)\";" +
         "} window.webkit.messageHandlers.iosListener.postMessage('heightChange'); });"
         
-        return "</body><script>\(script)</script></html>"
+        let reloadImages = """
+
+        function replaceSrc()
+        {
+            var images = document.getElementsByTagName('img');
+            for(var i = 0; i < images.length; i++)
+            {
+                var dt = new Date();
+                var img = images[i];
+                if(img.src.length >= 0)
+                {
+                    img.src = img.src + "";
+                }
+            }
+        }
+        """
+        
+        return "</body><script>\(script)\(reloadImages)</script></html>"
     }
     
     static func singleEmail (image: String, subject: String, contact: String, completeDate: String,
