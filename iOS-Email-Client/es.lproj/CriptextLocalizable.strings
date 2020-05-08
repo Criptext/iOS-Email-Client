@@ -536,3 +536,7 @@
 "CONTENT_BLOCK_ONCE" = "Una vez";
 "CONTENT_BLOCK_ALWAYS" = "Siempre para este contacto";
 "CONTENT_BLOCK_TURN_OFF" = "Deshabilitar bloqueo de contenido";
+
+"BLOCK_REMOTE_CONTENT" = "Bloquear contenido externo";
+"BLOCK_CONTENT_DESC" = "Bloquea imagenes de emisores no confiables";
+"BLOCK_CONTENT_UPDATE_FAILED" = "No fue posible actualizar sus preferencias de bloqueo";

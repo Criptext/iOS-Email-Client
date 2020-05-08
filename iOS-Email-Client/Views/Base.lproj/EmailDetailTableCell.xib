@@ -169,14 +169,17 @@
                                             <action selector="onDeleteDraftPressed:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="7g1-Na-fio"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWb-we-hL7">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWb-we-hL7">
                                         <rect key="frame" x="92" y="62" width="120" height="19"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="19" id="S7K-AE-Lvp"/>
                                             <constraint firstAttribute="width" constant="120" id="zvx-ZJ-eUF"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
-                                        <state key="normal" title="Show Images"/>
+                                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Show Images" image="show-images">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="onShowImagesPress:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="VfF-UE-Rju"/>
                                         </connections>
@@ -220,9 +223,15 @@
                                     <constraint firstItem="yfG-EO-Lu4" firstAttribute="centerY" secondItem="uDR-zl-Siw" secondAttribute="centerY" id="tde-FJ-o92"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JK4-4w-JCY">
+                                <rect key="frame" x="0.0" y="80" width="375" height="10"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="nax-ln-Fb5"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
-                                <rect key="frame" x="0.0" y="75" width="375" height="98"/>
-                                <rect key="frame" x="0.0" y="80" width="375" height="93"/>
+                                <rect key="frame" x="0.0" y="90" width="375" height="83"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="250" id="nMQ-Id-iGW"/>
@@ -383,6 +392,7 @@
                 <outlet property="readStatusMarginConstraint" destination="WQR-Th-pVs" id="eS2-QD-aTN"/>
                 <outlet property="secureIconView" destination="STJ-z8-shf" id="bCq-Wj-R0C"/>
                 <outlet property="showImagesButton" destination="oWb-we-hL7" id="yPY-rq-7TO"/>
+                <outlet property="showImagesSeparatorView" destination="JK4-4w-JCY" id="1An-FZ-Tzk"/>
                 <outlet property="upContainerView" destination="0Ve-4f-47D" id="3a8-pT-JT0"/>
                 <outlet property="upView" destination="F1U-WC-rl8" id="4dx-IV-Uzv"/>
                 <outlet property="webViewWrapperView" destination="tm2-e0-IDa" id="BGn-II-V8l"/>
@@ -395,6 +405,7 @@
         <image name="check" width="15" height="11.5"/>
         <image name="dots-options" width="24" height="6"/>
         <image name="icSecinb" width="17" height="17"/>
+        <image name="show-images" width="16" height="15"/>
         <image name="toolbar-trash" width="38" height="41"/>
     </resources>
 </document>

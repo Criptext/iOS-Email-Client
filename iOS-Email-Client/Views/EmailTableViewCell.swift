@@ -60,9 +60,9 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var moreOptionsIcon: UIImageView!
     @IBOutlet weak var deleteDraftButton: UIButton!
     @IBOutlet weak var showImagesButton: UIButton!
+    @IBOutlet weak var showImagesSeparatorView: UIView!
     
     let webView: WKWebView
-    var isTrusted = false
     
     var email: Email!
     var emailState: Email.State!
@@ -248,7 +248,7 @@ class EmailTableViewCell: UITableViewCell{
         bottomMarginView.isHidden = !isExpanded
         
         if(isExpanded){
-            setExpandedContent(email, myEmail: myEmail)
+            setExpandedContent(email, emailBody: emailBody, myEmail: myEmail)
         }else{
             setCollapsedContent(email)
         }
@@ -274,6 +274,7 @@ class EmailTableViewCell: UITableViewCell{
         }
         
         UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: email.fromContact)
+        showImagesSeparatorView.isHidden = showImagesButton.isHidden
     }
     
     func setCollapsedContent(_ email: Email){
@@ -282,8 +283,7 @@ class EmailTableViewCell: UITableViewCell{
         previewLabel.text = email.getPreview()
     }
     
-    func setExpandedContent(_ email: Email, myEmail: String){
-        showImagesButton.isHidden = false
+    func setExpandedContent(_ email: Email, emailBody: String, myEmail: String){
         deleteDraftButton.isHidden = !email.isDraft
         moreOptionsIcon.image = email.isDraft ? #imageLiteral(resourceName: "icon-edit") : #imageLiteral(resourceName: "dots-options")
         let allContacts = Array(email.getContacts(type: .to)) + Array(email.getContacts(type: .cc)) + Array(email.getContacts(type: .bcc))
@@ -296,6 +296,9 @@ class EmailTableViewCell: UITableViewCell{
         })
         let size = contactsLabel.sizeThatFits(CGSize(width: RECIPIENTS_MAX_WIDTH, height: 22.0))
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
+        
+        let hasImages = emailBody.contains("<img")
+        showImagesButton.isHidden = !hasImages || !shouldBlockContent(email: email, emailState: self.emailState)
     }
     
     func loadWebview(email: Email, emailBody: String){
@@ -308,7 +311,7 @@ class EmailTableViewCell: UITableViewCell{
         let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(script)"
         webView.scrollView.maximumZoomScale = 2.0
         
-        if (isTrusted) {
+        if (!shouldBlockContent(email: email, emailState: self.emailState)) {
             self.webView.configuration.userContentController.removeAllContentRuleLists()
             self.webView.loadHTMLString(content, baseURL: bundleUrl)
         } else {
@@ -403,11 +406,23 @@ class EmailTableViewCell: UITableViewCell{
         self.delegate?.tableViewTrustRecipient(cell: self, email: self.email)
     }
     
-    func enableImages() {
-        isTrusted = true
-        
+    func enableImages(emailState: Email.State) {
+        if (!isLoaded) {
+            return
+        }
         webView.configuration.userContentController.removeAllContentRuleLists()
         webView.evaluateJavaScript("replaceSrc();", completionHandler: nil)
+        
+        showImagesButton.isHidden = !shouldBlockContent(email: self.email, emailState: emailState)
+        showImagesSeparatorView.isHidden = showImagesButton.isHidden
+    }
+    
+    func shouldBlockContent(email: Email, emailState: Email.State) -> Bool {
+        if (email.isSpam) {
+            return !emailState.trustedOnce
+        }
+        
+        return !email.fromContact.isTrusted && email.account.blockRemoteContent
     }
 }
 

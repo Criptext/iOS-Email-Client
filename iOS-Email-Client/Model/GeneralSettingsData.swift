@@ -15,6 +15,7 @@ class GeneralSettingsData {
     var hasEmailReceipts = false
     var loadingReceipts = false
     var loading2FA = false
+    var loadingBlockContent = false
     var replyTo : String?
     var password: String?
     var syncStatus: SyncStatus = .none

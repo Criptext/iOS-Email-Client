@@ -538,8 +538,13 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        let email = getMail(index: indexPath.row)
-        emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface()
+        if (email.isSpam) {
+            emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface(options: [.once])
+        } else if emailData.getState(email.key).trustedOnce {
+            emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface(options: [.always, .disable])
+        } else {
+            emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface()
+        }
         emailDetailContentOptionsInterface?.delegate = self
         generalOptionsContainerView.setDelegate(newDelegate: emailDetailContentOptionsInterface!)
         toggleGeneralOptionsView()
@@ -746,16 +751,63 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
             self.toggleGeneralOptionsView()
             return
         }
-        cell.enableImages()
+        emailData.setState(cell.email.key, trusted: true)
+        cell.enableImages(emailState: emailData.getState(cell.email.key))
         self.toggleGeneralOptionsView()
     }
     
     func onAlwaysPress() {
-        //TODO
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        DBManager.update(contact: email.fromContact, isTrusted: true)
+        DBManager.refresh()
+        
+        for visibleCell in emailsTableView.visibleCells {
+            guard let cell = visibleCell as? EmailTableViewCell else {
+                continue
+            }
+            if(cell.email.fromContact.email == email.fromContact.email) {
+                cell.enableImages(emailState: emailData.getState(cell.email.key))
+            }
+        }
+        
+        self.toggleGeneralOptionsView()
+        
+        let eventData = EventData.Peer.ContactTrust(email: email.fromContact.email, trusted: true)
+        let eventParams = ["cmd": Event.Peer.contactTrust.rawValue, "params": eventData.asDictionary()] as [String : Any]
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], token: myAccount.jwt) { (responseData) in
+            if case .Success = responseData {
+                return
+            }
+            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
+        }
     }
     
     func onDisablePress() {
-        //TODO
+        APIManager.setBlockContent(isOn: false, token: myAccount.jwt) { (responseData) in
+            self.toggleGeneralOptionsView()
+            guard case .Success = responseData else {
+                self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            self.disableBlockContent()
+        }
+        
+    }
+    
+    func disableBlockContent() {
+        DBManager.update(account: myAccount, blockContent: false)
+        DBManager.refresh()
+        
+        for visibleCell in emailsTableView.visibleCells {
+            guard let cell = visibleCell as? EmailTableViewCell else {
+                continue
+            }
+            cell.enableImages(emailState: emailData.getState(cell.email.key))
+        }
     }
     
     func onContentOptionsClose() {

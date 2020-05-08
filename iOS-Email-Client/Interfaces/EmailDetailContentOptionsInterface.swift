@@ -16,7 +16,7 @@ protocol EmailContentOptionsDelegate: class {
 }
 
 class EmailDetailContentOptionsInterface: MoreOptionsViewInterface {
-    internal enum Option {
+    enum Option {
         case once
         case always
         case disable
@@ -39,6 +39,11 @@ class EmailDetailContentOptionsInterface: MoreOptionsViewInterface {
     
     init() {
         options = [.once, .always, .disable]
+        optionsCount = options.count
+    }
+    
+    init(options: [Option]) {
+        self.options = options
         optionsCount = options.count
     }
     
@@ -72,6 +77,4 @@ class EmailDetailContentOptionsInterface: MoreOptionsViewInterface {
     func onClose() {
         delegate?.onContentOptionsClose()
     }
-    
-    
 }

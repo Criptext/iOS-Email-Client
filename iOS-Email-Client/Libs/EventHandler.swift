@@ -122,6 +122,10 @@ class EventHandler {
             handleEditLabelCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.deleteLabel.rawValue:
             handleDeleteLabelCommand(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.blockRemoteContent.rawValue:
+            handleBlockRemoteContentCommand(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.contactTrust.rawValue:
+            handleContactTrustCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.changeName.rawValue:
             handleChangeNameCommand(params: params, finishCallback: handleEventResponse)
         case Event.Peer.updateProfilePic.rawValue:
@@ -311,6 +315,26 @@ extension EventHandler {
         finishCallback(true, .LabelDeleted)
     }
     
+    func handleBlockRemoteContentCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
+            finishCallback(false, .Empty)
+            return
+        }
+        let event = EventData.Peer.BlockContent.init(params: params)
+        DBManager.update(account: myAccount, blockContent: event.block)
+        finishCallback(true, .Empty)
+    }
+    
+    func handleContactTrustCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        let event = EventData.Peer.ContactTrust.init(params: params)
+        guard let contact = DBManager.getContact(event.email) else {
+            finishCallback(false, .Empty)
+            return
+        }
+        DBManager.update(contact: contact, isTrusted: true)
+        finishCallback(true, .Empty)
+    }
+    
     func handleEditLabelCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         guard let myAccount = DBManager.getAccountById(self.accountId) else {
             finishCallback(false, .Empty)
@@ -477,6 +501,9 @@ enum Event: Int32 {
         case updateProfilePic = 313
         case editLabel = 319
         case deleteLabel = 320
+        
+        case blockRemoteContent = 326
+        case contactTrust = 327
         
         case addressCreated = 701
         case addressStatusUpdate = 702

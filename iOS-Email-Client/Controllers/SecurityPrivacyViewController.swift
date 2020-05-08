@@ -28,6 +28,7 @@ class SecurityPrivacyViewController: UITableViewController {
         case biometric
         case twoFactor
         case receipts
+        case blockContent
         
         var description: String {
             switch(self) {
@@ -41,6 +42,8 @@ class SecurityPrivacyViewController: UITableViewController {
                 return String.localize("TWO_FACTOR")
             case .receipts:
                 return String.localize("READ_RECEIPTS")
+            case .blockContent:
+                return String.localize("BLOCK_REMOTE_CONTENT")
             case .biometric:
                 return ""
             }
@@ -102,8 +105,10 @@ class SecurityPrivacyViewController: UITableViewController {
     func initializePrivacyOptions() {
         let twoFactor = PrivacyOption(label: .twoFactor, pick: nil, isOn: true, hasFlow: false, detail: String.localize("TWO_FACTOR_DETAIL"), isEnabled: true)
         let receipts = PrivacyOption(label: .receipts, pick: nil, isOn: true, hasFlow: false, detail: String.localize("RECEIPTS_DETAIL"), isEnabled: true)
+        let blockContent = PrivacyOption(label: .blockContent, pick: nil, isOn: true, hasFlow: false, detail: String.localize("BLOCK_CONTENT_DESC"), isEnabled: true)
         options.append(receipts)
         options.append(twoFactor)
+        options.append(blockContent)
         toggleOptions()
     }
     
@@ -124,6 +129,9 @@ class SecurityPrivacyViewController: UITableViewController {
             case .receipts:
                 newOption.isEnabled = !generalData.loadingReceipts
                 newOption.isOn = generalData.hasEmailReceipts
+            case .blockContent:
+                newOption.isEnabled = !generalData.loadingBlockContent
+                newOption.isOn = myAccount.blockRemoteContent
             case .biometric:
                 newOption.isEnabled = defaults.hasPIN && biometricType != .none
                 newOption.isOn = defaults.hasFaceID || defaults.hasFingerPrint
@@ -176,6 +184,9 @@ class SecurityPrivacyViewController: UITableViewController {
         case .twoFactor:
             let isOn = !(option.isOn ?? false)
             self.setTwoFactor(enable: isOn)
+        case .blockContent:
+            let isOn = !(option.isOn ?? false)
+            self.setBlockContent(enable: isOn)
         case .biometric:
             let isOn = !(option.isOn ?? false)
             switch(self.biometricType) {
@@ -230,6 +241,25 @@ class SecurityPrivacyViewController: UITableViewController {
             guard case .Success = responseData else {
                 self.showAlert(String.localize("SOMETHING_WRONG"), message: String.localize("UNABLE_RECEIPTS"), style: .alert)
                 self.generalData.hasEmailReceipts = initialValue
+                self.toggleOptions()
+                return
+            }
+            self.toggleOptions()
+        }
+    }
+    
+    func setBlockContent(enable: Bool){
+        let initialValue = myAccount.blockRemoteContent
+        
+        self.generalData.loadingBlockContent = true
+        DBManager.update(account: myAccount, blockContent: enable)
+        self.toggleOptions()
+        
+        APIManager.setBlockContent(isOn: enable, token: myAccount.jwt) { (responseData) in
+            self.generalData.loadingBlockContent = false
+            guard case .Success = responseData else {
+                self.showAlert(String.localize("SOMETHING_WRONG"), message: (String.localize("BLOCK_CONTENT_UPDATE_FAILED")), style: .alert)
+                DBManager.update(account: self.myAccount, blockContent: initialValue)
                 self.toggleOptions()
                 return
             }

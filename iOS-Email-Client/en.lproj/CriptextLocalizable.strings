@@ -536,3 +536,8 @@
 "CONTENT_BLOCK_ONCE" = "Once";
 "CONTENT_BLOCK_ALWAYS" = "Always from this sender";
 "CONTENT_BLOCK_TURN_OFF" = "Turn off image blocking";
+
+"BLOCK_REMOTE_CONTENT" = "Block Remote Content";
+"BLOCK_CONTENT_DESC" = "Block Images from unauthorized senders";
+"BLOCK_CONTENT_UPDATE_FAILED" = "Unable to update remote content preference";
+
