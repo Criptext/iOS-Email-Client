@@ -263,6 +263,9 @@ struct Constants {
     
     static let enterprise = 2
     static func isPlus(customerType: Int) -> Bool {
+        return customerType == 1
+    }
+    static func isUpgrade(customerType: Int) -> Bool {
         return (customerType > 0 && customerType < 3)
     }
 }

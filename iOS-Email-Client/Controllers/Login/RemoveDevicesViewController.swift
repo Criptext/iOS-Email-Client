@@ -36,7 +36,7 @@ class RemoveDevicesViewController: UIViewController {
         self.showUpgradeButton()
         checkTrashButton()
         
-        if (Constants.isPlus(customerType: loginData.customerType)) {
+        if (Constants.isUpgrade(customerType: loginData.customerType)) {
             upgradeButton.isHidden = true
             upgradeButtonHeightConstraint.constant = 0
         } else {
@@ -113,14 +113,18 @@ class RemoveDevicesViewController: UIViewController {
         if(checkedDevices > 0){
             navigationItem.title = "\(String.localize("REMOVE_DEVICES_TITLE")) (\(checkedDevices))"
             navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(uncheckAllDevices), image: #imageLiteral(resourceName: "close-rounded"))
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(removeSelectedDevices))
         } else {
             navigationItem.title = String.localize("REMOVE_DEVICES_TITLE")
             navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(dismissViewController))
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .gray), style: .plain, target: self, action: nil)
         }
         let devicesToRemove = devices.count - maxAllowedDevices - devices.filter { $0.checked }.count + 1
         textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: maxAllowedDevices, devicesToRemove < 0 ? 0 : devicesToRemove)
+        
+        if (devicesToRemove <= 0) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(removeSelectedDevices))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .gray), style: .plain, target: self, action: nil)
+        }
     }
     
     @objc func goBack(){

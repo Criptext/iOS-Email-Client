@@ -69,6 +69,11 @@ class ProfileEditorViewController: UIViewController {
     @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollContentViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var avatarPlusBadgeView: UILabel!
+    @IBOutlet weak var avatarPlusBadgeHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var avatarPlusBadgeMarginTopConstraint: NSLayoutConstraint!
+    
     let STATUS_NOT_CONFIRMED = 0
     let SECTION_PROFILE = 0
     let ROW_HEADER_HEIGHT: CGFloat = 40.0
@@ -123,6 +128,11 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func setupSections() {
+        let plusMargin = Constants.isPlus(customerType: myAccount.customerType) ? avatarPlusBadgeMarginTopConstraint.constant + avatarPlusBadgeHeightConstraint.constant : 0.0
+        if (!Constants.isPlus(customerType: myAccount.customerType)) {
+            avatarPlusBadgeHeightConstraint.constant = 0
+            avatarPlusBadgeMarginTopConstraint.constant = 0
+        }
         tableView.tableFooterView = UIView()
         if self.myAccount.domain == nil {
             sections = [.profile, .danger] as [Section]
@@ -132,6 +142,8 @@ class ProfileEditorViewController: UIViewController {
             ] as [Section: [Section.Option]]
             tableViewHeightConstraint.constant += ROW_HEIGHT
             scrollContentViewHeightConstraint.constant += ROW_HEIGHT
+            scrollContentViewHeightConstraint.constant += plusMargin
+            
         } else {
             sections = [.profile] as [Section]
             options = [
@@ -139,6 +151,7 @@ class ProfileEditorViewController: UIViewController {
             ] as [Section: [Section.Option]]
             tableViewHeightConstraint.constant -= (ROW_HEIGHT + ROW_HEADER_HEIGHT)
             scrollContentViewHeightConstraint.constant -= (ROW_HEIGHT + ROW_HEADER_HEIGHT)
+            scrollContentViewHeightConstraint.constant += plusMargin
         }
     }
     
@@ -218,6 +231,11 @@ class ProfileEditorViewController: UIViewController {
         emailLabel.textColor = theme.mainText
         attachmentController.docsButton.setTitle(String.localize("remove_picture"), for: .normal)
         initFloatingButton(color: theme.criptextBlue)
+        
+        avatarPlusBadgeView.layer.cornerRadius = 4
+        avatarPlusBadgeView.textColor = .white
+        avatarPlusBadgeView.backgroundColor = UIColor.plusStatus
+        avatarPlusBadgeView.layer.masksToBounds = true
     }
     
     func initFloatingButton(color: UIColor){
