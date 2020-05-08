@@ -310,8 +310,19 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Plus" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7AP-E7-ttm">
+                                                <rect key="frame" x="165.66666666666666" y="337" width="44" height="27"/>
+                                                <color key="backgroundColor" red="0.89019607840000003" green="0.63921568630000003" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="44" id="GB5-wF-KO7"/>
+                                                    <constraint firstAttribute="height" constant="27" id="sRP-p2-BLc"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DpM-gh-gF1">
-                                                <rect key="frame" x="0.0" y="350" width="375" height="460"/>
+                                                <rect key="frame" x="0.0" y="387" width="375" height="460"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="460" id="6Rf-k7-s1h"/>
@@ -450,15 +461,17 @@
                                         <constraints>
                                             <constraint firstItem="5uS-bu-D4H" firstAttribute="centerX" secondItem="P91-Ih-lR9" secondAttribute="centerX" id="0MY-fF-zYs"/>
                                             <constraint firstAttribute="trailing" secondItem="Rp3-xB-Hgi" secondAttribute="trailing" constant="30" id="3VA-tb-3Uo"/>
+                                            <constraint firstItem="7AP-E7-ttm" firstAttribute="top" secondItem="Rp3-xB-Hgi" secondAttribute="bottom" constant="10" id="3iZ-jd-rPB"/>
                                             <constraint firstAttribute="trailing" secondItem="tur-l8-f3X" secondAttribute="trailing" constant="30" id="Dne-P7-GXA"/>
                                             <constraint firstItem="Rp3-xB-Hgi" firstAttribute="leading" secondItem="9Zh-Q6-aV4" secondAttribute="leading" constant="30" id="Ep8-Rg-iqz"/>
+                                            <constraint firstItem="7AP-E7-ttm" firstAttribute="centerX" secondItem="9Zh-Q6-aV4" secondAttribute="centerX" id="GlK-Dq-QYD"/>
                                             <constraint firstItem="Rp3-xB-Hgi" firstAttribute="top" secondItem="tur-l8-f3X" secondAttribute="bottom" constant="10" id="Hmd-jX-prA"/>
                                             <constraint firstItem="P91-Ih-lR9" firstAttribute="top" secondItem="9Zh-Q6-aV4" secondAttribute="top" constant="60" id="ItT-ut-PYI"/>
                                             <constraint firstItem="5uS-bu-D4H" firstAttribute="centerY" secondItem="P91-Ih-lR9" secondAttribute="centerY" id="LfX-bQ-pQi"/>
                                             <constraint firstItem="P91-Ih-lR9" firstAttribute="centerX" secondItem="9Zh-Q6-aV4" secondAttribute="centerX" id="RIz-du-Qz1"/>
                                             <constraint firstItem="tur-l8-f3X" firstAttribute="leading" secondItem="9Zh-Q6-aV4" secondAttribute="leading" constant="30" id="Xov-nH-qcQ"/>
-                                            <constraint firstItem="DpM-gh-gF1" firstAttribute="top" secondItem="Rp3-xB-Hgi" secondAttribute="bottom" constant="23" id="dja-mI-ufe"/>
                                             <constraint firstItem="tur-l8-f3X" firstAttribute="top" secondItem="P91-Ih-lR9" secondAttribute="bottom" constant="25" id="fTr-U6-7em"/>
+                                            <constraint firstItem="DpM-gh-gF1" firstAttribute="top" secondItem="7AP-E7-ttm" secondAttribute="bottom" constant="23" id="isK-ry-3Zn"/>
                                             <constraint firstAttribute="height" constant="810" id="joo-XE-enL"/>
                                             <constraint firstAttribute="trailing" secondItem="DpM-gh-gF1" secondAttribute="trailing" id="mDc-04-CS2"/>
                                             <constraint firstItem="gLE-WY-dAx" firstAttribute="bottom" secondItem="P91-Ih-lR9" secondAttribute="bottom" id="pCb-ry-AZ4"/>
@@ -609,6 +622,9 @@
                     <connections>
                         <outlet property="attachmentContainerBottomConstraint" destination="78j-Tw-lkZ" id="Zbh-F7-2rU"/>
                         <outlet property="attachmentController" destination="ONw-iZ-cI6" id="czM-Y6-H2G"/>
+                        <outlet property="avatarPlusBadgeHeightConstraint" destination="sRP-p2-BLc" id="VAa-b9-Lnb"/>
+                        <outlet property="avatarPlusBadgeMarginTopConstraint" destination="3iZ-jd-rPB" id="0oP-5G-wKt"/>
+                        <outlet property="avatarPlusBadgeView" destination="7AP-E7-ttm" id="YND-BR-ydh"/>
                         <outlet property="blackBackground" destination="ROc-KH-dao" id="Kka-xx-nET"/>
                         <outlet property="editButton" destination="gLE-WY-dAx" id="lrQ-AO-UhC"/>
                         <outlet property="emailLabel" destination="Rp3-xB-Hgi" id="X5H-bR-gmR"/>
@@ -1973,10 +1989,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="95.666664123535156"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="96"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="95.666664123535156"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -2000,10 +2016,10 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="276" height="95.666666666666671"/>
+                                                    <rect key="frame" x="27" y="0.0" width="276" height="96"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="95.666666666666671"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="96"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
                                                                     <rect key="frame" x="2" y="45" width="6" height="6"/>
@@ -2027,7 +2043,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="254" height="95.666666666666671"/>
+                                                            <rect key="frame" x="22" y="0.0" width="254" height="96"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
