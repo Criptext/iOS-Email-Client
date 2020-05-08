@@ -92,6 +92,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // Initialize sign-in
                 
+        Fabric.with([Crashlytics.self])
+        
         let realmURL = self.relocateDatabase()
         
         let config = Realm.Configuration(
@@ -612,6 +614,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         snackbarController.setBottomPadding(padding: paddingBottom)
         snackbarController.delegate = inboxVC
         self.registerPushNotifications()
+        
         return snackbarController
     }
     
