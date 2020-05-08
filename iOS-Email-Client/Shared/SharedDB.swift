@@ -218,6 +218,13 @@ class SharedDB {
         }
     }
     
+    class func update(contact: Contact, isTrusted: Bool){
+        let realm = try! Realm()
+        try! realm.write {
+            contact.isTrusted = isTrusted
+        }
+    }
+    
     class func updateScore(contact: Contact){
         let realm = try! Realm()
         try? realm.write {
@@ -407,6 +414,7 @@ class SharedDB {
         let realm = try! Realm()
         
         try! realm.write() {
+            senderContact.isTrusted = false
             senderContact.spamScore += 1
         }
     }
@@ -415,6 +423,7 @@ class SharedDB {
         let realm = try! Realm()
         
         try! realm.write() {
+            senderContact.isTrusted = true
             senderContact.spamScore = 0
         }
     }

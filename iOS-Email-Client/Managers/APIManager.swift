@@ -377,6 +377,28 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func setBlockContent(isOn: Bool, token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/content/remote/block"
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = [
+            "block": isOn
+            ] as [String: Any]
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+            let responseData = handleResponse(response, satisfy: .success)
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.setTwoFactor(isOn: isOn, token: newToken, completion: completion)
+            }
+        }
+    }
+    
     class func setReadReceipts(enable: Bool, token: String, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user/readtracking"
         let headers = [

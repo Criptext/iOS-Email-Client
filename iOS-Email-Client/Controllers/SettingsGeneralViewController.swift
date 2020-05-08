@@ -190,6 +190,11 @@ class SettingsGeneralViewController: UIViewController{
             if (customerType != self.myAccount.customerType) {
                 DBManager.update(account: self.myAccount, customerType: customerType)
             }
+            
+            if let blockRemoteContent = general["blockRemoteContent"] as? Int,
+                (blockRemoteContent == 1 ? true : false) != self.myAccount.blockRemoteContent {
+                DBManager.update(account: self.myAccount, blockContent: blockRemoteContent == 1 ? true : false )
+            }
         }
     }
     

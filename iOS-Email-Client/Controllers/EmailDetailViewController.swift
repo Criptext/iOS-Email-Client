@@ -525,7 +525,6 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         }
         
         emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        let email = getMail(index: indexPath.row)
         emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface()
         emailDetailContentOptionsInterface?.delegate = self
         generalOptionsContainerView.setDelegate(newDelegate: emailDetailContentOptionsInterface!)
@@ -702,11 +701,47 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
     }
     
     func onAlwaysPress() {
-        //TODO
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        DBManager.update(contact: email.fromContact, isTrusted: true)
+        DBManager.refresh()
+        
+        for visibleCell in emailsTableView.visibleCells {
+            guard let cell = visibleCell as? EmailTableViewCell else {
+                continue
+            }
+            if(cell.email.fromContact.email == email.fromContact.email) {
+                cell.enableImages()
+            }
+        }
+        self.toggleGeneralOptionsView()
     }
     
     func onDisablePress() {
-        //TODO
+        APIManager.setBlockContent(isOn: false, token: myAccount.jwt) { (responseData) in
+            self.toggleGeneralOptionsView()
+            guard case .Success = responseData else {
+                self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            self.disableBlockContent()
+        }
+        
+    }
+    
+    func disableBlockContent() {
+        DBManager.update(account: myAccount, blockContent: false)
+        DBManager.refresh()
+        
+        for visibleCell in emailsTableView.visibleCells {
+            guard let cell = visibleCell as? EmailTableViewCell else {
+                continue
+            }
+            cell.enableImages()
+        }
     }
     
     func onContentOptionsClose() {

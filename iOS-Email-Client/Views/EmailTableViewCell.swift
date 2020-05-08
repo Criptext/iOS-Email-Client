@@ -61,7 +61,6 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var showImagesButton: UIButton!
     
     let webView: WKWebView
-    var isTrusted = false
     
     var email: Email!
     var emailState: Email.State!
@@ -247,7 +246,7 @@ class EmailTableViewCell: UITableViewCell{
         bottomMarginView.isHidden = !isExpanded
         
         if(isExpanded){
-            setExpandedContent(email, myEmail: myEmail)
+            setExpandedContent(email, emailBody: emailBody, myEmail: myEmail)
         }else{
             setCollapsedContent(email)
         }
@@ -279,8 +278,7 @@ class EmailTableViewCell: UITableViewCell{
         previewLabel.text = email.getPreview()
     }
     
-    func setExpandedContent(_ email: Email, myEmail: String){
-        showImagesButton.isHidden = false
+    func setExpandedContent(_ email: Email, emailBody: String, myEmail: String){
         deleteDraftButton.isHidden = !email.isDraft
         moreOptionsIcon.image = email.isDraft ? #imageLiteral(resourceName: "icon-edit") : #imageLiteral(resourceName: "dots-options")
         let allContacts = Array(email.getContacts(type: .to)) + Array(email.getContacts(type: .cc)) + Array(email.getContacts(type: .bcc))
@@ -293,6 +291,9 @@ class EmailTableViewCell: UITableViewCell{
         })
         let size = contactsLabel.sizeThatFits(CGSize(width: RECIPIENTS_MAX_WIDTH, height: 22.0))
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
+        
+        let hasImages = emailBody.contains("<img")
+        showImagesButton.isHidden = !hasImages || email.fromContact.isTrusted || !email.account.blockRemoteContent
     }
     
     func loadWebview(email: Email, emailBody: String){
@@ -305,7 +306,7 @@ class EmailTableViewCell: UITableViewCell{
         let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(script)"
         webView.scrollView.maximumZoomScale = 2.0
         
-        if (isTrusted) {
+        if (email.fromContact.isTrusted || !email.account.blockRemoteContent) {
             self.webView.configuration.userContentController.removeAllContentRuleLists()
             self.webView.loadHTMLString(content, baseURL: bundleUrl)
         } else {
@@ -401,10 +402,13 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func enableImages() {
-        isTrusted = true
-        
+        if (!isLoaded) {
+            return
+        }
         webView.configuration.userContentController.removeAllContentRuleLists()
         webView.evaluateJavaScript("replaceSrc();", completionHandler: nil)
+        
+        showImagesButton.isHidden = true
     }
 }
 

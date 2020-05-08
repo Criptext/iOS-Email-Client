@@ -299,6 +299,14 @@ class DBManager: SharedDB {
         }
     }
     
+    class func update(account: Account, blockContent: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.blockRemoteContent = blockContent
+        }
+    }
+    
     class func update(account: Account, customerType: Int){
         let realm = try! Realm()
         

@@ -407,6 +407,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
                 }
+                if(oldSchemaVersion < 27) {
+                    migration.enumerateObjects(ofType: Contact.className()){ (oldObject, newObject) in
+                        guard let newContact = newObject else{
+                            return
+                        }
+                        newContact["isTrusted"] = true
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm

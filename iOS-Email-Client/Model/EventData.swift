@@ -292,6 +292,15 @@ extension EventData {
             }
         }
         
+        struct BlockContent {
+            let block: Bool
+            
+            init(params: [String: Any]){
+                let blockInt = params["block"] as! Int
+                block = blockInt == 1
+            }
+        }
+        
         struct NameChanged: Dictionarify {
             let name: String
             

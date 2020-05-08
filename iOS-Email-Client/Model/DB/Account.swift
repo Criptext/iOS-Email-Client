@@ -33,6 +33,8 @@ class Account: Object{
     
     @objc dynamic var customerType = 0;
     
+    @objc dynamic var blockRemoteContent = true
+    
     
     var email: String {
         guard let myDomain = domain else {
