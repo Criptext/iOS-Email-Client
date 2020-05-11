@@ -31,13 +31,6 @@ class CustomDomainEntryViewController: UIViewController {
         self.showLoader(false)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if (!Constants.isPlus(customerType: myAccount.customerType)) {
-            self.askUpgradePlus()
-        }
-    }
-    
     func applyLocalization() {
         titleLabel.text = String.localize("ADD_DOMAIN_TITLE")
         subtitleLabel.text = String.localize("ADD_DOMAIN_SUBTITLE")
@@ -155,27 +148,6 @@ class CustomDomainEntryViewController: UIViewController {
         loader.startAnimating()
         nextButton.isEnabled = false
         nextButton.setTitle("", for: .normal)
-    }
-    
-    func askUpgradePlus() {
-        let popover = GetPlusUIPopover()
-        popover.plusType = .domains
-        popover.onResponse = { upgrade in
-            if (upgrade) {
-                self.goToUpgradePlus()
-            } else {
-                self.goBack()
-            }
-        }
-        self.presentPopover(popover: popover, height: 435)
-    }
-    
-    func goToUpgradePlus() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
-        webviewVC.delegate = self
-        webviewVC.accountJWT = self.myAccount.jwt
-        self.navigationController?.pushViewController(webviewVC, animated: true)
     }
 }
 

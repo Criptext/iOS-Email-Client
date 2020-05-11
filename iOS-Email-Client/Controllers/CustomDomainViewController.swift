@@ -30,13 +30,6 @@ class CustomDomainViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if (!Constants.isPlus(customerType: myAccount.customerType)) {
-            self.askUpgradePlus()
-        }
-    }
-    
     func applyTheme() {
         let attributedTitle = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)
@@ -57,27 +50,7 @@ class CustomDomainViewController: UIViewController {
         popover.myMessage = String.localize("CUSTOM_DOMAIN_INFO_MESSAGE_1")
         self.presentPopover(popover: popover, height: 240)
     }
-    
-    func askUpgradePlus() {
-        let popover = GetPlusUIPopover()
-        popover.plusType = .domains
-        popover.onResponse = { upgrade in
-            if (upgrade) {
-                self.goToUpgradePlus()
-            } else {
-                self.goBack()
-            }
-        }
-        self.presentPopover(popover: popover, height: 435)
-    }
-    
-    func goToUpgradePlus() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
-        webviewVC.delegate = self
-        webviewVC.accountJWT = self.myAccount.jwt
-        self.navigationController?.pushViewController(webviewVC, animated: true)
-    }
+
 }
 
 extension CustomDomainViewController: MembershipWebViewControllerDelegate {

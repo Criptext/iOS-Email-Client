@@ -93,11 +93,13 @@ class ConnectDeviceViewController: UIViewController{
         UIApplication.shared.isIdleTimerDisabled = false
         socket?.close()
         scheduleWorker.cancel()
-        guard let myAccount = account else {
+        guard let myAccount = account,
+            signupData.refreshToken != nil else {
             presentingViewController?.navigationController?.popToRootViewController(animated: false)
             dismiss(animated: true, completion: nil)
             return
         }
+        updateAccount()
         goToMailbox(myAccount)
     }
     
