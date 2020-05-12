@@ -43,6 +43,7 @@ enum ErrorCode {
     case offline
     case unreferencedAccount
     case custom
+    case fileVersionTooOld
     
     var description: String {
         switch self {
@@ -56,6 +57,8 @@ enum ErrorCode {
             return String.localize("UNREF_ACCOUNT")
         case .custom:
             return ""
+        case .fileVersionTooOld:
+            return String.localize("")
         }
     }
 }
