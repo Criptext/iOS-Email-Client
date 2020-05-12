@@ -128,36 +128,6 @@ class ManualSyncViewController: UIViewController{
         }) {_ in 
             self.restoreSuccess()
         }
-        
-        let queue = DispatchQueue(label: "com.email.loaddb", qos: .background, attributes: .concurrent)
-        let accountId = myAccount.compoundKey
-        queue.async {
-            let streamReader = StreamReader(url: URL(fileURLWithPath: path), delimeter: "\n", encoding: .utf8, chunkSize: 1024)
-            var dbRows = [[String: Any]]()
-            var progress = 80
-            var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
-            while let line = streamReader?.nextLine() {
-                guard let row = Utils.convertToDictionary(text: line) else {
-                    continue
-                }
-                dbRows.append(row)
-                if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: accountId)
-                    dbRows.removeAll()
-                    if progress < 99 {
-                        progress += 1
-                    }
-                    DispatchQueue.main.async {
-                        self.connectUIView.progressChange(value: Double(progress), message: nil, completion: {})
-                    }
-                }
-            }
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: accountId)
-            CriptextFileManager.deleteFile(path: path)
-            DispatchQueue.main.async {
-                
-            }
-        }
     }
     
     func restoreSuccess() {

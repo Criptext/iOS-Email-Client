@@ -50,7 +50,12 @@ class CreateCustomJSONFileAsyncTask {
         let account = DBManager.getAccountById(self.accountId)
         let results = DBManager.retrieveWholeDB(account: account!)
         var progress = handleProgress(progress: 0, total: results.total, step: results.step, progressHandler: progressHandler)
+        
         let metadata = LinkFileHeaderData(recipientId: account!.username, domain: account!.domain ?? Env.plainDomain)
+        metadata.fillFromAccount(account!)
+        metadata.darkTheme = CriptextDefaults().themeMode == "Dark"
+        metadata.language = Env.language
+        
         handleRow(metadata.toDictionary())
         results.contacts.enumerated().forEach {
             contacts[$1.email] = $0 + 1
