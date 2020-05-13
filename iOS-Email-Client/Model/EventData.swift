@@ -42,6 +42,7 @@ class EventData {
         var updateSideMenu = false
         var linkStartData: LinkData? = nil
         var feature: MailboxData.Feature? = nil
+        var newCustomerType: Int? = nil
     }
     
     struct NewEmail {
@@ -300,6 +301,66 @@ extension EventData {
             
             init(name: String){
                 self.name = name
+            }
+        }
+        
+        struct AddressCreated {
+            let id: Int
+            let name: String
+            let domain: String
+            
+            init(params: [String: Any]){
+                id = params["addressId"] as! Int
+                name = params["addressName"] as! String
+                domain = params["addressDomain"] as! String
+            }
+        }
+        
+        struct AddressStatusUpdate {
+            let id: Int
+            let active: Bool
+            
+            init(params: [String: Any]){
+                id = params["addressId"] as! Int
+                active = params["activate"] as! Bool
+            }
+        }
+        
+        struct AddressDeleted {
+            let id: Int
+            
+            init(params: [String: Any]){
+                id = params["addressId"] as! Int
+            }
+        }
+        
+        struct DomainCreated {
+            let name: String
+            
+            init(params: [String: Any]){
+                name = params["customDomain"] as! String
+            }
+        }
+        
+        struct DomainDelete {
+            let name: String
+            
+            init(params: [String: Any]){
+                name = params["customDomain"] as! String
+            }
+        }
+    }
+    
+    class Acc {
+        struct CustomerType {
+            let recipientId: String
+            let domain: String
+            let customerType: Int
+            
+            init(params: [String: Any]) {
+                recipientId = params["recipientId"] as! String
+                domain = params["domain"] as! String
+                customerType = params["newCustomerType"] as! Int
             }
         }
     }

@@ -106,6 +106,7 @@ class ResetDeviceViewController: UIViewController{
                 let storyboard = UIStoryboard(name: "Login", bundle: nil)
                 let controller = storyboard.instantiateViewController(withIdentifier: "removeDevicesViewController")  as! RemoveDevicesViewController
                 self.loginData.password = password
+                controller.maxAllowedDevices = self.loginData.maxDevices
                 controller.loginData = self.loginData
                 controller.multipleAccount = self.multipleAccount
                 controller.tempToken = token
@@ -156,13 +157,17 @@ class ResetDeviceViewController: UIViewController{
                         self.showFeedback(true, String.localize("WRONG_PASS_RETRY"))
                         return
                 }
+                let customerType = data["customerType"] as! Int
                 let name = data["name"] as! String
                 let deviceId = data["deviceId"] as! Int
                 let token = data["token"] as! String
+                let addresses = data["addresses"] as? [[String: Any]]
                 let signupData = SignUpData(username: username, password: password, domain: domain, fullname: name, optionalEmail: nil)
+                signupData.addresses = addresses
                 signupData.deviceId = deviceId
                 signupData.token = token
                 signupData.comingFromLogin = true
+                signupData.customerType = customerType
                 self.jumpToCreatingAccount(signupData: signupData)
             }
         }

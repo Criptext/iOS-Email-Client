@@ -28,6 +28,9 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var avatarImage: UIImageView!
+    @IBOutlet weak var avatarImageWrapperView: UIView!
+    @IBOutlet weak var avatarPlusBadgeView: UILabel!
+    @IBOutlet weak var avatarPlusBadgeWrapperView: UIView!
     @IBOutlet weak var inboxMenuItem: MenuItemUIView!
     @IBOutlet weak var sentMenuItem: MenuItemUIView!
     @IBOutlet weak var draftMenuItem: MenuItemUIView!
@@ -63,6 +66,18 @@ class MenuViewController: UIViewController{
         let gesture = UITapGestureRecognizer(target: self, action: #selector(openProfile))
         avatarImage.isUserInteractionEnabled = true
         avatarImage.addGestureRecognizer(gesture)
+        
+        avatarImageWrapperView.layer.borderWidth = 2
+        avatarImageWrapperView.layer.cornerRadius = 37
+        avatarImageWrapperView.layer.borderColor = UIColor.plusStatus.cgColor
+        
+        avatarPlusBadgeView.layer.cornerRadius = 4
+        avatarPlusBadgeView.textColor = .white
+        avatarPlusBadgeView.backgroundColor = UIColor.plusStatus
+        avatarPlusBadgeView.layer.masksToBounds = true
+        
+        avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
     }
     
     @objc func openProfile(){
@@ -143,6 +158,8 @@ class MenuViewController: UIViewController{
         labelsTableView.reloadData()
         accountsCollectionView.reloadData()
         accountsTableView.reloadData()
+        avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
     }
     
     func applyTheme() {

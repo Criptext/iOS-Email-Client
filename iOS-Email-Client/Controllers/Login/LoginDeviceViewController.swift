@@ -15,6 +15,7 @@ class LoginDeviceViewController: UIViewController{
     var socket : SingleWebSocket?
     var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
     var showPasswordButton = true
+    var canSkipProcess = false
     @IBOutlet weak var waitingDeviceView: UIView!
     @IBOutlet weak var failureDeviceView: UIView!
     @IBOutlet weak var hourglassImage: UIImageView!
@@ -37,7 +38,12 @@ class LoginDeviceViewController: UIViewController{
         socket?.connect(jwt: jwt)
         scheduleWorker.delegate = self
         if !showPasswordButton {
-            signWithPasswordButton.isHidden = true
+            if (loginData.isTwoFactor) {
+                signWithPasswordButton.isHidden = true
+            } else {
+                signWithPasswordButton.setTitle(String.localize("SKIP"), for: .normal)
+                canSkipProcess = true
+            }
         }
         guard loginData.isTwoFactor else {
             self.sendLinkAuthRequest()
@@ -72,7 +78,33 @@ class LoginDeviceViewController: UIViewController{
     }
     
     @IBAction func onCantLoginPress(_ sender: Any) {
-        self.presentLoginPasswordPopover()
+        guard canSkipProcess,
+            loginData.password != nil else {
+            self.presentLoginPasswordPopover()
+            return
+        }
+        loginWithPassword()
+    }
+    
+    func loginWithPassword() {
+        APIManager.loginRequest(username: loginData.username, domain: loginData.domain, password: loginData.password!.sha256()!) { (responseData) in
+            guard case let .SuccessString(dataString) = responseData,
+                let data = Utils.convertToDictionary(text: dataString) else {
+                    return
+            }
+            let customerType = data["customerType"] as! Int
+            let name = data["name"] as! String
+            let deviceId = data["deviceId"] as! Int
+            let token = data["token"] as! String
+            let addresses = data["addresses"] as? [[String: Any]]
+            let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
+            signupData.addresses = addresses
+            signupData.deviceId = deviceId
+            signupData.token = token
+            signupData.comingFromLogin = true
+            signupData.customerType = customerType
+            self.jumpToCreatingAccount(signupData: signupData)
+        }
     }
     
     func presentLoginPasswordPopover() {
@@ -169,10 +201,12 @@ class LoginDeviceViewController: UIViewController{
                 }
                 let name = data["name"] as! String
                 let deviceId = data["deviceId"] as! Int
+                let customerType = data["customerType"] as! Int
                 let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
                 signupData.deviceId = deviceId
                 signupData.token = jwt
                 signupData.comingFromLogin = true
+                signupData.customerType = customerType
                 popover?.showLoader(false)
                 popover?.dismiss(animated: true, completion: nil)
                 self.jumpToCreatingAccount(signupData: signupData)
@@ -200,6 +234,7 @@ class LoginDeviceViewController: UIViewController{
         let signupData = SignUpData(username: loginData.username, password: "no password", domain: loginData.domain, fullname: data.name, optionalEmail: nil)
         signupData.deviceId = data.deviceId
         signupData.token = loginData.jwt ?? ""
+        signupData.customerType = loginData.customerType
         controller.signupData = signupData
         controller.linkData = data
         controller.multipleAccount = self.multipleAccount

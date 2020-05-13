@@ -11,10 +11,13 @@ import Foundation
 class RemoveDevicesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var textMessage: UILabel!
+    @IBOutlet weak var upgradeButton: UIButton!
+    @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
     var loginData: LoginData!
     var multipleAccount = false
     var deviceData: DeviceSettingsData!
     var tempToken: String!
+    var maxAllowedDevices = Env.maxAllowedDevices
     var devices: [Device] {
         return deviceData.devices
     }
@@ -23,19 +26,75 @@ class RemoveDevicesViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        navigationItem.title = String.localize("REMOVE_DEVICES_TITLE")
-        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(dismissViewController))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
-        textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: Env.maxAllowedDevices, (devices.count - (Env.maxAllowedDevices - 1)))
+        applyLocalization()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.allowsMultipleSelectionDuringEditing = true
         self.tableView.setEditing(!tableView.isEditing, animated: true)
         self.applyTheme()
+        self.showUpgradeButton()
         checkTrashButton()
+        
+        if (Constants.isUpgrade(customerType: loginData.customerType)) {
+            upgradeButton.isHidden = true
+            upgradeButtonHeightConstraint.constant = 0
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.askUpgradeToPlus(0)
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkForMaxDevices()
+    }
+    
+    func applyLocalization() {
+        navigationItem.title = String.localize("REMOVE_DEVICES_TITLE")
+        navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(dismissViewController))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
+        
+        let devicesToRemove = devices.count - maxAllowedDevices - devices.filter { $0.checked }.count + 1
+        textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: maxAllowedDevices, devicesToRemove < 0 ? 0 : devicesToRemove)
+    }
+    
+    func checkForMaxDevices() {
+        APIManager.maxDevices(token: tempToken) { [weak self] (responseData) in
+            self?.handleMaxDeviceRequest(responseData: responseData)
+        }
+    }
+    
+    func handleMaxDeviceRequest(responseData: ResponseData) {
+        switch (responseData) {
+            case .SuccessDictionary(let data):
+                guard let maxDevices = data["maxDevices"] as? Int else {
+                    return
+                }
+                maxAllowedDevices = maxDevices
+                let devicesToRemove = devices.count - maxAllowedDevices - devices.filter { $0.checked }.count + 1
+                textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: maxAllowedDevices, devicesToRemove < 0 ? 0 : devicesToRemove)
+                checkDevicesToContinue()
+            default:
+                break
+        }
+    }
+    
+    func checkDevicesToContinue() {
+        guard maxAllowedDevices > devices.count else {
+            return
+        }
+        self.linkBegin(username: self.loginData.username, domain: self.loginData.domain)
+    }
+    
+    func showUpgradeButton() {
+        let attrString1 = NSMutableAttributedString(string: "Or you can", attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(15.0)!])
+        let attrString2 = NSAttributedString(string: " Upgrade to Plus", attributes: [.foregroundColor: theme.criptextBlue, .font: Font.bold.size(15.0)!])
+        attrString1.append(attrString2)
+        upgradeButton.setAttributedTitle(attrString1, for: .normal)
     }
     
     func applyTheme() {
@@ -52,18 +111,49 @@ class RemoveDevicesViewController: UIViewController {
     private func checkTrashButton(){
         let checkedDevices = devices.filter { $0.checked }.count
         if(checkedDevices > 0){
-            navigationItem.title = "\(checkedDevices)"
+            navigationItem.title = "\(String.localize("REMOVE_DEVICES_TITLE")) (\(checkedDevices))"
             navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(uncheckAllDevices), image: #imageLiteral(resourceName: "close-rounded"))
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(removeSelectedDevices))
         } else {
             navigationItem.title = String.localize("REMOVE_DEVICES_TITLE")
             navigationItem.leftBarButtonItem = UIUtils.createLeftBackButton(target: self, action: #selector(dismissViewController))
+        }
+        let devicesToRemove = devices.count - maxAllowedDevices - devices.filter { $0.checked }.count + 1
+        textMessage.text = String.localize("REMOVE_DEVICES_MESSAGE", arguments: maxAllowedDevices, devicesToRemove < 0 ? 0 : devicesToRemove)
+        
+        if (devicesToRemove <= 0) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .white), style: .plain, target: self, action: #selector(removeSelectedDevices))
+        } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "delete-icon").tint(with: .gray), style: .plain, target: self, action: nil)
         }
     }
     
     @objc func goBack(){
         navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func askUpgradeToPlus(_ sender: Any) {
+        let popover = GetPlusUIPopover()
+        popover.plusType = .devices
+        popover.onResponse = { upgrade in
+            if (upgrade) {
+                self.goToUpgradePlus()
+            }
+        }
+        self.presentPopover(popover: popover, height: 435)
+    }
+
+    func goToUpgradePlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.accountJWT = self.tempToken
+        webviewVC.delegate = self
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+}
+
+extension RemoveDevicesViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -95,7 +185,7 @@ extension RemoveDevicesViewController: UITableViewDelegate, UITableViewDataSourc
     }
 }
 
-extension RemoveDevicesViewController: CustomTabsChildController {
+extension RemoveDevicesViewController {
     func reloadView() {
         self.applyTheme()
         tableView.reloadData()
@@ -160,7 +250,7 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
                 self.showPopoverError(error: String.localize("USERNAME_NOT"))
                 return
             }
-            if case .BadRequest = responseData {
+            if case .TooManyDevicesDictionary = responseData {
                 self.loginToMailbox()
                 return
             }
@@ -192,8 +282,7 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
     
     func loginToMailbox(){
         APIManager.loginRequest(username: self.loginData.username, domain: self.loginData.domain, password: self.loginData.password!.sha256()!) { (responseData) in
-            guard case let .SuccessString(dataString) = responseData,
-                let data = Utils.convertToDictionary(text: dataString) else {
+            guard case .SuccessString = responseData else {
                     let storyboard = UIStoryboard(name: "Login", bundle: nil)
                     let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
                     let loginVC = initialVC.topViewController as! NewLoginViewController
@@ -205,13 +294,6 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
                     UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
                     return
             }
-            let name = data["name"] as! String
-            let deviceId = data["deviceId"] as! Int
-            let token = data["token"] as! String
-            let signupData = SignUpData(username: self.loginData.username, password: self.loginData.password!, domain: self.loginData.domain, fullname: name, optionalEmail: nil)
-            signupData.deviceId = deviceId
-            signupData.token = token
-            signupData.comingFromLogin = true
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "loginDeviceViewController")  as! LoginDeviceViewController
             controller.loginData = self.loginData

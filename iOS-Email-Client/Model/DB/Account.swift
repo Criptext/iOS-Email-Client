@@ -31,6 +31,8 @@ class Account: Object{
     @objc dynamic var wifiOnly = true
     @objc dynamic var showCriptextFooter = true
     
+    @objc dynamic var customerType = 0;
+    
     
     var email: String {
         guard let myDomain = domain else {

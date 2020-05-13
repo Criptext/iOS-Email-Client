@@ -46,6 +46,8 @@ class DBManager: SharedDB {
             realm.delete(realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)'"))
             realm.delete(realm.objects(Label.self).filter("account.compoundKey == '\(account.compoundKey)'"))
             realm.delete(realm.objects(QueueItem.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'"))
+            realm.delete(realm.objects(CustomDomain.self).filter("account.compoundKey == '\(account.compoundKey)'"))
         }
     }
     
@@ -87,11 +89,6 @@ class DBManager: SharedDB {
         return realm.objects(Account.self).filter("isLoggedIn == false")
     }
     
-    class func getLoggedAccounts() -> Results<Account> {
-        let realm = try! Realm()
-        return realm.objects(Account.self).filter("isLoggedIn == true")
-    }
-    
     class func delete(account: Account){
         let realm = try! Realm()
         
@@ -116,9 +113,11 @@ class DBManager: SharedDB {
         let labels = realm.objects(Label.self).filter("type == 'custom' AND account.compoundKey == '\(account.compoundKey)'")
         let emails = realm.objects(Email.self).filter("messageId != '' AND account.compoundKey == '\(account.compoundKey)'")
         let emailContacts = realm.objects(EmailContact.self).filter("email.account.compoundKey == '\(account.compoundKey)' AND email.delivered != \(Email.Status.sending.rawValue) AND email.delivered != \(Email.Status.fail.rawValue) AND NOT (ANY email.labels.id == \(SystemLabel.draft.id))")
-        let total = contacts.count + labels.count + 3 * emails.count + emailContacts.count
-        let step = total * 5 / 100
-        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, total: total, step: step)
+        let aliases = realm.objects(Alias.self).filter("account.compoundKey == '\(account.compoundKey)'")
+        let customDomains = realm.objects(CustomDomain.self).filter("account.compoundKey == '\(account.compoundKey)'")
+        let total = contacts.count + labels.count + 3 * emails.count + emailContacts.count + aliases.count + customDomains.count
+        let step = total * 7 / 100
+        return LinkDBSource(contacts: contacts, labels: labels, emails: emails, emailContacts: emailContacts, aliases: aliases, customDomains: customDomains, total: total, step: step)
     }
     
     struct LinkDBSource {
@@ -126,6 +125,8 @@ class DBManager: SharedDB {
         let labels: Results<Label>
         let emails: Results<Email>
         let emailContacts: Results<EmailContact>
+        let aliases: Results<Alias>
+        let customDomains: Results<CustomDomain>
         let total: Int
         let step: Int
     }
@@ -255,6 +256,26 @@ class DBManager: SharedDB {
             file.fileKey = fileKey
             realm.add(file, update: .all)
             email.files.append(file)
+        case "alias":
+            let rowId = object["rowId"] as! Int
+            let name = object["name"] as! String
+            let active = object["active"] as! Bool
+            let domain = object["domain"] as? String
+            let alias = Alias()
+            alias.account = account
+            alias.active = active
+            alias.name = name
+            alias.domain = domain
+            alias.rowId = rowId
+            realm.add(alias, update: .all)
+        case "customDomain":
+            let name = object["name"] as! String
+            let validated  = object["validated"] as! Bool
+            let customDomain = CustomDomain()
+            customDomain.account = account
+            customDomain.validated = validated
+            customDomain.name = name
+            realm.add(customDomain, update: .all)
         default:
             return
         }
@@ -275,6 +296,14 @@ class DBManager: SharedDB {
         
         try! realm.write() {
             account.jwt = jwt
+        }
+    }
+    
+    class func update(account: Account, customerType: Int){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.customerType = customerType
         }
     }
     
@@ -906,6 +935,108 @@ class DBManager: SharedDB {
         
         try! realm.write() {
             realm.delete(queueItems)
+        }
+    }
+    
+    //MARK: - Alias
+    
+    class func store(_ alias: Alias){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(alias, update: .all)
+        }
+    }
+    
+    class func store(aliases: [Alias]){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(aliases, update: .modified)
+        }
+    }
+    
+    class func update(alias: Alias, active: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            alias.active = active
+        }
+    }
+    
+    class func deleteAlias(_ alias: Alias) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            realm.delete(alias)
+        }
+    }
+    
+    class func deleteAlias(_ domainName: String?, account: Account) {
+        let realm = try! Realm()
+        let aliasesToDelete = getAliases(account: account).filter { $0.domain == domainName }
+        
+        try! realm.write() {
+            realm.delete(aliasesToDelete)
+        }
+    }
+    
+    class func deleteAlias(ignore: [Int], account: Account) {
+        let realm = try! Realm()
+        let aliasesToDelete = realm.objects(Alias.self).filter("!(rowId IN %@) AND account.compoundKey == %@", ignore, account.compoundKey)
+        
+        try! realm.write {
+            realm.delete(aliasesToDelete)
+        }
+    }
+    
+    //MARK: - CustomDomain
+    
+    class func store(_ customDomain: CustomDomain){
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(customDomain, update: .all)
+        }
+    }
+    
+    class func update(customDomain: CustomDomain, validated: Bool){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            customDomain.validated = validated
+        }
+    }
+    
+    class func getCustomDomains(account: Account) -> Results<CustomDomain> {
+        let realm = try! Realm()
+        return realm.objects(CustomDomain.self).filter("account.compoundKey == '\(account.compoundKey)'")
+    }
+    
+    class func getVerifiedCustomDomains(account: Account) -> Results<CustomDomain> {
+        let realm = try! Realm()
+        return realm.objects(CustomDomain.self).filter("validated == true AND account.compoundKey == '\(account.compoundKey)'")
+    }
+    
+    class func getCustomDomain(name: String, account: Account) -> CustomDomain? {
+        let realm = try! Realm()
+        return realm.objects(CustomDomain.self).filter("name == '\(name)' AND account.compoundKey == '\(account.compoundKey)'").first
+    }
+    
+    class func deleteCustomDomain(_ customDomain: CustomDomain) {
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            realm.delete(customDomain)
+        }
+    }
+    
+    class func deleteCustomDomains(ignore: [String], account: Account) {
+        let realm = try! Realm()
+        let customDomainsToDelete = realm.objects(CustomDomain.self).filter("!(name IN %@) AND account.compoundKey == %@", ignore, account.compoundKey)
+        
+        try! realm.write {
+            realm.delete(customDomainsToDelete)
         }
     }
 }

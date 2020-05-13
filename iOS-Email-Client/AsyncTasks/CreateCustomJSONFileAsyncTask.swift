@@ -98,6 +98,18 @@ class CreateCustomJSONFileAsyncTask {
                 fileId += 1
             })
         }
+        var aliasId = 1
+        results.aliases.forEach {
+            handleRow($0.toDictionary(id: aliasId))
+            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+            aliasId += 1
+        }
+        var customDomainId = 1
+        results.customDomains.forEach {
+            handleRow($0.toDictionary(id: customDomainId))
+            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+            customDomainId += 1
+        }
         DispatchQueue.main.async {
             completion(nil, self.fileURL)
         }

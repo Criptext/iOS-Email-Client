@@ -15,6 +15,7 @@ class SettingsGeneralViewController: UIViewController{
     
     internal enum Section {
         case account
+        case addresses
         case general
         case support
         case about
@@ -24,6 +25,8 @@ class SettingsGeneralViewController: UIViewController{
             switch(self){
             case .account:
                 return String.localize("ACCOUNT")
+            case .addresses:
+                return String.localize("ADRESSES")
             case .general:
                 return String.localize("GENERAL")
             case .support:
@@ -37,11 +40,15 @@ class SettingsGeneralViewController: UIViewController{
         
         enum SubSection {
             case account
+            case plus
             case privacy
             case devices
             case labels
             case manualSync
             case backup
+            
+            case customDomain
+            case aliases
             
             case night
             case syncContact
@@ -78,6 +85,8 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("MANUAL_SYNC")
                 case .account:
                     return String.localize("ACCOUNT_OPTION")
+                case .plus:
+                    return String.localize("UPGRADE_TO_PLUS")
                 case .devices:
                     return String.localize("DEVICES_OPTION")
                 case .labels:
@@ -94,6 +103,10 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("FAQ")
                 case .policies:
                     return String.localize("POLICY")
+                case .customDomain:
+                    return String.localize("CUSTOM_DOMAIN")
+                case .aliases:
+                    return String.localize("ALIASES")
                 }
             }
         }
@@ -102,11 +115,12 @@ class SettingsGeneralViewController: UIViewController{
     @IBOutlet weak var tableView: UITableView!
     
     let STATUS_NOT_CONFIRMED = 0
-    let SECTION_VERSION = 4
+    let SECTION_VERSION = 5
     let ROW_HEIGHT: CGFloat = 40.0
-    let sections = [.account, .general, .support, .about, .version] as [Section]
-    let menus = [
-        .account: [.account, .privacy, .devices, .labels, .manualSync, .backup],
+    var sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
+    var menus = [
+        .account: [.account, .privacy, .devices, .labels, .manualSync, .backup, .plus],
+        .addresses: [.customDomain, .aliases],
         .general: [.night, .syncContact, .preview, .pin],
         .support: [.reportBug, .reportAbuse],
         .about: [.faq, .policies, .terms, .openSource],
@@ -121,6 +135,13 @@ class SettingsGeneralViewController: UIViewController{
     
     override func viewDidLoad() {
         ThemeManager.shared.addListener(id: "settings", delegate: self)
+        
+        if (myAccount.customerType == Constants.enterprise) {
+            sections.remove(at: 1);
+            menus.removeValue(forKey: .addresses)
+            menus[.account]?.remove(at: 6)
+        }
+        
         self.devicesData.devices.append(Device.createActiveDevice(deviceId: myAccount.deviceId))
         self.navigationItem.title = String.localize("SETTINGS")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close-rounded").tint(with: .white), style: .plain, target: self, action: #selector(dismissViewController))
@@ -146,9 +167,11 @@ class SettingsGeneralViewController: UIViewController{
             }
             guard case let .SuccessDictionary(settings) = responseData,
                 let devices = settings["devices"] as? [[String: Any]],
+                let addresses = settings["addresses"] as? [[String: Any]],
                 let general = settings["general"] as? [String: Any] else {
                     return
             }
+            self.parseAddresses(addresses: addresses)
             let myDevices = devices.map({Device.fromDictionary(data: $0)}).filter({$0.id != myDevice.id}).sorted(by: {$0.safeDate > $1.safeDate})
             self.devicesData.devices.append(contentsOf: myDevices)
             let email = general["recoveryEmail"] as! String
@@ -161,6 +184,12 @@ class SettingsGeneralViewController: UIViewController{
             self.generalData.recoveryEmailStatus = email.isEmpty ? .none : status == self.STATUS_NOT_CONFIRMED ? .pending : .verified
             self.generalData.isTwoFactor = isTwoFactor == 1 ? true : false
             self.generalData.hasEmailReceipts = hasEmailReceipts == 1 ? true : false
+            
+            let customerType = general["customerType"] as! Int
+            
+            if (customerType != self.myAccount.customerType) {
+                DBManager.update(account: self.myAccount, customerType: customerType)
+            }
         }
     }
     
@@ -176,6 +205,49 @@ class SettingsGeneralViewController: UIViewController{
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         super.dismiss(animated: flag, completion: completion)
         ThemeManager.shared.removeListener(id: "settings")
+    }
+    
+    func parseAddresses(addresses: [[String: Any]]) {
+        let aliasesPairArray = addresses.map({aliasesDomainFromDictionary(data: $0, account: self.myAccount)})
+        var ignoreDeleteAliasIds: [Int] = []
+        var ignoreDeleteDomainNames: [String] = []
+        for pair in aliasesPairArray {
+            if pair.0.name != Env.plainDomain {
+                if let existingDomain = DBManager.getCustomDomain(name: pair.0.name, account: myAccount) {
+                    DBManager.update(customDomain: existingDomain, validated: pair.0.validated)
+                } else {
+                    DBManager.store(pair.0)
+                }
+            }
+            ignoreDeleteDomainNames.append(pair.0.name)
+            for alias in pair.1 {
+                if let existingAlias = DBManager.getAlias(rowId: alias.rowId, account: self.myAccount) {
+                    DBManager.update(alias: existingAlias, active: alias.active)
+                } else {
+                    DBManager.store(alias)
+                }
+                ignoreDeleteAliasIds.append(alias.rowId)
+            }
+        }
+        
+        DBManager.deleteAlias(ignore: ignoreDeleteAliasIds, account: self.myAccount)
+        DBManager.deleteCustomDomains(ignore: ignoreDeleteDomainNames, account: self.myAccount)
+    }
+    
+    func aliasesDomainFromDictionary(data: [String: Any], account: Account) -> (CustomDomain, [Alias]) {
+        let aliases = data["aliases"] as! [[String: Any]]
+        let domainData = data["domain"] as! [String: Any]
+        let domainName = domainData["name"] as! String
+        let domainVerified = domainData["confirmed"] as! Int
+        
+        let domain = CustomDomain()
+        domain.name = domainName
+        domain.validated = domainVerified == 1 ? true : false
+        domain.account = account
+        
+        let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
+        
+        return (domain, aliasesArray)
     }
     
     func applyTheme(){
@@ -199,9 +271,21 @@ class SettingsGeneralViewController: UIViewController{
         switch(subsection){
         case .manualSync:
             cell.goImageView.isHidden = true
+        case .plus:
+            cell.optionLabel.text = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("UPGRADE_TO_PLUS")
         default:
             cell.goImageView.isHidden = false
         }
+        return cell
+    }
+    
+    func renderAddressesCells(subsection: Section.SubSection) -> GeneralTapTableCellView {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsGeneralTap") as! GeneralTapTableCellView
+        cell.messageLabel.text = ""
+        cell.loader.isHidden = true
+        cell.goImageView.isHidden = false
+        cell.optionLabel.textColor = theme.mainText
+        cell.optionLabel.text = subsection.name
         return cell
     }
     
@@ -349,6 +433,39 @@ class SettingsGeneralViewController: UIViewController{
         self.navigationController?.pushViewController(backupVC, animated: true)
     }
     
+    func goToCustomDomains() {
+        let customDomains = DBManager.getCustomDomains(account: myAccount)
+        if(customDomains.count > 0){
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let customDomainVC = storyboard.instantiateViewController(withIdentifier: "customDomainViewController") as! CustomDomainViewController
+            customDomainVC.myAccount = myAccount
+            customDomainVC.domains.append(contentsOf: customDomains)
+            self.navigationController?.pushViewController(customDomainVC, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let customEntryVC = storyboard.instantiateViewController(withIdentifier: "customDomainEntryViewController") as! CustomDomainEntryViewController
+            customEntryVC.myAccount = myAccount
+            
+            self.navigationController?.pushViewController(customEntryVC, animated: true)
+        }
+    }
+    
+    func goToAliases() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let aliasVC = storyboard.instantiateViewController(withIdentifier: "aliasViewController") as! AliasViewController
+        aliasVC.myAccount = myAccount
+        self.navigationController?.pushViewController(aliasVC, animated: true)
+    }
+    
+    func goToUpgradePlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.initialTitle = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("UPGRADE_TO_PLUS")
+        webviewVC.accountJWT = self.myAccount.jwt
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+    
     func syncContacts(){
         generalData.syncStatus = .syncing
         tableView.reloadData()
@@ -414,6 +531,12 @@ class SettingsGeneralViewController: UIViewController{
         self.present(snackVC, animated: true, completion: { [weak self] in
             self?.navigationDrawerController?.closeLeftView()
         })
+    }
+}
+
+extension SettingsGeneralViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        
     }
 }
 
@@ -499,6 +622,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
         switch(sections[indexPath.section]){
         case .account:
             return renderAccountCells(subsection: subsection)
+        case .addresses:
+            return renderAddressesCells(subsection: subsection)
         case .general:
             return renderGeneralCells(subsection: subsection)
         case .support:
@@ -538,6 +663,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
         switch(subsection){
         case .account:
             goToProfile()
+        case .plus:
+            goToUpgradePlus()
         case .privacy:
             goToPrivacyAndSecurity()
         case .devices:
@@ -548,6 +675,10 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             showManualSyncWarning()
         case .backup:
             goToBackup()
+        case .customDomain:
+            goToCustomDomains()
+        case .aliases:
+            goToAliases()
         case .syncContact:
             syncContacts()
         case .pin:
@@ -571,7 +702,7 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
     }
 }
 
-extension SettingsGeneralViewController: CustomTabsChildController {
+extension SettingsGeneralViewController {
     func reloadView() {
         applyTheme()
         tableView.reloadData()

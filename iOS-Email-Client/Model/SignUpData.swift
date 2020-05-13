@@ -21,7 +21,9 @@ class SignUpData{
     var deviceId: Int = 1
     var token: String = ""
     var refreshToken: String?
+    var customerType = 0
     var comingFromLogin = false
+    var addresses: [[String: Any]]?
     
     init(username: String, password: String, domain: String, fullname: String, optionalEmail: String?){
         self.username = username
@@ -56,6 +58,7 @@ class SignUpData{
         myAccount.identityB64 = ""
         myAccount.deviceId = signupData.deviceId
         myAccount.buildCompoundKey()
+        myAccount.customerType = signupData.customerType
         return myAccount
     }
 }

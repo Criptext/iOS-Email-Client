@@ -17,7 +17,7 @@ protocol ComposerDelegate: class {
     func send()
     func badRecipient()
     func typingRecipient(text: String)
-    func setAccount(accountId: String)
+    func setAccount(accountId: String, aliasId: Int?)
 }
 
 class ComposerUIView: UIView {
@@ -60,6 +60,7 @@ class ComposerUIView: UIView {
     var previousBccHeight: CGFloat = 45
     var collapsed = false
     weak var myAccount: Account!
+    var myAlias: Alias? = nil
     var checkedDomains: [String: Bool] = Utils.defaultDomains
     var accountOptionsInterface: AccountOptionsInterface?
     var composerEditorHeight: CGFloat = 0.0
@@ -139,23 +140,63 @@ class ComposerUIView: UIView {
         navigationBar.isTranslucent = false
     }
     
-    func setFrom(account: Account) {
-        let accounts = Array(SharedDB.getAccounts(ignore: account.compoundKey))
-        fromButton.isHidden = accounts.count == 0
-        let attributedFrom = NSMutableAttributedString(string: "\(String.localize("FROM")): ", attributes: [.font: Font.bold.size(15)!])
-        let attributedEmail = NSAttributedString(string: account.email, attributes: [.font: Font.regular.size(15)!])
-        attributedFrom.append(attributedEmail)
+    func setFrom(account: Account, alias: Alias? = nil) {
+        myAccount = account
+        myAlias = alias
         
-        fromField.attributedText = attributedFrom
+        let accountAliases = buildAccountAliases(currentAccount: account, currentAlias: alias)
+        accountOptionsInterface = AccountOptionsInterface(accounts: accountAliases)
+        accountOptionsInterface!.delegate = self
+        accountOptionsView.setDelegate(newDelegate: accountOptionsInterface!)
+        
+        let hideMoreButton = accountAliases.count == 0
+        setFromUI(hideMoreButton: hideMoreButton, accountEmail: account.email, aliasEmail: alias?.email)
+    }
+    
+    func setFromUI(hideMoreButton: Bool, accountEmail: String, aliasEmail: String?) {
+        fromButton.isHidden = hideMoreButton
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
         
-        accountOptionsInterface = AccountOptionsInterface(accounts: accounts)
-        accountOptionsInterface?.delegate = self
-        accountOptionsView.setDelegate(newDelegate: accountOptionsInterface!)
-        self.myAccount = account
+        if let aliasMail = aliasEmail {
+            let theme = ThemeManager.shared.theme
+            let attributedFrom = NSMutableAttributedString(string: "\(String.localize("FROM")): ", attributes: [.font: Font.bold.size(15)!])
+            let attributedEmail = NSAttributedString(string: aliasMail, attributes: [.font: Font.regular.size(15)!])
+            attributedFrom.append(attributedEmail)
+            let attributedOrigin = NSAttributedString(string: " (\(accountEmail))", attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.secondText])
+            attributedFrom.append(attributedOrigin)
+            fromField.attributedText = attributedFrom
+        } else {
+            let attributedFrom = NSMutableAttributedString(string: "\(String.localize("FROM")): ", attributes: [.font: Font.bold.size(15)!])
+            let attributedEmail = NSAttributedString(string: accountEmail, attributes: [.font: Font.regular.size(15)!])
+            attributedFrom.append(attributedEmail)
+            fromField.attributedText = attributedFrom
+        }
+    }
+    
+    func buildAccountAliases(currentAccount: Account, currentAlias: Alias?) -> [AccountAlias] {
+        let accounts = SharedDB.getLoggedAccounts()
+        var accountAliases: [AccountAlias] = []
+        
+        for account in accounts {
+            if (currentAlias != nil || account.compoundKey != currentAccount.compoundKey) {
+                accountAliases.append(AccountAlias(account: account))
+            }
+            let aliases = SharedDB.getActiveAliases(account: account)
+            for alias in aliases {
+                if (currentAlias == nil || currentAlias!.rowId != alias.rowId) {
+                    accountAliases.append(AccountAlias(account: account, alias: alias))
+                }
+            }
+        }
+        return accountAliases
     }
     
     @IBAction func didPressFrom(_ sender: Any) {
+        guard accountOptionsView.isHidden else {
+            onClose()
+            return
+        }
+        
         fromButton.setImage(UIImage(named: "icon-up"), for: .normal)
         accountOptionsView.showMoreOptions()
         
@@ -411,12 +452,12 @@ extension ComposerUIView: AccountOptionsInterfaceDelegate {
         accountOptionsView.closeMoreOptions()
     }
     
-    func accountSelected(account: Account) {
+    func accountSelected(account: Account, alias: Alias?) {
         fromButton.setImage(UIImage(named: "icon-down"), for: .normal)
         accountOptionsView.closeMoreOptions()
         guard !account.isInvalidated else {
             return
         }
-        self.setFrom(account: account)
+        self.delegate?.setAccount(accountId: account.compoundKey, aliasId: alias?.rowId)
     }
 }

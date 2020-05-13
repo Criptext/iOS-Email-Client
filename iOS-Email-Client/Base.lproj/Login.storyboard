@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -1534,15 +1534,25 @@ from Criptext</string>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLn-ah-vkj">
+                                <rect key="frame" x="20" y="90" width="335" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="A2f-aL-qEA"/>
+                                </constraints>
+                                <state key="normal" title="Upgrade to Plus"/>
+                                <connections>
+                                    <action selector="askUpgradeToPlus:" destination="6pa-2X-Ybk" eventType="touchUpInside" id="P8s-u4-Z1P"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqu-rB-prj" userLabel="Separator">
-                                <rect key="frame" x="0.0" y="90" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="135" width="375" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="8cT-cY-Upj"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZVg-5C-o5G">
-                                <rect key="frame" x="0.0" y="91" width="375" height="576"/>
+                                <rect key="frame" x="0.0" y="136" width="375" height="531"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="settingsDeviceCell" rowHeight="66" id="cMC-el-P32" customClass="SettingsDeviceTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -1629,26 +1639,32 @@ from Criptext</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="YVX-W4-ZYy" firstAttribute="top" secondItem="Z43-JX-zTO" secondAttribute="top" id="0qC-ID-0Hd"/>
+                            <constraint firstItem="cLn-ah-vkj" firstAttribute="leading" secondItem="YVX-W4-ZYy" secondAttribute="leading" id="5tU-AE-9VR"/>
                             <constraint firstAttribute="trailing" secondItem="ZVg-5C-o5G" secondAttribute="trailing" id="Fid-jV-UYj"/>
                             <constraint firstItem="ZVg-5C-o5G" firstAttribute="top" secondItem="yqu-rB-prj" secondAttribute="bottom" id="Htx-NG-cKA"/>
                             <constraint firstItem="YVX-W4-ZYy" firstAttribute="leading" secondItem="Z43-JX-zTO" secondAttribute="leading" constant="20" id="Kmj-Eg-qxt"/>
                             <constraint firstItem="ZVg-5C-o5G" firstAttribute="leading" secondItem="apU-f7-xVV" secondAttribute="leading" id="OY9-jY-M08"/>
                             <constraint firstItem="Z43-JX-zTO" firstAttribute="trailing" secondItem="yqu-rB-prj" secondAttribute="trailing" id="QFA-YN-ad8"/>
                             <constraint firstItem="yqu-rB-prj" firstAttribute="leading" secondItem="Z43-JX-zTO" secondAttribute="leading" id="T8L-bB-NQi"/>
-                            <constraint firstItem="yqu-rB-prj" firstAttribute="top" secondItem="YVX-W4-ZYy" secondAttribute="bottom" id="TWv-LH-kZ9"/>
+                            <constraint firstItem="cLn-ah-vkj" firstAttribute="centerX" secondItem="YVX-W4-ZYy" secondAttribute="centerX" id="Waa-SN-iTU"/>
+                            <constraint firstItem="cLn-ah-vkj" firstAttribute="trailing" secondItem="YVX-W4-ZYy" secondAttribute="trailing" id="Z2C-Pe-urF"/>
                             <constraint firstAttribute="bottom" secondItem="ZVg-5C-o5G" secondAttribute="bottom" id="eNQ-zu-roB"/>
                             <constraint firstItem="Z43-JX-zTO" firstAttribute="trailing" secondItem="YVX-W4-ZYy" secondAttribute="trailing" constant="20" id="f4S-jV-jvy"/>
+                            <constraint firstItem="yqu-rB-prj" firstAttribute="top" secondItem="cLn-ah-vkj" secondAttribute="bottom" constant="5" id="ypp-zJ-Rzm"/>
+                            <constraint firstItem="cLn-ah-vkj" firstAttribute="top" secondItem="YVX-W4-ZYy" secondAttribute="bottom" id="za1-Om-5uX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Z43-JX-zTO"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="ZVg-5C-o5G" id="uF0-K3-CJc"/>
                         <outlet property="textMessage" destination="YVX-W4-ZYy" id="dgs-X7-7P5"/>
+                        <outlet property="upgradeButton" destination="cLn-ah-vkj" id="eV2-So-FFF"/>
+                        <outlet property="upgradeButtonHeightConstraint" destination="A2f-aL-qEA" id="89s-AX-0rf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WO9-71-2sd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2964" y="454.72263868065971"/>
+            <point key="canvasLocation" x="-1284" y="745"/>
         </scene>
     </scenes>
     <resources>

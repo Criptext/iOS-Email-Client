@@ -21,6 +21,7 @@ class SendEmailData {
     
     var subject: String
     var threadId: String?
+    var fromAddressId: Int?
     var criptextEmails: [[String: Any]]
     var guestEmails: [String: Any]
     var files: [[String: Any]]?
@@ -47,6 +48,9 @@ class SendEmailData {
         }
         if let thread = self.threadId {
             requestParams["threadId"] = thread
+        }
+        if let addressId = self.fromAddressId {
+            requestParams["fromAddressId"] = addressId
         }
         return requestParams
     }

@@ -280,6 +280,9 @@ extension UIColor {
     static let darkBgBubbleCriptext = UIColor(red: 0, green: 52/255, blue: 111/255, alpha: 1.0)
     static let darkEmailBubble = UIColor(red: 102/255, green:187/255, blue: 1, alpha: 1.0)
     static let darkMenuText = UIColor(red: 180/255, green:181/255, blue: 190/255, alpha: 1.0)
+    
+    static let plusStatus = UIColor(red: 227/255, green: 163/255, blue: 68/255, alpha: 1.0)
+    static let success = UIColor(red: 104/255, green: 181/255, blue: 21/255, alpha: 1)
 }
 
 enum Font {

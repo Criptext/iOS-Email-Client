@@ -53,9 +53,6 @@ struct Env {
     }
     
     static var domain: String {
-        guard !Env.isProduction else {
-            return "@\(plainDomain)"
-        }
         return "@\(plainDomain)"
     }
     
@@ -84,7 +81,7 @@ struct Env {
         return Locale.current.languageCode ?? "en"
     }
     
-    static let databaseVersion: UInt64 = 24
+    static let databaseVersion: UInt64 = 26
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 6
     static let maxAllowedDevices = 10

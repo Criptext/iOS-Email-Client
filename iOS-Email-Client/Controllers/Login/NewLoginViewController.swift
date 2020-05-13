@@ -255,7 +255,11 @@ class NewLoginViewController: UIViewController{
                 self.jumpToLoginPasswordView(loginData: loginData)
                 return
             }
-            if case .TooManyDevices = responseData {
+            if case let .TooManyDevicesDictionary(data) = responseData,
+                let customerType = data["customerType"] as? Int,
+                let maxDevices = data["maxDevices"] as? Int {
+                loginData.customerType = customerType
+                loginData.maxDevices = maxDevices
                 loginData.needToRemoveDevices = true
                 self.jumpToLoginPasswordView(loginData: loginData)
                 return
