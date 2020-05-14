@@ -11,8 +11,6 @@ import Foundation
 class RemoveDevicesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var textMessage: UILabel!
-    @IBOutlet weak var upgradeButton: UIButton!
-    @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
     var loginData: LoginData!
     var multipleAccount = false
     var deviceData: DeviceSettingsData!
@@ -33,17 +31,7 @@ class RemoveDevicesViewController: UIViewController {
         self.tableView.allowsMultipleSelectionDuringEditing = true
         self.tableView.setEditing(!tableView.isEditing, animated: true)
         self.applyTheme()
-        self.showUpgradeButton()
         checkTrashButton()
-        
-        if (Constants.isUpgrade(customerType: loginData.customerType)) {
-            upgradeButton.isHidden = true
-            upgradeButtonHeightConstraint.constant = 0
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.askUpgradeToPlus(0)
-            }
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -90,13 +78,6 @@ class RemoveDevicesViewController: UIViewController {
         self.linkBegin(username: self.loginData.username, domain: self.loginData.domain)
     }
     
-    func showUpgradeButton() {
-        let attrString1 = NSMutableAttributedString(string: "Or you can", attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(15.0)!])
-        let attrString2 = NSAttributedString(string: " Upgrade to Plus", attributes: [.foregroundColor: theme.criptextBlue, .font: Font.bold.size(15.0)!])
-        attrString1.append(attrString2)
-        upgradeButton.setAttributedTitle(attrString1, for: .normal)
-    }
-    
     func applyTheme() {
         let attributedTitle = NSAttributedString(string: String.localize("REMOVE_DEVICES_TITLE"), attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)
@@ -129,25 +110,6 @@ class RemoveDevicesViewController: UIViewController {
     
     @objc func goBack(){
         navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func askUpgradeToPlus(_ sender: Any) {
-        let popover = GetPlusUIPopover()
-        popover.plusType = .devices
-        popover.onResponse = { upgrade in
-            if (upgrade) {
-                self.goToUpgradePlus()
-            }
-        }
-        self.presentPopover(popover: popover, height: 435)
-    }
-
-    func goToUpgradePlus() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
-        webviewVC.accountJWT = self.tempToken
-        webviewVC.delegate = self
-        self.navigationController?.pushViewController(webviewVC, animated: true)
     }
 }
 

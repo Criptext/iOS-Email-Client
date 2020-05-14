@@ -83,6 +83,7 @@ class NewEmailHandler {
                     event.messageType, content: bodyString, account: myAccount,
                     recipientId: recipientId, senderDeviceId: event.senderDeviceId,
                     isExternal: event.isExternal)
+                
                 switch(decryptedContentResult) {
                     case .Content(let decryptedContent):
                         content = decryptedContent
@@ -229,9 +230,10 @@ class NewEmailHandler {
         if let error = err {
             let payload = [
                 "name": error.name.rawValue,
-                "reason": error.reason ?? "Unknown Signal Error"
+                "reason": error.reason ?? "Unknown Signal Error",
+                "isExternal": isExternal.description
                 ] as [String : Any]
-            Crashlytics.sharedInstance().recordError(CriptextError(message: error.name.rawValue), withAdditionalUserInfo: payload)
+            Crashlytics.sharedInstance().recordError(CriptextError(message: "\(isExternal ? "CONTENT_UNENCRYPTED_BOB" : "CONTENT_UNENCRYPTED") : \(error.name.rawValue)"), withAdditionalUserInfo: payload)
             if (error.name.rawValue == "AxolotlDuplicateMessage") {
                 return .Duplicated
             } else if (error.name.rawValue == "AxolotlNoSessionException") {

@@ -13,7 +13,6 @@ class GetPlusUIPopover: BaseUIPopover {
     enum PlusType{
         case alias
         case domains
-        case devices
     }
     
     var domains: [String]!
@@ -23,7 +22,7 @@ class GetPlusUIPopover: BaseUIPopover {
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
-    var plusType : PlusType = .devices
+    var plusType : PlusType = .alias
     var maxDevices = 2
     var upToDevices = 5
     var onResponse: ((Bool) -> Void)?
@@ -66,16 +65,14 @@ class GetPlusUIPopover: BaseUIPopover {
     func applyLocalization() {
         switch(plusType) {
             case .alias:
+                titleLabel.text = String.localize("ALIAS_PLUS_TITLE")
                 messageLabel.text = String.localize("ALIAS_PLUS")
                 plusImage.image = UIImage(named: "plus-alias")
             case .domains:
+                titleLabel.text = String.localize("CUSTOM_DOMAINS_PLUS_TITLE")
                 messageLabel.text = String.localize("CUSTOM_DOMAINS_PLUS")
                 plusImage.image = UIImage(named: "plus-domains")
-            case .devices:
-                messageLabel.text = String.localize("DEVICE_LIMIT_PLUS", arguments: maxDevices, upToDevices)
-                plusImage.image = UIImage(named: "plus-devices")
         }
-        titleLabel.text = String.localize("DEVICE_LIMIT_REACHED")
         confirmButton.setTitle(String.localize("GET_PLUS"), for: .normal)
         cancelButton.setTitle(String.localize("MAYBE_LATER"), for: .normal)
     }

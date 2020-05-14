@@ -84,6 +84,24 @@ class CriptextDefaults {
         }
     }
     
+    var hasShownPlusAlias: Bool {
+        get {
+            return defaults.bool(forKey: Guide.plusAlias.rawValue)
+        }
+        set (value) {
+            defaults.set(value, forKey: Guide.plusAlias.rawValue)
+        }
+    }
+    
+    var hasShownPlusCustomDomains: Bool {
+        get {
+            return defaults.bool(forKey: Guide.plusCustomDomains.rawValue)
+        }
+        set (value) {
+            defaults.set(value, forKey: Guide.plusCustomDomains.rawValue)
+        }
+    }
+    
     //SHARED DEFAULTS
     var hasPIN : Bool {
         return groupDefaults.string(forKey: PIN.lock.rawValue) != nil
@@ -198,6 +216,9 @@ class CriptextDefaults {
         case feed = "guideFeed"
         case unsend = "guideUnsend"
         case secureLock = "guideSecure"
+        
+        case plusAlias = "plusAlias"
+        case plusCustomDomains = "plusCustomDomains"
     }
     
     enum Config: String {

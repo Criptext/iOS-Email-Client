@@ -944,8 +944,10 @@ extension InboxViewController: UITableViewDataSource{
                 cell.setAsNotSelected()
                 cell.isSelected = false
             }
+            cell.avatarBorderView.isHidden = true
         } else {
             UIUtils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastContact)
+            cell.avatarBorderView.isHidden = thread.lastContact.0 != myAccount.email || !Constants.isPlus(customerType: myAccount.customerType)
         }
         return cell
     }

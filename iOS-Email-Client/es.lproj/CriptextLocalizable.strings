@@ -452,7 +452,7 @@
 "REPORT_BUG" = "Reportar Error";
 "REPORT_ABUSE" = "Reportar Abuso";
 "REPORT_PHISHING" = "Reportar como Phishing";
-"CUSTOM_DOMAIN" = "Custom Domain";
+"CUSTOM_DOMAIN" = "Dominios Personalizados";
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Crea una dirección secundaria para tu buzón. Puedes agregar hasta 3 aliases por dominio.";
 "ALIASES_ALREADY_EXISTS" = "Esta dirección ya está en uso";
@@ -502,9 +502,9 @@
 
 "CONNECTION_LOST" = "Parece que has perdido tu connección a internet";
 
-"DEVICE_LIMIT_REACHED" = "Necesitas Plus para esto";
-"DEVICE_LIMIT_PLUS" = "Has alcanzado el máximo número de dispositivos (%i). Subscribete a Plus para poder vincular %i dispositivos. Caso contrario deberas remover dispositivos para continuar.";
-"CUSTOM_DOMAINS_PLUS" = "Agrega direcciones de correo con un dominio que te pertenezca como tu@compania.com\n\nObtén esto y más cuando te subscribas a Plus!";
-"ALIAS_PLUS" = "Con Aliases puedes manejar multiples direcciones de correo en un solo buzón\n\nObtén esto y más cuando te subscribas a Plus!";
-"GET_PLUS" = "Obtener Plus";
-"MAYBE_LATER" = "No, Gracias";
+"CUSTOM_DOMAINS_PLUS_TITLE" = "Disfruta Dominios Personalizados";
+"CUSTOM_DOMAINS_PLUS" = "Agrega direcciones de correo con un dominio que te pertenezca como tu@compania.com\n\nAyudanos a brindarle nuevas características a todos, unete a Plus.";
+"ALIAS_PLUS_TITLE" = "Disfruta Aliases";
+"ALIAS_PLUS" = "Con Aliases puedes manejar multiples direcciones de correo en un solo buzón\n\nAyudanos a brindarle nuevas características a todos, unete a Plus.";
+"GET_PLUS" = "Unirme";
+"MAYBE_LATER" = "No Ahora";

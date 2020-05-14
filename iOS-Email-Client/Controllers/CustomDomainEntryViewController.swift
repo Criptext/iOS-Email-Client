@@ -33,7 +33,9 @@ class CustomDomainEntryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if (!Constants.isPlus(customerType: myAccount.customerType)) {
+        let defaults = CriptextDefaults()
+        if (!Constants.isPlus(customerType: myAccount.customerType) && !defaults.hasShownPlusCustomDomains) {
+            defaults.hasShownPlusCustomDomains = true
             self.askUpgradePlus()
         }
     }
@@ -163,8 +165,6 @@ class CustomDomainEntryViewController: UIViewController {
         popover.onResponse = { upgrade in
             if (upgrade) {
                 self.goToUpgradePlus()
-            } else {
-                self.goBack()
             }
         }
         self.presentPopover(popover: popover, height: 435)
