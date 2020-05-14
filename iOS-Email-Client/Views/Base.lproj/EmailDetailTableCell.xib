@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -20,15 +18,15 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="403"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mtm-Bj-dEs" id="5te-0K-DXB">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="402.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="403"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x8R-Mr-qce">
-                        <rect key="frame" x="0.0" y="4" width="375" height="394.5"/>
+                        <rect key="frame" x="0.0" y="4" width="375" height="395"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KaE-PD-svL">
-                        <rect key="frame" x="0.0" y="5" width="375" height="392.5"/>
+                        <rect key="frame" x="0.0" y="5" width="375" height="393"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYk-NZ-Ec1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
@@ -36,6 +34,19 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D0N-r1-Ghu" customClass="CircleLoaderUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="16" y="17" width="40" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vde-wN-0QA">
+                                        <rect key="frame" x="13" y="14" width="46" height="46"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="46" id="4KM-00-LRo"/>
+                                            <constraint firstAttribute="width" constant="46" id="QgB-v2-8xh"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="23"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9UB-5Z-Iw6" customClass="UIImageView">
                                         <rect key="frame" x="18" y="19" width="36" height="36"/>
@@ -171,6 +182,7 @@
                                     <constraint firstItem="SNm-dQ-TeE" firstAttribute="height" secondItem="7fU-IW-zLs" secondAttribute="height" id="Agt-TQ-VbN"/>
                                     <constraint firstItem="7fU-IW-zLs" firstAttribute="centerY" secondItem="uDR-zl-Siw" secondAttribute="centerY" id="ArE-YO-3Qj"/>
                                     <constraint firstItem="uDR-zl-Siw" firstAttribute="leading" secondItem="yfG-EO-Lu4" secondAttribute="trailing" constant="5" id="CW4-gg-yXO"/>
+                                    <constraint firstItem="Vde-wN-0QA" firstAttribute="centerY" secondItem="9UB-5Z-Iw6" secondAttribute="centerY" id="DnE-Lv-Qz3"/>
                                     <constraint firstItem="9UB-5Z-Iw6" firstAttribute="leading" secondItem="oYk-NZ-Ec1" secondAttribute="leading" constant="18" id="EvF-xL-KVG"/>
                                     <constraint firstItem="D0N-r1-Ghu" firstAttribute="leading" secondItem="9UB-5Z-Iw6" secondAttribute="leading" constant="-2" id="FEp-3W-0gO"/>
                                     <constraint firstAttribute="trailing" secondItem="LGD-VD-w1C" secondAttribute="trailing" constant="24" id="FpX-Nc-JeE"/>
@@ -187,6 +199,7 @@
                                     <constraint firstItem="7fU-IW-zLs" firstAttribute="leading" secondItem="yfG-EO-Lu4" secondAttribute="trailing" constant="5" id="WQR-Th-pVs"/>
                                     <constraint firstItem="LGD-VD-w1C" firstAttribute="leading" secondItem="STJ-z8-shf" secondAttribute="trailing" constant="10" id="Wj5-VH-vca"/>
                                     <constraint firstItem="uDR-zl-Siw" firstAttribute="top" secondItem="XDx-eF-08j" secondAttribute="bottom" constant="5" id="c6p-1d-Mxj"/>
+                                    <constraint firstItem="Vde-wN-0QA" firstAttribute="centerX" secondItem="9UB-5Z-Iw6" secondAttribute="centerX" id="cyU-dx-bpx"/>
                                     <constraint firstItem="J60-E3-nju" firstAttribute="leading" secondItem="Mx0-ks-ALr" secondAttribute="trailing" constant="5" id="e5w-nt-Qco"/>
                                     <constraint firstItem="yfG-EO-Lu4" firstAttribute="leading" secondItem="XDx-eF-08j" secondAttribute="leading" id="f1G-na-4Mb"/>
                                     <constraint firstItem="LGD-VD-w1C" firstAttribute="bottom" secondItem="XDx-eF-08j" secondAttribute="bottom" id="f75-Tn-7oM"/>
@@ -199,28 +212,28 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
-                                <rect key="frame" x="0.0" y="75" width="375" height="97.5"/>
+                                <rect key="frame" x="0.0" y="75" width="375" height="98"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="250" id="nMQ-Id-iGW"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BUE-hX-7IB">
-                                <rect key="frame" x="0.0" y="172.5" width="375" height="5"/>
+                                <rect key="frame" x="0.0" y="173" width="375" height="5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="5" id="wqg-m8-6a7"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gto-qF-XbD">
-                                <rect key="frame" x="0.0" y="177.5" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="178" width="375" height="200"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="200" id="USB-5e-poq"/>
                                 </constraints>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Spu-tg-Ust">
-                                <rect key="frame" x="0.0" y="377.5" width="375" height="15"/>
+                                <rect key="frame" x="0.0" y="378" width="375" height="15"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="eYk-iM-SgF"/>
@@ -237,14 +250,14 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6QI-gH-SwO">
-                        <rect key="frame" x="0.0" y="397.5" width="375" height="5"/>
+                        <rect key="frame" x="0.0" y="398" width="375" height="5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="5" id="n42-ki-5wr"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Oq-bA-bXn">
-                        <rect key="frame" x="0.0" y="372.5" width="100" height="30"/>
+                        <rect key="frame" x="0.0" y="373" width="100" height="30"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jmg-JQ-Kcw">
                                 <rect key="frame" x="19" y="15" width="30" height="36"/>
@@ -332,6 +345,7 @@
                 <outlet property="attachmentsTableHeightConstraint" destination="USB-5e-poq" id="0Jf-5S-Nl2"/>
                 <outlet property="attachmentsTableView" destination="Gto-qF-XbD" id="on9-Ar-oSC"/>
                 <outlet property="attachmentsTopMarginView" destination="BUE-hX-7IB" id="d3o-Uz-d7t"/>
+                <outlet property="avatarBorderView" destination="Vde-wN-0QA" id="qCZ-OH-WS2"/>
                 <outlet property="borderBGView" destination="x8R-Mr-qce" id="kmH-ZK-eqh"/>
                 <outlet property="bottomContainerView" destination="4Oq-bA-bXn" id="30r-cM-HRT"/>
                 <outlet property="bottomMarginView" destination="Spu-tg-Ust" id="JPL-vn-6x2"/>

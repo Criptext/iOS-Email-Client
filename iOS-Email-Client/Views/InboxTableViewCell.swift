@@ -23,6 +23,7 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var secureLockImageView: UIImageView!
     
     @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var avatarBorderView: UIView!
     @IBOutlet weak var containerBadge: UIView!
     @IBOutlet weak var badgeLabel: UILabel!
     @IBOutlet weak var badgeWidthConstraint: NSLayoutConstraint!
@@ -47,6 +48,9 @@ class InboxTableViewCell: UITableViewCell {
         let myView = UIView()
         myView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.2)
         self.selectedBackgroundView = myView
+        
+        avatarBorderView.layer.borderWidth = 1
+        avatarBorderView.layer.borderColor = UIColor.plusStatus.cgColor
     }
     
     @objc func handleLongPress(_ gestureRecognizer:UILongPressGestureRecognizer){
@@ -80,8 +84,6 @@ class InboxTableViewCell: UITableViewCell {
         secureAttachmentImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
         secureLockImageView.isHidden = true
         secureLockImageView.tintColor = UIColor(red:0.84, green:0.84, blue:0.84, alpha:1.0)
-        
-        
         
         senderLabel.attributedText =  thread.buildContactString(theme: theme, fontSize: 15.0)
         if !thread.unread {
