@@ -1336,6 +1336,16 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         self.present(activityVC, animated: true)
     }
     
+    func joinPlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.initialTitle = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("JOIN_PLUS")
+        webviewVC.accountJWT = self.myAccount.jwt
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+        self.navigationDrawerController?.closeLeftView()
+    }
+    
     func openSupport(){
         let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         let supportContact = Contact()
@@ -1448,7 +1458,11 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
 }
 
-
+extension InboxViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        self.navigationController?.popViewController(animated: true)
+    }
+}
 
 //MARK: - Search Delegate
 extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {

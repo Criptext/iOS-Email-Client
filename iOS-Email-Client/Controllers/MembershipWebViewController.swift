@@ -21,7 +21,7 @@ class MembershipWebViewController: UIViewController {
     @IBOutlet weak var failureDescView: UILabel!
     
     var delegate: MembershipWebViewControllerDelegate? = nil
-    var initialTitle = String.localize("UPGRADE_TO_PLUS")
+    var initialTitle = String.localize("JOIN_PLUS")
     var sectionDescription = String.localize("SOMETHING_WRONG")
     var accountJWT: String = ""
     

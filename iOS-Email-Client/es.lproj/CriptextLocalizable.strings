@@ -498,8 +498,6 @@
 "VERIFY_DOMAIN_MESSAGE" = "No cierres el app hasta que este proceso termine.";
 
 "BILLING" = "Factuarción";
-"UPGRADE_TO_PLUS" = "Subscribete a Plus";
-
 "CONNECTION_LOST" = "Parece que has perdido tu connección a internet";
 
 "CUSTOM_DOMAINS_PLUS_TITLE" = "Disfruta Dominios Personalizados";
@@ -508,3 +506,5 @@
 "ALIAS_PLUS" = "Con Aliases puedes manejar multiples direcciones de correo en un solo buzón\n\nAyudanos a brindarle nuevas características a todos, unete a Plus.";
 "GET_PLUS" = "Unirme";
 "MAYBE_LATER" = "No Ahora";
+
+"JOIN_PLUS" = "Unete a Plus";

@@ -14,6 +14,7 @@ class MenuViewController: UIViewController{
     let COLLECTION_CELL_WIDTH = 57
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
     let MENU_CONTENT_HEIGHT : CGFloat = 860.0
+    let MENU_ITEM_HEIGHT: CGFloat = 63.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
     let MAX_ACCOUNTS = 3
@@ -43,12 +44,20 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var labelsTableHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var scrollInnerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var settingsMenuItem: MenuItemUIView!
+    @IBOutlet weak var joinPlusMenuItem: MenuItemUIView!
+    @IBOutlet weak var joinPlusItemHeightContraint: NSLayoutConstraint!
     @IBOutlet var menuItemsViews: [MenuItemUIView]?
     var selectedMenuItem : MenuItemUIView?
     var mailboxVC : InboxViewController! {
         get {
             return self.navigationDrawerController?.rootViewController.children.first as? InboxViewController
         }
+    }
+    var scrollViewHeight: CGFloat {
+        let isPlus = Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        joinPlusMenuItem.isHidden = isPlus
+        joinPlusItemHeightContraint.constant = isPlus ? 0.0 : MENU_ITEM_HEIGHT
+        return isPlus ? MENU_CONTENT_HEIGHT : (MENU_CONTENT_HEIGHT + MENU_ITEM_HEIGHT)
     }
     var menuData : MenuData!
     var accountsToken: NotificationToken?
@@ -78,6 +87,8 @@ class MenuViewController: UIViewController{
         
         avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
         avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        
+        joinPlusMenuItem.itemLabel.text = String.localize("JOIN_PLUS")
     }
     
     @objc func openProfile(){
@@ -172,6 +183,8 @@ class MenuViewController: UIViewController{
         accountContainerView.backgroundColor = theme.menuHeader
         topSeparatorView.backgroundColor = theme.separator
         bottomSeparatorView.backgroundColor = theme.separator
+        joinPlusMenuItem.iconView.tintColor = .plusStatus
+        joinPlusMenuItem.itemLabel.textColor = .plusStatus
         labelsTableView.reloadData()
         if let menuViews = menuItemsViews {
             for menuView in menuViews {
@@ -181,8 +194,9 @@ class MenuViewController: UIViewController{
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
-        scrollInnerViewHeightConstraint.constant = MENU_CONTENT_HEIGHT
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: scrollViewHeight)
+        scrollInnerViewHeightConstraint.constant = scrollViewHeight
+        
         guard nameLabel.text != mailboxVC.myAccount.name else {
             return
         }
@@ -202,8 +216,8 @@ class MenuViewController: UIViewController{
             menuData.expandedLabels = true
             self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.25) {
-                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.MENU_CONTENT_HEIGHT + labelsHeight)
-                self.scrollInnerViewHeightConstraint.constant = self.MENU_CONTENT_HEIGHT + labelsHeight
+                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.scrollViewHeight + labelsHeight)
+                self.scrollInnerViewHeightConstraint.constant = self.scrollViewHeight + labelsHeight
                 self.labelsTableHeightContraint.constant = labelsHeight
                 self.labelsTapIconView.image = UIImage(named: "icon-up")
                 self.view.layoutIfNeeded()
@@ -220,8 +234,8 @@ class MenuViewController: UIViewController{
     func hideCustomLabels(){
         menuData.expandedLabels = false
         self.labelsTableHeightContraint.constant = 0.0
-        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.MENU_CONTENT_HEIGHT)
-        self.scrollInnerViewHeightConstraint.constant = self.MENU_CONTENT_HEIGHT
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.scrollViewHeight)
+        self.scrollInnerViewHeightConstraint.constant = self.scrollViewHeight
         self.labelsTapIconView.image = UIImage(named: "icon-down")
     }
     
@@ -264,6 +278,10 @@ class MenuViewController: UIViewController{
     
     @IBAction func onInviteMenuItemPress(_ sender: Any) {
         mailboxVC.inviteFriend()
+    }
+    
+    @IBAction func onJoinPlusItemPress(_ sender: Any) {
+        mailboxVC.joinPlus()
     }
 }
 

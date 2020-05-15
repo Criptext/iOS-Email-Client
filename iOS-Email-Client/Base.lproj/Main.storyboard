@@ -2005,10 +2005,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="96.333335876464844"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="96.666664123535156"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="96.333335876464844"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="96.666664123535156"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -2032,10 +2032,10 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="276" height="96.333333333333329"/>
+                                                    <rect key="frame" x="27" y="0.0" width="276" height="96.666666666666671"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="96.333333333333329"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="96.666666666666671"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
                                                                     <rect key="frame" x="2" y="45.333333333333336" width="6" height="6"/>
@@ -2059,7 +2059,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="254" height="96.333333333333329"/>
+                                                            <rect key="frame" x="22" y="0.0" width="254" height="96.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -3432,22 +3432,22 @@
                                                     <outlet property="delegate" destination="pDf-uV-0zl" id="I7W-6y-S33"/>
                                                 </connections>
                                             </tableView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GMd-T7-3IZ" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="840" width="375" height="63"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="42f-9x-t8j" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="777" width="375" height="63"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="63" id="58X-QG-0AX"/>
+                                                    <constraint firstAttribute="height" constant="63" id="10u-mf-ZFf"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-settings"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="MENU_SETTINGS"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-plus"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="Join Plus"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="onSettingsMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="fs2-1r-q9Z"/>
+                                                    <action selector="onJoinPlusItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="M7u-Rm-WQq"/>
                                                 </connections>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4A-up-71I" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="777" width="375" height="63"/>
+                                                <rect key="frame" x="0.0" y="840" width="375" height="63"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="63" id="szg-qh-Dfh"/>
@@ -3460,8 +3460,22 @@
                                                     <action selector="onInviteMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="f2G-JT-q5n"/>
                                                 </connections>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ohA-2A-EIz" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GMd-T7-3IZ" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="903" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="63" id="58X-QG-0AX"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="itemImage" value="icon-settings"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="itemLabelText" value="MENU_SETTINGS"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onSettingsMenuItemPress:" destination="pDf-uV-0zl" eventType="touchUpInside" id="fs2-1r-q9Z"/>
+                                                </connections>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ohA-2A-EIz" customClass="MenuItemUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="966" width="375" height="63"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="63" id="KeX-MC-Kxg"/>
@@ -3501,13 +3515,13 @@
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIK-GC-Jmz">
-                                                                    <rect key="frame" x="84" y="23.666666666666664" width="237" height="20.666666666666664"/>
+                                                                    <rect key="frame" x="84" y="23.666666666666664" width="237" height="17.666666666666664"/>
                                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nu-aJ-Vxq">
-                                                                    <rect key="frame" x="84" y="42" width="237" height="20.666666666666671"/>
+                                                                    <rect key="frame" x="84" y="45" width="237" height="17.666666666666671"/>
                                                                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -3556,7 +3570,6 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="R4A-up-71I" firstAttribute="top" secondItem="rBg-0J-UXL" secondAttribute="bottom" id="0dA-40-og6"/>
                                             <constraint firstItem="Eke-lg-Yxy" firstAttribute="top" secondItem="1qd-qs-7ov" secondAttribute="bottom" constant="12" id="2ST-eX-O6m"/>
                                             <constraint firstItem="Mfd-QN-y7t" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" constant="38" id="3Bz-tK-2MS"/>
                                             <constraint firstItem="BrT-p6-ByL" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="3mj-b9-f3C"/>
@@ -3571,7 +3584,9 @@
                                             <constraint firstItem="Eke-lg-Yxy" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="9Yg-bG-fIG"/>
                                             <constraint firstAttribute="trailing" secondItem="vA9-AV-fgK" secondAttribute="trailing" constant="43" id="B9M-cx-1FM"/>
                                             <constraint firstItem="wTx-cH-PhY" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="BRy-fO-mEK"/>
+                                            <constraint firstItem="42f-9x-t8j" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="FVV-au-F4x"/>
                                             <constraint firstItem="GMd-T7-3IZ" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="G3b-35-f5t"/>
+                                            <constraint firstAttribute="trailing" secondItem="42f-9x-t8j" secondAttribute="trailing" id="GCK-FV-Qri"/>
                                             <constraint firstAttribute="trailing" secondItem="rBg-0J-UXL" secondAttribute="trailing" constant="43" id="H6Y-jG-jik"/>
                                             <constraint firstItem="7yK-cx-lA1" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="HqT-yi-9u3"/>
                                             <constraint firstAttribute="trailing" secondItem="R4A-up-71I" secondAttribute="trailing" id="I74-Pp-TDi"/>
@@ -3584,6 +3599,7 @@
                                             <constraint firstItem="rBg-0J-UXL" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" constant="38" id="RxL-gE-7Gk"/>
                                             <constraint firstAttribute="bottom" secondItem="7yK-cx-lA1" secondAttribute="bottom" id="TMD-Ur-EHi"/>
                                             <constraint firstAttribute="trailing" secondItem="wTx-cH-PhY" secondAttribute="trailing" id="UQr-ZK-KJ8"/>
+                                            <constraint firstItem="42f-9x-t8j" firstAttribute="top" secondItem="rBg-0J-UXL" secondAttribute="bottom" id="XWK-NE-jjQ"/>
                                             <constraint firstItem="7yK-cx-lA1" firstAttribute="top" secondItem="1qd-qs-7ov" secondAttribute="bottom" id="YJk-Zw-2Jc"/>
                                             <constraint firstItem="vA9-AV-fgK" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" constant="38" id="Z1l-vI-i1E"/>
                                             <constraint firstItem="BrT-p6-ByL" firstAttribute="top" secondItem="Eke-lg-Yxy" secondAttribute="bottom" id="ZKP-er-qoX"/>
@@ -3591,6 +3607,7 @@
                                             <constraint firstAttribute="trailing" secondItem="Rb8-hg-EV2" secondAttribute="trailing" id="cvQ-FC-Mfy"/>
                                             <constraint firstAttribute="trailing" secondItem="BrT-p6-ByL" secondAttribute="trailing" id="gC2-Z0-gmI"/>
                                             <constraint firstItem="Rb8-hg-EV2" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="gYS-H6-bLL"/>
+                                            <constraint firstItem="R4A-up-71I" firstAttribute="top" secondItem="42f-9x-t8j" secondAttribute="bottom" id="hFB-yu-RJN"/>
                                             <constraint firstItem="eua-tN-sq4" firstAttribute="top" secondItem="wHS-lP-oUA" secondAttribute="bottom" id="hMe-TT-ZA2"/>
                                             <constraint firstItem="3tM-4B-FoX" firstAttribute="top" secondItem="BrT-p6-ByL" secondAttribute="bottom" id="ixH-Cb-aNt"/>
                                             <constraint firstItem="wHS-lP-oUA" firstAttribute="leading" secondItem="cd4-gP-Pk8" secondAttribute="leading" id="n1D-Y9-qqm"/>
@@ -3642,6 +3659,8 @@
                         <outlet property="bottomSeparatorView" destination="rBg-0J-UXL" id="zcI-vq-gYg"/>
                         <outlet property="draftMenuItem" destination="3tM-4B-FoX" id="ZOf-pv-Qw0"/>
                         <outlet property="inboxMenuItem" destination="Eke-lg-Yxy" id="IYk-q9-Hj0"/>
+                        <outlet property="joinPlusItemHeightContraint" destination="10u-mf-ZFf" id="a49-OY-VWl"/>
+                        <outlet property="joinPlusMenuItem" destination="42f-9x-t8j" id="Vhy-Kh-sy9"/>
                         <outlet property="labelsTableHeightContraint" destination="pbx-63-WZD" id="Np2-bK-p6D"/>
                         <outlet property="labelsTableView" destination="vA9-AV-fgK" id="XOn-v5-bhB"/>
                         <outlet property="labelsTapIconView" destination="RLw-GA-FAh" id="TOT-YX-mTo"/>
@@ -4632,6 +4651,7 @@ Also check that the DNS records on your domain are not empty; otherwise go back 
         <image name="icon-inbox" width="18" height="17"/>
         <image name="icon-invite" width="37" height="41"/>
         <image name="icon-label" width="33" height="33"/>
+        <image name="icon-plus" width="28" height="29"/>
         <image name="icon-settings" width="32" height="32"/>
         <image name="icon-spam" width="31" height="31"/>
         <image name="icon-starred" width="32" height="31"/>
