@@ -234,7 +234,8 @@ class ProfileEditorViewController: UIViewController {
         
         avatarPlusBadgeView.layer.cornerRadius = 4
         avatarPlusBadgeView.textColor = .white
-        avatarPlusBadgeView.backgroundColor = UIColor.plusStatus
+        let hexColor = Account.CustomerType(rawValue: myAccount.customerType)?.hexColor ?? "FFFFFF"
+        avatarPlusBadgeView.backgroundColor = UIColor.init().toColorString(hex: hexColor)
         avatarPlusBadgeView.layer.masksToBounds = true
     }
     

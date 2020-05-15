@@ -46,7 +46,7 @@ class InboxViewController: UIViewController {
     var menuAvatarButton:UIBarButtonItem!
     var menuAvatarImageView: UIImageView!
     var circleBadgeView: UIView!
-    var avatarBorderView: UIView!
+    var avatarBorderView: UIImageView!
     var counterBarButton:UIBarButtonItem!
     var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
     var countBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -226,8 +226,6 @@ class InboxViewController: UIViewController {
         mailboxOptionsInterface = MailboxOptionsInterface(currentLabel: mailboxData.selectedLabel)
         mailboxOptionsInterface?.delegate = self
         self.generalOptionsContainerView.setDelegate(newDelegate: mailboxOptionsInterface!)
-        
-        avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
     }
     
     func applyTheme() {
@@ -417,7 +415,7 @@ class InboxViewController: UIViewController {
     func initAvatarButton() {
         let containerView = UIView(frame: CGRect(x: 3, y: 0, width: 33, height: 30))
         menuAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
-        avatarBorderView = UIView(frame: CGRect(x: -3, y: -3, width: 34, height: 34))
+        avatarBorderView = UIImageView(frame: CGRect(x: -3, y: -3, width: 34, height: 34))
         circleBadgeView = UIView(frame: CGRect(x: 22, y: -2, width: 12, height: 12))
         circleBadgeView.backgroundColor = .red
         circleBadgeView.layer.cornerRadius = 6
@@ -428,12 +426,11 @@ class InboxViewController: UIViewController {
         menuAvatarImageView.contentMode = .scaleAspectFit
         menuAvatarImageView.clipsToBounds = true
         
-        avatarBorderView.layer.borderWidth = 1
-        avatarBorderView.layer.cornerRadius = 17
-        avatarBorderView.layer.borderColor = UIColor.plusStatus.cgColor
-        
+        avatarBorderView.contentMode = .scaleAspectFit
         
         UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
+        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOpenMenu(_:)))
         containerView.addSubview(avatarBorderView)
         containerView.addSubview(menuAvatarImageView)
@@ -645,7 +642,7 @@ extension InboxViewController {
             DBManager.refresh()
             UIUtils.deleteSDWebImageCache()
             UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-            avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
+            UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
             menuViewController.reloadView()
         }
         
@@ -947,7 +944,7 @@ extension InboxViewController: UITableViewDataSource{
             cell.avatarBorderView.isHidden = true
         } else {
             UIUtils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastContact)
-            cell.avatarBorderView.isHidden = thread.lastContact.0 != myAccount.email || !Constants.isPlus(customerType: myAccount.customerType)
+            UIUtils.setAvatarBorderImage(imageView: cell.avatarBorderView, contact: thread.lastContact)
         }
         return cell
     }
@@ -2002,7 +1999,6 @@ extension InboxViewController: ThemeDelegate {
     func swapTheme(_ theme: Theme) {
         applyTheme()
         tableView.reloadData()
-        avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
         generalOptionsContainerView.refreshView()
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.reloadView()
@@ -2034,7 +2030,6 @@ extension InboxViewController {
         WebSocketManager.sharedInstance.connect(accounts: [account])
         self.invalidateObservers()
         self.swapMailbox(labelId: mailboxData.selectedLabel, sender: nil, force: true)
-        avatarBorderView.isHidden = !Constants.isPlus(customerType: myAccount.customerType)
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.reloadView()
             menuViewController.hideAccounts()
@@ -2046,6 +2041,7 @@ extension InboxViewController {
         }
         self.setQueueItemsListener()
         UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
+        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
         self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
         RequestManager.shared.getAccountEvents(accountId: account.compoundKey)
     }

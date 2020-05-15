@@ -35,18 +35,13 @@
                                         <rect key="frame" x="16" y="17" width="40" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vde-wN-0QA">
-                                        <rect key="frame" x="13" y="14" width="46" height="46"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vde-wN-0QA" customClass="UIImageView">
+                                        <rect key="frame" x="13.5" y="14.5" width="45" height="45"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="46" id="4KM-00-LRo"/>
-                                            <constraint firstAttribute="width" constant="46" id="QgB-v2-8xh"/>
+                                            <constraint firstAttribute="height" constant="45" id="4KM-00-LRo"/>
+                                            <constraint firstAttribute="width" constant="45" id="QgB-v2-8xh"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="23"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9UB-5Z-Iw6" customClass="UIImageView">
                                         <rect key="frame" x="18" y="19" width="36" height="36"/>

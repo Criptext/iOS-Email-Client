@@ -29,7 +29,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var avatarImage: UIImageView!
-    @IBOutlet weak var avatarImageWrapperView: UIView!
+    @IBOutlet weak var avatarImageWrapperView: UIImageView!
     @IBOutlet weak var avatarPlusBadgeView: UILabel!
     @IBOutlet weak var avatarPlusBadgeWrapperView: UIView!
     @IBOutlet weak var inboxMenuItem: MenuItemUIView!
@@ -76,19 +76,17 @@ class MenuViewController: UIViewController{
         avatarImage.isUserInteractionEnabled = true
         avatarImage.addGestureRecognizer(gesture)
         
-        avatarImageWrapperView.layer.borderWidth = 2
-        avatarImageWrapperView.layer.cornerRadius = 37
-        avatarImageWrapperView.layer.borderColor = UIColor.plusStatus.cgColor
-        
         avatarPlusBadgeView.layer.cornerRadius = 4
         avatarPlusBadgeView.textColor = .white
-        avatarPlusBadgeView.backgroundColor = UIColor.plusStatus
+        let hexColor = Account.CustomerType(rawValue: mailboxVC.myAccount.customerType)?.hexColor ?? "FFFFFF"
+        avatarPlusBadgeView.backgroundColor = UIColor.init().toColorString(hex: hexColor)
         avatarPlusBadgeView.layer.masksToBounds = true
         
         avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
         avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
         
         joinPlusMenuItem.itemLabel.text = String.localize("JOIN_PLUS")
+        self.accountsSectionButton.imageView?.tintColor = .mainUI
     }
     
     @objc func openProfile(){
@@ -149,17 +147,9 @@ class MenuViewController: UIViewController{
     func setupAccountInfo(_ myAccount: Account){
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.email
-        avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.domain ?? Env.plainDomain)/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
-            if error != nil,
-                !myAccount.isInvalidated {
-                self.avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
-            } else {
-                self.avatarImage.contentMode = .scaleAspectFill
-                self.avatarImage.layer.masksToBounds = false
-                self.avatarImage.layer.cornerRadius = self.avatarImage.frame.size.width / 2
-                self.avatarImage.clipsToBounds = true
-            }
-        }
+        
+        UIUtils.setProfilePictureImage(imageView: avatarImage, contact: (myAccount.email, myAccount.name))
+        UIUtils.setAvatarBorderImage(imageView: avatarImageWrapperView, contact: (myAccount.email, myAccount.name))
     }
     
     func reloadView() {
@@ -169,6 +159,10 @@ class MenuViewController: UIViewController{
         labelsTableView.reloadData()
         accountsCollectionView.reloadData()
         accountsTableView.reloadData()
+        
+        let hexColor = Account.CustomerType(rawValue: mailboxVC.myAccount.customerType)?.hexColor ?? "FFFFFF"
+        avatarPlusBadgeView.backgroundColor = UIColor.init().toColorString(hex: hexColor)
+        
         avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
         avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
     }
@@ -416,6 +410,7 @@ extension MenuViewController{
         self.accountsTableView.isHidden = !accountsTableView.isHidden
         self.accountsCollectionView.isHidden = !accountsCollectionView.isHidden
         self.accountsSectionButton.setImage(accountsTableView.isHidden ? UIImage(named: "icon-down") : UIImage(named: "icon-up"), for: .normal)
+        self.accountsSectionButton.imageView?.tintColor = .mainUI
     }
     
     func hideAccounts() {

@@ -149,6 +149,30 @@ class UIUtils {
         
     }
     
+    class func setAvatarBorderImage(imageView: UIImageView, contact: Contact) {
+        let (username, domain) = ContactUtils.getUsernameAndDomain(email: contact.email)
+        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/frame/\(domain)/\(username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
+            if let err = error {
+                print("ERROR \(err) : \("\(Env.apiURL)/user/avatar/frame/\(domain)/\(username)")")
+            } else {
+                imageView.contentMode = .scaleAspectFill
+            }
+        }
+        
+    }
+    
+    class func setAvatarBorderImage(imageView: UIImageView, contact: (String, String)) {
+        let (username, domain) = ContactUtils.getUsernameAndDomain(email: contact.0)
+        imageView.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/frame/\(domain)/\(username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
+            if let err = error {
+                print("ERROR \(err) : \("\(Env.apiURL)/user/avatar/frame/\(domain)/\(username)")")
+            } else {
+                imageView.contentMode = .scaleAspectFill
+            }
+        }
+        
+    }
+    
     class func createLeftBackButton(target: Any?, image: UIImage? = #imageLiteral(resourceName: "arrow-back")) -> UIButton {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 31, height: 31))
         button.layer.cornerRadius = button.frame.width / 2

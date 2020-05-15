@@ -44,7 +44,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var attachmentsTableHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var initialsImageView: UIImageView!
-    @IBOutlet weak var avatarBorderView: UIView!
+    @IBOutlet weak var avatarBorderView: UIImageView!
     @IBOutlet weak var moreOptionsContainerView: UIView!
     @IBOutlet weak var moreInfoContainerView: UIButton!
     @IBOutlet weak var contactsLabel: UILabel!
@@ -169,9 +169,6 @@ class EmailTableViewCell: UITableViewCell{
         contactsCollapseLabel.textColor = theme.mainText
         backgroundColor = .clear
         circleLoaderUIView.backgroundColor = .clear
-        
-        avatarBorderView.layer.borderWidth = 1
-        avatarBorderView.layer.borderColor = UIColor.plusStatus.cgColor
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -248,7 +245,7 @@ class EmailTableViewCell: UITableViewCell{
             borderBGView.layer.borderColor = theme.alert.cgColor
         }
         
-        avatarBorderView.isHidden = email.fromContact.email != myEmail || !Constants.isPlus(customerType: email.account.customerType)
+        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: email.fromContact)
     }
     
     func setCollapsedContent(_ email: Email){
