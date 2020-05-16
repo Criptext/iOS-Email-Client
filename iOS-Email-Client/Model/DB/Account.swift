@@ -52,4 +52,33 @@ class Account: Object{
     override static func primaryKey() -> String? {
         return "compoundKey"
     }
+    
+    
+    
+    enum CustomerType: Int {
+        case standard = 0
+        case plus = 1
+        case enterprise = 2
+        case redeemed = 3
+        case fan = 5
+        case hero = 6
+        case legend = 7
+        
+        var id: Int {
+            return self.rawValue
+        }
+        
+        var hexColor: String {
+            switch self {
+            case .fan:
+                return "6EA2CD"
+            case .hero:
+                return "7876F3"
+            case .legend:
+                return "E3A344"
+            default:
+                return "ffffff"
+            }
+        }
+    }
 }

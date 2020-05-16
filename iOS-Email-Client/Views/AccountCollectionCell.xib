@@ -22,12 +22,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="57" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="buf-yw-B9j">
-                        <rect key="frame" x="0.5" y="2" width="46" height="46"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="buf-yw-B9j" customClass="UIImageView">
+                        <rect key="frame" x="-0.5" y="1" width="48" height="48"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="46" id="0Gb-x0-tzC"/>
-                            <constraint firstAttribute="height" constant="46" id="YHe-lJ-BUX"/>
+                            <constraint firstAttribute="width" constant="48" id="0Gb-x0-tzC"/>
+                            <constraint firstAttribute="height" constant="48" id="YHe-lJ-BUX"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tuf-7I-Gfl">

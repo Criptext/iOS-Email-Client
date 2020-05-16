@@ -14,6 +14,7 @@ class MenuViewController: UIViewController{
     let COLLECTION_CELL_WIDTH = 57
     let LABEL_CELL_HEIGHT : CGFloat = 44.0
     let MENU_CONTENT_HEIGHT : CGFloat = 860.0
+    let MENU_ITEM_HEIGHT: CGFloat = 63.0
     let MAX_LABELS_HEIGHT : CGFloat = 110.0
     let MAX_LABELS_DISPLAY = 2
     let MAX_ACCOUNTS = 3
@@ -28,7 +29,7 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var avatarImage: UIImageView!
-    @IBOutlet weak var avatarImageWrapperView: UIView!
+    @IBOutlet weak var avatarImageWrapperView: UIImageView!
     @IBOutlet weak var avatarPlusBadgeView: UILabel!
     @IBOutlet weak var avatarPlusBadgeWrapperView: UIView!
     @IBOutlet weak var inboxMenuItem: MenuItemUIView!
@@ -43,12 +44,20 @@ class MenuViewController: UIViewController{
     @IBOutlet weak var labelsTableHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var scrollInnerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var settingsMenuItem: MenuItemUIView!
+    @IBOutlet weak var joinPlusMenuItem: MenuItemUIView!
+    @IBOutlet weak var joinPlusItemHeightContraint: NSLayoutConstraint!
     @IBOutlet var menuItemsViews: [MenuItemUIView]?
     var selectedMenuItem : MenuItemUIView?
     var mailboxVC : InboxViewController! {
         get {
             return self.navigationDrawerController?.rootViewController.children.first as? InboxViewController
         }
+    }
+    var scrollViewHeight: CGFloat {
+        let isPlus = Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        joinPlusMenuItem.isHidden = isPlus
+        joinPlusItemHeightContraint.constant = isPlus ? 0.0 : MENU_ITEM_HEIGHT
+        return isPlus ? MENU_CONTENT_HEIGHT : (MENU_CONTENT_HEIGHT + MENU_ITEM_HEIGHT)
     }
     var menuData : MenuData!
     var accountsToken: NotificationToken?
@@ -67,17 +76,17 @@ class MenuViewController: UIViewController{
         avatarImage.isUserInteractionEnabled = true
         avatarImage.addGestureRecognizer(gesture)
         
-        avatarImageWrapperView.layer.borderWidth = 2
-        avatarImageWrapperView.layer.cornerRadius = 37
-        avatarImageWrapperView.layer.borderColor = UIColor.plusStatus.cgColor
-        
         avatarPlusBadgeView.layer.cornerRadius = 4
         avatarPlusBadgeView.textColor = .white
-        avatarPlusBadgeView.backgroundColor = UIColor.plusStatus
+        let hexColor = Account.CustomerType(rawValue: mailboxVC.myAccount.customerType)?.hexColor ?? "FFFFFF"
+        avatarPlusBadgeView.backgroundColor = UIColor.init().toColorString(hex: hexColor)
         avatarPlusBadgeView.layer.masksToBounds = true
         
         avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
         avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        
+        joinPlusMenuItem.itemLabel.text = String.localize("JOIN_PLUS")
+        self.accountsSectionButton.imageView?.tintColor = .mainUI
     }
     
     @objc func openProfile(){
@@ -138,17 +147,9 @@ class MenuViewController: UIViewController{
     func setupAccountInfo(_ myAccount: Account){
         nameLabel.text = myAccount.name
         usernameLabel.text = myAccount.email
-        avatarImage.sd_setImage(with: URL(string: "\(Env.apiURL)/user/avatar/\(myAccount.domain ?? Env.plainDomain)/\(myAccount.username)"), placeholderImage: nil, options: [SDWebImageOptions.continueInBackground, SDWebImageOptions.lowPriority]) { (image, error, cacheType, url) in
-            if error != nil,
-                !myAccount.isInvalidated {
-                self.avatarImage.setImageWith(myAccount.name, color: colorByName(name: myAccount.name), circular: true, fontName: "NunitoSans-Regular")
-            } else {
-                self.avatarImage.contentMode = .scaleAspectFill
-                self.avatarImage.layer.masksToBounds = false
-                self.avatarImage.layer.cornerRadius = self.avatarImage.frame.size.width / 2
-                self.avatarImage.clipsToBounds = true
-            }
-        }
+        
+        UIUtils.setProfilePictureImage(imageView: avatarImage, contact: (myAccount.email, myAccount.name))
+        UIUtils.setAvatarBorderImage(imageView: avatarImageWrapperView, contact: (myAccount.email, myAccount.name))
     }
     
     func reloadView() {
@@ -158,6 +159,10 @@ class MenuViewController: UIViewController{
         labelsTableView.reloadData()
         accountsCollectionView.reloadData()
         accountsTableView.reloadData()
+        
+        let hexColor = Account.CustomerType(rawValue: mailboxVC.myAccount.customerType)?.hexColor ?? "FFFFFF"
+        avatarPlusBadgeView.backgroundColor = UIColor.init().toColorString(hex: hexColor)
+        
         avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
         avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
     }
@@ -172,6 +177,8 @@ class MenuViewController: UIViewController{
         accountContainerView.backgroundColor = theme.menuHeader
         topSeparatorView.backgroundColor = theme.separator
         bottomSeparatorView.backgroundColor = theme.separator
+        joinPlusMenuItem.iconView.tintColor = .plusStatus
+        joinPlusMenuItem.itemLabel.textColor = .plusStatus
         labelsTableView.reloadData()
         if let menuViews = menuItemsViews {
             for menuView in menuViews {
@@ -181,8 +188,9 @@ class MenuViewController: UIViewController{
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: MENU_CONTENT_HEIGHT)
-        scrollInnerViewHeightConstraint.constant = MENU_CONTENT_HEIGHT
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: scrollViewHeight)
+        scrollInnerViewHeightConstraint.constant = scrollViewHeight
+        
         guard nameLabel.text != mailboxVC.myAccount.name else {
             return
         }
@@ -202,8 +210,8 @@ class MenuViewController: UIViewController{
             menuData.expandedLabels = true
             self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.25) {
-                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.MENU_CONTENT_HEIGHT + labelsHeight)
-                self.scrollInnerViewHeightConstraint.constant = self.MENU_CONTENT_HEIGHT + labelsHeight
+                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.scrollViewHeight + labelsHeight)
+                self.scrollInnerViewHeightConstraint.constant = self.scrollViewHeight + labelsHeight
                 self.labelsTableHeightContraint.constant = labelsHeight
                 self.labelsTapIconView.image = UIImage(named: "icon-up")
                 self.view.layoutIfNeeded()
@@ -220,8 +228,8 @@ class MenuViewController: UIViewController{
     func hideCustomLabels(){
         menuData.expandedLabels = false
         self.labelsTableHeightContraint.constant = 0.0
-        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.MENU_CONTENT_HEIGHT)
-        self.scrollInnerViewHeightConstraint.constant = self.MENU_CONTENT_HEIGHT
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: self.scrollViewHeight)
+        self.scrollInnerViewHeightConstraint.constant = self.scrollViewHeight
         self.labelsTapIconView.image = UIImage(named: "icon-down")
     }
     
@@ -264,6 +272,10 @@ class MenuViewController: UIViewController{
     
     @IBAction func onInviteMenuItemPress(_ sender: Any) {
         mailboxVC.inviteFriend()
+    }
+    
+    @IBAction func onJoinPlusItemPress(_ sender: Any) {
+        mailboxVC.joinPlus()
     }
 }
 
@@ -398,6 +410,7 @@ extension MenuViewController{
         self.accountsTableView.isHidden = !accountsTableView.isHidden
         self.accountsCollectionView.isHidden = !accountsCollectionView.isHidden
         self.accountsSectionButton.setImage(accountsTableView.isHidden ? UIImage(named: "icon-down") : UIImage(named: "icon-up"), for: .normal)
+        self.accountsSectionButton.imageView?.tintColor = .mainUI
     }
     
     func hideAccounts() {

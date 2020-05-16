@@ -113,12 +113,6 @@ class RemoveDevicesViewController: UIViewController {
     }
 }
 
-extension RemoveDevicesViewController: MembershipWebViewControllerDelegate {
-    func close() {
-        self.navigationController?.popViewController(animated: true)
-    }
-}
-
 extension RemoveDevicesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return devices.count

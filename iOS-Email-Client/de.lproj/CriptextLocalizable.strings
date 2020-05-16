@@ -498,8 +498,6 @@
 "VERIFY_DOMAIN_MESSAGE" = "Do not close the app or put in the background until this process ends.";
 
 "BILLING" = "Billing";
-"UPGRADE_TO_PLUS" = "Upgrade to Plus";
-
 "CONNECTION_LOST" = "Looks like you have lost connections with Wifi or other Internet connection";
 
 "CUSTOM_DOMAINS_PLUS_TITLE" = "Enjoy Custom Domains";
@@ -508,3 +506,5 @@
 "ALIAS_PLUS" = "With Aliases you can manage multiple addresses in one inbox\n\nHelp us bring more awesome features to all, by joining Plus.";
 "GET_PLUS" = "Join";
 "MAYBE_LATER" = "Not Now";
+
+"JOIN_PLUS" = "Join Plus";

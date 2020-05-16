@@ -9,7 +9,7 @@
 import Foundation
 
 class AccountCollectionCell: UICollectionViewCell {
-    @IBOutlet weak var plusBorderView: UIView!
+    @IBOutlet weak var plusBorderView: UIImageView!
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var badgeLabel: UILabel!
     
@@ -21,6 +21,7 @@ class AccountCollectionCell: UICollectionViewCell {
     
     func setContent(account: Account, counter: Int) {
         UIUtils.setProfilePictureImage(imageView: avatarImage, contact: (account.email, account.name))
+        UIUtils.setAvatarBorderImage(imageView: plusBorderView, contact: (account.email, account.name))
         if counter == 0 {
             badgeLabel.isHidden = true
         } else {
@@ -28,11 +29,5 @@ class AccountCollectionCell: UICollectionViewCell {
             badgeLabel.text = counter > 100 ? "99+" : counter.description
         }
         backgroundColor = .clear
-        
-        plusBorderView.layer.cornerRadius = 21.5
-        plusBorderView.layer.borderWidth = 1
-        plusBorderView.layer.borderColor = UIColor.plusStatus.cgColor
-        
-        plusBorderView.isHidden = !Constants.isPlus(customerType: account.customerType)
     }
 }
