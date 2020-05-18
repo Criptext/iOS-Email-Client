@@ -54,10 +54,10 @@ class MenuViewController: UIViewController{
         }
     }
     var scrollViewHeight: CGFloat {
-        let isPlus = Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
-        joinPlusMenuItem.isHidden = isPlus
-        joinPlusItemHeightContraint.constant = isPlus ? 0.0 : MENU_ITEM_HEIGHT
-        return isPlus ? MENU_CONTENT_HEIGHT : (MENU_CONTENT_HEIGHT + MENU_ITEM_HEIGHT)
+        let needsUpgrade = Constants.isUpgrade(customerType: mailboxVC.myAccount.customerType)
+        joinPlusMenuItem.isHidden = !needsUpgrade
+        joinPlusItemHeightContraint.constant = !needsUpgrade ? 0.0 : MENU_ITEM_HEIGHT
+        return !needsUpgrade ? MENU_CONTENT_HEIGHT : (MENU_CONTENT_HEIGHT + MENU_ITEM_HEIGHT)
     }
     var menuData : MenuData!
     var accountsToken: NotificationToken?
