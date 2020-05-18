@@ -457,6 +457,7 @@
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Create a secondary address for your existing inbox. You can add up to 3 aliases per domain.";
 "ALIASES_ALREADY_EXISTS" = "This address is already in use";
+"ALIASES_FORMAT_ERROR" = "Please enter a valid username";
 "ALIASES_UKNOWN_ERROR" = "Unknown Server Error. Please try again";
 "ALIASES_DELETE" = "Delete Alias";
 "ALIASES_DELETE_DESC" = "If you delete this Alias your emails will remain intact, but you will no longer be able to send or receive emails under that address.\n\nAre you sure you want to delete %@?";
@@ -504,9 +505,9 @@
 "CONNECTION_LOST" = "Looks like you have lost connections with Wifi or other Internet connection";
 
 "CUSTOM_DOMAINS_PLUS_TITLE" = "Enjoy Custom Domains";
-"CUSTOM_DOMAINS_PLUS" = "Add custom email addresses with a Domain that you already own like you@company.com\n\nHelp us bring more awesome features to all, by joining Plus.";
+"CUSTOM_DOMAINS_PLUS" = "Add custom email addresses with a Domain that you already own like you@company.com\n\nHelp us bring more great features to all by joining Plus.";
 "ALIAS_PLUS_TITLE" = "Enjoy Alias";
-"ALIAS_PLUS" = "With Aliases you can manage multiple addresses in one inbox\n\nHelp us bring more awesome features to all, by joining Plus.";
+"ALIAS_PLUS" = "With Aliases you can manage multiple addresses in one inbox\n\nHelp us bring more great features to all by joining Plus.";
 "GET_PLUS" = "Join";
 "MAYBE_LATER" = "Not Now";
 

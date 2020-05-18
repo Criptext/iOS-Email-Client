@@ -47,6 +47,8 @@ class AddAliasUIPopover: BaseUIPopover {
             domainPicker.dataSource = self
             domainPicker.delegate = self
         }
+        aliasTextInput.autocorrectionType = .no
+        aliasTextInput.autocapitalizationType = .none
         applyTheme()
     }
     
@@ -75,9 +77,16 @@ class AddAliasUIPopover: BaseUIPopover {
     }
     
     @IBAction func onConfirmPress(_ sender: Any) {
+        aliasTextInput.text = aliasTextInput.text?.lowercased()
+        guard let aliasUsername = aliasTextInput.text,
+            Utils.isValidUsername(aliasUsername) else {
+            self.showLoader(false, error: String.localize("ALIASES_FORMAT_ERROR"))
+            return
+        }
+        
         showLoader(true)
         let domainName = domains.count == 0 ? Env.plainDomain : domains[domainPicker.selectedRow(inComponent: 0)].replacingOccurrences(of: "@", with: "")
-        APIManager.createAlias(alias: aliasTextInput.text!, domain: domainName, token: myAccount.jwt){ (responseData) in
+        APIManager.createAlias(alias: aliasUsername, domain: domainName, token: myAccount.jwt){ (responseData) in
             if case .BadRequest = responseData {
                 self.showLoader(false, error: String.localize("ALIASES_ALREADY_EXISTS"))
                 return
