@@ -356,8 +356,21 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewCellDidTapLink(url: String) {
+        if (myAccount.customerType != Account.CustomerType.enterprise.id && url == "https://admin.criptext.com/?#/account/billing") {
+            joinPlus()
+            return
+        }
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
+    }
+    
+    func joinPlus() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.initialTitle = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("JOIN_PLUS")
+        webviewVC.accountJWT = self.myAccount.jwt
+        self.navigationController?.pushViewController(webviewVC, animated: true)
     }
     
     func tableViewCellDidChangeHeight(_ height: CGFloat, email: Email) {
@@ -516,6 +529,12 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             return
         }
         generalOptionsContainerView.showMoreOptions()
+    }
+}
+
+extension EmailDetailViewController: MembershipWebViewControllerDelegate {
+    func close() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
