@@ -456,6 +456,7 @@
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Crea una dirección secundaria para tu buzón. Puedes agregar hasta 3 aliases por dominio.";
 "ALIASES_ALREADY_EXISTS" = "Esta dirección ya está en uso";
+"ALIASES_FORMAT_ERROR" = "Ingrese un nombre de usuario válido";
 "ALIASES_UKNOWN_ERROR" = "Error desconocido. Por favor intenta de nuevo";
 "ALIASES_DELETE" = "Eliminar Alias";
 "ALIASES_DELETE_DESC" = "Si eliminas este alias tus correos permanecerán intactos, pero no podrás enviar ni recibir correos a esa dirección.\n\nEstás seguro que quieres eliminar %@?";
@@ -469,6 +470,7 @@
 "DELETE_DOMAIN_SUCCESS" = "Dominio eliminado! 🗑";
 "CUSTOM_DOMAIN_INFO_MESSAGE_1" = "Al agregar un dominio personal podrás crear Aliases Personales que te permitirán enviar correos usando tu dominio personal.";
 "CUSTOM_DOMAIN_ENTRY_ERROR" = "This domain is already in use";
+"CUSTOM_DOMAIN_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
 "STEP_2_INFO_TITLE" = "Campo TTL?";
 "STEP_2_INFO_MESSAGE" = "Si ves el campo TTL ingresa 3600 segundos (1 hora). Tu proveedor puede que no incluya el campo \"Nombre\", \"Host\" o \"Alias\".";
 "STEP_1_HEADER" = "PASO 1 DE 3";

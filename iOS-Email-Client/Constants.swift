@@ -268,4 +268,6 @@ struct Constants {
     static func isUpgrade(customerType: Int) -> Bool {
         return customerType == 0
     }
+    
+    static let adminUrl = "https://admin.criptext.com/?#/account/billing"
 }
