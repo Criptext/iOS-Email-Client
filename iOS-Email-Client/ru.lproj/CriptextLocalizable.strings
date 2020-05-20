@@ -469,6 +469,8 @@
 "DELETE_DOMAIN_ERROR" = "Error deleting custom domain.";
 "DELETE_DOMAIN_SUCCESS" = "Domain deleted successfully! 🗑";
 "CUSTOM_DOMAIN_INFO_MESSAGE_1" = "By adding a custom domain you will be able to add a custom alias allowing you to send and receive emails from your custom domain.";
+"CUSTOM_DOMAIN_EXAMPLE" = "example.com";
+"CUSTOM_DOMAIN_ENTRY_EMPTY" = "Please enter a valid domain name";
 "CUSTOM_DOMAIN_ENTRY_ERROR" = "This domain is already in use";
 "CUSTOM_DOMAIN_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
 "STEP_2_INFO_TITLE" = "TTL Field?";
@@ -492,7 +494,7 @@
 "ADD_DOMAIN_SUBTITLE" = "Enter the custom domain you wish to add";
 "ADD_DOMAIN_STEPS" = "Visit your DNS Manager";
 "ADD_DOMAIN_STEPS_ONE" = "1. Go to Go Daddy or whomever your domain provider is and access the DNS Manager where you can add MX and text records.";
-"ADD_DOMAIN_STEPS_ONE" = "2. Delete any existing MX records before proceeding.";
+"ADD_DOMAIN_STEPS_TWO" = "2. Delete any existing MX records before proceeding.";
 "ADD_RECORDS" = "Add Records for Criptext";
 "ADD_FOLLOWING_RECORDS" = "Add the following records in your DNS Manager. This will verify your domain ownership and configure Criptext email settings. Need help?";
 "VERIFY_DOMAIN" = "Verifying Domain\nOwnership";
