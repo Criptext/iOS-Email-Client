@@ -94,6 +94,12 @@ class Utils: SharedUtils {
         return predicate.evaluate(with: urlString)
     }
     
+    class func verifyDomain(domainString: String) -> Bool {
+        let regEx = "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", argumentArray:[regEx])
+        return predicate.evaluate(with: domainString)
+    }
+    
     class func isValidUsername(_ testStr:String) -> Bool {
         let emailRegEx = "(?=^([a-z0-9]([._-]{0,2}[a-z0-9])+)$)(?:^.{3,64}$)$"
         

@@ -9,6 +9,7 @@
 import Foundation
 
 class ComposerData {
+    var initAlias: Alias? = nil
     var attachmentArray = [File]()
     var contactArray = [Contact]()
     var initToContacts = [Contact]()
@@ -17,4 +18,5 @@ class ComposerData {
     var initContent = ""
     var emailDraft: Email?
     var threadId: String?
+    var blockFrom = false
 }

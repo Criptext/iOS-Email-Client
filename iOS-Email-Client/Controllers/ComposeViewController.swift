@@ -231,7 +231,7 @@ class ComposeViewController: UIViewController {
         self.coachMarksController.overlay.color = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.85)
         self.coachMarksController.dataSource = self
         
-        setFrom(account: activeAccount)
+        setFrom(account: activeAccount, alias: composerData.initAlias)
         applyTheme()
     }
     
@@ -245,7 +245,7 @@ class ComposeViewController: UIViewController {
         accountOptionsInterface.delegate = self
         accountOptionsView.setDelegate(newDelegate: accountOptionsInterface)
         
-        let hideMoreButton = accountAliases.count == 0 || (composerData.threadId != nil && composerData.threadId != composerData.emailDraft?.key.description)
+        let hideMoreButton = accountAliases.count == 0 || composerData.blockFrom
         setFromUI(hideMoreButton: hideMoreButton, accountEmail: account.email, aliasEmail: alias?.email)
     }
     

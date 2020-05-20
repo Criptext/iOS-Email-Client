@@ -439,7 +439,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         let email = getMail(index: indexPath.row)
         let contactsTo = Array(email.getContacts(type: .to))
         let contactsCc = Array(email.getContacts(type: .cc))
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: email.subject, content: self.emailData.bodies[email.key] ?? "")
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: email.subject, content: self.emailData.bodies[email.key] ?? "", blockFrom: true)
     }
     
     func handleContactsTap(_ cell: EmailTableViewCell, _ sender: UIView){
@@ -552,14 +552,44 @@ extension EmailDetailViewController: UIGestureRecognizerDelegate {
 
 extension EmailDetailViewController: EmailDetailFooterDelegate {
     
-    func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subject: String, content: String, attachments: [File]? = nil){
+    func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subject: String, content: String, blockFrom: Bool, attachments: [File]? = nil){
+        var fromAlias: Alias? = nil
+        if (email.isSent) {
+            let userDomain = email.fromContact.email.split(separator: "2")
+            let username = userDomain[0].description
+            let domain = userDomain[1].description == Env.plainDomain ? nil : userDomain[1].description
+            if email.fromContact.email != email.account.email,
+                let alias = DBManager.getAlias(username: username, domain: domain, account: email.account) {
+                fromAlias = alias
+            }
+        } else {
+            let myContact = email.getContacts(emails: [myAccount.email]).first
+            if myContact == nil {
+                let aliases = DBManager.getAliases(account: myAccount)
+                for alias in aliases {
+                    let hasAlias = email.getContacts(emails: [alias.email]).first != nil
+                    if hasAlias {
+                        fromAlias = alias
+                        break
+                    }
+                }
+            }
+        }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
         let snackVC = SnackbarController(rootViewController: navComposeVC)
         let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
         let composerData = ComposerData()
-        composerData.initToContacts.append(contentsOf: contactsTo)
-        composerData.initCcContacts.append(contentsOf: contactsCc)
+        if let myAlias = fromAlias {
+            composerData.initAlias = myAlias
+            composerData.initToContacts.append(contentsOf: contactsTo.filter { $0.email != myAlias.email })
+            composerData.initCcContacts.append(contentsOf: contactsCc.filter { $0.email != myAlias.email })
+        } else {
+            composerData.initToContacts.append(contentsOf: contactsTo)
+            composerData.initCcContacts.append(contentsOf: contactsCc)
+        }
+        composerData.blockFrom = blockFrom
         composerData.initSubject = subject
         composerData.initContent = content
         composerData.threadId = emailData.threadId
@@ -722,7 +752,7 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subject: subject, content: content)
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subject: subject, content: content, blockFrom: true)
     }
     
     func onReplyAllPress() {
@@ -747,7 +777,7 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
-        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: subject, content: content)
+        presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: subject, content: content, blockFrom: true)
     }
     
     func onForwardPress() {
@@ -764,7 +794,7 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "fw:") || email.subject.lowercased().starts(with: "fwd:") ? "" : "Fw: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress.replacingOccurrences(of: "<", with: "&#60;").replacingOccurrences(of: ">", with: "&#62;") : "<b>\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\"><span>---------- \(String.localize("FORWARD_MAIL")) ---------</span><br><span>\(String.localize("FROM")): \(contact)</span><br><span>\(String.localize("DATE")): \(email.completeDate)</span><br><span>\(String.localize("SUBJECT")): \(email.subject)</span><br>\(String.localize("TO")): \(toContacts.map({$0.displayName + " &#60;" + $0.email + "&#62;"}).joined(separator: ", "))<br><br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
-        presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content, attachments: email.getFiles())
+        presentComposer(email: email, contactsTo: [], contactsCc: [], subject: subject, content: content, blockFrom: false, attachments: email.getFiles())
     }
     
     func onDeletePress() {
