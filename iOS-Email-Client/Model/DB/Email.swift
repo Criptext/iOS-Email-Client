@@ -119,6 +119,19 @@ class Email: Object {
         }
         return contacts
     }
+    
+    func getContacts(emails: [String]) -> List<Contact> {
+        let contacts = List<Contact>()
+        let predicate = NSPredicate(format: "contact.email IN %@", emails)
+        let emailContacts = self.emailContacts.filter(predicate)
+        emailContacts.forEach { (emailContact) in
+            guard let contact = emailContact.contact else {
+                return
+            }
+            contacts.append(contact)
+        }
+        return contacts
+    }
         
     func getFormattedDate() -> String {
         return DateUtils.conversationTime(date).replacingOccurrences(of: "Yesterday", with: String.localize("YESTERDAY")).replacingOccurrences(of: "at", with: String.localize("AT"))

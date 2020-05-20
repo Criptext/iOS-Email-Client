@@ -469,6 +469,8 @@
 "DELETE_DOMAIN_ERROR" = "Error al intentar borrar el dominio.";
 "DELETE_DOMAIN_SUCCESS" = "Dominio eliminado! 🗑";
 "CUSTOM_DOMAIN_INFO_MESSAGE_1" = "Al agregar un dominio personal podrás crear Aliases Personales que te permitirán enviar correos usando tu dominio personal.";
+"CUSTOM_DOMAIN_EXAMPLE" = "ejemplo.com";
+"CUSTOM_DOMAIN_ENTRY_EMPTY" = "Por favor ingresa un dominio válido";
 "CUSTOM_DOMAIN_ENTRY_ERROR" = "This domain is already in use";
 "CUSTOM_DOMAIN_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
 "STEP_2_INFO_TITLE" = "Campo TTL?";
@@ -492,7 +494,7 @@
 "ADD_DOMAIN_SUBTITLE" = "Ingresa el dominio personal que quisieras agregar";
 "ADD_DOMAIN_STEPS" = "Visita tu Administrador de DNS";
 "ADD_DOMAIN_STEPS_ONE" = "1. Ve a GoDaddy o quien sea tu proveedor de dominios y accede al Administrador de DNS donde puedas agregar MX Records y Text records.";
-"ADD_DOMAIN_STEPS_ONE" = "2. Elimina los existentes MX records antes de proceder.";
+"ADD_DOMAIN_STEPS_TWO" = "2. Elimina los existentes MX records antes de proceder.";
 "ADD_RECORDS" = "Agrega Records para Criptext";
 "ADD_FOLLOWING_RECORDS" = "Agrega los siguientes records en tu Administrador de DNS. Esto validará que el dominio te pertenece y configurará ajustes de correo Criptext";
 "VERIFY_DOMAIN" = "Validando Dominio";

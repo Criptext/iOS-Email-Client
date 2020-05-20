@@ -57,6 +57,7 @@ class CustomDomainEntryViewController: UIViewController {
         titleLabel.textColor = theme.mainText
         subtitleLabel.textColor = theme.secondText
 
+        customDomainTextInput.attributedPlaceholder = NSAttributedString(string: String.localize("CUSTOM_DOMAIN_EXAMPLE"), attributes: [.foregroundColor: theme.secondText])
     }
     
     @objc func goBack(){
@@ -77,8 +78,11 @@ class CustomDomainEntryViewController: UIViewController {
     @IBAction func onNextPress(_ sender: Any) {
         showLoader(true)
         clearInput()
-        guard let domainName = customDomainTextInput.text else {
+        guard let domainName = customDomainTextInput.text,
+            !domainName.isEmpty,
+            Utils.verifyDomain(domainString: domainName) else {
             showLoader(false)
+            self.setError(message: String.localize("CUSTOM_DOMAIN_ENTRY_EMPTY"))
             return
         }
         APIManager.checkCustomDomainAvailability(customDomainName: domainName, token: myAccount.jwt) { (responseData) in

@@ -470,6 +470,8 @@
 "DELETE_DOMAIN_ERROR" = "Error deleting custom domain.";
 "DELETE_DOMAIN_SUCCESS" = "Domain deleted successfully! 🗑";
 "CUSTOM_DOMAIN_INFO_MESSAGE_1" = "By adding a custom domain you will be able to add a custom alias allowing you to send and receive emails from your custom domain.";
+"CUSTOM_DOMAIN_EXAMPLE" = "example.com";
+"CUSTOM_DOMAIN_ENTRY_EMPTY" = "Please enter a valid domain name";
 "CUSTOM_DOMAIN_ENTRY_ERROR" = "This domain is already in use";
 "CUSTOM_DOMAIN_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
 "STEP_2_INFO_TITLE" = "TTL Field?";
@@ -478,7 +480,6 @@
 "STEP_2_HEADER" = "STEP 2 OF 3";
 "STEP_3_HEADER" = "STEP 3 OF 3";
 "DOMAIN_ALREADY_REGISTERED" = "This domain is already registered.";
-"DOMAIN_LIMIT_REACHED" = "Custom domain limit reached.";
 "DOMAIN_LIMIT_REACHED" = "Custom domain limit reached.";
 "MX_DONT_MATCH_TITLE" = "MX Records Don\’t Match";
 "MX_DONT_MATCH_MESSAGE" = "Go back and verify that you've added the right information into your DNS records.";
