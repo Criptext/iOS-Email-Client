@@ -78,7 +78,7 @@ class CustomDomainEntryViewController: UIViewController {
     @IBAction func onNextPress(_ sender: Any) {
         showLoader(true)
         clearInput()
-        guard let domainName = customDomainTextInput.text,
+        guard let domainName = customDomainTextInput.text?.lowercased(),
             !domainName.isEmpty,
             Utils.verifyDomain(domainString: domainName) else {
             showLoader(false)
