@@ -23,7 +23,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="buf-yw-B9j" customClass="UIImageView">
-                        <rect key="frame" x="-0.5" y="1" width="48" height="48"/>
+                        <rect key="frame" x="0.5" y="1" width="48" height="48"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="48" id="0Gb-x0-tzC"/>
@@ -31,7 +31,7 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tuf-7I-Gfl">
-                        <rect key="frame" x="3" y="4.5" width="41" height="41"/>
+                        <rect key="frame" x="4" y="4.5" width="41" height="41"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="OmW-Fe-erN"/>
                             <constraint firstAttribute="width" constant="41" id="RIk-JC-fkc"/>
@@ -58,10 +58,10 @@
             <constraints>
                 <constraint firstItem="buf-yw-B9j" firstAttribute="centerX" secondItem="Tuf-7I-Gfl" secondAttribute="centerX" id="F6B-rz-UJc"/>
                 <constraint firstItem="buf-yw-B9j" firstAttribute="centerY" secondItem="Tuf-7I-Gfl" secondAttribute="centerY" id="apx-Vc-w7b"/>
-                <constraint firstItem="Tuf-7I-Gfl" firstAttribute="centerX" secondItem="5Hd-Dq-S5B" secondAttribute="centerX" constant="-5" id="jAj-bi-KVV"/>
+                <constraint firstItem="Tuf-7I-Gfl" firstAttribute="centerX" secondItem="5Hd-Dq-S5B" secondAttribute="centerX" constant="-4" id="jAj-bi-KVV"/>
                 <constraint firstItem="X3q-SW-StO" firstAttribute="top" secondItem="Tuf-7I-Gfl" secondAttribute="top" id="mWe-ao-1Pe"/>
                 <constraint firstItem="Tuf-7I-Gfl" firstAttribute="centerY" secondItem="5Hd-Dq-S5B" secondAttribute="centerY" id="y6M-Ux-eiZ"/>
-                <constraint firstItem="X3q-SW-StO" firstAttribute="trailing" secondItem="Tuf-7I-Gfl" secondAttribute="trailing" constant="13" id="ziU-yN-f0L"/>
+                <constraint firstItem="X3q-SW-StO" firstAttribute="trailing" secondItem="Tuf-7I-Gfl" secondAttribute="trailing" constant="12" id="ziU-yN-f0L"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="5Hd-Dq-S5B"/>
             <size key="customSize" width="95" height="91"/>
