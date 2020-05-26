@@ -452,6 +452,7 @@
 "REPORT_BUG" = "Report a Bug";
 "REPORT_ABUSE" = "Report Abuse";
 "REPORT_PHISHING" = "Mark as Phishing";
+"ADDRESSES" = "ADDRESSES";
 "CUSTOM_DOMAIN" = "Custom Domain";
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Create a secondary address for your existing inbox. You can add up to 3 aliases per domain.";
@@ -470,6 +471,7 @@
 "DELETE_DOMAIN_SUCCESS" = "Domain deleted successfully! 🗑";
 "CUSTOM_DOMAIN_INFO_MESSAGE_1" = "By adding a custom domain you will be able to add a custom alias allowing you to send and receive emails from your custom domain.";
 "CUSTOM_DOMAIN_EXAMPLE" = "example.com";
+"CUSTOM_DOMAIN_ENTRY_OWNED" = "You don't own this domain";
 "CUSTOM_DOMAIN_ENTRY_EMPTY" = "Please enter a valid domain name";
 "CUSTOM_DOMAIN_ENTRY_ERROR" = "This domain is already in use";
 "CUSTOM_DOMAIN_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
@@ -512,3 +514,13 @@
 "MAYBE_LATER" = "Not Now";
 
 "JOIN_PLUS" = "Join Plus";
+
+"PERKS_PLUS" = "Plus Perks";
+"PERK_PLUS_ONE" = "Exclusive Profile Frame";
+"PERK_PLUS_TWO" = "Plus Badge";
+"PERK_PLUS_THREE" = "Early access to new features";
+"PERK_PLUS_FOUR" = "CEO's monthly update";
+"PERK_PLUS_FIVE" = "Priority Support";
+
+"PLUS_SETTINGS_TITLE" = "Looking for your\nBilling Settings?";
+"PLUS_SETTINGS_MESSAGE" = "Open Criptext App on desktop to manage your Billing Settings";

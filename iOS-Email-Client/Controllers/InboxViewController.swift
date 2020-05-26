@@ -1335,10 +1335,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     
     func joinPlus() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
-        webviewVC.delegate = self
-        webviewVC.initialTitle = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("JOIN_PLUS")
-        webviewVC.accountJWT = self.myAccount.jwt
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "plusviewcontroller") as! PlusViewController
         self.navigationController?.pushViewController(webviewVC, animated: true)
         self.navigationDrawerController?.closeLeftView()
     }
@@ -1452,12 +1449,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 completion?()
             }
         }
-    }
-}
-
-extension InboxViewController: MembershipWebViewControllerDelegate {
-    func close() {
-        self.navigationController?.popViewController(animated: true)
     }
 }
 

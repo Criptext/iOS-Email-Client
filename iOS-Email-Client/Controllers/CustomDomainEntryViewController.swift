@@ -76,15 +76,18 @@ class CustomDomainEntryViewController: UIViewController {
     }
     
     @IBAction func onNextPress(_ sender: Any) {
-        showLoader(true)
         clearInput()
         guard let domainName = customDomainTextInput.text?.lowercased(),
             !domainName.isEmpty,
             Utils.verifyDomain(domainString: domainName) else {
-            showLoader(false)
             self.setError(message: String.localize("CUSTOM_DOMAIN_ENTRY_EMPTY"))
             return
         }
+        guard Utils.defaultDomains[domainName] == nil else {
+            self.setError(message: String.localize("CUSTOM_DOMAIN_ENTRY_OWNED"))
+            return
+        }
+        showLoader(true)
         APIManager.checkCustomDomainAvailability(customDomainName: domainName, token: myAccount.jwt) { (responseData) in
             if case .BadRequest = responseData {
                 self.showLoader(false)
@@ -176,9 +179,7 @@ class CustomDomainEntryViewController: UIViewController {
     
     func goToUpgradePlus() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
-        webviewVC.delegate = self
-        webviewVC.accountJWT = self.myAccount.jwt
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "plusviewcontroller") as! PlusViewController
         self.navigationController?.pushViewController(webviewVC, animated: true)
     }
 }
