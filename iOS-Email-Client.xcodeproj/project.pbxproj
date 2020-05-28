@@ -240,6 +240,9 @@
 		7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */; };
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
+		7CE1F9FE2478788300D14352 /* PlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FD2478788300D14352 /* PlusViewController.swift */; };
+		7CE1FA0024787BEC00D14352 /* UpgradePlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */; };
+		7CE1FA02247882B300D14352 /* AlreadyPlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */; };
 		7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */; };
 		7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */; };
 		7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */; };
@@ -896,6 +899,9 @@
 		7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
+		7CE1F9FD2478788300D14352 /* PlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusViewController.swift; sourceTree = "<group>"; };
+		7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradePlusUIView.swift; sourceTree = "<group>"; };
+		7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlreadyPlusUIView.swift; sourceTree = "<group>"; };
 		7CE548E820CB400F0046D12F /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckMarkUIView.swift; sourceTree = "<group>"; };
 		7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemUIView.xib; sourceTree = "<group>"; };
@@ -1323,6 +1329,7 @@
 				348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */,
 				7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */,
 				7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */,
+				7CE1F9FD2478788300D14352 /* PlusViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1599,6 +1606,8 @@
 				7C6CA86A244F4FD100181703 /* GetPlusUIPopover.xib */,
 				7C7869CB246EDFD40085D909 /* AvatarUIView.xib */,
 				7C7869CD246EE0DC0085D909 /* AvatarUI.swift */,
+				7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */,
+				7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2278,6 +2287,7 @@
 				348F1ED52411B8150095BCBB /* CustomDomain.swift in Sources */,
 				A758E2E9221F0002007ECC21 /* GetBadgeCountersAsyncTask.swift in Sources */,
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
+				7CE1FA02247882B300D14352 /* AlreadyPlusUIView.swift in Sources */,
 				7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */,
 				A721B346225D2D5F004528B4 /* RestoreViewController.swift in Sources */,
 				A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */,
@@ -2294,6 +2304,7 @@
 				7CBD20C52025141F00D70B87 /* GradientUIView.swift in Sources */,
 				A76D303A225671DC004F8747 /* BackupHeaderView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
+				7CE1FA0024787BEC00D14352 /* UpgradePlusUIView.swift in Sources */,
 				7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */,
 				7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */,
 				A7B17A8A2257C93600927102 /* BackupManager.swift in Sources */,
@@ -2309,6 +2320,7 @@
 				A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */,
 				A742720522550A1F006D10C9 /* BackupViewController.swift in Sources */,
 				A723254521CBE257003CF78D /* ThemeManager.swift in Sources */,
+				7CE1F9FE2478788300D14352 /* PlusViewController.swift in Sources */,
 				A7115EA12316F84600EBECE7 /* AccountOptionsInterface.swift in Sources */,
 				7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */,
 				7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */,
@@ -3112,7 +3124,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3154,7 +3166,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3301,7 +3313,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3366,7 +3378,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3397,7 +3409,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3427,7 +3439,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3460,7 +3472,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3494,7 +3506,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3527,7 +3539,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (

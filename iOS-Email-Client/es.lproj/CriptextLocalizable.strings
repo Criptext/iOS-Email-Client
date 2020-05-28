@@ -452,6 +452,7 @@
 "REPORT_BUG" = "Reportar Error";
 "REPORT_ABUSE" = "Reportar Abuso";
 "REPORT_PHISHING" = "Reportar como Phishing";
+"ADDRESSES" = "DIRECCIONES";
 "CUSTOM_DOMAIN" = "Dominios Personalizados";
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Crea una dirección secundaria para tu buzón. Puedes agregar hasta 3 aliases por dominio.";
@@ -470,6 +471,7 @@
 "DELETE_DOMAIN_SUCCESS" = "Dominio eliminado! 🗑";
 "CUSTOM_DOMAIN_INFO_MESSAGE_1" = "Al agregar un dominio personal podrás crear Aliases Personales que te permitirán enviar correos usando tu dominio personal.";
 "CUSTOM_DOMAIN_EXAMPLE" = "ejemplo.com";
+"CUSTOM_DOMAIN_ENTRY_OWNED" = "You don't own this domain";
 "CUSTOM_DOMAIN_ENTRY_EMPTY" = "Por favor ingresa un dominio válido";
 "CUSTOM_DOMAIN_ENTRY_ERROR" = "This domain is already in use";
 "CUSTOM_DOMAIN_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
@@ -501,7 +503,7 @@
 "VERIFY_DOMAIN_ERROR" = "Ingresaste %@ como tu dominio. Verifica que esto este correcto.\n\nTambién verifica que los DNS Records de tu dominio no estén vacíos.";
 "VERIFY_DOMAIN_MESSAGE" = "No cierres el app hasta que este proceso termine.";
 
-"BILLING" = "Factuarción";
+"BILLING" = "Facturación";
 "CONNECTION_LOST" = "Parece que has perdido tu connección a internet";
 
 "CUSTOM_DOMAINS_PLUS_TITLE" = "Disfruta Dominios Personalizados";
@@ -512,3 +514,13 @@
 "MAYBE_LATER" = "No Ahora";
 
 "JOIN_PLUS" = "Únete a Plus";
+
+"PERKS_PLUS" = "Beneficios de Plus";
+"PERK_PLUS_ONE" = "Marco Exclusivo para tu Perfil";
+"PERK_PLUS_TWO" = "Insignia Plus";
+"PERK_PLUS_THREE" = "Acceso con anticipación de nuevas características";
+"PERK_PLUS_FOUR" = "Actualizaciones mensuales del CEO";
+"PERK_PLUS_FIVE" = "Prioridad en Soporte";
+
+"PLUS_SETTINGS_TITLE" = "Estas buscando los\nDatos de Facturación?";
+"PLUS_SETTINGS_MESSAGE" = "Abre el App de Criptext en tu PC para administar tus datos de Facturación";

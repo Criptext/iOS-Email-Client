@@ -92,9 +92,7 @@ class AliasViewController: UIViewController {
     
     func goToUpgradePlus() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
-        webviewVC.delegate = self
-        webviewVC.accountJWT = self.myAccount.jwt
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "plusviewcontroller") as! PlusViewController
         self.navigationController?.pushViewController(webviewVC, animated: true)
     }
 }

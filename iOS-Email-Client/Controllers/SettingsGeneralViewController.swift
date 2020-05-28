@@ -26,7 +26,7 @@ class SettingsGeneralViewController: UIViewController{
             case .account:
                 return String.localize("ACCOUNT")
             case .addresses:
-                return String.localize("ADRESSES")
+                return String.localize("ADDRESSES")
             case .general:
                 return String.localize("GENERAL")
             case .support:
@@ -459,10 +459,7 @@ class SettingsGeneralViewController: UIViewController{
     
     func goToUpgradePlus() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
-        webviewVC.delegate = self
-        webviewVC.initialTitle = Constants.isPlus(customerType: myAccount.customerType) ? String.localize("BILLING") : String.localize("JOIN_PLUS")
-        webviewVC.accountJWT = self.myAccount.jwt
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "plusviewcontroller") as! PlusViewController
         self.navigationController?.pushViewController(webviewVC, animated: true)
     }
     
