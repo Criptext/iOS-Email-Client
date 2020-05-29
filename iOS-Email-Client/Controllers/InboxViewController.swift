@@ -17,6 +17,7 @@ import AudioToolbox
 import RealmSwift
 import Instructions
 import FirebaseAnalytics
+import FirebaseCrashlytics
 
 class InboxViewController: UIViewController {
     let BOTTOM_PADDING : CGFloat = 18.0

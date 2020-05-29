@@ -21,3 +21,8 @@ github "airbnb/lottie-ios" "master"
 github "1024jp/GzipSwift"
 github "tilltue/TLPhotoPicker"
 github "Hirobreak/SwiftPasscodeLock" == 2.2.8
+
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json"
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseMessagingBinary.json"
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseProtobufBinary.json"
