@@ -249,6 +249,25 @@ class SecurityPrivacyViewController: UITableViewController {
     }
     
     func setBlockContent(enable: Bool){
+        if enable {
+            requestBlockRemoteContent(enable: enable)
+            return
+        }
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("TURN_OFF_REMOTE_TITLE")
+        popover.initialMessage = String.localize("TURN_OFF_REMOTE_MESSAGE")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("SAVE")
+        popover.onResponse = { accept in
+            guard accept else {
+                return
+            }
+            self.requestBlockRemoteContent(enable: enable)
+        }
+        self.presentPopover(popover: popover, height: 274)
+    }
+    
+    func requestBlockRemoteContent(enable: Bool) {
         let initialValue = myAccount.blockRemoteContent
         
         self.generalData.loadingBlockContent = true

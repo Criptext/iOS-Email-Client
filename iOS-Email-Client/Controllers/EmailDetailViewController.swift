@@ -779,6 +779,7 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
         let eventData = EventData.Peer.ContactTrust(email: email.fromContact.email, trusted: true)
         let eventParams = ["cmd": Event.Peer.contactTrust.rawValue, "params": eventData.asDictionary()] as [String : Any]
         APIManager.postPeerEvent(["peerEvents": [eventParams]], token: myAccount.jwt) { (responseData) in
+            self.showSnackbar(String.localize("BLOCK_CONTENT_CONTACT_TRUSTED", arguments: email.fromContact.displayName), attributedText: nil, buttons: "", permanent: false)
             if case .Success = responseData {
                 return
             }
@@ -787,18 +788,29 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
     }
     
     func onDisablePress() {
-        APIManager.setBlockContent(isOn: false, token: myAccount.jwt) { (responseData) in
-            self.toggleGeneralOptionsView()
-            guard case .Success = responseData else {
-                self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_FAILED"), attributedText: nil, buttons: "", permanent: false)
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("TURN_OFF_REMOTE_TITLE")
+        popover.initialMessage = String.localize("TURN_OFF_REMOTE_MESSAGE")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("SAVE")
+        popover.onResponse = { accept in
+            guard accept else {
                 return
             }
-            self.disableBlockContent()
+            APIManager.setBlockContent(isOn: false, token: self.myAccount.jwt) { (responseData) in
+                self.toggleGeneralOptionsView()
+                guard case .Success = responseData else {
+                    self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                    return
+                }
+                self.disableBlockContent()
+            }
         }
-        
+        self.presentPopover(popover: popover, height: 274)
     }
     
     func disableBlockContent() {
+        self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_SUCCESS"), attributedText: nil, buttons: "", permanent: false)
         DBManager.update(account: myAccount, blockContent: false)
         DBManager.refresh()
         

@@ -540,3 +540,8 @@
 "BLOCK_REMOTE_CONTENT" = "Bloquear contenido externo";
 "BLOCK_CONTENT_DESC" = "Bloquea imagenes de emisores no confiables";
 "BLOCK_CONTENT_UPDATE_FAILED" = "No fue posible actualizar sus preferencias de bloqueo";
+"BLOCK_CONTENT_UPDATE_SUCCESS" = "Bloqueo de imagenes desactivado";
+"BLOCK_CONTENT_CONTACT_TRUSTED" = "%@ marcado como confiable";
+
+"TURN_OFF_REMOTE_TITLE" = "Desactivar Bloqueo";
+"TURN_OFF_REMOTE_MESSAGE" = "Tu seguridad se vera afectada al desactivar esta funcionalidad.\nPuedes reactivarla yendo a Configuración > Privacidad";

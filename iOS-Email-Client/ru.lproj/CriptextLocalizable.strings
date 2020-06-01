@@ -540,3 +540,8 @@
 "BLOCK_REMOTE_CONTENT" = "Block Remote Content";
 "BLOCK_CONTENT_DESC" = "Block Images from unauthorized senders";
 "BLOCK_CONTENT_UPDATE_FAILED" = "Unable to update remote content preference";
+"BLOCK_CONTENT_UPDATE_SUCCESS" = "Image Blocking turned off";
+"BLOCK_CONTENT_CONTACT_TRUSTED" = "%@ marked as trusted";
+
+"TURN_OFF_REMOTE_TITLE" = "Turn Off Image Block";
+"TURN_OFF_REMOTE_MESSAGE" = "Your security is affected by deactivating this function.\nYou can reactivate this function in Settings > Privacy";
