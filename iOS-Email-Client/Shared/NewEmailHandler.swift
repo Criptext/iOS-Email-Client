@@ -9,7 +9,7 @@
 import Foundation
 import SwiftSoup
 import FirebaseAnalytics
-import Crashlytics
+import FirebaseCrashlytics
 
 class NewEmailHandler {
     
@@ -228,12 +228,14 @@ class NewEmailHandler {
             trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
         }
         if let error = err {
+            let codeName = isExternal ? "CONTENT_UNENCRYPTED_BOB" : "CONTENT_UNENCRYPTED"
             let payload = [
                 "name": error.name.rawValue,
                 "reason": error.reason ?? "Unknown Signal Error",
-                "isExternal": isExternal.description
+                "isExternal": isExternal.description,
+                "codeName": codeName
                 ] as [String : Any]
-            Crashlytics.sharedInstance().recordError(CriptextError(message: "\(isExternal ? "CONTENT_UNENCRYPTED_BOB" : "CONTENT_UNENCRYPTED") : \(error.name.rawValue)"), withAdditionalUserInfo: payload)
+            Crashlytics.crashlytics().record(error: NSError.init(domain: codeName, code: -1000, userInfo: payload))
             if (error.name.rawValue == "AxolotlDuplicateMessage") {
                 return .Duplicated
             } else if (error.name.rawValue == "AxolotlNoSessionException") {
