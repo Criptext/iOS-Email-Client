@@ -366,6 +366,7 @@
 "BACKUP_AUTO_MESSAGE" = "Примечание. Чтобы избежать чрезмерной платы за передачу данных, подключите телефон к Wi-Fi или отключите сотовые данные для iCloud: «Настройки iPhone» > iCloud» > iCloudDrive» > Использовать сотовые данные» > Выкл.»).";
 "BACKUP_PROGRESS" = "Загрузка резервной копии ... ( %i %% )";
 "BACKUP_SUCCESS" = "Почтовый ящик успешно создан!";
+"BACKUP_ERROR" = "Unable to complete backup. Try again";
 "BACKUP_SEARCH" = "Мы ищем в вашем iCloud (если iCloud Drive включен) файл резервной копии.";
 "TAKE_WHILE" = "Это может занять некоторое время";
 "BACKUP_LOOKING" = "Ищете вашу резервную копию ...";
