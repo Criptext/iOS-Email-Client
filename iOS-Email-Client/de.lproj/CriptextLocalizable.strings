@@ -366,6 +366,7 @@
 "BACKUP_AUTO_MESSAGE" = "Hinweis: Automatische Sicherung funktioniert nur mit Cloud Sicherung. Um die Verwendung Ihrer Mobilfunkdaten zu vermeiden, vergewissern Sie sich, dass Sie mit dem WLAN verbunden sind oder dass das iCloud Drive für Mobilfunkdaten unter Konfiguration > Mobilfunkdaten > iCloud Drive deaktiviert ist";
 "BACKUP_PROGRESS" = "Sicherung wird hochgeladen … (%i %%)";
 "BACKUP_SUCCESS" = "Postfach erfolgreich wiederhergestellt!";
+"BACKUP_ERROR" = "Unable to complete backup. Try again";
 "BACKUP_SEARCH" = "Wir suchen in Ihrer iCloud (sofern iCloud Drive aktiviert ist) nach einer Sicherungsdatei.";
 "TAKE_WHILE" = "Das kann eine Weile dauern";
 "BACKUP_LOOKING" = "Auf der Suche nach Ihrer Sicherung …";

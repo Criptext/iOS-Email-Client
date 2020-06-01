@@ -366,6 +366,7 @@
 "BACKUP_AUTO_MESSAGE" = "Remarque: pour éviter des frais de données excessifs, connectez votre téléphone au Wi-Fi ou désactivez les données cellulaires pour iCloud: Paramètres iPhone > iCloud > iCloudDrive > Utiliser les données cellulaires > Désactivé.";
 "BACKUP_PROGRESS" = "Chargement de la sauvegarde ... ( %i %% )";
 "BACKUP_SUCCESS" = "Boîte aux lettres sauvegardée avec succès!";
+"BACKUP_ERROR" = "Unable to complete backup. Try again";
 "BACKUP_SEARCH" = "Nous recherchons dans votre iCloud (si iCloud Drive est activé) un fichier de sauvegarde.";
 "TAKE_WHILE" = "Cela peut prendre un peu de temps";
 "BACKUP_LOOKING" = "Vous cherchez votre sauvegarde ...";

@@ -366,6 +366,7 @@
 "BACKUP_AUTO_MESSAGE" = "Nota: Para evitar el uso excesivo de datos móviles, asegúrate de estar conectado a internet o deshabilitar iCloud Drive: Configuración> iCloud> iCloud Drive> Deshabilitado";
 "BACKUP_PROGRESS" = "Subiendo Respaldo... (%i %%)";
 "BACKUP_SUCCESS" = "Buzon respaldado exitosamente!";
+"BACKUP_ERROR" = "No se completó el respaldo. Intenta otra vez";
 "BACKUP_SEARCH" = "Estamos buscando en tu iCloud (De estar habilitado) un archivo de respaldo existente.";
 "TAKE_WHILE" = "Esto podria demorar un poco";
 "BACKUP_LOOKING" = "Buscando respaldo...";

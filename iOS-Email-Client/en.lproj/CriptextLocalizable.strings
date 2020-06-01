@@ -366,6 +366,7 @@
 "BACKUP_AUTO_MESSAGE" = "Note: To avoid excessive data charges, connect your phone to Wi-Fi or disable cellular data for iCloud: iPhone Settings> iCloud> iCloudDrive> Use Cellular Data> Off ";
 "BACKUP_PROGRESS" = "Uploading Backup... (%i %%)";
 "BACKUP_SUCCESS" = "Mailbox Backed Successfully!";
+"BACKUP_ERROR" = "Unable to complete backup. Try again";
 "BACKUP_SEARCH" = "We are searching in your iCloud (if iCloud Drive is enable) for a backup file.";
 "TAKE_WHILE" = "This may take a while";
 "BACKUP_LOOKING" = "Looking for your backup...";

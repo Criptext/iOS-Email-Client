@@ -124,29 +124,9 @@ class BackupViewController: UIViewController {
             createDBTask.start(progressHandler: { [weak self] progress in
                 self?.progressUpdate(accountId: (self?.myAccount.compoundKey)!, progress: progress, isLocal: true)
             }) { (error, url) in
-                guard let dbUrl = url,
-                    let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.shareZip.name, compress: true) else {
-                        return
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.handleExportFile(url: url, password: password)
                 }
-                var filePath = compressedPath
-                if let pass = password,
-                    let encryptPath = AESCipher.streamEncrypt(path: compressedPath, outputName: StaticFile.shareRSA.name, bundle: AESCipher.KeyBundle(password: pass, salt: AESCipher.generateRandomBytes(length: 8)), ivData: AESCipher.generateRandomBytes(length: 16), operation: kCCEncrypt) {
-                    filePath = encryptPath
-                }
-                self.uploading = false
-                self.alert?.dismiss(animated: true, completion: nil)
-                self.alert = nil
-                let activityVC = UIActivityViewController(activityItems: [URL(fileURLWithPath: filePath)], applicationActivities: nil)
-                activityVC.completionWithItemsHandler = { (activity, success, items, error) in
-                    guard success else {
-                        return
-                    }
-                    self.showSnackbarMessage(message: String.localize("BACKUP_SUCCESS"), permanent: false)
-                }
-                activityVC.modalPresentationStyle = .popover
-                activityVC.popoverPresentationController?.sourceView = self.view
-                activityVC.popoverPresentationController?.sourceRect = CGRect.zero
-                self.present(activityVC, animated: true, completion: nil)
             }
         } else {
             tableView.reloadData()
@@ -154,6 +134,34 @@ class BackupViewController: UIViewController {
             handleProgress()
             toggleOptions()
         }
+    }
+    
+    func handleExportFile(url: URL?, password: String? = nil) {
+        self.uploading = false
+        self.alert?.dismiss(animated: false, completion: nil)
+        self.alert = nil
+        
+        guard let dbUrl = url,
+            let compressedPath = try? AESCipher.compressFile(path: dbUrl.path, outputName: StaticFile.shareZip.name, compress: true) else {
+                self.showSnackbarMessage(message: String.localize("BACKUP_ERROR"), permanent: false)
+                return
+        }
+        var filePath = compressedPath
+        if let pass = password,
+            let encryptPath = AESCipher.streamEncrypt(path: compressedPath, outputName: StaticFile.shareRSA.name, bundle: AESCipher.KeyBundle(password: pass, salt: AESCipher.generateRandomBytes(length: 8)), ivData: AESCipher.generateRandomBytes(length: 16), operation: kCCEncrypt) {
+            filePath = encryptPath
+        }
+        let activityVC = UIActivityViewController(activityItems: [URL(fileURLWithPath: filePath)], applicationActivities: nil)
+        activityVC.completionWithItemsHandler = { (activity, success, items, error) in
+            guard success else {
+                return
+            }
+            self.showSnackbarMessage(message: String.localize("BACKUP_SUCCESS"), permanent: false)
+        }
+        activityVC.modalPresentationStyle = .popover
+        activityVC.popoverPresentationController?.sourceView = self.view
+        activityVC.popoverPresentationController?.sourceRect = CGRect.zero
+        self.present(activityVC, animated: true, completion: nil)
     }
     
     func encryptAndSaveFile(password: String? = nil) {
@@ -470,7 +478,7 @@ extension BackupViewController: BackupDelegate {
                 self.alert?.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = theme.background
                 self.alert?.view.tintColor = theme.mainText
                 self.alert?.view.addSubview(loadingIndicator)
-                present(alert!, animated: true, completion: nil)
+                present(alert!, animated: false, completion: nil)
             } else {
                 self.alert?.setValue(NSAttributedString(string: String.localize("GENERATING_PROGRESS", arguments: progress), attributes: [NSAttributedString.Key.foregroundColor : theme.mainText]), forKey: "attributedMessage")
             }
