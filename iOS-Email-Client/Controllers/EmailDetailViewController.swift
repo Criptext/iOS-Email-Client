@@ -13,7 +13,7 @@ import Instructions
 import RealmSwift
 
 class EmailDetailViewController: UIViewController {
-    let ESTIMATED_ROW_HEIGHT : CGFloat = 75
+    let ESTIMATED_ROW_HEIGHT : CGFloat = 77
     let ESTIMATED_SECTION_HEADER_HEIGHT : CGFloat = 50
     let CONTACTS_BASE_HEIGHT = 56
     let CONTACTS_MAX_HEIGHT: CGFloat = 300.0
@@ -854,6 +854,7 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
+        sendTrustedOnReply(email: email)
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subject: subject, content: content, blockFrom: true)
     }
     
@@ -879,7 +880,17 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
+        sendTrustedOnReply(email: email)
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: subject, content: content, blockFrom: true)
+    }
+    
+    func sendTrustedOnReply(email: Email) {
+        if (!email.isSent && !email.fromContact.isTrusted) {
+            let eventData = EventData.Peer.ContactTrust(email: email.fromContact.email, trusted: true)
+            let eventParams = ["cmd": Event.Peer.contactTrust.rawValue, "params": eventData.asDictionary()] as [String : Any]
+            DBManager.update(contact: email.fromContact, isTrusted: true)
+            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
+        }
     }
     
     func onForwardPress() {

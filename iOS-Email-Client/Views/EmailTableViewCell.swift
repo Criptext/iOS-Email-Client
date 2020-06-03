@@ -418,6 +418,9 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     func shouldBlockContent(email: Email, emailState: Email.State) -> Bool {
+        if (email.fromContact.email == email.account.email) {
+            return false
+        }
         if (email.isSpam) {
             return !emailState.trustedOnce
         }
