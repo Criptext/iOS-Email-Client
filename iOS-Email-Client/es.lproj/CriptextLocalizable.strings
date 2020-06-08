@@ -533,6 +533,8 @@
 "GET_PLUS" = "Obtener Plus";
 "MAYBE_LATER" = "No, Gracias";
 
+"CONTENT_BLOCK_SHOW_IMAGES" = "Mostrar Imagenes";
+"CONTENT_BLOCK_SHOW_ALWAYS" = "Mostrar Siempre";
 "CONTENT_BLOCK_ONCE" = "Una vez";
 "CONTENT_BLOCK_ALWAYS" = "Siempre para este contacto";
 "CONTENT_BLOCK_TURN_OFF" = "Deshabilitar bloqueo de contenido";

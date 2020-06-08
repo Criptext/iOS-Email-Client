@@ -196,6 +196,7 @@ class EmailTableViewCell: UITableViewCell{
         backgroundColor = .clear
         circleLoaderUIView.backgroundColor = .clear
         
+        showImagesButton.setTitle(String.localize("CONTENT_BLOCK_SHOW_IMAGES"), for: .normal)
         showImagesButton.setTitleColor(theme.criptextBlue, for: .normal)
     }
     
@@ -415,6 +416,7 @@ class EmailTableViewCell: UITableViewCell{
         
         showImagesButton.isHidden = !shouldBlockContent(email: self.email, emailState: emailState)
         showImagesSeparatorView.isHidden = showImagesButton.isHidden
+        showImagesButton.setTitle(String.localize("CONTENT_BLOCK_SHOW_ALWAYS"), for: .normal)
     }
     
     func shouldBlockContent(email: Email, emailState: Email.State) -> Bool {

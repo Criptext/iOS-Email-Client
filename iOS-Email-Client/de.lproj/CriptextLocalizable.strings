@@ -533,6 +533,8 @@
 "GET_PLUS" = "Get Plus";
 "MAYBE_LATER" = "No, Thanks";
 
+"CONTENT_BLOCK_SHOW_IMAGES" = "Show Images";
+"CONTENT_BLOCK_SHOW_ALWAYS" = "Show Always";
 "CONTENT_BLOCK_ONCE" = "Once";
 "CONTENT_BLOCK_ALWAYS" = "Always from this sender";
 "CONTENT_BLOCK_TURN_OFF" = "Turn off image blocking";

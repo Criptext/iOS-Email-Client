@@ -361,6 +361,13 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             joinPlus()
             return
         }
+        guard emailData.selectedLabel != SystemLabel.spam.id else {
+            return
+        }
+        openUrl(url: url)
+    }
+    
+    func openUrl(url: String) {
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
     }
