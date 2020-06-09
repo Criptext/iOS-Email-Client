@@ -46,7 +46,7 @@
 "NEED_ENABLE_ACCESS" = "Necesitas habilitar el acceso para esta aplicación en tu configuración del celular";
 "ODD" = "Bueno, eso fue extraño…";
 "SIGNUP" = "Crear Cuenta";
-"NOT_REGISTERED" = "¿No estás registrado?";
+"NOT_REGISTERED" = "¿No estás registrado? ";
 "SIGNIN" = "Iniciar Sesión";
 "SIGNIN_WARNING_1" = "Iniciar sesión con una cuenta diferente ";
 "SIGNIN_WARNING_2" = "borrará todos los datos del buzón ";

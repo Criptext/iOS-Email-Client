@@ -428,7 +428,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().backgroundColor = ThemeManager.shared.theme.toolbar
         UINavigationBar.appearance().tintColor = ThemeManager.shared.theme.criptextBlue
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-                
+               
+        URLCache.shared.removeAllCachedResponses()
+        
         if let myAccount = DBManager.getActiveAccount() {
             //Go to inbox
             initialVC = initMailboxRootVC(launchOptions, myAccount)
