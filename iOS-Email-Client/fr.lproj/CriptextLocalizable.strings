@@ -46,7 +46,7 @@
 "NEED_ENABLE_ACCESS" = "Vous devez activer l'accès à cette app dans vos paramètres";
 "ODD" = "Eh bien, c'est étrange...";
 "SIGNUP" = "Inscription";
-"NOT_REGISTERED" = "Pas enregistré ?";
+"NOT_REGISTERED" = "Pas enregistré? ";
 "SIGNIN" = "Connexion";
 "SIGNIN_WARNING_1" = "Se connecter avec un autre compte";
 "SIGNIN_WARNING_2" = "effacera toutes les données de votre boîte de réception";
