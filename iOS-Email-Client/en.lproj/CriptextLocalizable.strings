@@ -46,7 +46,7 @@
 "NEED_ENABLE_ACCESS" = "You need to enable access for this app in your settings";
 "ODD" = "Well, that’s odd…";
 "SIGNUP" = "Sign up";
-"NOT_REGISTERED" = "Not registered?";
+"NOT_REGISTERED" = "Not registered? ";
 "SIGNIN" = "Sign In";
 "SIGNIN_WARNING_1" = "Signing in with a different account ";
 "SIGNIN_WARNING_2" = "will erase all mailbox data ";

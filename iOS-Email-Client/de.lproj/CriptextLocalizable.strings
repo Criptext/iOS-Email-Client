@@ -46,7 +46,7 @@
 "NEED_ENABLE_ACCESS" = "Sie müssen den Zugriff für diese App in Ihren Einstellungen aktivieren";
 "ODD" = "Nun, das ist seltsam ...";
 "SIGNUP" = "Registrieren";
-"NOT_REGISTERED" = "Nicht registriert?";
+"NOT_REGISTERED" = "Nicht registriert? ";
 "SIGNIN" = "Anmelden";
 "SIGNIN_WARNING_1" = "Mit einem anderen Konto anmelden";
 "SIGNIN_WARNING_2" = "löscht alle Postfachdaten ";
