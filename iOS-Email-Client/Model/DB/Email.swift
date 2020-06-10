@@ -26,11 +26,13 @@ class Email: Object {
         var isExpanded: Bool
         var isUnsending: Bool
         var cellHeight: CGFloat
+        var trustedOnce: Bool
         
         init() {
             isExpanded = false
             isUnsending = false
             cellHeight = 0.0
+            trustedOnce = false
         }
     }
     

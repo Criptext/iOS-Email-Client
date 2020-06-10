@@ -525,3 +525,25 @@
 
 "PLUS_SETTINGS_TITLE" = "Estas buscando los\nDatos de Facturación?";
 "PLUS_SETTINGS_MESSAGE" = "Abre el App de Criptext en tu PC para administar tus datos de Facturación";
+
+"DEVICE_LIMIT_REACHED" = "Necesitas Plus para esto";
+"DEVICE_LIMIT_PLUS" = "Has alcanzado el máximo número de dispositivos (%i). Subscribete a Plus para poder vincular %i dispositivos. Caso contrario deberas remover dispositivos para continuar.";
+"CUSTOM_DOMAINS_PLUS" = "Agrega direcciones de correo con un dominio que te pertenezca como tu@compania.com\n\nObtén esto y más cuando te subscribas a Plus!";
+"ALIAS_PLUS" = "Con Aliases puedes manejar multiples direcciones de correo en un solo buzón\n\nObtén esto y más cuando te subscribas a Plus!";
+"GET_PLUS" = "Obtener Plus";
+"MAYBE_LATER" = "No, Gracias";
+
+"CONTENT_BLOCK_SHOW_IMAGES" = "Mostrar Imagenes";
+"CONTENT_BLOCK_SHOW_ALWAYS" = "Mostrar Siempre";
+"CONTENT_BLOCK_ONCE" = "Una vez";
+"CONTENT_BLOCK_ALWAYS" = "Siempre para este contacto";
+"CONTENT_BLOCK_TURN_OFF" = "Deshabilitar bloqueo de contenido";
+
+"BLOCK_REMOTE_CONTENT" = "Bloquear contenido externo";
+"BLOCK_CONTENT_DESC" = "Bloquea imagenes de emisores no confiables";
+"BLOCK_CONTENT_UPDATE_FAILED" = "No fue posible actualizar sus preferencias de bloqueo";
+"BLOCK_CONTENT_UPDATE_SUCCESS" = "Bloqueo de imagenes desactivado";
+"BLOCK_CONTENT_CONTACT_TRUSTED" = "%@ marcado como confiable";
+
+"TURN_OFF_REMOTE_TITLE" = "Desactivar Bloqueo";
+"TURN_OFF_REMOTE_MESSAGE" = "Tu seguridad se vera afectada al desactivar esta funcionalidad.\nPuedes reactivarla yendo a Configuración > Privacidad";

@@ -29,7 +29,7 @@
                         <rect key="frame" x="0.0" y="5" width="375" height="393"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oYk-NZ-Ec1">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D0N-r1-Ghu" customClass="CircleLoaderUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="16" y="17" width="40" height="40"/>
@@ -169,11 +169,27 @@
                                             <action selector="onDeleteDraftPressed:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="7g1-Na-fio"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWb-we-hL7">
+                                        <rect key="frame" x="71" y="64" width="120" height="19"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="19" id="S7K-AE-Lvp"/>
+                                            <constraint firstAttribute="width" constant="120" id="zvx-ZJ-eUF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Show Images" image="show-images">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onShowImagesPress:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="VfF-UE-Rju"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="9UB-5Z-Iw6" firstAttribute="top" secondItem="oYk-NZ-Ec1" secondAttribute="top" constant="19" id="4Z7-gF-k6m"/>
                                     <constraint firstItem="YbZ-Ti-AdL" firstAttribute="centerY" secondItem="LGD-VD-w1C" secondAttribute="centerY" id="5JZ-L8-Xf5"/>
+                                    <constraint firstItem="oWb-we-hL7" firstAttribute="top" secondItem="uDR-zl-Siw" secondAttribute="bottom" constant="3" id="7wR-tn-REG"/>
                                     <constraint firstItem="SNm-dQ-TeE" firstAttribute="height" secondItem="7fU-IW-zLs" secondAttribute="height" id="Agt-TQ-VbN"/>
                                     <constraint firstItem="7fU-IW-zLs" firstAttribute="centerY" secondItem="uDR-zl-Siw" secondAttribute="centerY" id="ArE-YO-3Qj"/>
                                     <constraint firstItem="uDR-zl-Siw" firstAttribute="leading" secondItem="yfG-EO-Lu4" secondAttribute="trailing" constant="5" id="CW4-gg-yXO"/>
@@ -190,7 +206,7 @@
                                     <constraint firstItem="D0N-r1-Ghu" firstAttribute="top" secondItem="9UB-5Z-Iw6" secondAttribute="top" constant="-2" id="MJW-Ma-zxV"/>
                                     <constraint firstAttribute="trailing" secondItem="uDR-zl-Siw" secondAttribute="trailing" constant="24" id="MR0-De-mPm"/>
                                     <constraint firstItem="Mx0-ks-ALr" firstAttribute="centerY" secondItem="SNm-dQ-TeE" secondAttribute="centerY" id="S2D-cz-3Pv"/>
-                                    <constraint firstAttribute="height" priority="750" constant="75" id="VL2-Xd-yMx"/>
+                                    <constraint firstAttribute="height" priority="750" constant="82" id="VL2-Xd-yMx"/>
                                     <constraint firstItem="7fU-IW-zLs" firstAttribute="leading" secondItem="yfG-EO-Lu4" secondAttribute="trailing" constant="5" id="WQR-Th-pVs"/>
                                     <constraint firstItem="LGD-VD-w1C" firstAttribute="leading" secondItem="STJ-z8-shf" secondAttribute="trailing" constant="10" id="Wj5-VH-vca"/>
                                     <constraint firstItem="uDR-zl-Siw" firstAttribute="top" secondItem="XDx-eF-08j" secondAttribute="bottom" constant="5" id="c6p-1d-Mxj"/>
@@ -204,10 +220,18 @@
                                     <constraint firstItem="XDx-eF-08j" firstAttribute="leading" secondItem="9UB-5Z-Iw6" secondAttribute="trailing" constant="17" id="oAl-J4-HDg"/>
                                     <constraint firstItem="XDx-eF-08j" firstAttribute="top" secondItem="oYk-NZ-Ec1" secondAttribute="top" constant="16" id="sQn-1F-e6O"/>
                                     <constraint firstItem="yfG-EO-Lu4" firstAttribute="centerY" secondItem="uDR-zl-Siw" secondAttribute="centerY" id="tde-FJ-o92"/>
+                                    <constraint firstItem="oWb-we-hL7" firstAttribute="leading" secondItem="yfG-EO-Lu4" secondAttribute="leading" id="yJk-nK-hwq"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JK4-4w-JCY">
+                                <rect key="frame" x="0.0" y="82" width="375" height="10"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="nax-ln-Fb5"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
-                                <rect key="frame" x="0.0" y="75" width="375" height="98"/>
+                                <rect key="frame" x="0.0" y="92" width="375" height="81"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="250" id="nMQ-Id-iGW"/>
@@ -367,6 +391,8 @@
                 <outlet property="readStatusContentMarginConstraint" destination="CW4-gg-yXO" id="HHf-n5-zt0"/>
                 <outlet property="readStatusMarginConstraint" destination="WQR-Th-pVs" id="eS2-QD-aTN"/>
                 <outlet property="secureIconView" destination="STJ-z8-shf" id="bCq-Wj-R0C"/>
+                <outlet property="showImagesButton" destination="oWb-we-hL7" id="yPY-rq-7TO"/>
+                <outlet property="showImagesSeparatorView" destination="JK4-4w-JCY" id="1An-FZ-Tzk"/>
                 <outlet property="upContainerView" destination="0Ve-4f-47D" id="3a8-pT-JT0"/>
                 <outlet property="upView" destination="F1U-WC-rl8" id="4dx-IV-Uzv"/>
                 <outlet property="webViewWrapperView" destination="tm2-e0-IDa" id="BGn-II-V8l"/>
@@ -379,6 +405,7 @@
         <image name="check" width="15" height="11.5"/>
         <image name="dots-options" width="24" height="6"/>
         <image name="icSecinb" width="17" height="17"/>
+        <image name="show-images" width="16" height="15"/>
         <image name="toolbar-trash" width="38" height="41"/>
     </resources>
 </document>

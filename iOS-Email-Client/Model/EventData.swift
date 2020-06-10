@@ -292,6 +292,15 @@ extension EventData {
             }
         }
         
+        struct BlockContent {
+            let block: Bool
+            
+            init(params: [String: Any]){
+                let blockInt = params["block"] as! Int
+                block = blockInt == 1
+            }
+        }
+        
         struct NameChanged: Dictionarify {
             let name: String
             
@@ -347,6 +356,22 @@ extension EventData {
             
             init(params: [String: Any]){
                 name = params["customDomain"] as! String
+            }
+        }
+        
+        struct ContactTrust: Dictionarify {
+            let email: String
+            let trusted: Bool
+            
+            init(params: [String: Any]){
+                email = params["email"] as! String
+                let trustedInt = params["trusted"] as! Int
+                trusted = trustedInt == 1
+            }
+            
+            init(email: String, trusted: Bool){
+                self.email = email
+                self.trusted = trusted
             }
         }
     }

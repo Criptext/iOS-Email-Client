@@ -13,7 +13,7 @@ import Instructions
 import RealmSwift
 
 class EmailDetailViewController: UIViewController {
-    let ESTIMATED_ROW_HEIGHT : CGFloat = 75
+    let ESTIMATED_ROW_HEIGHT : CGFloat = 77
     let ESTIMATED_SECTION_HEADER_HEIGHT : CGFloat = 50
     let CONTACTS_BASE_HEIGHT = 56
     let CONTACTS_MAX_HEIGHT: CGFloat = 300.0
@@ -33,6 +33,7 @@ class EmailDetailViewController: UIViewController {
     weak var target: UIView?
     var emailDetailOptionsInterface: EmailDetailOptionsInterface?
     var emailMoreOptionsInterface: EmailMoreOptionsInterface?
+    var emailDetailContentOptionsInterface: EmailDetailContentOptionsInterface?
     let fileManager = CriptextFileManager()
     let coachMarksController = CoachMarksController()
     
@@ -360,6 +361,13 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             joinPlus()
             return
         }
+        guard emailData.selectedLabel != SystemLabel.spam.id else {
+            return
+        }
+        openUrl(url: url)
+    }
+    
+    func openUrl(url: String) {
         let svc = SFSafariViewController(url: URL(string: url)!)
         self.present(svc, animated: true, completion: nil)
     }
@@ -529,6 +537,24 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
             return
         }
         generalOptionsContainerView.showMoreOptions()
+    }
+    
+    func tableViewTrustRecipient(cell: EmailTableViewCell, email: Email) {
+        guard let indexPath = emailsTableView.indexPath(for: cell) else {
+            return
+        }
+        
+        emailsTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        if (email.isSpam) {
+            emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface(options: [.once])
+        } else if emailData.getState(email.key).trustedOnce {
+            emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface(options: [.always, .disable])
+        } else {
+            emailDetailContentOptionsInterface = EmailDetailContentOptionsInterface()
+        }
+        emailDetailContentOptionsInterface?.delegate = self
+        generalOptionsContainerView.setDelegate(newDelegate: emailDetailContentOptionsInterface!)
+        toggleGeneralOptionsView()
     }
 }
 
@@ -725,6 +751,89 @@ extension EmailDetailViewController: NavigationToolbarDelegate {
     }
 }
 
+extension EmailDetailViewController: EmailContentOptionsDelegate {
+    func onOncePress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow,
+            let cell = emailsTableView.cellForRow(at: indexPath) as? EmailTableViewCell else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        emailData.setState(cell.email.key, trusted: true)
+        cell.enableImages(emailState: emailData.getState(cell.email.key))
+        self.toggleGeneralOptionsView()
+    }
+    
+    func onAlwaysPress() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        let email = emailData.emails[indexPath.row]
+        DBManager.update(contact: email.fromContact, isTrusted: true)
+        DBManager.refresh()
+        
+        for visibleCell in emailsTableView.visibleCells {
+            guard let cell = visibleCell as? EmailTableViewCell else {
+                continue
+            }
+            if(cell.email.fromContact.email == email.fromContact.email) {
+                cell.enableImages(emailState: emailData.getState(cell.email.key))
+            }
+        }
+        
+        self.toggleGeneralOptionsView()
+        
+        let eventData = EventData.Peer.ContactTrust(email: email.fromContact.email, trusted: true)
+        let eventParams = ["cmd": Event.Peer.contactTrust.rawValue, "params": eventData.asDictionary()] as [String : Any]
+        APIManager.postPeerEvent(["peerEvents": [eventParams]], token: myAccount.jwt) { (responseData) in
+            self.showSnackbar(String.localize("BLOCK_CONTENT_CONTACT_TRUSTED", arguments: email.fromContact.displayName), attributedText: nil, buttons: "", permanent: false)
+            if case .Success = responseData {
+                return
+            }
+            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
+        }
+    }
+    
+    func onDisablePress() {
+        let popover = GenericDualAnswerUIPopover()
+        popover.initialTitle = String.localize("TURN_OFF_REMOTE_TITLE")
+        popover.initialMessage = String.localize("TURN_OFF_REMOTE_MESSAGE")
+        popover.leftOption = String.localize("CANCEL")
+        popover.rightOption = String.localize("SAVE")
+        popover.onResponse = { accept in
+            guard accept else {
+                return
+            }
+            APIManager.setBlockContent(isOn: false, token: self.myAccount.jwt) { (responseData) in
+                self.toggleGeneralOptionsView()
+                guard case .Success = responseData else {
+                    self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                    return
+                }
+                self.disableBlockContent()
+            }
+        }
+        self.presentPopover(popover: popover, height: 274)
+    }
+    
+    func disableBlockContent() {
+        self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_SUCCESS"), attributedText: nil, buttons: "", permanent: false)
+        DBManager.update(account: myAccount, blockContent: false)
+        DBManager.refresh()
+        
+        for visibleCell in emailsTableView.visibleCells {
+            guard let cell = visibleCell as? EmailTableViewCell else {
+                continue
+            }
+            cell.enableImages(emailState: emailData.getState(cell.email.key))
+        }
+    }
+    
+    func onContentOptionsClose() {
+        self.toggleGeneralOptionsView()
+    }
+}
+
 extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
     func onRetryPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
@@ -752,6 +861,7 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
+        sendTrustedOnReply(email: email)
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: [], subject: subject, content: content, blockFrom: true)
     }
     
@@ -777,7 +887,17 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
         let subject = "\(email.subject.lowercased().starts(with: "re:") ? "" : "Re: ")\(email.subject)"
         let contact = ContactUtils.checkIfFromHasName(email.fromAddress) ? email.fromAddress : "\(email.fromContact.displayName) &#60;\(email.fromContact.email)&#62;"
         let content = ("<br><br><div class=\"criptext_quote\">\(String.localize("ON_REPLY")) \(email.completeDate), \(contact) wrote:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">\(self.emailData.bodies[email.key] ?? "")</blockquote></div>")
+        sendTrustedOnReply(email: email)
         presentComposer(email: email, contactsTo: contactsTo, contactsCc: contactsCc, subject: subject, content: content, blockFrom: true)
+    }
+    
+    func sendTrustedOnReply(email: Email) {
+        if (!email.isSent && !email.fromContact.isTrusted) {
+            let eventData = EventData.Peer.ContactTrust(email: email.fromContact.email, trusted: true)
+            let eventParams = ["cmd": Event.Peer.contactTrust.rawValue, "params": eventData.asDictionary()] as [String : Any]
+            DBManager.update(contact: email.fromContact, isTrusted: true)
+            DBManager.createQueueItem(params: eventParams, account: self.myAccount)
+        }
     }
     
     func onForwardPress() {
