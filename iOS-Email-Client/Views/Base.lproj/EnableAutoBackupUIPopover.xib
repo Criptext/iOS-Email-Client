@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="NunitoSans-Bold.ttf">
+            <string>NunitoSans-Bold</string>
+        </array>
+        <array key="NunitoSans-Regular.ttf">
+            <string>NunitoSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EnableAutoBackupUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="activateAutoBackupButton" destination="Obv-ZW-6Om" id="4qN-CC-XtP"/>
+                <outlet property="enableBackupView" destination="RAa-rG-0LX" id="NRQ-Mv-JjX"/>
+                <outlet property="firstDescriptionLabel" destination="g6u-so-Wdi" id="rUP-BI-IaC"/>
+                <outlet property="firstNotNowButton" destination="ZYQ-9l-wE9" id="Wqz-ec-JoX"/>
+                <outlet property="firstTitleLabel" destination="gca-yK-3VQ" id="NXQ-1T-xUj"/>
+                <outlet property="secondDescriptionLabel" destination="Ll9-T7-PjW" id="OWv-MD-jMU"/>
+                <outlet property="secondNotNowButton" destination="4X9-wC-5Cl" id="KGn-7n-WVq"/>
+                <outlet property="secondTitleLabel" destination="Frg-9C-OMC" id="65S-sl-RDr"/>
+                <outlet property="turnOnAutoBackupButton" destination="0ok-aY-mDl" id="E1n-dc-UP5"/>
+                <outlet property="view" destination="iN0-l3-epB" id="w6p-bK-q0P"/>
+                <outlet property="warningView" destination="nf8-EF-eSN" id="oah-BZ-Xtd"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="270" height="380"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAa-rG-0LX">
+                    <rect key="frame" x="0.0" y="0.0" width="270" height="380"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="upload-cloud" translatesAutoresizingMaskIntoConstraints="NO" id="ugm-wY-VXF">
+                            <rect key="frame" x="95" y="30" width="80" height="124"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="80" id="AeA-4U-sVU"/>
+                                <constraint firstAttribute="height" constant="124" id="FtK-07-23Q"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto Backup to iCloud" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gca-yK-3VQ">
+                            <rect key="frame" x="44" y="174" width="182.5" height="21"/>
+                            <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activate backups to guarantee that you never lose your data" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6u-so-Wdi">
+                            <rect key="frame" x="20" y="215" width="230" height="35"/>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ok-aY-mDl">
+                            <rect key="frame" x="0.0" y="334" width="270" height="46"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="46" id="hX8-Th-kb1"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="15"/>
+                            <state key="normal" title="Turn On Auto Backup">
+                                <color key="titleColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onEnablePress:" destination="-1" eventType="touchUpInside" id="Dmc-wQ-k0T"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZYQ-9l-wE9">
+                            <rect key="frame" x="60" y="270" width="150" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="2tV-J4-i1S"/>
+                                <constraint firstAttribute="width" constant="150" id="Sv4-BM-Qhg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Not Now">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="20"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onFirstNotNowPress:" destination="-1" eventType="touchUpInside" id="LLR-Mt-7fJ"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="g6u-so-Wdi" firstAttribute="leading" secondItem="RAa-rG-0LX" secondAttribute="leading" constant="20" id="7JE-rT-eR9"/>
+                        <constraint firstAttribute="trailing" secondItem="g6u-so-Wdi" secondAttribute="trailing" constant="20" id="Nzt-4r-amz"/>
+                        <constraint firstItem="gca-yK-3VQ" firstAttribute="top" secondItem="ugm-wY-VXF" secondAttribute="bottom" constant="20" id="Q8H-HO-dQC"/>
+                        <constraint firstAttribute="bottom" secondItem="0ok-aY-mDl" secondAttribute="bottom" id="QVW-Kc-0b5"/>
+                        <constraint firstItem="ZYQ-9l-wE9" firstAttribute="top" secondItem="g6u-so-Wdi" secondAttribute="bottom" constant="20" id="Tqs-pt-K8L"/>
+                        <constraint firstAttribute="trailing" secondItem="0ok-aY-mDl" secondAttribute="trailing" id="cl1-TF-uIC"/>
+                        <constraint firstItem="gca-yK-3VQ" firstAttribute="centerX" secondItem="RAa-rG-0LX" secondAttribute="centerX" id="fTn-zP-uIg"/>
+                        <constraint firstItem="ugm-wY-VXF" firstAttribute="centerX" secondItem="RAa-rG-0LX" secondAttribute="centerX" id="gvL-VB-4dy"/>
+                        <constraint firstItem="ugm-wY-VXF" firstAttribute="top" secondItem="RAa-rG-0LX" secondAttribute="top" constant="30" id="rlj-Eq-EZm"/>
+                        <constraint firstItem="0ok-aY-mDl" firstAttribute="leading" secondItem="RAa-rG-0LX" secondAttribute="leading" id="vSp-n1-Wob"/>
+                        <constraint firstItem="g6u-so-Wdi" firstAttribute="top" secondItem="gca-yK-3VQ" secondAttribute="bottom" constant="20" id="x25-dK-IRX"/>
+                        <constraint firstItem="ZYQ-9l-wE9" firstAttribute="centerX" secondItem="RAa-rG-0LX" secondAttribute="centerX" id="zHs-cr-98g"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nf8-EF-eSN">
+                    <rect key="frame" x="0.0" y="0.0" width="270" height="380"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Warning ⚠️" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Frg-9C-OMC">
+                            <rect key="frame" x="88.5" y="40" width="93.5" height="21"/>
+                            <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ll9-T7-PjW">
+                            <rect key="frame" x="20" y="71" width="230" height="82"/>
+                            <string key="text">Your emails are exclusively kept on your device, not Criptext servers.
+This means that if you delete the app or lose your device you will lose all your emails.</string>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obv-ZW-6Om">
+                            <rect key="frame" x="0.0" y="334" width="270" height="46"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="46" id="aBk-zv-252"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="15"/>
+                            <state key="normal" title="Activate iCloud Backup">
+                                <color key="titleColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onEnablePress:" destination="-1" eventType="touchUpInside" id="eDA-om-ss7"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4X9-wC-5Cl">
+                            <rect key="frame" x="60" y="183" width="150" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="JLd-UN-uPN"/>
+                                <constraint firstAttribute="width" constant="150" id="R0T-WI-Gk3"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="I don't want backups">
+                                <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="20"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onSecondNotNowPress:" destination="-1" eventType="touchUpInside" id="cQ1-ai-xdR"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="Ll9-T7-PjW" firstAttribute="top" secondItem="Frg-9C-OMC" secondAttribute="bottom" constant="10" id="0AF-gN-qcv"/>
+                        <constraint firstItem="Frg-9C-OMC" firstAttribute="top" secondItem="nf8-EF-eSN" secondAttribute="top" constant="40" id="IL1-yk-PUr"/>
+                        <constraint firstAttribute="trailing" secondItem="Obv-ZW-6Om" secondAttribute="trailing" id="IeZ-5c-nlm"/>
+                        <constraint firstItem="4X9-wC-5Cl" firstAttribute="centerX" secondItem="nf8-EF-eSN" secondAttribute="centerX" id="LS7-cv-jBi"/>
+                        <constraint firstItem="Ll9-T7-PjW" firstAttribute="leading" secondItem="nf8-EF-eSN" secondAttribute="leading" constant="20" id="OTP-Rv-5IU"/>
+                        <constraint firstAttribute="trailing" secondItem="Ll9-T7-PjW" secondAttribute="trailing" constant="20" id="PVa-bi-FGx"/>
+                        <constraint firstAttribute="bottom" secondItem="Obv-ZW-6Om" secondAttribute="bottom" id="QG5-hx-FWr"/>
+                        <constraint firstItem="4X9-wC-5Cl" firstAttribute="top" secondItem="Ll9-T7-PjW" secondAttribute="bottom" constant="30" id="VqJ-y3-lOU"/>
+                        <constraint firstItem="Frg-9C-OMC" firstAttribute="centerX" secondItem="nf8-EF-eSN" secondAttribute="centerX" id="iR3-Fx-1s9"/>
+                        <constraint firstItem="Obv-ZW-6Om" firstAttribute="leading" secondItem="nf8-EF-eSN" secondAttribute="leading" id="sx0-Ri-JNX"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="RAa-rG-0LX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ELh-fr-PEU"/>
+                <constraint firstItem="nf8-EF-eSN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="JoA-8I-ZgY"/>
+                <constraint firstItem="nf8-EF-eSN" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="cAi-SD-DCD"/>
+                <constraint firstItem="RAa-rG-0LX" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="fwL-7k-Fxh"/>
+                <constraint firstItem="nf8-EF-eSN" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="hYg-Vh-95v"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="RAa-rG-0LX" secondAttribute="trailing" id="j7v-qF-qBr"/>
+                <constraint firstAttribute="bottom" secondItem="RAa-rG-0LX" secondAttribute="bottom" id="kA7-hV-v40"/>
+                <constraint firstItem="nf8-EF-eSN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="nez-Nh-OjR"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="117.39130434782609" y="-68.973214285714278"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="upload-cloud" width="80" height="123"/>
+    </resources>
+</document>

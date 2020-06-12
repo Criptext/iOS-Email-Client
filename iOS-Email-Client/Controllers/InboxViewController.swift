@@ -624,7 +624,10 @@ extension InboxViewController {
             self.presentAccountSuspendedPopover(myAccount: myAccount, accounts: Array(accounts), onPressSwitch: self.swapAccount(_:), onPressLogin: self.addAccount)
             return
         } else {
-            self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
+            let topView = getTopView()
+            if !(topView.presentedViewController is EnableAutoBackupUIPopover) {
+                self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
+            }
         }
         
         if let feature = result.feature {
@@ -856,7 +859,44 @@ extension InboxViewController{
             weakSelf.tableView.reloadData()
             weakSelf.updateBadges()
             weakSelf.showNoThreadsView(weakSelf.mailboxData.reachedEnd && weakSelf.mailboxData.threads.isEmpty)
+            
+            if (!weakSelf.myAccount.hasCloudBackup && weakSelf.mailboxData.selectedLabel == SystemLabel.inbox.id && threads.count >= 10) {
+                weakSelf.showAutoBackupPopover()
+            }
         }
+        
+
+    }
+    
+    func showAutoBackupPopover() {
+        let defaults = CriptextDefaults()
+        guard !defaults.getShownAutoBackup(email: myAccount.email) else {
+            return
+        }
+        
+        let popover = EnableAutoBackupUIPopover()
+        popover.onEnableAutoBackup = { [weak self] enable in
+            self?.enableAutoBackup(enable)
+        }
+        self.presentPopover(popover: popover, height: 380)
+    }
+    
+    func enableAutoBackup(_ enable: Bool) {
+        let defaults = CriptextDefaults()
+        guard enable else {
+            defaults.setShownAutobackup(email: self.myAccount.email)
+            return
+        }
+        guard BackupManager.shared.hasCloudAccessDir(email: self.myAccount.email) else {
+            self.showAlert(String.localize("CLOUD_ERROR"), message: String.localize("CLOUD_ERROR_MSG"), style: .alert)
+            return
+        }
+        DBManager.update(account: self.myAccount, hasCloudBackup: !self.myAccount.hasCloudBackup)
+        DBManager.update(account: self.myAccount, frequency: BackupFrequency.daily.rawValue)
+        BackupManager.shared.clearAccount(accountId: self.myAccount.compoundKey)
+        BackupManager.shared.backupNow(account: self.myAccount)
+        defaults.setShownAutobackup(email: self.myAccount.email)
+        self.showSnackbar(String.localize("BACKUP_ACTIVATED"), attributedText: nil, buttons: "", permanent: false)
     }
 }
 

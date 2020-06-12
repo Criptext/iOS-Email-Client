@@ -209,6 +209,14 @@ class CriptextDefaults {
         defaults.removeObject(forKey: id)
     }
     
+    func setShownAutobackup(email: String) {
+        defaults.set(true, forKey: "\(Config.autoBackupPopup.rawValue)_\(email)")
+    }
+    
+    func getShownAutoBackup(email: String) -> Bool {
+        return defaults.bool(forKey: "\(Config.autoBackupPopup.rawValue)_\(email)")
+    }
+    
     enum Guide: String {
         case welcomeTour = "welcomeTour"
         case attachments = "guideAttachments"
@@ -229,6 +237,7 @@ class CriptextDefaults {
         case goneTimestamp = "goneTimestamp"
         case pinAttempts = "pinAttempts"
         case appStateActive = "appActive"
+        case autoBackupPopup = "shownAutoBackupPopup"
     }
     
 }

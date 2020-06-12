@@ -147,4 +147,8 @@ final class BackupManager {
         return (timeForExcecution, autoFrequency)
     }
     
+    func hasCloudAccessDir(email: String) -> Bool {
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(email) != nil
+    }
+    
 }

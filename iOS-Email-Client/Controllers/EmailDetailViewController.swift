@@ -581,7 +581,7 @@ extension EmailDetailViewController: EmailDetailFooterDelegate {
     func presentComposer(email: Email, contactsTo: [Contact], contactsCc: [Contact], subject: String, content: String, blockFrom: Bool, attachments: [File]? = nil){
         var fromAlias: Alias? = nil
         if (email.isSent) {
-            let userDomain = email.fromContact.email.split(separator: "2")
+            let userDomain = email.fromContact.email.split(separator: "@")
             let username = userDomain[0].description
             let domain = userDomain[1].description == Env.plainDomain ? nil : userDomain[1].description
             if email.fromContact.email != email.account.email,
