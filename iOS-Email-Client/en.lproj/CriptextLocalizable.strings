@@ -398,7 +398,7 @@
 "DEVICE_REJECTED" = "Device was already rejected";
 "TO_ME" = "Me";
 "CLOUD_ERROR" = "iCloud Error";
-"CLOUD_ERROR_MSG" = "Unable to access your iCloud Drive. Check if you have iCloud Drive enabled for Criptext: iPhone Settings> iCloud> iCloudDrive";
+"CLOUD_ERROR_MSG" = "Unable to access your iCloud. Check if you have it enabled for Criptext: iPhone Settings> iCloud> iCloudDrive";
 "GENERATING_PROGRESS" = "Generating Backup File... (%i %%)";
 "EMAIL" = "Email or Username";
 "ENCRYPT_EXTERNALS_DETAIL" = "Get asked if you want to encrypt the email before sending it to an address that is outside the Criptext network. (I.e. Gmail).";
@@ -539,7 +539,7 @@
 "CONTENT_BLOCK_ALWAYS" = "Always from this sender";
 "CONTENT_BLOCK_TURN_OFF" = "Turn off image blocking";
 
-"BLOCK_REMOTE_CONTENT" = "Block Remote Content";
+"BLOCK_REMOTE_CONTENT" = "Block Images";
 "BLOCK_CONTENT_DESC" = "Block Images from unauthorized senders";
 "BLOCK_CONTENT_UPDATE_FAILED" = "Unable to update remote content preference";
 "BLOCK_CONTENT_UPDATE_SUCCESS" = "Image Blocking turned off";
@@ -547,3 +547,5 @@
 
 "TURN_OFF_REMOTE_TITLE" = "Turn Off Image Block";
 "TURN_OFF_REMOTE_MESSAGE" = "Your security is affected by deactivating this function.\nYou can reactivate this function in Settings > Privacy";
+
+"BACKUP_ACTIVATED" = "Backup Activated ☁️";

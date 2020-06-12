@@ -220,6 +220,8 @@
 		7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */; };
 		7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */; };
 		7CB198A82051ED4700AA4FF8 /* HistoryUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */; };
+		7CB3969C2491B04F00301129 /* EnableAutoBackupUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB3969B2491B04F00301129 /* EnableAutoBackupUIPopover.swift */; };
+		7CB3969F2493058F00301129 /* EnableAutoBackupUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */; };
 		7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */; };
 		7CB44949207BBE0C009430EB /* MenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB44948207BBE0C009430EB /* MenuData.swift */; };
 		7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */; };
@@ -891,6 +893,13 @@
 		7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentHistoryTableCell.xib; sourceTree = "<group>"; };
 		7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentHistoryTableCell.swift; sourceTree = "<group>"; };
 		7CB198A72051ED4700AA4FF8 /* HistoryUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryUIPopover.swift; sourceTree = "<group>"; };
+		7CB3969B2491B04F00301129 /* EnableAutoBackupUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableAutoBackupUIPopover.swift; sourceTree = "<group>"; };
+		7CB396A02493058F00301129 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EnableAutoBackupUIPopover.xib; sourceTree = "<group>"; };
+		7CB396A32493059300301129 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EnableAutoBackupUIPopover.strings; sourceTree = "<group>"; };
+		7CB396A52493059400301129 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EnableAutoBackupUIPopover.strings; sourceTree = "<group>"; };
+		7CB396A72493059400301129 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EnableAutoBackupUIPopover.strings; sourceTree = "<group>"; };
+		7CB396A92493059500301129 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EnableAutoBackupUIPopover.strings; sourceTree = "<group>"; };
+		7CB396AB2493059600301129 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/EnableAutoBackupUIPopover.strings; sourceTree = "<group>"; };
 		7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTableViewCell.swift; sourceTree = "<group>"; };
 		7CB44948207BBE0C009430EB /* MenuData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuData.swift; sourceTree = "<group>"; };
 		7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
@@ -1638,6 +1647,8 @@
 				7C7869CD246EE0DC0085D909 /* AvatarUI.swift */,
 				7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */,
 				7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */,
+				7CB3969B2491B04F00301129 /* EnableAutoBackupUIPopover.swift */,
+				7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2036,6 +2047,7 @@
 				A7627D9C223C3234007A26F6 /* showmore-light-opened.png in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				A7D2DE7421C42BC8002ED6F8 /* PasscodeLockView.xib in Resources */,
+				7CB3969F2493058F00301129 /* EnableAutoBackupUIPopover.xib in Resources */,
 				A7FFCF63217A93E600FFFDFF /* CriptextLocalizable.strings in Resources */,
 				7C6CA86B244F4FD100181703 /* GetPlusUIPopover.xib in Resources */,
 				7CF93F582146E41700361837 /* Email.json in Resources */,
@@ -2337,6 +2349,7 @@
 				A76D303A225671DC004F8747 /* BackupHeaderView.swift in Sources */,
 				41AAC53D201A9FCD00809C4D /* ShareActivityItemProvider.swift in Sources */,
 				7CE1FA0024787BEC00D14352 /* UpgradePlusUIView.swift in Sources */,
+				7CB3969C2491B04F00301129 /* EnableAutoBackupUIPopover.swift in Sources */,
 				7C8D6C6A2035FCD700AB96EF /* LoginDeviceViewController.swift in Sources */,
 				7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */,
 				A7B17A8A2257C93600927102 /* BackupManager.swift in Sources */,
@@ -2674,6 +2687,19 @@
 				7C3C35C02432598F001A8C9F /* es */,
 			);
 			name = MXRecordsUIView.xib;
+			sourceTree = "<group>";
+		};
+		7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7CB396A02493058F00301129 /* Base */,
+				7CB396A32493059300301129 /* en */,
+				7CB396A52493059400301129 /* fr */,
+				7CB396A72493059400301129 /* de */,
+				7CB396A92493059500301129 /* ru */,
+				7CB396AB2493059600301129 /* es */,
+			);
+			name = EnableAutoBackupUIPopover.xib;
 			sourceTree = "<group>";
 		};
 		A703FAF121F925760080769A /* PasscodeLockView.xib */ = {

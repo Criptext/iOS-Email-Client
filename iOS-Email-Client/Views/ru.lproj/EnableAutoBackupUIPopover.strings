@@ -1,0 +1,24 @@
+
+/* Class = "UIButton"; normalTitle = "Turn On Auto Backup"; ObjectID = "0ok-aY-mDl"; */
+"0ok-aY-mDl.normalTitle" = "Turn On Auto Backup";
+
+/* Class = "UIButton"; normalTitle = "I don't want backups"; ObjectID = "4X9-wC-5Cl"; */
+"4X9-wC-5Cl.normalTitle" = "I don't want backups";
+
+/* Class = "UILabel"; text = "Warning ⚠️"; ObjectID = "Frg-9C-OMC"; */
+"Frg-9C-OMC.text" = "Warning ⚠️";
+
+/* Class = "UILabel"; text = "Your emails are exclusively kept on your device, not Criptext servers.\nThis means that if you delete the app or lose your device you will lose all your emails."; ObjectID = "Ll9-T7-PjW"; */
+"Ll9-T7-PjW.text" = "Your emails are exclusively kept on your device, not Criptext servers.\nThis means that if you delete the app or lose your device you will lose all your emails.";
+
+/* Class = "UIButton"; normalTitle = "Activate iCloud Backup"; ObjectID = "Obv-ZW-6Om"; */
+"Obv-ZW-6Om.normalTitle" = "Turn On Auto Backup";
+
+/* Class = "UIButton"; normalTitle = "Not Now"; ObjectID = "ZYQ-9l-wE9"; */
+"ZYQ-9l-wE9.normalTitle" = "Not Now";
+
+/* Class = "UILabel"; text = "Activate backups to guarantee that you never lose your data"; ObjectID = "g6u-so-Wdi"; */
+"g6u-so-Wdi.text" = "Auto Backup ensures that your data is never lost.";
+
+/* Class = "UILabel"; text = "Auto Backup to iCloud"; ObjectID = "gca-yK-3VQ"; */
+"gca-yK-3VQ.text" = "Auto Backup";

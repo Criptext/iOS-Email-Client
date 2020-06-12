@@ -1,0 +1,24 @@
+
+/* Class = "UIButton"; normalTitle = "Turn On Auto Backup"; ObjectID = "0ok-aY-mDl"; */
+"0ok-aY-mDl.normalTitle" = "Activar Respaldo en iCloud";
+
+/* Class = "UIButton"; normalTitle = "I don't want backups"; ObjectID = "4X9-wC-5Cl"; */
+"4X9-wC-5Cl.normalTitle" = "No deseo respaldar";
+
+/* Class = "UILabel"; text = "Warning ⚠️"; ObjectID = "Frg-9C-OMC"; */
+"Frg-9C-OMC.text" = "Cuidado ⚠️";
+
+/* Class = "UILabel"; text = "Your emails are exclusively kept on your device, not Criptext servers.\nThis means that if you delete the app or lose your device you will lose all your emails."; ObjectID = "Ll9-T7-PjW"; */
+"Ll9-T7-PjW.text" = "Tus correos solo existen en tu dispositivo, no en los servidores de Criptext. Esto quiere decir que si desinstalas tu app o pierdes tu dispositivo, perderás también todos tus correos.";
+
+/* Class = "UIButton"; normalTitle = "Activate iCloud Backup"; ObjectID = "Obv-ZW-6Om"; */
+"Obv-ZW-6Om.normalTitle" = "Activar Respaldo en iCloud";
+
+/* Class = "UIButton"; normalTitle = "Not Now"; ObjectID = "ZYQ-9l-wE9"; */
+"ZYQ-9l-wE9.normalTitle" = "No por ahora";
+
+/* Class = "UILabel"; text = "Activate backups to guarantee that you never lose your data"; ObjectID = "g6u-so-Wdi"; */
+"g6u-so-Wdi.text" = "Cuando activas el respaldo automático te aseguras de no perder tu información.";
+
+/* Class = "UILabel"; text = "Auto Backup to iCloud"; ObjectID = "gca-yK-3VQ"; */
+"gca-yK-3VQ.text" = "Respaldo en iCloud";

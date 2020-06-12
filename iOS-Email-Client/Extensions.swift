@@ -266,7 +266,7 @@ extension UIViewController {
         let popover = GenericAlertUIPopover()
         popover.myTitle = title
         popover.myMessage = message
-        self.presentPopover(popover: popover, height: 200)
+        self.presentPopover(popover: popover, height: 210)
     }
     
     func showAlert(_ title: String?, message: String?, style: UIAlertController.Style, actions:[UIAlertAction]?) {
