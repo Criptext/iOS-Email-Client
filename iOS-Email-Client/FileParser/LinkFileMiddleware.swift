@@ -13,11 +13,6 @@ protocol LinkFileInterface: class {
     func handleLinkFileRow(realm: Realm, row: [String: Any], maps: inout LinkDBMaps, accountId: String)
 }
 
-struct LinkDBMaps {
-    var emails: [Int: Int]
-    var contacts: [Int: String]
-}
-
 class LinkFileMiddleware {
     
     let linkFileInterface: LinkFileInterface

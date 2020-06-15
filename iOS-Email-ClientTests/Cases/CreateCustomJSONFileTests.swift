@@ -17,7 +17,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     var account: Account!
     
     let desiredDBText = """
-    {"fileVersion":6,"domain":"criptext.com","recipientId":"test"}
+    {"recipientId":"test","language":"en","hasCriptextFooter":true,"fileVersion":6,"domain":"criptext.com","darkTheme":false,"signature":""}
     {"object":{"email":"test1@criptext.com","isTrusted":false,"id":1,"name":"Test 1","spamScore":0},"table":"contact"}
     {"object":{"email":"test2@criptext.com","isTrusted":false,"id":2,"name":"Test 2","spamScore":0},"table":"contact"}
     {"object":{"type":"custom","uuid":"430A9A0B-8028-4907-827C-11D6AEFD5803","visible":true,"color":"fff000","id":1,"text":"Test 1"},"table":"label"}
@@ -151,30 +151,19 @@ class CreateCustomJSONFileTests: XCTestCase {
             }
             let fileData = try! Data(contentsOf: myUrl)
             let fileString = String(data: fileData, encoding: .utf8)!
-            XCTAssert(fileString.count == self.desiredDBText.count)
+            XCTAssert(fileString.count == self.desiredDBText.count, "\(fileString)\nvs\n\(self.desiredDBText)")
             
-            let streamReader = StreamReader(url: myUrl, delimeter: "\n", encoding: .utf8, chunkSize: 1024)
-            var dbRows = [[String: Any]]()
-            var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
-            while let line = streamReader?.nextLine() {
-                guard let row = Utils.convertToDictionary(text: line) else {
-                    continue
-                }
-                dbRows.append(row)
-                if dbRows.count >= 30 {
-                    DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: account.compoundKey)
-                    dbRows.removeAll()
-                }
+            let restoreTask = RestoreDBAsyncTask(path: myUrl.path, accountId: account.compoundKey, initialProgress: 0)
+            restoreTask.start(progressHandler: { (progress) in
+                print(progress)
+            }) {_ in
+                let email = DBManager.getMail(key: 123, account: account)
+                XCTAssert(email != nil)
+                expect.fulfill()
             }
-            
-            DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: account.compoundKey)
-            
-            let email = DBManager.getMail(key: 123, account: account)
-            XCTAssert(email != nil)
-            expect.fulfill()
         }
         
-        waitForExpectations(timeout: 5) { (error) in
+        waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail("Unable to execute callback with error : \(error)")
             }
