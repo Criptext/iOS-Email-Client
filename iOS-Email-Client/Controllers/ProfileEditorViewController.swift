@@ -159,8 +159,8 @@ class ProfileEditorViewController: UIViewController {
     func loadData(){
         let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
+            if case .Removed = responseData {
+                self.logout(account: self.myAccount, manually: false)
                 return
             }
             if case .Forbidden = responseData {
@@ -335,8 +335,12 @@ class ProfileEditorViewController: UIViewController {
     func changeProfileName(name: String){
         let params = EventData.Peer.NameChanged(name: name)
         APIManager.updateName(name: name, token: myAccount.jwt) { (responseData) in
+            if case .Removed = responseData {
+                self.logout(account: self.myAccount, manually: false)
+                return
+            }
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
+                self.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUHT_ERROR_MESSAGE"), style: .alert)
                 return
             }
             if case .Forbidden = responseData {
@@ -677,8 +681,12 @@ extension ProfileEditorViewController: UITableViewDataSource, UITableViewDelegat
     
     func confirmLogout(){
         APIManager.logout(token: myAccount.jwt) { (responseData) in
+            if case .Removed = responseData {
+                self.logout(account: self.myAccount, manually: false)
+                return
+            }
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
+                self.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUTH_ERROR_MESSAGE"), style: .alert)
                 return
             }
             if case .Forbidden = responseData {

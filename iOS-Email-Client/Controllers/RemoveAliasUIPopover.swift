@@ -67,8 +67,12 @@ class RemoveAliasUIPopover: BaseUIPopover {
         let domainName = alias.domain ?? Env.plainDomain
         showLoader(true)
         APIManager.deleteAlias(rowId: aliasId, token: myAccount.jwt) { (responseData) in
+            if case .Removed = responseData {
+                self.logout(account: self.myAccount, manually: false)
+                return
+            }
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount)
+                self.setFailContent(message: String.localize("AUHT_ERROR_MESSAGE"))
                 return
             }
             if case let .PreConditionRequired(daysLeft) = responseData {

@@ -1021,7 +1021,12 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
             }
             weakSelf.emailData.setState(email.key, isUnsending: false)
             if case .Unauthorized = responseData {
-                weakSelf.logout(account: weakSelf.myAccount, manually: true)
+                weakSelf.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUTH_ERROR_MESSAGE"), style: .alert)
+                weakSelf.emailsTableView.reloadData()
+                return
+            }
+            if case .Removed = responseData {
+                weakSelf.logout(account: weakSelf.myAccount, manually: false)
                 return
             }
             if case .Forbidden = responseData {

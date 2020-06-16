@@ -67,7 +67,7 @@ struct Env {
         guard !Env.isProduction else {
             return "https://api.criptext.com"
         }
-        return "https://api.criptext.com"
+        return "https://api.jigl.com"
     }
     
     static var transferURL: String {

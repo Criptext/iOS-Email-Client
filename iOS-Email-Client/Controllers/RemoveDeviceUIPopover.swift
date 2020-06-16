@@ -75,7 +75,11 @@ class RemoveDeviceUIPopover: BaseUIPopover {
         showLoader(true)
         APIManager.removeDevice(deviceId: deviceId, password: password.sha256()!, token: myAccount.jwt) { (responseData) in
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
+                self.passwordTextField.detail = String.localize("AUTH_ERROR_MESSAGE")
+                return
+            }
+            if case .Removed = responseData {
+                self.logout(account: self.myAccount, manually: false)
                 return
             }
             if case .Missing = responseData {

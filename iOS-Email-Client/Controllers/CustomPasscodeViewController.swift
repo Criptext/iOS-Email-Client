@@ -93,7 +93,6 @@ class CustomPasscodeViewController: PasscodeLockViewController {
     }
     
     func confirmLogout(){
-        let defaults = CriptextDefaults()
         guard let account = SharedDB.getActiveAccount() else {
             self.showAlert(String.localize("SIGNOUT_ERROR"), message: String.localize("RESTART_APP"), style: .alert)
             return
@@ -102,8 +101,11 @@ class CustomPasscodeViewController: PasscodeLockViewController {
             guard let weakSelf = self else {
                 return
             }
+            if case .Removed = responseData {
+                weakSelf.forceOut(account: account, manually: false)
+            }
             if case .Unauthorized = responseData {
-                weakSelf.forceOut(account: account, manually: true)
+                weakSelf.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUTH_ERROR_MESSAGE"), style: .alert)
                 return
             }
             if case .Forbidden = responseData {
