@@ -31,6 +31,7 @@ class SharedAPI {
         case forbidden = 403
         case missing = 404
         case conflicts = 405
+        case removed = 419
         case authPending = 491
         case authDenied = 493
         case tooManyDevices = 439
@@ -73,6 +74,8 @@ class SharedAPI {
             return .AuthDenied
         case .authPending:
             return .AuthPending
+        case .removed:
+            return .Removed
         case .tooManyRequests:
             let waitingTime = Int64(response?.allHeaderFields["retry-after"] as? String ?? "-1") ?? -1
             return .TooManyRequests(waitingTime)
@@ -82,6 +85,10 @@ class SharedAPI {
             let maxSize = Int64(response?.allHeaderFields["max-size"] as? String ?? "-1") ?? -1
             return .EntityTooLarge(maxSize)
         case .conflicts:
+            if let resultObj = responseRequest.result.value as? [String: Any],
+                let errorInt = resultObj["error"] as? Int {
+                return .ConflictsInt(errorInt)
+            }
             return .Conflicts
         case .success, .successAndRepeat, .successAccepted, .successNoContent, .notModified:
             break

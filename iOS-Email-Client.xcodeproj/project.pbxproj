@@ -100,6 +100,8 @@
 		7C1566A020A23AEB000CA8D2 /* TopbarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */; };
 		7C170F2524980BC100D083F8 /* LinkDBMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C170F2424980BC100D083F8 /* LinkDBMaps.swift */; };
 		7C170F2624980BC500D083F8 /* LinkDBMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C170F2424980BC100D083F8 /* LinkDBMaps.swift */; };
+		7C170F28249931EF00D083F8 /* ComposerVerifyRecoveryUIPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C170F27249931EF00D083F8 /* ComposerVerifyRecoveryUIPopup.xib */; };
+		7C170F2A2499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C170F292499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift */; };
 		7C1DA38D2153083700C4C38E /* ConnectUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1DA38C2153083700C4C38E /* ConnectUIView.swift */; };
 		7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1E82BD2116A122007CA853 /* Instructions.framework */; };
 		7C1E82C22116BD43007CA853 /* HintUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E82C12116BD43007CA853 /* HintUIView.xib */; };
@@ -772,6 +774,8 @@
 		7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopbarUIView.xib; sourceTree = "<group>"; };
 		7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopbarUIView.swift; sourceTree = "<group>"; };
 		7C170F2424980BC100D083F8 /* LinkDBMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkDBMaps.swift; sourceTree = "<group>"; };
+		7C170F27249931EF00D083F8 /* ComposerVerifyRecoveryUIPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposerVerifyRecoveryUIPopup.xib; sourceTree = "<group>"; };
+		7C170F292499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerVerifyRecoveryUIPopup.swift; sourceTree = "<group>"; };
 		7C1DA38C2153083700C4C38E /* ConnectUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUIView.swift; sourceTree = "<group>"; };
 		7C1E82BD2116A122007CA853 /* Instructions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Instructions.framework; path = Carthage/Build/iOS/Instructions.framework; sourceTree = "<group>"; };
 		7C1E82BF2116A12B007CA853 /* InstructionsAppExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InstructionsAppExtensions.framework; path = Carthage/Build/iOS/InstructionsAppExtensions.framework; sourceTree = "<group>"; };
@@ -1658,6 +1662,8 @@
 				7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */,
 				7CB3969B2491B04F00301129 /* EnableAutoBackupUIPopover.swift */,
 				7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */,
+				7C170F27249931EF00D083F8 /* ComposerVerifyRecoveryUIPopup.xib */,
+				7C170F292499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2035,6 +2041,7 @@
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
+				7C170F28249931EF00D083F8 /* ComposerVerifyRecoveryUIPopup.xib in Resources */,
 				7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */,
 				412CB0382037402D005D1B3F /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 				A7FFCF36217A911B00FFFDFF /* LabelsHeaderTableViewCell.xib in Resources */,
@@ -2362,6 +2369,7 @@
 				7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */,
 				34A56A46241AD23F00120984 /* CustomDomainViewController.swift in Sources */,
 				7CA607B9242A5E120086D6B4 /* AccountAlias.swift in Sources */,
+				7C170F2A2499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
 				48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */,
 				7C1E884C208D1193003FA304 /* MoreOptionsUIView.swift in Sources */,
