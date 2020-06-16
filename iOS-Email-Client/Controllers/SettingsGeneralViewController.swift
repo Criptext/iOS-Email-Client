@@ -157,8 +157,8 @@ class SettingsGeneralViewController: UIViewController{
     func loadData(){
         let myDevice = Device.createActiveDevice(deviceId: myAccount.deviceId)
         APIManager.getSettings(token: myAccount.jwt) { (responseData) in
-            if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
+            if case .Removed = responseData {
+                self.logout(account: self.myAccount, manually: false)
                 return
             }
             if case .Forbidden = responseData {
@@ -567,7 +567,11 @@ extension SettingsGeneralViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.logout(account: weakSelf.myAccount, manually: true)
+                weakSelf.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            if case .Removed = responseData {
+                weakSelf.logout(account: weakSelf.myAccount, manually: false)
                 return
             }
             if case .Forbidden = responseData {

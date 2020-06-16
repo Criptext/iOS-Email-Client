@@ -555,3 +555,6 @@
 "RECOVERY_EMAIL_UNVERIFIED" = "This address has no verified email";
 "RECOVERY_EMAIL_SAME" = "Can't use the same email address as recovery email";
 "UNABLE_CHANGE_RECOVERY" = "Unable to change Recovery Email. please try again";
+
+"AUTH_ERROR" = "Authentication Error";
+"AUTH_ERROR_MESSAGE" = "Unable to proccess your request. Try again later";

@@ -1477,9 +1477,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             }
             weakSelf.mailboxData.isDequeueing = false
             switch(responseData) {
-            case .Unauthorized:
+            case .Removed:
                 completion?()
-                weakSelf.logout(account: weakSelf.myAccount, manually: true)
+                weakSelf.logout(account: weakSelf.myAccount, manually: false)
             case .Forbidden:
                 completion?()
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
@@ -1726,7 +1726,11 @@ extension InboxViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.logout(account: weakSelf.myAccount, manually: true)
+                weakSelf.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            if case .Removed = responseData {
+                weakSelf.logout(account: weakSelf.myAccount, manually: false)
                 return
             }
             if case .Forbidden = responseData {
@@ -2110,8 +2114,11 @@ extension InboxViewController: RequestDelegate {
         }
         
         switch response {
+            case .Removed:
+                self.logout(account: self.myAccount, manually: false)
+                return
             case .Unauthorized:
-                self.logout(account: self.myAccount, manually: true)
+                self.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
                 return
             case .Error(let error):
                 if(error.code != .custom) {
