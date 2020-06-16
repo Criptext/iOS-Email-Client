@@ -549,3 +549,8 @@
 "TURN_OFF_REMOTE_MESSAGE" = "Your security is affected by deactivating this function.\nYou can reactivate this function in Settings > Privacy";
 
 "BACKUP_ACTIVATED" = "Backup Activated ☁️";
+
+"RECOVERY_EMAIL_BLOCKED" = "Black-listed email provider";
+"RECOVERY_EMAIL_USED" = "This address has already been used 3 times";
+"RECOVERY_EMAIL_UNVERIFIED" = "This address has no verified email";
+"UNABLE_CHANGHE_RECOVERY" = "Unable to change Recovery Email. please try again";

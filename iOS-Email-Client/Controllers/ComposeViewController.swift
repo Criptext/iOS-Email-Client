@@ -635,7 +635,55 @@ class ComposeViewController: UIViewController {
         let draftEmail = saveDraft()
         composerData.emailDraft = draftEmail
         self.toggleInteraction(false)
-        sendMailInMainController()
+        
+        APIManager.canSend(token: activeAccount.jwt) { (responseData) in
+            guard case .Success = responseData else {
+                self.showVerifyPopup()
+                return
+            }
+            self.sendMailInMainController()
+       }
+    }
+    
+    func showVerifyPopup() {
+        let popover = ComposerVerifyRecoveryUIPopup()
+        popover.onValidate = { validate in
+            guard validate else {
+                self.toggleInteraction(true)
+                return
+            }
+            self.closeComposerGoToSettings()
+        }
+        self.presentPopover(popover: popover, height: 354)
+    }
+    
+    func closeComposerGoToSettings() {
+        let mailboxVC = self.presentingViewController?.navigationDrawerController?.rootViewController.children.first as? InboxViewController
+        self.dismiss(animated: true) {
+            mailboxVC?.goToProfile()
+        }
+    }
+    
+    func resendConfirmationEmail() {
+        APIManager.resendConfirmationEmail(token: activeAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout(account: self.activeAccount, manually: true)
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.activeAccount)
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.showAlert("REQUEST_ERROR", message: "\(error.description). \(String.localize("TRY_AGAIN"))", style: .alert)
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert("NETWORK_ERROR", message: "UNABLE_RESEND_LINK", style: .alert)
+                return
+            }
+        }
     }
     
     @IBAction func didPressCC(_ sender: UIButton) {

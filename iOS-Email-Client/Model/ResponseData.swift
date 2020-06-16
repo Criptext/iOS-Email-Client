@@ -23,6 +23,8 @@ enum ResponseData {
     case AuthPending
     case AuthDenied
     case Conflicts
+    case ConflictsInt(Int)
+    case Removed
     case TooManyDevices
     case TooManyDevicesDictionary([String: Any])
     case EntityTooLarge(Int64)
