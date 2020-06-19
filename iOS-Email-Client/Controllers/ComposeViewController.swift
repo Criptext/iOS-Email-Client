@@ -566,7 +566,11 @@ class ComposeViewController: UIViewController {
     }
     
     func toggleInteraction(_ flag:Bool){
-        self.navigationItem.rightBarButtonItem = self.disableSendButton
+        if flag {
+            checkEnableSendButton()
+        } else {
+            self.navigationItem.rightBarButtonItem = self.disableSendButton
+        }
         
         self.view.isUserInteractionEnabled = flag
         self.navigationController?.navigationBar.layer.zPosition = flag ? 0 : -1
@@ -637,22 +641,32 @@ class ComposeViewController: UIViewController {
         self.toggleInteraction(false)
         
         APIManager.canSend(token: activeAccount.jwt) { (responseData) in
-            guard case .Success = responseData else {
-                self.showVerifyPopup()
+            if case let .Error(error) = responseData,
+                error.code == .offline || error.code == .timeout {
+                self.sendMailInMainController()
+            }
+            if case let .ConflictsData(_, data) = responseData,
+                let recoveryEmail = data["recovery"] as? String {
+                self.toggleInteraction(true)
+                self.showVerifyPopup(recoveryEmail: recoveryEmail)
                 return
             }
             self.sendMailInMainController()
        }
     }
     
-    func showVerifyPopup() {
+    func showVerifyPopup(recoveryEmail: String) {
         let popover = ComposerVerifyRecoveryUIPopup()
         popover.onValidate = { validate in
             guard validate else {
                 self.toggleInteraction(true)
                 return
             }
-            self.closeComposerGoToSettings()
+            if recoveryEmail.isEmpty {
+                self.closeComposerGoToSettings()
+            } else {
+                self.resendConfirmationEmail()
+            }
         }
         self.presentPopover(popover: popover, height: 354)
     }
@@ -683,6 +697,7 @@ class ComposeViewController: UIViewController {
                 self.showAlert("NETWORK_ERROR", message: "UNABLE_RESEND_LINK", style: .alert)
                 return
             }
+            self.showAlert(String.localize("LINK_SENT"), message: String.localize("CHECK_INBOX_LINK"), style: .alert)
         }
     }
     

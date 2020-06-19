@@ -87,7 +87,11 @@ class SharedAPI {
         case .conflicts:
             if let resultObj = responseRequest.result.value as? [String: Any],
                 let errorInt = resultObj["error"] as? Int {
-                return .ConflictsInt(errorInt)
+                if let data = resultObj["data"] as? [String: Any] {
+                    return .ConflictsData(errorInt, data)
+                } else {
+                    return .ConflictsInt(errorInt)
+                }
             }
             return .Conflicts
         case .success, .successAndRepeat, .successAccepted, .successNoContent, .notModified:

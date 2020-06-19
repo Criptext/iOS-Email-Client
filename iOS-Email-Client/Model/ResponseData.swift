@@ -24,6 +24,7 @@ enum ResponseData {
     case AuthDenied
     case Conflicts
     case ConflictsInt(Int)
+    case ConflictsData(Int, [String: Any])
     case Removed
     case TooManyDevices
     case TooManyDevicesDictionary([String: Any])
