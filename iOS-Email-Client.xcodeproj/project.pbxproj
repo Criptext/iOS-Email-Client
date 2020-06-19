@@ -98,6 +98,8 @@
 		7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */; };
 		7C1566A020A23AEB000CA8D2 /* TopbarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */; };
+		7C170F2524980BC100D083F8 /* LinkDBMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C170F2424980BC100D083F8 /* LinkDBMaps.swift */; };
+		7C170F2624980BC500D083F8 /* LinkDBMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C170F2424980BC100D083F8 /* LinkDBMaps.swift */; };
 		7C1DA38D2153083700C4C38E /* ConnectUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1DA38C2153083700C4C38E /* ConnectUIView.swift */; };
 		7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1E82BD2116A122007CA853 /* Instructions.framework */; };
 		7C1E82C22116BD43007CA853 /* HintUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C1E82C12116BD43007CA853 /* HintUIView.xib */; };
@@ -179,6 +181,8 @@
 		7C72F16F2141997E00A7DDEA /* InboxHeaderUITableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */; };
 		7C756F2D20DF5B23007C0641 /* SendMailAsyncTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */; };
 		7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */; };
+		7C7869C82469F1240085D909 /* LinkFileMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869C72469F1240085D909 /* LinkFileMiddleware.swift */; };
+		7C7869CA2469F2070085D909 /* LinkFileHandlerVersion6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869C92469F2070085D909 /* LinkFileHandlerVersion6.swift */; };
 		7C7869CC246EDFD40085D909 /* AvatarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C7869CB246EDFD40085D909 /* AvatarUIView.xib */; };
 		7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869CD246EE0DC0085D909 /* AvatarUI.swift */; };
 		7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */; };
@@ -767,6 +771,7 @@
 		7C154FD2204DEBAF00D72F6E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopbarUIView.xib; sourceTree = "<group>"; };
 		7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopbarUIView.swift; sourceTree = "<group>"; };
+		7C170F2424980BC100D083F8 /* LinkDBMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkDBMaps.swift; sourceTree = "<group>"; };
 		7C1DA38C2153083700C4C38E /* ConnectUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUIView.swift; sourceTree = "<group>"; };
 		7C1E82BD2116A122007CA853 /* Instructions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Instructions.framework; path = Carthage/Build/iOS/Instructions.framework; sourceTree = "<group>"; };
 		7C1E82BF2116A12B007CA853 /* InstructionsAppExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InstructionsAppExtensions.framework; path = Carthage/Build/iOS/InstructionsAppExtensions.framework; sourceTree = "<group>"; };
@@ -855,6 +860,8 @@
 		7C72F16E2141997E00A7DDEA /* InboxHeaderUITableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxHeaderUITableCell.swift; sourceTree = "<group>"; };
 		7C756F2C20DF5B23007C0641 /* SendMailAsyncTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailAsyncTask.swift; sourceTree = "<group>"; };
 		7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
+		7C7869C72469F1240085D909 /* LinkFileMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileMiddleware.swift; sourceTree = "<group>"; };
+		7C7869C92469F2070085D909 /* LinkFileHandlerVersion6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileHandlerVersion6.swift; sourceTree = "<group>"; };
 		7C7869CB246EDFD40085D909 /* AvatarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarUIView.xib; sourceTree = "<group>"; };
 		7C7869CD246EE0DC0085D909 /* AvatarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarUI.swift; sourceTree = "<group>"; };
 		7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTapTableCellView.swift; sourceTree = "<group>"; };
@@ -1399,6 +1406,7 @@
 				A741B9F52268DD00001BB19C /* DateString.swift */,
 				A7B96A71228E1A4F00C636D4 /* EventParser.swift */,
 				5BBA9D29232F68D100277C48 /* ValidateString.swift */,
+				7C170F2424980BC100D083F8 /* LinkDBMaps.swift */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -1449,6 +1457,7 @@
 				A7CC387721939B7700C8355A /* Shared */,
 				7CF93F522146E3D700361837 /* Lottie */,
 				7CB60A7520F7E75F00C9090C /* Snackbar */,
+				7C7869C62469F1070085D909 /* FileParser */,
 				7C756F2B20DF5AFB007C0641 /* AsyncTasks */,
 				7CDAD2662040A7BD0080A32C /* AxolotlStore */,
 				412CB00A20373C28005D1B3F /* Fonts */,
@@ -1734,6 +1743,15 @@
 				A721B349225E43CE004528B4 /* RestoreDBAsyncTask.swift */,
 			);
 			path = AsyncTasks;
+			sourceTree = "<group>";
+		};
+		7C7869C62469F1070085D909 /* FileParser */ = {
+			isa = PBXGroup;
+			children = (
+				7C7869C72469F1240085D909 /* LinkFileMiddleware.swift */,
+				7C7869C92469F2070085D909 /* LinkFileHandlerVersion6.swift */,
+			);
+			path = FileParser;
 			sourceTree = "<group>";
 		};
 		7CB60A7520F7E75F00C9090C /* Snackbar */ = {
@@ -2277,6 +2295,7 @@
 				7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */,
 				A73151C321B9F2FA00D20B72 /* SettingsOptionCell.swift in Sources */,
 				A7115E9D2316D32500EBECE7 /* MailboxOptionsInterface.swift in Sources */,
+				7C7869C82469F1240085D909 /* LinkFileMiddleware.swift in Sources */,
 				34A56A48241AD66700120984 /* CustomDomainSettingsData.swift in Sources */,
 				7C6CA86D244F545300181703 /* GetPlusUIPopover.swift in Sources */,
 				7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */,
@@ -2309,6 +2328,7 @@
 				7C154FD3204DEBAF00D72F6E /* Account.swift in Sources */,
 				3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */,
 				7C63AB60205816470053219F /* UnsentUIPopover.swift in Sources */,
+				7C7869CA2469F2070085D909 /* LinkFileHandlerVersion6.swift in Sources */,
 				7C26229B20A5E5E200F077FD /* CriptextFileManager.swift in Sources */,
 				7C154FD1204DE76B00D72F6E /* CriptextAxolotlStore.swift in Sources */,
 				7C8D6C762038C1C200AB96EF /* ProgressArrowUIView.swift in Sources */,
@@ -2391,6 +2411,7 @@
 				41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */,
 				7CF93F5C214963A500361837 /* GeneralVersionTableViewCell.swift in Sources */,
 				A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */,
+				7C170F2524980BC100D083F8 /* LinkDBMaps.swift in Sources */,
 				7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */,
 				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
 				7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */,
@@ -2491,6 +2512,7 @@
 				A78D27A12238084200B3ECD6 /* APIManagerSpy.swift in Sources */,
 				A718BE6F22273646008CAA72 /* ThreadTests.swift in Sources */,
 				7C26229920A4A53900F077FD /* UtilsTests.swift in Sources */,
+				7C170F2624980BC500D083F8 /* LinkDBMaps.swift in Sources */,
 				7C247E0A20C6E5270019321E /* MockSignalHandler.swift in Sources */,
 				7CC44BF120FEE1ED004BF759 /* AESCipherTests.swift in Sources */,
 				A718BE6922270322008CAA72 /* SignUpTests.swift in Sources */,

@@ -29,35 +29,39 @@ class RestoreDBAsyncTask {
             }
             let fileSize = UInt64(truncating: fileAttributes[.size] as! NSNumber)
             var dbRows = [[String: Any]]()
-            var maps = DBManager.LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
+            var maps = LinkDBMaps.init(emails: [Int: Int](), contacts: [Int: String]())
             let account = DBManager.getAccountById(self.accountId)!
             var line = streamReader.nextLine()
-            let metadata = LinkFileHeaderData.fromDictionary(dictionary: Utils.convertToDictionary(text: line!))
-            if(metadata != nil && (Env.linkVersion != metadata!.fileVersion || account.email != "\(metadata!.recipientId)@\(metadata!.domain)")) {
+            
+            guard let metadata = LinkFileHeaderData.fromDictionary(dictionary: Utils.convertToDictionary(text: line!)),
+                account.email == "\(metadata.recipientId)@\(metadata.domain)",
+                let fileHandler = try? LinkFileMiddleware(version: metadata.fileVersion) else {
                 completion(CriptextError(message: String.localize("LINK_FILE_METADATA_ERROR")))
-            } else {
-                line = streamReader.nextLine()
-                while line != nil {
-                    guard let row = Utils.convertToDictionary(text: line!) else {
-                        continue
-                    }
-                    var progress = Int((100 - UInt64(self.initialProgress)) * streamReader.currentPosition/fileSize) + self.initialProgress
-                    dbRows.append(row)
-                    if dbRows.count >= 30 {
-                        DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: self.accountId)
-                        dbRows.removeAll()
-                        if progress > 99 {
-                            progress = 99
-                        }
-                        DispatchQueue.main.async {
-                            progressHandler(progress)
-                        }
-                    }
-                    line = streamReader.nextLine()
-                }
-                DBManager.insertBatchRows(rows: dbRows, maps: &maps, accountId: self.accountId)
-                CriptextFileManager.deleteFile(path: self.path)
+                return
             }
+            
+            line = streamReader.nextLine()
+            while line != nil {
+                guard let row = Utils.convertToDictionary(text: line!) else {
+                    continue
+                }
+                var progress = Int((100 - UInt64(self.initialProgress)) * streamReader.currentPosition/fileSize) + self.initialProgress
+                dbRows.append(row)
+                if dbRows.count >= 30 {
+                    fileHandler.insertBatchRows(rows: dbRows, maps: &maps, accountId: self.accountId)
+                    dbRows.removeAll()
+                    if progress > 99 {
+                        progress = 99
+                    }
+                    DispatchQueue.main.async {
+                        progressHandler(progress)
+                    }
+                }
+                line = streamReader.nextLine()
+            }
+            fileHandler.insertBatchRows(rows: dbRows, maps: &maps, accountId: self.accountId)
+            CriptextFileManager.deleteFile(path: self.path)
+            
             DispatchQueue.main.async {
                 completion(nil)
             }
