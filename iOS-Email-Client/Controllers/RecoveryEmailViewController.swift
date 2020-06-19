@@ -175,12 +175,14 @@ class RecoveryEmailViewController: UIViewController {
                     if (error.code != .custom) {
                         self.showAlert("NETWORK_ERROR", message: "\(error.description). Please try again", style: .alert)
                     } else {
-                        self.showAlert("ODD", message: String.localize("UNABLE_CHANGHE_RECOVERY"), style: .alert)
+                        self.showAlert("ODD", message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
                     }
                 case .BadRequest:
                     self.showAlert("ODD", message: String.localize("ENTERED_WRONG_PASS"), style: .alert)
                 case .ConflictsInt(let error):
                     self.handleChangeRecoveryEmailError(error)
+                case .ConflictsData(let errorCode, let data):
+                    self.handleChangeRecoveryEmailError(errorCode, limit: data["max"] as? Int ?? 0)
                 case .Success:
                     self.generalData.recoveryEmail = email
                     self.generalData.recoveryEmailStatus = .pending
@@ -189,22 +191,24 @@ class RecoveryEmailViewController: UIViewController {
                     self.prepareView()
                     self.presentResendAlert()
                 default:
-                    self.showAlert("ODD", message: String.localize("UNABLE_CHANGHE_RECOVERY"), style: .alert)
+                    self.showAlert("ODD", message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
             }
         }
     }
     
-    func handleChangeRecoveryEmailError(_ error: Int) {
+    func handleChangeRecoveryEmailError(_ error: Int, limit: Int = 0) {
         var message = ""
         switch(error) {
         case 1:
             message = String.localize("RECOVERY_EMAIL_UNVERIFIED")
         case 2:
-            message = String.localize("RECOVERY_EMAIL_USED")
+            message = String.localize("RECOVERY_EMAIL_USED", arguments: limit)
         case 3:
             message = String.localize("RECOVERY_EMAIL_BLOCKED")
+        case 4:
+            message = String.localize("RECOVERY_EMAIL_SAME")
         default:
-            self.showAlert("ODD", message: String.localize("UNABLE_CHANGHE_RECOVERY"), style: .alert)
+            self.showAlert("ODD", message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
             return
         }
         emailTextField.dividerActiveColor = .alert

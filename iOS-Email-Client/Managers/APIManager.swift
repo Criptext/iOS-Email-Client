@@ -52,13 +52,22 @@ class APIManager: SharedAPI {
     }
     
     class func canSend(token: String, completion: @escaping ((ResponseData) -> Void)){
-        let url = "\(self.baseUrl)/send/mail"
+        let url = "\(self.baseUrl)/user/cansend"
         let headers = [
             "Authorization": "Bearer \(token)",
             versionHeader: apiVersion,
             language: Env.language
         ]
-        completion(.ServerError)
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            let responseData = handleResponse(response)
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.canSend(token: newToken, completion: completion)
+            }
+        }
     }
     
     class func getKeysRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){

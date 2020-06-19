@@ -1,0 +1,12 @@
+
+/* Class = "UILabel"; text = "You need to verify a Recovery Email  before being able to send emails.\n\nThis is only so you can regain access to your account if you ever forget your password."; ObjectID = "Azw-aw-o91"; */
+"Azw-aw-o91.text" = "You need to verify a Recovery Email  before being able to send emails.\n\nThis is only so you can regain access to your account if you ever forget your password.";
+
+/* Class = "UIButton"; normalTitle = "Not Now"; ObjectID = "Lai-0a-Ki5"; */
+"Lai-0a-Ki5.normalTitle" = "Not Now";
+
+/* Class = "UIButton"; normalTitle = "Verify Recovery Email"; ObjectID = "l3n-ng-ou3"; */
+"l3n-ng-ou3.normalTitle" = "Verify Recovery Email";
+
+/* Class = "UILabel"; text = "Not so fast 🤨"; ObjectID = "zh6-VJ-4gg"; */
+"zh6-VJ-4gg.text" = "Not so fast 🤨";

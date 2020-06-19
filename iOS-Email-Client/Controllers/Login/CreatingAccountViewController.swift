@@ -189,20 +189,24 @@ class CreatingAccountViewController: UIViewController{
                 }
             case .ConflictsInt(let errorCode):
                 self.handleSignUpErrorCode(error: errorCode)
+            case .ConflictsData(let errorCode, let data):
+                self.handleSignUpErrorCode(error: errorCode, limit: data["max"] as? Int ?? 0)
             default:
                 self.displayErrorMessage()
         }
     }
     
-    func handleSignUpErrorCode(error: Int) {
+    func handleSignUpErrorCode(error: Int, limit: Int = 0) {
         var message = ""
         switch(error) {
         case 1:
             message = String.localize("RECOVERY_EMAIL_UNVERIFIED")
         case 2:
-            message = String.localize("RECOVERY_EMAIL_USED")
+            message = String.localize("RECOVERY_EMAIL_USED", arguments: limit)
         case 3:
             message = String.localize("RECOVERY_EMAIL_BLOCKED")
+        case 4:
+            message = String.localize("RECOVERY_EMAIL_SAME")
         default:
             self.displayErrorMessage()
             return

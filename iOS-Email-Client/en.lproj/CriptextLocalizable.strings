@@ -551,6 +551,7 @@
 "BACKUP_ACTIVATED" = "Backup Activated ☁️";
 
 "RECOVERY_EMAIL_BLOCKED" = "Black-listed email provider";
-"RECOVERY_EMAIL_USED" = "This address has already been used 3 times";
+"RECOVERY_EMAIL_USED" = "This address has already been used %@ times";
 "RECOVERY_EMAIL_UNVERIFIED" = "This address has no verified email";
-"UNABLE_CHANGHE_RECOVERY" = "Unable to change Recovery Email. please try again";
+"RECOVERY_EMAIL_SAME" = "Can't use the same email address as recovery email";
+"UNABLE_CHANGE_RECOVERY" = "Unable to change Recovery Email. please try again";

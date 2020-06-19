@@ -549,3 +549,9 @@
 "TURN_OFF_REMOTE_MESSAGE" = "Tu seguridad se vera afectada al desactivar esta funcionalidad.\nPuedes reactivarla yendo a Configuración > Privacidad";
 
 "BACKUP_ACTIVATED" = "Respaldo Activado ☁️";
+
+"RECOVERY_EMAIL_BLOCKED" = "Este proveedor de correo está bloqueado";
+"RECOVERY_EMAIL_USED" = "Este correo ya ha sido usado %@ veces";
+"RECOVERY_EMAIL_UNVERIFIED" = "Este correo no esta validado";
+"RECOVERY_EMAIL_SAME" = "No puedes usar el mismo correo";
+"UNABLE_CHANGE_RECOVERY" = "No fue posible cambiar el correo. Por favor intenta de nuevo";
