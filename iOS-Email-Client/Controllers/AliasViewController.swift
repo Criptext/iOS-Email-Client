@@ -33,15 +33,6 @@ class AliasViewController: UIViewController {
         self.applyTheme()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let defaults = CriptextDefaults()
-        if (!Constants.isPlus(customerType: myAccount.customerType) && !defaults.hasShownPlusAlias) {
-            defaults.hasShownPlusAlias = true
-            self.askUpgradePlus()
-        }
-    }
-    
     func loadAliasesAndCustomDomains() {
         let aliases = DBManager.getAliases(account: myAccount)
         let customDomains = DBManager.getVerifiedCustomDomains(account: myAccount)

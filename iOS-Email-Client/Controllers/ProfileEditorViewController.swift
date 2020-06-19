@@ -128,11 +128,10 @@ class ProfileEditorViewController: UIViewController {
     }
     
     func setupSections() {
-        let plusMargin = Constants.isPlus(customerType: myAccount.customerType) ? avatarPlusBadgeMarginTopConstraint.constant + avatarPlusBadgeHeightConstraint.constant : 0.0
-        if (!Constants.isPlus(customerType: myAccount.customerType)) {
-            avatarPlusBadgeHeightConstraint.constant = 0
-            avatarPlusBadgeMarginTopConstraint.constant = 0
-        }
+        let plusMargin: CGFloat = 0.0
+        avatarPlusBadgeHeightConstraint.constant = 0
+        avatarPlusBadgeMarginTopConstraint.constant = 0
+        
         tableView.tableFooterView = UIView()
         if self.myAccount.domain == nil {
             sections = [.profile, .danger] as [Section]

@@ -54,7 +54,7 @@ class MenuViewController: UIViewController{
         }
     }
     var scrollViewHeight: CGFloat {
-        let needsUpgrade = Constants.isUpgrade(customerType: mailboxVC.myAccount.customerType)
+        let needsUpgrade = false
         joinPlusMenuItem.isHidden = !needsUpgrade
         joinPlusItemHeightContraint.constant = !needsUpgrade ? 0.0 : MENU_ITEM_HEIGHT
         return !needsUpgrade ? MENU_CONTENT_HEIGHT : (MENU_CONTENT_HEIGHT + MENU_ITEM_HEIGHT)
@@ -82,8 +82,8 @@ class MenuViewController: UIViewController{
         avatarPlusBadgeView.backgroundColor = UIColor.init().toColorString(hex: hexColor)
         avatarPlusBadgeView.layer.masksToBounds = true
         
-        avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
-        avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        avatarImageWrapperView.isHidden = true
+        avatarPlusBadgeWrapperView.isHidden = true
         
         joinPlusMenuItem.itemLabel.text = String.localize("JOIN_PLUS")
         self.accountsSectionButton.imageView?.tintColor = .mainUI
@@ -149,7 +149,7 @@ class MenuViewController: UIViewController{
         usernameLabel.text = myAccount.email
         
         UIUtils.setProfilePictureImage(imageView: avatarImage, contact: (myAccount.email, myAccount.name))
-        UIUtils.setAvatarBorderImage(imageView: avatarImageWrapperView, contact: (myAccount.email, myAccount.name))
+        avatarImageWrapperView.isHidden = true
     }
     
     func reloadView() {
@@ -163,8 +163,8 @@ class MenuViewController: UIViewController{
         let hexColor = Account.CustomerType(rawValue: mailboxVC.myAccount.customerType)?.hexColor ?? "FFFFFF"
         avatarPlusBadgeView.backgroundColor = UIColor.init().toColorString(hex: hexColor)
         
-        avatarImageWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
-        avatarPlusBadgeWrapperView.isHidden = !Constants.isPlus(customerType: mailboxVC.myAccount.customerType)
+        avatarImageWrapperView.isHidden = true
+        avatarPlusBadgeWrapperView.isHidden = true
     }
     
     func applyTheme() {

@@ -119,7 +119,7 @@ class SettingsGeneralViewController: UIViewController{
     let ROW_HEIGHT: CGFloat = 40.0
     var sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
     var menus = [
-        .account: [.account, .privacy, .devices, .labels, .manualSync, .backup, .plus],
+        .account: [.account, .privacy, .devices, .labels, .manualSync, .backup],
         .addresses: [.customDomain, .aliases],
         .general: [.night, .syncContact, .preview, .pin],
         .support: [.reportBug, .reportAbuse],

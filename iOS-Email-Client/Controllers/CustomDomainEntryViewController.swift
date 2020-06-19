@@ -31,15 +31,6 @@ class CustomDomainEntryViewController: UIViewController {
         self.showLoader(false)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let defaults = CriptextDefaults()
-        if (!Constants.isPlus(customerType: myAccount.customerType) && !defaults.hasShownPlusCustomDomains) {
-            defaults.hasShownPlusCustomDomains = true
-            self.askUpgradePlus()
-        }
-    }
-    
     func applyLocalization() {
         titleLabel.text = String.localize("ADD_DOMAIN_TITLE")
         subtitleLabel.text = String.localize("ADD_DOMAIN_SUBTITLE")

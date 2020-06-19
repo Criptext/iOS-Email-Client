@@ -21,7 +21,7 @@ class AccountCollectionCell: UICollectionViewCell {
     
     func setContent(account: Account, counter: Int) {
         UIUtils.setProfilePictureImage(imageView: avatarImage, contact: (account.email, account.name))
-        UIUtils.setAvatarBorderImage(imageView: plusBorderView, contact: (account.email, account.name))
+        plusBorderView.isHidden = true
         if counter == 0 {
             badgeLabel.isHidden = true
         } else {
