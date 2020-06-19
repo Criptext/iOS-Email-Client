@@ -274,7 +274,7 @@ class EmailTableViewCell: UITableViewCell{
             borderBGView.layer.borderColor = theme.alert.cgColor
         }
         
-        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: email.fromContact)
+        avatarBorderView.isHidden = true
         showImagesSeparatorView.isHidden = showImagesButton.isHidden
     }
     

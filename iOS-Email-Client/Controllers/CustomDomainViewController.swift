@@ -30,15 +30,6 @@ class CustomDomainViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let defaults = CriptextDefaults()
-        if (!Constants.isPlus(customerType: myAccount.customerType) && !defaults.hasShownPlusCustomDomains) {
-            defaults.hasShownPlusCustomDomains = true
-            self.askUpgradePlus()
-        }
-    }
-    
     func applyTheme() {
         let attributedTitle = NSAttributedString(string: String.localize("CUSTOM_DOMAIN").capitalized, attributes: [.font: Font.semibold.size(16.0)!, .foregroundColor: theme.mainText])
         tabItem.setAttributedTitle(attributedTitle, for: .normal)

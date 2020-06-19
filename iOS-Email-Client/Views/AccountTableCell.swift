@@ -36,7 +36,7 @@ class AccountTableCell: UITableViewCell {
     
     func setContent(account: Account, counter: Int) {
         UIUtils.setProfilePictureImage(imageView: self.avatarImage, contact: (account.email, account.name))
-        UIUtils.setAvatarBorderImage(imageView: self.plusBorderView, contact: (account.email, account.name))
+        plusBorderView.isHidden = true
         
         nameLabel.text = account.name
         emailLabel.text = account.email
