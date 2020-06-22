@@ -1142,12 +1142,13 @@ extension InboxViewController: UITableViewDataSource{
         self.present(snackbarController, animated: true, completion: nil)
     }
     
-    func goToProfile(){
+    func goToProfile(account: Account? = nil){
+        let settingsAccount = account ?? self.myAccount
         self.navigationDrawerController?.closeLeftView()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let profileVC = storyboard.instantiateViewController(withIdentifier: "profileEditorView") as! ProfileEditorViewController
-        profileVC.myAccount = self.myAccount
+        profileVC.myAccount = settingsAccount
         profileVC.loadDataAtStart = true
         
         let navProfileVC = UINavigationController(rootViewController: profileVC)

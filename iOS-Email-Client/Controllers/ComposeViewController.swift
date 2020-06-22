@@ -674,7 +674,7 @@ class ComposeViewController: UIViewController {
     func closeComposerGoToSettings() {
         let mailboxVC = self.presentingViewController?.navigationDrawerController?.rootViewController.children.first as? InboxViewController
         self.dismiss(animated: true) {
-            mailboxVC?.goToProfile()
+            mailboxVC?.goToProfile(account: self.activeAccount)
         }
     }
     
