@@ -115,6 +115,14 @@ class ComposeViewController: UIViewController {
     
     var accountOptionsInterface: AccountOptionsInterface!
     
+    var isTest: Bool {
+        let dic = ProcessInfo.processInfo.environment
+        guard let isTest = dic["isTest"] else {
+            return false
+        }
+        return isTest == "true"
+    }
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -639,6 +647,11 @@ class ComposeViewController: UIViewController {
         let draftEmail = saveDraft()
         composerData.emailDraft = draftEmail
         self.toggleInteraction(false)
+        
+        guard !isTest else {
+            self.sendMailInMainController()
+            return
+        }
         
         APIManager.canSend(token: activeAccount.jwt) { (responseData) in
             if case let .Error(error) = responseData,

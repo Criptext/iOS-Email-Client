@@ -68,6 +68,14 @@ class InboxViewController: UIViewController {
     var currentGuide = "guideComposer"
     var controllerMessage: ControllerMessage?
     var mailboxOptionsInterface: MailboxOptionsInterface?
+    
+    var isTest: Bool {
+        let dic = ProcessInfo.processInfo.environment
+        guard let isTest = dic["isTest"] else {
+            return false
+        }
+        return isTest == "true"
+    }
 
     var containerUrl: URL? {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
@@ -834,7 +842,7 @@ extension InboxViewController{
 //MARK: - Load mails
 extension InboxViewController{
     func loadMails(since date:Date, clear: Bool = false, limit: Int = 0){
-        guard clear || mailboxData.fetchAsyncTask == nil else {
+        guard !isTest && (clear || mailboxData.fetchAsyncTask == nil) else {
             return
         }
         let searchText = searchController.searchBar.text
