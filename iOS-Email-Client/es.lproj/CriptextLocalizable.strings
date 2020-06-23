@@ -504,7 +504,7 @@
 "VERIFY_DOMAIN_ERROR" = "Ingresaste %@ como tu dominio. Verifica que esto este correcto.\n\nTambién verifica que los DNS Records de tu dominio no estén vacíos.";
 "VERIFY_DOMAIN_MESSAGE" = "No cierres el app hasta que este proceso termine.";
 
-"BILLING" = "Facturación";
+"BILLING" = "Plus";
 "CONNECTION_LOST" = "Parece que has perdido tu connección a internet";
 
 "CUSTOM_DOMAINS_PLUS_TITLE" = "Disfruta Dominios Personalizados";
@@ -523,8 +523,8 @@
 "PERK_PLUS_FOUR" = "Actualizaciones mensuales del CEO";
 "PERK_PLUS_FIVE" = "Prioridad en Soporte";
 
-"PLUS_SETTINGS_TITLE" = "Estas buscando los\nDatos de Facturación?";
-"PLUS_SETTINGS_MESSAGE" = "Abre el App de Criptext en tu PC para administar tus datos de Facturación";
+"PLUS_SETTINGS_TITLE" = "Buscando Plus?";
+"PLUS_SETTINGS_MESSAGE" = "No puedes hacer esto en el App";
 
 "DEVICE_LIMIT_REACHED" = "Necesitas Plus para esto";
 "DEVICE_LIMIT_PLUS" = "Has alcanzado el máximo número de dispositivos (%i). Subscribete a Plus para poder vincular %i dispositivos. Caso contrario deberas remover dispositivos para continuar.";

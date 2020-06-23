@@ -504,7 +504,7 @@
 "VERIFY_DOMAIN_ERROR" = "%@ is listed as your domain, make sure this is right; otherwise correct the domain on your Company Profile. Need help?\n\nAlso check that the DNS records on your domain are not empty; otherwise go back and add them from the previous steps.";
 "VERIFY_DOMAIN_MESSAGE" = "Do not close the app or put in the background until this process ends.";
 
-"BILLING" = "Billing";
+"BILLING" = "Plus";
 "CONNECTION_LOST" = "Looks like you have lost connections with Wifi or other Internet connection";
 
 "CUSTOM_DOMAINS_PLUS_TITLE" = "Enjoy Custom Domains";
@@ -523,8 +523,8 @@
 "PERK_PLUS_FOUR" = "CEO's monthly update";
 "PERK_PLUS_FIVE" = "Priority Support";
 
-"PLUS_SETTINGS_TITLE" = "Looking for your\nBilling Settings?";
-"PLUS_SETTINGS_MESSAGE" = "Open Criptext App on desktop to manage your Billing Settings";
+"PLUS_SETTINGS_TITLE" = "Looking for Plus?";
+"PLUS_SETTINGS_MESSAGE" = "You can't do this in the App";
 
 "DEVICE_LIMIT_REACHED" = "You need Plus for this";
 "DEVICE_LIMIT_PLUS" = "You've reached your maximum devices allowed (%i). Upgrade to Plus to get up to %i devices connected on your account. Otherwise, remove an existing device in order to continue logging in.";
