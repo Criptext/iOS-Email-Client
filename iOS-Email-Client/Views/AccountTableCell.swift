@@ -36,8 +36,8 @@ class AccountTableCell: UITableViewCell {
     
     func setContent(account: Account, counter: Int) {
         UIUtils.setProfilePictureImage(imageView: self.avatarImage, contact: (account.email, account.name))
-        plusBorderView.isHidden = true
-        
+        UIUtils.setAvatarBorderImage(imageView: self.plusBorderView, contact: (account.email, account.name))
+
         nameLabel.text = account.name
         emailLabel.text = account.email
         badgeLabel.text = counter > 100 ? "99+" : counter.description

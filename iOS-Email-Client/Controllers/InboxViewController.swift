@@ -430,7 +430,7 @@ class InboxViewController: UIViewController {
         avatarBorderView.contentMode = .scaleAspectFit
         
         UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-        avatarBorderView.isHidden = true
+        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOpenMenu(_:)))
         containerView.addSubview(avatarBorderView)
@@ -646,7 +646,7 @@ extension InboxViewController {
             DBManager.refresh()
             UIUtils.deleteSDWebImageCache()
             UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-            avatarBorderView.isHidden = true
+            UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
             menuViewController.reloadView()
         }
         
@@ -985,7 +985,7 @@ extension InboxViewController: UITableViewDataSource{
             cell.avatarBorderView.isHidden = true
         } else {
             UIUtils.setProfilePictureImage(imageView: cell.avatarImageView, contact: thread.lastContact)
-            avatarBorderView.isHidden = true
+            UIUtils.setAvatarBorderImage(imageView: cell.avatarBorderView, contact: thread.lastContact)
         }
         return cell
     }
@@ -2073,7 +2073,7 @@ extension InboxViewController {
         }
         self.setQueueItemsListener()
         UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-        avatarBorderView.isHidden = true
+        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
         self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
         RequestManager.shared.getAccountEvents(accountId: account.compoundKey)
     }

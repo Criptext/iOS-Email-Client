@@ -2000,14 +2000,14 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="414" height="100"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="100.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="100.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                    <rect key="frame" x="339" y="42" width="16" height="16"/>
+                                                    <rect key="frame" x="339" y="42.5" width="16" height="16"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="16" id="6m0-09-ggS"/>
@@ -2015,7 +2015,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6n-ID-26a" userLabel="More Label Button">
-                                                    <rect key="frame" x="379" y="40" width="18" height="20"/>
+                                                    <rect key="frame" x="379" y="40.5" width="18" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="MBK-5z-3XB"/>
                                                         <constraint firstAttribute="height" constant="20" id="pgR-MU-Koc"/>
@@ -2027,13 +2027,13 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="315" height="100"/>
+                                                    <rect key="frame" x="27" y="0.0" width="315" height="100.5"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="100"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="100.5"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
-                                                                    <rect key="frame" x="2" y="47" width="6" height="6"/>
+                                                                    <rect key="frame" x="2" y="47.5" width="6" height="6"/>
                                                                     <color key="backgroundColor" red="0.0" green="1" blue="0.017805179300000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="6" id="LiT-aA-huk"/>
@@ -2054,7 +2054,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="293" height="100"/>
+                                                            <rect key="frame" x="22" y="0.0" width="293" height="100.5"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -4096,7 +4096,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JoM-zN-aio" customClass="AlreadyPlusUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="700"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="billing-settings" translatesAutoresizingMaskIntoConstraints="NO" id="Gis-RF-Vx1">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="got-plus" translatesAutoresizingMaskIntoConstraints="NO" id="Gis-RF-Vx1">
                                                         <rect key="frame" x="137" y="127.5" width="140" height="130"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="140" id="21h-IS-cpR"/>
@@ -4110,8 +4110,8 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Criptext App on Desktop to manage your billing settings" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="INw-Sk-l1K">
-                                                        <rect key="frame" x="60" y="418" width="294" height="44"/>
-                                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
+                                                        <rect key="frame" x="60" y="398" width="294" height="49.5"/>
+                                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -4123,7 +4123,7 @@
                                                     <constraint firstItem="nnY-1o-BSE" firstAttribute="top" secondItem="Gis-RF-Vx1" secondAttribute="bottom" constant="60" id="Y5Z-Bq-904"/>
                                                     <constraint firstItem="Gis-RF-Vx1" firstAttribute="centerX" secondItem="JoM-zN-aio" secondAttribute="centerX" id="afo-me-q7i"/>
                                                     <constraint firstItem="INw-Sk-l1K" firstAttribute="leading" secondItem="JoM-zN-aio" secondAttribute="leading" constant="60" id="ks8-iT-Qpf"/>
-                                                    <constraint firstItem="INw-Sk-l1K" firstAttribute="top" secondItem="nnY-1o-BSE" secondAttribute="bottom" constant="40" id="nGA-nK-GYP"/>
+                                                    <constraint firstItem="INw-Sk-l1K" firstAttribute="top" secondItem="nnY-1o-BSE" secondAttribute="bottom" constant="20" id="nGA-nK-GYP"/>
                                                     <constraint firstAttribute="trailing" secondItem="INw-Sk-l1K" secondAttribute="trailing" constant="60" id="ugp-ow-gDR"/>
                                                     <constraint firstItem="Gis-RF-Vx1" firstAttribute="centerY" secondItem="JoM-zN-aio" secondAttribute="centerY" multiplier="0.55" id="ywZ-VV-OPu"/>
                                                 </constraints>
@@ -4986,7 +4986,6 @@ Also check that the DNS records on your domain are not empty; otherwise go back 
         <image name="attachment_inbox" width="36" height="20"/>
         <image name="attachment_pdf" width="80" height="80"/>
         <image name="attachment_photolibrary" width="27" height="27"/>
-        <image name="billing-settings" width="156" height="147"/>
         <image name="border-gold" width="102" height="101"/>
         <image name="camera" width="28.5" height="28.5"/>
         <image name="check-gold" width="14" height="11"/>
@@ -5000,6 +4999,7 @@ Also check that the DNS records on your domain are not empty; otherwise go back 
         <image name="double-check" width="18.5" height="10.5"/>
         <image name="envelope" width="112" height="112"/>
         <image name="formatting" width="15" height="18.5"/>
+        <image name="got-plus" width="126" height="147"/>
         <image name="icSecinb" width="17" height="17"/>
         <image name="icon-allmail" width="48" height="37"/>
         <image name="icon-down" width="13" height="8"/>

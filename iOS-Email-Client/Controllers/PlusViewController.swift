@@ -28,16 +28,9 @@ class PlusViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
         
-        if isPlus {
-            upgradePlusView.isHidden = true
-            alreadyPlusView.applyTheme()
-            alreadyPlusView.applyLocalization()
-        } else {
-            alreadyPlusView.isHidden = true
-            upgradePlusView.applyTheme()
-            upgradePlusView.applyLocalization()
-            UIUtils.setProfilePictureImage(imageView: upgradePlusView.avatarImage, contact: (myAccount.email, myAccount.name))
-        }
+        upgradePlusView.isHidden = true
+        alreadyPlusView.applyTheme()
+        alreadyPlusView.applyLocalization()
         
         let theme = ThemeManager.shared.theme
         self.view.backgroundColor = theme.background
