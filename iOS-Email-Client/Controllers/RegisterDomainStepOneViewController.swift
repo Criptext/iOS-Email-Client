@@ -101,12 +101,6 @@ class RegisterDomainStepOneViewController: UIViewController {
     }
 }
 
-extension RegisterDomainStepOneViewController {
-    func reloadView() {
-        self.applyTheme()
-    }
-}
-
 extension RegisterDomainStepOneViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let nav = self.navigationController else {

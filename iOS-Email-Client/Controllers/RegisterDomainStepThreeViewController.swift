@@ -177,12 +177,6 @@ extension RegisterDomainStepThreeViewController: ScheduleWorkerDelegate {
     }
 }
 
-extension RegisterDomainStepThreeViewController {
-    func reloadView() {
-        self.applyTheme()
-    }
-}
-
 extension RegisterDomainStepThreeViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let nav = self.navigationController else {

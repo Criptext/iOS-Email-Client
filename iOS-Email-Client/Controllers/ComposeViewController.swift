@@ -693,8 +693,12 @@ class ComposeViewController: UIViewController {
     
     func resendConfirmationEmail() {
         APIManager.resendConfirmationEmail(token: activeAccount.jwt) { (responseData) in
+            if case .Removed = responseData {
+                self.logout(account: self.activeAccount, manually: false)
+                return
+            }
             if case .Unauthorized = responseData {
-                self.logout(account: self.activeAccount, manually: true)
+                self.showAlert("AUTH_ERROR", message: "AUTH_ERROR_MESSAGE", style: .alert)
                 return
             }
             if case .Forbidden = responseData {

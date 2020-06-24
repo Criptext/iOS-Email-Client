@@ -220,12 +220,6 @@ class RegisterDomainStepTwoViewController: UIViewController {
     }
 }
 
-extension RegisterDomainStepTwoViewController {
-    func reloadView() {
-        self.applyTheme()
-    }
-}
-
 extension RegisterDomainStepTwoViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let nav = self.navigationController else {

@@ -141,13 +141,6 @@ extension RemoveDevicesViewController: UITableViewDelegate, UITableViewDataSourc
     }
 }
 
-extension RemoveDevicesViewController {
-    func reloadView() {
-        self.applyTheme()
-        tableView.reloadData()
-    }
-}
-
 extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
     @objc func tableViewCellDidLongPress(_ cell: SettingsDeviceTableViewCell) {
        

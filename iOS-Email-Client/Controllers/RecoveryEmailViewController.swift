@@ -88,8 +88,12 @@ class RecoveryEmailViewController: UIViewController {
     @IBAction func onResendPress(_ sender: Any) {
         self.showLoaderTimer(true)
         APIManager.resendConfirmationEmail(token: myAccount.jwt) { (responseData) in
+            if case .Removed = responseData {
+                self.logout(account: self.myAccount, manually: false)
+                return
+            }
             if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
+                self.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUTH_ERROR_MESSAGE"), style: .alert)
                 return
             }
             self.showLoaderTimer(false)
@@ -99,11 +103,11 @@ class RecoveryEmailViewController: UIViewController {
             }
             if case let .Error(error) = responseData,
                 error.code != .custom {
-                self.showAlert("REQUEST_ERROR", message: "\(error.description). \(String.localize("TRY_AGAIN"))", style: .alert)
+                self.showAlert(String.localize("REQUEST_ERROR"), message: "\(error.description). \(String.localize("TRY_AGAIN"))", style: .alert)
                 return
             }
             guard case .Success = responseData else {
-                self.showAlert("NETWORK_ERROR", message: "UNABLE_RESEND_LINK", style: .alert)
+                self.showAlert(String.localize("NETWORK_ERROR"), message: String.localize("UNABLE_RESEND_LINK"), style: .alert)
                 return
             }
             self.presentResendAlert()
@@ -168,17 +172,19 @@ class RecoveryEmailViewController: UIViewController {
             self.showLoader(false)
             switch(responseData) {
                 case .Unauthorized:
-                    self.logout(account: self.myAccount, manually: true)
+                    self.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUTH_ERROR_MESSAGE"), style: .alert)
+                case .Removed:
+                    self.logout(account: self.myAccount, manually: false)
                 case .Forbidden:
                     self.presentPasswordPopover(myAccount: self.myAccount)
                 case .Error(let error):
                     if (error.code != .custom) {
-                        self.showAlert("NETWORK_ERROR", message: "\(error.description). Please try again", style: .alert)
+                        self.showAlert(String.localize("NETWORK_ERROR"), message: "\(error.description). Please try again", style: .alert)
                     } else {
-                        self.showAlert("ODD", message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
+                        self.showAlert(String.localize("ODD"), message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
                     }
                 case .BadRequest:
-                    self.showAlert("ODD", message: String.localize("ENTERED_WRONG_PASS"), style: .alert)
+                    self.showAlert(String.localize("ODD"), message: String.localize("ENTERED_WRONG_PASS"), style: .alert)
                 case .ConflictsInt(let error):
                     self.handleChangeRecoveryEmailError(error)
                 case .ConflictsData(let errorCode, let data):
@@ -299,8 +305,8 @@ class RecoveryEmailViewController: UIViewController {
     }
 }
 
-extension RecoveryEmailViewController {
-    func reloadView() {
+extension RecoveryEmailViewController: SettingsRefresher {
+    func updateView() {
         recoveryEmailLabel.text = recoveryEmail
         statusLabel.text = recoveryEmailStatus.description
         statusLabel.textColor = recoveryEmailStatus.color

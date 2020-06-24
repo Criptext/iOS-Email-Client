@@ -63,13 +63,6 @@ extension SettingsDevicesViewController: UITableViewDelegate, UITableViewDataSou
     }
 }
 
-extension SettingsDevicesViewController {
-    func reloadView() {
-        self.applyTheme()
-        tableView.reloadData()
-    }
-}
-
 extension SettingsDevicesViewController: DeviceTableViewCellDelegate {
     func tableViewCellDidLongPress(_ cell: SettingsDeviceTableViewCell) {
         guard let indexPath = self.tableView.indexPath(for: cell) else {

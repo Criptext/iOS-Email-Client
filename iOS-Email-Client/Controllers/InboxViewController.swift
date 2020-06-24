@@ -565,19 +565,33 @@ extension InboxViewController: WebSocketManagerDelegate {
             }
             delegate.logout(account: myAccount)
         case .RecoveryChanged(let address):
-            guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.children.first as? SettingsGeneralViewController else {
-                return
+            if let snack = self.presentedViewController as? CriptextSnackbarController,
+                let nav = snack.rootViewController as? UINavigationController,
+                let settings = nav.children.first as? SettingsGeneralViewController {
+                settings.generalData.recoveryEmail = address
+                settings.generalData.recoveryEmailStatus = .pending
+                settings.generalData.isTwoFactor = false
+                settings.reloadView()
             }
-            settings.generalData.recoveryEmail = address
-            settings.generalData.recoveryEmailStatus = .pending
-            settings.generalData.isTwoFactor = false
+            if let nav = self.presentedViewController as? UINavigationController,
+                let profile = nav.children.first as? ProfileEditorViewController {
+                profile.generalData.recoveryEmail = address
+                profile.generalData.recoveryEmailStatus = .pending
+                profile.generalData.isTwoFactor = false
+                profile.reloadView()
+            }
         case .RecoveryVerified:
-            guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.children.first as? SettingsGeneralViewController else {
-                    return
+            if let snack = self.presentedViewController as? CriptextSnackbarController,
+                let nav = snack.rootViewController as? UINavigationController,
+                let settings = nav.children.first as? SettingsGeneralViewController {
+                settings.generalData.recoveryEmailStatus = .verified
+                settings.reloadView()
             }
-            settings.generalData.recoveryEmailStatus = .verified
+            if let nav = self.presentedViewController as? UINavigationController,
+                let profile = nav.children.first as? ProfileEditorViewController {
+                profile.generalData.recoveryEmailStatus = .verified
+                profile.reloadView()
+            }
         case .EnterpriseSuspended(let recipientId, let domain):
             if(myAccount.email == (recipientId + "@\(domain)")){
                 let accounts = DBManager.getLoggedAccounts()
@@ -1486,9 +1500,9 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             }
             weakSelf.mailboxData.isDequeueing = false
             switch(responseData) {
-            case .Unauthorized:
+            case .Removed:
                 completion?()
-                weakSelf.logout(account: weakSelf.myAccount, manually: true)
+                weakSelf.logout(account: weakSelf.myAccount, manually: false)
             case .Forbidden:
                 completion?()
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
@@ -1735,7 +1749,11 @@ extension InboxViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.logout(account: weakSelf.myAccount, manually: true)
+                weakSelf.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
+                return
+            }
+            if case .Removed = responseData {
+                weakSelf.logout(account: weakSelf.myAccount, manually: false)
                 return
             }
             if case .Forbidden = responseData {
@@ -2119,8 +2137,11 @@ extension InboxViewController: RequestDelegate {
         }
         
         switch response {
+            case .Removed:
+                self.logout(account: self.myAccount, manually: false)
+                return
             case .Unauthorized:
-                self.logout(account: self.myAccount, manually: true)
+                self.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
                 return
             case .Error(let error):
                 if(error.code != .custom) {

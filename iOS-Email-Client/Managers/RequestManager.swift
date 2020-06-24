@@ -44,7 +44,7 @@ final class RequestManager: NSObject {
             var events = [[String: Any]]()
             var repeatRequest = false
             switch(responseData) {
-            case .Unauthorized:
+            case .Removed:
                 var result = EventData.Result()
                 result.removed = true
                 weakSelf.accountCompletions[accountId]?(true)
