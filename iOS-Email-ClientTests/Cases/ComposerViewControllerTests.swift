@@ -49,7 +49,7 @@ class ComposerViewControllerTests: XCTestCase {
         
         composerVC.loadView()
         composerVC.viewDidLoad()
-        
+                
         composerVC.setupInitContacts()
         composerVC.prepareMail()
         guard let email = composerVC.composerData.emailDraft else {
@@ -59,6 +59,10 @@ class ComposerViewControllerTests: XCTestCase {
         
         XCTAssert(email.fromContact.email == "myself\(Env.domain)")
         XCTAssert(email.subject == "test subject")
+        
+        composerVC.composerData.initCcContacts = []
+        composerVC.composerData.initToContacts = []
+        composerVC.editorView.webView.stopLoading()
     }
     
     func testPassDraftToComposer() {
@@ -96,5 +100,9 @@ class ComposerViewControllerTests: XCTestCase {
         
         XCTAssert(draft.isInvalidated)
         XCTAssert(email.key != 1234)
+        
+        composerVC.composerData.initCcContacts = []
+        composerVC.composerData.initToContacts = []
+        composerVC.editorView.webView.stopLoading()
     }
 }

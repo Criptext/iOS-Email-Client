@@ -51,6 +51,25 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func canSend(token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/cansend"
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            let responseData = handleResponse(response)
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.canSend(token: newToken, completion: completion)
+            }
+        }
+    }
+    
     class func getKeysRequest(_ params: [String : Any], token: String, queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle/find"
         let headers = [
@@ -319,11 +338,13 @@ class APIManager: SharedAPI {
             versionHeader: apiVersion,
             language: Env.language
         ]
-        let params = [
+        var params = [
             "email": email,
-            "password": password
             ] as [String: Any]
-        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { response in
+        if !password.isEmpty {
+            params["password"] = password
+        }
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             let responseData = handleResponse(response, satisfy: .success)
             self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
                 if let refreshData = refreshResponseData {

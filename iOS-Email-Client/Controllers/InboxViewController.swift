@@ -68,6 +68,14 @@ class InboxViewController: UIViewController {
     var currentGuide = "guideComposer"
     var controllerMessage: ControllerMessage?
     var mailboxOptionsInterface: MailboxOptionsInterface?
+    
+    var isTest: Bool {
+        let dic = ProcessInfo.processInfo.environment
+        guard let isTest = dic["isTest"] else {
+            return false
+        }
+        return isTest == "true"
+    }
 
     var containerUrl: URL? {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
@@ -834,7 +842,7 @@ extension InboxViewController{
 //MARK: - Load mails
 extension InboxViewController{
     func loadMails(since date:Date, clear: Bool = false, limit: Int = 0){
-        guard clear || mailboxData.fetchAsyncTask == nil else {
+        guard !isTest && (clear || mailboxData.fetchAsyncTask == nil) else {
             return
         }
         let searchText = searchController.searchBar.text
@@ -1142,12 +1150,13 @@ extension InboxViewController: UITableViewDataSource{
         self.present(snackbarController, animated: true, completion: nil)
     }
     
-    func goToProfile(){
+    func goToProfile(account: Account? = nil){
+        let settingsAccount = account ?? self.myAccount
         self.navigationDrawerController?.closeLeftView()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let profileVC = storyboard.instantiateViewController(withIdentifier: "profileEditorView") as! ProfileEditorViewController
-        profileVC.myAccount = self.myAccount
+        profileVC.myAccount = settingsAccount
         profileVC.loadDataAtStart = true
         
         let navProfileVC = UINavigationController(rootViewController: profileVC)

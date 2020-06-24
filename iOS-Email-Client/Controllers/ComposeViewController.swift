@@ -115,6 +115,14 @@ class ComposeViewController: UIViewController {
     
     var accountOptionsInterface: AccountOptionsInterface!
     
+    var isTest: Bool {
+        let dic = ProcessInfo.processInfo.environment
+        guard let isTest = dic["isTest"] else {
+            return false
+        }
+        return isTest == "true"
+    }
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -566,7 +574,11 @@ class ComposeViewController: UIViewController {
     }
     
     func toggleInteraction(_ flag:Bool){
-        self.navigationItem.rightBarButtonItem = self.disableSendButton
+        if flag {
+            checkEnableSendButton()
+        } else {
+            self.navigationItem.rightBarButtonItem = self.disableSendButton
+        }
         
         self.view.isUserInteractionEnabled = flag
         self.navigationController?.navigationBar.layer.zPosition = flag ? 0 : -1
@@ -635,7 +647,71 @@ class ComposeViewController: UIViewController {
         let draftEmail = saveDraft()
         composerData.emailDraft = draftEmail
         self.toggleInteraction(false)
-        sendMailInMainController()
+        
+        guard !isTest else {
+            self.sendMailInMainController()
+            return
+        }
+        
+        APIManager.canSend(token: activeAccount.jwt) { (responseData) in
+            if case let .Error(error) = responseData,
+                error.code == .offline || error.code == .timeout {
+                self.sendMailInMainController()
+            }
+            if case let .ConflictsData(_, data) = responseData,
+                let recoveryEmail = data["recovery"] as? String {
+                self.toggleInteraction(true)
+                self.showVerifyPopup(recoveryEmail: recoveryEmail)
+                return
+            }
+            self.sendMailInMainController()
+       }
+    }
+    
+    func showVerifyPopup(recoveryEmail: String) {
+        let popover = ComposerVerifyRecoveryUIPopup()
+        popover.onValidate = { validate in
+            guard validate else {
+                self.toggleInteraction(true)
+                return
+            }
+            if recoveryEmail.isEmpty {
+                self.closeComposerGoToSettings()
+            } else {
+                self.resendConfirmationEmail()
+            }
+        }
+        self.presentPopover(popover: popover, height: 354)
+    }
+    
+    func closeComposerGoToSettings() {
+        let mailboxVC = self.presentingViewController?.navigationDrawerController?.rootViewController.children.first as? InboxViewController
+        self.dismiss(animated: true) {
+            mailboxVC?.goToProfile(account: self.activeAccount)
+        }
+    }
+    
+    func resendConfirmationEmail() {
+        APIManager.resendConfirmationEmail(token: activeAccount.jwt) { (responseData) in
+            if case .Unauthorized = responseData {
+                self.logout(account: self.activeAccount, manually: true)
+                return
+            }
+            if case .Forbidden = responseData {
+                self.presentPasswordPopover(myAccount: self.activeAccount)
+                return
+            }
+            if case let .Error(error) = responseData,
+                error.code != .custom {
+                self.showAlert("REQUEST_ERROR", message: "\(error.description). \(String.localize("TRY_AGAIN"))", style: .alert)
+                return
+            }
+            guard case .Success = responseData else {
+                self.showAlert("NETWORK_ERROR", message: "UNABLE_RESEND_LINK", style: .alert)
+                return
+            }
+            self.showAlert(String.localize("LINK_SENT"), message: String.localize("CHECK_INBOX_LINK"), style: .alert)
+        }
     }
     
     @IBAction func didPressCC(_ sender: UIButton) {

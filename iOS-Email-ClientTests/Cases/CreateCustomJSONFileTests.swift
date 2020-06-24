@@ -32,7 +32,14 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        DBManager.destroy()
+    }
+    
+    func initData () {
         self.account = DBFactory.createAndStoreAccount(username: "test", deviceId: 1, name: "Test")
         
         let newLabel = Label("Test 1")
@@ -91,11 +98,6 @@ class CreateCustomJSONFileTests: XCTestCase {
         DBManager.store([emailContact, emailContact2])
     }
     
-    override func tearDown() {
-        super.tearDown()
-        DBManager.destroy()
-    }
-    
     func testSuccessfullyParseDate(){
         let originalDateString = "2018-09-21 09:33:05"
         let date = EventData.convertToDate(dateString: originalDateString)
@@ -107,6 +109,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     }
     
     func testSuccessfullyCreateEncryptDecryptDBFile(){
+        initData()
         let expect = expectation(description: "Callback runs after generating db file")
         CreateCustomJSONFileAsyncTask(accountId: self.account.compoundKey).start(progressHandler: { _ in }) { (error, url) in
             guard let myUrl = url else {
@@ -142,6 +145,7 @@ class CreateCustomJSONFileTests: XCTestCase {
     
     
     func testSuccessfullyCreateDBFromFile(){
+        initData()
         let expect = expectation(description: "Callback runs after generating db file")
         CreateCustomJSONFileAsyncTask(accountId: self.account.compoundKey).start(progressHandler: { _ in }) { (error, url) in
             guard let myUrl = url,

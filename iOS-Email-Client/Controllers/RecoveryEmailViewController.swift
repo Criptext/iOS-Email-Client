@@ -144,7 +144,11 @@ class RecoveryEmailViewController: UIViewController {
             emailTextField.detail = String.localize("DIFFERENT_EMAIL")
             return
         }
-        presentChangePasswordPopover()
+        guard recoveryEmailStatus != .verified else {
+            presentChangePasswordPopover()
+            return
+        }
+        sendRequest(password: "")
     }
     
     func presentChangePasswordPopover(){
@@ -161,39 +165,57 @@ class RecoveryEmailViewController: UIViewController {
         }
         showLoader(true)
         APIManager.changeRecoveryEmail(email: email, password: password, token: myAccount.jwt) { responseData in
-            if case .Unauthorized = responseData {
-                self.logout(account: self.myAccount, manually: true)
-                return
-            }
             self.showLoader(false)
-            if case .Forbidden = responseData {
-                self.presentPasswordPopover(myAccount: self.myAccount)
-                return
+            switch(responseData) {
+                case .Unauthorized:
+                    self.logout(account: self.myAccount, manually: true)
+                case .Forbidden:
+                    self.presentPasswordPopover(myAccount: self.myAccount)
+                case .Error(let error):
+                    if (error.code != .custom) {
+                        self.showAlert("NETWORK_ERROR", message: "\(error.description). Please try again", style: .alert)
+                    } else {
+                        self.showAlert("ODD", message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
+                    }
+                case .BadRequest:
+                    self.showAlert("ODD", message: String.localize("ENTERED_WRONG_PASS"), style: .alert)
+                case .ConflictsInt(let error):
+                    self.handleChangeRecoveryEmailError(error)
+                case .ConflictsData(let errorCode, let data):
+                    self.handleChangeRecoveryEmailError(errorCode, limit: data["max"] as? Int ?? 0)
+                case .Success:
+                    self.generalData.recoveryEmail = email
+                    self.generalData.recoveryEmailStatus = .pending
+                    self.generalData.isTwoFactor = false
+                    self.emailTextField.detail = ""
+                    self.prepareView()
+                    self.presentResendAlert()
+                default:
+                    self.showAlert("ODD", message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
             }
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.showAlert("NETWORK_ERROR", message: "\(error.description). Please try again", style: .alert)
-                return
-            }
-            if case .BadRequest = responseData {
-                self.showAlert("ODD", message: String.localize("ENTERED_WRONG_PASS"), style: .alert)
-                return
-            }
-            if case .Conflicts = responseData {
-                self.showAlert("ODD", message: String.localize("DIFFERENT_RECOVERY"), style: .alert)
-                return
-            }
-            guard case .Success = responseData else {
-                self.showAlert("ODD", message: String.localize("UNABLE_CHANGHE_RECOVERY"), style: .alert)
-                return
-            }
-            self.generalData.recoveryEmail = email
-            self.generalData.recoveryEmailStatus = .pending
-            self.generalData.isTwoFactor = false
-            self.emailTextField.detail = ""
-            self.prepareView()
-            self.presentResendAlert()
         }
+    }
+    
+    func handleChangeRecoveryEmailError(_ error: Int, limit: Int = 0) {
+        var message = ""
+        switch(error) {
+        case 1:
+            message = String.localize("RECOVERY_EMAIL_UNVERIFIED")
+        case 2:
+            message = String.localize("RECOVERY_EMAIL_USED", arguments: limit)
+        case 3:
+            message = String.localize("RECOVERY_EMAIL_BLOCKED")
+        case 4:
+            message = String.localize("RECOVERY_EMAIL_SAME")
+        default:
+            self.showAlert("ODD", message: String.localize("UNABLE_CHANGE_RECOVERY"), style: .alert)
+            return
+        }
+        emailTextField.dividerActiveColor = .alert
+        emailTextField.detailColor = .alert
+        emailTextField.detail = message
+        doneButton.isEnabled = false
+        doneButton.alpha = 0.6
     }
     
     func showLoaderTimer(_ show: Bool){

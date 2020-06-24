@@ -682,11 +682,11 @@
                         <viewControllerLayoutGuide type="bottom" id="cyn-55-lIQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3KV-4L-vEo">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="786"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2A-K4-V0b">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="752"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="otC-Sy-dru" userLabel="ViewSeparetor">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
@@ -996,7 +996,7 @@
                                         </connections>
                                     </tableView>
                                     <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c58-aV-hT9">
-                                        <rect key="frame" x="0.0" y="92" width="414" height="605"/>
+                                        <rect key="frame" x="0.0" y="92" width="414" height="627"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ContactTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="ContactTableViewCell" rowHeight="60" id="AwB-cg-X36" customClass="ContactTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -1079,7 +1079,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9xK-7S-wAd" userLabel="Toolbar">
-                                <rect key="frame" x="0.0" y="697" width="414" height="55"/>
+                                <rect key="frame" x="0.0" y="719" width="414" height="55"/>
                                 <subviews>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N3R-WH-lLb">
                                         <rect key="frame" x="298" y="0.0" width="44" height="44"/>
@@ -1131,11 +1131,11 @@
                                 </constraints>
                             </view>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U42-me-sDa">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="786"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                                 <color key="backgroundColor" white="0.059999999999999998" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sye-0t-mfE" userLabel="Attachment Container" customClass="AttachmentOptionsContainerView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="752" width="414" height="150"/>
+                                <rect key="frame" x="0.0" y="774" width="414" height="150"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8C-MD-Pik" userLabel="ViewSeparetor">
                                         <rect key="frame" x="0.0" y="46" width="414" height="1"/>
@@ -1246,7 +1246,7 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRm-m6-8UE" customClass="MoreOptionsUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="46" width="414" height="740"/>
+                                <rect key="frame" x="0.0" y="46" width="414" height="762"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -1631,7 +1631,7 @@
                         <outlet property="newsHeaderView" destination="ZfB-jw-VMM" id="k1y-Mt-8H8"/>
                         <outlet property="tableView" destination="RGw-Kx-VBy" id="PUS-eO-VVj"/>
                         <outlet property="topToolbar" destination="xJq-0v-4GG" id="ciI-OE-wd4"/>
-                        <segue destination="U03-Od-wtY" kind="presentation" identifier="showComposer" id="Lr4-gz-kw3"/>
+                        <segue destination="U03-Od-wtY" kind="presentation" identifier="showComposer" modalPresentationStyle="fullScreen" id="Lr4-gz-kw3"/>
                         <segue destination="bgc-oZ-Vag" kind="show" id="J0x-Ob-YwV"/>
                     </connections>
                 </viewController>
@@ -3691,7 +3691,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NavigationComposeViewController" id="U03-Od-wtY" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="4qy-zx-FDf">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">

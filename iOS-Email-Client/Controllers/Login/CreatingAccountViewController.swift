@@ -17,6 +17,9 @@ class CreatingAccountViewController: UIViewController{
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var percentageLabel: CounterLabelUIView!
     @IBOutlet weak var feedbackLabel: UILabel!
+    
+    weak var delegate: SignUpMessageDelegate?
+    
     var fromSignup = false
     var multipleAccount = false
     var signupData: SignUpData!
@@ -154,32 +157,62 @@ class CreatingAccountViewController: UIViewController{
         feedbackLabel.text = String.localize("GENERATING_KEYS")
         let accountData = createAccount()
         let signupRequestData = signupData.buildDataForRequest(publicKeys: accountData.1)
-        APIManager.signUpRequest(signupRequestData) { (responseData) in
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.displayErrorMessage(message: error.description)
-                return
-            }
-            if case let .TooManyRequests(waitingTime) = responseData {
+        APIManager.signUpRequest(signupRequestData) { [weak self] (responseData) in
+            self?.handleSignUpResponse(responseData: responseData)
+        }
+    }
+    
+    func handleSignUpResponse(responseData: ResponseData) {
+        switch(responseData) {
+            case .TooManyRequests(let waitingTime):
                 if waitingTime < 0 {
                     self.displayErrorMessage(message: String.localize("TOO_MANY_SIGNIN_ATTEMPTS"))
                 } else {
                     self.displayErrorMessage(message: String.localize("ATTEMPTS_TIME_LEFT", arguments: Time.remaining(seconds: waitingTime)))
                 }
                 return
-            }
-            guard case let .SuccessDictionary(tokens) = responseData,
-                let sessionToken = tokens["token"] as? String,
-                let refreshToken = tokens["refreshToken"] as? String else {
+            case .Error(let error):
+                if error.code != .custom {
+                    self.displayErrorMessage(message: error.description)
+                }
+            case .SuccessDictionary(let tokens):
+                guard let sessionToken = tokens["token"] as? String,
+                    let refreshToken = tokens["refreshToken"] as? String else {
+                    self.displayErrorMessage()
+                    return
+                }
+                self.signupData.token = sessionToken
+                self.signupData.refreshToken = refreshToken
+                self.animateProgress(50.0, 2.0) {
+                    self.state = .accountCreate
+                    self.handleState()
+                }
+            case .ConflictsInt(let errorCode):
+                self.handleSignUpErrorCode(error: errorCode)
+            case .ConflictsData(let errorCode, let data):
+                self.handleSignUpErrorCode(error: errorCode, limit: data["max"] as? Int ?? 0)
+            default:
                 self.displayErrorMessage()
-                return
-            }
-            self.signupData.token = sessionToken
-            self.signupData.refreshToken = refreshToken
-            self.animateProgress(50.0, 2.0) {
-                self.state = .accountCreate
-                self.handleState()
-            }
+        }
+    }
+    
+    func handleSignUpErrorCode(error: Int, limit: Int = 0) {
+        var message = ""
+        switch(error) {
+        case 1:
+            message = String.localize("RECOVERY_EMAIL_UNVERIFIED")
+        case 2:
+            message = String.localize("RECOVERY_EMAIL_USED", arguments: limit)
+        case 3:
+            message = String.localize("RECOVERY_EMAIL_BLOCKED")
+        case 4:
+            message = String.localize("RECOVERY_EMAIL_SAME")
+        default:
+            self.displayErrorMessage()
+            return
+        }
+        self.dismiss(animated: true) {
+            self.delegate?.invalidRecoveryEmail(message: message)
         }
     }
     

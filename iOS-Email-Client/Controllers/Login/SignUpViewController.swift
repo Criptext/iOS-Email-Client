@@ -10,6 +10,10 @@ import Foundation
 import Material
 import Alamofire
 
+protocol SignUpMessageDelegate: class {
+    func invalidRecoveryEmail(message: String)
+}
+
 class SignUpViewController: UIViewController{
     let MIN_USERNAME_LENGTH = 3
     @IBOutlet weak var backButton: UIButton!
@@ -269,6 +273,7 @@ class SignUpViewController: UIViewController{
         controller.signupData = signupData
         controller.fromSignup = true
         controller.multipleAccount = self.multipleAccount
+        controller.delegate = self
         self.present(controller, animated: true, completion: nil)
     }
     
@@ -326,5 +331,13 @@ class SignUpViewController: UIViewController{
         }else{
             createAccountButton.alpha = 0.5
         }
+    }
+    
+}
+
+extension SignUpViewController: SignUpMessageDelegate {
+    func invalidRecoveryEmail(message: String) {
+        emailTextField.setStatus(.invalid, message)
+        checkToEnableDisableCreateButton()
     }
 }

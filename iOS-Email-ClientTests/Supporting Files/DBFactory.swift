@@ -17,8 +17,9 @@ class DBFactory {
         newAccount.username = username
         newAccount.deviceId = deviceId
         newAccount.buildCompoundKey()
-        newAccount.isActive = true
-        newAccount.isLoggedIn = true
+        newAccount.isActive = false
+        newAccount.isLoggedIn = false
+        newAccount.jwt = "<test_jwt>"
         DBManager.store(newAccount)
         
         return newAccount
