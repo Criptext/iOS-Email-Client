@@ -148,13 +148,6 @@ extension AliasViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension AliasViewController {
-    func reloadView() {
-        self.applyTheme()
-        tableView.reloadData()
-    }
-}
-
 extension AliasViewController: AddAliasTableViewCellDelegate {
     func tableViewCellDidLongPress(_ cell: AddAliasTableViewCell) {
         let popoverHeight = 350

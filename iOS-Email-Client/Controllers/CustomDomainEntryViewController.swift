@@ -181,12 +181,6 @@ extension CustomDomainEntryViewController: MembershipWebViewControllerDelegate {
     }
 }
 
-extension CustomDomainEntryViewController {
-    func reloadView() {
-        self.applyTheme()
-    }
-}
-
 extension CustomDomainEntryViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let nav = self.navigationController else {

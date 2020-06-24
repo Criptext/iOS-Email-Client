@@ -305,8 +305,8 @@ class RecoveryEmailViewController: UIViewController {
     }
 }
 
-extension RecoveryEmailViewController {
-    func reloadView() {
+extension RecoveryEmailViewController: SettingsRefresher {
+    func updateView() {
         recoveryEmailLabel.text = recoveryEmail
         statusLabel.text = recoveryEmailStatus.description
         statusLabel.textColor = recoveryEmailStatus.color

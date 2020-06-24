@@ -11,6 +11,10 @@ import Material
 import SafariServices
 import PasscodeLock
 
+protocol SettingsRefresher: class {
+    func updateView()
+}
+
 class SettingsGeneralViewController: UIViewController{
     
     internal enum Section {
@@ -712,6 +716,14 @@ extension SettingsGeneralViewController {
     func reloadView() {
         applyTheme()
         tableView.reloadData()
+        if let childViews = self.navigationController?.children {
+            for childView in childViews {
+                guard let settingsRefresher = childView as? SettingsRefresher else {
+                    continue
+                }
+                settingsRefresher.updateView()
+            }
+        }
     }
 }
 

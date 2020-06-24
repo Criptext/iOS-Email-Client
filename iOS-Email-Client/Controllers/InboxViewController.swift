@@ -565,19 +565,33 @@ extension InboxViewController: WebSocketManagerDelegate {
             }
             delegate.logout(account: myAccount)
         case .RecoveryChanged(let address):
-            guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.children.first as? SettingsGeneralViewController else {
-                return
+            if let snack = self.presentedViewController as? CriptextSnackbarController,
+                let nav = snack.rootViewController as? UINavigationController,
+                let settings = nav.children.first as? SettingsGeneralViewController {
+                settings.generalData.recoveryEmail = address
+                settings.generalData.recoveryEmailStatus = .pending
+                settings.generalData.isTwoFactor = false
+                settings.reloadView()
             }
-            settings.generalData.recoveryEmail = address
-            settings.generalData.recoveryEmailStatus = .pending
-            settings.generalData.isTwoFactor = false
+            if let nav = self.presentedViewController as? UINavigationController,
+                let profile = nav.children.first as? ProfileEditorViewController {
+                profile.generalData.recoveryEmail = address
+                profile.generalData.recoveryEmailStatus = .pending
+                profile.generalData.isTwoFactor = false
+                profile.reloadView()
+            }
         case .RecoveryVerified:
-            guard let nav = self.presentedViewController as? UINavigationController,
-                let settings = nav.children.first as? SettingsGeneralViewController else {
-                    return
+            if let snack = self.presentedViewController as? CriptextSnackbarController,
+                let nav = snack.rootViewController as? UINavigationController,
+                let settings = nav.children.first as? SettingsGeneralViewController {
+                settings.generalData.recoveryEmailStatus = .verified
+                settings.reloadView()
             }
-            settings.generalData.recoveryEmailStatus = .verified
+            if let nav = self.presentedViewController as? UINavigationController,
+                let profile = nav.children.first as? ProfileEditorViewController {
+                profile.generalData.recoveryEmailStatus = .verified
+                profile.reloadView()
+            }
         case .EnterpriseSuspended(let recipientId, let domain):
             if(myAccount.email == (recipientId + "@\(domain)")){
                 let accounts = DBManager.getLoggedAccounts()

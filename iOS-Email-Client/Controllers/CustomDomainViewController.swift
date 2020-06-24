@@ -93,14 +93,6 @@ extension CustomDomainViewController: UITableViewDelegate, UITableViewDataSource
     }
 }
 
-extension CustomDomainViewController {
-    func reloadView() {
-        self.applyTheme()
-        tableView.reloadData()
-    }
-}
-
-
 extension CustomDomainViewController: CustomDomainTableViewCellDelegate {
     func didPressVerify(_ cell: CustomDomainTableViewCell) {
         guard let indexPath = self.tableView.indexPath(for: cell) else {

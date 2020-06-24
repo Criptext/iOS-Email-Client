@@ -364,6 +364,18 @@ class ProfileEditorViewController: UIViewController {
             self.reloadView()
         }
     }
+    
+    func reloadView() {
+        self.updateView()
+        if let childViews = self.navigationController?.children {
+            for childView in childViews {
+                guard let settingsRefresher = childView as? SettingsRefresher else {
+                    continue
+                }
+                settingsRefresher.updateView()
+            }
+        }
+    }
 }
 
 extension ProfileEditorViewController: RequestDelegate {
@@ -378,8 +390,8 @@ extension ProfileEditorViewController: RequestDelegate {
     }
 }
 
-extension ProfileEditorViewController {
-    func reloadView() {
+extension ProfileEditorViewController: SettingsRefresher {
+    func updateView() {
         nameLabel.text = myAccount.name
         UIUtils.deleteSDWebImageCache()
         self.resetProfileImage()
