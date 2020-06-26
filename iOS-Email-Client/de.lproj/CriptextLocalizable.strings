@@ -555,3 +555,6 @@
 "RECOVERY_EMAIL_UNVERIFIED" = "This address has no verified email";
 "RECOVERY_EMAIL_SAME" = "Can't use the same email address as recovery email";
 "UNABLE_CHANGE_RECOVERY" = "Unable to change Recovery Email. please try again";
+
+"NO_OTHER_DEVICE" = "You don't have any device to sync with";
+"OK" = "Ok";

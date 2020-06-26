@@ -558,3 +558,6 @@
 
 "AUTH_ERROR" = "Authentication Error";
 "AUTH_ERROR_MESSAGE" = "Unable to proccess your request. Try again later";
+
+"NO_OTHER_DEVICE" = "You don't have any device to sync with";
+"OK" = "Ok";

@@ -381,6 +381,15 @@ class SettingsGeneralViewController: UIViewController{
     }
     
     func showManualSyncWarning() {
+        guard devicesData.devices.count != 0 && devicesData.devices.count > 1 else {
+            let popover = GenericAlertUIPopover()
+            popover.myButton = String.localize("OK")
+            popover.myMessage = String.localize("NO_OTHER_DEVICE")
+            popover.myTitle = String.localize("ODD")
+            self.presentPopover(popover: popover, height: 200)
+            return
+        }
+        
         let popover = GenericDualAnswerUIPopover()
         popover.initialTitle = String.localize("SYNC_WARNING")
         let attributedText = NSMutableAttributedString(string: String.localize("SYNC_WARNING_1"), attributes: [.font: Font.regular.size(15)!])
