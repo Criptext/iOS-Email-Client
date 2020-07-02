@@ -35,7 +35,7 @@ class EventParser {
             return .LinkData(linkData, recipientId, domain)
         case Event.Sync.accept.rawValue:
             guard let params = event["params"] as? [String: Any],
-                let domain = params["domain"] as? String,
+                let domain = event["domain"] as? String,
                 let syncData = AcceptData.fromDictionary(params) else {
                     return .Error
             }
