@@ -81,7 +81,7 @@ struct Env {
         return Locale.current.languageCode ?? "en"
     }
     
-    static let databaseVersion: UInt64 = 27
+    static let databaseVersion: UInt64 = 28
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 6
     static let maxAllowedDevices = 10

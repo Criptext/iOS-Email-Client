@@ -32,7 +32,7 @@ class Account: Object{
     @objc dynamic var showCriptextFooter = true
     
     @objc dynamic var customerType = 0;
-    
+    @objc dynamic var defaultAddressId: Int = 0
     @objc dynamic var blockRemoteContent = true
     
     

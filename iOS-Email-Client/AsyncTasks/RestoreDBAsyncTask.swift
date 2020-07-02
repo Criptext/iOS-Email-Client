@@ -40,6 +40,8 @@ class RestoreDBAsyncTask {
                 return
             }
             
+            DBManager.update(account: account, defaultAddressId: metadata.defaultAddressId ?? 0)
+            
             line = streamReader.nextLine()
             while line != nil {
                 guard let row = Utils.convertToDictionary(text: line!) else {

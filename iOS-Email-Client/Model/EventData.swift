@@ -359,6 +359,24 @@ extension EventData {
             }
         }
         
+        struct DefaultUpdate {
+            let aliasId: Int
+            
+            init(params: [String: Any]){
+                aliasId = params["addressId"] as? Int ?? 0
+            }
+        }
+        
+        struct AddressNameUpdate {
+            let name: String
+            let aliasId: Int
+            
+            init(params: [String: Any]){
+                name = params["fullname"] as! String
+                aliasId = params["addressId"] as! Int
+            }
+        }
+        
         struct ContactTrust: Dictionarify {
             let email: String
             let trusted: Bool

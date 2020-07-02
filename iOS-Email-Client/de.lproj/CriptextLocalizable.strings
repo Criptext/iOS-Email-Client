@@ -454,6 +454,7 @@
 "REPORT_ABUSE" = "Report Abuse";
 "REPORT_PHISHING" = "Mark as Phishing";
 "ADDRESSES" = "ADDRESSES";
+"ADDRESS_MANAGER" = "ADDRESS_MANAGER";
 "CUSTOM_DOMAIN" = "Custom Domain";
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Create a secondary address for your existing inbox. You can add up to 3 aliases per domain.";

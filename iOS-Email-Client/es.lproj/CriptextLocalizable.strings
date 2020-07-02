@@ -454,6 +454,7 @@
 "REPORT_ABUSE" = "Reportar Abuso";
 "REPORT_PHISHING" = "Reportar como Phishing";
 "ADDRESSES" = "DIRECCIONES";
+"ADDRESS_MANAGER" = "Administrador de Direcciones";
 "CUSTOM_DOMAIN" = "Dominios Personalizados";
 "ALIASES" = "Aliases";
 "ALIASES_INFO_MESSAGE" = "Crea una dirección secundaria para tu buzón. Puedes agregar hasta 3 aliases por dominio.";

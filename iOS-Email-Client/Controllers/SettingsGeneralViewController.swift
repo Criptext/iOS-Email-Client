@@ -51,8 +51,7 @@ class SettingsGeneralViewController: UIViewController{
             case manualSync
             case backup
             
-            case customDomain
-            case aliases
+            case addressManager
             
             case night
             case syncContact
@@ -107,10 +106,8 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("FAQ")
                 case .policies:
                     return String.localize("POLICY")
-                case .customDomain:
-                    return String.localize("CUSTOM_DOMAIN")
-                case .aliases:
-                    return String.localize("ALIASES")
+                case .addressManager:
+                    return String.localize("ADDRESS_MANAGER")
                 }
             }
         }
@@ -124,7 +121,7 @@ class SettingsGeneralViewController: UIViewController{
     var sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
     var menus = [
         .account: [.account, .privacy, .devices, .labels, .manualSync, .backup, .plus],
-        .addresses: [.customDomain, .aliases],
+        .addresses: [.addressManager],
         .general: [.night, .syncContact, .preview, .pin],
         .support: [.reportBug, .reportAbuse],
         .about: [.faq, .policies, .terms, .openSource],
@@ -481,6 +478,16 @@ class SettingsGeneralViewController: UIViewController{
         self.navigationController?.pushViewController(webviewVC, animated: true)
     }
     
+    func goToAddresses() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.initialTitle = String.localize("ADDRESS_MANAGER")
+        webviewVC.accountJWT = self.myAccount.jwt
+        webviewVC.kind = .addresses
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+    
     func syncContacts(){
         generalData.syncStatus = .syncing
         tableView.reloadData()
@@ -694,10 +701,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             showManualSyncWarning()
         case .backup:
             goToBackup()
-        case .customDomain:
-            goToCustomDomains()
-        case .aliases:
-            goToAliases()
+        case .addressManager:
+            goToAddresses()
         case .syncContact:
             syncContacts()
         case .pin:

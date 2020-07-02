@@ -160,6 +160,10 @@ class EventHandler {
             handleDomainCreated(params: params, finishCallback: handleEventResponse)
         case Event.Peer.domainDeleted.rawValue:
             handleDomainDeleted(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.defaultUpdate.rawValue:
+            handleDefaultUpdate(params: params, finishCallback: handleEventResponse)
+        case Event.Peer.addressNameUpdate.rawValue:
+            handleAddressNameUpdate(params: params, finishCallback: handleEventResponse)
         default:
             finishCallback(nil, .Empty)
             break
@@ -440,6 +444,37 @@ extension EventHandler {
         finishCallback(true, .Empty)
     }
     
+    func handleDefaultUpdate(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
+        let event = EventData.Peer.DefaultUpdate.init(params: params)
+        guard let myAccount = DBManager.getAccountById(self.accountId) else {
+            finishCallback(true, .Empty)
+            return
+        }
+        DBManager.update(account: myAccount, defaultAddressId: event.aliasId)
+        finishCallback(true, .Empty)
+    }
+    
+    func handleAddressNameUpdate(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
+        let event = EventData.Peer.AddressNameUpdate.init(params: params)
+        guard let myAccount = DBManager.getAccountById(self.accountId),
+            let existingAlias = DBManager.getAlias(rowId: event.aliasId, account: myAccount) else {
+            finishCallback(true, .Empty)
+            return
+        }
+        if let contact = DBManager.getContact(existingAlias.email) {
+            DBManager.update(contact: contact, name: event.name)
+        } else {
+            let newContact = Contact()
+            newContact.displayName = event.name
+            newContact.email = existingAlias.email
+            newContact.isTrusted = true
+            DBManager.store([newContact], account: myAccount)
+        }
+        finishCallback(true, .Empty)
+    }
+    
     func handleNewsCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
         let event = EventData.Server.News(params: params)
         APIManager.getNews(code: event.code) { (responseData) in
@@ -510,6 +545,8 @@ enum Event: Int32 {
         case addressDeleted = 703
         case domainCreated = 704
         case domainDeleted = 705
+        case defaultUpdate = 706
+        case addressNameUpdate = 707
     }
     
     enum Acc: Int32 {
