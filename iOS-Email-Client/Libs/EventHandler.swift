@@ -365,6 +365,7 @@ extension EventHandler {
     }
     
     func handleAccountCustomerType(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        UIUtils.deleteSDWebImageCache()
         let event = EventData.Acc.CustomerType.init(params: params)
         let recipientId = event.domain == Env.plainDomain ? event.recipientId : "\(event.recipientId)@\(event.domain)"
         guard let myAccount = DBManager.getAccountById(recipientId) else {
@@ -376,7 +377,6 @@ extension EventHandler {
     }
     
     func handleAddressCreated(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.AddressCreated.init(params: params)
         guard let myAccount = DBManager.getAccountById(self.accountId),
             DBManager.getAlias(rowId: event.id, account: myAccount) == nil else {
@@ -393,7 +393,6 @@ extension EventHandler {
     }
     
     func handleAddressStatusUpdate(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.AddressStatusUpdate.init(params: params)
         guard let myAccount = DBManager.getAccountById(self.accountId),
             let existingAlias = DBManager.getAlias(rowId: event.id, account: myAccount) else {
@@ -405,7 +404,6 @@ extension EventHandler {
     }
     
     func handleAddressDeleted(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.AddressDeleted.init(params: params)
         guard let myAccount = DBManager.getAccountById(self.accountId),
             let existingAlias = DBManager.getAlias(rowId: event.id, account: myAccount) else {
@@ -417,7 +415,6 @@ extension EventHandler {
     }
     
     func handleDomainCreated(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.DomainCreated.init(params: params)
         guard let myAccount = DBManager.getAccountById(self.accountId),
             DBManager.getCustomDomain(name: event.name, account: myAccount) == nil else {
@@ -432,7 +429,6 @@ extension EventHandler {
     }
     
     func handleDomainDeleted(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.DomainDelete.init(params: params)
         guard let myAccount = DBManager.getAccountById(self.accountId),
             let existingDomain = DBManager.getCustomDomain(name: event.name, account: myAccount) else {
@@ -445,7 +441,6 @@ extension EventHandler {
     }
     
     func handleDefaultUpdate(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.DefaultUpdate.init(params: params)
         guard let myAccount = DBManager.getAccountById(self.accountId) else {
             finishCallback(true, .Empty)
@@ -456,7 +451,6 @@ extension EventHandler {
     }
     
     func handleAddressNameUpdate(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
-        UIUtils.deleteSDWebImageCache()
         let event = EventData.Peer.AddressNameUpdate.init(params: params)
         guard let myAccount = DBManager.getAccountById(self.accountId),
             let existingAlias = DBManager.getAlias(rowId: event.aliasId, account: myAccount) else {

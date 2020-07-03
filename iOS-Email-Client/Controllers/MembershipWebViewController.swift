@@ -22,9 +22,9 @@ class MembershipWebViewController: UIViewController {
         func getUrl(jwt: String) -> URL {
             switch(self) {
             case .plus:
-                return URL(string: "https://admin.criptext.com/?#/account/billing?lang=\(Env.language)&token=\(jwt)")!
+                return URL(string: "\(Env.adminURL)/?#/account/billing?lang=\(Env.language)&token=\(jwt)")!
             case .addresses:
-                return URL(string: "https://stageadmin.criptext.com/?#/addresses?token=\(jwt)")!
+                return URL(string: "\(Env.adminURL)/?#/addresses?lang=\(Env.language)&token=\(jwt)")!
             }
         }
     }

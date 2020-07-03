@@ -104,16 +104,19 @@ class CreatingAccountViewController: UIViewController{
     }
     
     func parseAddresses(addresses: [[String: Any]], account: Account) {
-        let aliasesPairArray = addresses.map({aliasesDomainFromDictionary(data: $0, account: account)})
+        let (aliasesPairArray) = addresses.map({aliasesDomainFromDictionary(data: $0, account: account)})
         for pair in aliasesPairArray {
             if pair.0.name != Env.plainDomain {
                 DBManager.store(pair.0)
             }
             DBManager.store(aliases: pair.1)
+            if let defaultAddressId = pair.2 {
+                DBManager.update(account: account, defaultAddressId: defaultAddressId)
+            }
         }
     }
     
-    func aliasesDomainFromDictionary(data: [String: Any], account: Account) -> (CustomDomain, [Alias]) {
+    func aliasesDomainFromDictionary(data: [String: Any], account: Account) -> (CustomDomain, [Alias], Int?) {
         let aliases = data["aliases"] as! [[String: Any]]
         let domainData = data["domain"] as! [String: Any]
         let domainName = domainData["name"] as! String
@@ -124,9 +127,17 @@ class CreatingAccountViewController: UIViewController{
         domain.validated = domainVerified == 1 ? true : false
         domain.account = account
         
-        let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
+        var defaultAddressId: Int? = nil
+        let aliasesArray: [Alias] = aliases.map { aliasObj in
+            let alias = Alias.aliasFromDictionary(aliasData: aliasObj, domainName: domainName, account: account)
+            if let isDefault = aliasObj["default"] as? Int,
+                isDefault == 1 {
+                defaultAddressId = alias.rowId
+            }
+            return alias
+        }
         
-        return (domain, aliasesArray)
+        return (domain, aliasesArray, defaultAddressId)
     }
     
     func sendKeysRequest(){

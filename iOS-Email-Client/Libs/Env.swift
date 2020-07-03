@@ -77,6 +77,13 @@ struct Env {
         return "https://transfer.criptext.com"
     }
     
+    static var adminURL: String {
+        guard !Env.isProduction else {
+            return "https://admin.criptext.com"
+        }
+        return "https://admin.criptext.com"
+    }
+    
     static var language: String {
         return Locale.current.languageCode ?? "en"
     }
