@@ -740,17 +740,13 @@ extension InboxViewController{
     }
     
     @IBAction func didPressComposer(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let navComposeVC = storyboard.instantiateViewController(withIdentifier: "NavigationComposeViewController") as! UINavigationController
-        let snackVC = SnackbarController(rootViewController: navComposeVC)
-        let composerVC = navComposeVC.viewControllers.first as! ComposeViewController
-        composerVC.delegate = self
-        snackVC.modalPresentationStyle = .fullScreen
-        
         APIManager.postUserEvent(event: Int(Event.UserEvent.openComposer.rawValue), token: myAccount.jwt, completion: {_ in })
-        
-        self.present(snackVC, animated: true, completion: nil)
+        let composerData = ComposerData()
+        if myAccount.defaultAddressId != 0,
+            let existingAlias = DBManager.getAlias(rowId: myAccount.defaultAddressId, account: myAccount) {
+            composerData.initAlias = existingAlias
+        }
+        openComposer(composerData: composerData, files: List<File>())
     }
     
     func swapMailbox(labelId: Int, sender: Any?, force: Bool = false){

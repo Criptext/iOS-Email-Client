@@ -286,5 +286,5 @@ struct Constants {
         return customerType == 0
     }
     
-    static let adminUrl = "https://admin.criptext.com/?#/account/billing"
+    static let adminUrl = "\(Env.adminURL)/?#/account/billing"
 }

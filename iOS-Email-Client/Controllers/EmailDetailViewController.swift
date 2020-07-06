@@ -357,7 +357,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewCellDidTapLink(url: String) {
-        if (myAccount.customerType != Account.CustomerType.enterprise.id && url == "https://admin.criptext.com/?#/account/billing") {
+        if (myAccount.customerType != Account.CustomerType.enterprise.id && url == Constants.adminUrl) {
             joinPlus()
             return
         }

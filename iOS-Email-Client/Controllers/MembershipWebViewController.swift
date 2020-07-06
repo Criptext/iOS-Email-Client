@@ -14,6 +14,21 @@ protocol MembershipWebViewControllerDelegate: class {
 }
 
 class MembershipWebViewController: UIViewController {
+    
+    enum Kind {
+        case plus
+        case addresses
+        
+        func getUrl(jwt: String) -> URL {
+            switch(self) {
+            case .plus:
+                return URL(string: "\(Env.adminURL)/?#/account/billing?lang=\(Env.language)&token=\(jwt)")!
+            case .addresses:
+                return URL(string: "\(Env.adminURL)/?#/addresses?lang=\(Env.language)&token=\(jwt)")!
+            }
+        }
+    }
+    
     @IBOutlet weak var webview: WKWebView!
     @IBOutlet weak var loaderView: UIActivityIndicatorView!
     @IBOutlet weak var failureWrapperView: UIView!
@@ -22,8 +37,8 @@ class MembershipWebViewController: UIViewController {
     
     var delegate: MembershipWebViewControllerDelegate? = nil
     var initialTitle = String.localize("JOIN_PLUS")
-    var sectionDescription = String.localize("SOMETHING_WRONG")
     var accountJWT: String = ""
+    var kind: Kind = .plus
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +57,7 @@ class MembershipWebViewController: UIViewController {
         
         webview.navigationDelegate = self
         
-        let url = URL(string: "https://admin.criptext.com/?#/account/billing?lang=\(Env.language)&token=\(accountJWT)")!
+        let url = kind.getUrl(jwt: self.accountJWT)
         webview.load(URLRequest(url: url))
         
         webview.allowsBackForwardNavigationGestures = true
@@ -68,7 +83,7 @@ class MembershipWebViewController: UIViewController {
     func showFailureView() {
         loaderView.isHidden = true
         loaderView.stopAnimating()
-        failureTitleView.text = sectionDescription
+        failureTitleView.text = String.localize("SOMETHING_WRONG")
         failureDescView.text = String.localize("CONNECTION_LOST")
         failureWrapperView.isHidden = false
         webview.isHidden = true

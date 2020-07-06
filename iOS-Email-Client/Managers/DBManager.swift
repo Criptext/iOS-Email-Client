@@ -165,6 +165,14 @@ class DBManager: SharedDB {
         }
     }
     
+    class func update(account: Account, defaultAddressId: Int){
+        let realm = try! Realm()
+        
+        try! realm.write() {
+            account.defaultAddressId = defaultAddressId
+        }
+    }
+    
     class func update(account: Account, jwt: String, refreshToken: String, regId: Int32, identityB64: String) {
         let realm = try! Realm()
         

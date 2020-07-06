@@ -51,8 +51,7 @@ class SettingsGeneralViewController: UIViewController{
             case manualSync
             case backup
             
-            case customDomain
-            case aliases
+            case addressManager
             
             case night
             case syncContact
@@ -107,10 +106,8 @@ class SettingsGeneralViewController: UIViewController{
                     return String.localize("FAQ")
                 case .policies:
                     return String.localize("POLICY")
-                case .customDomain:
-                    return String.localize("CUSTOM_DOMAIN")
-                case .aliases:
-                    return String.localize("ALIASES")
+                case .addressManager:
+                    return String.localize("ADDRESS_MANAGER")
                 }
             }
         }
@@ -124,7 +121,7 @@ class SettingsGeneralViewController: UIViewController{
     var sections = [.account, .addresses, .general, .support, .about, .version] as [Section]
     var menus = [
         .account: [.account, .privacy, .devices, .labels, .manualSync, .backup, .plus],
-        .addresses: [.customDomain, .aliases],
+        .addresses: [.addressManager],
         .general: [.night, .syncContact, .preview, .pin],
         .support: [.reportBug, .reportAbuse],
         .about: [.faq, .policies, .terms, .openSource],
@@ -220,6 +217,7 @@ class SettingsGeneralViewController: UIViewController{
         let aliasesPairArray = addresses.map({aliasesDomainFromDictionary(data: $0, account: self.myAccount)})
         var ignoreDeleteAliasIds: [Int] = []
         var ignoreDeleteDomainNames: [String] = []
+        var myDefaultAddressId: Int = 0
         for pair in aliasesPairArray {
             if pair.0.name != Env.plainDomain {
                 if let existingDomain = DBManager.getCustomDomain(name: pair.0.name, account: myAccount) {
@@ -237,13 +235,19 @@ class SettingsGeneralViewController: UIViewController{
                 }
                 ignoreDeleteAliasIds.append(alias.rowId)
             }
+            if let defaultAddressId = pair.2 {
+                myDefaultAddressId = defaultAddressId
+            }
+        }
+        if (myDefaultAddressId != self.myAccount.defaultAddressId) {
+            DBManager.update(account: self.myAccount, defaultAddressId: myDefaultAddressId)
         }
         
         DBManager.deleteAlias(ignore: ignoreDeleteAliasIds, account: self.myAccount)
         DBManager.deleteCustomDomains(ignore: ignoreDeleteDomainNames, account: self.myAccount)
     }
     
-    func aliasesDomainFromDictionary(data: [String: Any], account: Account) -> (CustomDomain, [Alias]) {
+    func aliasesDomainFromDictionary(data: [String: Any], account: Account) -> (CustomDomain, [Alias], Int?) {
         let aliases = data["aliases"] as! [[String: Any]]
         let domainData = data["domain"] as! [String: Any]
         let domainName = domainData["name"] as! String
@@ -254,9 +258,17 @@ class SettingsGeneralViewController: UIViewController{
         domain.validated = domainVerified == 1 ? true : false
         domain.account = account
         
-        let aliasesArray: [Alias] = aliases.map({Alias.aliasFromDictionary(aliasData: $0, domainName: domainName, account: account)})
-        
-        return (domain, aliasesArray)
+        var defaultAddressId: Int? = nil
+        let aliasesArray: [Alias] = aliases.map { aliasObj in
+            let alias = Alias.aliasFromDictionary(aliasData: aliasObj, domainName: domainName, account: account)
+            if let isDefault = aliasObj["default"] as? Int,
+                isDefault == 1 {
+                defaultAddressId = alias.rowId
+            }
+            return alias
+        }
+                
+        return (domain, aliasesArray, defaultAddressId)
     }
     
     func applyTheme(){
@@ -481,6 +493,16 @@ class SettingsGeneralViewController: UIViewController{
         self.navigationController?.pushViewController(webviewVC, animated: true)
     }
     
+    func goToAddresses() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let webviewVC = storyboard.instantiateViewController(withIdentifier: "membershipViewController") as! MembershipWebViewController
+        webviewVC.delegate = self
+        webviewVC.initialTitle = String.localize("ADDRESS_MANAGER")
+        webviewVC.accountJWT = self.myAccount.jwt
+        webviewVC.kind = .addresses
+        self.navigationController?.pushViewController(webviewVC, animated: true)
+    }
+    
     func syncContacts(){
         generalData.syncStatus = .syncing
         tableView.reloadData()
@@ -694,10 +716,8 @@ extension SettingsGeneralViewController: UITableViewDelegate, UITableViewDataSou
             showManualSyncWarning()
         case .backup:
             goToBackup()
-        case .customDomain:
-            goToCustomDomains()
-        case .aliases:
-            goToAliases()
+        case .addressManager:
+            goToAddresses()
         case .syncContact:
             syncContacts()
         case .pin:

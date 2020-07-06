@@ -77,11 +77,18 @@ struct Env {
         return "https://transfer.criptext.com"
     }
     
+    static var adminURL: String {
+        guard !Env.isProduction else {
+            return "https://admin.criptext.com"
+        }
+        return "https://admin.criptext.com"
+    }
+    
     static var language: String {
         return Locale.current.languageCode ?? "en"
     }
     
-    static let databaseVersion: UInt64 = 27
+    static let databaseVersion: UInt64 = 28
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 6
     static let maxAllowedDevices = 10

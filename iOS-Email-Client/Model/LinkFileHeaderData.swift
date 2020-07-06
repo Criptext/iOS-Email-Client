@@ -18,6 +18,7 @@ class LinkFileHeaderData {
     var hasCriptextFooter: Bool?
     var language: String?
     var showPreview: Bool?
+    var defaultAddressId: Int?
     
     init(fileVersion: Int = Env.linkVersion, recipientId: String, domain: String) {
         self.fileVersion = fileVersion
@@ -28,6 +29,7 @@ class LinkFileHeaderData {
     func fillFromAccount(_ account: Account) {
         self.signature = account.signature
         self.hasCriptextFooter = account.showCriptextFooter
+        self.defaultAddressId = account.defaultAddressId == 0 ? nil : account.defaultAddressId
     }
     
     func toDictionary() -> [String: Any] {
@@ -52,6 +54,9 @@ class LinkFileHeaderData {
         if let myShowPreview = self.showPreview {
             object["showPreview"] = myShowPreview
         }
+        if let myDefaultAddressId = self.defaultAddressId {
+            object["defaultAddressId"] = myDefaultAddressId
+        }
         
         return object
     }
@@ -68,13 +73,14 @@ extension LinkFileHeaderData {
                 return nil
         }
 
-        var data = LinkFileHeaderData(fileVersion: fileVersion, recipientId: recipientId, domain: domain)
+        let data = LinkFileHeaderData(fileVersion: fileVersion, recipientId: recipientId, domain: domain)
         
         data.signature = object["signature"] as? String
         data.darkTheme = object["darkTheme"] as? Bool
         data.language = object["language"] as? String
         data.hasCriptextFooter = object["hasCriptextFooter"] as? Bool
         data.showPreview = object["showPreview"] as? Bool
+        data.defaultAddressId = object["defaultAddressId"] as? Int
         
         return data
     }
