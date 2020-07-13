@@ -298,8 +298,7 @@ class NewLoginViewController: UIViewController{
     }
     
     @IBAction func didPressContactSupport(sender: Any) {
-        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        goToUrl(url: "https://criptext.com/\(Env.language)/contact?version=\(appVersionString.trimmed)&device=\(UIDevice.modelName)&os=\(UIDevice.current.systemVersion)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+        goToUrl(url: "https://criptext.atlassian.net/servicedesk/customer/portals")
     }
     
     @IBAction func didPressClose(sender: Any) {
