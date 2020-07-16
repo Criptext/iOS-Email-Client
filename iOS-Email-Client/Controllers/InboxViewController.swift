@@ -1401,16 +1401,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func openSupport(){
-        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let supportContact = Contact()
-        supportContact.displayName = "Criptext Support"
-        supportContact.email = "support@criptext.com"
-        let composerData = ComposerData()
-        composerData.initContent = "<br/><br/><span>\(String.localize("DONT_WRITE_BELOW"))</span><br/><span>***************************</span><br/><span>Version: \(appVersionString)</span><br/><span>Device: \(UIDevice.modelName) [\(systemIdentifier())]</span><br/><span>OS: \(UIDevice.current.systemVersion)</span>"
-        composerData.initToContacts = [supportContact]
-        composerData.initSubject = "Customer Support - iOS"
-        openComposer(composerData: composerData, files: List<File>())
-        
+        goToUrl(url: "https://criptext.atlassian.net/servicedesk/customer/portals")
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
