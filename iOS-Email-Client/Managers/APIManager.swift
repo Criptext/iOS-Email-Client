@@ -171,7 +171,7 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func acknowledgeEvents(eventIds: [Int32], token: String){
+    class func acknowledgeEvents(eventIds: [Any], token: String){
         let parameters = ["ids": eventIds] as [String : Any]
         let url = "\(self.baseUrl)/event/ack"
         let headers = [

@@ -16,7 +16,7 @@ class MockAPIManager: APIManager {
         completion(ResponseData.SuccessDictionary(["body": "ytw8v0ntriuhtkirglsdfnakncbdjshndls"]))
     }
     
-    override class func acknowledgeEvents(eventIds: [Int32], token: String){
+    override class func acknowledgeEvents(eventIds: [Any], token: String){
         return
     }
     
