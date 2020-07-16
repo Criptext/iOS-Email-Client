@@ -15,7 +15,7 @@ import RealmSwift
 
 class SharedAPI {
     static let baseUrl = Env.apiURL
-    static let apiVersion = "9.0.0"
+    static let apiVersion = "11.0.0"
     static let versionHeader = "criptext-api-version"
     static let language = "accept-language"
     
@@ -229,6 +229,29 @@ class SharedAPI {
                     return
                 }
                 self.getEmailBody(metadataKey: metadataKey, token: newToken, completion: completion)
+            }
+        }
+    }
+    
+    class func reEncryptEmail(metadataKey: Int, eventId: Any, token: String, queue: DispatchQueue? = .main, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/email/reencrypt"
+        let headers = [
+            "Authorization": "Bearer \(token)",
+            versionHeader: apiVersion,
+            language: Env.language
+        ]
+        let params = [
+        "metadataKey": metadataKey,
+        "eventid": eventId,
+        ] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { response in
+            let responseData = handleResponse(response)
+            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
+                if let refreshData = refreshResponseData {
+                    completion(refreshData)
+                    return
+                }
+                self.reEncryptEmail(metadataKey: metadataKey, eventId: eventId, token: newToken, completion: completion)
             }
         }
     }
