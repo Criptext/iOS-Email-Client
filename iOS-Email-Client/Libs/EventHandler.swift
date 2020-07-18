@@ -24,7 +24,7 @@ class EventHandler {
 
     func handleEvents(events: [[String: Any]], completion: @escaping (_ result: EventData.Result) -> Void){
         var result = EventData.Result()
-        var successfulEvents = [Int32]()
+        var successfulEvents = [Any]()
         let dispatchQueue = DispatchQueue(label: "taskQueue")
         let dispatchSemaphore = DispatchSemaphore(value: 0)
         
@@ -48,11 +48,14 @@ class EventHandler {
         }
     }
     
-    func handleEventResult(result: inout EventData.Result, successfulEvents: inout [Int32], _ successfulEventId : Int32?, _ eventResult: Event.EventResult) {
+    func handleEventResult(result: inout EventData.Result, successfulEvents: inout [Any], _ successfulEventId : Any?, _ eventResult: Event.EventResult) {
+        
         guard let eventId = successfulEventId else {
             return
         }
+        
         successfulEvents.append(eventId)
+        
         switch(eventResult){
         case .Email(let email):
             result.emailLabels.append(contentsOf: Array(email.labels.map({$0.text})))
@@ -76,9 +79,10 @@ class EventHandler {
         }
     }
     
-    func handleEvent(_ event: [String: Any], finishCallback: @escaping (_ successfulEventId : Int32?, _ data: Event.EventResult) -> Void){
+    func handleEvent(_ event: [String: Any], finishCallback: @escaping (_ successfulEventId : Any?, _ data: Event.EventResult) -> Void){
         let cmd = event["cmd"] as! Int32
         let rowId = event["rowid"] as? Int32 ?? -1
+        let docId = event["docid"] as? String ?? nil
         guard let params = event["params"] as? [String : Any] ?? Utils.convertToDictionary(text: (event["params"] as! String)) else {
             finishCallback(nil, .Empty)
             return
@@ -88,7 +92,11 @@ class EventHandler {
                     finishCallback(nil, .Empty)
                     return
             }
-            finishCallback(rowId, result)
+            if(docId != nil){
+                finishCallback(docId, result)
+            } else {
+                finishCallback(rowId, result)
+            }
         }
         DBManager.refresh()
         switch(cmd){
@@ -147,7 +155,11 @@ class EventHandler {
             }
             handleEventResponse(successfulEvent: true, result: .LinkData(linkData))
         case Event.Link.success.rawValue:
-            finishCallback(rowId, .Empty)
+            if(docId != nil){
+                finishCallback(docId, .Empty)
+            } else {
+                finishCallback(rowId, .Empty)
+            }
         case Event.Acc.customerType.rawValue:
             handleAccountCustomerType(params: params, finishCallback: handleEventResponse)
         case Event.Peer.addressCreated.rawValue:
