@@ -101,7 +101,7 @@ class EventHandler {
         DBManager.refresh()
         switch(cmd){
         case Event.newEmail.rawValue:
-            self.handleNewEmailCommand(params: params, finishCallback: handleEventResponse)
+            self.handleNewEmailCommand(params: params, eventId: docId ?? rowId, finishCallback: handleEventResponse)
         case Event.emailStatus.rawValue:
             self.handleEmailStatusCommand(params: params, finishCallback: handleEventResponse)
         case Event.preKeys.rawValue:
@@ -182,11 +182,11 @@ class EventHandler {
         }
     }
     
-    func handleNewEmailCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ email: Event.EventResult) -> Void){
+    func handleNewEmailCommand(params: [String: Any], eventId: Any, finishCallback: @escaping (_ success: Bool, _ email: Event.EventResult) -> Void){
         let handler = NewEmailHandler(accountId: self.accountId, queue: self.queue)
         handler.api = self.apiManager
         handler.signal = self.signalHandler
-        handler.command(params: params) { (result) in
+        handler.command(params: params, eventId: eventId) { (result) in
             guard let email = result.email else {
                 finishCallback(result.success, .Empty)
                 return

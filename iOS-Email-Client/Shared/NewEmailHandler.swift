@@ -25,6 +25,14 @@ class NewEmailHandler {
         self.queue = queue
     }
     
+    enum ResultType {
+        case Success
+        case Failure
+        case UnableToDecrypt
+        case UnableToDecryptExternal
+        case TooManyRequests
+    }
+    
     struct Result {
         let email: Email?
         let success: Bool
@@ -40,7 +48,22 @@ class NewEmailHandler {
         }
     }
     
-    func command(params: [String: Any], completion: @escaping (_ result: Result) -> Void){
+    struct EmailProcessResult {
+        let email: Email?
+        let type: ResultType
+        
+        init(type: ResultType) {
+            self.type = type
+            self.email = nil
+        }
+        
+        init(email: Email) {
+            self.email = email
+            self.type = .Success
+        }
+    }
+    
+    func command(params: [String: Any], eventId: Any, completion: @escaping (_ result: Result) -> Void){
         guard let myAccount = database.getAccountById(accountId) else {
             completion(Result(success: false))
             return
@@ -48,7 +71,7 @@ class NewEmailHandler {
         
         guard let event = try? NewEmail.init(params: params),
             let recipientId = event.recipientId else {
-            completion(Result(success: false))
+                completion(Result(success: false))
             return
         }
         
@@ -60,23 +83,67 @@ class NewEmailHandler {
             }
             let defaults = CriptextDefaults()
             defaults.deleteEmailStrike(id: email.compoundKey)
-            completion(Result(success: true))
+            completion(Result(success: false))
             return
         }
+        self.getEmailBody(event: event, recipientId: recipientId, eventId: eventId, myAccount: myAccount) { (result) in
+            switch(result.type){
+                case .UnableToDecryptExternal:
+                    guard let account = self.database.getAccountById(self.accountId) else {
+                        completion(Result(success: false))
+                        return
+                    }
+                    self.reEncryptEmail(event: event, eventId: eventId, jwt: account.jwt) { (result) in
+                        switch(result.type){
+                            case .TooManyRequests:
+                                let content = String.localize("CONTENT_UNENCRYPTED")
+                                guard let unencryptedEmail = self.constructEmail(content: content, event: event, myAccount: account) else {
+                                    completion(Result(success: false))
+                                    return
+                                }
+                                completion(Result(email: unencryptedEmail))
+                            default:
+                                completion(Result(success: result.type == .Success))
+                        }
+                    }
+                default:
+                    guard let email = result.email else {
+                        completion(Result(success: false))
+                        return
+                    }
+                    completion(Result(email: email))
+            }
+        }
         
+    }
+    
+    private func reEncryptEmail(event: NewEmail, eventId: Any, jwt: String, completion: @escaping (_ result: EmailProcessResult) -> Void){
+        self.api.reEncryptEmail(metadataKey: event.metadataKey, eventId: eventId, token: jwt) { (responseData) in
+            switch(responseData){
+                case .TooManyRequests:
+                    completion(EmailProcessResult(type: .TooManyRequests))
+                case .Success:
+                    completion(EmailProcessResult(type: .Success))
+                default:
+                    completion(EmailProcessResult(type: .Failure))
+            }
+        }
+    }
+    
+    private func getEmailBody(event: NewEmail, recipientId: String, eventId: Any, myAccount: Account, completion: @escaping (_ result: EmailProcessResult) -> Void){
         api.getEmailBody(metadataKey: event.metadataKey, token: myAccount.jwt, queue: self.queue) { (responseData) in
             var unsent = false
             var content = ""
             var contentHeader: String? = nil
             guard let myAccount = self.database.getAccountById(self.accountId) else {
-                completion(Result(success: false))
+                completion(EmailProcessResult(type: .Failure))
                 return
             }
             if case .Missing = responseData {
                 unsent = true
             } else if case let .SuccessDictionary(data) = responseData {
                 guard let bodyString = data["body"] as? String else {
-                        completion(Result(success: false))
+                    completion(EmailProcessResult(type: .Failure))
                         return
                 }
                 let decryptedContentResult = self.handleContentByMessageType(
@@ -95,9 +162,12 @@ class NewEmailHandler {
                             defaults.deleteEmailStrike(id: emailId)
                         } else {
                             defaults.addEmailStrike(id: emailId)
-                            completion(Result(success: false))
+                            completion(EmailProcessResult(type: .Failure))
                             return
                         }
+                    case .UnableToDecryptExternal:
+                        completion(EmailProcessResult(type: .UnableToDecryptExternal))
+                        return
                     default:
                         content = String.localize("CONTENT_UNENCRYPTED")
                 }
@@ -108,109 +178,121 @@ class NewEmailHandler {
                     contentHeader = headersResult
                 }
             } else {
-                completion(Result(success: false))
+                completion(EmailProcessResult(type: .Failure))
                 return
             }
             
-            guard !FileUtils.existBodyFile(email: myAccount.email, metadataKey: "\(event.metadataKey)") else {
-                if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
-                    completion(Result(email: email))
-                    return
-                }
-                completion(Result(success: true))
+            let finalEmail = self.constructEmail(content: content, event: event, myAccount: myAccount, unsent: unsent, contentHeader: contentHeader)
+            guard finalEmail != nil else {
+                completion(EmailProcessResult(type: .Success))
                 return
             }
             
-            var replyThreadId = event.threadId
-            if let inReplyTo = event.inReplyTo,
-                let replyEmail = SharedDB.getEmail(messageId: inReplyTo, account: myAccount) {
-                replyThreadId = replyEmail.threadId
-            }
-            
-            let contentPreview = self.getContentPreview(content: content)
-            let email = Email()
-            email.account = myAccount
-            email.threadId = replyThreadId
-            email.subject = event.subject
-            email.key = event.metadataKey
-            email.messageId = event.messageId
-            email.boundary = event.boundary ?? ""
-            email.date = event.date
-            email.unread = true
-            email.secure = event.guestEncryption == 1 || event.guestEncryption == 3 ? true : false
-            email.preview = contentPreview.0
-            email.replyTo = event.replyTo ?? ""
-            email.buildCompoundKey()
-            
-            if(unsent){
-                email.unsentDate = email.date
-                email.delivered = Email.Status.unsent.rawValue
-            } else {
-                FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
-            }
-            
-            self.handleAttachments(recipientId: recipientId, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
-            
-            email.fromAddress = event.from
-            var fromMe = false
-            if self.isFromMe(email: email, account: myAccount, event: event),
-                let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
-                fromMe = true
-                if !unsent {
-                    email.delivered = Email.Status.sent.rawValue
-                }
-                email.unread = false
-                email.labels.append(sentLabel)
-                if self.isMeARecipient(email: email, account: myAccount, event: event),
-                    let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
-                    email.unread = true
-                    email.labels.append(inboxLabel)
-                }
-            } else if let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
-                email.labels.append(inboxLabel)
-                let fromContact = self.database.getContact(ContactUtils.parseContact(event.from, account: myAccount).email)
-                if(fromContact != nil){
-                    if(fromContact?.spamScore ?? 0 >= 2){
-                        let spamLabel = SharedDB.getLabel(SystemLabel.spam.id)
-                        email.labels.append(spamLabel!)
-                    }
-                }
-            }
-            
-            if(!event.labels.isEmpty){
-                let labels = event.labels.reduce([Label](), { (labelsArray, labelText) -> [Label] in
-                    guard let label = SharedDB.getLabel(text: labelText),
-                        (!fromMe || label.id != SystemLabel.spam.id) else {
-                        return labelsArray
-                    }
-                    return labelsArray.appending(label)
-                })
-                email.labels.append(objectsIn: labels)
-            }
-            
-            guard self.database.store(email) else {
-                completion(Result(success: true))
-                return
-            }
-            
-            ContactUtils.parseEmailContacts([event.from], email: email, type: .from, account: myAccount)
-            ContactUtils.parseEmailContacts(event.to, email: email, type: .to, account: myAccount)
-            ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc, account: myAccount)
-            ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc, account: myAccount)
-            
-            if let myContact = SharedDB.getContact(myAccount.email),
-                myContact.displayName != myAccount.name {
-                SharedDB.update(contact: myContact, name: myAccount.name)
-            }
-            
-            completion(Result(email: email))
+            completion(EmailProcessResult(email: finalEmail!))
         }
+    }
+    
+    func constructEmail(content: String, event: NewEmail, myAccount: Account, unsent: Bool = false, contentHeader: String? = nil) -> Email? {
+        guard !FileUtils.existBodyFile(email: myAccount.email, metadataKey: "\(event.metadataKey)") else {
+            if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
+                return email
+            }
+            return nil
+        }
+        
+        var replyThreadId = event.threadId
+        if let inReplyTo = event.inReplyTo,
+            let replyEmail = SharedDB.getEmail(messageId: inReplyTo, account: myAccount) {
+            replyThreadId = replyEmail.threadId
+        }
+        
+        let contentPreview = self.getContentPreview(content: content)
+        let email = Email()
+        email.account = myAccount
+        email.threadId = replyThreadId
+        email.subject = event.subject
+        email.key = event.metadataKey
+        email.messageId = event.messageId
+        email.boundary = event.boundary ?? ""
+        email.date = event.date
+        email.unread = true
+        email.secure = event.guestEncryption == 1 || event.guestEncryption == 3 ? true : false
+        email.preview = contentPreview.0
+        email.replyTo = event.replyTo ?? ""
+        email.buildCompoundKey()
+        
+        if(unsent){
+            email.unsentDate = email.date
+            email.delivered = Email.Status.unsent.rawValue
+        } else {
+            FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(event.metadataKey)", body: contentPreview.1, headers: contentHeader)
+        }
+        
+        guard let recipientId = event.recipientId else {
+            return nil
+        }
+        
+        self.handleAttachments(recipientId: recipientId, event: event, email: email, myAccount: myAccount, body: contentPreview.1)
+        
+        email.fromAddress = event.from
+        var fromMe = false
+        if self.isFromMe(email: email, account: myAccount, event: event),
+            let sentLabel = SharedDB.getLabel(SystemLabel.sent.id) {
+            fromMe = true
+            if !unsent {
+                email.delivered = Email.Status.sent.rawValue
+            }
+            email.unread = false
+            email.labels.append(sentLabel)
+            if self.isMeARecipient(email: email, account: myAccount, event: event),
+                let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
+                email.unread = true
+                email.labels.append(inboxLabel)
+            }
+        } else if let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
+            email.labels.append(inboxLabel)
+            let fromContact = self.database.getContact(ContactUtils.parseContact(event.from, account: myAccount).email)
+            if(fromContact != nil){
+                if(fromContact?.spamScore ?? 0 >= 2){
+                    let spamLabel = SharedDB.getLabel(SystemLabel.spam.id)
+                    email.labels.append(spamLabel!)
+                }
+            }
+        }
+        
+        if(!event.labels.isEmpty){
+            let labels = event.labels.reduce([Label](), { (labelsArray, labelText) -> [Label] in
+                guard let label = SharedDB.getLabel(text: labelText),
+                    (!fromMe || label.id != SystemLabel.spam.id) else {
+                    return labelsArray
+                }
+                return labelsArray.appending(label)
+            })
+            email.labels.append(objectsIn: labels)
+        }
+        
+        guard self.database.store(email) else {
+            return nil
+        }
+        
+        ContactUtils.parseEmailContacts([event.from], email: email, type: .from, account: myAccount)
+        ContactUtils.parseEmailContacts(event.to, email: email, type: .to, account: myAccount)
+        ContactUtils.parseEmailContacts(event.cc, email: email, type: .cc, account: myAccount)
+        ContactUtils.parseEmailContacts(event.bcc, email: email, type: .bcc, account: myAccount)
+        
+        if let myContact = SharedDB.getContact(myAccount.email),
+            myContact.displayName != myAccount.name {
+            SharedDB.update(contact: myContact, name: myAccount.name)
+        }
+        return email
     }
     
     enum DecryptResult {
         case Content(String)
         case Duplicated
         case NoSession
+        case UnableToDecrypt
+        case UnableToDecryptExternal
         case Uknown
     }
     
@@ -240,6 +322,8 @@ class NewEmailHandler {
                 return .Duplicated
             } else if (error.name.rawValue == "AxolotlNoSessionException") {
                 return .NoSession
+            } else if(isExternal){
+                return .UnableToDecryptExternal
             } else {
                 return .Uknown
             }
