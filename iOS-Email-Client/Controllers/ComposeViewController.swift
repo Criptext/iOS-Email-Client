@@ -217,6 +217,9 @@ class ComposeViewController: UIViewController {
         let closeImage = UIImage(named: "close-rounded")!.tint(with: UIColor.white.withAlphaComponent(0.6))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(didPressCancel(_:)))
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        
         subjectField.text = composerData.initSubject
 
         editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
@@ -241,6 +244,11 @@ class ComposeViewController: UIViewController {
         
         setFrom(account: activeAccount, alias: composerData.initAlias)
         applyTheme()
+    }
+    
+    @objc func appMovedToBackground() {
+        let draft = self.saveDraft()
+        self.delegate?.newDraft(draft: draft)
     }
     
     func setFrom(account: Account, alias: Alias? = nil) {
