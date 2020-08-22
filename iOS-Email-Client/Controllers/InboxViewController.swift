@@ -554,20 +554,19 @@ class InboxViewController: UIViewController {
     func presentWelcomeTour(){
         let defaults = CriptextDefaults()
         guard !defaults.welcomeTour else {
-            syncContacts()
             self.showGuide()
             return
         }
         
-        let welcomeTourVC = WelcomeTourViewController(nibName: "WelcomeTourView", bundle: nil)
-        welcomeTourVC.modalPresentationStyle = .overCurrentContext
-        welcomeTourVC.modalTransitionStyle = .crossDissolve
-        welcomeTourVC.onDismiss = { [weak self] in
-            self?.syncContacts()
+        let yayPopover = YayUIPopover()
+        yayPopover.modalPresentationStyle = .overCurrentContext
+        yayPopover.modalTransitionStyle = .crossDissolve
+        yayPopover.myAccount = self.myAccount
+        yayPopover.onYayPressed = { [weak self] in
             self?.showGuide()
             defaults.welcomeTour = true
         }
-        self.present(welcomeTourVC, animated: false, completion: nil)
+        self.present(yayPopover, animated: false, completion: nil)
     }
 }
 

@@ -16,14 +16,16 @@ open class StatusTextField: TextField{
     
     var status = Status.none
     var markView: UIImageView?
+    var invalidDividerColor: UIColor = UIColor.black
+    var validDividerColor: UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6)
     
     func setStatus(_ sts: Status, _ error: String? = nil){
         status = sts
         detail = error
         if(status == .invalid){
-            dividerNormalColor = UIColor.black
+            dividerNormalColor = invalidDividerColor
         }else{
-            dividerNormalColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6)
+            dividerNormalColor = validDividerColor
         }
         updateMark()
     }
