@@ -331,8 +331,8 @@ class NewLoginViewController: UIViewController{
     }
     
     func jumpToSignupDeviceView(){
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "signupview")  as! SignUpViewController
+        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "fullNameView")  as! SignUpNameViewController
         controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
