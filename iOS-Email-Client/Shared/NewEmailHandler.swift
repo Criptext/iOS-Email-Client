@@ -83,7 +83,7 @@ class NewEmailHandler {
             }
             let defaults = CriptextDefaults()
             defaults.deleteEmailStrike(id: email.compoundKey)
-            completion(Result(success: false))
+            completion(Result(success: true))
             return
         }
         self.getEmailBody(event: event, recipientId: recipientId, eventId: eventId, myAccount: myAccount) { (result) in
