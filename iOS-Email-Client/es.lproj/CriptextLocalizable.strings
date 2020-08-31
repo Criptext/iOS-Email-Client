@@ -561,3 +561,5 @@
 "OK" = "Ok";
 "TURN_ON_LIGHTS" = "Encender las luces";
 "TURN_OFF_LIGHTS" = "Apagar las luces";
+"UPDATE_BTN" = "Actualizar";
+"VERSION_NOT_SUPPORTED_DIALOG_MESSAGE" = "Esta versión de Criptext ya no está soportada. Por favor actualiza a la última versión para poder ver tus nuevos correos.";

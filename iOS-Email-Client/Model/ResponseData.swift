@@ -30,6 +30,7 @@ enum ResponseData {
     case TooManyDevicesDictionary([String: Any])
     case EntityTooLarge(Int64)
     case TooManyRequests(Int64)
+    case VersionNotSupported
     case ServerError
     case PreConditionRequired(Int)
     case PreConditionFail

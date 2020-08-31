@@ -62,6 +62,16 @@ final class RequestManager: NSObject {
                     delegate?.finishRequest(accountId: accountId, result: result)
                 }
                 weakSelf.getEvents()
+            case .VersionNotSupported:
+                var result = EventData.Result()
+                result.versionNotSupported = true
+                weakSelf.accountCompletions[accountId]?(true)
+                weakSelf.accountCompletions[accountId] = nil
+                weakSelf.delegates.forEach { delegate in
+                    delegate?.finishRequest(accountId: accountId, result: result)
+                }
+                weakSelf.getEvents()
+                break;
             case .SuccessAndRepeat(let responseEvents):
                 events = responseEvents
                 repeatRequest = true

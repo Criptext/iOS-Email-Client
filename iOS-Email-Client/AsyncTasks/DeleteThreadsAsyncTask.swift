@@ -31,8 +31,11 @@ class DeleteThreadsAsyncTask {
             for threadId in self.threadIds {
                 DBManager.deleteThreads(threadId, label: self.currentLabel, account: myAccount)
             }
-            let eventData = EventData.Peer.ThreadDeleted(threadIds: self.eventThreadIds)
-            DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: myAccount)
+            
+            self.threadIds.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+                let eventData = EventData.Peer.ThreadDeleted(threadIds: batch)
+                DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: myAccount)
+            })
             
             DispatchQueue.main.async {
                 completion()

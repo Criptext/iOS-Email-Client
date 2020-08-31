@@ -92,6 +92,7 @@ struct Env {
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 6
     static let maxAllowedDevices = 10
+    static let peerEventDataSize = 50
     
     enum linkFileExtensions: String {
         case normal = "db"

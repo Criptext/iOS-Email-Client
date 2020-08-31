@@ -39,8 +39,11 @@ class ThreadsLabelsAsyncTask {
             }
             
             let changedLabels = self.getLabelNames(added: self.added, removed: self.removed)
-            let eventData = EventData.Peer.ThreadLabels(threadIds: self.eventThreadIds, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
-            DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], account: myAccount)
+            
+            self.threadIds.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+                let eventData = EventData.Peer.ThreadLabels(threadIds: batch, labelsAdded: changedLabels.0, labelsRemoved: changedLabels.1)
+                DBManager.createQueueItem(params: ["params": eventData.asDictionary(), "cmd": Event.Peer.threadsLabels.rawValue], account: myAccount)
+            })
             
             DispatchQueue.main.async {
                 completion()

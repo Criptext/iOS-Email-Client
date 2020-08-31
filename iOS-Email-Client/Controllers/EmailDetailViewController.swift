@@ -999,13 +999,14 @@ extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
             emailKeys.append(email.key)
         }
         if !emailKeys.isEmpty {
-            let params = ["cmd": Event.Peer.emailsUnread.rawValue,
+            emailKeys.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+                let params = ["cmd": Event.Peer.emailsUnread.rawValue,
                           "params": [
                             "unread": 1,
-                            "metadataKeys": emailKeys
+                            "metadataKeys": batch
                 ]] as [String : Any]
-            self.navigationController?.popViewController(animated: true)
-            DBManager.createQueueItem(params: params, account: myAccount)
+                DBManager.createQueueItem(params: params, account: myAccount)
+            })
         }
         self.navigationController?.popViewController(animated: true)
     }
