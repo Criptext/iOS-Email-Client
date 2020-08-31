@@ -91,13 +91,12 @@ final class RequestManager: NSObject {
                 }
                 
                 if repeatRequest {
-                    weakSelf.accountRequests.insert(accountId, at: 0)
-                } else {
-                    weakSelf.accountCompletions[accountId]?(true)
-                    weakSelf.accountCompletions[accountId] = nil
-                    weakSelf.delegates.forEach { delegate in
-                        delegate?.finishRequest(accountId: accountId, result: result)
-                    }
+                    weakSelf.accountRequests.append(accountId)
+                }
+                weakSelf.accountCompletions[accountId]?(true)
+                weakSelf.accountCompletions[accountId] = nil
+                weakSelf.delegates.forEach { delegate in
+                    delegate?.finishRequest(accountId: accountId, result: result)
                 }
                 weakSelf.getEvents()
             }
