@@ -835,6 +835,22 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
 }
 
 extension EmailDetailViewController: EmailMoreOptionsInterfaceDelegate {
+    func onTurnOnLightsPressed() {
+        guard let indexPath = emailsTableView.indexPathForSelectedRow else {
+            self.toggleGeneralOptionsView()
+            return
+        }
+        generalOptionsContainerView.closeMoreOptions()
+        let email = getMail(index: indexPath.row)
+        guard let turnedOn = emailData.getState(email.key).hasTurnedOnLights else {
+            emailData.setState(email.key, hasLightsOn: true)
+            emailsTableView.reloadData()
+            return
+        }
+        emailData.setState(email.key, hasLightsOn: !turnedOn)
+        emailsTableView.reloadData()
+    }
+    
     func onRetryPress() {
         guard let indexPath = emailsTableView.indexPathForSelectedRow else {
             self.toggleGeneralOptionsView()

@@ -55,7 +55,7 @@ class AESCipher {
         let options = CCOptions(kCCOptionPKCS7Padding)
         
         var cryptor: CCCryptorRef? = nil
-        let cryptorPointer = UnsafeMutablePointer<CCCryptorRef?>(&cryptor)
+        let cryptorPointer = UnsafeMutablePointer<CCCryptorRef?>( &cryptor)
         
         guard let inputStream = InputStream.init(fileAtPath: path),
             let outputStream = OutputStream.init(url: outputURL, append: false) else {

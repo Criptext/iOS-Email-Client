@@ -9,6 +9,7 @@
 import Foundation
 
 protocol EmailMoreOptionsInterfaceDelegate: class {
+    func onTurnOnLightsPressed()
     func onReplyPress()
     func onReplyAllPress()
     func onForwardPress()
@@ -25,6 +26,7 @@ protocol EmailMoreOptionsInterfaceDelegate: class {
 
 class EmailMoreOptionsInterface: MoreOptionsViewInterface {
     internal enum Option {
+        case turnOnLights
         case reply
         case replyAll
         case forward
@@ -40,6 +42,8 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
         
         var description: String {
             switch self {
+            case .turnOnLights:
+                return String.localize("TURN_ON_LIGHTS")
             case .reply:
                 return String.localize("REPLY")
             case .replyAll:
@@ -73,7 +77,8 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
     var delegate: EmailMoreOptionsInterfaceDelegate?
     
     init(email: Email) {
-        options = [.reply, .replyAll, .forward, .delete, .mark]
+        let theme = ThemeManager.shared.theme
+        options = theme.name == "Dark" ? [.turnOnLights, .reply, .replyAll, .forward, .delete, .mark] : [.reply, .replyAll, .forward, .delete, .mark]
         optionsCount = options.count
         if (email.isSpam) {
             options.append(.notSpam)
@@ -111,6 +116,8 @@ class EmailMoreOptionsInterface: MoreOptionsViewInterface {
         }
         let option = options[index]
         switch option {
+        case .turnOnLights:
+            delegate?.onTurnOnLightsPressed()
         case .reply:
             delegate?.onReplyPress()
         case .replyAll:
