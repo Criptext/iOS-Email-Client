@@ -557,5 +557,7 @@
 "RECOVERY_EMAIL_SAME" = "No puedes usar el mismo correo";
 "UNABLE_CHANGE_RECOVERY" = "No fue posible cambiar el correo. Por favor intenta de nuevo";
 
-"NO_OTHER_DEVICE" = "You don't have any device to sync with";
+"NO_OTHER_DEVICE" = "No existe otro dispositivo activo para poder sincronizarte";
 "OK" = "Ok";
+"TURN_ON_LIGHTS" = "Encender las luces";
+"TURN_OFF_LIGHTS" = "Apagar las luces";

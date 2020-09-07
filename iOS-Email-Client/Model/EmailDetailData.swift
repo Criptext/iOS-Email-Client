@@ -42,7 +42,8 @@ class EmailDetailData{
         return state
     }
     
-    func setState(_ key: Int, isExpanded: Bool? = nil, isUnsending: Bool? = nil, cellHeight: CGFloat? = nil, trusted: Bool? = nil) {
+    func setState(_ key: Int, isExpanded: Bool? = nil, isUnsending: Bool? = nil, cellHeight: CGFloat? = nil, trusted: Bool? = nil,
+                  hasLightsOn: Bool? = nil) {
         guard var state = emailStates[key] else {
             emailStates[key] = Email.State()
             setState(key, isExpanded: isExpanded, isUnsending: isUnsending, cellHeight: cellHeight)
@@ -59,6 +60,9 @@ class EmailDetailData{
         }
         if let trustedOnce = trusted {
             state.trustedOnce = trustedOnce
+        }
+        if let hasTurnedLights = hasLightsOn {
+            state.hasTurnedOnLights = hasTurnedLights
         }
         emailStates[key] = state
     }

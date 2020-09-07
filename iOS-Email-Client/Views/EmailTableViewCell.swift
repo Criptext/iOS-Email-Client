@@ -254,8 +254,8 @@ class EmailTableViewCell: UITableViewCell{
             setCollapsedContent(email)
         }
         
-        if(state.isExpanded && !isLoaded){
-            loadWebview(email: email, emailBody: emailBody)
+        if((state.isExpanded && !isLoaded) || state.hasTurnedOnLights != nil){
+            loadWebview(email: email, emailBody: emailBody, hasTurnedOnLights: state.hasTurnedOnLights ?? false)
         }
         
         if(state.isUnsending){
@@ -302,14 +302,19 @@ class EmailTableViewCell: UITableViewCell{
         showImagesButton.isHidden = !hasImages || !shouldBlockContent(email: email, emailState: self.emailState)
     }
     
-    func loadWebview(email: Email, emailBody: String){
+    func loadWebview(email: Email, emailBody: String, hasTurnedOnLights: Bool){
         let theme = ThemeManager.shared.theme
         isLoaded = true
         let bundleUrl = URL(fileURLWithPath: Bundle.main.bundlePath)
-        let anchorColor = theme.name != "Dark" ? "" : "48a3ff"
+        var anchorColor = ""
+        if(theme.name == "Dark"){
+            anchorColor = hasTurnedOnLights ? "" : "48a3ff"
+        }
         let isFwd = email.subject.range(of: "^(Fw|FW|Fwd|FWD): .*", options: .regularExpression, range: nil, locale: nil) != nil
-        let script = Constants.quoteScript(theme: theme.name, isFwd: isFwd)
-        let content = "\(Constants.htmlTopWrapper(bgColor: theme.secondBackground.toHexString(), color: theme.mainText.toHexString(), anchorColor: anchorColor))\(emailBody)\(script)"
+        let script = Constants.quoteScript(theme: theme.name, isFwd: isFwd, hasLightsOn: hasTurnedOnLights)
+        let bgColor = theme.name == "Dark" && !hasTurnedOnLights ? Theme.dark().secondBackground.toHexString() : Theme.init().secondBackground.toHexString()
+        let color = theme.name == "Dark" && !hasTurnedOnLights ? Theme.dark().mainText.toHexString() : Theme.init().mainText.toHexString()
+        let content = "\(Constants.htmlTopWrapper(bgColor: bgColor, color: color, anchorColor: anchorColor))\(emailBody)\(script)"
         webView.scrollView.maximumZoomScale = 2.0
         
         if (!shouldBlockContent(email: email, emailState: self.emailState)) {
