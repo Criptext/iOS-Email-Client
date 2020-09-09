@@ -27,12 +27,14 @@ class Email: Object {
         var isUnsending: Bool
         var cellHeight: CGFloat
         var trustedOnce: Bool
+        var hasTurnedOnLights: Bool?
         
         init() {
             isExpanded = false
             isUnsending = false
             cellHeight = 0.0
             trustedOnce = false
+            hasTurnedOnLights = nil
         }
     }
     

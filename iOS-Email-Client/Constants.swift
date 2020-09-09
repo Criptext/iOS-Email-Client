@@ -156,9 +156,9 @@ struct Constants {
     
     static let darkExpandedPath = Bundle.main.path(forResource: "showmore-dark-opened.png", ofType: nil) ?? ""
     
-    static func quoteScript(theme: String, isFwd: Bool) -> String {
-        let expandedPath = theme == "Dark" ? darkExpandedPath : imageExpandedPath
-        let path = theme == "Dark" ? darkPath : imagePath
+    static func quoteScript(theme: String, isFwd: Bool, hasLightsOn: Bool = false) -> String {
+        let expandedPath = theme == "Dark" && !hasLightsOn ? darkExpandedPath : imageExpandedPath
+        let path = theme == "Dark" && !hasLightsOn ? darkPath : imagePath
         let initialDisplay = isFwd ? "block" : "none"
         let initialPath = isFwd ? expandedPath : path
         
