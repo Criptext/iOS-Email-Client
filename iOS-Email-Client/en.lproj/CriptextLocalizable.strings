@@ -564,3 +564,5 @@
 "OK" = "Ok";
 "TURN_ON_LIGHTS" = "Turn on the lights";
 "TURN_OFF_LIGHTS" = "Turn off the lights";
+"UPDATE_BTN" = "Update Now";
+"VERSION_NOT_SUPPORTED_DIALOG_MESSAGE" = "This version of the Criptext app is no longer supported, please update now to receive new emails";

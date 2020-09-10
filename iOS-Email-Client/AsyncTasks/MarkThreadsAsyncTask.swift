@@ -33,14 +33,15 @@ class MarkThreadsAsyncTask {
             for threadId in self.threadIds {
                 DBManager.updateThread(threadId: threadId, currentLabel: self.currentLabel, unread: self.unread, account: myAccount)
             }
-            let params = ["cmd": Event.Peer.threadsUnread.rawValue,
-                          "params": [
-                            "unread": self.unread ? 1 : 0,
-                            "threadIds": self.eventThreadIds
-                ]
-                ] as [String : Any]
-            DBManager.createQueueItem(params: params, account: myAccount)
-            
+            self.threadIds.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+                let params = ["cmd": Event.Peer.threadsUnread.rawValue,
+                              "params": [
+                                "unread": self.unread ? 1 : 0,
+                                "threadIds": batch
+                    ]
+                    ] as [String : Any]
+                DBManager.createQueueItem(params: params, account: myAccount)
+            })
             DispatchQueue.main.async {
                 completion()
             }

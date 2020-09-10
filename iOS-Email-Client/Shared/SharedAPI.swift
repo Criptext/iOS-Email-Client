@@ -37,6 +37,7 @@ class SharedAPI {
         case tooManyDevices = 439
         case preConditionRequired = 428
         case tooManyRequests = 429
+        case versionNotSupported = 430
         case preConditionFail = 412
         case entityTooLarge = 413
         case enterpriseSuspended = 451

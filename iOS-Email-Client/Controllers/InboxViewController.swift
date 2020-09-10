@@ -641,6 +641,16 @@ extension InboxViewController {
             return
         }
         
+        guard !result.versionNotSupported else {
+            self.presentVersionNotSupportedPopover(onPressUpdate: {
+                if let url = URL(string: "itms-apps://itunes.apple.com/app/id1377890297"),
+                    UIApplication.shared.canOpenURL(url){
+                    UIApplication.shared.open(url, options: [:]) { (opened) in }
+                }
+            })
+            return
+        }
+        
         if (result.suspended) {
             let accounts = DBManager.getLoggedAccounts()
             self.presentAccountSuspendedPopover(myAccount: myAccount, accounts: Array(accounts), onPressSwitch: self.swapAccount(_:), onPressLogin: self.addAccount)
@@ -1083,10 +1093,13 @@ extension InboxViewController: UITableViewDataSource{
                 !threadIds.isEmpty else {
                 return
             }
-            let eventData = EventData.Peer.ThreadDeleted(threadIds: threadIds)
             DBManager.deleteThreads(threadIds: threadIds)
             self.refreshThreadRows()
-            DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
+            
+            threadIds.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+                let eventData = EventData.Peer.ThreadDeleted(threadIds: batch)
+                DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
+            })
         }
     }
     
@@ -1313,13 +1326,17 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
         guard !peerKeys.isEmpty else {
             return
         }
-        let params = ["cmd": Event.Peer.emailsUnread.rawValue,
+        
+        DBManager.updateEmails(peerKeys, unread: false, account: self.myAccount)
+        
+        peerKeys.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+            let params = ["cmd": Event.Peer.emailsUnread.rawValue,
                       "params": [
                         "unread": 0,
-                        "metadataKeys": peerKeys
+                        "metadataKeys": batch
             ]] as [String : Any]
-        DBManager.updateEmails(peerKeys, unread: false, account: self.myAccount)
-        DBManager.createQueueItem(params: params, account: self.myAccount)
+            DBManager.createQueueItem(params: params, account: self.myAccount)
+        })
     }
     
     func openEmails(openKeys: [Int], peerKeys: [Int]) {
@@ -1327,9 +1344,13 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
             openOwnEmails(peerKeys)
             return
         }
-        let params = ["cmd": Event.Queue.open.rawValue, "params": EventData.Queue.EmailOpen(metadataKeys: openKeys).asDictionary()] as [String : Any]
         DBManager.updateEmails(openKeys, unread: false, account: self.myAccount)
-        DBManager.createQueueItem(params: params, account: self.myAccount)
+        
+        openKeys.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+            let params = ["cmd": Event.Queue.open.rawValue, "params": EventData.Queue.EmailOpen(metadataKeys: batch).asDictionary()] as [String : Any]
+            DBManager.createQueueItem(params: params, account: self.myAccount)
+        })
+        
         self.openOwnEmails(peerKeys)
     }
     

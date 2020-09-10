@@ -39,6 +39,7 @@ class EventData {
         var modifiedEmailKeys = [Int]()
         var removed = false
         var suspended = false
+        var versionNotSupported = false
         var updateSideMenu = false
         var linkStartData: LinkData? = nil
         var feature: MailboxData.Feature? = nil

@@ -120,6 +120,19 @@ extension UIViewController {
         self.presentPopover(popover: suspendedVC, height: 300)
     }
     
+    func presentVersionNotSupportedPopover(onPressUpdate: (() -> (Void))?){
+        let suspendedVC = GenericAlertUIPopover()
+        suspendedVC.canDismiss = false
+        suspendedVC.myTitle = String.localize("WARNING")
+        suspendedVC.myMessage = String.localize("VERSION_NOT_SUPPORTED_DIALOG_MESSAGE")
+        suspendedVC.myButton = String.localize("UPDATE_BTN")
+        
+        suspendedVC.onOkPress = {
+            onPressUpdate?()
+        }
+        self.presentPopover(popover: suspendedVC, height: 300)
+    }
+    
     func presentLinkDevicePopover(linkData: LinkData, account: Account){
         let linkDeviceVC = SignInVerificationUIPopover()
         linkDeviceVC.linkData = linkData
