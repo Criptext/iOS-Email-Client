@@ -122,6 +122,9 @@ class InboxViewController: UIViewController {
             return
         }
         switch(mailboxData.feature?.symbol){
+        case -1:
+            openActionRequired()
+            break
         case 1: // <
             if(appVersion!.compare(version!, options: .numeric) == .orderedAscending){
                 openNewsBanner()
@@ -174,6 +177,13 @@ class InboxViewController: UIViewController {
         }
     }
     
+    @objc func openAdminBusiness(_ recognizer: UITapGestureRecognizer) {
+        if let url = URL(string: Env.adminURL),
+            UIApplication.shared.canOpenURL(url){
+            UIApplication.shared.open(url, options: [:]) { (opened) in }
+        }
+    }
+    
     func openUpdateBanner(){
         if mailboxData.selectedLabel == SystemLabel.inbox.id {
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.openAppStore(_:)))
@@ -182,6 +192,19 @@ class InboxViewController: UIViewController {
             newsHeaderView.subtitleLabel.addGestureRecognizer(tap)
             newsHeaderView.newsImageView.image = UIImage(named: "sync")!
             newsHeaderView.fillFieldsUpdate(title: String.localize("update_now_title"), subTitle: String.localize("update_now_message"))
+            openNewsHeader()
+        } else {
+            closeNewsHeader()
+        }
+    }
+    
+    func openActionRequired(){
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.openAdminBusiness(_:)))
+        tap.numberOfTapsRequired = 1
+        newsHeaderView.subtitleLabel.isUserInteractionEnabled = true
+        newsHeaderView.subtitleLabel.addGestureRecognizer(tap)
+        if let actionRequired = mailboxData.actionRequired {
+            newsHeaderView.fillFields(actionRequired: actionRequired)
             openNewsHeader()
         } else {
             closeNewsHeader()
@@ -259,6 +282,7 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         viewSetupNews()
+        //openActionRequired()
         generalOptionsContainerView.refreshView()
 
         if mailboxData.showRestore {
@@ -667,6 +691,11 @@ extension InboxViewController {
             viewSetupNews()
         }
         
+        if let actionRequired = result.actionRequired {
+            mailboxData.actionRequired = actionRequired
+            openActionRequired()
+        }
+        
         if let linkData = result.linkStartData {
             handleLinkStart(linkData: linkData, account: self.myAccount)
         }
@@ -781,6 +810,7 @@ extension InboxViewController{
         
         self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.viewSetupNews()
+        self.openActionRequired()
         self.showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
         self.tableView.reloadData()
         self.navigationDrawerController?.closeLeftView()

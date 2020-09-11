@@ -71,6 +71,9 @@ class EventHandler {
             result.linkStartData = linkData
         case .News(let feature):
             result.feature = feature
+        case .ActionRequired(let actionRequired):
+            result.actionRequired = actionRequired
+            successfulEvents.removeLast()
         case .CustomerType(let newType):
             result.updateSideMenu = true
             result.newCustomerType = newType
@@ -140,6 +143,8 @@ class EventHandler {
             handleUpdateProfilePic(params: params, finishCallback: handleEventResponse)
         case Event.Server.news.rawValue:
             handleNewsCommand(params: params, finishCallback: handleEventResponse)
+        case Event.Server.actionRequired.rawValue:
+            handleActionRequiredCommand(params: params, finishCallback: handleEventResponse)
         case Event.serverError.rawValue:
             handleEventResponse(successfulEvent: true, result: .Empty)
         case Event.Link.start.rawValue:
@@ -495,6 +500,21 @@ extension EventHandler {
             finishCallback(true, .News(feature))
         }
     }
+    
+    func handleActionRequiredCommand(params: [String: Any], finishCallback: @escaping (_ successfulEvent: Bool, _ item: Event.EventResult) -> Void){
+        let event = EventData.Server.ActionRequired(params: params)
+        APIManager.getNews(code: String(event.code)) { (responseData) in
+            guard case let .SuccessDictionary(action) = responseData,
+                let title = action["title"] as? String,
+                let body = action["body"] as? String,
+                let imageUrl = action["imageUrl"] as? String else {
+                    finishCallback(false, .Empty)
+                return
+            }
+            let actionRequired = MailboxData.ActionRequired(imageUrl: imageUrl, title: title, subtitle: body)
+            finishCallback(true, .ActionRequired(actionRequired))
+        }
+    }
 }
 
 enum Event: Int32 {
@@ -561,6 +581,7 @@ enum Event: Int32 {
     
     enum Server: Int32 {
         case news = 401
+        case actionRequired = 404
     }
     
     enum Queue: Int32 {
@@ -584,6 +605,7 @@ enum Event: Int32 {
         case LabelEdited
         case Empty
         case News(MailboxData.Feature)
+        case ActionRequired(MailboxData.ActionRequired)
         case UpdateProfilePic
         case CustomerType(Int)
     }

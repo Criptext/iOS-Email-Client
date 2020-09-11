@@ -25,6 +25,7 @@ class MailboxData {
     var unreadMails = 0
     var filterUnread = false
     var feature: Feature? = nil
+    var actionRequired: ActionRequired? = nil
     var reachedEnd : Bool {
         get {
             return searchMode ? filteredReachedEnd : emailReachedEnd
@@ -78,5 +79,11 @@ class MailboxData {
         var subtitle: String
         var version: String
         var symbol: Int
+    }
+    
+    struct ActionRequired {
+        var imageUrl: String
+        var title: String
+        var subtitle: String
     }
 }
