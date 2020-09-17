@@ -14,6 +14,7 @@ class MailboxNewsHeaderUIView: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var newsImageView: UIImageView!
+    @IBOutlet weak var xButton: UIButton!
     var feature: MailboxData.Feature!
     var onClose: (() -> Void)?
     
@@ -32,6 +33,13 @@ class MailboxNewsHeaderUIView: UIView {
         titleLabel.text = feature.title
         subtitleLabel.text = feature.subtitle
         newsImageView.sd_setImage(with: URL(string: feature.imageUrl), completed: nil)
+    }
+    
+    func fillFields(actionRequired: MailboxData.ActionRequired){
+        titleLabel.text = actionRequired.title
+        subtitleLabel.text = actionRequired.subtitle
+        newsImageView.sd_setImage(with: URL(string: actionRequired.imageUrl), completed: nil)
+        xButton.isHidden = true
     }
     
     func fillFieldsUpdate(title:String, subTitle: String){

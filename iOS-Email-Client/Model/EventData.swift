@@ -43,6 +43,7 @@ class EventData {
         var updateSideMenu = false
         var linkStartData: LinkData? = nil
         var feature: MailboxData.Feature? = nil
+        var actionRequired: MailboxData.ActionRequired? = nil
         var newCustomerType: Int? = nil
     }
     
@@ -418,6 +419,13 @@ extension EventData {
                 code = params["code"] as? String ?? ""
                 version = params["version"] as? String ?? ""
                 symbol = Int32(params["operator"] as? String ?? "1") ?? 1
+            }
+        }
+        
+        struct ActionRequired: Dictionarify {
+            let code: String
+            init(params: [String: Any]){
+                code = params["code"] as? String ?? ""
             }
         }
     }
