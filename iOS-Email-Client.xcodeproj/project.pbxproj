@@ -131,7 +131,6 @@
 		7C354A34248052330083EE41 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A27248052320083EE41 /* FirebaseCore.framework */; };
 		7C354A35248052330083EE41 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A28248052320083EE41 /* FirebaseMessaging.framework */; };
 		7C354A36248052340083EE41 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A29248052320083EE41 /* FirebaseCoreDiagnostics.framework */; };
-		7C354A37248052340083EE41 /* GoogleDataTransportCCTSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2A248052320083EE41 /* GoogleDataTransportCCTSupport.framework */; };
 		7C354A39248052340083EE41 /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2C248052320083EE41 /* FirebaseInstallations.framework */; };
 		7C354A3A248052340083EE41 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2D248052320083EE41 /* FIRAnalyticsConnector.framework */; };
 		7C354A3B248052340083EE41 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2E248052330083EE41 /* GoogleUtilities.framework */; };
@@ -1188,7 +1187,6 @@
 				7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */,
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
 				7C89D1ED24805417001E6198 /* Protobuf.framework in Frameworks */,
-				7C354A37248052340083EE41 /* GoogleDataTransportCCTSupport.framework in Frameworks */,
 				41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */,
 				41C36848207C69F3008B50A8 /* IQKeyboardManagerSwift.framework in Frameworks */,
 				41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */,
@@ -3231,7 +3229,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3271,7 +3269,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3416,7 +3414,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3479,7 +3477,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3510,7 +3508,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3540,7 +3538,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3573,7 +3571,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3607,7 +3605,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3640,7 +3638,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (

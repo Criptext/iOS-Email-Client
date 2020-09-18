@@ -805,14 +805,15 @@ extension InboxViewController{
         mailboxData.cancelFetchAsyncTask()
         mailboxData.reachedEnd = false
         mailboxData.threads.removeAll()
+        self.showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+        self.tableView.reloadData()
+        
         titleBarButton.title = (SystemLabel(rawValue: myLabelId)?.description ?? fallbackLabel.text).uppercased()
         topToolbar.swapTrashIcon(labelId: labelId)
         
         self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.viewSetupNews()
         self.openActionRequired()
-        self.showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
-        self.tableView.reloadData()
         self.navigationDrawerController?.closeLeftView()
         
         mailboxOptionsInterface = MailboxOptionsInterface(currentLabel: mailboxData.selectedLabel)
