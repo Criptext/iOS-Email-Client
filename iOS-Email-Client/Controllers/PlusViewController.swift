@@ -12,7 +12,7 @@ class PlusViewController: UIViewController {
     @IBOutlet weak var upgradePlusView: UpgradePlusUIView!
     @IBOutlet weak var alreadyPlusView: AlreadyPlusUIView!
     
-    weak var myAccount: Account!
+    var myAccount: Account!
     
     var isPlus: Bool {
         return Constants.isPlus(customerType: myAccount.customerType)

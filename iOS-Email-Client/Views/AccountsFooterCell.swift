@@ -38,6 +38,7 @@ class AccountsFooterCell: UITableViewHeaderFooterView {
         
         existingLabel.textColor = theme.mainText
         existingIconImage.tintColor = theme.criptextBlue
+        self.contentView.backgroundColor = theme.menuBackground
     }
     
     @IBAction func addAccount(sender: Any) {
