@@ -23,6 +23,7 @@ protocol EmailTableViewCellDelegate: class {
     func tableViewExpandViews()
     func tableViewDeleteDraft(email: Email)
     func tableViewTrustRecipient(cell: EmailTableViewCell, email: Email)
+    func tableViewLearnMore()
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -61,6 +62,7 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var deleteDraftButton: UIButton!
     @IBOutlet weak var showImagesButton: UIButton!
     @IBOutlet weak var showImagesSeparatorView: UIView!
+    @IBOutlet weak var learnMoreButton: UIButton!
     
     let webView: WKWebView
     
@@ -299,7 +301,7 @@ class EmailTableViewCell: UITableViewCell{
         contactsWidthConstraint.constant = size.width > RECIPIENTS_MAX_WIDTH ? RECIPIENTS_MAX_WIDTH : size.width
         
         let hasImages = emailBody.contains("<img")
-        showImagesButton.isHidden = !hasImages || !shouldBlockContent(email: email, emailState: self.emailState)
+        showImagesButton.isHidden = !hasImages || !shouldBlockContent(email: email, emailState: self.emailState) || email.shouldShowUndecryptedBanner
     }
     
     func loadWebview(email: Email, emailBody: String, hasTurnedOnLights: Bool){
@@ -410,6 +412,10 @@ class EmailTableViewCell: UITableViewCell{
     
     @IBAction func onShowImagesPress(_ sender: Any) {
         self.delegate?.tableViewTrustRecipient(cell: self, email: self.email)
+    }
+    
+    @IBAction func onLearnMorePressed(_ sender: Any) {
+        self.delegate?.tableViewLearnMore()
     }
     
     func enableImages(emailState: Email.State) {

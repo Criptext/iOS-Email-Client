@@ -79,9 +79,9 @@ struct Env {
     
     static var adminURL: String {
         guard !Env.isProduction else {
-            return "https://admin.criptext.com"
+            return "https://account.criptext.com/"
         }
-        return "https://admin.criptext.com"
+        return "https://account.criptext.com/"
     }
     
     static var language: String {

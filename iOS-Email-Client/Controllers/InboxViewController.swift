@@ -92,7 +92,7 @@ class InboxViewController: UIViewController {
         WebSocketManager.sharedInstance.delegate = self
         ThemeManager.shared.addListener(id: "mailbox", delegate: self)
         RequestManager.shared.delegates.append(self)
-        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
+        emptyJunk(isSpam: false, from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
         applyTheme()
@@ -1068,13 +1068,21 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
+        guard (mailboxData.selectedLabel == SystemLabel.trash.id
+                || mailboxData.selectedLabel == SystemLabel.spam.id) && !mailboxData.threads.isEmpty else {
             return nil
         }
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
         cell.contentView.backgroundColor = UIColor(red: 242/255, green: 248/255, blue: 1, alpha: 1)
+        if(mailboxData.selectedLabel == SystemLabel.spam.id){
+            cell.actionButton.setTitle(String.localize("EMPTY_SPAM"), for: .normal)
+            cell.messageLabel.text = String.localize("EMPTY_SPAM_MESSAGE")
+        } else {
+            cell.actionButton.setTitle(String.localize("EMPTY_TRASH"), for: .normal)
+            cell.messageLabel.text = String.localize("x1S-nX-RZk.text")
+        }
         cell.onEmptyPress = {
-            self.showEmptyTrashWarning()
+            self.showEmptyTrashWarning(isSpam: self.mailboxData.selectedLabel == SystemLabel.spam.id)
         }
         return cell
     }
@@ -1102,10 +1110,15 @@ extension InboxViewController: UITableViewDataSource{
         }
     }
     
-    func showEmptyTrashWarning() {
+    func showEmptyTrashWarning(isSpam: Bool) {
         let popover = GenericDualAnswerUIPopover()
-        popover.initialTitle = String.localize("EMPTY_TRASH")
-        popover.initialMessage = String.localize("ALL_TRASH_DELETE")
+        if(isSpam){
+            popover.initialTitle = String.localize("EMPTY_SPAM")
+            popover.initialMessage = String.localize("ALL_SPAM_DELETE")
+        } else {
+            popover.initialTitle = String.localize("EMPTY_TRASH")
+            popover.initialMessage = String.localize("ALL_TRASH_DELETE")
+        }
         popover.leftOption = String.localize("CANCEL")
         popover.rightOption = String.localize("YES")
         popover.onResponse = { [weak self] accept in
@@ -1113,21 +1126,27 @@ extension InboxViewController: UITableViewDataSource{
                 let weakSelf = self else {
                     return
             }
-            weakSelf.emptyTrash()
+            weakSelf.emptyJunk(isSpam: isSpam)
         }
         self.presentPopover(popover: popover, height: 210)
     }
     
-    func emptyTrash(from date: Date = Date()){
+    func emptyJunk(isSpam: Bool, from date: Date = Date()){
         autoreleasepool {
-            guard let threadIds = DBManager.getTrashThreads(from: date, account: myAccount),
-                !threadIds.isEmpty else {
+            var threadIds: [String]? = nil
+            if(isSpam){
+                threadIds = DBManager.getTrashThreads(from: date, account: myAccount)
+            } else {
+                threadIds = DBManager.getSpamThreads(from: date, account: myAccount)
+            }
+            guard threadIds != nil,
+                  !(threadIds?.isEmpty ?? true)  else {
                 return
             }
-            DBManager.deleteThreads(threadIds: threadIds)
+            DBManager.deleteThreads(threadIds: threadIds!)
             self.refreshThreadRows()
             
-            threadIds.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+            threadIds!.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
                 let eventData = EventData.Peer.ThreadDeleted(threadIds: batch)
                 DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
             })

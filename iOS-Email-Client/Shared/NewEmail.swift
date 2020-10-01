@@ -26,6 +26,7 @@ struct NewEmail {
     let fileKeys:[String]?
     let labels: [String]
     let isExternal: Bool
+    let isNewsletter: Bool?
     let replyTo: String?
     let boundary: String?
     let guestEncryption: Int
@@ -54,6 +55,7 @@ struct NewEmail {
         fileKey = params["fileKey"] as? String
         fileKeys = params["fileKeys"] as? [String]
         isExternal = params["external"] as? Bool ?? false
+        isNewsletter = params["isNewsletter"] as? Bool ?? nil
         
         
         let dateString = params["date"] as! String
