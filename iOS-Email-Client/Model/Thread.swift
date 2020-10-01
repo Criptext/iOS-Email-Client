@@ -66,7 +66,8 @@ class Thread {
                 emailParticipants.insert(participant.email)
                 self.participants.append(DisplayContact(name: displayName, isDraft: threadEmail.isDraft, isUnread: threadEmail.unread))
             }
-            if(!self.hasAttachments && threadEmail.files.count > 0){
+            if(!self.hasAttachments && threadEmail.files.count > 0
+                && threadEmail.files.filter { $0.cid != nil }.count < threadEmail.files.count){
                 self.hasAttachments = true
             }
         }
