@@ -81,6 +81,11 @@ class InboxViewController: UIViewController {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
     }
     
+    var showTableHeader: Bool {
+        return (mailboxData.selectedLabel == SystemLabel.trash.id
+                    || mailboxData.selectedLabel == SystemLabel.spam.id) && !mailboxData.threads.isEmpty
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -92,7 +97,7 @@ class InboxViewController: UIViewController {
         WebSocketManager.sharedInstance.delegate = self
         ThemeManager.shared.addListener(id: "mailbox", delegate: self)
         RequestManager.shared.delegates.append(self)
-        emptyJunk(isSpam: false, from: Date.init(timeIntervalSinceNow: -30*24*60*60))
+        emptyMailbox(label: .trash, from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
         applyTheme()
@@ -1068,8 +1073,7 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard (mailboxData.selectedLabel == SystemLabel.trash.id
-                || mailboxData.selectedLabel == SystemLabel.spam.id) && !mailboxData.threads.isEmpty else {
+        guard self.showTableHeader else {
             return nil
         }
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
@@ -1079,10 +1083,10 @@ extension InboxViewController: UITableViewDataSource{
             cell.messageLabel.text = String.localize("EMPTY_SPAM_MESSAGE")
         } else {
             cell.actionButton.setTitle(String.localize("EMPTY_TRASH"), for: .normal)
-            cell.messageLabel.text = String.localize("x1S-nX-RZk.text")
+            cell.messageLabel.text = String.localize("EMPTY_TRASH_MESSAGE")
         }
         cell.onEmptyPress = {
-            self.showEmptyTrashWarning(isSpam: self.mailboxData.selectedLabel == SystemLabel.spam.id)
+            self.showEmptyWarning(label: self.mailboxData.selectedLabel == SystemLabel.spam.id ? .spam : .trash)
         }
         return cell
     }
@@ -1110,9 +1114,9 @@ extension InboxViewController: UITableViewDataSource{
         }
     }
     
-    func showEmptyTrashWarning(isSpam: Bool) {
+    func showEmptyWarning(label: SystemLabel) {
         let popover = GenericDualAnswerUIPopover()
-        if(isSpam){
+        if case SystemLabel.spam = label{
             popover.initialTitle = String.localize("EMPTY_SPAM")
             popover.initialMessage = String.localize("ALL_SPAM_DELETE")
         } else {
@@ -1126,18 +1130,18 @@ extension InboxViewController: UITableViewDataSource{
                 let weakSelf = self else {
                     return
             }
-            weakSelf.emptyJunk(isSpam: isSpam)
+            weakSelf.emptyMailbox(label: label)
         }
         self.presentPopover(popover: popover, height: 210)
     }
     
-    func emptyJunk(isSpam: Bool, from date: Date = Date()){
+    func emptyMailbox(label: SystemLabel, from date: Date = Date()){
         autoreleasepool {
             var threadIds: [String]? = nil
-            if(isSpam){
-                threadIds = DBManager.getTrashThreads(from: date, account: myAccount)
+            if case SystemLabel.spam = label {
+                threadIds = DBManager.getSpamThreads(account: myAccount)
             } else {
-                threadIds = DBManager.getSpamThreads(from: date, account: myAccount)
+                threadIds = DBManager.getTrashThreads(from: date, account: myAccount)
             }
             guard threadIds != nil,
                   !(threadIds?.isEmpty ?? true)  else {
@@ -1154,7 +1158,7 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
+        guard self.showTableHeader else {
             return 0.0
         }
         return 95.0

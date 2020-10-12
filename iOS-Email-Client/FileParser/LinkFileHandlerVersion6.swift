@@ -73,6 +73,9 @@ class LinkFileHandlerVersion6: LinkFileInterface {
             if let boundary = object["boundary"]{
                 email.boundary = boundary as! String
             }
+            if let isNewsletter = object["isNewsletter"] as? Bool {
+                email.isNewsletter = isNewsletter ? Email.IsNewsletter.itIs.rawValue : Email.IsNewsletter.isNot.rawValue
+            }
             email.buildCompoundKey()
             realm.add(email, update: .all)
             maps.emails[id] = email.key

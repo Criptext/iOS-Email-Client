@@ -106,7 +106,11 @@
 "RECIPIENTS_CAP_SIZE" = "Vous pouvez ajouter jusqu'à 300 destinataires par email. Merci d'en supprimer un avant d'en ajouter un autre.";
 "ADD_ATTACHMENT" = "Ajouter des pièces jointes sécurisées";
 "EMPTY_TRASH" = "Vider la corbeille";
+"EMPTY_TRASH_MESSAGE" = "Messages that have been in Trash more than 30 days will be automatically deleted";
+"EMPTY_SPAM" = "Empty Spam";
+"EMPTY_SPAM_MESSAGE" = "You can permanently delete all emails on your spam folder";
 "ALL_TRASH_DELETE" = "Tous les emails de la corbeille vont être effacés DÉFINITIVEMENT. Voulez-vous continuer?";
+"ALL_SPAM_DELETE" = "All your emails in Spam are going to be deleted PERMANENTLY. Do you want to continue?";
 "NO_RESULTS" = "Aucun résultat trouvé";
 "NOR_TRASH_SPAM" = "La corbeille et le courrier indésirable ne sont pas affichés.";
 "NO_INBOXES" = "Il n'y a aucun email";
@@ -563,3 +567,6 @@
 "TURN_OFF_LIGHTS" = "Turn off the lights";
 "UPDATE_BTN" = "Update Now";
 "VERSION_NOT_SUPPORTED_DIALOG_MESSAGE" = "This version of the Criptext app is no longer supported, please update now to receive new emails";
+
+"UNABLE_ENCRYPT" = "This email couldn't be encrypted.";
+"LEARN_MORE" = "Learn More";

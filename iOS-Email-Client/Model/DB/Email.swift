@@ -91,7 +91,7 @@ class Email: Object {
     }
     
     var shouldShowUndecryptedBanner: Bool {
-        return self.isNewsletter != IsNewsletter.isNil.rawValue && self.isNewsletter != IsNewsletter.itIs.rawValue
+        return self.isNewsletter == IsNewsletter.isNot.rawValue
     }
     
     override static func primaryKey() -> String? {
@@ -221,6 +221,9 @@ extension Email {
         }
         if let unsentDate = self.unsentDate {
             object["unsentDate"] = DateUtils().date(toServerString: unsentDate)!
+        }
+        if self.isNewsletter != IsNewsletter.isNil.rawValue {
+            object["isNewsletter"] = self.isNewsletter == IsNewsletter.itIs.rawValue
         }
         return [
             "table": "email",

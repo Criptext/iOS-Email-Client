@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -230,22 +231,33 @@
                                     <constraint firstAttribute="height" constant="10" id="nax-ln-Fb5"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayH-Ox-FYy">
-                                <rect key="frame" x="5" y="92" width="301" height="40"/>
-                                <color key="backgroundColor" red="0.96078431372549022" green="0.96862745098039216" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dSD-VW-pNY">
+                                <rect key="frame" x="0.0" y="92" width="375" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayH-Ox-FYy">
+                                        <rect key="frame" x="18" y="5" width="339" height="40"/>
+                                        <color key="backgroundColor" red="0.96078431372549022" green="0.96862745098039216" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="gxy-R6-BOO"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
+                                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="This Email couldn't be encrypted. Learn more">
+                                            <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onLearnMorePressed:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="Mt6-rJ-PF6"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="gxy-R6-BOO"/>
+                                    <constraint firstAttribute="trailing" secondItem="ayH-Ox-FYy" secondAttribute="trailing" constant="18" id="1Ae-XX-guc"/>
+                                    <constraint firstAttribute="height" constant="50" id="FQD-JE-rYI"/>
+                                    <constraint firstItem="ayH-Ox-FYy" firstAttribute="leading" secondItem="dSD-VW-pNY" secondAttribute="leading" constant="18" id="JZU-A9-G73"/>
+                                    <constraint firstItem="ayH-Ox-FYy" firstAttribute="centerY" secondItem="dSD-VW-pNY" secondAttribute="centerY" id="KDC-YO-eaC"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="15"/>
-                                <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="This Email couldn't be encrypted. Learn more">
-                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onLearnMorePressed:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="Mt6-rJ-PF6"/>
-                                    <action selector="onShowImagesPress:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="gXt-Fi-AGa"/>
-                                </connections>
-                            </button>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">
                                 <rect key="frame" x="0.0" y="142" width="375" height="31"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -276,11 +288,6 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ayH-Ox-FYy" secondAttribute="trailing" constant="5" id="jNk-Ho-Rhc"/>
-                            <constraint firstItem="tm2-e0-IDa" firstAttribute="top" secondItem="ayH-Ox-FYy" secondAttribute="bottom" constant="10" id="y7M-P7-9hL"/>
-                            <constraint firstItem="ayH-Ox-FYy" firstAttribute="leading" secondItem="KaE-PD-svL" secondAttribute="leading" constant="5" id="yGJ-fU-TcS"/>
-                        </constraints>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z3R-AR-5lt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="5"/>
@@ -403,6 +410,7 @@
                 <outlet property="infoViewContainer" destination="oYk-NZ-Ec1" id="rki-Zp-eDT"/>
                 <outlet property="initialsImageView" destination="9UB-5Z-Iw6" id="ptg-fJ-Owd"/>
                 <outlet property="learnMoreButton" destination="ayH-Ox-FYy" id="fOb-tb-Mdz"/>
+                <outlet property="learnMoreButtonContainerView" destination="dSD-VW-pNY" id="90g-dO-z4X"/>
                 <outlet property="miniAttachmentIconView" destination="YbZ-Ti-AdL" id="fgu-Jo-SV7"/>
                 <outlet property="miniReadIconView" destination="yfG-EO-Lu4" id="Zkd-em-rvE"/>
                 <outlet property="moreInfoContainerView" destination="SNm-dQ-TeE" id="Zo8-W8-a47"/>
@@ -429,5 +437,8 @@
         <image name="icSecinb" width="17" height="17"/>
         <image name="show-images" width="16" height="15"/>
         <image name="toolbar-trash" width="38" height="41"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

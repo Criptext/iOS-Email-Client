@@ -221,13 +221,13 @@ class NewEmailHandler {
         email.replyTo = event.replyTo ?? ""
         email.buildCompoundKey()
         if let isNews = event.isNewsletter {
-            email.isNewsletter = Email.IsNewsletter.isNil.rawValue
-        } else {
-            if(event.isNewsletter){
+            if(isNews){
                 email.isNewsletter = Email.IsNewsletter.itIs.rawValue
             } else {
                 email.isNewsletter = Email.IsNewsletter.isNot.rawValue
             }
+        } else {
+            email.isNewsletter = Email.IsNewsletter.isNil.rawValue
         }
         
         if(unsent){
