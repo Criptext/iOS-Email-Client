@@ -415,6 +415,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newContact["isTrusted"] = true
                     }
                 }
+                if(oldSchemaVersion < 29) {
+                    migration.enumerateObjects(ofType: Email.className()){ (oldObject, newObject) in
+                        guard let newEmail = newObject else{
+                            return
+                        }
+                        newEmail["isNewsletter"] = Email.IsNewsletter.isNil.rawValue
+                    }
+                }
             })
         
         // Tell Realm to use this new configuration object for the default Realm

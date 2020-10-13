@@ -106,7 +106,11 @@
 "RECIPIENTS_CAP_SIZE" = "Вы можете добавить до 300 получателей каждого письма. Пожалуйста, удалите одного из получателей, прежде чем добавить еще одного";
 "ADD_ATTACHMENT" = "Добавить безопасные\nвложения";
 "EMPTY_TRASH" = "Очистить корзину";
+"EMPTY_TRASH_MESSAGE" = "Messages that have been in Trash more than 30 days will be automatically deleted";
+"EMPTY_SPAM" = "Empty Spam";
+"EMPTY_SPAM_MESSAGE" = "You can permanently delete all emails on your spam folder";
 "ALL_TRASH_DELETE" = "Все письма в вашей \"Корзине\" будут БЕЗВОЗВРАТНО удалены. Хотите продолжить?";
+"ALL_SPAM_DELETE" = "All your emails in Spam are going to be deleted PERMANENTLY. Do you want to continue?";
 "NO_RESULTS" = "Нет результатов поиска";
 "NOR_TRASH_SPAM" = "Папки \"Корзина\" и \"Спам\" не отображаются";
 "NO_INBOXES" = "Нет писем";
@@ -563,3 +567,6 @@
 "TURN_OFF_LIGHTS" = "Turn off the lights";
 "UPDATE_BTN" = "Update Now";
 "VERSION_NOT_SUPPORTED_DIALOG_MESSAGE" = "This version of the Criptext app is no longer supported, please update now to receive new emails";
+
+"UNABLE_ENCRYPT" = "This email couldn't be encrypted.";
+"LEARN_MORE" = "Learn More";

@@ -38,6 +38,12 @@ class Email: Object {
         }
     }
     
+    enum IsNewsletter : Int {
+        case isNil = -1
+        case isNot = 0
+        case itIs = 1
+    }
+    
     
     @objc dynamic var compoundKey = ""
     @objc dynamic var key = 0 //metadataKey
@@ -55,6 +61,7 @@ class Email: Object {
     @objc dynamic var fromAddress = ""
     @objc dynamic var replyTo = ""
     @objc dynamic var boundary = ""
+    @objc dynamic var isNewsletter = IsNewsletter.isNil.rawValue
     
     @objc dynamic var account : Account!
     let labels = List<Label>()
@@ -81,6 +88,10 @@ class Email: Object {
     }
     var canTriggerEvent: Bool {
         return status != .fail && status != .sending
+    }
+    
+    var shouldShowUndecryptedBanner: Bool {
+        return self.isNewsletter == IsNewsletter.isNot.rawValue
     }
     
     override static func primaryKey() -> String? {
@@ -210,6 +221,9 @@ extension Email {
         }
         if let unsentDate = self.unsentDate {
             object["unsentDate"] = DateUtils().date(toServerString: unsentDate)!
+        }
+        if self.isNewsletter != IsNewsletter.isNil.rawValue {
+            object["isNewsletter"] = self.isNewsletter == IsNewsletter.itIs.rawValue
         }
         return [
             "table": "email",

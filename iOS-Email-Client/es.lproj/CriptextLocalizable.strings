@@ -106,7 +106,11 @@
 "RECIPIENTS_CAP_SIZE" = "\n Puede agregar hasta 300 destinatarios por cada correo. Considere quitar uno antes de agregar otro";
 "ADD_ATTACHMENT" = "Añadir archivos \nadjuntos seguros";
 "EMPTY_TRASH" = "Vaciar Papelera";
+"EMPTY_TRASH_MESSAGE" = "Los mensajes que estén en la papelera más de 30 días serán eliminados automáticamente.";
+"EMPTY_SPAM" = "Vaciar Spam";
+"EMPTY_SPAM_MESSAGE" = "Puedes borrar permanentemente todos los correos que se encuentren en tu carpeta de Spam.";
 "ALL_TRASH_DELETE" = "Todos sus correos en la Papelera serán eliminados PERMANENTEMENTE.\n¿Quieres continuar?";
+"ALL_SPAM_DELETE" = "Todos sus correos en Spam serán eliminados PERMANENTEMENTE.\n¿Quieres continuar?";
 "NO_RESULTS" = "Sin resultados de búsqueda";
 "NOR_TRASH_SPAM" = "Correos en Papelera & Spam no mostrados";
 "NO_INBOXES" = "Bandeja de Recibidos vacía";
@@ -563,3 +567,6 @@
 "TURN_OFF_LIGHTS" = "Apagar las luces";
 "UPDATE_BTN" = "Actualizar";
 "VERSION_NOT_SUPPORTED_DIALOG_MESSAGE" = "Esta versión de Criptext ya no está soportada. Por favor actualiza a la última versión para poder ver tus nuevos correos.";
+
+"UNABLE_ENCRYPT" = "Este correo no pudo ser encriptado.";
+"LEARN_MORE" = "Conocer Más";

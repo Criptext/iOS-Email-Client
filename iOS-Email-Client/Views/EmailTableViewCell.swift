@@ -23,6 +23,7 @@ protocol EmailTableViewCellDelegate: class {
     func tableViewExpandViews()
     func tableViewDeleteDraft(email: Email)
     func tableViewTrustRecipient(cell: EmailTableViewCell, email: Email)
+    func tableViewLearnMore()
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -61,6 +62,8 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var deleteDraftButton: UIButton!
     @IBOutlet weak var showImagesButton: UIButton!
     @IBOutlet weak var showImagesSeparatorView: UIView!
+    @IBOutlet weak var learnMoreButton: UIButton!
+    @IBOutlet weak var learnMoreButtonContainerView: UIView!
     
     let webView: WKWebView
     
@@ -131,6 +134,11 @@ class EmailTableViewCell: UITableViewCell{
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(expandView(sender:)))
         upContainerView.addGestureRecognizer(tapGesture)
         bottomContainerView.addGestureRecognizer(tapGesture)
+        
+        let attributedPhrase = NSMutableAttributedString(string: String.localize("UNABLE_ENCRYPT"), attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.secondText])
+        let attributedLink = NSAttributedString(string: " \(String.localize("LEARN_MORE"))", attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.criptextBlue])
+        attributedPhrase.append(attributedLink)
+        learnMoreButton.setAttributedTitle(attributedPhrase, for: .normal)
     }
     
     func hideCollapse() {
@@ -281,6 +289,7 @@ class EmailTableViewCell: UITableViewCell{
     func setCollapsedContent(_ email: Email){
         showImagesButton.isHidden = true
         deleteDraftButton.isHidden = true
+        learnMoreButtonContainerView.isHidden = true
         previewLabel.text = email.getPreview()
     }
     
@@ -300,6 +309,7 @@ class EmailTableViewCell: UITableViewCell{
         
         let hasImages = emailBody.contains("<img")
         showImagesButton.isHidden = !hasImages || !shouldBlockContent(email: email, emailState: self.emailState)
+        learnMoreButtonContainerView.isHidden = !email.shouldShowUndecryptedBanner
     }
     
     func loadWebview(email: Email, emailBody: String, hasTurnedOnLights: Bool){
@@ -410,6 +420,10 @@ class EmailTableViewCell: UITableViewCell{
     
     @IBAction func onShowImagesPress(_ sender: Any) {
         self.delegate?.tableViewTrustRecipient(cell: self, email: self.email)
+    }
+    
+    @IBAction func onLearnMorePressed(_ sender: Any) {
+        self.delegate?.tableViewLearnMore()
     }
     
     func enableImages(emailState: Email.State) {

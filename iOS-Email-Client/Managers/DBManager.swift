@@ -431,6 +431,15 @@ class DBManager: SharedDB {
         return threadIds
     }
     
+    class func getSpamThreads(account: Account) -> [String]? {
+        let realm = try! Realm()
+        let emails = Array(realm.objects(Email.self).filter("ANY labels.id IN %@ AND account.compoundKey == %@", [SystemLabel.spam.id], account.compoundKey))
+        let threadIds = Array(Set(emails.map({ (email) -> String in
+            return email.threadId
+        })))
+        return threadIds
+    }
+    
     class func updateThread(threadId: String, currentLabel: Int, unread: Bool, account: Account){
         let emails = getThreadEmails(threadId, label: currentLabel, account: account)
         for email in emails {

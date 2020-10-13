@@ -557,6 +557,10 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
         generalOptionsContainerView.setDelegate(newDelegate: emailDetailContentOptionsInterface!)
         toggleGeneralOptionsView()
     }
+    
+    func tableViewLearnMore() {
+        self.goToUrl(url: "https://criptext.atlassian.net/wiki/spaces/CRIPTEXT/pages/511377409/Content+Unencrypted+Learn+More")
+    }
 }
 
 extension EmailDetailViewController: MembershipWebViewControllerDelegate {

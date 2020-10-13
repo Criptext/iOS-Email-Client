@@ -81,6 +81,11 @@ class InboxViewController: UIViewController {
         return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(myAccount.email)
     }
     
+    var showTableHeader: Bool {
+        return (mailboxData.selectedLabel == SystemLabel.trash.id
+                    || mailboxData.selectedLabel == SystemLabel.spam.id) && !mailboxData.threads.isEmpty
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -92,7 +97,7 @@ class InboxViewController: UIViewController {
         WebSocketManager.sharedInstance.delegate = self
         ThemeManager.shared.addListener(id: "mailbox", delegate: self)
         RequestManager.shared.delegates.append(self)
-        emptyTrash(from: Date.init(timeIntervalSinceNow: -30*24*60*60))
+        emptyMailbox(label: .trash, from: Date.init(timeIntervalSinceNow: -30*24*60*60))
         getPendingEvents(nil)
         
         applyTheme()
@@ -1068,13 +1073,20 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
+        guard self.showTableHeader else {
             return nil
         }
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "InboxHeaderTableViewCell") as! InboxHeaderUITableCell
         cell.contentView.backgroundColor = UIColor(red: 242/255, green: 248/255, blue: 1, alpha: 1)
+        if(mailboxData.selectedLabel == SystemLabel.spam.id){
+            cell.actionButton.setTitle(String.localize("EMPTY_SPAM"), for: .normal)
+            cell.messageLabel.text = String.localize("EMPTY_SPAM_MESSAGE")
+        } else {
+            cell.actionButton.setTitle(String.localize("EMPTY_TRASH"), for: .normal)
+            cell.messageLabel.text = String.localize("EMPTY_TRASH_MESSAGE")
+        }
         cell.onEmptyPress = {
-            self.showEmptyTrashWarning()
+            self.showEmptyWarning(label: self.mailboxData.selectedLabel == SystemLabel.spam.id ? .spam : .trash)
         }
         return cell
     }
@@ -1102,10 +1114,15 @@ extension InboxViewController: UITableViewDataSource{
         }
     }
     
-    func showEmptyTrashWarning() {
+    func showEmptyWarning(label: SystemLabel) {
         let popover = GenericDualAnswerUIPopover()
-        popover.initialTitle = String.localize("EMPTY_TRASH")
-        popover.initialMessage = String.localize("ALL_TRASH_DELETE")
+        if case SystemLabel.spam = label{
+            popover.initialTitle = String.localize("EMPTY_SPAM")
+            popover.initialMessage = String.localize("ALL_SPAM_DELETE")
+        } else {
+            popover.initialTitle = String.localize("EMPTY_TRASH")
+            popover.initialMessage = String.localize("ALL_TRASH_DELETE")
+        }
         popover.leftOption = String.localize("CANCEL")
         popover.rightOption = String.localize("YES")
         popover.onResponse = { [weak self] accept in
@@ -1113,21 +1130,27 @@ extension InboxViewController: UITableViewDataSource{
                 let weakSelf = self else {
                     return
             }
-            weakSelf.emptyTrash()
+            weakSelf.emptyMailbox(label: label)
         }
         self.presentPopover(popover: popover, height: 210)
     }
     
-    func emptyTrash(from date: Date = Date()){
+    func emptyMailbox(label: SystemLabel, from date: Date = Date()){
         autoreleasepool {
-            guard let threadIds = DBManager.getTrashThreads(from: date, account: myAccount),
-                !threadIds.isEmpty else {
+            var threadIds: [String]? = nil
+            if case SystemLabel.spam = label {
+                threadIds = DBManager.getSpamThreads(account: myAccount)
+            } else {
+                threadIds = DBManager.getTrashThreads(from: date, account: myAccount)
+            }
+            guard threadIds != nil,
+                  !(threadIds?.isEmpty ?? true)  else {
                 return
             }
-            DBManager.deleteThreads(threadIds: threadIds)
+            DBManager.deleteThreads(threadIds: threadIds!)
             self.refreshThreadRows()
             
-            threadIds.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
+            threadIds!.chunked(into: Env.peerEventDataSize).forEach({ (batch) in
                 let eventData = EventData.Peer.ThreadDeleted(threadIds: batch)
                 DBManager.createQueueItem(params: ["cmd": Event.Peer.threadsDeleted.rawValue, "params": eventData.asDictionary()], account: self.myAccount)
             })
@@ -1135,7 +1158,7 @@ extension InboxViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard mailboxData.selectedLabel == SystemLabel.trash.id && !mailboxData.threads.isEmpty else {
+        guard self.showTableHeader else {
             return 0.0
         }
         return 95.0
