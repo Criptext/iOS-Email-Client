@@ -138,9 +138,11 @@ class InboxTableViewCell: UITableViewCell {
         case .unsent:
             readWidthConstraint.constant = 0.0
             readImageView.isHidden = true
-        case .sending, .fail:
+        case .sending:
             readImageView.image = #imageLiteral(resourceName: "waiting-icon")
             readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+        case .fail:
+            readImageView.image = #imageLiteral(resourceName: "resend-warning")
         }
     }
     

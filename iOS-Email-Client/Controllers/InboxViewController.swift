@@ -263,6 +263,8 @@ class InboxViewController: UIViewController {
         mailboxOptionsInterface = MailboxOptionsInterface(currentLabel: mailboxData.selectedLabel)
         mailboxOptionsInterface?.delegate = self
         self.generalOptionsContainerView.setDelegate(newDelegate: mailboxOptionsInterface!)
+        
+        DBManager.setSendingEmailsAsFailed(account: myAccount)
     }
     
     func applyTheme() {
@@ -287,7 +289,7 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         viewSetupNews()
-        //openActionRequired()
+
         generalOptionsContainerView.refreshView()
 
         if mailboxData.showRestore {
@@ -540,7 +542,7 @@ class InboxViewController: UIViewController {
             switch status {
             case .notReachable, .unknown:
                 //do nothing
-                self?.showSnackbar("Offline", attributedText: nil, buttons: "", permanent: false)
+                self?.showSnackbar("Offline", attributedText: nil, permanent: false)
                 break
             default:
                 self?.dequeueEvents()
@@ -960,7 +962,7 @@ extension InboxViewController{
         BackupManager.shared.clearAccount(accountId: self.myAccount.compoundKey)
         BackupManager.shared.backupNow(account: self.myAccount)
         defaults.setShownAutobackup(email: self.myAccount.email)
-        self.showSnackbar(String.localize("BACKUP_ACTIVATED"), attributedText: nil, buttons: "", permanent: false)
+        self.showSnackbar(String.localize("BACKUP_ACTIVATED"), attributedText: nil, permanent: false)
     }
 }
 
@@ -1782,89 +1784,6 @@ extension InboxViewController: NavigationToolbarDelegate {
     }
 }
 
-extension InboxViewController: ComposerSendMailDelegate {
-    func newDraft(draft: Email) {
-        guard mailboxData.selectedLabel == SystemLabel.draft.id else {
-            return
-        }
-        self.refreshThreadRows()
-        self.showSendingSnackBar(message: String.localize("DRAFT_SAVED"), permanent: false)
-    }
-    
-    func sendFailEmail(){
-        guard let email = DBManager.getEmailFailed(account: self.myAccount) else {
-            return
-        }
-        DBManager.updateEmail(email, status: .sending)
-        let bodyFromFile = FileUtils.getBodyFromFile(account: myAccount, metadataKey: "\(email.key)")
-        sendMail(email: email,
-                 emailBody: bodyFromFile.isEmpty ? email.content : bodyFromFile,
-                 password: nil)
-    }
-    
-    func sendMail(email: Email, emailBody: String, password: String?) {
-        showSendingSnackBar(message: String.localize("SENDING_MAIL"), permanent: true)
-        reloadIfSentMailbox(email: email)
-        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: emailBody, password: password)
-        sendMailAsyncTask.start { [weak self] responseData in
-            guard let weakSelf = self else {
-                return
-            }
-            if case .Unauthorized = responseData {
-                weakSelf.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
-                return
-            }
-            if case .Removed = responseData {
-                weakSelf.logout(account: weakSelf.myAccount, manually: false)
-                return
-            }
-            if case .Forbidden = responseData {
-                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
-                weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
-                return
-            }
-            if case let .Error(error) = responseData {
-                weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, buttons: "", permanent: false)
-                return
-            }
-            guard case let .SuccessInt(key) = responseData else {
-                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
-                return
-            }
-            let sentEmail = DBManager.getMail(key: key, account: weakSelf.myAccount)
-            guard sentEmail != nil else {
-                weakSelf.showSendingSnackBar(message: String.localize("EMAIL_SENT"), permanent: false)
-                return
-            }
-            weakSelf.refreshThreadRows()
-            let message = sentEmail!.secure ? String.localize("EMAIL_SENT_SECURE") : String.localize("EMAIL_SENT")
-            weakSelf.showSendingSnackBar(message: message, permanent: false)
-            weakSelf.sendFailEmail()
-        }
-    }
-    
-    func reloadIfSentMailbox(email: Email){
-        if( SystemLabel(rawValue: self.mailboxData.selectedLabel) == .sent || mailboxData.threads.contains(where: {$0.threadId == email.threadId}) ){
-            self.refreshThreadRows()
-        }
-    }
-    
-    func showSendingSnackBar(message: String, permanent: Bool) {
-        let fullString = NSMutableAttributedString(string: "")
-        let attrs = [NSAttributedString.Key.font : Font.regular.size(15)!, NSAttributedString.Key.foregroundColor : UIColor.white]
-        fullString.append(NSAttributedString(string: message, attributes: attrs))
-        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
-    }
-    
-    func deleteDraft(draftId: Int) {
-        guard let draftIndex = mailboxData.threads.firstIndex(where: {$0.lastEmailKey == draftId}) else {
-                return
-        }
-        mailboxData.threads.remove(at: draftIndex)
-        tableView.reloadData()
-    }
-}
-
 extension InboxViewController: MailboxOptionsInterfaceDelegate {
     func onClose() {
         self.toggleMoreOptions()
@@ -2163,7 +2082,7 @@ extension InboxViewController {
         self.setQueueItemsListener()
         UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
         UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
-        self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, buttons: "", permanent: false)
+        self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, permanent: false)
         RequestManager.shared.getAccountEvents(accountId: account.compoundKey)
     }
 }
@@ -2203,11 +2122,11 @@ extension InboxViewController: RequestDelegate {
                 self.logout(account: self.myAccount, manually: false)
                 return
             case .Unauthorized:
-                self.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
+                self.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, permanent: false)
                 return
             case .Error(let error):
                 if(error.code != .custom) {
-                    self.showSnackbar(error.description, attributedText: nil, buttons: "", permanent: false)
+                    self.showSnackbar(error.description, attributedText: nil, permanent: false)
                     return
                 }
             case .Forbidden:

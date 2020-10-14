@@ -182,7 +182,7 @@ extension RestoreViewController: RestoreDelegate {
             }
             inboxVC.dismiss(animated: true) {
                 inboxVC.loadMails(since: Date(), clear: true, limit: 0)
-                inboxVC.showSnackbar(String.localize("RESTORE_SUCCESS"), attributedText: nil, buttons: "", permanent: false)
+                inboxVC.showSnackbar(String.localize("RESTORE_SUCCESS"), attributedText: nil, permanent: false)
             }
         })
     }

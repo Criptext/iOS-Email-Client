@@ -510,6 +510,11 @@ class SharedDB {
         return realm.object(ofType: Email.self, forPrimaryKey: "\(account.compoundKey):\(key)")
     }
     
+    class func getMail(compoundKey: String) -> Email? {
+        let realm = try! Realm()
+        return realm.object(ofType: Email.self, forPrimaryKey: compoundKey)
+    }
+    
     //MARK: - DummySession
     
     class func store(_ dummySession: DummySession) {

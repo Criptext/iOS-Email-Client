@@ -457,6 +457,17 @@ class DBManager: SharedDB {
         return results.first
     }
     
+    class func setSendingEmailsAsFailed(account: Account) {
+        let realm = try! Realm()
+        let isSending = NSPredicate(format: "delivered == \(Email.Status.sending.rawValue) AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", [SystemLabel.trash.id])
+        let results = realm.objects(Email.self).filter(isSending)
+        try? realm.write {
+            for email in results {
+                email.status = .fail
+            }
+        }
+    }
+    
     class func unsendEmail(_ email: Email, date: Date = Date()){
         let realm = try! Realm()
         

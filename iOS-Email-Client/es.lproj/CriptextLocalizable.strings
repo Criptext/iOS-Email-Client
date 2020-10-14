@@ -570,3 +570,6 @@
 
 "UNABLE_ENCRYPT" = "Este correo no pudo ser encriptado.";
 "LEARN_MORE" = "Conocer Más";
+
+"UNABLE_SENT" = "Este correo no pudo ser enviado.";
+"RETRY_SENT" = "Reenviar";

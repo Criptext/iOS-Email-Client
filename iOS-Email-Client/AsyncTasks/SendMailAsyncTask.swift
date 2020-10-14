@@ -150,7 +150,7 @@ class SendMailAsyncTask {
     }
     
     func start(completion: @escaping ((ResponseData) -> Void)){
-        let queue = DispatchQueue(label: "com.email.sendmail", qos: .background, attributes: .concurrent)
+        let queue = DispatchQueue(label: "com.email.sendmail", qos: .default, attributes: .concurrent)
         queue.async {
             self.getDuplicatedFiles(queue: queue, completion: completion)
         }

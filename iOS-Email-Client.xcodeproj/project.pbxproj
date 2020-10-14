@@ -218,6 +218,7 @@
 		7CA607BC242A71EC0086D6B4 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1ED62411B8210095BCBB /* Alias.swift */; };
 		7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */; };
 		7CA794B9204F3B2A000AC986 /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
+		7CA91D922536367200CC0B2A /* InboxViewControllerSendMailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA91D912536367200CC0B2A /* InboxViewControllerSendMailExtension.swift */; };
 		7CAC1CEC20F6AA29004A50C6 /* CriptextSnackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */; };
 		7CAC1CEE20F6AE7B004A50C6 /* PaddingUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC1CED20F6AE7B004A50C6 /* PaddingUILabel.swift */; };
 		7CAC1CF020F6AF58004A50C6 /* CriptextSnackbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC1CEF20F6AF58004A50C6 /* CriptextSnackbarController.swift */; };
@@ -901,6 +902,7 @@
 		7CA607B8242A5E120086D6B4 /* AccountAlias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAlias.swift; sourceTree = "<group>"; };
 		7CA794B6204F30AB000AC986 /* CRSessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRSessionRecord.swift; sourceTree = "<group>"; };
 		7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTrustedDevice.swift; sourceTree = "<group>"; };
+		7CA91D912536367200CC0B2A /* InboxViewControllerSendMailExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxViewControllerSendMailExtension.swift; sourceTree = "<group>"; };
 		7CAC1CEB20F6AA29004A50C6 /* CriptextSnackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSnackbar.swift; sourceTree = "<group>"; };
 		7CAC1CED20F6AE7B004A50C6 /* PaddingUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingUILabel.swift; sourceTree = "<group>"; };
 		7CAC1CEF20F6AF58004A50C6 /* CriptextSnackbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextSnackbarController.swift; sourceTree = "<group>"; };
@@ -1380,6 +1382,7 @@
 				7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */,
 				7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */,
 				7CE1F9FD2478788300D14352 /* PlusViewController.swift */,
+				7CA91D912536367200CC0B2A /* InboxViewControllerSendMailExtension.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2363,6 +2366,7 @@
 				41AAC539201A9FCD00809C4D /* Contact.swift in Sources */,
 				7CE1FA02247882B300D14352 /* AlreadyPlusUIView.swift in Sources */,
 				7C69BADD20DC4A2E001ABD5B /* Thread.swift in Sources */,
+				7CA91D922536367200CC0B2A /* InboxViewControllerSendMailExtension.swift in Sources */,
 				A721B346225D2D5F004528B4 /* RestoreViewController.swift in Sources */,
 				A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */,
 				34A56A4E241ED8E400120984 /* RegisterDomainStepTwoViewController.swift in Sources */,

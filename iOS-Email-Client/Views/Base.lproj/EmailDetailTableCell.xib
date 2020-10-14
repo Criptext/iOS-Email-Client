@@ -233,9 +233,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dSD-VW-pNY">
                                 <rect key="frame" x="0.0" y="92" width="375" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayH-Ox-FYy">
-                                        <rect key="frame" x="18" y="5" width="339" height="40"/>
-                                        <color key="backgroundColor" red="0.96078431372549022" green="0.96862745098039216" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayH-Ox-FYy">
+                                        <rect key="frame" x="18" y="3" width="339" height="40"/>
+                                        <color key="backgroundColor" red="0.96862745098039216" green="0.97647058823529409" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="gxy-R6-BOO"/>
                                         </constraints>
@@ -244,6 +244,11 @@
                                         <state key="normal" title="This Email couldn't be encrypted. Learn more">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="onLearnMorePressed:" destination="mtm-Bj-dEs" eventType="touchUpInside" id="Mt6-rJ-PF6"/>
                                         </connections>
@@ -254,7 +259,7 @@
                                     <constraint firstAttribute="trailing" secondItem="ayH-Ox-FYy" secondAttribute="trailing" constant="18" id="1Ae-XX-guc"/>
                                     <constraint firstAttribute="height" constant="50" id="FQD-JE-rYI"/>
                                     <constraint firstItem="ayH-Ox-FYy" firstAttribute="leading" secondItem="dSD-VW-pNY" secondAttribute="leading" constant="18" id="JZU-A9-G73"/>
-                                    <constraint firstItem="ayH-Ox-FYy" firstAttribute="centerY" secondItem="dSD-VW-pNY" secondAttribute="centerY" id="KDC-YO-eaC"/>
+                                    <constraint firstItem="ayH-Ox-FYy" firstAttribute="centerY" secondItem="dSD-VW-pNY" secondAttribute="centerY" constant="-2" id="KDC-YO-eaC"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm2-e0-IDa">

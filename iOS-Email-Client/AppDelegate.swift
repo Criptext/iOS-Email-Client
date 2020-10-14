@@ -524,7 +524,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
         UIApplication.shared.registerForRemoteNotifications()
-        UNUserNotificationCenter.current().setNotificationCategories([setupLinkDeviceNotification(), setupNewEmailNotification(), setupSyncDeviceNotification()])
+        UNUserNotificationCenter.current().setNotificationCategories([setupLinkDeviceNotification(), setupNewEmailNotification(), setupSyncDeviceNotification(), setupLocalNotification()])
     }
     
     func setupLinkDeviceNotification() -> UNNotificationCategory {
@@ -544,6 +544,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let emailReply = UNNotificationAction(identifier: "EMAIL_REPLY", title: String.localize("REPLY"), options: .foreground)
         let emailTrash = UNNotificationAction(identifier: "EMAIL_TRASH", title: String.localize("DELETE"), options: .destructive)
         return UNNotificationCategory(identifier: "OPEN_THREAD", actions: [emailMark, emailReply, emailTrash], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+    }
+    
+    func setupLocalNotification() -> UNNotificationCategory {
+        let resendCancel = UNNotificationAction(identifier: "RESEND_CANCEL", title: String.localize("CANCEL"), options: .destructive)
+        let resendRetry = UNNotificationAction(identifier: "RESEND_RETRY", title: String.localize("RETRY"), options: .foreground)
+        return UNNotificationCategory(identifier: "RESEND_EMAIL", actions: [resendRetry, resendCancel], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
     }
     
     func logout(account: Account, manually: Bool = false, message: String = String.localize("REMOVED_REMOTELY")){
@@ -715,11 +721,38 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        guard notification.request.identifier.contains("resend-") else {
+            return
+        }
+        completionHandler([.alert, .sound])
+    }
+    
+    func handleLocalNotification(_ response: UNNotificationResponse) {
+        guard let inboxVC = getInboxVC() else {
+            return
+        }
+        
+        switch response.actionIdentifier {
+        case "RESEND_RETRY":
+            let emailId = response.notification.request.identifier.replacingOccurrences(of: "resend-", with: "")
+            guard let email = DBManager.getMail(compoundKey: emailId) else {
+                return
+            }
+            inboxVC.resendEmail(email)
+            break
+        default:
+            break
+        }
     }
         
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
+        if response.notification.request.identifier.contains("resend-") {
+            handleLocalNotification(response)
+            completionHandler()
+            return
+        }
         
+        let userInfo = response.notification.request.content.userInfo
         guard let inboxVC = getInboxVC(),
             let accountUser = (userInfo["account"] as? String ?? userInfo["recipientId"] as? String),
             let accountDomain = userInfo["domain"] as? String else {
