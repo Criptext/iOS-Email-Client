@@ -31,6 +31,7 @@ class SharedAPI {
         case forbidden = 403
         case missing = 404
         case conflicts = 405
+        case conflict = 409
         case removed = 419
         case authPending = 491
         case authDenied = 493
@@ -85,6 +86,8 @@ class SharedAPI {
         case .entityTooLarge:
             let maxSize = Int64(response?.allHeaderFields["max-size"] as? String ?? "-1") ?? -1
             return .EntityTooLarge(maxSize)
+        case .conflict:
+            return .Conflict
         case .conflicts:
             if let resultObj = responseRequest.result.value as? [String: Any],
                 let errorInt = resultObj["error"] as? Int {

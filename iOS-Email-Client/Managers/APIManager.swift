@@ -941,6 +941,16 @@ class APIManager: SharedAPI {
         }
     }
     
+    class func getCaptcha(completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/captcha"
+        let headers = [versionHeader: apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON{
+            (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
     class func signUpRequest(_ params: [String : Any], completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user"
         let headers = [versionHeader: apiVersion]

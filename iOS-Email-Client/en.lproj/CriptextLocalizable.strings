@@ -619,3 +619,6 @@
 "CUSTOMIZE_ICLOUD_BTN" = "Activate iCloud Backup";
 "YAY_POPOVER_TITLE" = "Your new secure inbox is ready to go! 🎉";
 "YAY_POPOVER_BTN" = "Yay!";
+"CAPTCH_ERROR" = "Unable to refresh captcha. Please try again";
+"CAPTCH_PLACEHOLDER" = "Enter the characters you see";
+"WRONG_CAPTCHA" = "Wrong Captcha. Please try again";

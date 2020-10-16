@@ -22,6 +22,7 @@ enum ResponseData {
     case BadRequest
     case AuthPending
     case AuthDenied
+    case Conflict
     case Conflicts
     case ConflictsInt(Int)
     case ConflictsData(Int, [String: Any])

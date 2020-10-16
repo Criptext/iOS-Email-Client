@@ -10,6 +10,7 @@ import Foundation
 import Material
 import SignalProtocolFramework
 import FirebaseMessaging
+import WebKit
 
 class SignUpTermsAndConditionsViewController: UIViewController{
     @IBOutlet weak var closeButton: UIButton!
@@ -20,6 +21,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     @IBOutlet weak var loadingView: SwingingLoaderUIView!
     @IBOutlet weak var loadingOverlayView: UIView!
     @IBOutlet weak var captchaTextField: StatusTextField!
+    @IBOutlet weak var captchaWebView: WKWebView!
     @IBOutlet weak var descriptionLabel: UILabel!
 
     var signUpData: TempSignUpData!
@@ -29,6 +31,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     
     var account: Account?
     var bundle: CRBundle?
+    var randomId: String?
     var state : CreationState = .checkDB
     var signUpFinalData: SignUpData?
     
@@ -43,10 +46,6 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         case .checkDB:
             checkDatabase()
         case .signupRequest:
-            guard !signUpFinalData!.comingFromLogin else {
-                sendKeysRequest()
-                break
-            }
             sendSignUpRequest()
         case .accountCreate:
             updateAccount()
@@ -69,6 +68,9 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         toggleLoadingView(false)
         closeButton.isHidden = !multipleAccount
+        onRefreshPress(self)
+        captchaWebView.scrollView.bouncesZoom = false
+        captchaWebView.scrollView.isScrollEnabled = false
     }
     
     func applyTheme() {
@@ -166,36 +168,17 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         return (domain, aliasesArray, defaultAddressId)
     }
     
-    func sendKeysRequest(){
-        let accountData = createAccount()
-        APIManager.postKeybundle(params: accountData.1, token: self.signUpFinalData!.token){ (responseData) in
-            if case let .Error(error) = responseData,
-                error.code != .custom {
-                self.displayErrorMessage(message: error.description)
-                return
-            }
-            guard case let .SuccessDictionary(tokens) = responseData,
-                let jwt = tokens["token"] as? String,
-                let refreshToken = tokens["refreshToken"] as? String else {
-                self.displayErrorMessage()
-                return
-            }
-            self.signUpFinalData!.token = jwt
-            self.signUpFinalData!.refreshToken = refreshToken
-            self.state = .accountCreate
-            self.handleState()
-        }
-    }
-    
     func sendSignUpRequest(){
+        self.captchaTextField.resignFirstResponder()
         let accountData = createAccount()
-        let signupRequestData = self.signUpFinalData!.buildDataForRequest(publicKeys: accountData.1)
+        let signupRequestData = self.signUpFinalData!.buildDataForRequest(publicKeys: accountData.1, randomId: self.randomId!, captcha: self.captchaTextField.text ?? "")
         APIManager.signUpRequest(signupRequestData) { [weak self] (responseData) in
             self?.handleSignUpResponse(responseData: responseData)
         }
     }
     
     func handleSignUpResponse(responseData: ResponseData) {
+        var dismissOverlay = true
         switch(responseData) {
             case .TooManyRequests(let waitingTime):
                 if waitingTime < 0 {
@@ -203,7 +186,6 @@ class SignUpTermsAndConditionsViewController: UIViewController{
                 } else {
                     self.displayErrorMessage(message: String.localize("ATTEMPTS_TIME_LEFT", arguments: Time.remaining(seconds: waitingTime)))
                 }
-                return
             case .Error(let error):
                 if error.code != .custom {
                     self.displayErrorMessage(message: error.description)
@@ -212,18 +194,25 @@ class SignUpTermsAndConditionsViewController: UIViewController{
                 guard let sessionToken = tokens["token"] as? String,
                     let refreshToken = tokens["refreshToken"] as? String else {
                     self.displayErrorMessage()
-                    return
+                    break
                 }
                 self.signUpFinalData!.token = sessionToken
                 self.signUpFinalData!.refreshToken = refreshToken
                 self.state = .accountCreate
                 self.handleState()
+                dismissOverlay = false
+            case .Conflict:
+                self.displayErrorMessage(message: String.localize("WRONG_CAPTCHA"))
+                self.captchaTextField.setStatus(.invalid, String.localize("CAPTCH_ERROR"))
             case .ConflictsInt(let errorCode):
                 self.handleSignUpErrorCode(error: errorCode)
             case .ConflictsData(let errorCode, let data):
                 self.handleSignUpErrorCode(error: errorCode, limit: data["max"] as? Int ?? 0)
             default:
                 self.displayErrorMessage()
+        }
+        if dismissOverlay {
+            toggleLoadingView(false)
         }
     }
     
@@ -292,16 +281,10 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     }
     
     func displayErrorMessage(message: String = String.localize("SIGNUP_FALLBACK_ERROR")){
-        let alert = UIAlertController(title: String.localize("WARNING"), message: "\(message)\(String.localize("WOULD_TRY_AGAIN"))", preferredStyle: .alert)
-        let proceedAction = UIAlertAction(title: String.localize("RETRY"), style: .default){ (alert : UIAlertAction!) -> Void in
-            self.handleState()
-        }
-        let cancelAction = UIAlertAction(title: String.localize("CANCEL"), style: .cancel){ (alert : UIAlertAction!) -> Void in
-            self.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(proceedAction)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
+        let popup = GenericAlertUIPopover()
+        popup.myTitle = String.localize("WARNING")
+        popup.myMessage = message
+        self.presentPopover(popover: popup, height: 220)
     }
     
     func registerFirebaseToken(jwt: String){
@@ -351,7 +334,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         captchaTextField.font = Font.regular.size(17.0)
         captchaTextField.rightViewMode = .always
         captchaTextField.placeholderAnimation = .hidden
-        captchaTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: placeholderAttrs)
+        captchaTextField.attributedPlaceholder = NSAttributedString(string: String.localize("CAPTCH_PLACEHOLDER"), attributes: placeholderAttrs)
         
         titleLabel.text = String.localize("SIGN_UP_TERMS_TITLE")
         nextButton.setTitle(String.localize("SIGN_UP_CREATE_ACCOUNT_BTN"), for: .normal)
@@ -387,11 +370,54 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     @IBAction func onNextPress(_ sender: Any) {
         toggleLoadingView(true)
         self.signUpFinalData = SignUpData(username: self.signUpData!.username!, password: self.signUpData!.password!, domain: Env.domain.replacingOccurrences(of: "@", with: ""),  fullname: self.signUpData!.fullname!, optionalEmail: self.signUpData!.optionalEmail)
-        //sendSignUpRequest()
+        sendSignUpRequest()
     }
     
     @IBAction func onRefreshPress(_ sender: Any) {
-        
+        APIManager.getCaptcha { (responseData) in
+            guard case let .SuccessDictionary(body) = responseData,
+                  let image = body["image"] as? String,
+                  let randomId = body["randomId"] as? String else {
+                self.captchaTextField.setStatus(.invalid, String.localize("CAPTCH_ERROR"))
+                return
+            }
+            self.captchaTextField.setStatus(.none)
+            self.randomId = randomId
+            let html = """
+                <html>
+                    <head>
+                        <meta name=\"viewport\" content="width=device-width, initial-scale=1.0">
+                        <style>
+                            body {
+                                width: 100%;
+                                height: 100%;
+                                margin: 0px;
+                                padding: 0px;
+                            }
+                            .captcha-svg {
+                                flex-grow: 1;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                background-color: white;
+                                width= 100%;
+                                height= 100%;
+                            }
+                            svg {
+                                witdh: 100%;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="captcha-svg">
+                            \(image)
+                        </div>
+                    </body>
+                </html>
+            """
+            self.captchaWebView.loadHTMLString(html, baseURL: nil)
+            self.checkToEnableDisableNextButton()
+        }
     }
     
     @IBAction func didPressTermsAndConditions(sender: Any) {
@@ -403,7 +429,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     }
     
     func checkToEnableDisableNextButton(){
-        nextButton.isEnabled = signUpData?.termsAccepted ?? false
+        nextButton.isEnabled = signUpData.termsAccepted && randomId != nil
         if(nextButton.isEnabled){
             nextButton.alpha = 1.0
         }else{

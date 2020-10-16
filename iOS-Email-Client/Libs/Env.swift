@@ -49,7 +49,7 @@ struct Env {
         guard !Env.isProduction else {
             return "wss://socket.criptext.com"
         }
-        return "wss://stagesocket.criptext.com"
+        return "wss://socket.criptext.com"
     }
     
     static var domain: String {
@@ -67,21 +67,21 @@ struct Env {
         guard !Env.isProduction else {
             return "https://api.criptext.com"
         }
-        return "https://stage.mail.criptext.com"
+        return "https://api.criptext.com"
     }
     
     static var transferURL: String {
         guard !Env.isProduction else {
             return "https://transfer.criptext.com"
         }
-        return "https://stagetransfer.criptext.com"
+        return "https://transfer.criptext.com"
     }
     
     static var adminURL: String {
         guard !Env.isProduction else {
             return "https://account.criptext.com/"
         }
-        return "https://stageaccount.criptext.com/"
+        return "https://account.criptext.com/"
     }
     
     static var language: String {

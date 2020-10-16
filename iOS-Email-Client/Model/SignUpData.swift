@@ -47,6 +47,19 @@ class SignUpData{
         return data
     }
     
+    func buildDataForRequest(publicKeys: [String: Any], randomId: String, captcha: String) -> [String : Any]{
+        let data = [
+            "recipientId": username,
+            "password": password.sha256()!,
+            "name": fullname,
+            "keybundle": publicKeys,
+            "recoveryEmail": optionalEmail!,
+            "captchaKey": randomId,
+            "captchaAnswer": captcha
+        ] as [String : Any]
+        return data
+    }
+    
     class func createAccount(from signupData: SignUpData) -> Account {
         let myAccount = Account()
         myAccount.username = signupData.username

@@ -635,6 +635,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let snackbarController = CriptextSnackbarController(rootViewController: drawerVC)
         snackbarController.setBottomPadding(padding: paddingBottom)
         snackbarController.delegate = inboxVC
+        self.registerPushNotifications()
         
         return snackbarController
     }

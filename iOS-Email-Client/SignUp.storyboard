@@ -321,7 +321,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shouldn’t be your username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiQ-cm-BES" userLabel="Condition One">
-                                <rect key="frame" x="48" y="318" width="175" height="19"/>
+                                <rect key="frame" x="48" y="318" width="177" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="lNI-xQ-T1L"/>
                                 </constraints>
@@ -330,7 +330,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Must be at least 8 characters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PnG-Yp-v8z" userLabel="Condition Two">
-                                <rect key="frame" x="48" y="344" width="179.5" height="19"/>
+                                <rect key="frame" x="48" y="344" width="182.5" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="LE8-vL-kEp"/>
                                     <constraint firstAttribute="height" constant="19" id="VfK-Xz-hUV"/>
@@ -627,7 +627,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u9b-dV-Mse" userLabel="Check Box One" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="48" y="438" width="16" height="16"/>
+                                <rect key="frame" x="48" y="430" width="16" height="16"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="QxA-3e-PVB"/>
@@ -651,27 +651,27 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're almost there! 💪" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dTr-fp-yrm" userLabel="Title">
-                                <rect key="frame" x="48" y="146" width="318" height="30"/>
+                                <rect key="frame" x="48" y="146" width="318" height="24"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="cAw-I1-o2z"/>
+                                    <constraint firstAttribute="height" constant="24" id="cAw-I1-o2z"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="mVt-mb-R3A" userLabel="Terms And Conditions">
-                                <rect key="frame" x="74" y="434" width="292" height="48"/>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="mVt-mb-R3A" userLabel="Terms And Conditions">
+                                <rect key="frame" x="74" y="427" width="292" height="70"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="cgF-yh-Gxg"/>
+                                    <constraint firstAttribute="height" constant="70" id="cgF-yh-Gxg"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
-                                <state key="normal" title="I have read and agree withe the Terms and Conditions"/>
+                                <state key="normal" title="By clicking create account, you agree to our Terms and Conditions its ok"/>
                                 <connections>
                                     <action selector="didPressTermsAndConditionsWithSender:" destination="Myd-UL-lJ3" eventType="touchUpInside" id="dxK-4u-bWM"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zF5-2R-aG9">
-                                <rect key="frame" x="48" y="522" width="318" height="50"/>
+                                <rect key="frame" x="48" y="537" width="318" height="50"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="heK-k5-cYc"/>
@@ -690,7 +690,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O0v-gr-DuT">
-                                <rect key="frame" x="326" y="276" width="40" height="55"/>
+                                <rect key="frame" x="326" y="269" width="40" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="5QL-Lr-Ub8"/>
                                     <constraint firstAttribute="width" constant="40" id="e0V-gL-vLs"/>
@@ -701,7 +701,7 @@
                                 </connections>
                             </button>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R3X-KN-zq2">
-                                <rect key="frame" x="48" y="276" width="278" height="55"/>
+                                <rect key="frame" x="48" y="269" width="278" height="55"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="Sbp-GB-g7K"/>
@@ -712,24 +712,28 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter the characters you see" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ckS-XH-132" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="48" y="346" width="318" height="40"/>
+                                <rect key="frame" x="48" y="339" width="318" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="N85-u8-r0W"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="detailColor">
                                         <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
+                                    <action selector="onCaptchaChange:" destination="Myd-UL-lJ3" eventType="valueChanged" id="ym7-l3-gKq"/>
                                     <action selector="onFullnameChange:" destination="dEx-8O-lGX" eventType="editingChanged" id="LRG-F0-VCh"/>
                                     <action selector="textfieldDidEndOnExit:" destination="dEx-8O-lGX" eventType="editingDidEndOnExit" id="Gd6-qT-00k"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prove you are not a robot" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llz-Fn-yfk">
-                                <rect key="frame" x="48" y="201" width="318" height="25"/>
+                                <rect key="frame" x="48" y="195" width="318" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="bgh-Ie-KHi"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -745,7 +749,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creating Account..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bxm-Cy-aXN">
-                                        <rect key="frame" x="126.5" y="756" width="161" height="26"/>
+                                        <rect key="frame" x="125" y="759.5" width="164" height="22.5"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="19"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -775,7 +779,7 @@
                             <constraint firstItem="zF5-2R-aG9" firstAttribute="top" secondItem="mVt-mb-R3A" secondAttribute="bottom" constant="40" id="Lvd-Sd-fBc"/>
                             <constraint firstItem="mVt-mb-R3A" firstAttribute="top" secondItem="ckS-XH-132" secondAttribute="bottom" constant="48" id="Mfb-1S-Nla"/>
                             <constraint firstItem="R3X-KN-zq2" firstAttribute="leading" secondItem="Q17-9a-9Cu" secondAttribute="leading" constant="48" id="Nt0-sr-DGf"/>
-                            <constraint firstItem="u9b-dV-Mse" firstAttribute="top" secondItem="mVt-mb-R3A" secondAttribute="top" constant="4" id="Q0I-VE-hre"/>
+                            <constraint firstItem="u9b-dV-Mse" firstAttribute="top" secondItem="mVt-mb-R3A" secondAttribute="top" constant="3" id="Q0I-VE-hre"/>
                             <constraint firstItem="Q17-9a-9Cu" firstAttribute="trailing" secondItem="y71-rH-nbZ" secondAttribute="trailing" id="RDd-aj-jUk"/>
                             <constraint firstItem="RNK-zP-D85" firstAttribute="top" secondItem="Q17-9a-9Cu" secondAttribute="top" constant="44" id="Swg-Yr-88s"/>
                             <constraint firstItem="u9b-dV-Mse" firstAttribute="leading" secondItem="Q17-9a-9Cu" secondAttribute="leading" constant="48" id="UyY-h3-nMz"/>
@@ -796,9 +800,11 @@
                     </view>
                     <connections>
                         <outlet property="captchaTextField" destination="ckS-XH-132" id="R2n-BK-pkQ"/>
+                        <outlet property="captchaWebView" destination="R3X-KN-zq2" id="zTL-uQ-LOa"/>
                         <outlet property="checkBoxTerms" destination="u9b-dV-Mse" id="CQf-c4-cYx"/>
                         <outlet property="closeButton" destination="RNK-zP-D85" id="teY-bM-Axx"/>
                         <outlet property="conditionOne" destination="mVt-mb-R3A" id="QlZ-G1-gWc"/>
+                        <outlet property="descriptionLabel" destination="Llz-Fn-yfk" id="ftq-rI-Y9K"/>
                         <outlet property="loadingOverlayView" destination="y71-rH-nbZ" id="Ct7-Ye-LMl"/>
                         <outlet property="loadingView" destination="4pA-r7-dqh" id="f39-1s-HhZ"/>
                         <outlet property="nextButton" destination="zF5-2R-aG9" id="xei-E0-3xr"/>
@@ -1041,7 +1047,7 @@ Let’s make it yours 😎</string>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sQ-6E-T9A" userLabel="Skip">
-                                <rect key="frame" x="167" y="683" width="80" height="34"/>
+                                <rect key="frame" x="167" y="683" width="80" height="31"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                                 <state key="normal" title="Skip">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -1076,7 +1082,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 1 of 5" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXP-77-RGe" userLabel="Step">
-                                <rect key="frame" x="48" y="248" width="71.5" height="64"/>
+                                <rect key="frame" x="48" y="248" width="69" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="g9z-Xo-WJW"/>
                                 </constraints>
@@ -1208,7 +1214,7 @@ Let’s make it yours 😎</string>
                                 </segments>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 2 of 5" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bC2-yL-fg6" userLabel="Step">
-                                <rect key="frame" x="48" y="248" width="71.5" height="64"/>
+                                <rect key="frame" x="48" y="248" width="69" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="MmT-C0-OfA"/>
                                 </constraints>
@@ -1235,7 +1241,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u25-J4-E8l" userLabel="Skip">
-                                <rect key="frame" x="167" y="671" width="80" height="34"/>
+                                <rect key="frame" x="167" y="671" width="80" height="31"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                                 <state key="normal" title="Skip">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -1314,7 +1320,7 @@ Let’s make it yours 😎</string>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 3 of 5" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeX-Y5-Llc" userLabel="Step">
-                                <rect key="frame" x="48" y="248" width="71.5" height="19"/>
+                                <rect key="frame" x="48" y="248" width="69" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="eoh-1g-jaa"/>
                                 </constraints>
@@ -1323,7 +1329,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Awesome 🤠)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjq-Kf-CHO" userLabel="Awesome">
-                                <rect key="frame" x="159" y="518" width="96.5" height="19"/>
+                                <rect key="frame" x="161" y="518" width="92" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="f8U-Eh-Sac"/>
                                 </constraints>
@@ -1387,7 +1393,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f7S-Z0-zIK" userLabel="Skip">
-                                <rect key="frame" x="167" y="647" width="80" height="34"/>
+                                <rect key="frame" x="167" y="647" width="80" height="31"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                                 <state key="normal" title="Skip">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -1453,7 +1459,7 @@ Let’s make it yours 😎</string>
                                 <rect key="frame" x="197" y="593" width="20" height="20"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 4 of 5" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BiD-gf-YIf" userLabel="Step">
-                                <rect key="frame" x="48" y="248" width="71.5" height="19"/>
+                                <rect key="frame" x="48" y="248" width="69" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="s07-PN-ekO"/>
                                 </constraints>
@@ -1480,7 +1486,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jorge@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="izp-LG-MRP" userLabel="RecoveryEmail">
-                                <rect key="frame" x="144" y="450" width="126" height="19"/>
+                                <rect key="frame" x="146.5" y="450" width="121" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="hiz-pn-2oQ"/>
                                 </constraints>
@@ -1489,7 +1495,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Verified!)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4n-TI-13M" userLabel="Verified">
-                                <rect key="frame" x="177" y="482" width="60.5" height="19"/>
+                                <rect key="frame" x="178.5" y="482" width="57.5" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="rRF-IS-XnK"/>
                                 </constraints>
@@ -1517,7 +1523,7 @@ Let’s make it yours 😎</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pwt-KS-WAz" userLabel="Skip">
-                                <rect key="frame" x="167" y="642" width="80" height="34"/>
+                                <rect key="frame" x="167" y="642" width="80" height="31"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                                 <state key="normal" title="Skip">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -1577,10 +1583,10 @@ Let’s make it yours 😎</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Mta-o7-eLd" userLabel="Loading View">
-                                <rect key="frame" x="197" y="575.5" width="20" height="20"/>
+                                <rect key="frame" x="197" y="561" width="20" height="20"/>
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Il3-1k-3f7" userLabel="Skip">
-                                <rect key="frame" x="167" y="624.5" width="80" height="34"/>
+                                <rect key="frame" x="167" y="610" width="80" height="31"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                                 <state key="normal" title="Skip">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -1590,7 +1596,7 @@ Let’s make it yours 😎</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qT-TX-xYc">
-                                <rect key="frame" x="48" y="560.5" width="318" height="50"/>
+                                <rect key="frame" x="48" y="546" width="318" height="50"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="fDA-w4-zQW"/>
@@ -1618,14 +1624,14 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7f-24-RqX" userLabel="Message">
-                                <rect key="frame" x="48" y="382" width="318" height="98.5"/>
+                                <rect key="frame" x="48" y="382" width="318" height="84"/>
                                 <string key="text">For your privacy your emails are only kept on your device. It’s best you turn on iCloud backup to avoid loosing your emails if you lose or change devices.</string>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 4 of 5" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWN-A9-CxU" userLabel="Step">
-                                <rect key="frame" x="48" y="248" width="71.5" height="19"/>
+                                <rect key="frame" x="48" y="248" width="69" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="8qL-eq-xFg"/>
                                 </constraints>
