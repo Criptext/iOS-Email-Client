@@ -559,7 +559,7 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     }
     
     func tableViewLearnMore() {
-        self.goToUrl(url: "https://criptext.atlassian.net/wiki/spaces/CRIPTEXT/pages/511377409/Content+Unencrypted+Learn+More")
+        self.goToUrl(url: "https://criptext.atlassian.net/l/c/10NeN7ZM")
     }
 }
 

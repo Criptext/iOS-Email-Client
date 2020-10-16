@@ -94,6 +94,7 @@ class ComposeViewController: UIViewController {
     var selectedTokenInputView:CLTokenInputView?
     
     var isEdited = false
+    var shouldSaveDraft = true
     var attachmentBarButton:MIBadgeButton!
     
     var dismissTapGestureRecognizer: UITapGestureRecognizer!
@@ -247,7 +248,15 @@ class ComposeViewController: UIViewController {
     }
     
     @objc func appMovedToBackground() {
+        if !shouldSaveDraft {
+            return
+        }
+        if let storedDraft = composerData.emailDraft,
+           storedDraft.isInvalidated || storedDraft.status != .none {
+            return
+        }
         let draft = self.saveDraft()
+        self.composerData.emailDraft = draft
         self.delegate?.newDraft(draft: draft)
     }
     
@@ -628,6 +637,7 @@ class ComposeViewController: UIViewController {
         APIManager.cancelAllUploads()
         let draft = self.saveDraft()
         self.delegate?.newDraft(draft: draft)
+        self.shouldSaveDraft = false
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -647,6 +657,7 @@ class ComposeViewController: UIViewController {
         DBManager.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.sent.id], removedLabelIds: [SystemLabel.draft.id])
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
         self.dismiss(animated: true){
+            self.shouldSaveDraft = false
             self.delegate?.sendMail(email: email, emailBody: self.editorView.html, password: password)
         }
     }
@@ -695,6 +706,7 @@ class ComposeViewController: UIViewController {
     func closeComposerGoToSettings() {
         let mailboxVC = self.presentingViewController?.navigationDrawerController?.rootViewController.children.first as? InboxViewController
         self.dismiss(animated: true) {
+            self.shouldSaveDraft = false
             mailboxVC?.goToProfile(account: self.activeAccount)
         }
     }
