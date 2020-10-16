@@ -39,7 +39,6 @@ class CustomizeProfilePictureViewController: UIViewController {
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupFields()
     }
     
@@ -68,11 +67,6 @@ class CustomizeProfilePictureViewController: UIViewController {
         skipButton.setTitle(String.localize("SKIP"), for: .normal)
         stepLabel.text = String.localize("CUSTOMIZE_STEP_1")
         attachmentController.docsButton.setTitle(String.localize("CANCEL"), for: .normal)
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
     }
     
     func showAttachmentDrawer(_ flag:Bool = false){

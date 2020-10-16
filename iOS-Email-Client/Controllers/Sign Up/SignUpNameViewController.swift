@@ -13,11 +13,10 @@ class SignUpNameViewController: UIViewController{
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var fullnameTextField: StatusTextField!
-    @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     var multipleAccount = false
-    var signUpData: TempSignUpData?
+    var signUpData: TempSignUpData!
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -27,15 +26,9 @@ class SignUpNameViewController: UIViewController{
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupField()
         
-        if(signUpData == nil){
-            signUpData = TempSignUpData()
-        } else {
-            toggleLoadingView(false)
-            checkToEnableDisableNextButton()
-        }
+        signUpData = TempSignUpData()
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -47,8 +40,8 @@ class SignUpNameViewController: UIViewController{
         fullnameTextField.textColor = theme.mainText
         fullnameTextField.validDividerColor = theme.criptextBlue
         fullnameTextField.invalidDividerColor = UIColor.red
-        fullnameTextField.dividerColor = theme.criptextBlue
-        fullnameTextField.detailColor = UIColor.red
+        fullnameTextField.dividerColor = theme.alert
+        fullnameTextField.detailColor = theme.alert
         titleLabel.textColor = theme.mainText
         messageLabel.textColor = theme.secondText
         view.backgroundColor = theme.background
@@ -78,11 +71,7 @@ class SignUpNameViewController: UIViewController{
         titleLabel.text = String.localize("SIGN_UP_NAME_TITLE")
         messageLabel.text = String.localize("SIGN_UP_NAME_MESSAGE")
 
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
+        fullnameTextField.becomeFirstResponder()
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -90,19 +79,6 @@ class SignUpNameViewController: UIViewController{
             return
         }
         self.onNextPress(sender)
-    }
-    
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
-        checkToEnableDisableNextButton()
     }
     
     @IBAction func onFullnameChange(_ sender: Any) {
@@ -130,18 +106,15 @@ class SignUpNameViewController: UIViewController{
     }
     
     @IBAction func onNextPress(_ sender: Any) {
-        guard self.signUpData != nil,
-            let name = fullnameTextField.text?.lowercased() else {
+        guard let name = fullnameTextField.text else {
             return
         }
-        self.signUpData!.fullname = name
-        toggleLoadingView(true)
+        self.signUpData.fullname = name
         let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "usernameView")  as! SignUpUserNameViewController
         controller.multipleAccount = self.multipleAccount
         controller.signUpData = self.signUpData
         navigationController?.pushViewController(controller, animated: true)
-        toggleLoadingView(false)
     }
     
     @IBAction func textfieldDidEndOnExit(_ sender: Any) {

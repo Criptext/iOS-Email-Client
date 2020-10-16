@@ -28,27 +28,22 @@ class SignUpRecoveryEmailViewController: UIViewController{
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupField()
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        if(signUpData == nil){
-            signUpData = TempSignUpData()
-        } else {
-            toggleLoadingView(false)
-            checkToEnableDisableNextButton()
-        }
+        
+        toggleLoadingView(false)
         closeButton.isHidden = !multipleAccount
     }
     
     func applyTheme() {
         emailTextField.textColor = theme.mainText
         emailTextField.validDividerColor = theme.criptextBlue
-        emailTextField.invalidDividerColor = UIColor.red
+        emailTextField.invalidDividerColor = theme.alert
         emailTextField.dividerColor = theme.criptextBlue
-        emailTextField.detailColor = UIColor.red
+        emailTextField.detailColor = theme.alert
         titleLabel.textColor = theme.mainText
         messageLabel.textColor = theme.secondText
         view.backgroundColor = theme.background
@@ -152,11 +147,8 @@ class SignUpRecoveryEmailViewController: UIViewController{
         titleLabel.text = String.localize("SIGN_UP_RECOVERY_EMAIL_TITLE")
         messageLabel.text = String.localize("SIGN_UP_RECOVERY_EMAIL_MESSAGE")
         nextButton.setTitle(String.localize("SIGN_UP_RECOVERY_EMAIL_BTN"), for: .normal)
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
+        
+        emailTextField.becomeFirstResponder()
     }
     
     @objc func onDonePress(_ sender: Any){

@@ -18,7 +18,7 @@ class SignUpUserNameViewController: UIViewController{
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var criptextLabel: UILabel!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
-    var signUpData: TempSignUpData?
+    var signUpData: TempSignUpData!
     var multipleAccount = false
     var apiRequest : DataRequest?
     
@@ -30,15 +30,7 @@ class SignUpUserNameViewController: UIViewController{
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupField()
-        
-        if(signUpData == nil){
-            signUpData = TempSignUpData()
-        } else {
-            toggleLoadingView(false)
-            checkToEnableDisableNextButton()
-        }
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -49,9 +41,9 @@ class SignUpUserNameViewController: UIViewController{
     func applyTheme() {
         usernameTextField.textColor = theme.mainText
         usernameTextField.validDividerColor = theme.criptextBlue
-        usernameTextField.invalidDividerColor = UIColor.red
+        usernameTextField.invalidDividerColor = theme.alert
         usernameTextField.dividerColor = theme.criptextBlue
-        usernameTextField.detailColor = UIColor.red
+        usernameTextField.detailColor = theme.alert
         titleLabel.textColor = theme.mainText
         criptextLabel.textColor = theme.mainText
         messageLabel.textColor = theme.secondText
@@ -112,11 +104,8 @@ class SignUpUserNameViewController: UIViewController{
         titleLabel.text = String.localize("SIGN_UP_USER_NAME_TITLE")
         messageLabel.text = String.localize("SIGN_UP_USER_NAME_MESSAGE")
         criptextLabel.text = Env.domain
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
+        
+        usernameTextField.becomeFirstResponder()
     }
     
     @objc func onDonePress(_ sender: Any){

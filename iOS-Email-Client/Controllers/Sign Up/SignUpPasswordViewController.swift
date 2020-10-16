@@ -16,8 +16,7 @@ class SignUpPasswordViewController: UIViewController{
     @IBOutlet weak var conditionTwo: UILabel!
     @IBOutlet weak var passwordTextField: StatusTextField!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var loadingView: UIActivityIndicatorView!
-    var signUpData: TempSignUpData?
+    var signUpData: TempSignUpData!
     var multipleAccount = false
     let signUpValidator = ValidateString.signUp
     
@@ -29,15 +28,7 @@ class SignUpPasswordViewController: UIViewController{
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupField()
-        
-        if(signUpData == nil){
-            signUpData = TempSignUpData()
-        } else {
-            toggleLoadingView(false)
-            checkToEnableDisableNextButton()
-        }
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -75,7 +66,7 @@ class SignUpPasswordViewController: UIViewController{
             self.setConditionState(isCorrect: nil, text: String.localize("SIGN_UP_PASS_SAME_USERNAME"), conditionLabel: self.conditionOne)
             return false
         }
-        if (password == self.signUpData?.password) {
+        if password == self.signUpData.username {
             self.setConditionState(isCorrect: false, text: String.localize("SIGN_UP_PASS_SAME_USERNAME"), conditionLabel: self.conditionOne)
             return false
         }
@@ -132,17 +123,14 @@ class SignUpPasswordViewController: UIViewController{
         passwordTextField.rightViewMode = .always
         passwordTextField.placeholderAnimation = .hidden
         passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: placeholderAttrs)
-        
+        passwordTextField.visibilityIconButton?.tintColor = theme.mainText
         passwordTextField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
         
-        titleLabel.text = String.localize("SIGN_UP_USER_NAME_TITLE")
+        titleLabel.text = String.localize("SIGN_UP_PASSWORD_TITLE")
         conditionOne.text = String.localize("SIGN_UP_PASSWORD_CONDITION_ONE")
         conditionTwo.text = String.localize("SIGN_UP_PASSWORD_CONDITION_TWO")
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
+        
+        passwordTextField.becomeFirstResponder()
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -150,19 +138,6 @@ class SignUpPasswordViewController: UIViewController{
             return
         }
         self.onNextPress(sender)
-    }
-    
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
-        checkToEnableDisableNextButton()
     }
     
     @IBAction func onPasswordChange(_ sender: Any) {
@@ -174,13 +149,11 @@ class SignUpPasswordViewController: UIViewController{
             return
         }
         self.signUpData!.password = password
-        toggleLoadingView(true)
         let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "confirmPasswordView")  as! SignUpConfirmPasswordViewController
         controller.multipleAccount = self.multipleAccount
         controller.signUpData = self.signUpData
         navigationController?.pushViewController(controller, animated: true)
-        toggleLoadingView(false)
     }
     
     @IBAction func textfieldDidEndOnExit(_ sender: Any) {

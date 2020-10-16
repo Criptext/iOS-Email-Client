@@ -81,7 +81,7 @@ struct Env {
         guard !Env.isProduction else {
             return "https://account.criptext.com/"
         }
-        return "https://account.criptext.com/"
+        return "https://stageaccount.criptext.com/"
     }
     
     static var language: String {

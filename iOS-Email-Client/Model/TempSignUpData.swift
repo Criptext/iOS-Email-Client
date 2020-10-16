@@ -13,5 +13,5 @@ class TempSignUpData {
     var password: String?
     var fullname: String?
     var optionalEmail: String?
-    var termsAccepted: Bool?
+    var termsAccepted: Bool = false
 }

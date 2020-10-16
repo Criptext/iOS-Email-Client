@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lgh-kb-FeW">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -55,7 +55,7 @@
                                     <action selector="usernameChange:" destination="xiP-Yr-e9p" eventType="editingChanged" id="cj1-d6-x7J"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z38-EZ-ooJ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z38-EZ-ooJ">
                                 <rect key="frame" x="56" y="443.5" width="263" height="44"/>
                                 <color key="backgroundColor" red="0.21568627450980393" green="0.22745098039215686" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -78,7 +78,7 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQN-zb-RQx">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQN-zb-RQx">
                                 <rect key="frame" x="22" y="503.5" width="331" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JT0-mZ-8Az"/>
@@ -91,8 +91,8 @@
                                     <action selector="didPressSignupWithSender:" destination="xiP-Yr-e9p" eventType="touchUpInside" id="ZBV-kU-rAy"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58C-Tv-8oi" userLabel="Contact Support Button">
-                                <rect key="frame" x="61.5" y="627" width="252" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58C-Tv-8oi" userLabel="Contact Support Button">
+                                <rect key="frame" x="63" y="627" width="249" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="T4y-6S-mbn"/>
                                 </constraints>
@@ -142,6 +142,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="gtO-CH-xJW"/>
                         <color key="backgroundColor" red="0.0" green="0.76862745098039209" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="uqv-px-110" firstAttribute="top" secondItem="Kdd-Jg-Qc6" secondAttribute="bottom" constant="11" id="1nS-oQ-ZAH"/>
@@ -173,7 +174,6 @@
                             <constraint firstItem="uqv-px-110" firstAttribute="centerX" secondItem="aRw-9s-cBf" secondAttribute="centerX" id="tTx-2D-nym"/>
                             <constraint firstItem="Ksj-Vf-DXI" firstAttribute="centerX" secondItem="hQN-zb-RQx" secondAttribute="centerX" id="yyq-hn-Y6F"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="gtO-CH-xJW"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="startColor">
                                 <color key="value" red="0.0" green="0.76862745098039209" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -435,7 +435,7 @@
                                                     <action selector="onDidEndOnExit:" destination="OMZ-WS-rzb" eventType="editingDidEndOnExit" id="I3R-ID-kIr"/>
                                                 </connections>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="MIl-CE-AOA">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="MIl-CE-AOA">
                                                 <rect key="frame" x="55" y="511" width="265" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="eZO-Vh-vk9"/>
@@ -448,7 +448,7 @@
                                                     <action selector="didPressTermsAndConditionsWithSender:" destination="OMZ-WS-rzb" eventType="touchUpInside" id="5id-eT-gbS"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwZ-3C-ekg">
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SwZ-3C-ekg">
                                                 <rect key="frame" x="38" y="569" width="299" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -503,8 +503,8 @@
                                                     <constraint firstAttribute="height" constant="22" id="yAL-nO-e8Z"/>
                                                 </constraints>
                                             </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0c4-qk-ZDM" userLabel="Contact Support Button">
-                                                <rect key="frame" x="61.5" y="648" width="252" height="30"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0c4-qk-ZDM" userLabel="Contact Support Button">
+                                                <rect key="frame" x="63" y="648" width="249" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="zl1-CO-nc2"/>
                                                 </constraints>
@@ -577,6 +577,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="rhq-5C-WHG"/>
                         <color key="backgroundColor" red="0.0" green="0.67491319444444442" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Rdq-Q8-Fdr" firstAttribute="leading" secondItem="NQY-OK-PJR" secondAttribute="leading" id="2Oo-zW-5ze"/>
@@ -584,7 +585,6 @@
                             <constraint firstAttribute="trailing" secondItem="Rdq-Q8-Fdr" secondAttribute="trailing" id="jLF-XV-OxY"/>
                             <constraint firstAttribute="bottom" secondItem="Rdq-Q8-Fdr" secondAttribute="bottom" id="tgr-u2-eTt"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="rhq-5C-WHG"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="startColor">
                                 <color key="value" red="0.0" green="0.76862745098039209" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -687,6 +687,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="AaF-tb-sER"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="YZU-A6-c4O" secondAttribute="trailing" constant="63" id="01r-cs-fFz"/>
@@ -700,7 +701,6 @@
                             <constraint firstItem="Yqy-3d-Yj1" firstAttribute="centerX" secondItem="qgy-Ki-t57" secondAttribute="centerX" id="tFz-IF-Zz7"/>
                             <constraint firstItem="BBI-ya-JwL" firstAttribute="top" secondItem="YZU-A6-c4O" secondAttribute="bottom" constant="15" id="xsO-3B-dIN"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="AaF-tb-sER"/>
                     </view>
                     <connections>
                         <outlet property="feedbackLabel" destination="VeR-Uo-Ifp" id="pHF-ho-Lwu"/>
@@ -803,7 +803,7 @@ from Criptext</string>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2e-M6-6pu">
+                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2e-M6-6pu">
                                                         <rect key="frame" x="37.5" y="440.5" width="300" height="44"/>
                                                         <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
@@ -903,7 +903,7 @@ from Criptext</string>
                                                     <action selector="backButtonPress:" destination="Msb-QW-zAf" eventType="touchUpInside" id="8gi-Ou-ltW"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jek-k9-O5Z">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jek-k9-O5Z">
                                                 <rect key="frame" x="71" y="603" width="233" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="q4V-G7-AZ9"/>
@@ -955,6 +955,7 @@ from Criptext</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="0uw-dI-bcF"/>
                         <color key="backgroundColor" red="0.0" green="0.67491319439999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="vUY-NC-eWx" secondAttribute="bottom" id="ABe-Ot-ffw"/>
@@ -962,7 +963,6 @@ from Criptext</string>
                             <constraint firstItem="vUY-NC-eWx" firstAttribute="leading" secondItem="I0f-U5-zUk" secondAttribute="leading" id="C3O-Bi-68T"/>
                             <constraint firstItem="vUY-NC-eWx" firstAttribute="top" secondItem="0uw-dI-bcF" secondAttribute="top" id="PJm-K7-g0J"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="0uw-dI-bcF"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="startColor">
                                 <color key="value" red="0.0" green="0.76862745099999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -997,6 +997,7 @@ from Criptext</string>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="wTE-lO-vwA"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="SPl-NZ-Gze" firstAttribute="centerX" secondItem="wTE-lO-vwA" secondAttribute="centerX" id="CXO-8z-XE9"/>
@@ -1004,7 +1005,6 @@ from Criptext</string>
                             <constraint firstItem="SPl-NZ-Gze" firstAttribute="height" secondItem="kMI-Pj-Jjq" secondAttribute="height" id="sPB-XV-PLP"/>
                             <constraint firstItem="SPl-NZ-Gze" firstAttribute="centerY" secondItem="wTE-lO-vwA" secondAttribute="centerY" id="tM3-ly-Pkp"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="wTE-lO-vwA"/>
                     </view>
                     <connections>
                         <outlet property="connectUIView" destination="SPl-NZ-Gze" id="bek-4J-Igp"/>
@@ -1067,7 +1067,7 @@ from Criptext</string>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8N5-Z7-gsp">
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8N5-Z7-gsp">
                                                 <rect key="frame" x="38" y="446" width="299" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -1146,7 +1146,7 @@ from Criptext</string>
                                                     <constraint firstAttribute="width" constant="20" id="Duk-rf-yvJ"/>
                                                 </constraints>
                                             </activityIndicatorView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ctn-3x-BiI">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ctn-3x-BiI">
                                                 <rect key="frame" x="57" y="389" width="261" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="a3c-uu-zu0"/>
@@ -1205,6 +1205,7 @@ from Criptext</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="eZE-wc-RMc"/>
                         <color key="backgroundColor" red="0.0" green="0.67491319439999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="eZE-wc-RMc" firstAttribute="trailing" secondItem="3M9-sp-DTk" secondAttribute="trailing" id="4AC-Ht-F7V"/>
@@ -1212,7 +1213,6 @@ from Criptext</string>
                             <constraint firstItem="3M9-sp-DTk" firstAttribute="bottom" secondItem="eZE-wc-RMc" secondAttribute="bottom" id="ese-hK-pMt"/>
                             <constraint firstItem="3M9-sp-DTk" firstAttribute="leading" secondItem="eZE-wc-RMc" secondAttribute="leading" id="mrA-aN-don"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="eZE-wc-RMc"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="startColor">
                                 <color key="value" red="0.0" green="0.76862745099999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1277,7 +1277,7 @@ from Criptext</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change the password for:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k5b-AK-Viu">
-                                                <rect key="frame" x="20" y="193.5" width="335" height="31.5"/>
+                                                <rect key="frame" x="20" y="188" width="335" height="37"/>
                                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="27"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1291,7 +1291,7 @@ from Criptext</string>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spW-0d-eId">
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spW-0d-eId">
                                                 <rect key="frame" x="38" y="493" width="301" height="44"/>
                                                 <color key="backgroundColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -1424,7 +1424,7 @@ from Criptext</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="white-logo" translatesAutoresizingMaskIntoConstraints="NO" id="gy9-k9-P9s" userLabel="white-logo">
-                                                <rect key="frame" x="149" y="116.5" width="77" height="69"/>
+                                                <rect key="frame" x="149" y="111" width="77" height="69"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
                                         </subviews>
@@ -1477,6 +1477,7 @@ from Criptext</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Psp-9m-u6p"/>
                         <color key="backgroundColor" red="0.0" green="0.67491319439999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="QjU-3I-V62" firstAttribute="leading" secondItem="Psp-9m-u6p" secondAttribute="leading" id="AqH-qU-cgy"/>
@@ -1484,7 +1485,6 @@ from Criptext</string>
                             <constraint firstItem="QjU-3I-V62" firstAttribute="bottom" secondItem="Psp-9m-u6p" secondAttribute="bottom" id="dPl-un-6cs"/>
                             <constraint firstItem="QjU-3I-V62" firstAttribute="top" secondItem="Psp-9m-u6p" secondAttribute="top" id="eqb-hY-07Q"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Psp-9m-u6p"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="startColor">
                                 <color key="value" red="0.0" green="0.76862745099999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1575,16 +1575,16 @@ from Criptext</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Udq-tK-HQB">
-                                                    <rect key="frame" x="61" y="16" width="196" height="34.5"/>
+                                                    <rect key="frame" x="61" y="13" width="196" height="40"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Samsung Galaxy S8" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJq-v9-Xn1">
-                                                            <rect key="frame" x="0.0" y="0.0" width="196" height="19"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Samsung Galaxy S8" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJq-v9-Xn1">
+                                                            <rect key="frame" x="0.0" y="0.0" width="196" height="22"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Guayaquil - 12 hours ago" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUT-BD-KUd">
-                                                            <rect key="frame" x="0.0" y="19" width="196" height="15.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guayaquil - 12 hours ago" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUT-BD-KUd">
+                                                            <rect key="frame" x="0.0" y="22" width="196" height="18"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1626,6 +1626,7 @@ from Criptext</string>
                                 </prototypes>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Z43-JX-zTO"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="YVX-W4-ZYy" firstAttribute="top" secondItem="Z43-JX-zTO" secondAttribute="top" id="0qC-ID-0Hd"/>
@@ -1639,7 +1640,6 @@ from Criptext</string>
                             <constraint firstAttribute="bottom" secondItem="ZVg-5C-o5G" secondAttribute="bottom" id="eNQ-zu-roB"/>
                             <constraint firstItem="Z43-JX-zTO" firstAttribute="trailing" secondItem="YVX-W4-ZYy" secondAttribute="trailing" constant="20" id="f4S-jV-jvy"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Z43-JX-zTO"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="ZVg-5C-o5G" id="uF0-K3-CJc"/>

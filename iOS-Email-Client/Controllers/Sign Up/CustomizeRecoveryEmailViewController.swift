@@ -37,7 +37,6 @@ class CustomizeRecoveryEmailViewController: UIViewController {
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupFields()
     }
     
@@ -69,11 +68,6 @@ class CustomizeRecoveryEmailViewController: UIViewController {
         nextButton.setTitle(String.localize("NEXT"), for: .normal)
         skipButton.setTitle(String.localize("SKIP"), for: .normal)
         emailLabel.text = recoveryEmail
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
     }
     
     func presentResendAlert(){

@@ -246,6 +246,7 @@
 		7CB3969F2493058F00301129 /* EnableAutoBackupUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */; };
 		7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */; };
 		7CB44949207BBE0C009430EB /* MenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB44948207BBE0C009430EB /* MenuData.swift */; };
+		7CB5D81B253895E2008A0E62 /* SwingingLoaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB5D81A253895E2008A0E62 /* SwingingLoaderUIView.swift */; };
 		7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */; };
 		7CB60A7B20F81A5600C9090C /* PlainContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */; };
 		7CB60A7D20F9490300C9090C /* FileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A7C20F9490300C9090C /* FileManagerTests.swift */; };
@@ -951,6 +952,7 @@
 		7CB396AB2493059600301129 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/EnableAutoBackupUIPopover.strings; sourceTree = "<group>"; };
 		7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTableViewCell.swift; sourceTree = "<group>"; };
 		7CB44948207BBE0C009430EB /* MenuData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuData.swift; sourceTree = "<group>"; };
+		7CB5D81A253895E2008A0E62 /* SwingingLoaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwingingLoaderUIView.swift; sourceTree = "<group>"; };
 		7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
 		7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainContactTableViewCell.swift; sourceTree = "<group>"; };
 		7CB60A7C20F9490300C9090C /* FileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerTests.swift; sourceTree = "<group>"; };
@@ -1726,6 +1728,7 @@
 				7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */,
 				7C31E8E2249D6D6000B52632 /* ComposerVerifyRecoveryUIPopup.xib */,
 				7C170F292499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift */,
+				7CB5D81A253895E2008A0E62 /* SwingingLoaderUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2356,6 +2359,7 @@
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,
 				A73ACB9B2280CAB500B0CF91 /* GetThreadsAsyncTask.swift in Sources */,
+				7CB5D81B253895E2008A0E62 /* SwingingLoaderUIView.swift in Sources */,
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,

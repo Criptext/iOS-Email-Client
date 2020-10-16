@@ -28,7 +28,6 @@ class CustomizeThemeViewController: UIViewController {
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupFields()
     }
     
@@ -58,11 +57,6 @@ class CustomizeThemeViewController: UIViewController {
         nextButton.setTitle(String.localize("ADD"), for: .normal)
         themeSwitch.setTitle(String.localize("CUSTOMIZE_THEME_LIGHT"), forSegmentAt: 0)
         themeSwitch.setTitle(String.localize("CUSTOMIZE_THEME_DARK"), forSegmentAt: 1)
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
     }
     
     @objc func onDonePress(_ sender: Any){

@@ -27,7 +27,6 @@ class CustomizeAccountCreatedViewController: UIViewController {
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupFields()
     }
     
@@ -51,11 +50,6 @@ class CustomizeAccountCreatedViewController: UIViewController {
         titleLabel.text = String.localize("SIGN_UP_NAME_TITLE")
         fullnameLabel.text = myAccount.name
         titleLabel.text = myAccount.email
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
     }
     
     @objc func onDonePress(_ sender: Any){

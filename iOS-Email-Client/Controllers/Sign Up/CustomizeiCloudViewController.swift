@@ -27,7 +27,6 @@ class CustomizeiCloudViewController: UIViewController {
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupFields()
     }
     
@@ -56,11 +55,6 @@ class CustomizeiCloudViewController: UIViewController {
         stepLabel.text = String.localize("CUSTOMIZE_STEP_5")
         nextButton.setTitle(String.localize("CUSTOMIZE_ICLOUD_BTN"), for: .normal)
         skipButton.setTitle(String.localize("SKIP"), for: .normal)
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
     }
     
     @objc func onDonePress(_ sender: Any){

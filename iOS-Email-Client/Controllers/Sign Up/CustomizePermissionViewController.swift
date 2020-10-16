@@ -32,7 +32,6 @@ class CustomizePermissionViewController: UIViewController {
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupFields()
     }
     
@@ -64,11 +63,6 @@ class CustomizePermissionViewController: UIViewController {
         stepLabel.text = String.localize("CUSTOMIZE_STEP_3")
         contactLabel.text = String.localize("CUSTOMIZE_PERMISSIONS_CONTACTS")
         notificationLabel.text = String.localize("CUSTOMIZE_PERMISSIONS_NOTIFICATIONS")
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
     }
     
     @objc func onDonePress(_ sender: Any){

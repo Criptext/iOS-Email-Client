@@ -15,15 +15,16 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var checkBoxTerms: CheckMarkUIView!
-    @IBOutlet weak var checkBoxMom: CheckMarkUIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var conditionOne: UIButton!
-    @IBOutlet weak var conditionTwo: UILabel!
-    @IBOutlet weak var loadingView: UIActivityIndicatorView!
-    var signUpData: TempSignUpData?
+    @IBOutlet weak var loadingView: SwingingLoaderUIView!
+    @IBOutlet weak var loadingOverlayView: UIView!
+    @IBOutlet weak var captchaTextField: StatusTextField!
+    @IBOutlet weak var descriptionLabel: UILabel!
+
+    var signUpData: TempSignUpData!
     var multipleAccount = false
     let signUpValidator = ValidateString.signUp
-    var checkBoxMomIsChecked = false
     var fromSignup = false
     
     var account: Account?
@@ -62,26 +63,24 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         applyTheme()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         checkBoxTerms.addGestureRecognizer(tap)
-        let fakeTap = UITapGestureRecognizer(target: self, action: #selector(handleFakeTap(_:)))
-        checkBoxMom.addGestureRecognizer(fakeTap)
     
-        nextButtonInit()
         setupField()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        if(signUpData == nil){
-            signUpData = TempSignUpData()
-        } else {
-            toggleLoadingView(false)
-            checkToEnableDisableNextButton()
-        }
+        toggleLoadingView(false)
         closeButton.isHidden = !multipleAccount
     }
     
     func applyTheme() {
         titleLabel.textColor = theme.mainText
-        conditionTwo.textColor = theme.secondText
+        descriptionLabel.textColor = theme.secondText
         view.backgroundColor = theme.background
+        
+        captchaTextField.textColor = theme.mainText
+        captchaTextField.validDividerColor = theme.criptextBlue
+        captchaTextField.invalidDividerColor = UIColor.red
+        captchaTextField.dividerColor = theme.criptextBlue
+        captchaTextField.detailColor = UIColor.red
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -346,31 +345,25 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         conditionOne.setAttributedTitle(normalString, for: .normal)
         
         checkBoxTerms.setChecked(false)
-        checkBoxMom.setChecked(false)
+        
+        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
+        
+        captchaTextField.font = Font.regular.size(17.0)
+        captchaTextField.rightViewMode = .always
+        captchaTextField.placeholderAnimation = .hidden
+        captchaTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: placeholderAttrs)
+        
         titleLabel.text = String.localize("SIGN_UP_TERMS_TITLE")
-        conditionTwo.text = String.localize("SIGN_UP_TERMS_CONDITION_TWO")
         nextButton.setTitle(String.localize("SIGN_UP_CREATE_ACCOUNT_BTN"), for: .normal)
     }
     
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
-    }
-    
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){
-        guard let checked = signUpData?.termsAccepted else {
-            signUpData!.termsAccepted = true
-            checkBoxTerms.setChecked(true)
+        guard let data = signUpData else {
             return
         }
-        signUpData!.termsAccepted = !checked
-        checkBoxTerms.setChecked(signUpData!.termsAccepted!)
+        data.termsAccepted = !data.termsAccepted
+        checkBoxTerms.setChecked(data.termsAccepted)
         self.checkToEnableDisableNextButton()
-    }
-    
-    @objc func handleFakeTap(_ gestureRecognizer:UITapGestureRecognizer){
-        checkBoxMomIsChecked = !checkBoxMomIsChecked
-        checkBoxMom.setChecked(checkBoxMomIsChecked)
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -382,12 +375,10 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     
     func toggleLoadingView(_ show: Bool){
         if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
+            loadingOverlayView.isHidden = false
             loadingView.startAnimating()
         }else{
-            nextButton.setTitle(String.localize("SIGN_UP_CREATE_ACCOUNT_BTN"), for: .normal)
-            loadingView.isHidden = true
+            loadingOverlayView.isHidden = true
             loadingView.stopAnimating()
         }
         checkToEnableDisableNextButton()
@@ -395,8 +386,11 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     
     @IBAction func onNextPress(_ sender: Any) {
         toggleLoadingView(true)
-        self.LoadingStart(message: String.localize("SIGN_UP_CREATING_KEYS"))
         self.signUpFinalData = SignUpData(username: self.signUpData!.username!, password: self.signUpData!.password!, domain: Env.domain.replacingOccurrences(of: "@", with: ""),  fullname: self.signUpData!.fullname!, optionalEmail: self.signUpData!.optionalEmail)
+        //sendSignUpRequest()
+    }
+    
+    @IBAction func onRefreshPress(_ sender: Any) {
         
     }
     
@@ -409,7 +403,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     }
     
     func checkToEnableDisableNextButton(){
-        nextButton.isEnabled = !checkBoxTerms.checkImageView.isHidden
+        nextButton.isEnabled = signUpData?.termsAccepted ?? false
         if(nextButton.isEnabled){
             nextButton.alpha = 1.0
         }else{

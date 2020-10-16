@@ -16,7 +16,7 @@ class SignUpConfirmPasswordViewController: UIViewController{
     @IBOutlet weak var confirmPasswordTextField: StatusTextField!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
-    var signUpData: TempSignUpData?
+    var signUpData: TempSignUpData!
     var multipleAccount = false
     let signUpValidator = ValidateString.signUp
     
@@ -28,15 +28,7 @@ class SignUpConfirmPasswordViewController: UIViewController{
         super.viewDidLoad()
     
         applyTheme()
-        nextButtonInit()
         setupField()
-        
-        if(signUpData == nil){
-            signUpData = TempSignUpData()
-        } else {
-            toggleLoadingView(false)
-            checkToEnableDisableNextButton()
-        }
         
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -47,9 +39,10 @@ class SignUpConfirmPasswordViewController: UIViewController{
     func applyTheme() {
         confirmPasswordTextField.textColor = theme.mainText
         confirmPasswordTextField.validDividerColor = theme.criptextBlue
-        confirmPasswordTextField.invalidDividerColor = UIColor.red
+        confirmPasswordTextField.invalidDividerColor = theme.alert
         confirmPasswordTextField.dividerColor = theme.criptextBlue
-        confirmPasswordTextField.detailColor = UIColor.red
+        confirmPasswordTextField.detailColor = theme.alert
+        confirmPasswordTextField.visibilityIconButton?.tintColor = theme.mainText
         titleLabel.textColor = theme.mainText
         conditionOne.textColor = theme.secondText
         view.backgroundColor = theme.background
@@ -117,11 +110,8 @@ class SignUpConfirmPasswordViewController: UIViewController{
         
         titleLabel.text = String.localize("SIGN_UP_CONFIRM_PASSWORD_TITLE")
         conditionOne.text = String.localize("SIGN_UP_CONFIRM_PASSWORD_CONDITION")
-    }
-    
-    func nextButtonInit(){
-        nextButton.clipsToBounds = true
-        nextButton.layer.cornerRadius = 20
+        
+        confirmPasswordTextField.becomeFirstResponder()
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -129,19 +119,6 @@ class SignUpConfirmPasswordViewController: UIViewController{
             return
         }
         self.onNextPress(sender)
-    }
-    
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
-        checkToEnableDisableNextButton()
     }
     
     @IBAction func onPasswordChange(_ sender: Any) {
@@ -152,13 +129,11 @@ class SignUpConfirmPasswordViewController: UIViewController{
         guard confirmPasswordTextField.text != nil else {
             return
         }
-        toggleLoadingView(true)
         let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "recoveryEmailView")  as! SignUpRecoveryEmailViewController
         controller.multipleAccount = self.multipleAccount
         controller.signUpData = self.signUpData
         navigationController?.pushViewController(controller, animated: true)
-        toggleLoadingView(false)
     }
     
     @IBAction func textfieldDidEndOnExit(_ sender: Any) {
