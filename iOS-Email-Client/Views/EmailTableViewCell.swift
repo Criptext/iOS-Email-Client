@@ -418,6 +418,9 @@ class EmailTableViewCell: UITableViewCell{
             miniReadIconView.image = #imageLiteral(resourceName: "waiting-icon")
             miniReadIconView.tintColor = theme.icon
         case .fail:
+            readStatusMarginConstraint.constant = 1.0
+            readStatusContentMarginConstraint.constant = 1.0
+            readIconWidthConstraint.constant = 20.0
             miniReadIconView.image = #imageLiteral(resourceName: "resend-warning")
         }
     }
