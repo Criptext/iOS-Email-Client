@@ -31,7 +31,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     
     var account: Account?
     var bundle: CRBundle?
-    var randomId: String?
+    var captchaKey: String?
     var state : CreationState = .checkDB
     var signUpFinalData: SignUpData?
     
@@ -171,7 +171,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     func sendSignUpRequest(){
         self.captchaTextField.resignFirstResponder()
         let accountData = createAccount()
-        let signupRequestData = self.signUpFinalData!.buildDataForRequest(publicKeys: accountData.1, randomId: self.randomId!, captcha: self.captchaTextField.text ?? "")
+        let signupRequestData = self.signUpFinalData!.buildDataForRequest(publicKeys: accountData.1, captchaKey: self.captchaKey!, captcha: self.captchaTextField.text ?? "")
         APIManager.signUpRequest(signupRequestData) { [weak self] (responseData) in
             self?.handleSignUpResponse(responseData: responseData)
         }
@@ -377,12 +377,12 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         APIManager.getCaptcha { (responseData) in
             guard case let .SuccessDictionary(body) = responseData,
                   let image = body["image"] as? String,
-                  let randomId = body["randomId"] as? String else {
+                  let captchaKey = body["captchaKey"] as? String else {
                 self.captchaTextField.setStatus(.invalid, String.localize("CAPTCH_ERROR"))
                 return
             }
             self.captchaTextField.setStatus(.none)
-            self.randomId = randomId
+            self.captchaKey = captchaKey
             let html = """
                 <html>
                     <head>
@@ -429,7 +429,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     }
     
     func checkToEnableDisableNextButton(){
-        nextButton.isEnabled = signUpData.termsAccepted && randomId != nil
+        nextButton.isEnabled = signUpData.termsAccepted && captchaKey != nil
         if(nextButton.isEnabled){
             nextButton.alpha = 1.0
         }else{

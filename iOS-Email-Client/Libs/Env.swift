@@ -60,7 +60,7 @@ struct Env {
         guard !Env.isProduction else {
             return "criptext.com"
         }
-        return "jigl.com"
+        return "criptext.com"
     }
     
     static var apiURL: String {
