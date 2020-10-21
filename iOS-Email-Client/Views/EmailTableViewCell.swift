@@ -24,6 +24,7 @@ protocol EmailTableViewCellDelegate: class {
     func tableViewDeleteDraft(email: Email)
     func tableViewTrustRecipient(cell: EmailTableViewCell, email: Email)
     func tableViewLearnMore()
+    func tableViewResendEmail(email: Email)
 }
 
 class EmailTableViewCell: UITableViewCell{
@@ -64,6 +65,11 @@ class EmailTableViewCell: UITableViewCell{
     @IBOutlet weak var showImagesSeparatorView: UIView!
     @IBOutlet weak var learnMoreButton: UIButton!
     @IBOutlet weak var learnMoreButtonContainerView: UIView!
+    
+    enum Banner {
+        case notSent
+        case notEncrypted
+    }
     
     let webView: WKWebView
     
@@ -309,7 +315,34 @@ class EmailTableViewCell: UITableViewCell{
         
         let hasImages = emailBody.contains("<img")
         showImagesButton.isHidden = !hasImages || !shouldBlockContent(email: email, emailState: self.emailState)
-        learnMoreButtonContainerView.isHidden = !email.shouldShowUndecryptedBanner
+        
+        if (email.shouldShowUndecryptedBanner) {
+            handleBanner(type: .notEncrypted)
+        } else if (email.status == .fail) {
+            handleBanner(type: .notSent)
+        } else {
+            learnMoreButtonContainerView.isHidden = true
+        }
+    }
+    
+    func handleBanner(type: Banner) {
+        learnMoreButtonContainerView.isHidden = false
+        switch(type) {
+            case .notSent:
+                learnMoreButton.backgroundColor = UIColor(hex: "FEF6DE")
+                let attributedPhrase = NSMutableAttributedString(string: String.localize("UNABLE_SENT"), attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.secondText])
+                let attributedLink = NSAttributedString(string: " \(String.localize("RETRY_SENT"))", attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.criptextBlue])
+                attributedPhrase.append(attributedLink)
+                learnMoreButton.setAttributedTitle(attributedPhrase, for: .normal)
+                break
+            case .notEncrypted:
+                learnMoreButton.backgroundColor = UIColor(hex: "F7F9FF")
+                let attributedPhrase = NSMutableAttributedString(string: String.localize("UNABLE_ENCRYPT"), attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.secondText])
+                let attributedLink = NSAttributedString(string: " \(String.localize("LEARN_MORE"))", attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.criptextBlue])
+                attributedPhrase.append(attributedLink)
+                learnMoreButton.setAttributedTitle(attributedPhrase, for: .normal)
+                break
+        }
     }
     
     func loadWebview(email: Email, emailBody: String, hasTurnedOnLights: Bool){
@@ -381,9 +414,14 @@ class EmailTableViewCell: UITableViewCell{
             readStatusMarginConstraint.constant = 0.0
             readStatusContentMarginConstraint.constant = 0.0
             miniReadIconView.isHidden = true
-        case .sending, .fail:
+        case .sending:
             miniReadIconView.image = #imageLiteral(resourceName: "waiting-icon")
             miniReadIconView.tintColor = theme.icon
+        case .fail:
+            readStatusMarginConstraint.constant = 1.0
+            readStatusContentMarginConstraint.constant = 1.0
+            readIconWidthConstraint.constant = 20.0
+            miniReadIconView.image = #imageLiteral(resourceName: "resend-warning")
         }
     }
     
@@ -423,6 +461,10 @@ class EmailTableViewCell: UITableViewCell{
     }
     
     @IBAction func onLearnMorePressed(_ sender: Any) {
+        if email.status == .fail {
+            self.delegate?.tableViewResendEmail(email: email)
+            return
+        }
         self.delegate?.tableViewLearnMore()
     }
     

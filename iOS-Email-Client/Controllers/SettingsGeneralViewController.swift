@@ -602,7 +602,7 @@ extension SettingsGeneralViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Unauthorized = responseData {
-                weakSelf.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar(String.localize("AUTH_ERROR_MESSAGE"), attributedText: nil, permanent: false)
                 return
             }
             if case .Removed = responseData {
@@ -610,16 +610,16 @@ extension SettingsGeneralViewController: ComposerSendMailDelegate {
                 return
             }
             if case .Forbidden = responseData {
-                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, permanent: false)
                 weakSelf.presentPasswordPopover(myAccount: weakSelf.myAccount)
                 return
             }
             if case let .Error(error) = responseData {
-                weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar("\(error.description). \(String.localize("RESENT_FUTURE"))", attributedText: nil, permanent: false)
                 return
             }
             guard case let .SuccessInt(key) = responseData else {
-                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                weakSelf.showSnackbar(String.localize("EMAIL_FAILED"), attributedText: nil, permanent: false)
                 return
             }
             let sentEmail = DBManager.getMail(key: key, account: weakSelf.myAccount)
@@ -641,7 +641,7 @@ extension SettingsGeneralViewController: ComposerSendMailDelegate {
         let fullString = NSMutableAttributedString(string: "")
         let attrs = [NSAttributedString.Key.font : Font.regular.size(15)!, NSAttributedString.Key.foregroundColor : UIColor.white]
         fullString.append(NSAttributedString(string: message, attributes: attrs))
-        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
+        self.showSnackbar("", attributedText: fullString, permanent: permanent)
     }
     
     func deleteDraft(draftId: Int) {

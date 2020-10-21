@@ -450,11 +450,23 @@ class DBManager: SharedDB {
     class func getEmailFailed(account: Account) -> Email? {
         var dateComponents = DateComponents()
         dateComponents.setValue(-3, for: .day)
-        let yesterday = Calendar.current.date(byAdding: dateComponents, to: Date())
+        let today = Date()
+        let yesterday = Calendar.current.date(byAdding: dateComponents, to: today)
         let realm = try! Realm()
-        let hasFailed = NSPredicate(format: "date <= %@ AND delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", yesterday! as CVarArg, [SystemLabel.trash.id])
+        let hasFailed = NSPredicate(format: "date BETWEEN %@ AND delivered == \(Email.Status.fail.rawValue) AND NOT (ANY labels.id IN %@) AND account.compoundKey == %@", [yesterday, today], [SystemLabel.trash.id], account.compoundKey)
         let results = realm.objects(Email.self).filter(hasFailed)
         return results.first
+    }
+    
+    class func setSendingEmailsAsFailed(account: Account) {
+        let realm = try! Realm()
+        let isSending = NSPredicate(format: "delivered == \(Email.Status.sending.rawValue) AND NOT (ANY labels.id IN %@) AND account.compoundKey == '\(account.compoundKey)'", [SystemLabel.trash.id])
+        let results = realm.objects(Email.self).filter(isSending)
+        try? realm.write {
+            for email in results {
+                email.status = .fail
+            }
+        }
     }
     
     class func unsendEmail(_ email: Email, date: Date = Date()){

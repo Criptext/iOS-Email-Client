@@ -432,6 +432,9 @@ class ComposeViewController: UIViewController {
     
     func saveDraft() -> Email {
         if let draft = composerData.emailDraft {
+            if draft.isInvalidated || draft.status != .none {
+                return draft
+            }
             delegate?.deleteDraft(draftId: draft.key)
             FileUtils.deleteDirectoryFromEmail(account: activeAccount, metadataKey: "\(draft.key)")
             DBManager.deleteDraftInComposer(draft)

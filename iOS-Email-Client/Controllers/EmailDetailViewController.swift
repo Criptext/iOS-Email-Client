@@ -95,7 +95,7 @@ class EmailDetailViewController: UIViewController {
                     return email.labels.contains(where: {$0.id == SystemLabel.inbox.id})
                 })
                 if (hasNewInboxEmail) {
-                    weakSelf.showSnackbar(String.localize("HAVE_NEW_EMAIL"), attributedText: nil, buttons: "", permanent: false)
+                    weakSelf.showSnackbar(String.localize("HAVE_NEW_EMAIL"), attributedText: nil, permanent: false)
                 }
             default:
                 break
@@ -561,6 +561,13 @@ extension EmailDetailViewController: EmailTableViewCellDelegate {
     func tableViewLearnMore() {
         self.goToUrl(url: "https://criptext.atlassian.net/l/c/10NeN7ZM")
     }
+    
+    func tableViewResendEmail(email: Email) {
+        guard let inboxViewController = navigationController?.viewControllers.first as? InboxViewController else {
+            return
+        }
+        inboxViewController.resendEmail(email)
+    }
 }
 
 extension EmailDetailViewController: MembershipWebViewControllerDelegate {
@@ -791,7 +798,7 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
         let eventData = EventData.Peer.ContactTrust(email: email.fromContact.email, trusted: true)
         let eventParams = ["cmd": Event.Peer.contactTrust.rawValue, "params": eventData.asDictionary()] as [String : Any]
         APIManager.postPeerEvent(["peerEvents": [eventParams]], token: myAccount.jwt) { (responseData) in
-            self.showSnackbar(String.localize("BLOCK_CONTENT_CONTACT_TRUSTED", arguments: email.fromContact.displayName), attributedText: nil, buttons: "", permanent: false)
+            self.showSnackbar(String.localize("BLOCK_CONTENT_CONTACT_TRUSTED", arguments: email.fromContact.displayName), attributedText: nil, permanent: false)
             if case .Success = responseData {
                 return
             }
@@ -812,7 +819,7 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
             APIManager.setBlockContent(isOn: false, token: self.myAccount.jwt) { (responseData) in
                 self.toggleGeneralOptionsView()
                 guard case .Success = responseData else {
-                    self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_FAILED"), attributedText: nil, buttons: "", permanent: false)
+                    self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_FAILED"), attributedText: nil, permanent: false)
                     return
                 }
                 self.disableBlockContent()
@@ -822,7 +829,7 @@ extension EmailDetailViewController: EmailContentOptionsDelegate {
     }
     
     func disableBlockContent() {
-        self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_SUCCESS"), attributedText: nil, buttons: "", permanent: false)
+        self.showSnackbar(String.localize("BLOCK_CONTENT_UPDATE_SUCCESS"), attributedText: nil, permanent: false)
         DBManager.update(account: myAccount, blockContent: false)
         DBManager.refresh()
         

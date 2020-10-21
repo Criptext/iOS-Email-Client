@@ -31,6 +31,7 @@ class InboxTableViewCell: UITableViewCell {
     
     @IBOutlet weak var subjectWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var readWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var readHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var readImageView: UIImageView!
     @IBOutlet weak var starredImageView: UIImageView!
     
@@ -121,6 +122,7 @@ class InboxTableViewCell: UITableViewCell {
     }
     
     func setReadStatus(status: Email.Status){
+        readHeightConstraint.constant = 10.0
         readWidthConstraint.constant = status == .none ? 0.0 : 23.0
         readImageView.isHidden = status == .none
         switch(status){
@@ -138,9 +140,12 @@ class InboxTableViewCell: UITableViewCell {
         case .unsent:
             readWidthConstraint.constant = 0.0
             readImageView.isHidden = true
-        case .sending, .fail:
+        case .sending:
             readImageView.image = #imageLiteral(resourceName: "waiting-icon")
             readImageView.tintColor = UIColor(red: 182/255, green: 182/255, blue: 182/255, alpha: 1)
+        case .fail:
+            readHeightConstraint.constant = 13
+            readImageView.image = #imageLiteral(resourceName: "resend-warning")
         }
     }
     

@@ -213,7 +213,7 @@ class BackupViewController: UIViewController {
         let fullString = NSMutableAttributedString(string: "")
         let attrs = [NSAttributedString.Key.font : Font.regular.size(15)!, NSAttributedString.Key.foregroundColor : UIColor.white]
         fullString.append(NSAttributedString(string: message, attributes: attrs))
-        self.showSnackbar("", attributedText: fullString, buttons: "", permanent: permanent)
+        self.showSnackbar("", attributedText: fullString, permanent: permanent)
     }
     
 }

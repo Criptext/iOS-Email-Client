@@ -314,7 +314,7 @@ extension UIViewController {
         self.showAlert(title, message: message, style: .alert, actions: actions)
     }
     
-    func showSnackbar(_ title:String, attributedText:NSAttributedString?, buttons:String, permanent:Bool){
+    func showSnackbar(_ title:String, attributedText:NSAttributedString?, permanent:Bool){
         guard let snackbarVC = self.snackbarController as? CriptextSnackbarController else {
             return
         }
@@ -331,6 +331,29 @@ extension UIViewController {
         if !permanent {
             let _ = snackbarVC.animate(snackbar: .hidden, delay: 2.5)
         }
+        
+        snackbarVC.customSnackbar.rightViews = []
+    }
+    
+    func showSnackbar(_ title:String, attributedText:NSAttributedString?, buttons: [UIView], permanent:Bool){
+        guard let snackbarVC = self.snackbarController as? CriptextSnackbarController else {
+            return
+        }
+        
+        if let attributedText = attributedText {
+            snackbarVC.customSnackbar.attributedText = attributedText
+        } else {
+            snackbarVC.customSnackbar.text = title
+        }
+        
+        snackbarVC.customSnackbar.backgroundColor = UIColor(red: 28/255, green: 29/255, blue: 34/255, alpha: 1.0)
+        let _ = snackbarVC.animate(snackbar: .visible, delay: 0)
+        
+        if !permanent {
+            let _ = snackbarVC.animate(snackbar: .hidden, delay: 2.5)
+        }
+        
+        snackbarVC.customSnackbar.rightViews = buttons
     }
     
     func setSnackbar(_ title:String, attributedText:NSAttributedString?){
@@ -343,6 +366,8 @@ extension UIViewController {
         } else {
             snackbarVC.customSnackbar.text = title
         }
+        
+        snackbarVC.customSnackbar.rightViews = []
     }
     
     func hideSnackbar(){
