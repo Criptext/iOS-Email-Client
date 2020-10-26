@@ -71,7 +71,7 @@ class CustomizeiCloudViewController: UIViewController {
             BackupManager.shared.clearAccount(accountId: self.myAccount.compoundKey)
             BackupManager.shared.backupNow(account: self.myAccount)
             defaults.setShownAutobackup(email: self.myAccount.email)
-            self.showSnackbar(String.localize("BACKUP_ACTIVATED"), attributedText: nil, buttons: "", permanent: false)
+            self.showSnackbar(String.localize("BACKUP_ACTIVATED"), attributedText: nil, permanent: false)
             goToMailbox()
         default:
             goToMailbox()

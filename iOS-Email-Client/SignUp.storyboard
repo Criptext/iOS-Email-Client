@@ -28,7 +28,7 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Profile Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2Py-p0-RGY" customClass="StatusTextField" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="48" y="318" width="318" height="34"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" textContentType="name"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="detailColor">
                                         <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -630,7 +630,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u9b-dV-Mse" userLabel="Check Box One" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                <rect key="frame" x="48" y="430" width="16" height="16"/>
+                                <rect key="frame" x="48" y="454" width="16" height="16"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="QxA-3e-PVB"/>
@@ -662,7 +662,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="mVt-mb-R3A" userLabel="Terms And Conditions">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="mVt-mb-R3A" userLabel="Terms And Conditions">
                                 <rect key="frame" x="74" y="427" width="292" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="cgF-yh-Gxg"/>
@@ -752,8 +752,8 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creating Account..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bxm-Cy-aXN">
-                                        <rect key="frame" x="126.5" y="800" width="161" height="26"/>
-                                        <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="19"/>
+                                        <rect key="frame" x="123.5" y="800" width="167.5" height="26"/>
+                                        <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="19"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -790,7 +790,7 @@
                             <constraint firstItem="zF5-2R-aG9" firstAttribute="top" secondItem="mVt-mb-R3A" secondAttribute="bottom" constant="40" id="Lvd-Sd-fBc"/>
                             <constraint firstItem="mVt-mb-R3A" firstAttribute="top" secondItem="ckS-XH-132" secondAttribute="bottom" constant="48" id="Mfb-1S-Nla"/>
                             <constraint firstItem="R3X-KN-zq2" firstAttribute="leading" secondItem="Q17-9a-9Cu" secondAttribute="leading" constant="48" id="Nt0-sr-DGf"/>
-                            <constraint firstItem="u9b-dV-Mse" firstAttribute="top" secondItem="mVt-mb-R3A" secondAttribute="top" constant="3" id="Q0I-VE-hre"/>
+                            <constraint firstItem="u9b-dV-Mse" firstAttribute="centerY" secondItem="mVt-mb-R3A" secondAttribute="centerY" id="QJz-Q5-s8p"/>
                             <constraint firstItem="Q17-9a-9Cu" firstAttribute="trailing" secondItem="y71-rH-nbZ" secondAttribute="trailing" id="RDd-aj-jUk"/>
                             <constraint firstItem="RNK-zP-D85" firstAttribute="top" secondItem="Q17-9a-9Cu" secondAttribute="top" constant="44" id="Swg-Yr-88s"/>
                             <constraint firstItem="u9b-dV-Mse" firstAttribute="leading" secondItem="Q17-9a-9Cu" secondAttribute="leading" constant="48" id="UyY-h3-nMz"/>
@@ -815,6 +815,7 @@
                         <outlet property="checkBoxTerms" destination="u9b-dV-Mse" id="CQf-c4-cYx"/>
                         <outlet property="closeButton" destination="RNK-zP-D85" id="teY-bM-Axx"/>
                         <outlet property="conditionOne" destination="mVt-mb-R3A" id="QlZ-G1-gWc"/>
+                        <outlet property="creatingLabel" destination="Bxm-Cy-aXN" id="agW-1N-wKF"/>
                         <outlet property="descriptionLabel" destination="Llz-Fn-yfk" id="ftq-rI-Y9K"/>
                         <outlet property="loadingOverlayView" destination="y71-rH-nbZ" id="Ct7-Ye-LMl"/>
                         <outlet property="loadingView" destination="4pA-r7-dqh" id="f39-1s-HhZ"/>

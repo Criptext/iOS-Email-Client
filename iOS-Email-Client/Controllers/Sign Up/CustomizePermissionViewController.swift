@@ -36,6 +36,7 @@ class CustomizePermissionViewController: UIViewController {
     }
     
     func applyTheme() {
+        let lightTheme = Theme.init()
         titleLabel.textColor = theme.mainText
         messageLabel.textColor = theme.secondText
         stepLabel.textColor = theme.secondText
@@ -44,6 +45,9 @@ class CustomizePermissionViewController: UIViewController {
         UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         view.backgroundColor = theme.background
         skipButton.setTitleColor(theme.markedText, for: .normal)
+        
+        contactLabel.textColor = lightTheme.mainText
+        notificationLabel.textColor = lightTheme.mainText
     }
     
     override func viewDidAppear(_ animated: Bool) {

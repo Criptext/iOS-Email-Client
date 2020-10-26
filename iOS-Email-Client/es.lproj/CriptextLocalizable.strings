@@ -588,8 +588,10 @@
 "SIGN_UP_RECOVERY_EMAIL_MESSAGE" = "Te permitira recuperar tu cuenta en caso de que te olvides de tu contraseña";
 "SIGN_UP_RECOVERY_EMAIL_BTN" = "Establecer como Recuperación";
 "SIGN_UP_TERMS_TITLE" = "¡Ya estamos casi listos!";
+"SIGN_UP_NOT_ROBOT" = "Prueba que no eres un Robot";
 "SIGN_UP_TERMS_CONDITION_TWO" = "Prometo llamar a mi mamá más seguido";
-"SIGN_UP_CREATE_ACCOUNT_BTN" = "Creando Cuenta";
+"SIGN_UP_CREATE_ACCOUNT_BTN" = "Crear Cuenta";
+"SIGN_UP_CREATING_ACCOUNT_BTN" = "Creando Cuenta";
 "SIGN_UP_CREATING_KEYS" = "Creando Llaves de Encriptación...";
 "SIGN_UP_ACCOUNT_CREATED" = "¡Cuenta Creada!\nPersonalizala a tu gusto";
 "ADD_BTN" = "Agregar";

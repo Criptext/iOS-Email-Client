@@ -58,30 +58,30 @@ struct Env {
     
     static var plainDomain: String {
         guard !Env.isProduction else {
-            return "jigl.com"
+            return "criptext.com"
         }
-        return "jigl.com"
+        return "criptext.com"
     }
     
     static var apiURL: String {
         guard !Env.isProduction else {
-            return "https://api.jigl.com"
+            return "https://api.criptext.com"
         }
-        return "https://api.jigl.com"
+        return "https://api.criptext.com"
     }
     
     static var transferURL: String {
         guard !Env.isProduction else {
-            return "https://stagetransfer.criptext.com"
+            return "https://transfer.criptext.com"
         }
-        return "https://stagetransfer.criptext.com"
+        return "https://transfer.criptext.com"
     }
     
     static var adminURL: String {
         guard !Env.isProduction else {
-            return "https://stageaccount.criptext.com/"
+            return "https://account.criptext.com/"
         }
-        return "https://stageaccount.criptext.com/"
+        return "https://account.criptext.com/"
     }
     
     static var language: String {

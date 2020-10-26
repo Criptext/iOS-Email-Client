@@ -23,6 +23,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     @IBOutlet weak var captchaTextField: StatusTextField!
     @IBOutlet weak var captchaWebView: WKWebView!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var creatingLabel: UILabel!
 
     var signUpData: TempSignUpData!
     var multipleAccount = false
@@ -328,6 +329,9 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         
         titleLabel.text = String.localize("SIGN_UP_TERMS_TITLE")
         nextButton.setTitle(String.localize("SIGN_UP_CREATE_ACCOUNT_BTN"), for: .normal)
+        descriptionLabel.text = String.localize("SIGN_UP_NOT_ROBOT")
+        creatingLabel.text = String.localize("SIGN_UP_CREATING_ACCOUNT_BTN")
+
     }
     
     @objc func handleTap(_ gestureRecognizer:UITapGestureRecognizer){

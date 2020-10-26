@@ -588,8 +588,10 @@
 "SIGN_UP_RECOVERY_EMAIL_MESSAGE" = "This will allow you to regain access if you ever forget your password";
 "SIGN_UP_RECOVERY_EMAIL_BTN" = "Set Recovery Email";
 "SIGN_UP_TERMS_TITLE" = "You're almost there! 💪";
+"SIGN_UP_NOT_ROBOT" = "Prove you are not a Robot";
 "SIGN_UP_TERMS_CONDITION_TWO" = "I promise to call mom more often";
 "SIGN_UP_CREATE_ACCOUNT_BTN" = "Create Account";
+"SIGN_UP_CREATING_ACCOUNT_BTN" = "Creating Account";
 "SIGN_UP_CREATING_KEYS" = "Creating encrtyption keys...";
 "SIGN_UP_ACCOUNT_CREATED" = "Account created!\nLet’s make it yours 😎";
 "ADD_BTN" = "Add";

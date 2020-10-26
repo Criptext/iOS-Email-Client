@@ -28,7 +28,7 @@ class CustomizeRecoveryEmailViewController: UIViewController {
     
     var isVerified = false
     
-    let WAIT_TIME: Double = 300
+    let WAIT_TIME: Double = 20
     let POPOVER_HEIGHT = 220
     
     var theme: Theme {
@@ -137,7 +137,7 @@ class CustomizeRecoveryEmailViewController: UIViewController {
         let defaults = CriptextDefaults()
         let lastTimeResent = defaults.lastTimeResent
         let currentTime = Date().timeIntervalSince1970
-        let secondsLeft = 300 - (currentTime - lastTimeResent)
+        let secondsLeft = WAIT_TIME - (currentTime - lastTimeResent)
         let title = "\(String.localize("RESEND_LINK")) (\(Int(secondsLeft)) \(secondsLeft == 1 ? "sec" : "secs"))"
         nextButton.titleLabel?.text = title
         nextButton.setTitle(title, for: .normal)
