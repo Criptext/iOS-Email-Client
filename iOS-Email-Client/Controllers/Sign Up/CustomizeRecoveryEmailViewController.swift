@@ -20,9 +20,11 @@ class CustomizeRecoveryEmailViewController: UIViewController {
     @IBOutlet weak var verifiedLabel: UILabel!
     
     var timer: Timer?
+    var scheduleWorker = ScheduleWorker(interval: 10.0, maxRetries: 18)
     
     var myAccount: Account!
     var recoveryEmail: String!
+    var multipleAccount: Bool = false
     
     var isVerified = false
     
@@ -38,17 +40,25 @@ class CustomizeRecoveryEmailViewController: UIViewController {
     
         applyTheme()
         setupFields()
+        
+        scheduleWorker.delegate = self
+        scheduleWorker.start()
+        
+        nextButton.setTitle(String.localize("RESEND_LINK"), for: .normal)
+        loadingView.stopAnimating()
     }
     
     func applyTheme() {
         titleLabel.textColor = theme.mainText
         messageLabel.textColor = theme.secondText
         stepLabel.textColor = theme.secondText
+        emailLabel.textColor = theme.markedText
         verifiedLabel.textColor = UIColor(red: 61/255, green: 170/255, blue: 85/255, alpha: 1)
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: theme.mainText]
         UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .selected)
         UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         view.backgroundColor = theme.background
+        skipButton.setTitleColor(theme.markedText, for: .normal)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -63,18 +73,11 @@ class CustomizeRecoveryEmailViewController: UIViewController {
     func setupFields(){
         titleLabel.text = String.localize("CUSTOMIZE_RECOVERY_EMAIL_TITLE")
         messageLabel.text = String.localize("CUSTOMIZE_RECOVERY_EMAIL_MESSAGE")
-        stepLabel.text = String.localize("CUSTOMIZE_STEP_4")
-        verifiedLabel.text = "(" + String.localize("VERIFIED") + ")"
+        stepLabel.text = String.localize(self.multipleAccount ? "STEP_2_HEADER" : "CUSTOMIZE_STEP_4")
+        verifiedLabel.text = "(\(String.localize("VERIFIED")))"
         nextButton.setTitle(String.localize("NEXT"), for: .normal)
         skipButton.setTitle(String.localize("SKIP"), for: .normal)
         emailLabel.text = recoveryEmail
-    }
-    
-    func presentResendAlert(){
-        let alertVC = GenericAlertUIPopover()
-        alertVC.myTitle = String.localize("LINK_SENT")
-        alertVC.myMessage = String.localize("CHECK_INBOX_LINK")
-        self.presentPopover(popover: alertVC, height: POPOVER_HEIGHT)
     }
     
     func showLoaderTimer(_ show: Bool){
@@ -85,18 +88,20 @@ class CustomizeRecoveryEmailViewController: UIViewController {
             let defaults = CriptextDefaults()
             let lastTimeResent = defaults.lastTimeResent
             guard lastTimeResent == 0 || Date().timeIntervalSince1970 - lastTimeResent > WAIT_TIME else {
-                nextButton.backgroundColor = UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1)
                 nextButton.isEnabled = false
+                nextButton.alpha = 0.5
                 startTimer()
                 return
             }
             
+            nextButton.alpha = 1
             nextButton.isEnabled = true
             nextButton.setTitle(String.localize("RESEND_LINK"), for: .normal)
             return
         }
         
         nextButton.isEnabled = false
+        nextButton.alpha = 0.5
         nextButton.setTitle("", for: .normal)
         loadingView.isHidden = false
         loadingView.startAnimating()
@@ -106,9 +111,9 @@ class CustomizeRecoveryEmailViewController: UIViewController {
         if let myTimer = timer {
             myTimer.invalidate()
         }
-        setButtonTimerLable()
+        setButtonTimerLabel()
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { timer in
-            let secondsLeft = self.setButtonTimerLable()
+            let secondsLeft = self.setButtonTimerLabel()
             self.checkTimer(seconds: secondsLeft)
         })
     }
@@ -120,53 +125,37 @@ class CustomizeRecoveryEmailViewController: UIViewController {
         if let myTimer = timer {
             myTimer.invalidate()
         }
+        
         nextButton.isEnabled = true
+        nextButton.alpha = 1
         nextButton.setTitle(String.localize("RESEND_LINK"), for: .normal)
         nextButton.backgroundColor = .mainUI
         nextButton.setTitleColor(.white, for: .normal)
     }
     
-    @discardableResult func setButtonTimerLable() -> Double {
+    @discardableResult func setButtonTimerLabel() -> Double {
         let defaults = CriptextDefaults()
         let lastTimeResent = defaults.lastTimeResent
         let currentTime = Date().timeIntervalSince1970
         let secondsLeft = 300 - (currentTime - lastTimeResent)
-        let minsLeft = Int(ceil(secondsLeft/60))
-        let title = "\(minsLeft) \(minsLeft == 1 ? "min" : "mins")"
+        let title = "\(String.localize("RESEND_LINK")) (\(Int(secondsLeft)) \(secondsLeft == 1 ? "sec" : "secs"))"
+        nextButton.titleLabel?.text = title
         nextButton.setTitle(title, for: .normal)
-        nextButton.setTitleColor(UIColor(red: 138/255, green: 138/255, blue: 138/255, alpha: 1), for: .normal)
         return secondsLeft
-    }
-    
-    @objc func onDonePress(_ sender: Any){
-        guard let button = sender as? UIButton else {
-            return
-        }
-        if(button.isEnabled){
-            self.onNextPress(button)
-        }
-    }
-    
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
     }
     
     func checkToEnableDisableNextButton(){
         nextButton.isEnabled = isVerified
         if(nextButton.isEnabled){
+            nextButton.setTitle(String.localize("NEXT"), for: .normal)
             nextButton.alpha = 1.0
             skipButton.isHidden = true
             verifiedLabel.isHidden = false
+            if let myTimer = timer {
+                myTimer.invalidate()
+            }
         }else{
-            nextButton.alpha = 0.5
+            nextButton.setTitle(String.localize("RESEND_LINK"), for: .normal)
             skipButton.isHidden = false
             verifiedLabel.isHidden = true
         }
@@ -175,40 +164,38 @@ class CustomizeRecoveryEmailViewController: UIViewController {
     @IBAction func onNextPress(_ sender: UIButton) {
         switch sender {
         case nextButton:
-            if(self.isVerified){
-                toggleLoadingView(true)
+            if self.isVerified {
                 goToiCloudView()
-                toggleLoadingView(false)
-            } else {
-                self.showLoaderTimer(true)
-                APIManager.resendConfirmationEmail(token: myAccount.jwt) { (responseData) in
-                    if case .Removed = responseData {
-                        self.logout(account: self.myAccount, manually: false)
-                        return
-                    }
-                    if case .Unauthorized = responseData {
-                        self.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUTH_ERROR_MESSAGE"), style: .alert)
-                        return
-                    }
-                    self.showLoaderTimer(false)
-                    if case .Forbidden = responseData {
-                        self.presentPasswordPopover(myAccount: self.myAccount)
-                        return
-                    }
-                    if case let .Error(error) = responseData,
-                        error.code != .custom {
-                        self.showAlert(String.localize("REQUEST_ERROR"), message: "\(error.description). \(String.localize("TRY_AGAIN"))", style: .alert)
-                        return
-                    }
-                    guard case .Success = responseData else {
-                        self.showAlert(String.localize("NETWORK_ERROR"), message: String.localize("UNABLE_RESEND_LINK"), style: .alert)
-                        return
-                    }
-                    self.presentResendAlert()
-                    let defaults = CriptextDefaults()
-                    defaults.lastTimeResent = Date().timeIntervalSince1970
-                    self.showLoaderTimer(false)
+                break
+            }
+            self.showLoaderTimer(true)
+            APIManager.resendConfirmationEmail(token: myAccount.jwt) { (responseData) in
+                if case .Removed = responseData {
+                    self.logout(account: self.myAccount, manually: false)
+                    return
                 }
+                if case .Unauthorized = responseData {
+                    self.showAlert(String.localize("AUTH_ERROR"), message: String.localize("AUTH_ERROR_MESSAGE"), style: .alert)
+                    return
+                }
+                
+                self.showLoaderTimer(false)
+                if case .Forbidden = responseData {
+                    self.presentPasswordPopover(myAccount: self.myAccount)
+                    return
+                }
+                if case let .Error(error) = responseData,
+                    error.code != .custom {
+                    self.showAlert(String.localize("REQUEST_ERROR"), message: "\(error.description). \(String.localize("TRY_AGAIN"))", style: .alert)
+                    return
+                }
+                guard case .Success = responseData else {
+                    self.showAlert(String.localize("NETWORK_ERROR"), message: String.localize("UNABLE_RESEND_LINK"), style: .alert)
+                    return
+                }
+                let defaults = CriptextDefaults()
+                defaults.lastTimeResent = Date().timeIntervalSince1970
+                self.showLoaderTimer(false)
             }
         default:
             presentRecoveryEmailWarning()
@@ -216,9 +203,11 @@ class CustomizeRecoveryEmailViewController: UIViewController {
     }
     
     func goToiCloudView(){
+        scheduleWorker.cancel()
         let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "customizeiCloudView")  as! CustomizeiCloudViewController
         controller.myAccount = self.myAccount
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -234,6 +223,24 @@ class CustomizeRecoveryEmailViewController: UIViewController {
             }
         }
         self.presentPopover(popover: retryPopup, height: 235)
+    }
+}
+
+extension CustomizeRecoveryEmailViewController: ScheduleWorkerDelegate {
+    func work(completion: @escaping (Bool) -> Void) {
+        APIManager.canSend(token: myAccount.jwt) { (responseData) in
+            guard case .Success = responseData else {
+                completion(false)
+                return
+            }
+            completion(true)
+            self.isVerified = true
+            self.checkToEnableDisableNextButton()
+        }
+    }
+    
+    func dangled(){
+        self.scheduleWorker.start()
     }
 }
 

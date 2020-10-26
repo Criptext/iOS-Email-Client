@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -16,78 +17,91 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="YayUIPopover" customModule="iOS_Email_Client" customModuleProvider="target">
+            <connections>
+                <outlet property="messageLabel" destination="aca-qu-EKc" id="9Fv-aM-Dc9"/>
+                <outlet property="profilePicture" destination="D4m-zN-7Em" id="v63-Pj-EmU"/>
+                <outlet property="titleLabel" destination="Wrl-09-iAi" id="CN9-MJ-YTi"/>
+                <outlet property="view" destination="hMe-3r-3h5" id="pt6-5z-DMF"/>
+                <outlet property="yayButton" destination="O5W-62-FsR" id="XOI-Kf-0Op"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="hMe-3r-3h5">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="430"/>
+            <rect key="frame" x="0.0" y="0.0" width="270" height="430"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5W-62-FsR">
-                    <rect key="frame" x="0.0" y="384" width="300" height="46"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5W-62-FsR">
+                    <rect key="frame" x="0.0" y="384" width="270" height="46"/>
                     <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="gSd-IY-UFF"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                     <state key="normal" title="Yay!">
-                        <color key="titleColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" systemColor="systemBlueColor"/>
                     </state>
+                    <connections>
+                        <action selector="didPressYay:" destination="-1" eventType="touchUpInside" id="VAH-9x-bJI"/>
+                    </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgProfile" translatesAutoresizingMaskIntoConstraints="NO" id="D4m-zN-7Em">
-                    <rect key="frame" x="98" y="94" width="104" height="104"/>
+                    <rect key="frame" x="83" y="66" width="104" height="104"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="104" id="JOl-qk-6Gx"/>
                         <constraint firstAttribute="height" constant="104" id="x3J-zl-9CR"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgYaycustom" translatesAutoresizingMaskIntoConstraints="NO" id="WaA-K8-dqJ" userLabel="ProfileBackground">
-                    <rect key="frame" x="50.5" y="44" width="199" height="172"/>
+                    <rect key="frame" x="35.5" y="14" width="199" height="172"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
                             <color key="value" red="0.0" green="0.56862745100000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your new secure inbox is ready to go! 🎉" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrl-09-iAi" userLabel="Message">
-                    <rect key="frame" x="41" y="243" width="218" height="77"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your new secure inbox is ready to go! 🎉" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrl-09-iAi" userLabel="Message">
+                    <rect key="frame" x="41" y="213" width="188" height="77"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="77" id="xWe-Tp-Ekg"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="20"/>
+                    <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vectorrender@criptext.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aca-qu-EKc" userLabel="Email">
-                    <rect key="frame" x="38" y="330" width="224" height="22"/>
+                    <rect key="frame" x="41" y="300" width="188" height="44"/>
                     <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="YKU-nv-SU1"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="aca-qu-EKc" firstAttribute="leading" secondItem="YKU-nv-SU1" secondAttribute="leading" constant="38" id="2nQ-3w-liy"/>
+                <constraint firstItem="aca-qu-EKc" firstAttribute="leading" secondItem="YKU-nv-SU1" secondAttribute="leading" constant="41" id="2nQ-3w-liy"/>
                 <constraint firstItem="YKU-nv-SU1" firstAttribute="trailing" secondItem="O5W-62-FsR" secondAttribute="trailing" id="3kX-BU-WFa"/>
-                <constraint firstItem="YKU-nv-SU1" firstAttribute="trailing" secondItem="aca-qu-EKc" secondAttribute="trailing" constant="38" id="4H9-DS-imW"/>
-                <constraint firstItem="YKU-nv-SU1" firstAttribute="trailing" secondItem="D4m-zN-7Em" secondAttribute="trailing" constant="98" id="4ar-hN-O2T"/>
-                <constraint firstItem="D4m-zN-7Em" firstAttribute="leading" secondItem="YKU-nv-SU1" secondAttribute="leading" constant="98" id="6QP-4g-iNH"/>
+                <constraint firstItem="YKU-nv-SU1" firstAttribute="trailing" secondItem="aca-qu-EKc" secondAttribute="trailing" constant="41" id="4H9-DS-imW"/>
                 <constraint firstItem="aca-qu-EKc" firstAttribute="top" secondItem="Wrl-09-iAi" secondAttribute="bottom" constant="10" id="K58-4j-BC5"/>
                 <constraint firstAttribute="trailing" secondItem="Wrl-09-iAi" secondAttribute="trailing" constant="41" id="Oo0-VT-XCE"/>
-                <constraint firstItem="WaA-K8-dqJ" firstAttribute="top" secondItem="YKU-nv-SU1" secondAttribute="top" id="QGp-4D-c5U"/>
+                <constraint firstItem="WaA-K8-dqJ" firstAttribute="centerY" secondItem="D4m-zN-7Em" secondAttribute="centerY" constant="-18" id="VUH-va-BmR"/>
                 <constraint firstItem="Wrl-09-iAi" firstAttribute="leading" secondItem="hMe-3r-3h5" secondAttribute="leading" constant="41" id="Vae-oO-lXI"/>
-                <constraint firstItem="D4m-zN-7Em" firstAttribute="top" secondItem="YKU-nv-SU1" secondAttribute="top" constant="50" id="YlN-np-Kf4"/>
+                <constraint firstItem="D4m-zN-7Em" firstAttribute="top" secondItem="hMe-3r-3h5" secondAttribute="top" constant="66" id="f77-Iu-ioX"/>
                 <constraint firstItem="YKU-nv-SU1" firstAttribute="bottom" secondItem="O5W-62-FsR" secondAttribute="bottom" id="ntr-BP-79d"/>
                 <constraint firstItem="Wrl-09-iAi" firstAttribute="top" secondItem="WaA-K8-dqJ" secondAttribute="bottom" constant="27" id="sGt-9r-WR1"/>
+                <constraint firstItem="D4m-zN-7Em" firstAttribute="centerX" secondItem="YKU-nv-SU1" secondAttribute="centerX" id="u8H-vV-Fph"/>
                 <constraint firstItem="O5W-62-FsR" firstAttribute="leading" secondItem="YKU-nv-SU1" secondAttribute="leading" id="ylk-VR-fYR"/>
                 <constraint firstItem="WaA-K8-dqJ" firstAttribute="centerX" secondItem="YKU-nv-SU1" secondAttribute="centerX" id="ze4-iv-4DS"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="YKU-nv-SU1"/>
             <point key="canvasLocation" x="137.59999999999999" y="267.61619190404798"/>
         </view>
     </objects>
     <resources>
         <image name="imgProfile" width="109" height="109"/>
         <image name="imgYaycustom" width="199" height="172"/>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

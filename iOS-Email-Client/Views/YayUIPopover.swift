@@ -64,8 +64,9 @@ class YayUIPopover: BaseUIPopover {
         titleLabel.textColor = theme.markedText
         messageLabel.textColor = theme.mainText
         view.backgroundColor = theme.background
-        let attrSkip = NSAttributedString(string: String.localize("YAY_POPOVER_BTN"), attributes: [.font: Font.regular.size(15)!, .foregroundColor: theme.criptextBlue, .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: theme.criptextBlue])
+        let attrSkip = NSAttributedString(string: String.localize("YAY_POPOVER_BTN"), attributes: [.font: Font.bold.size(16)!, .foregroundColor: theme.criptextBlue])
         yayButton.setAttributedTitle(attrSkip, for: .normal)
+        yayButton.backgroundColor = theme.popoverButton
     }
     
     @IBAction func didPressYay(_ sender: Any) {

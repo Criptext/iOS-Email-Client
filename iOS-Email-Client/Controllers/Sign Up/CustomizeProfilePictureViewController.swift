@@ -20,7 +20,6 @@ class CustomizeProfilePictureViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var stepLabel: UILabel!
-    
     @IBOutlet weak var attachmentController: AttachmentOptionsContainerView!
     @IBOutlet weak var attachmentContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var blackBackground: UIView!
@@ -28,6 +27,7 @@ class CustomizeProfilePictureViewController: UIViewController {
     
     var myAccount: Account!
     var recoveryEmail: String!
+    var multipleAccount: Bool = false
     var ATTACHMENT_OPTIONS_BOTTOM_PADDING: CGFloat = -120
     var hasPicture = false
     
@@ -40,6 +40,10 @@ class CustomizeProfilePictureViewController: UIViewController {
     
         applyTheme()
         setupFields()
+        
+        self.attachmentContainerBottomConstraint.constant = self.ATTACHMENT_OPTIONS_BOTTOM_PADDING
+        self.blackBackground.alpha = 0
+        imagePicker.delegate = self
     }
     
     func applyTheme() {
@@ -48,6 +52,7 @@ class CustomizeProfilePictureViewController: UIViewController {
         fullnameLabel.textColor = theme.mainText
         stepLabel.textColor = theme.secondText
         view.backgroundColor = theme.background
+        skipButton.setTitleColor(theme.markedText, for: .normal)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -63,16 +68,16 @@ class CustomizeProfilePictureViewController: UIViewController {
         titleLabel.text = String.localize("CUSTOMIZE_PROFILE_TITLE")
         messageLabel.text = String.localize("CUSTOMIZE_PROFILE_TITLE")
         fullnameLabel.text = self.myAccount.name
-        nextButton.setTitle(String.localize("ADD"), for: .normal)
+        nextButton.setTitle(String.localize("ADD_BTN"), for: .normal)
         skipButton.setTitle(String.localize("SKIP"), for: .normal)
-        stepLabel.text = String.localize("CUSTOMIZE_STEP_1")
+        stepLabel.text = String.localize(self.multipleAccount ? "STEP_1_HEADER" : "CUSTOMIZE_STEP_1")
         attachmentController.docsButton.setTitle(String.localize("CANCEL"), for: .normal)
     }
     
     func showAttachmentDrawer(_ flag:Bool = false){
-        self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? 0 : ATTACHMENT_OPTIONS_BOTTOM_PADDING)
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
+            self.attachmentContainerBottomConstraint.constant = CGFloat(flag ? 0 : self.ATTACHMENT_OPTIONS_BOTTOM_PADDING)
             self.blackBackground.alpha = flag ? 0.5 : 0
         }
     }
@@ -88,11 +93,9 @@ class CustomizeProfilePictureViewController: UIViewController {
     
     func toggleLoadingView(_ show: Bool){
         if(show){
-            nextButton.setTitle("", for: .normal)
             loadingView.isHidden = false
             loadingView.startAnimating()
         }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
             loadingView.isHidden = true
             loadingView.stopAnimating()
         }
@@ -122,7 +125,6 @@ class CustomizeProfilePictureViewController: UIViewController {
     
     @IBAction func disPressedRemove(_ sender: Any) {
         self.showAttachmentDrawer(false)
-        toggleLoadingView(false)
     }
     
     @IBAction func didPressedCamera(_ sender: Any) {
@@ -142,17 +144,33 @@ class CustomizeProfilePictureViewController: UIViewController {
     }
     
     @IBAction func onNextPress(_ sender: UIButton) {
-        toggleLoadingView(true)
         switch sender {
         case nextButton:
             if(self.hasPicture){
-                goToThemeView()
+                goToNextView()
             } else {
                 self.showAttachmentDrawer(true)
             }
         default:
+            goToNextView()
+        }
+    }
+    
+    func goToNextView() {
+        if (self.multipleAccount) {
+            goToRecoveryEmailView()
+        } else {
             goToThemeView()
         }
+    }
+    
+    func goToRecoveryEmailView(){
+        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "customizeRecoveryEmailView")  as! CustomizeRecoveryEmailViewController
+        controller.myAccount = self.myAccount
+        controller.recoveryEmail = self.recoveryEmail
+        controller.multipleAccount = self.multipleAccount
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     func goToThemeView(){
@@ -171,14 +189,17 @@ class CustomizeProfilePictureViewController: UIViewController {
             "mimeType": File.mimeTypeForPath(path: imageName),
             "size": data!.count
             ] as [String: Any]
+        toggleLoadingView(true)
         APIManager.uploadProfilePicture(inputStream: inputStream, params: params, token: myAccount.jwt, progressCallback: { (progress) in
         }) { (responseData) in
+            self.toggleLoadingView(false)
             guard case .Success = responseData else {
                 self.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_update_failed"), style: .alert)
                 return
             }
-            self.showAlert(String.localize("PROFILE"), message: String.localize("profile_picture_updated"), style: .alert)
             UIUtils.deleteSDWebImageCache()
+            self.hasPicture = true
+            self.nextButton.setTitle(String.localize("NEXT"), for: .normal)
         }
     }
     
@@ -212,7 +233,6 @@ extension CustomizeProfilePictureViewController: UIImagePickerControllerDelegate
             imageView.image = image
             self.makeCircleImage()
             changeProfilePicture(image: image, imageName: imageName)
-            toggleLoadingView(false)
             return
         }
 
@@ -225,7 +245,6 @@ extension CustomizeProfilePictureViewController: UIImagePickerControllerDelegate
             let data = pickedImage.pngData()
             fileManager.createFile(atPath: path as String, contents: data, attributes: nil)
             changeProfilePicture(image: pickedImage, imageName: imageName)
-            toggleLoadingView(false)
             return
         }
     }

@@ -33,10 +33,10 @@ class SignUpNameViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        closeButton.isHidden = !multipleAccount
     }
     
     func applyTheme() {
+        fullnameTextField.tintColor = theme.mainText
         fullnameTextField.textColor = theme.mainText
         fullnameTextField.validDividerColor = theme.criptextBlue
         fullnameTextField.invalidDividerColor = UIColor.red

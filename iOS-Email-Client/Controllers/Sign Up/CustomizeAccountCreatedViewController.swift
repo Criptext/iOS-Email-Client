@@ -18,6 +18,7 @@ class CustomizeAccountCreatedViewController: UIViewController {
     
     var myAccount: Account!
     var recoveryEmail: String!
+    var multipleAccount: Bool = false
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -32,9 +33,11 @@ class CustomizeAccountCreatedViewController: UIViewController {
     
     func applyTheme() {
         titleLabel.textColor = theme.mainText
-        fullnameLabel.textColor = theme.mainText
-        emailLabel.textColor = theme.mainText
         view.backgroundColor = theme.background
+        
+        let tempTheme = Theme()
+        emailLabel.textColor = tempTheme.mainText
+        fullnameLabel.textColor = tempTheme.markedText
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,9 +50,9 @@ class CustomizeAccountCreatedViewController: UIViewController {
     }
     
     func setupFields(){
-        titleLabel.text = String.localize("SIGN_UP_NAME_TITLE")
+        titleLabel.text = String.localize("SIGN_UP_ACCOUNT_CREATED")
         fullnameLabel.text = myAccount.name
-        titleLabel.text = myAccount.email
+        emailLabel.text = myAccount.email
     }
     
     @objc func onDonePress(_ sender: Any){
@@ -77,6 +80,7 @@ class CustomizeAccountCreatedViewController: UIViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "customizeProfilePictureView")  as! CustomizeProfilePictureViewController
         controller.myAccount = self.myAccount
         controller.recoveryEmail = self.recoveryEmail
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
     }

@@ -35,10 +35,10 @@ class SignUpUserNameViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        closeButton.isHidden = !multipleAccount
     }
     
     func applyTheme() {
+        usernameTextField.tintColor = theme.mainText
         usernameTextField.textColor = theme.mainText
         usernameTextField.validDividerColor = theme.criptextBlue
         usernameTextField.invalidDividerColor = theme.alert
@@ -76,6 +76,9 @@ class SignUpUserNameViewController: UIViewController{
         usernameTextField.setStatus(.none)
         apiRequest?.cancel()
         apiRequest = APIManager.checkAvailableUsername(username) { (responseData) in
+            if username != self.usernameTextField.text {
+                return
+            }
             if case let .Error(error) = responseData,
                 error.code != .custom {
                 self.usernameTextField.setStatus(.invalid, error.description)

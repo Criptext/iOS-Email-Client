@@ -35,10 +35,10 @@ class SignUpRecoveryEmailViewController: UIViewController{
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         toggleLoadingView(false)
-        closeButton.isHidden = !multipleAccount
     }
     
     func applyTheme() {
+        emailTextField.tintColor = theme.mainText
         emailTextField.textColor = theme.mainText
         emailTextField.validDividerColor = theme.criptextBlue
         emailTextField.invalidDividerColor = theme.alert
@@ -74,6 +74,9 @@ class SignUpRecoveryEmailViewController: UIViewController{
             return
         }
         APIManager.checkAvailableRecoveryEmail(self.signUpData!.username!, recoveryEmail: email) { (responseData) in
+            if email != self.emailTextField.text {
+                return
+            }
             switch(responseData) {
                 case .ConflictsInt(let error):
                     self.emailTextField.setStatus(.invalid)
@@ -136,7 +139,7 @@ class SignUpRecoveryEmailViewController: UIViewController{
     }
     
     func setupField(){
-        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
+        let placeholderAttrs = [.foregroundColor: theme.secondText] as [NSAttributedString.Key: Any]
         
         emailTextField.font = Font.regular.size(17.0)
         emailTextField.placeholderAnimation = .hidden

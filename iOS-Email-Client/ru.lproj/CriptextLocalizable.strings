@@ -591,6 +591,7 @@
 "SIGN_UP_TERMS_CONDITION_TWO" = "I promise to call mom more often";
 "SIGN_UP_CREATE_ACCOUNT_BTN" = "Create Account";
 "SIGN_UP_CREATING_KEYS" = "Creating encrtyption keys...";
+"SIGN_UP_ACCOUNT_CREATED" = "Account created!\nLet’s make it yours 😎";
 "ADD_BTN" = "Add";
 "CUSTOMIZE_STEP_1" = "Step 1 of 5";
 "CUSTOMIZE_STEP_2" = "Step 2 of 5";

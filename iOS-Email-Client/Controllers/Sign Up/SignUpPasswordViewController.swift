@@ -33,7 +33,6 @@ class SignUpPasswordViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        closeButton.isHidden = !multipleAccount
     }
     
     func applyTheme() {
@@ -117,8 +116,9 @@ class SignUpPasswordViewController: UIViewController{
     }
     
     func setupField(){
-        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
+        let placeholderAttrs = [.foregroundColor: theme.secondText] as [NSAttributedString.Key: Any]
         
+        passwordTextField.tintColor = theme.mainText
         passwordTextField.font = Font.regular.size(17.0)
         passwordTextField.rightViewMode = .always
         passwordTextField.placeholderAnimation = .hidden

@@ -67,7 +67,6 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         toggleLoadingView(false)
-        closeButton.isHidden = !multipleAccount
         onRefreshPress(self)
         captchaWebView.scrollView.bouncesZoom = false
         captchaWebView.scrollView.isScrollEnabled = false
@@ -76,8 +75,9 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     func applyTheme() {
         titleLabel.textColor = theme.mainText
         descriptionLabel.textColor = theme.secondText
-        view.backgroundColor = theme.background
+        view.backgroundColor = theme.overallBackground
         
+        captchaTextField.tintColor = theme.mainText
         captchaTextField.textColor = theme.mainText
         captchaTextField.validDividerColor = theme.criptextBlue
         captchaTextField.invalidDividerColor = UIColor.red
@@ -236,6 +236,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     }
     
     func updateAccount(){
+        DBManager.createSystemLabels()
         guard let myAccount = self.account,
             let myBundle = self.bundle,
             !self.signUpFinalData!.token.isEmpty,
@@ -253,22 +254,10 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         if self.signUpFinalData!.deviceId != 1 {
             defaults.welcomeTour = true
         }
+        defaults.setShowYay(recipientId: myAccount.username)
         registerFirebaseToken(jwt: myAccount.jwt)
         let hasEmails = self.fromSignup ? true : DBManager.hasEmails(account: myAccount)
-        if self.multipleAccount {
-            self.goBackToStart(account: myAccount)
-        } else {
-            self.goToCustomize(myAccount, showRestore: !hasEmails)
-        }
-    }
-    
-    func goBackToStart(account: Account) {
-        self.account = nil
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            self.dismiss(animated: true)
-            return
-        }
-        delegate.swapAccount(account: account, showRestore: false)
+        self.goToCustomize(myAccount, showRestore: !hasEmails)
     }
     
     func goToCustomize(_ activeAccount: Account, showRestore: Bool){
@@ -276,6 +265,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         let controller = storyboard.instantiateViewController(withIdentifier: "customizeAccountCreatedView")  as! CustomizeAccountCreatedViewController
         controller.myAccount = activeAccount
         controller.recoveryEmail = self.signUpData!.optionalEmail!
+        controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
         toggleLoadingView(false)
     }
@@ -329,7 +319,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         
         checkBoxTerms.setChecked(false)
         
-        let placeholderAttrs = [.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)] as [NSAttributedString.Key: Any]
+        let placeholderAttrs = [.foregroundColor: theme.secondText] as [NSAttributedString.Key: Any]
         
         captchaTextField.font = Font.regular.size(17.0)
         captchaTextField.rightViewMode = .always

@@ -14,7 +14,6 @@ class CustomizePermissionViewController: UIViewController {
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var contactSwitch: UISwitch!
     @IBOutlet weak var contactLabel: UILabel!
@@ -33,6 +32,7 @@ class CustomizePermissionViewController: UIViewController {
     
         applyTheme()
         setupFields()
+        checkToEnableDisableNextButton()
     }
     
     func applyTheme() {
@@ -43,6 +43,7 @@ class CustomizePermissionViewController: UIViewController {
         UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .selected)
         UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         view.backgroundColor = theme.background
+        skipButton.setTitleColor(theme.markedText, for: .normal)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -74,18 +75,6 @@ class CustomizePermissionViewController: UIViewController {
         }
     }
     
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
-    }
-    
     @IBAction func onSwitchToggle(_ sender: UISwitch) {
         switch(sender){
             case contactSwitch:
@@ -93,26 +82,21 @@ class CustomizePermissionViewController: UIViewController {
                     let syncContactsTask = RetrieveContactsTask(accountId: myAccount.compoundKey)
                     syncContactsTask.start { [weak self] (success) in
                         guard let weakSelf = self else {
-                            self?.toggleLoadingView(false)
                             self?.checkToEnableDisableNextButton()
                             return
                         }
-                        weakSelf.toggleLoadingView(false)
                         weakSelf.checkToEnableDisableNextButton()
                     }
                 }
-                self.toggleLoadingView(false)
                 self.checkToEnableDisableNextButton()
             case notificationSwitch:
                 if(notificationSwitch.isOn){
                     guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-                        self.toggleLoadingView(false)
                         self.checkToEnableDisableNextButton()
                         return
                     }
                     delegate.registerPushNotifications()
                 }
-                self.toggleLoadingView(false)
                 self.checkToEnableDisableNextButton()
             default:
                 break
@@ -133,15 +117,7 @@ class CustomizePermissionViewController: UIViewController {
     }
     
     @IBAction func onNextPress(_ sender: UIButton) {
-        switch sender {
-        case nextButton:
-            toggleLoadingView(true)
-            goToRecoveryEmailView()
-            toggleLoadingView(false)
-        default:
-            goToRecoveryEmailView()
-        }
-        
+        goToRecoveryEmailView()
     }
     
     func goToRecoveryEmailView(){

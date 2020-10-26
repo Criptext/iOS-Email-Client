@@ -483,9 +483,9 @@
 "CUSTOM_DOMAIN_ERROR_UNKNOWN" = "Unknown Server Error. Please try again";
 "STEP_2_INFO_TITLE" = "TTL Field?";
 "STEP_2_INFO_MESSAGE" = "If you see the field Time To Live, enter 3600 seconds (1hour). Your host may not include a field called \"Name\",\"Host\", or \"Alias\".";
-"STEP_1_HEADER" = "STEP 1 OF 3";
-"STEP_2_HEADER" = "STEP 2 OF 3";
-"STEP_3_HEADER" = "STEP 3 OF 3";
+"STEP_1_HEADER" = "Step 1 of 3";
+"STEP_2_HEADER" = "Step 2 of 3";
+"STEP_3_HEADER" = "Step 3 of 3";
 "DOMAIN_ALREADY_REGISTERED" = "This domain is already registered.";
 "DOMAIN_LIMIT_REACHED" = "Custom domain limit reached.";
 "MX_DONT_MATCH_TITLE" = "MX Records Don\’t Match";
@@ -594,6 +594,7 @@
 "SIGN_UP_TERMS_CONDITION_TWO" = "I promise to call mom more often";
 "SIGN_UP_CREATE_ACCOUNT_BTN" = "Create Account";
 "SIGN_UP_CREATING_KEYS" = "Creating encrtyption keys...";
+"SIGN_UP_ACCOUNT_CREATED" = "Account created!\nLet’s make it yours 😎";
 "ADD_BTN" = "Add";
 "CUSTOMIZE_STEP_1" = "Step 1 of 5";
 "CUSTOMIZE_STEP_2" = "Step 2 of 5";

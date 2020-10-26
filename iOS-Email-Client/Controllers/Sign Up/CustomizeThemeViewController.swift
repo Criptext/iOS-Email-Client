@@ -29,6 +29,8 @@ class CustomizeThemeViewController: UIViewController {
     
         applyTheme()
         setupFields()
+        
+        themeSwitch.selectedSegmentIndex = ThemeManager.shared.theme.name != "Dark" ? 0 : 1
     }
     
     func applyTheme() {
@@ -54,7 +56,7 @@ class CustomizeThemeViewController: UIViewController {
         titleLabel.text = String.localize("CUSTOMIZE_THEME_TITLE")
         messageLabel.text = String.localize("CUSTOMIZE_THEME_MESSAGE")
         stepLabel.text = String.localize("CUSTOMIZE_STEP_2")
-        nextButton.setTitle(String.localize("ADD"), for: .normal)
+        nextButton.setTitle(String.localize("ADD_BTN"), for: .normal)
         themeSwitch.setTitle(String.localize("CUSTOMIZE_THEME_LIGHT"), forSegmentAt: 0)
         themeSwitch.setTitle(String.localize("CUSTOMIZE_THEME_DARK"), forSegmentAt: 1)
     }
@@ -66,19 +68,7 @@ class CustomizeThemeViewController: UIViewController {
         self.onNextPress(sender)
     }
     
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
-    }
-    
-    @IBAction func actionTriggered(sender: AnyObject) {
+    @IBAction func actionTriggered(sender: Any) {
         let index = themeSwitch.selectedSegmentIndex
         switch(index){
             case 0:
@@ -88,16 +78,15 @@ class CustomizeThemeViewController: UIViewController {
         }
         let defaults = CriptextDefaults()
         defaults.themeMode = ThemeManager.shared.theme.name
+        applyTheme()
     }
     
     @IBAction func onNextPress(_ sender: Any) {
-        toggleLoadingView(true)
         let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "customizePermissionView")  as! CustomizePermissionViewController
         controller.myAccount = self.myAccount
         controller.recoveryEmail = self.recoveryEmail
         navigationController?.pushViewController(controller, animated: true)
-        toggleLoadingView(false)
     }
 }
 

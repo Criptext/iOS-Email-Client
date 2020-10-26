@@ -14,10 +14,10 @@ class CustomizeiCloudViewController: UIViewController {
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var stepLabel: UILabel!
     
     var myAccount: Account!
+    var multipleAccount: Bool = false
     
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -32,12 +32,13 @@ class CustomizeiCloudViewController: UIViewController {
     
     func applyTheme() {
         titleLabel.textColor = theme.mainText
-        messageLabel.textColor = theme.secondText
+        messageLabel.textColor = theme.mainText
         stepLabel.textColor = theme.secondText
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: theme.mainText]
         UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .selected)
         UISegmentedControl.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         view.backgroundColor = theme.background
+        skipButton.setTitleColor(theme.markedText, for: .normal)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,34 +53,12 @@ class CustomizeiCloudViewController: UIViewController {
     func setupFields(){
         titleLabel.text = String.localize("CUSTOMIZE_ICLOUD_TITLE")
         messageLabel.text = String.localize("CUSTOMIZE_ICLOUD_MESSAGE")
-        stepLabel.text = String.localize("CUSTOMIZE_STEP_5")
+        stepLabel.text = String.localize(self.multipleAccount ? "STEP_3_HEADER" : "CUSTOMIZE_STEP_5")
         nextButton.setTitle(String.localize("CUSTOMIZE_ICLOUD_BTN"), for: .normal)
         skipButton.setTitle(String.localize("SKIP"), for: .normal)
     }
     
-    @objc func onDonePress(_ sender: Any){
-        guard let button = sender as? UIButton else {
-            return
-        }
-        if(button.isEnabled){
-            self.onNextPress(button)
-        }
-    }
-    
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("CUSTOMIZE_ICLOUD_BTN"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
-    }
-    
     @IBAction func onNextPress(_ sender: UIButton) {
-        toggleLoadingView(true)
         switch sender {
         case nextButton:
             let defaults = CriptextDefaults()
@@ -93,7 +72,6 @@ class CustomizeiCloudViewController: UIViewController {
             BackupManager.shared.backupNow(account: self.myAccount)
             defaults.setShownAutobackup(email: self.myAccount.email)
             self.showSnackbar(String.localize("BACKUP_ACTIVATED"), attributedText: nil, buttons: "", permanent: false)
-            toggleLoadingView(false)
             goToMailbox()
         default:
             goToMailbox()
@@ -101,15 +79,23 @@ class CustomizeiCloudViewController: UIViewController {
     }
     
     func goToMailbox(){
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        if (multipleAccount) {
+            guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                self.dismiss(animated: true)
+                return
+            }
+            delegate.swapAccount(account: myAccount, showRestore: false)
+        } else {
+            guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
+            var options = UIWindow.TransitionOptions()
+            options.direction = .toTop
+            options.duration = 0.4
+            options.style = .easeOut
+            UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
         }
-        let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
-        var options = UIWindow.TransitionOptions()
-        options.direction = .toTop
-        options.duration = 0.4
-        options.style = .easeOut
-        UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
     }
 }
 

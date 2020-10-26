@@ -33,10 +33,10 @@ class SignUpConfirmPasswordViewController: UIViewController{
         let tap : UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        closeButton.isHidden = !multipleAccount
     }
     
     func applyTheme() {
+        confirmPasswordTextField.tintColor = theme.mainText
         confirmPasswordTextField.textColor = theme.mainText
         confirmPasswordTextField.validDividerColor = theme.criptextBlue
         confirmPasswordTextField.invalidDividerColor = theme.alert
