@@ -930,6 +930,27 @@ class APIManager: SharedAPI {
         }
     }
     
+    @discardableResult class func checkAvailableRecoveryEmail(_ username: String, recoveryEmail: String, completion: @escaping ((ResponseData) -> Void)) -> DataRequest{
+        let url = "\(self.baseUrl)/user/recovery/check"
+        let headers = [versionHeader: apiVersion]
+        let params = [ "email": recoveryEmail,
+                       "username": username] as [String : Any]
+        return Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+            let responseData = handleResponse(response, satisfy: .success)
+            completion(responseData)
+        }
+    }
+    
+    class func getCaptcha(completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/user/captcha"
+        let headers = [versionHeader: apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON{
+            (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
+        }
+    }
+    
     class func signUpRequest(_ params: [String : Any], completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/user"
         let headers = [versionHeader: apiVersion]

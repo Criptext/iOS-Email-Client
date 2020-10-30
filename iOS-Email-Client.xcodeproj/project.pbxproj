@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34718D4024F3800100936E50 /* CustomizeProfilePictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34718D3F24F3800100936E50 /* CustomizeProfilePictureViewController.swift */; };
+		34718D4224F3DF7000936E50 /* CustomizeThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34718D4124F3DF7000936E50 /* CustomizeThemeViewController.swift */; };
+		34718D4424F3E96100936E50 /* CustomizePermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34718D4324F3E96100936E50 /* CustomizePermissionViewController.swift */; };
+		34718D4624F3EF5F00936E50 /* CustomizeRecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34718D4524F3EF5F00936E50 /* CustomizeRecoveryEmailViewController.swift */; };
+		34718D4824F3F16E00936E50 /* CustomizeiCloudViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34718D4724F3F16E00936E50 /* CustomizeiCloudViewController.swift */; };
+		34718D4A24F3F6B300936E50 /* YayUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34718D4924F3F6B300936E50 /* YayUIPopover.swift */; };
 		347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A659822E126F1002D9151 /* LinkFileHeaderData.swift */; };
 		347CC85C236B43D900A2FA99 /* LabelOptionsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347CC85B236B43D900A2FA99 /* LabelOptionsInterface.swift */; };
 		34857664235918BC002E2049 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD825205C857C000E5F14 /* Utils.swift */; };
@@ -22,6 +28,15 @@
 		348F1EEE24198E5C0095BCBB /* AddAliasUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */; };
 		348F1EF12419B8030095BCBB /* AddAliasUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 348F1EEF2419B8030095BCBB /* AddAliasUIPopover.xib */; };
 		3498992A22EA17C900FB00DC /* RemoveDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */; };
+		3499BEB624EDB78F00ADBFD6 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEB524EDB78F00ADBFD6 /* SignUp.storyboard */; };
+		3499BEB824EF9D7900ADBFD6 /* YayUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEB724EF9D7900ADBFD6 /* YayUIPopover.xib */; };
+		3499BEBA24EFAC6A00ADBFD6 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499BEB924EFAC6A00ADBFD6 /* SignUpUserNameViewController.swift */; };
+		3499BEBC24EFB30600ADBFD6 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499BEBB24EFB30600ADBFD6 /* SignUpPasswordViewController.swift */; };
+		3499BEBE24EFBE3600ADBFD6 /* SignUpConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499BEBD24EFBE3600ADBFD6 /* SignUpConfirmPasswordViewController.swift */; };
+		3499BEC024F0543B00ADBFD6 /* SignUpRecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499BEBF24F0543B00ADBFD6 /* SignUpRecoveryEmailViewController.swift */; };
+		3499BEC224F0797600ADBFD6 /* TempSignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499BEC124F0797600ADBFD6 /* TempSignUpData.swift */; };
+		3499BEC424F07F2000ADBFD6 /* SignUpTermsAndConditionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499BEC324F07F2000ADBFD6 /* SignUpTermsAndConditionsViewController.swift */; };
+		3499BEC624F0D49800ADBFD6 /* CustomizeAccountCreatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3499BEC524F0D49800ADBFD6 /* CustomizeAccountCreatedViewController.swift */; };
 		34A56A44241ACCEB00120984 /* CustomDomainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A56A43241ACCEB00120984 /* CustomDomainTableViewCell.swift */; };
 		34A56A46241AD23F00120984 /* CustomDomainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A56A45241AD23F00120984 /* CustomDomainViewController.swift */; };
 		34A56A48241AD66700120984 /* CustomDomainSettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A56A47241AD66700120984 /* CustomDomainSettingsData.swift */; };
@@ -30,6 +45,7 @@
 		34A56A4E241ED8E400120984 /* RegisterDomainStepTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A56A4D241ED8E400120984 /* RegisterDomainStepTwoViewController.swift */; };
 		34A56A50241EE19600120984 /* RegisterDomainStepThreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A56A4F241EE19600120984 /* RegisterDomainStepThreeViewController.swift */; };
 		34A56A52241F2C5E00120984 /* MXRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A56A51241F2C5E00120984 /* MXRecord.swift */; };
+		34BC280824E5E5150035A26D /* SignUpNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BC280724E5E5150035A26D /* SignUpNameViewController.swift */; };
 		411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411FDF70204CF93300BCD787 /* InitialsImageView.swift */; };
 		412CB0352037402D005D1B3F /* NunitoSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */; };
 		412CB0362037402D005D1B3F /* NunitoSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */; };
@@ -230,6 +246,7 @@
 		7CB3969F2493058F00301129 /* EnableAutoBackupUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */; };
 		7CB4494720780B4C009430EB /* CustomLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */; };
 		7CB44949207BBE0C009430EB /* MenuData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB44948207BBE0C009430EB /* MenuData.swift */; };
+		7CB5D81B253895E2008A0E62 /* SwingingLoaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB5D81A253895E2008A0E62 /* SwingingLoaderUIView.swift */; };
 		7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */; };
 		7CB60A7B20F81A5600C9090C /* PlainContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */; };
 		7CB60A7D20F9490300C9090C /* FileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB60A7C20F9490300C9090C /* FileManagerTests.swift */; };
@@ -585,6 +602,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34718D3F24F3800100936E50 /* CustomizeProfilePictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeProfilePictureViewController.swift; sourceTree = "<group>"; };
+		34718D4124F3DF7000936E50 /* CustomizeThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeThemeViewController.swift; sourceTree = "<group>"; };
+		34718D4324F3E96100936E50 /* CustomizePermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizePermissionViewController.swift; sourceTree = "<group>"; };
+		34718D4524F3EF5F00936E50 /* CustomizeRecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeRecoveryEmailViewController.swift; sourceTree = "<group>"; };
+		34718D4724F3F16E00936E50 /* CustomizeiCloudViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeiCloudViewController.swift; sourceTree = "<group>"; };
+		34718D4924F3F6B300936E50 /* YayUIPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YayUIPopover.swift; sourceTree = "<group>"; };
 		347A659822E126F1002D9151 /* LinkFileHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileHeaderData.swift; sourceTree = "<group>"; };
 		347CC8012367A14A00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ConnectView.strings; sourceTree = "<group>"; };
 		347CC8022367A14B00A2FA99 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ContactsDetailUIPopover.strings; sourceTree = "<group>"; };
@@ -686,6 +709,15 @@
 		348F1EED24198E5C0095BCBB /* AddAliasUIPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAliasUIPopover.swift; sourceTree = "<group>"; };
 		348F1EF02419B8030095BCBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/Base.lproj/AddAliasUIPopover.xib"; sourceTree = "<group>"; };
 		3498992922EA17C900FB00DC /* RemoveDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevicesViewController.swift; sourceTree = "<group>"; };
+		3499BEB524EDB78F00ADBFD6 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
+		3499BEB724EF9D7900ADBFD6 /* YayUIPopover.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YayUIPopover.xib; sourceTree = "<group>"; };
+		3499BEB924EFAC6A00ADBFD6 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
+		3499BEBB24EFB30600ADBFD6 /* SignUpPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPasswordViewController.swift; sourceTree = "<group>"; };
+		3499BEBD24EFBE3600ADBFD6 /* SignUpConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpConfirmPasswordViewController.swift; sourceTree = "<group>"; };
+		3499BEBF24F0543B00ADBFD6 /* SignUpRecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRecoveryEmailViewController.swift; sourceTree = "<group>"; };
+		3499BEC124F0797600ADBFD6 /* TempSignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempSignUpData.swift; sourceTree = "<group>"; };
+		3499BEC324F07F2000ADBFD6 /* SignUpTermsAndConditionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTermsAndConditionsViewController.swift; sourceTree = "<group>"; };
+		3499BEC524F0D49800ADBFD6 /* CustomizeAccountCreatedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeAccountCreatedViewController.swift; sourceTree = "<group>"; };
 		34A56A43241ACCEB00120984 /* CustomDomainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDomainTableViewCell.swift; sourceTree = "<group>"; };
 		34A56A45241AD23F00120984 /* CustomDomainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDomainViewController.swift; sourceTree = "<group>"; };
 		34A56A47241AD66700120984 /* CustomDomainSettingsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDomainSettingsData.swift; sourceTree = "<group>"; };
@@ -694,6 +726,7 @@
 		34A56A4D241ED8E400120984 /* RegisterDomainStepTwoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterDomainStepTwoViewController.swift; sourceTree = "<group>"; };
 		34A56A4F241EE19600120984 /* RegisterDomainStepThreeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterDomainStepThreeViewController.swift; sourceTree = "<group>"; };
 		34A56A51241F2C5E00120984 /* MXRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXRecord.swift; sourceTree = "<group>"; };
+		34BC280724E5E5150035A26D /* SignUpNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNameViewController.swift; sourceTree = "<group>"; };
 		411FDF70204CF93300BCD787 /* InitialsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsImageView.swift; sourceTree = "<group>"; };
 		412CB0272037402C005D1B3F /* NunitoSans-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Black.ttf"; sourceTree = "<group>"; };
 		412CB0282037402C005D1B3F /* NunitoSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -919,6 +952,7 @@
 		7CB396AB2493059600301129 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/EnableAutoBackupUIPopover.strings; sourceTree = "<group>"; };
 		7CB4494620780B4C009430EB /* CustomLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabelTableViewCell.swift; sourceTree = "<group>"; };
 		7CB44948207BBE0C009430EB /* MenuData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuData.swift; sourceTree = "<group>"; };
+		7CB5D81A253895E2008A0E62 /* SwingingLoaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwingingLoaderUIView.swift; sourceTree = "<group>"; };
 		7CB60A7820F818AD00C9090C /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
 		7CB60A7A20F81A5600C9090C /* PlainContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainContactTableViewCell.swift; sourceTree = "<group>"; };
 		7CB60A7C20F9490300C9090C /* FileManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerTests.swift; sourceTree = "<group>"; };
@@ -1296,6 +1330,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		34A7668924D897FC004189C2 /* Sign Up */ = {
+			isa = PBXGroup;
+			children = (
+				34BC280724E5E5150035A26D /* SignUpNameViewController.swift */,
+				3499BEB924EFAC6A00ADBFD6 /* SignUpUserNameViewController.swift */,
+				3499BEBB24EFB30600ADBFD6 /* SignUpPasswordViewController.swift */,
+				3499BEBD24EFBE3600ADBFD6 /* SignUpConfirmPasswordViewController.swift */,
+				3499BEBF24F0543B00ADBFD6 /* SignUpRecoveryEmailViewController.swift */,
+				3499BEC324F07F2000ADBFD6 /* SignUpTermsAndConditionsViewController.swift */,
+				3499BEC524F0D49800ADBFD6 /* CustomizeAccountCreatedViewController.swift */,
+				34718D3F24F3800100936E50 /* CustomizeProfilePictureViewController.swift */,
+				34718D4124F3DF7000936E50 /* CustomizeThemeViewController.swift */,
+				34718D4324F3E96100936E50 /* CustomizePermissionViewController.swift */,
+				34718D4524F3EF5F00936E50 /* CustomizeRecoveryEmailViewController.swift */,
+				34718D4724F3F16E00936E50 /* CustomizeiCloudViewController.swift */,
+			);
+			path = "Sign Up";
+			sourceTree = "<group>";
+		};
 		411FDF6F204A07B700BCD787 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1335,6 +1388,7 @@
 		41AAC4E8201A9E7000809C4D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				34A7668924D897FC004189C2 /* Sign Up */,
 				7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */,
 				7CF93F4C214329C600361837 /* ChangePassViewController.swift */,
 				41AAC4F6201A9FAD00809C4D /* ComposeViewController.swift */,
@@ -1497,6 +1551,7 @@
 				7C8D6C73203735E000AB96EF /* Constants.swift */,
 				A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */,
 				A7D2DEB221C852A7002ED6F8 /* PasscodeLock.strings */,
+				3499BEB524EDB78F00ADBFD6 /* SignUp.storyboard */,
 			);
 			path = "iOS-Email-Client";
 			sourceTree = "<group>";
@@ -1547,6 +1602,7 @@
 				348F1EDA241679540095BCBB /* AliasSettingsData.swift */,
 				34A56A47241AD66700120984 /* CustomDomainSettingsData.swift */,
 				7CA607B8242A5E120086D6B4 /* AccountAlias.swift */,
+				3499BEC124F0797600ADBFD6 /* TempSignUpData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1658,6 +1714,8 @@
 				A741B9F02264E60D001BB19C /* BackupHeaderView.xib */,
 				A76D3039225671DC004F8747 /* BackupHeaderView.swift */,
 				A721B34D225E9418004528B4 /* RestoreUIPopover.xib */,
+				34718D4924F3F6B300936E50 /* YayUIPopover.swift */,
+				3499BEB724EF9D7900ADBFD6 /* YayUIPopover.xib */,
 				A721B347225D2DA5004528B4 /* RestoreUIView.swift */,
 				7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */,
 				7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */,
@@ -1670,6 +1728,7 @@
 				7CB396A12493058F00301129 /* EnableAutoBackupUIPopover.xib */,
 				7C31E8E2249D6D6000B52632 /* ComposerVerifyRecoveryUIPopup.xib */,
 				7C170F292499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift */,
+				7CB5D81A253895E2008A0E62 /* SwingingLoaderUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2072,6 +2131,7 @@
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */,
 				7CF93F562146E41700361837 /* Lock.json in Resources */,
+				3499BEB824EF9D7900ADBFD6 /* YayUIPopover.xib in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				A7B5B574223B0D650083E467 /* AccountCollectionCell.xib in Resources */,
 				A7627D9E223C323F007A26F6 /* showmore-dark-opened.png in Resources */,
@@ -2102,6 +2162,7 @@
 				41AAC549201AA02C00809C4D /* editor-style.css in Resources */,
 				412CB03B2037402D005D1B3F /* NunitoSans-ExtraBoldItalic.ttf in Resources */,
 				A700F59921D41B3F00792B4A /* dark-showmore.png in Resources */,
+				3499BEB624EDB78F00ADBFD6 /* SignUp.storyboard in Resources */,
 				412CB0402037402D005D1B3F /* NunitoSans-Regular.ttf in Resources */,
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
 				A741B9EE2264E60D001BB19C /* BackupHeaderView.xib in Resources */,
@@ -2280,11 +2341,13 @@
 				7C38774B242531C4002B98D4 /* MXRecordsUIView.swift in Sources */,
 				A72FBF3322396683002A710D /* AccountsFooterCell.swift in Sources */,
 				A7CC38892194979A00C8355A /* SharedExtensions.swift in Sources */,
+				3499BEC624F0D49800ADBFD6 /* CustomizeAccountCreatedViewController.swift in Sources */,
 				7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */,
 				7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */,
 				D6BD1B0421F62B3F00BED5AE /* ReplyToEditorViewController.swift in Sources */,
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
+				3499BEBE24EFBE3600ADBFD6 /* SignUpConfirmPasswordViewController.swift in Sources */,
 				7C3C35D0243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				5BBA9D2A232F68D100277C48 /* ValidateString.swift in Sources */,
@@ -2296,6 +2359,7 @@
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
 				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,
 				A73ACB9B2280CAB500B0CF91 /* GetThreadsAsyncTask.swift in Sources */,
+				7CB5D81B253895E2008A0E62 /* SwingingLoaderUIView.swift in Sources */,
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
 				A7F3026D216679D800676DD2 /* ScheduleWorker.swift in Sources */,
 				411FDF71204CF93300BCD787 /* InitialsImageView.swift in Sources */,
@@ -2307,6 +2371,7 @@
 				D6E1E63D21E5156400FA968A /* FileKey.swift in Sources */,
 				7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */,
 				A73151C321B9F2FA00D20B72 /* SettingsOptionCell.swift in Sources */,
+				3499BEC024F0543B00ADBFD6 /* SignUpRecoveryEmailViewController.swift in Sources */,
 				A7115E9D2316D32500EBECE7 /* MailboxOptionsInterface.swift in Sources */,
 				7C7869C82469F1240085D909 /* LinkFileMiddleware.swift in Sources */,
 				34A56A48241AD66700120984 /* CustomDomainSettingsData.swift in Sources */,
@@ -2369,6 +2434,7 @@
 				7CA91D922536367200CC0B2A /* InboxViewControllerSendMailExtension.swift in Sources */,
 				A721B346225D2D5F004528B4 /* RestoreViewController.swift in Sources */,
 				A7385F4122303CF0005CB38D /* AccountContact.swift in Sources */,
+				3499BEC224F0797600ADBFD6 /* TempSignUpData.swift in Sources */,
 				34A56A4E241ED8E400120984 /* RegisterDomainStepTwoViewController.swift in Sources */,
 				7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */,
 				7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */,
@@ -2376,6 +2442,8 @@
 				7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */,
 				34A56A46241AD23F00120984 /* CustomDomainViewController.swift in Sources */,
 				7CA607B9242A5E120086D6B4 /* AccountAlias.swift in Sources */,
+				34718D4824F3F16E00936E50 /* CustomizeiCloudViewController.swift in Sources */,
+				34718D4424F3E96100936E50 /* CustomizePermissionViewController.swift in Sources */,
 				7C170F2A2499321000D083F8 /* ComposerVerifyRecoveryUIPopup.swift in Sources */,
 				7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */,
 				48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */,
@@ -2390,7 +2458,9 @@
 				A7B17A8A2257C93600927102 /* BackupManager.swift in Sources */,
 				A7065E6121CC62E200F8292A /* AttachmentOptionsContainerView.swift in Sources */,
 				A7065E5D21CC1A4200F8292A /* FeedHeaderTitleUIView.swift in Sources */,
+				3499BEBC24EFB30600ADBFD6 /* SignUpPasswordViewController.swift in Sources */,
 				A7F30280216F9DCF00676DD2 /* SignInVerificationUIPopover.swift in Sources */,
+				34718D4224F3DF7000936E50 /* CustomizeThemeViewController.swift in Sources */,
 				348F1ED92412B3F70095BCBB /* AliasViewController.swift in Sources */,
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
 				34A56A52241F2C5E00120984 /* MXRecord.swift in Sources */,
@@ -2423,6 +2493,7 @@
 				7C8D6C6E20362F8600AB96EF /* ResetDeviceViewController.swift in Sources */,
 				954BDB0420486AF9009ED8F1 /* ContactTableViewCell.swift in Sources */,
 				7C6DB46B2152B910001B3749 /* LinkData.swift in Sources */,
+				34718D4A24F3F6B300936E50 /* YayUIPopover.swift in Sources */,
 				41AAC53E201A9FCD00809C4D /* FeedItem.swift in Sources */,
 				7CF93F5C214963A500361837 /* GeneralVersionTableViewCell.swift in Sources */,
 				A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */,
@@ -2437,20 +2508,24 @@
 				A758E2EF221F50E8007ECC21 /* DeleteThreadsAsyncTask.swift in Sources */,
 				7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */,
 				7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */,
+				34BC280824E5E5150035A26D /* SignUpNameViewController.swift in Sources */,
 				7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
 				70D965392340E839006D7E95 /* AppStoreReviewManager.swift in Sources */,
 				A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */,
+				34718D4624F3EF5F00936E50 /* CustomizeRecoveryEmailViewController.swift in Sources */,
 				A741B9F62268DD00001BB19C /* DateString.swift in Sources */,
 				7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */,
 				7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */,
+				34718D4024F3800100936E50 /* CustomizeProfilePictureViewController.swift in Sources */,
 				A7B5B572223B0CD20083E467 /* AccountCollectionCell.swift in Sources */,
 				A77C30A721A4DE720031E219 /* PasscodeConfig.swift in Sources */,
 				348F1ED3241198DD0095BCBB /* AliasTableViewCell.swift in Sources */,
 				7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */,
 				A758E2EB221F48E4007ECC21 /* MarkThreadsAsyncTask.swift in Sources */,
 				7C8F1B69203C7A3500D30DCC /* SignUpData.swift in Sources */,
+				3499BEBA24EFAC6A00ADBFD6 /* SignUpUserNameViewController.swift in Sources */,
 				7CBD20C7202A367B00D70B87 /* SignUpViewController.swift in Sources */,
 				7CB60A8520FD306300C9090C /* CreateCustomJSONFileAsyncTask.swift in Sources */,
 				A7115E9F2316DC4000EBECE7 /* EmailMoreOptionsInterface.swift in Sources */,
@@ -2491,6 +2566,7 @@
 				A758E2E7221EFAA9007ECC21 /* GetBadgeCounterAsyncTask.swift in Sources */,
 				34A56A50241EE19600120984 /* RegisterDomainStepThreeViewController.swift in Sources */,
 				7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */,
+				3499BEC424F07F2000ADBFD6 /* SignUpTermsAndConditionsViewController.swift in Sources */,
 				7C9F572224621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift in Sources */,
 				7C8D6C6C2036008700AB96EF /* DotsProgressUIView.swift in Sources */,
 				A7CC388021939E8800C8355A /* ContactUtils.swift in Sources */,
@@ -3243,7 +3319,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3283,7 +3359,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3429,7 +3505,7 @@
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3490,7 +3566,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
@@ -3521,7 +3597,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
@@ -3552,7 +3628,7 @@
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
@@ -3584,7 +3660,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
@@ -3618,7 +3694,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3652,7 +3728,7 @@
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -289,12 +289,15 @@ class InboxViewController: UIViewController {
         super.viewDidAppear(animated)
         sendFailEmail()
         viewSetupNews()
-
         generalOptionsContainerView.refreshView()
 
+        let defaults = CriptextDefaults()
         if mailboxData.showRestore {
             mailboxData.showRestore = false
             fetchBackupData()
+        } else if defaults.getShowYay(recipientId: myAccount.username) {
+            showYayPopover()
+            defaults.removeShowYay(recipientId: myAccount.username)
         } else {
             presentWelcomeTour()
         }
@@ -551,23 +554,28 @@ class InboxViewController: UIViewController {
         }
     }
     
+    func showYayPopover() {
+        let yayPopover = YayUIPopover()
+        yayPopover.modalPresentationStyle = .overCurrentContext
+        yayPopover.modalTransitionStyle = .crossDissolve
+        yayPopover.myAccount = self.myAccount
+        yayPopover.onYayPressed = { [weak self] in
+            let defaults = CriptextDefaults()
+            self?.showGuide()
+            defaults.welcomeTour = true
+        }
+        self.presentPopover(popover: yayPopover, height: 400)
+    }
+    
     func presentWelcomeTour(){
         let defaults = CriptextDefaults()
         guard !defaults.welcomeTour else {
-            syncContacts()
             self.showGuide()
             return
         }
         
-        let welcomeTourVC = WelcomeTourViewController(nibName: "WelcomeTourView", bundle: nil)
-        welcomeTourVC.modalPresentationStyle = .overCurrentContext
-        welcomeTourVC.modalTransitionStyle = .crossDissolve
-        welcomeTourVC.onDismiss = { [weak self] in
-            self?.syncContacts()
-            self?.showGuide()
-            defaults.welcomeTour = true
-        }
-        self.present(welcomeTourVC, animated: false, completion: nil)
+        self.showGuide()
+        defaults.welcomeTour = true
     }
 }
 
@@ -688,7 +696,7 @@ extension InboxViewController {
             return
         } else {
             let topView = getTopView()
-            if !(topView.presentedViewController is EnableAutoBackupUIPopover) {
+            if !(topView.presentedViewController is EnableAutoBackupUIPopover) && !(topView.presentedViewController is YayUIPopover) {
                 self.getTopView().presentedViewController?.dismiss(animated: false, completion: nil)
             }
         }

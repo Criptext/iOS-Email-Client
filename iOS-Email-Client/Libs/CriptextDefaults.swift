@@ -210,14 +210,27 @@ class CriptextDefaults {
     }
     
     func setShownAutobackup(email: String) {
-        defaults.set(true, forKey: "\(Config.autoBackupPopup.rawValue)_\(email)")
+        defaults.bool(forKey: "\(Config.autoBackupPopup.rawValue)_\(email)")
     }
     
     func getShownAutoBackup(email: String) -> Bool {
         return defaults.bool(forKey: "\(Config.autoBackupPopup.rawValue)_\(email)")
     }
     
+    func setShowYay(recipientId: String) {
+        defaults.set(true, forKey: "\(Guide.yay.rawValue)_\(recipientId)")
+    }
+    
+    func getShowYay(recipientId: String) -> Bool {
+        defaults.bool(forKey: "\(Guide.yay.rawValue)_\(recipientId)")
+    }
+    
+    func removeShowYay(recipientId: String) {
+        defaults.removeObject(forKey: "\(Guide.yay.rawValue)_\(recipientId)")
+    }
+    
     enum Guide: String {
+        case yay = "yay"
         case welcomeTour = "welcomeTour"
         case attachments = "guideAttachments"
         case composer = "guideComposer"
