@@ -204,7 +204,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
                 dismissOverlay = false
             case .Conflict:
                 self.displayErrorMessage(message: String.localize("WRONG_CAPTCHA"))
-                self.captchaTextField.setStatus(.invalid, String.localize("CAPTCH_ERROR"))
+                self.captchaTextField.setStatus(.invalid, String.localize("WRONG_CAPTCHA"))
             case .ConflictsInt(let errorCode):
                 self.handleSignUpErrorCode(error: errorCode)
             case .ConflictsData(let errorCode, let data):
