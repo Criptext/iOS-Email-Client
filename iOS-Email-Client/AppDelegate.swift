@@ -458,7 +458,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             BackupManager.shared.checkAccounts()
         } else {
             //Go to login
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
             let loginVC = storyboard.instantiateInitialViewController()!
             initialVC = loginVC
         }

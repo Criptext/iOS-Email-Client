@@ -625,3 +625,5 @@
 "CAPTCH_ERROR" = "Unable to refresh captcha. Please try again";
 "CAPTCH_PLACEHOLDER" = "Enter the characters you see";
 "WRONG_CAPTCHA" = "Wrong Captcha. Please try again";
+
+"LOGIN" = "Log In";

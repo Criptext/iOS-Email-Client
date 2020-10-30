@@ -622,3 +622,5 @@
 "CAPTCH_ERROR" = "No fue posible refrescar el Captcha. Intenta otra vez.";
 "CAPTCH_PLACEHOLDER" = "Ingresa los caracteres que ves";
 "WRONG_CAPTCHA" = "Captcha Equivocado. Intenta otra vez";
+
+"LOGIN" = "Log In";

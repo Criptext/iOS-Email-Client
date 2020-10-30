@@ -58,30 +58,30 @@ struct Env {
     
     static var plainDomain: String {
         guard !Env.isProduction else {
-            return "criptext.com"
+            return "jigl.com"
         }
-        return "criptext.com"
+        return "jigl.com"
     }
     
     static var apiURL: String {
         guard !Env.isProduction else {
-            return "https://api.criptext.com"
+            return "https://api.jigl.com"
         }
-        return "https://api.criptext.com"
+        return "https://api.jigl.com"
     }
     
     static var transferURL: String {
         guard !Env.isProduction else {
-            return "https://transfer.criptext.com"
+            return "https://stagetransfer.criptext.com"
         }
-        return "https://transfer.criptext.com"
+        return "https://stagetransfer.criptext.com"
     }
     
     static var adminURL: String {
         guard !Env.isProduction else {
-            return "https://account.criptext.com/"
+            return "https://stageaccount.criptext.com/"
         }
-        return "https://account.criptext.com/"
+        return "https://stageaccount.criptext.com/"
     }
     
     static var language: String {
@@ -91,7 +91,7 @@ struct Env {
     static let databaseVersion: UInt64 = 29
     static let maxRetryAttempts: Int = 10
     static let linkVersion = 6
-    static let maxAllowedDevices = 10
+    static let maxAllowedDevices = 5
     static let peerEventDataSize = 50
     
     enum linkFileExtensions: String {
