@@ -104,6 +104,8 @@
 		7C091FAC2548966E008A6A10 /* LoginParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C091FAB2548966E008A6A10 /* LoginParams.swift */; };
 		7C091FB125489DDC008A6A10 /* CreatingAccountLoadingUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C091FB025489DDC008A6A10 /* CreatingAccountLoadingUIView.swift */; };
 		7C091FB62548A02C008A6A10 /* CreatingAccountLoadingUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C091FB52548A02C008A6A10 /* CreatingAccountLoadingUIView.xib */; };
+		7C09FF3525548F7600C4213A /* CircleProgressBarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF3425548F7600C4213A /* CircleProgressBarUIView.swift */; };
+		7C09FF3D2555C4A200C4213A /* CloudRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF3C2555C4A200C4213A /* CloudRestorer.swift */; };
 		7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */; };
 		7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AC20810CFD008F1395 /* EventHandler.swift */; };
 		7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
@@ -283,6 +285,11 @@
 		7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */; };
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
+		7CE1ED2025533220005599DE /* SyncRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED1F25533220005599DE /* SyncRequestViewController.swift */; };
+		7CE1ED26255332AD005599DE /* SyncRequestUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED25255332AD005599DE /* SyncRequestUIView.swift */; };
+		7CE1ED2E2553334A005599DE /* SyncDeniedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */; };
+		7CE1ED392553442D005599DE /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED382553442D005599DE /* SyncViewController.swift */; };
+		7CE1ED4325535A07005599DE /* RestoreBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */; };
 		7CE1F9FE2478788300D14352 /* PlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FD2478788300D14352 /* PlusViewController.swift */; };
 		7CE1FA0024787BEC00D14352 /* UpgradePlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */; };
 		7CE1FA02247882B300D14352 /* AlreadyPlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */; };
@@ -807,6 +814,8 @@
 		7C091FAB2548966E008A6A10 /* LoginParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginParams.swift; sourceTree = "<group>"; };
 		7C091FB025489DDC008A6A10 /* CreatingAccountLoadingUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountLoadingUIView.swift; sourceTree = "<group>"; };
 		7C091FB52548A02C008A6A10 /* CreatingAccountLoadingUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreatingAccountLoadingUIView.xib; sourceTree = "<group>"; };
+		7C09FF3425548F7600C4213A /* CircleProgressBarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressBarUIView.swift; sourceTree = "<group>"; };
+		7C09FF3C2555C4A200C4213A /* CloudRestorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudRestorer.swift; sourceTree = "<group>"; };
 		7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		7C13D8AC20810CFD008F1395 /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		7C13D8AE20810D75008F1395 /* SignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalHandler.swift; sourceTree = "<group>"; };
@@ -978,6 +987,11 @@
 		7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
+		7CE1ED1F25533220005599DE /* SyncRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRequestViewController.swift; sourceTree = "<group>"; };
+		7CE1ED25255332AD005599DE /* SyncRequestUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRequestUIView.swift; sourceTree = "<group>"; };
+		7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDeniedUIView.swift; sourceTree = "<group>"; };
+		7CE1ED382553442D005599DE /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncViewController.swift; sourceTree = "<group>"; };
+		7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreBackupViewController.swift; sourceTree = "<group>"; };
 		7CE1F9FD2478788300D14352 /* PlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusViewController.swift; sourceTree = "<group>"; };
 		7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradePlusUIView.swift; sourceTree = "<group>"; };
 		7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlreadyPlusUIView.swift; sourceTree = "<group>"; };
@@ -1353,6 +1367,7 @@
 				A7385F3E2230272E005CB38D /* RequestManager.swift */,
 				A7B17A892257C93600927102 /* BackupManager.swift */,
 				7C3611142549FAE500F3A1B6 /* LoginManager.swift */,
+				7C09FF3C2555C4A200C4213A /* CloudRestorer.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1590,6 +1605,7 @@
 		41B6AAD020179E4E00D428B7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7CE1ED242553326E005599DE /* LogIn */,
 				7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */,
 				7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */,
 				A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */,
@@ -1660,6 +1676,7 @@
 				A73151C221B9F2FA00D20B72 /* SettingsOptionCell.swift */,
 				A764443321768AB7005304DA /* ProgressAnimatedUIView.swift */,
 				7C8D6C752038C1C200AB96EF /* ProgressArrowUIView.swift */,
+				7C09FF3425548F7600C4213A /* CircleProgressBarUIView.swift */,
 				7C63AB57205332990053219F /* AccountFromCell.swift */,
 				7C63AB55205330A00053219F /* AccountFromCell.xib */,
 				7C63AB5320532C9A0053219F /* ReadHistoryUIPopover.xib */,
@@ -1732,6 +1749,9 @@
 				7C36110A2549ECC200F3A1B6 /* DevicesLimitViewController.swift */,
 				7C36111C254A3AC900F3A1B6 /* TwoFactorAuthViewController.swift */,
 				7C7D1D1B254B576300400281 /* PasswordChangeLoginViewController.swift */,
+				7CE1ED1F25533220005599DE /* SyncRequestViewController.swift */,
+				7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */,
+				7CE1ED382553442D005599DE /* SyncViewController.swift */,
 			);
 			path = "New Login";
 			sourceTree = "<group>";
@@ -1857,6 +1877,15 @@
 				A7CC385C21934E1200C8355A /* DBAxolotl.swift */,
 			);
 			path = AxolotlStore;
+			sourceTree = "<group>";
+		};
+		7CE1ED242553326E005599DE /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				7CE1ED25255332AD005599DE /* SyncRequestUIView.swift */,
+				7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */,
+			);
+			path = LogIn;
 			sourceTree = "<group>";
 		};
 		7CF93F522146E3D700361837 /* Lottie */ = {
@@ -2414,6 +2443,8 @@
 				7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */,
 				7C091FA1254865C8008A6A10 /* LaunchViewController.swift in Sources */,
 				41AAC4FA201A9FAD00809C4D /* InboxViewController.swift in Sources */,
+				7C09FF3D2555C4A200C4213A /* CloudRestorer.swift in Sources */,
+				7CE1ED2025533220005599DE /* SyncRequestViewController.swift in Sources */,
 				7C8D6C702036491100AB96EF /* LoginData.swift in Sources */,
 				41AAC537201A9FCD00809C4D /* Email.swift in Sources */,
 				348F1EDB241679540095BCBB /* AliasSettingsData.swift in Sources */,
@@ -2500,6 +2531,7 @@
 				A7CC387821939BA600C8355A /* NewEmail.swift in Sources */,
 				7CDAD26E2040BE340080A32C /* CriptextIdentityKeyStore.swift in Sources */,
 				41AAC547201AA01F00809C4D /* Extensions.swift in Sources */,
+				7CE1ED4325535A07005599DE /* RestoreBackupViewController.swift in Sources */,
 				A77AD67321642AFC00C26F07 /* StreamReader.swift in Sources */,
 				348F1EDD24167CC80095BCBB /* RemoveAliasUIPopover.swift in Sources */,
 				7C4D33C3212C745A00045B09 /* GenericAlertUIPopover.swift in Sources */,
@@ -2523,6 +2555,8 @@
 				7C170F2524980BC100D083F8 /* LinkDBMaps.swift in Sources */,
 				7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */,
 				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
+				7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */,
+				7C09FF3525548F7600C4213A /* CircleProgressBarUIView.swift in Sources */,
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C7F2FF120B4D2C400A2CB32 /* SettingsDevicesViewController.swift in Sources */,
@@ -2535,6 +2569,8 @@
 				7C1E987E20C9E608003205F8 /* EmailSetPasswordViewController.swift in Sources */,
 				7CA794B7204F30AB000AC986 /* CRSessionRecord.swift in Sources */,
 				7CB198A62051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift in Sources */,
+				7CE1ED2E2553334A005599DE /* SyncDeniedUIView.swift in Sources */,
+				7CE1ED392553442D005599DE /* SyncViewController.swift in Sources */,
 				70D965392340E839006D7E95 /* AppStoreReviewManager.swift in Sources */,
 				A73151C521B9F41500D20B72 /* SecurityPrivacyViewController.swift in Sources */,
 				34718D4624F3EF5F00936E50 /* CustomizeRecoveryEmailViewController.swift in Sources */,
@@ -2562,6 +2598,7 @@
 				D643395022013C4C00B74C1D /* ProfileEditorViewController.swift in Sources */,
 				A718BE6B22272970008CAA72 /* UIUtils.swift in Sources */,
 				A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */,
+				7CE1ED26255332AD005599DE /* SyncRequestUIView.swift in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
 				A7385F3F2230272E005CB38D /* RequestManager.swift in Sources */,

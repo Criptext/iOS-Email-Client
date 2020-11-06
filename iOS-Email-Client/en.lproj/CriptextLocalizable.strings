@@ -627,3 +627,46 @@
 "WRONG_CAPTCHA" = "Wrong Captcha. Please try again";
 
 "LOGIN" = "Log In";
+
+"SYNC_REQUEST_TITLE" = "Check other device";
+"SYNC_REQUEST_MESSAGE" = "Open Criptext on the other device to begin import";
+"SYNC_REQUEST_BUTTON" = "Resend Request";
+
+"SYNC_DENIED_TITLE" = "Import Rejected 😖";
+"SYNC_DENIED_MESSAGE" = "Your other device rejected the request to import mailbox";
+"SYNC_DENIED_WARNING_TITLE" = "Warning: ";
+"SYNC_DENIED_WARNING_MESSAGE" = "Multiple rejections could lead this device to be blacklisted";
+"SYNC_DENIED_BUTTON" = "Try again";
+
+
+"SYNC_TITLE" = "Importing Mailbox";
+"SYNC_MESSAGE" = "Don’t leave the app or turn off the screen ";
+"SYNC_KEYS" = "Sending Keys…";
+"SYNC_WAITING" = "Waiting for mailbox…";
+"SYNC_DOWNLOADING" = "Downloading Mailbox…";
+"SYNC_RESTORING" = "Restoring Mailbox…";
+"SYNC_READY" = "Device Ready! 😎";
+"SYNC_CANCEL" = "Cancel Import";
+
+"BACKUP_SEARCH" = "Searching for Backup";
+"BACKUP_SEARCH_MESSAGE" = "Don’t leave the app or turn off the screen";
+
+"BACKUP_NONE" = "No backup found  😟";
+"BACKUP_NONE_MESSAGE" = "Try importing from another source";
+
+"BACKUP_FOUND" = "Backup Found 🙌";
+"BACKUP_FOUND_MESSAGE" = "Your data is ready to be imported";
+
+"BACKUP_RESTORING" = "Restoring…";
+"BACKUP_RESTORING_MESSAGE" = "Don’t leave the app or turn off the screen";
+
+"BACKUP_DELAY" = "Something has happened that is delaying this process.";
+
+"IMPORT_TITLE" = "Where will you import your emails from?";
+"IMPORT_MESSAGE" = "Select a source to import your emails and account info";
+"IMPORT_DEVICE" = "From other device  🖥";
+"IMPORT_CLOUD" = "From iCloud  ☁️";
+"IMPORT_FILE" = "From Backup File  📁";
+
+"IMPORT_FORMAT" = "The file format is invalid";
+"IMPORT_WRONG_PASSWORD" = "The password you entered is invalid";

@@ -2057,12 +2057,20 @@ extension InboxViewController: ThemeDelegate {
 
 extension InboxViewController {
     func addAccount(){
-        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+        /*let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "navlaunchviewcontroller") as! UINavigationController
         let loginVC = controller.topViewController as! LaunchViewController
         loginVC.multipleAccount = true
         controller.modalPresentationStyle = .fullScreen
-        self.present(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)*/
+        
+        let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "importoptionsviewcontroller") as! ImportOptionsViewController
+        controller.myAccount = self.myAccount
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.setNavigationBarHidden(true, animated: false)
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     func swapAccount(_ account: Account) {
