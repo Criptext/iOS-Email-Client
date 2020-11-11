@@ -583,7 +583,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setloginAsRoot(manually: Bool, message: String) {
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if !manually,
             let loginVC = initialVC.topViewController as? NewLoginViewController {

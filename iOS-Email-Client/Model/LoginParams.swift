@@ -32,7 +32,7 @@ class LoginParams {
         self.domain = domain
         self.password = password
         
-        isTwoFactor = (data["twoFactorAuth"] as! Int) == 0 ? false : true
+        isTwoFactor = (data["twoFactorAuth"] as? Int ?? 0) == 0 ? false : true
         needToRemoveDevices = (data["hasTooManyDevices"] as! Int) == 0 ? false : true
         
         blockRemoteContent = (data["blockRemoteContent"] as! Int) == 0 ? false : true

@@ -32,6 +32,7 @@ class ImportOptionsViewController: UIViewController {
         titleLabel.textColor = theme.markedText
         messageLabel.textColor = theme.mainText
         skipButton.setTitleColor(theme.markedText, for: .normal)
+        view.backgroundColor = theme.overallBackground
     }
     
     func setupFields() {
@@ -81,12 +82,10 @@ class ImportOptionsViewController: UIViewController {
             return
         }
         
-        let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
-        var options = UIWindow.TransitionOptions()
-        options.direction = .toTop
-        options.duration = 0.4
-        options.style = .easeOut
-        UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
+        let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "setsettingsviewcontroller") as! SetSettingsViewController
+        controller.myAccount = self.myAccount
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 

@@ -20,6 +20,19 @@ class DeviceLimitTableViewCell: UITableViewCell {
     weak var delegate: DeviceLimitTableViewCellDelegate?
     var deviceId = 0
     
+    var theme: Theme {
+        return ThemeManager.shared.theme
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        deviceImageView.tintColor = UIColor(red: 110/255, green: 121/255, blue: 140/255, alpha: 1)
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
+        nameLabel.textColor = theme.markedText
+    }
+    
     @IBAction func onDeletePress(_ sender: Any) {
         delegate?.onRemoveDevice(deviceId: deviceId)
     }
@@ -29,13 +42,13 @@ class DeviceLimitTableViewCell: UITableViewCell {
         deviceImageView.image = (Device.Kind(rawValue: device.type) ?? .pc) != .pc ? #imageLiteral(resourceName: "device-mobile") : #imageLiteral(resourceName: "device-desktop")
         nameLabel.text = device.friendlyName
 
-        let attrString = NSMutableAttributedString(string: String.localize("DEVICE_LAST_ACTIVE"), attributes: [NSAttributedString.Key.font: Font.bold.size(12.0)!])
+        let attrString = NSMutableAttributedString(string: String.localize("DEVICE_LAST_ACTIVE"), attributes: [NSAttributedString.Key.font: Font.bold.size(12.0)!, .foregroundColor: theme.secondText])
         guard let date = device.lastActivity else {
-            attrString.append(NSAttributedString(string: String.localize("DEVICE_OVER_2_MONTHS"), attributes: [NSAttributedString.Key.font: Font.regular.size(12.0)!]))
+            attrString.append(NSAttributedString(string: String.localize("DEVICE_OVER_2_MONTHS"), attributes: [NSAttributedString.Key.font: Font.regular.size(12.0)!, .foregroundColor: theme.secondText]))
             activityLabel.attributedText = attrString
             return
         }
-        attrString.append(NSAttributedString(string: " \(String(DateUtils.beautyDate(date)!).replacingOccurrences(of: "at ", with: ""))", attributes: [NSAttributedString.Key.font: Font.regular.size(12.0)!]))
+        attrString.append(NSAttributedString(string: " \(String(DateUtils.beautyDate(date)!).replacingOccurrences(of: "at ", with: ""))", attributes: [NSAttributedString.Key.font: Font.regular.size(12.0)!, .foregroundColor: theme.secondText]))
         activityLabel.attributedText = attrString
     }
 }

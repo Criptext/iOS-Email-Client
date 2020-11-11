@@ -7,16 +7,18 @@
 //
 
 import Foundation
+import Lottie
 
 class SyncViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var processLabel: UILabel!
     @IBOutlet weak var cancelProcessButton: UIButton!
-    @IBOutlet weak var processImageView: UIImageView!
     @IBOutlet weak var checkImageView: UIImageView!
+    @IBOutlet weak var animateView: UIView!
     @IBOutlet weak var circleProgressView: CircleProgressBarUIView!
     
+    var animationView: AnimationView? = nil
     var acceptData: AcceptData!
     var socket : SingleWebSocket?
     weak var previousWebsocketDelegate: WebSocketManagerDelegate?
@@ -73,6 +75,7 @@ class SyncViewController: UIViewController {
     }
     
     var step: STEP = .waiting
+    var animationStep: STEP = .waiting
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +90,7 @@ class SyncViewController: UIViewController {
         
         applyTheme()
         applyLocalization()
+        setupAnimations()
         handleState()
     }
     
@@ -96,9 +100,19 @@ class SyncViewController: UIViewController {
         checkImageView.tintColor = theme.criptextBlue
         circleProgressView.progressColor = theme.criptextBlue.cgColor
         titleLabel.textColor = theme.markedText
-        messageLabel.textColor = theme.secondText
-        processLabel.textColor = theme.secondText
-        cancelProcessButton.setTitleColor(theme.secondText, for: .normal)
+        messageLabel.textColor = theme.mainText
+        processLabel.textColor = theme.mainText
+        cancelProcessButton.setTitleColor(theme.markedText, for: .normal)
+        view.backgroundColor = theme.overallBackground
+    }
+    
+    func setupAnimations() {
+        let animationPath = Bundle.main.path(forResource: "ImportingMobile", ofType: "json")!
+        animationView = AnimationView(filePath: animationPath)
+        self.animateView.addSubview(animationView!)
+        animationView!.center = self.animateView.center
+        animationView!.frame = self.animateView.bounds
+        animationView!.contentMode = .scaleAspectFit
     }
     
     func applyLocalization() {
@@ -111,31 +125,66 @@ class SyncViewController: UIViewController {
         cancelProcessButton.isHidden = true
         circleProgressView.isHidden = true
         checkImageView.isHidden = true
-        processImageView.isHidden = false
+        animateView.isHidden = false
         setProcessLabel()
         
         switch(step){
         case .waiting:
+            handleAnimation()
             cancelProcessButton.isHidden = false
             break
         case .downloading(let successData):
+            handleAnimation()
             circleProgressView.isHidden = false
             circleProgressView.angle = 0
             circleProgressView.targetAngle = 0
             downloadMailbox(data: successData)
         case .restoring(let path, let successData):
+            handleAnimation()
             restore(path: path, data: successData)
         case .importing(let path):
             circleProgressView.isHidden = false
-            circleProgressView.angle = 0
-            circleProgressView.targetAngle = 0
+            circleProgressView.reset(angle: 0)
             importDatabase(path: path)
         case .ready:
+            animationView?.stop()
             circleProgressView.isHidden = false
-            circleProgressView.angle = 360
-            circleProgressView.targetAngle = 360
+            circleProgressView.reset(angle: 360)
             checkImageView.isHidden = false
-            processImageView.isHidden = true
+            animateView.isHidden = true
+            break
+        }
+    }
+    
+    func handleAnimation(){
+        switch(animationStep){
+        case .waiting:
+            animationView?.play(fromFrame: AnimationFrameTime(180), toFrame: AnimationFrameTime(240), loopMode: .playOnce, completion: { (done) in
+                guard case .downloading = self.step else {
+                    self.handleAnimation()
+                    return
+                }
+                self.animationView?.play(fromFrame: AnimationFrameTime(240), toFrame: AnimationFrameTime(300), loopMode: .playOnce, completion: { (done) in
+                    self.animationStep = self.step
+                    self.handleState()
+                })
+            })
+        case .downloading:
+            animationView?.play(fromFrame: AnimationFrameTime(300), toFrame: AnimationFrameTime(420), loopMode: .playOnce, completion: { (done) in
+                guard case .restoring = self.step else {
+                    self.handleAnimation()
+                    return
+                }
+                self.animationView?.play(fromFrame: AnimationFrameTime(420), toFrame: AnimationFrameTime(480), loopMode: .playOnce, completion: { (done) in
+                    self.animationStep = self.step
+                    self.handleState()
+                })
+            })
+        case .restoring:
+            self.animationView?.play(fromFrame: AnimationFrameTime(480), toFrame: AnimationFrameTime(600), loopMode: .loop, completion: nil)
+        case .importing:
+            break
+        case .ready:
             break
         }
     }
@@ -149,7 +198,6 @@ class SyncViewController: UIViewController {
                 return
             }
             self.step = .restoring(filepath, data)
-            self.handleState()
         }
     }
     
@@ -184,10 +232,13 @@ class SyncViewController: UIViewController {
         restoreTask.start(progressHandler: { (progress) in
             self.circleProgressView.targetAngle = Double(progress * 360 / 100)
         }) {_ in
-            self.step = .ready
-            self.handleState()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.goToMailbox()
+            self.circleProgressView.targetAngle = 360
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.step = .ready
+                self.handleState()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.goToMailbox()
+                }
             }
         }
     }
@@ -202,17 +253,14 @@ class SyncViewController: UIViewController {
             return
         }
         
-        let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
-        var options = UIWindow.TransitionOptions()
-        options.direction = .toTop
-        options.duration = 0.4
-        options.style = .easeOut
-        UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
+        let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "setsettingsviewcontroller") as! SetSettingsViewController
+        controller.myAccount = self.myAccount
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     func setProcessLabel() {
         processLabel.text = step.message
-        processImageView.image = step.image
     }
     
     func presentProcessInterrupted(code: CODE){
@@ -273,7 +321,6 @@ extension SyncViewController: SingleSocketDelegate {
             scheduleWorker.cancel()
             let data = LinkSuccessData(key: key, address: address)
             step = .downloading(data)
-            handleState()
         default:
             break
         }

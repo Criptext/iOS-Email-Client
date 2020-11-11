@@ -13,28 +13,67 @@ class PasswordChangeLoginViewController: UIViewController {
     @IBOutlet weak var confirmPasswordTextField: StatusTextField!
     @IBOutlet weak var passwordTextField: StatusTextField!
     @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var helpButton: UIButton!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     
     var username = ""
     var domain = ""
-    var password = ""
     var oldPassword = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        creatingAccountLoadingView.display = false
+        applyTheme()
+        applyLocalization()
         checkButton()
     }
     
     @IBAction func onPasswordChanged(_ sender: StatusTextField) {
+        passwordTextField.setStatus(.none)
+        confirmPasswordTextField.setStatus(.none)
         checkButton()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        passwordTextField.isVisibilityIconButtonEnabled = true
+        confirmPasswordTextField.isVisibilityIconButtonEnabled = true
+        passwordTextField.applyMyTheme()
+        confirmPasswordTextField.applyMyTheme()
+        
+        titleLabel.textColor = theme.markedText
+        messageLabel.textColor = theme.mainText
+        self.view.backgroundColor = theme.overallBackground
+    }
+    
+    func applyLocalization() {
+        let theme = ThemeManager.shared.theme
+        
+        confirmPasswordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("CONFIRM_PASSWORD"), attributes: [.font: Font.regular.size(confirmPasswordTextField.minimumFontSize)!, .foregroundColor: theme.secondText])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [.font: Font.regular.size(passwordTextField.minimumFontSize)!, .foregroundColor: theme.secondText])
+        
+        let attrString = NSMutableAttributedString(string: String.localize("HAVING_TROUBLE"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(helpButton.fontSize) as Any])
+        attrString.append(NSAttributedString(string: String.localize("CONTACT_SUPPORT"), attributes: [.foregroundColor: theme.criptextBlue, .font: Font.bold.size(helpButton.fontSize) as Any]))
+        helpButton.setAttributedTitle(attrString, for: .normal)
+        
+        titleLabel.text = String.localize("CHANGE_TITLE")
+        messageLabel.text = String.localize("CHANGE_MESSAGE")
+    }
+    
+    @IBAction func onHelpPress(sender: Any) {
+        goToUrl(url: "https://criptext.atlassian.net/servicedesk/customer/portals")
     }
     
     func checkButton() {
         guard let pass = passwordTextField.text,
               let confirmPass = confirmPasswordTextField.text else {
             continueButton.isEnabled = false
+            continueButton.alpha = 0.5
             return
         }
-        continueButton.isEnabled = pass.count >= 8 && confirmPass.count > 8 && pass == confirmPass
+        continueButton.isEnabled = pass.count >= 8 && confirmPass.count >= 8 && pass == confirmPass
+        continueButton.alpha = continueButton.isEnabled ? 1 : 0.5
     }
     
     @IBAction func onContinuePress(_ sender: Any) {
@@ -106,7 +145,8 @@ class PasswordChangeLoginViewController: UIViewController {
     }
     
     func showFeedback(_ show: Bool, _ message: String) {
-        
+        passwordTextField.setStatus(.invalid)
+        confirmPasswordTextField.setStatus(.invalid, message)
     }
     
     @IBAction func onBackPress(_ sender: UIButton) {
@@ -114,7 +154,15 @@ class PasswordChangeLoginViewController: UIViewController {
     }
     
     @objc func goBack(){
-        navigationController?.popViewController(animated: true)
+        let returnVC = self.navigationController?.viewControllers.first(where: { (vc) -> Bool in
+            return vc.isKind(of: LoginViewController.self)
+        })
+        
+        if let returnToVC = returnVC {
+            self.navigationController?.popToViewController(returnToVC, animated: true)
+        } else {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
     }
 }
 

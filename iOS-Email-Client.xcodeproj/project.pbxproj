@@ -106,6 +106,16 @@
 		7C091FB62548A02C008A6A10 /* CreatingAccountLoadingUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C091FB52548A02C008A6A10 /* CreatingAccountLoadingUIView.xib */; };
 		7C09FF3525548F7600C4213A /* CircleProgressBarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF3425548F7600C4213A /* CircleProgressBarUIView.swift */; };
 		7C09FF3D2555C4A200C4213A /* CloudRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF3C2555C4A200C4213A /* CloudRestorer.swift */; };
+		7C09FF422558C54900C4213A /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF412558C54900C4213A /* ResetPasswordViewController.swift */; };
+		7C09FF472558CE0300C4213A /* SuccessResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF462558CE0300C4213A /* SuccessResetViewController.swift */; };
+		7C09FF7B255AE94700C4213A /* ImportingDesktop.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C09FF75255AE94600C4213A /* ImportingDesktop.json */; };
+		7C09FF7C255AE94700C4213A /* ImportingMobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C09FF76255AE94600C4213A /* ImportingMobile.json */; };
+		7C09FF7D255AE94700C4213A /* ExportingMobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C09FF77255AE94600C4213A /* ExportingMobile.json */; };
+		7C09FF7E255AE94700C4213A /* Waitingmobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C09FF78255AE94700C4213A /* Waitingmobile.json */; };
+		7C09FF7F255AE94700C4213A /* WaitingDesktop.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C09FF79255AE94700C4213A /* WaitingDesktop.json */; };
+		7C09FF80255AE94700C4213A /* ExportDesktop.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C09FF7A255AE94700C4213A /* ExportDesktop.json */; };
+		7C09FF85255B399700C4213A /* SetSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF84255B399700C4213A /* SetSettingsTableViewCell.swift */; };
+		7C09FF8A255B3D2D00C4213A /* SetSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C09FF89255B3D2D00C4213A /* SetSettingsViewController.swift */; };
 		7C13D8AB2080FCCD008F1395 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */; };
 		7C13D8AD20810CFD008F1395 /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AC20810CFD008F1395 /* EventHandler.swift */; };
 		7C13D8AF20810D75008F1395 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
@@ -816,6 +826,16 @@
 		7C091FB52548A02C008A6A10 /* CreatingAccountLoadingUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreatingAccountLoadingUIView.xib; sourceTree = "<group>"; };
 		7C09FF3425548F7600C4213A /* CircleProgressBarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressBarUIView.swift; sourceTree = "<group>"; };
 		7C09FF3C2555C4A200C4213A /* CloudRestorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudRestorer.swift; sourceTree = "<group>"; };
+		7C09FF412558C54900C4213A /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		7C09FF462558CE0300C4213A /* SuccessResetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessResetViewController.swift; sourceTree = "<group>"; };
+		7C09FF75255AE94600C4213A /* ImportingDesktop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImportingDesktop.json; sourceTree = "<group>"; };
+		7C09FF76255AE94600C4213A /* ImportingMobile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImportingMobile.json; sourceTree = "<group>"; };
+		7C09FF77255AE94600C4213A /* ExportingMobile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ExportingMobile.json; sourceTree = "<group>"; };
+		7C09FF78255AE94700C4213A /* Waitingmobile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Waitingmobile.json; sourceTree = "<group>"; };
+		7C09FF79255AE94700C4213A /* WaitingDesktop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WaitingDesktop.json; sourceTree = "<group>"; };
+		7C09FF7A255AE94700C4213A /* ExportDesktop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ExportDesktop.json; sourceTree = "<group>"; };
+		7C09FF84255B399700C4213A /* SetSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSettingsTableViewCell.swift; sourceTree = "<group>"; };
+		7C09FF89255B3D2D00C4213A /* SetSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSettingsViewController.swift; sourceTree = "<group>"; };
 		7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		7C13D8AC20810CFD008F1395 /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		7C13D8AE20810D75008F1395 /* SignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalHandler.swift; sourceTree = "<group>"; };
@@ -1729,6 +1749,7 @@
 				7C091FB025489DDC008A6A10 /* CreatingAccountLoadingUIView.swift */,
 				7C091FB52548A02C008A6A10 /* CreatingAccountLoadingUIView.xib */,
 				7C36110F2549F20200F3A1B6 /* DeviceLimitTableViewCell.swift */,
+				7C09FF84255B399700C4213A /* SetSettingsTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1752,6 +1773,9 @@
 				7CE1ED1F25533220005599DE /* SyncRequestViewController.swift */,
 				7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */,
 				7CE1ED382553442D005599DE /* SyncViewController.swift */,
+				7C09FF412558C54900C4213A /* ResetPasswordViewController.swift */,
+				7C09FF462558CE0300C4213A /* SuccessResetViewController.swift */,
+				7C09FF89255B3D2D00C4213A /* SetSettingsViewController.swift */,
 			);
 			path = "New Login";
 			sourceTree = "<group>";
@@ -1891,6 +1915,12 @@
 		7CF93F522146E3D700361837 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				7C09FF7A255AE94700C4213A /* ExportDesktop.json */,
+				7C09FF77255AE94600C4213A /* ExportingMobile.json */,
+				7C09FF75255AE94600C4213A /* ImportingDesktop.json */,
+				7C09FF76255AE94600C4213A /* ImportingMobile.json */,
+				7C09FF79255AE94700C4213A /* WaitingDesktop.json */,
+				7C09FF78255AE94700C4213A /* Waitingmobile.json */,
 				7CF93F552146E41600361837 /* Email.json */,
 				7CF93F542146E41600361837 /* Arm.json */,
 				7CF93F532146E41500361837 /* Lock.json */,
@@ -2175,8 +2205,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A723253921C94E69003CF78D /* EmailDetailTableCell.xib in Resources */,
+				7C09FF7E255AE94700C4213A /* Waitingmobile.json in Resources */,
 				7CB198A22051DE4800AA4FF8 /* HistoryUIPopover.xib in Resources */,
 				A7FFCF4B217A91E200FFFDFF /* ConnectView.xib in Resources */,
+				7C09FF7F255AE94700C4213A /* WaitingDesktop.json in Resources */,
 				412CB03D2037402D005D1B3F /* NunitoSans-ExtraBold.ttf in Resources */,
 				7C31E8E0249D6D6000B52632 /* ComposerVerifyRecoveryUIPopup.xib in Resources */,
 				7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */,
@@ -2186,7 +2218,9 @@
 				412CB03A2037402D005D1B3F /* NunitoSans-ExtraLightItalic.ttf in Resources */,
 				A700F59521D3E28800792B4A /* SettingsGeneralHeaderView.xib in Resources */,
 				7C049F8F2087AB8A007A6213 /* LabelTableViewCell.xib in Resources */,
+				7C09FF80255AE94700C4213A /* ExportDesktop.json in Resources */,
 				7CB60A7920F818AD00C9090C /* ContactTableViewCell.xib in Resources */,
+				7C09FF7C255AE94700C4213A /* ImportingMobile.json in Resources */,
 				412CB03E2037402D005D1B3F /* NunitoSans-Italic.ttf in Resources */,
 				A7FFCF42217A91C300FFFDFF /* WelcomeTourView.xib in Resources */,
 				7C091FB62548A02C008A6A10 /* CreatingAccountLoadingUIView.xib in Resources */,
@@ -2194,6 +2228,7 @@
 				A7FFCF39217A912800FFFDFF /* SignInWarningUIPopover.xib in Resources */,
 				A721B34B225E9418004528B4 /* RestoreUIPopover.xib in Resources */,
 				412CB03F2037402D005D1B3F /* NunitoSans-ExtraLight.ttf in Resources */,
+				7C09FF7D255AE94700C4213A /* ExportingMobile.json in Resources */,
 				A7D2DEB021C852A6002ED6F8 /* PasscodeLock.strings in Resources */,
 				412CB03C2037402D005D1B3F /* NunitoSans-Light.ttf in Resources */,
 				7CB198A42051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib in Resources */,
@@ -2203,6 +2238,7 @@
 				A7FFCF1B217A8FE300FFFDFF /* Login.storyboard in Resources */,
 				41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */,
 				7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */,
+				7C09FF7B255AE94700C4213A /* ImportingDesktop.json in Resources */,
 				7CF93F562146E41700361837 /* Lock.json in Resources */,
 				3499BEB824EF9D7900ADBFD6 /* YayUIPopover.xib in Resources */,
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
@@ -2555,6 +2591,7 @@
 				7C170F2524980BC100D083F8 /* LinkDBMaps.swift in Sources */,
 				7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */,
 				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
+				7C09FF422558C54900C4213A /* ResetPasswordViewController.swift in Sources */,
 				7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */,
 				7C09FF3525548F7600C4213A /* CircleProgressBarUIView.swift in Sources */,
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
@@ -2597,18 +2634,21 @@
 				7CF0CFD5204611D300781DE6 /* EmailTableViewCell.swift in Sources */,
 				D643395022013C4C00B74C1D /* ProfileEditorViewController.swift in Sources */,
 				A718BE6B22272970008CAA72 /* UIUtils.swift in Sources */,
+				7C09FF472558CE0300C4213A /* SuccessResetViewController.swift in Sources */,
 				A74B972A21DD0C68008136D7 /* ManualSyncViewController.swift in Sources */,
 				7CE1ED26255332AD005599DE /* SyncRequestUIView.swift in Sources */,
 				7CBD20C12024BCD700D70B87 /* NewLoginViewController.swift in Sources */,
 				7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */,
 				A7385F3F2230272E005CB38D /* RequestManager.swift in Sources */,
 				347A659922E126F1002D9151 /* LinkFileHeaderData.swift in Sources */,
+				7C09FF85255B399700C4213A /* SetSettingsTableViewCell.swift in Sources */,
 				41AAC545201AA01500809C4D /* DBManager.swift in Sources */,
 				7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */,
 				7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */,
 				A758E2ED221F4B24007ECC21 /* ThreadsLabelsAsyncTask.swift in Sources */,
 				7CDAD27320449A730080A32C /* CRSignedPreKeyRecord.swift in Sources */,
 				A72B864821AC93EE00DCC601 /* RetrieveContactsTask.swift in Sources */,
+				7C09FF8A255B3D2D00C4213A /* SetSettingsViewController.swift in Sources */,
 				7CB44949207BBE0C009430EB /* MenuData.swift in Sources */,
 				9539F99321FBBA4900A4C813 /* FileUtils.swift in Sources */,
 				A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */,

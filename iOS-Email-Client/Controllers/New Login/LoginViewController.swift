@@ -16,10 +16,58 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     @IBOutlet weak var loginButton: UIButton!
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var forgotButton: UIButton!
+    @IBOutlet weak var helpButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         creatingAccountLoadingView.display = false
         showLoading(false)
+        
+        applyTheme()
+        applyLocalization()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        
+        titleLabel.textColor = theme.markedText
+        messageLabel.textColor = theme.mainText
+        forgotButton.setTitleColor(theme.criptextBlue, for: .normal)
+        
+        self.view.backgroundColor = theme.overallBackground
+        passwordTextField.isVisibilityIconButtonEnabled = true
+        usernameTextField.applyMyTheme()
+        passwordTextField.applyMyTheme()
+    }
+    
+    func applyLocalization() {
+        let theme = ThemeManager.shared.theme
+        
+        titleLabel.text = String.localize("LOGIN_TITLE")
+        messageLabel.text = String.localize("LOGIN_MESSAGE")
+        
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: String.localize("USERNAME"), attributes: [.font: Font.regular.size(usernameTextField.minimumFontSize)!, .foregroundColor: theme.secondText])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: String.localize("PASSWORD"), attributes: [.font: Font.regular.size(usernameTextField.minimumFontSize)!, .foregroundColor: theme.secondText])
+        
+        loginButton.setTitle(String.localize("LOGIN"), for: .normal)
+        forgotButton.setTitle(String.localize("LOGIN_FORGOT"), for: .normal)
+        
+        let attrString = NSMutableAttributedString(string: String.localize("HAVING_TROUBLE"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(helpButton.fontSize) as Any])
+        attrString.append(NSAttributedString(string: String.localize("CONTACT_SUPPORT"), attributes: [.foregroundColor: theme.criptextBlue, .font: Font.bold.size(helpButton.fontSize) as Any]))
+        helpButton.setAttributedTitle(attrString, for: .normal)
+    }
+    
+    @IBAction func onHelpPress(sender: Any) {
+        goToUrl(url: "https://criptext.atlassian.net/servicedesk/customer/portals")
+    }
+    
+    @IBAction func onForgotPress(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "resetpasswordviewcontroller")  as! ResetPasswordViewController
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     @IBAction func onLoginPress(_ sender: UIButton) {
@@ -55,13 +103,12 @@ class LoginViewController: UIViewController {
                 return
             }
             if case .PreConditionFail = responseData {
-                let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let controller = storyboard.instantiateViewController(withIdentifier: "changePasswordLoginView")  as! ChangePasswordLoginViewController
-                /*self.loginData.password = password
-                controller.loginData = self.loginData
-                controller.multipleAccount = self.multipleAccount
+                let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
+                let controller = storyboard.instantiateViewController(withIdentifier: "passwordchangeloginviewcontroller") as! PasswordChangeLoginViewController
+                controller.username = username
+                controller.domain = domain
+                controller.oldPassword = password
                 self.navigationController?.pushViewController(controller, animated: true)
-                self.showLoader(false)*/
                 return
             }
             guard case let .SuccessString(dataString) = responseData,

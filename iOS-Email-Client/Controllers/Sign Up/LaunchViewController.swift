@@ -12,6 +12,8 @@ class LaunchViewController: UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var versionLabel: UILabel!
+    @IBOutlet weak var logoImageView: UIImageView!
+    @IBOutlet weak var sloganImageView: UIImageView!
     
     var multipleAccount = false
     var theme: Theme {
@@ -32,6 +34,9 @@ class LaunchViewController: UIViewController {
         
         view.backgroundColor = theme.overallBackground
         versionLabel.textColor = theme.secondText
+        
+        logoImageView.image = theme.name == "Dark" ? UIImage(named: "new-logo-dark") : UIImage(named: "new-logo")
+        sloganImageView.image = theme.name == "Dark" ? UIImage(named: "slogan-dark") : UIImage(named: "slogan")
     }
     
     func setupFields() {

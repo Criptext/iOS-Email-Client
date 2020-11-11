@@ -30,7 +30,7 @@ class ReplyToEditorViewController: UIViewController {
         navigationItem.rightBarButtonItem?.setTitleTextAttributes(
             [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         replyToEnableSwitch.isOn = self.generalData.replyTo == "" ? false : true
-        emailText.text = self.generalData.replyTo == "" ? "" : self.generalData.replyTo!
+        emailText.text = (self.generalData.replyTo?.isEmpty ?? false) ? "" : self.generalData.replyTo!
         setSwitchAttributes()
         applyTheme()
     }

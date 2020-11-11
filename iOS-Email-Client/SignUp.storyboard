@@ -321,7 +321,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shouldn’t be your username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiQ-cm-BES" userLabel="Condition One">
-                                <rect key="frame" x="48" y="276" width="177" height="19"/>
+                                <rect key="frame" x="48" y="276" width="175" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="lNI-xQ-T1L"/>
                                 </constraints>
@@ -330,7 +330,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Must be at least 8 characters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PnG-Yp-v8z" userLabel="Condition Two">
-                                <rect key="frame" x="48" y="302" width="182.5" height="19"/>
+                                <rect key="frame" x="48" y="302" width="179.5" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="LE8-vL-kEp"/>
                                     <constraint firstAttribute="height" constant="19" id="VfK-Xz-hUV"/>
@@ -752,7 +752,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creating Account..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bxm-Cy-aXN">
-                                        <rect key="frame" x="105.5" y="608.5" width="164" height="22.5"/>
+                                        <rect key="frame" x="104" y="605" width="167.5" height="26"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="19"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -1292,7 +1292,7 @@ Let’s make it yours 😎</string>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 3 of 5" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeX-Y5-Llc" userLabel="Step">
-                                <rect key="frame" x="48" y="148" width="69" height="19"/>
+                                <rect key="frame" x="48" y="148" width="71.5" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="eoh-1g-jaa"/>
                                 </constraints>
@@ -1301,7 +1301,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Awesome 🤠)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjq-Kf-CHO" userLabel="Awesome">
-                                <rect key="frame" x="130" y="420" width="115.5" height="19"/>
+                                <rect key="frame" x="128" y="420" width="119" height="19"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="19" id="f8U-Eh-Sac"/>
                                 </constraints>
@@ -1313,7 +1313,7 @@ Let’s make it yours 😎</string>
                                 <rect key="frame" x="48" y="291" width="279" height="53"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="📒 Allow Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v2g-7a-jlU">
-                                        <rect key="frame" x="22" y="18.5" width="181" height="16.5"/>
+                                        <rect key="frame" x="22" y="17" width="181" height="19.5"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1344,7 +1344,7 @@ Let’s make it yours 😎</string>
                                 <rect key="frame" x="48" y="354" width="279" height="53"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🔔 Allow Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCp-UK-ULh">
-                                        <rect key="frame" x="22" y="18.5" width="181" height="16.5"/>
+                                        <rect key="frame" x="22" y="17" width="181" height="19.5"/>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1381,7 +1381,7 @@ Let’s make it yours 😎</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f7S-Z0-zIK" userLabel="Skip">
-                                <rect key="frame" x="171.5" y="549" width="32" height="31"/>
+                                <rect key="frame" x="171" y="549" width="33" height="34"/>
                                 <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="16"/>
                                 <state key="normal" title="Skip">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -1761,7 +1761,9 @@ Let’s make it yours 😎</string>
                     <navigationItem key="navigationItem" id="OvH-1x-18l"/>
                     <connections>
                         <outlet property="loginButton" destination="9LD-fO-TgO" id="Fau-R6-Crk"/>
+                        <outlet property="logoImageView" destination="eOB-CA-lxa" id="gZB-sy-bGr"/>
                         <outlet property="signupButton" destination="GMH-af-QIS" id="cxg-c3-toS"/>
+                        <outlet property="sloganImageView" destination="r6p-I3-RcH" id="5L3-YK-Kdh"/>
                         <outlet property="versionLabel" destination="1Dy-Ub-Kqv" id="aj8-bE-c0h"/>
                     </connections>
                 </viewController>

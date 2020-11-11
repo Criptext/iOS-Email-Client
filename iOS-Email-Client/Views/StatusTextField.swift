@@ -30,6 +30,18 @@ open class StatusTextField: TextField{
         updateMark()
     }
     
+    func applyMyTheme() {
+        let theme = ThemeManager.shared.theme
+        
+        self.tintColor = theme.mainText
+        self.textColor = theme.mainText
+        self.validDividerColor = theme.criptextBlue
+        self.invalidDividerColor = theme.alert
+        self.dividerActiveColor = theme.criptextBlue
+        self.visibilityIconButton?.tintColor = theme.mainText
+        self.detailColor = theme.alert
+    }
+    
     func updateMark(){
         guard let markView = self.markView else { return }
 

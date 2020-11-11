@@ -47,7 +47,7 @@ class SharedAPI {
     
     static let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
-    open class func handleResponse<T>(_ responseRequest: DataResponse<T>, satisfy: code? = nil) -> ResponseData {
+    open class func handleResponse<T>(_ responseRequest: DataResponse<T>, satisfy: code? = nil, alwaysReturnJSON: Bool = false) -> ResponseData {
         let response = responseRequest.response
         let error = responseRequest.error
         print("ALAMOFIRE REQUEST : \(response?.url?.description ?? "NONE") -- \(response?.statusCode ?? 0)")
@@ -71,6 +71,10 @@ class SharedAPI {
         case .missing:
             return .Missing
         case .badRequest:
+            if alwaysReturnJSON,
+               let resultObj = responseRequest.result.value as? [String: Any] {
+                return .BadRequestDictionary(resultObj)
+            }
             return .BadRequest
         case .authDenied:
             return .AuthDenied

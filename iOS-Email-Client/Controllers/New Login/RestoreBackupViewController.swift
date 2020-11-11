@@ -14,7 +14,9 @@ class RestoreBackupViewController: UIViewController {
     @IBOutlet weak var restoreButton: UIButton!
     @IBOutlet weak var skipButton: UIButton!
     
+    @IBOutlet weak var searchingContainerView: UIView!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var downloadingProgressView: CircleProgressBarUIView!
     @IBOutlet weak var errorImageView: UIImageView!
     
     @IBOutlet weak var restoreDetailContainerView: UIView!
@@ -65,21 +67,18 @@ class RestoreBackupViewController: UIViewController {
         lastLabel.textColor = theme.markedText
         dateLabel.textColor = theme.mainText
         
-        passphraseTextField.tintColor = theme.mainText
-        passphraseTextField.textColor = theme.mainText
-        passphraseTextField.validDividerColor = theme.criptextBlue
-        passphraseTextField.invalidDividerColor = theme.alert
-        passphraseTextField.dividerColor = theme.alert
-        passphraseTextField.detailColor = theme.alert
+        passphraseTextField.applyMyTheme()
         
         progressView.progressColor = theme.criptextBlue.cgColor
         progressLabel.textColor = theme.markedText
+        
+        view.backgroundColor = theme.overallBackground
     }
     
     func applyStep() {
         restoreDetailContainerView.isHidden = true
         progressContainerView.isHidden = true
-        imageView.isHidden = true
+        searchingContainerView.isHidden = true
         errorImageView.isHidden = true
         skipButton.isHidden = false
         restoreButton.alpha = 1
@@ -101,7 +100,9 @@ class RestoreBackupViewController: UIViewController {
             restoreButton.isEnabled = false
             skipButton.setTitle(String.localize(""), for: .normal)
             
-            imageView.isHidden = false
+            searchingContainerView.isHidden = false
+            downloadingProgressView.isHidden = true
+            downloadingProgressView.reset(angle: 0)
             
             cloudRestorer = CloudRestorer()
             cloudRestorer?.myAccount = myAccount
@@ -260,12 +261,10 @@ class RestoreBackupViewController: UIViewController {
             return
         }
         
-        let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
-        var options = UIWindow.TransitionOptions()
-        options.direction = .toTop
-        options.duration = 0.4
-        options.style = .easeOut
-        UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
+        let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "setsettingsviewcontroller") as! SetSettingsViewController
+        controller.myAccount = self.myAccount
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 
@@ -278,5 +277,13 @@ extension RestoreBackupViewController: CloudRestorerDelegate {
         self.fileUrl = url
         step = .found
         applyStep()
+    }
+    
+    func downloading(progress: Float) {
+        guard step == .searching else {
+            return
+        }
+        downloadingProgressView.isHidden = false
+        downloadingProgressView.angle = Double(progress * 360 / 100)
     }
 }

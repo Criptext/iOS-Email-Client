@@ -11,7 +11,11 @@ import Material
 
 class TwoFactorAuthViewController: UIViewController {
     @IBOutlet weak var codeTextField: StatusTextField!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var helpButton: UIButton!
     @IBOutlet weak var creatingAccountLoadingView: CreatingAccountLoadingUIView!
 
     var loginData: LoginParams!
@@ -19,7 +23,42 @@ class TwoFactorAuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         creatingAccountLoadingView.display = false
+        emailLabel.text = ""
+        applyTheme()
+        applyLocalization()
         sendCode()
+    }
+    
+    func applyTheme() {
+        let theme = ThemeManager.shared.theme
+        
+        titleLabel.textColor = theme.markedText
+        messageLabel.textColor = theme.mainText
+        emailLabel.textColor = theme.markedText
+        codeTextField.applyMyTheme()
+        
+        self.view.backgroundColor = theme.overallBackground
+        
+        let attrString = NSMutableAttributedString(string: String.localize("2FA_DIDNT"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(resendButton.fontSize) as Any])
+        attrString.append(NSAttributedString(string: String.localize("2FA_RESEND"), attributes: [.foregroundColor: theme.criptextBlue, .font: Font.bold.size(resendButton.fontSize) as Any]))
+        resendButton.setAttributedTitle(attrString, for: .normal)
+        
+        codeTextField.attributedPlaceholder = NSAttributedString(string: String.localize("2FA_CODE"), attributes: [.foregroundColor: theme.secondText, .font: Font.regular.size(codeTextField.minimumFontSize) as Any])
+    }
+    
+    func applyLocalization() {
+        let theme = ThemeManager.shared.theme
+        
+        titleLabel.text = String.localize("2FA_TITLE")
+        messageLabel.text = String.localize("2FA_MESSAGE")
+        
+        let attrString = NSMutableAttributedString(string: String.localize("HAVING_TROUBLE"), attributes: [.foregroundColor: theme.mainText, .font: Font.regular.size(helpButton.fontSize) as Any])
+        attrString.append(NSAttributedString(string: String.localize("CONTACT_SUPPORT"), attributes: [.foregroundColor: theme.criptextBlue, .font: Font.bold.size(helpButton.fontSize) as Any]))
+        helpButton.setAttributedTitle(attrString, for: .normal)
+    }
+    
+    @IBAction func onHelpPress(sender: Any) {
+        goToUrl(url: "https://criptext.atlassian.net/servicedesk/customer/portals")
     }
     
     func sendCode() {
@@ -27,10 +66,11 @@ class TwoFactorAuthViewController: UIViewController {
             if case let .SuccessDictionary(data) = responseData {
                 let emailAddress = data["address"] as? String ?? "No email address found"
                 self.emailLabel.text = emailAddress
-            } else if case .BadRequest = responseData {
-                return
+            } else if case let .BadRequestDictionary(data) = responseData {
+                let emailAddress = data["address"] as? String ?? "No email address found"
+                self.emailLabel.text = emailAddress
             } else {
-                 return
+                self.codeTextField.setStatus(.invalid, String.localize("SERVER_ERROR_RETRY"))
             }
         }
     }
@@ -53,9 +93,12 @@ class TwoFactorAuthViewController: UIViewController {
         codeTextField.isEnabled = false
         APIManager.validateRecoveryCode(recipientId: loginData.username, domain: loginData.domain, code: code, token: loginData.jwt) { (responseData) in
             self.codeTextField.isEnabled = true
-            guard case .SuccessDictionary = responseData else {
+            guard case let .SuccessDictionary(data) = responseData else {
                 self.codeTextField.setStatus(.invalid, String.localize("RECOVERY_CODE_DIALOG_ERROR"))
                 return
+            }
+            if let newToken = data["token"] as? String {
+                self.loginData.jwt = newToken
             }
             self.codeTextField.resignFirstResponder()
             self.handleNext()
@@ -96,8 +139,16 @@ class TwoFactorAuthViewController: UIViewController {
         goBack()
     }
     
-    @objc func goBack(){
-        navigationController?.popViewController(animated: true)
+    func goBack(){
+        let returnVC = self.navigationController?.viewControllers.first(where: { (vc) -> Bool in
+            return vc.isKind(of: LoginViewController.self)
+        })
+        
+        if let returnToVC = returnVC {
+            self.navigationController?.popToViewController(returnToVC, animated: true)
+        } else {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
     }
 }
 

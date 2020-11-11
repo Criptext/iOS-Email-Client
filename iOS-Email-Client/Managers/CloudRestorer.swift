@@ -11,6 +11,7 @@ import Foundation
 protocol CloudRestorerDelegate: class {
     func error(message: String)
     func success(url: URL)
+    func downloading(progress: Float)
 }
 
 class CloudRestorer {
@@ -51,6 +52,7 @@ class CloudRestorer {
             delegate?.error(message: "Not Found")
             return
         }
+        delegate?.downloading(progress: 0)
         query = NSMetadataQuery()
         query.searchScopes = [NSMetadataQueryUbiquitousDataScope]
         query.predicate = NSPredicate(format: "%K ==[cd] %@", NSMetadataItemPathKey, url.path)
@@ -78,6 +80,12 @@ class CloudRestorer {
                 }
                 self.query.stop()
             }
+        } else {
+            guard (item.value(forKey: NSMetadataUbiquitousItemIsDownloadingKey) as? NSNumber)?.boolValue ?? false,
+                let progress = item.value(forKey: NSMetadataUbiquitousItemPercentDownloadedKey) as? NSNumber else {
+                return
+            }
+            self.delegate?.downloading(progress: progress.floatValue)
         }
         self.query.enableUpdates()
     }

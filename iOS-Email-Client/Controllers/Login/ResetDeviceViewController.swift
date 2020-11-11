@@ -82,7 +82,7 @@ class ResetDeviceViewController: UIViewController{
         let username = String(email.split(separator: "@")[0])
         let domain = String(email.split(separator: "@")[1])
         if(loginData.needToRemoveDevices){
-            APIManager.findDevices(username: username, domain: domain, password: password.sha256()!) { (responseData) in
+            APIManager.listDevices(token: loginData.jwt ?? "") { (responseData) in
                 self.showLoader(false)
                 if case let .TooManyRequests(waitingTime) = responseData {
                     if waitingTime < 0 {

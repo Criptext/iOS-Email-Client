@@ -13,11 +13,12 @@ class DevicesLimitViewController: UIViewController {
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var creatingAccountLoadingView: CreatingAccountLoadingUIView!
 
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
 
     var loginData: LoginParams!
     var devices = [Device]()
     var maxAllowedDevices = Env.maxAllowedDevices
-    var tempToken: String?
 
     var theme: Theme {
         return ThemeManager.shared.theme
@@ -29,13 +30,14 @@ class DevicesLimitViewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.applyTheme()
+        self.applyLocalization()
         self.loadDevices()
         
         creatingAccountLoadingView.display = false
     }
     
     func loadDevices() {
-        APIManager.findDevices(username: loginData.username, domain: loginData.domain, password: loginData.password.sha256()!) { (responseData) in
+        APIManager.listDevices(token: loginData.jwt) { (responseData) in
             if case let .TooManyRequests(waitingTime) = responseData {
                 if waitingTime < 0 {
                     self.showFeedback(String.localize("TOO_MANY_SIGNIN"))
@@ -50,13 +52,11 @@ class DevicesLimitViewController: UIViewController {
                 return
             }
             guard case let .SuccessDictionary(data) = responseData,
-                let devices = data["devices"] as? [[String: Any]],
-                let token = data["token"] as? String else {
+                let devices = data["devices"] as? [[String: Any]] else {
                     self.showFeedback(String.localize("WRONG_PASS_RETRY"))
                     return
             }
             
-            self.tempToken = token
             let myDevices = devices.map({Device.fromDictionary(data: $0, isLogin: true)}).sorted(by: {$0.safeDate > $1.safeDate})
             self.devices.append(contentsOf: myDevices)
             self.tableView.reloadData()
@@ -64,25 +64,11 @@ class DevicesLimitViewController: UIViewController {
         }
     }
     
-    func applyLocalization() {
-        
-    }
-    
     func showFeedback(_ message: String? = nil){
-        print("FEEDBACK : \(message ?? "none")")
-    }
-    
-    func handleMaxDeviceRequest(responseData: ResponseData) {
-        switch (responseData) {
-            case .SuccessDictionary(let data):
-                guard let maxDevices = data["maxDevices"] as? Int else {
-                    return
-                }
-                maxAllowedDevices = maxDevices
-                checkDevicesToContinue()
-            default:
-                break
-        }
+        let popover = GenericAlertUIPopover()
+        popover.title = String.localize("ODD")
+        popover.myMessage = message
+        self.presentPopover(popover: popover, height: 220)
     }
     
     func checkDevicesToContinue() {
@@ -96,7 +82,17 @@ class DevicesLimitViewController: UIViewController {
     }
     
     func applyTheme() {
+        let theme = ThemeManager.shared.theme
         
+        self.view.backgroundColor = theme.overallBackground
+        titleLabel.textColor = theme.markedText
+        messageLabel.textColor = theme.mainText
+    }
+    
+    func applyLocalization() {
+        titleLabel.text = String.localize("DEVICE_LIMIT_TITLE")
+        messageLabel.text = String.localize("DEVICE_LIMIT_MESSAGE")
+        continueButton.setTitle(String.localize("CONTINUE"), for: .normal)
     }
     
     @IBAction func onBackPress(_ sender: UIButton) {
@@ -110,8 +106,16 @@ class DevicesLimitViewController: UIViewController {
         loginManager.createAccount()
     }
     
-    @objc func goBack(){
-        navigationController?.popViewController(animated: true)
+    func goBack(){
+        let returnVC = self.navigationController?.viewControllers.first(where: { (vc) -> Bool in
+            return vc.isKind(of: LoginViewController.self)
+        })
+        
+        if let returnToVC = returnVC {
+            self.navigationController?.popToViewController(returnToVC, animated: true)
+        } else {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     func goToImportOptions(account: Account) {
@@ -162,8 +166,8 @@ extension DevicesLimitViewController: UITableViewDelegate, UITableViewDataSource
 
 extension DevicesLimitViewController: DeviceLimitTableViewCellDelegate {
     func onRemoveDevice(deviceId: Int){
-        APIManager.deleteDevices(username: self.loginData.username, domain: self.loginData.domain, token: tempToken!, deviceIds: [deviceId]) { (responseData) in
-            guard case .Success = responseData else {
+        APIManager.deleteDevices(token: loginData.jwt, deviceIds: [deviceId]) { (responseData) in
+            guard case let .SuccessDictionary(data) = responseData else {
                 let popover = GenericAlertUIPopover()
                 popover.myTitle = String.localize("REMOVE_DEVICES_POPOVER_ERROR_TITLE")
                 popover.myMessage = String.localize("REMOVE_DEVICES_POPOVER_ERROR_MESSAGE")
@@ -174,6 +178,9 @@ extension DevicesLimitViewController: DeviceLimitTableViewCellDelegate {
             if let index = self.devices.firstIndex(where: {$0.id == deviceId}) {
                 self.devices.remove(at: index)
                 self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            }
+            if let newToken = data["token"] as? String {
+                self.loginData.jwt = newToken
             }
             self.checkDevicesToContinue()
         }

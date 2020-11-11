@@ -7,13 +7,14 @@
 //
 
 import Foundation
+import Lottie
 
 class SyncRequestViewController: UIViewController {
     @IBOutlet weak var requestView: SyncRequestUIView!
     @IBOutlet weak var deniedView: SyncDeniedUIView!
     
     weak var previousWebsocketDelegate: WebSocketManagerDelegate?
-    var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 12)
+    var scheduleWorker = ScheduleWorker(interval: 5.0, maxRetries: 24)
     weak var myAccount: Account!
     
     override func viewDidLoad() {
@@ -27,8 +28,10 @@ class SyncRequestViewController: UIViewController {
             self.startSync()
         }
         
+        view.backgroundColor = ThemeManager.shared.theme.overallBackground
         self.previousWebsocketDelegate = WebSocketManager.sharedInstance.delegate
         WebSocketManager.sharedInstance.delegate = self
+        scheduleWorker.delegate = self
         startSync()
     }
     
@@ -40,6 +43,7 @@ class SyncRequestViewController: UIViewController {
     }
     
     func startSync() {
+        requestView.animate(true)
         requestView.isHidden = false
         deniedView.isHidden = true
         APIManager.syncBegin(token: myAccount.jwt) { (responseData) in
@@ -52,6 +56,8 @@ class SyncRequestViewController: UIViewController {
     }
     
     func accept(_ acceptData: AcceptData, _ recipientId: String, _ domain: String) {
+        requestView.animate(false)
+        scheduleWorker.cancel()
         let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "syncviewcontroller") as! SyncViewController
         controller.modalPresentationStyle = .fullScreen
@@ -61,11 +67,15 @@ class SyncRequestViewController: UIViewController {
     }
     
     func notAccept() {
+        requestView.animate(false)
         self.requestView.isHidden = true
         self.deniedView.isHidden = false
     }
     
     @IBAction func onBackPress(_ sender: Any) {
+        scheduleWorker.cancel()
+        WebSocketManager.sharedInstance.delegate = self.previousWebsocketDelegate
+        self.previousWebsocketDelegate = nil
         self.navigationController?.popViewController(animated: true)
     }
 }

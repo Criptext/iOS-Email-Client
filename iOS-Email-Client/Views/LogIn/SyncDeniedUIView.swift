@@ -28,6 +28,7 @@ class SyncDeniedUIView: UIView {
         
         titleLabel.textColor = theme.markedText
         messageLabel.textColor = theme.secondText
+        self.backgroundColor = .clear
     }
     
     func applyLocalization() {
