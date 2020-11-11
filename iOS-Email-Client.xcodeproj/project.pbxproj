@@ -238,6 +238,7 @@
 		7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FF620B5E29900A2CB32 /* SingleTextInputViewController.swift */; };
 		7C7F2FF920B6059800A2CB32 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FF820B6059800A2CB32 /* Device.swift */; };
 		7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */; };
+		7C8C163B255C856E00DD94C9 /* WaitingCloud.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C8C163A255C856E00DD94C9 /* WaitingCloud.json */; };
 		7C8C2F7020EAB87D00FC145E /* LabelsFooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8C2F6F20EAB87D00FC145E /* LabelsFooterViewCell.swift */; };
 		7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C632034A4D800AB96EF /* StatusTextField.swift */; };
 		7C8D6C682035F42B00AB96EF /* CircleBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */; };
@@ -943,6 +944,7 @@
 		7C7F2FF620B5E29900A2CB32 /* SingleTextInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTextInputViewController.swift; sourceTree = "<group>"; };
 		7C7F2FF820B6059800A2CB32 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDrawerController.swift; sourceTree = "<group>"; };
+		7C8C163A255C856E00DD94C9 /* WaitingCloud.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WaitingCloud.json; sourceTree = "<group>"; };
 		7C8C2F6F20EAB87D00FC145E /* LabelsFooterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsFooterViewCell.swift; sourceTree = "<group>"; };
 		7C8D6C632034A4D800AB96EF /* StatusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTextField.swift; sourceTree = "<group>"; };
 		7C8D6C672035F42B00AB96EF /* CircleBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBackButton.swift; sourceTree = "<group>"; };
@@ -1915,6 +1917,7 @@
 		7CF93F522146E3D700361837 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				7C8C163A255C856E00DD94C9 /* WaitingCloud.json */,
 				7C09FF7A255AE94700C4213A /* ExportDesktop.json */,
 				7C09FF77255AE94600C4213A /* ExportingMobile.json */,
 				7C09FF75255AE94600C4213A /* ImportingDesktop.json */,
@@ -2257,6 +2260,7 @@
 				A7FFCF3F217A914000FFFDFF /* RemoveDeviceUIPopover.xib in Resources */,
 				7C7869CC246EDFD40085D909 /* AvatarUIView.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
+				7C8C163B255C856E00DD94C9 /* WaitingCloud.json in Resources */,
 				7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */,
 				D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */,
 				348F1EE0241680420095BCBB /* RemoveAliasUIPopover.xib in Resources */,

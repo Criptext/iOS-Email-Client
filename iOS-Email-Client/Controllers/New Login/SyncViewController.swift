@@ -159,29 +159,29 @@ class SyncViewController: UIViewController {
     func handleAnimation(){
         switch(animationStep){
         case .waiting:
-            animationView?.play(fromFrame: AnimationFrameTime(180), toFrame: AnimationFrameTime(240), loopMode: .playOnce, completion: { (done) in
+            animationView?.play(fromFrame: AnimationFrameTime(181), toFrame: AnimationFrameTime(240), loopMode: .playOnce, completion: { (done) in
                 guard case .downloading = self.step else {
                     self.handleAnimation()
                     return
                 }
-                self.animationView?.play(fromFrame: AnimationFrameTime(240), toFrame: AnimationFrameTime(300), loopMode: .playOnce, completion: { (done) in
+                self.animationView?.play(fromFrame: AnimationFrameTime(241), toFrame: AnimationFrameTime(300), loopMode: .playOnce, completion: { (done) in
                     self.animationStep = self.step
                     self.handleState()
                 })
             })
         case .downloading:
-            animationView?.play(fromFrame: AnimationFrameTime(300), toFrame: AnimationFrameTime(420), loopMode: .playOnce, completion: { (done) in
+            animationView?.play(fromFrame: AnimationFrameTime(301), toFrame: AnimationFrameTime(420), loopMode: .playOnce, completion: { (done) in
                 guard case .restoring = self.step else {
                     self.handleAnimation()
                     return
                 }
-                self.animationView?.play(fromFrame: AnimationFrameTime(420), toFrame: AnimationFrameTime(480), loopMode: .playOnce, completion: { (done) in
+                self.animationView?.play(fromFrame: AnimationFrameTime(421), toFrame: AnimationFrameTime(480), loopMode: .playOnce, completion: { (done) in
                     self.animationStep = self.step
                     self.handleState()
                 })
             })
         case .restoring:
-            self.animationView?.play(fromFrame: AnimationFrameTime(480), toFrame: AnimationFrameTime(600), loopMode: .loop, completion: nil)
+            self.animationView?.play(fromFrame: AnimationFrameTime(481), toFrame: AnimationFrameTime(600), loopMode: .loop, completion: nil)
         case .importing:
             break
         case .ready:

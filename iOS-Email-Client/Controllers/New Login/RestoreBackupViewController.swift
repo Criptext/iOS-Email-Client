@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Lottie
 
 class RestoreBackupViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -15,7 +16,7 @@ class RestoreBackupViewController: UIViewController {
     @IBOutlet weak var skipButton: UIButton!
     
     @IBOutlet weak var searchingContainerView: UIView!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var animateView: UIView!
     @IBOutlet weak var downloadingProgressView: CircleProgressBarUIView!
     @IBOutlet weak var errorImageView: UIImageView!
     
@@ -44,8 +45,9 @@ class RestoreBackupViewController: UIViewController {
         case ready
     }
     
+    var animationView: AnimationView? = nil
     var cloudRestorer: CloudRestorer?
-    weak var myAccount: Account!
+    var myAccount: Account!
     var step: STEP = .searching
     var isEncrypted = false
     var fileUrl: URL?
@@ -54,7 +56,18 @@ class RestoreBackupViewController: UIViewController {
         super.viewDidLoad()
         
         applyTheme()
+        setupAnimations()
         applyStep()
+    }
+    
+    func setupAnimations() {
+        let animationPath = Bundle.main.path(forResource: "WaitingCloud", ofType: "json")!
+        animationView = AnimationView(filePath: animationPath)
+        self.animateView.addSubview(animationView!)
+        animationView!.center = self.animateView.center
+        animationView!.frame = self.animateView.bounds
+        animationView!.contentMode = .scaleAspectFit
+        animationView!.loopMode = .loop
     }
     
     func applyTheme() {
@@ -70,6 +83,7 @@ class RestoreBackupViewController: UIViewController {
         passphraseTextField.applyMyTheme()
         
         progressView.progressColor = theme.criptextBlue.cgColor
+        downloadingProgressView.progressColor = theme.criptextBlue.cgColor
         progressLabel.textColor = theme.markedText
         
         view.backgroundColor = theme.overallBackground
@@ -85,6 +99,7 @@ class RestoreBackupViewController: UIViewController {
         restoreButton.isEnabled = true
         checkImageView.isHidden = true
         progressImageView.isHidden = false
+        animationView?.stop()
         
         switch step {
         case .searching:
@@ -103,6 +118,8 @@ class RestoreBackupViewController: UIViewController {
             searchingContainerView.isHidden = false
             downloadingProgressView.isHidden = true
             downloadingProgressView.reset(angle: 0)
+            
+            animationView?.play()
             
             cloudRestorer = CloudRestorer()
             cloudRestorer?.myAccount = myAccount
@@ -274,9 +291,13 @@ extension RestoreBackupViewController: CloudRestorerDelegate {
     }
     
     func success(url: URL) {
-        self.fileUrl = url
-        step = .found
-        applyStep()
+        downloadingProgressView.isHidden = false
+        downloadingProgressView.targetAngle = 360
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.fileUrl = url
+            self.step = .found
+            self.applyStep()
+        }
     }
     
     func downloading(progress: Float) {
@@ -284,6 +305,6 @@ extension RestoreBackupViewController: CloudRestorerDelegate {
             return
         }
         downloadingProgressView.isHidden = false
-        downloadingProgressView.angle = Double(progress * 360 / 100)
+        downloadingProgressView.targetAngle = Double(progress * 360 / 100)
     }
 }

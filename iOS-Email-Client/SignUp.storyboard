@@ -1740,6 +1740,18 @@ Let’s make it yours 😎</string>
                                     <action selector="onNextPress:" destination="ThV-XO-lhk" eventType="touchUpInside" id="F3g-Xu-7Wo"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7JA-Ph-3Dm">
+                                <rect key="frame" x="30" y="70" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="UoK-XR-IT9"/>
+                                    <constraint firstAttribute="height" constant="30" id="c2A-YV-4Va"/>
+                                </constraints>
+                                <color key="tintColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="close-rounded"/>
+                                <connections>
+                                    <action selector="onBackPress:" destination="1bm-nh-e5K" eventType="touchUpInside" id="ES8-WG-Eqe"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="eHg-2F-01W"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1749,10 +1761,12 @@ Let’s make it yours 😎</string>
                             <constraint firstItem="1Dy-Ub-Kqv" firstAttribute="centerX" secondItem="eHg-2F-01W" secondAttribute="centerX" id="CzS-uZ-hDM"/>
                             <constraint firstItem="eHg-2F-01W" firstAttribute="bottom" secondItem="1Dy-Ub-Kqv" secondAttribute="bottom" constant="24" id="KS0-i1-xjO"/>
                             <constraint firstItem="eHg-2F-01W" firstAttribute="trailing" secondItem="GMH-af-QIS" secondAttribute="trailing" constant="48" id="Mii-KH-Iu0"/>
+                            <constraint firstItem="7JA-Ph-3Dm" firstAttribute="leading" secondItem="eHg-2F-01W" secondAttribute="leading" constant="30" id="ZqH-hR-eKY"/>
                             <constraint firstItem="GMH-af-QIS" firstAttribute="top" secondItem="9LD-fO-TgO" secondAttribute="bottom" constant="15" id="bcY-Nw-286"/>
                             <constraint firstItem="r6p-I3-RcH" firstAttribute="top" secondItem="eOB-CA-lxa" secondAttribute="bottom" constant="24" id="e91-gz-vDp"/>
                             <constraint firstItem="eOB-CA-lxa" firstAttribute="centerY" secondItem="eHg-2F-01W" secondAttribute="centerY" multiplier="0.79" id="exr-Pm-9Ek"/>
                             <constraint firstItem="GMH-af-QIS" firstAttribute="leading" secondItem="eHg-2F-01W" secondAttribute="leading" constant="48" id="fjo-Mx-9nv"/>
+                            <constraint firstItem="7JA-Ph-3Dm" firstAttribute="top" secondItem="eHg-2F-01W" secondAttribute="top" constant="70" id="iju-GE-gBo"/>
                             <constraint firstItem="9LD-fO-TgO" firstAttribute="leading" secondItem="eHg-2F-01W" secondAttribute="leading" constant="48" id="jRs-7O-LWK"/>
                             <constraint firstItem="eOB-CA-lxa" firstAttribute="centerX" secondItem="eHg-2F-01W" secondAttribute="centerX" id="qdv-Lg-DeM"/>
                             <constraint firstItem="r6p-I3-RcH" firstAttribute="centerX" secondItem="eOB-CA-lxa" secondAttribute="centerX" id="yfl-HB-ZJd"/>
@@ -1760,6 +1774,7 @@ Let’s make it yours 😎</string>
                     </view>
                     <navigationItem key="navigationItem" id="OvH-1x-18l"/>
                     <connections>
+                        <outlet property="backButton" destination="7JA-Ph-3Dm" id="QAv-D7-rYK"/>
                         <outlet property="loginButton" destination="9LD-fO-TgO" id="Fau-R6-Crk"/>
                         <outlet property="logoImageView" destination="eOB-CA-lxa" id="gZB-sy-bGr"/>
                         <outlet property="signupButton" destination="GMH-af-QIS" id="cxg-c3-toS"/>
@@ -1775,6 +1790,7 @@ Let’s make it yours 😎</string>
     <resources>
         <image name="attachment_camera" width="28" height="21"/>
         <image name="attachment_photolibrary" width="27" height="27"/>
+        <image name="close-rounded" width="14" height="14"/>
         <image name="icArrow" width="18" height="16"/>
         <image name="icon-refresh" width="20" height="20"/>
         <image name="imgCard" width="312" height="195"/>

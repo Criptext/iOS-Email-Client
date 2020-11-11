@@ -11,6 +11,7 @@ import Foundation
 class LaunchViewController: UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var sloganImageView: UIImageView!
@@ -42,6 +43,12 @@ class LaunchViewController: UIViewController {
     func setupFields() {
         let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         versionLabel.text = "\(String.localize("VERSION").lowercased()) \(appVersionString)"
+        
+        
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        backButton.isHidden = delegate.getInboxVC() == nil
     }
     
     @IBAction func onLoginPress(_ sender: UIButton) {
@@ -55,5 +62,9 @@ class LaunchViewController: UIViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "fullNameView")  as! SignUpNameViewController
         controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    @IBAction func onBackPress(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

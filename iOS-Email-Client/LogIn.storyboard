@@ -1133,39 +1133,43 @@ off the screen </string>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZJ-ZA-Ji0">
                                         <rect key="frame" x="48" y="154.5" width="318" height="49.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="49.5" id="fCh-Of-rFn"/>
+                                        </constraints>
                                         <string key="text">Don’t leave the app or turn 
-off the screen </string>
+off the screen  sdfgsdfgsfd</string>
                                         <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wx7-8m-R30">
-                                        <rect key="frame" x="91" y="293" width="232" height="232"/>
+                                        <rect key="frame" x="57" y="259" width="300" height="300"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="import-search" translatesAutoresizingMaskIntoConstraints="NO" id="OLv-33-gHn">
-                                                <rect key="frame" x="0.0" y="0.0" width="232" height="232"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vnZ-rp-20U">
+                                                <rect key="frame" x="5" y="17" width="290" height="290"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="232" id="QuS-vi-i6a"/>
-                                                    <constraint firstAttribute="width" constant="232" id="eda-5D-DpC"/>
+                                                    <constraint firstAttribute="height" constant="290" id="U3v-0F-xEl"/>
+                                                    <constraint firstAttribute="width" constant="290" id="Utq-Wp-2HB"/>
                                                 </constraints>
-                                            </imageView>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XdT-9V-zx4" customClass="CircleProgressBarUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                <rect key="frame" x="26" y="26" width="180" height="180"/>
+                                                <rect key="frame" x="69" y="89" width="162" height="162"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="180" id="Ijg-R5-FS3"/>
-                                                    <constraint firstAttribute="height" constant="180" id="dFe-RK-we0"/>
+                                                    <constraint firstAttribute="width" constant="162" id="Ijg-R5-FS3"/>
+                                                    <constraint firstAttribute="height" constant="162" id="dFe-RK-we0"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="OLv-33-gHn" firstAttribute="centerX" secondItem="wx7-8m-R30" secondAttribute="centerX" id="1eE-Gi-00H"/>
                                             <constraint firstItem="XdT-9V-zx4" firstAttribute="centerX" secondItem="wx7-8m-R30" secondAttribute="centerX" id="Jqj-YE-kVO"/>
-                                            <constraint firstAttribute="height" constant="232" id="S5D-jA-MJ4"/>
-                                            <constraint firstItem="OLv-33-gHn" firstAttribute="centerY" secondItem="wx7-8m-R30" secondAttribute="centerY" id="Ut0-3T-wNS"/>
-                                            <constraint firstItem="XdT-9V-zx4" firstAttribute="centerY" secondItem="wx7-8m-R30" secondAttribute="centerY" id="cAL-35-QJv"/>
-                                            <constraint firstAttribute="width" constant="232" id="z1q-ld-7NS"/>
+                                            <constraint firstAttribute="height" constant="300" id="S5D-jA-MJ4"/>
+                                            <constraint firstItem="XdT-9V-zx4" firstAttribute="centerY" secondItem="wx7-8m-R30" secondAttribute="centerY" constant="20" id="cAL-35-QJv"/>
+                                            <constraint firstItem="vnZ-rp-20U" firstAttribute="centerX" secondItem="wx7-8m-R30" secondAttribute="centerX" id="p0u-Af-eOR"/>
+                                            <constraint firstItem="vnZ-rp-20U" firstAttribute="centerY" secondItem="wx7-8m-R30" secondAttribute="centerY" constant="12" id="t1R-MI-BuX"/>
+                                            <constraint firstAttribute="width" constant="300" id="z1q-ld-7NS"/>
                                         </constraints>
                                     </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="import-not-found" translatesAutoresizingMaskIntoConstraints="NO" id="BK3-FE-UXp">
@@ -1348,12 +1352,12 @@ off the screen </string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="animateView" destination="vnZ-rp-20U" id="Ntd-73-Vda"/>
                         <outlet property="backupImageTopConstraint" destination="Do9-KM-VbI" id="Woy-jv-jLd"/>
                         <outlet property="checkImageView" destination="mB8-fu-yea" id="fDs-P7-qKz"/>
                         <outlet property="dateLabel" destination="37a-aH-wyN" id="Bjh-cF-Ru0"/>
                         <outlet property="downloadingProgressView" destination="XdT-9V-zx4" id="Xnl-9h-2sm"/>
                         <outlet property="errorImageView" destination="BK3-FE-UXp" id="xxl-Zv-gws"/>
-                        <outlet property="imageView" destination="OLv-33-gHn" id="7Jc-Br-TNn"/>
                         <outlet property="lastLabel" destination="bOl-hd-D0i" id="DpH-X4-Lgf"/>
                         <outlet property="messageLabel" destination="nZJ-ZA-Ji0" id="5uC-RH-pzR"/>
                         <outlet property="passphraseTextField" destination="vdt-ku-pz6" id="3cY-pT-sWF"/>
@@ -1708,7 +1712,6 @@ off the screen </string>
         <image name="import-not-found" width="232" height="232"/>
         <image name="import-ready" width="232" height="232"/>
         <image name="import-rejected" width="233" height="233"/>
-        <image name="import-search" width="232" height="232"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
