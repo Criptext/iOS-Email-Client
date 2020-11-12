@@ -76,13 +76,13 @@ class NewEmailHandler {
         }
         
         if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
+            let defaults = CriptextDefaults()
+            defaults.deleteEmailStrike(id: email.compoundKey)
             if(isMeARecipient(email: email, account: myAccount)){
                 self.database.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
                 completion(Result(email: email))
                 return
             }
-            let defaults = CriptextDefaults()
-            defaults.deleteEmailStrike(id: email.compoundKey)
             completion(Result(success: true))
             return
         }

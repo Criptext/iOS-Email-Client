@@ -62,6 +62,9 @@ class Utils: SharedUtils {
 
     class func convertToJSONString(dictionary: [String: Any]) -> String? {
         do {
+            guard JSONSerialization.isValidJSONObject(dictionary) else {
+                return nil
+            }
             let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
             return String(data: jsonData, encoding: .utf8)
         } catch {
