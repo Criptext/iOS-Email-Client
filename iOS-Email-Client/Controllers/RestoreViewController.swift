@@ -127,11 +127,15 @@ extension RestoreViewController: RestoreDelegate {
         if(self.isLocal){
             var filePath = self.localUrl.path
             if let pass = password,
+               !pass.isEmpty,
                 let encryptPath = AESCipher.streamEncrypt(path: filePath, outputName: StaticFile.decryptedDB.name, bundle: AESCipher.KeyBundle(password: pass, salt: nil), ivData: nil, operation: kCCDecrypt) {
                 contentView.setRestoring(isLocal: self.isLocal)
                 self.contentView.animateProgress(Double(10), 3.0, completion: {})
                 filePath = encryptPath
+            } else {
+                contentView.setRestoring(isLocal: self.isLocal)
             }
+            
             guard let decompressedPath = try? AESCipher.compressFile(path: filePath, outputName: StaticFile.unzippedDB.name, compress: false) else {
                 contentView.setError(isLocal: self.isLocal, isEncrypted: self.isEncrypted)
                 return
