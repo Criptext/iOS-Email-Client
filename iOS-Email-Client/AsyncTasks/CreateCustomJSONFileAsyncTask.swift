@@ -9,6 +9,7 @@
 import Foundation
 import SignalProtocolFramework
 import RealmSwift
+import FirebaseCrashlytics
 
 class CreateCustomJSONFileAsyncTask {
     
@@ -122,6 +123,14 @@ class CreateCustomJSONFileAsyncTask {
     
     private func handleRow(_ row: [String: Any], appendNewLine: Bool = true){
         guard let jsonString = Utils.convertToJSONString(dictionary: row) else {
+            let codeName = "LINK_FILE_ROW"
+            let payload = [
+                "name": "JSON ERROR",
+                "reason": "INVALID JSON FORMAT",
+                "row": (row["table"] as? String == "email") ? "PROTECTED_TABLE" : row,
+                "codeName": codeName
+                ] as [String : Any]
+            Crashlytics.crashlytics().record(error: NSError.init(domain: codeName, code: -2000, userInfo: payload))
             return
         }
         writeRowToFile(jsonRow: jsonString, appendNewLine: appendNewLine)

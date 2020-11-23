@@ -76,13 +76,13 @@ class NewEmailHandler {
         }
         
         if let email = self.database.getMail(key: event.metadataKey, account: myAccount) {
+            let defaults = CriptextDefaults()
+            defaults.deleteEmailStrike(id: email.compoundKey)
             if(isMeARecipient(email: email, account: myAccount)){
                 self.database.addRemoveLabelsFromEmail(email, addedLabelIds: [SystemLabel.inbox.id], removedLabelIds: [])
                 completion(Result(email: email))
                 return
             }
-            let defaults = CriptextDefaults()
-            defaults.deleteEmailStrike(id: email.compoundKey)
             completion(Result(success: true))
             return
         }
@@ -93,17 +93,11 @@ class NewEmailHandler {
                         completion(Result(success: false))
                         return
                     }
-                    self.reEncryptEmail(event: event, eventId: eventId, jwt: account.jwt) { (result) in
-                        switch(result.type){
-                            case .TooManyRequests:
-                                let content = String.localize("CONTENT_UNENCRYPTED")
-                                guard let unencryptedEmail = self.constructEmail(content: content, event: event, myAccount: account) else {
-                                    completion(Result(success: false))
-                                    return
-                                }
-                                completion(Result(email: unencryptedEmail))
-                            default:
-                                completion(Result(success: result.type == .Success))
+                    self.api.reEncryptEmail(metadataKey: event.metadataKey, eventId: eventId, token: account.jwt) { (responseData) in
+                        if case .Success = responseData {
+                            completion(Result(success: true))
+                        } else {
+                            completion(Result(success: false))
                         }
                     }
                 default:
@@ -115,19 +109,6 @@ class NewEmailHandler {
             }
         }
         
-    }
-    
-    private func reEncryptEmail(event: NewEmail, eventId: Any, jwt: String, completion: @escaping (_ result: EmailProcessResult) -> Void){
-        self.api.reEncryptEmail(metadataKey: event.metadataKey, eventId: eventId, token: jwt) { (responseData) in
-            switch(responseData){
-                case .TooManyRequests:
-                    completion(EmailProcessResult(type: .TooManyRequests))
-                case .Success:
-                    completion(EmailProcessResult(type: .Success))
-                default:
-                    completion(EmailProcessResult(type: .Failure))
-            }
-        }
     }
     
     private func getEmailBody(event: NewEmail, recipientId: String, eventId: Any, myAccount: Account, completion: @escaping (_ result: EmailProcessResult) -> Void){

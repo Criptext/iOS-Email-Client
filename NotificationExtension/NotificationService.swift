@@ -33,12 +33,6 @@ class NotificationService: UNNotificationServiceExtension {
             let username = userInfo["account"] as? String,
             let domain = userInfo["domain"] as? String,
             let account = SharedDB.getAccountById(domain == Env.plainDomain ? username : "\(username)@\(domain)"),
-            let senderId = userInfo["senderId"] as? String,
-            let senderDomain = userInfo["senderDomain"] as? String,
-            let deviceIdString = userInfo["deviceId"] as? String,
-            let deviceId = Int32(deviceIdString),
-            let messageTypeString = userInfo["previewMessageType"] as? String,
-            let messageType = Int(messageTypeString),
             let preview = userInfo["preview"] as? String else {
                 
             self.bestAttemptContent?.badge = NSNumber(value: SharedDB.getUnreadCounters() + 1)
@@ -46,10 +40,19 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        let recipientId = senderDomain == Env.plainDomain ? senderId : "\(senderId)@\(senderDomain)"
         var decryptedPreview: String? = nil
-        tryBlock {
-           decryptedPreview = SignalHandler.decryptMessage(preview, messageType: MessageType(rawValue: messageType)!, account: account, recipientId: recipientId, deviceId: deviceId)
+        if let senderId = userInfo["senderId"] as? String,
+           let senderDomain = userInfo["senderDomain"] as? String,
+           let deviceIdString = userInfo["deviceId"] as? String,
+           let deviceId = Int32(deviceIdString),
+           let messageTypeString = userInfo["previewMessageType"] as? String,
+           let messageType = Int(messageTypeString) {
+            let recipientId = senderDomain == Env.plainDomain ? senderId : "\(senderId)@\(senderDomain)"
+            tryBlock {
+               decryptedPreview = SignalHandler.decryptMessage(preview, messageType: MessageType(rawValue: messageType)!, account: account, recipientId: recipientId, deviceId: deviceId)
+            }
+        } else {
+            decryptedPreview = preview
         }
         
         guard let decrPreview = decryptedPreview else {
