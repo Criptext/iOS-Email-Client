@@ -248,7 +248,7 @@ class SharedAPI {
         "metadataKey": metadataKey,
         "eventid": eventId,
         ] as [String: Any]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString(queue: queue) { response in
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             let responseData = handleResponse(response)
             self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
                 if let refreshData = refreshResponseData {

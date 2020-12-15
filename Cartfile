@@ -1,28 +1,12 @@
 github "Criptext/SignalProtocolSwift" == 0.8
 github "ElaWorkshop/TagListView" ~> 1.0
-github "Alamofire/Alamofire" ~> 4.7
-github "SwiftyJSON/SwiftyJSON"
-binary "./realm-cocoa.json"
 github "Hirobreak/CLTokenInputView" == 3.0.3
 github "CosmicMind/Material" == 3.1.1
 github "Hirobreak/CICropPicker" == 1.1.2
-github "rs/SDWebImage"
 github "Marxon13/M13Checkbox"
 github "daltoniam/Starscream" == 3.0.5
-github "scinfu/SwiftSoup"
-github "misterwell/MMMaterialDesignSpinner"
 github "Criptext/MIBadgeButton-Swift" ~> 0.8
 github "cjwirth/RichEditorView"
-github "hackiftekhar/IQKeyboardManager"
 github "Criptext/UIImageView-Letters" ~> 1.1.5
 git "https://github.com/ephread/Instructions.git" "ab42e21382b571d43839a2c7187647e59c6cae55"
-github "malcommac/UIWindowTransitions"
-github "airbnb/lottie-ios" "master"
-github "1024jp/GzipSwift"
-github "tilltue/TLPhotoPicker"
 github "Hirobreak/SwiftPasscodeLock" == 2.2.8
-
-binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
-binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json"
-binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseMessagingBinary.json"
-binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseProtobufBinary.json"

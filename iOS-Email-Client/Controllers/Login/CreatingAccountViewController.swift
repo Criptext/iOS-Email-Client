@@ -293,7 +293,7 @@ class CreatingAccountViewController: UIViewController{
         options.direction = .toTop
         options.duration = 0.4
         options.style = .easeOut
-        UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
+        UIApplication.shared.keyWindow?.set(rootViewController: mailboxVC, options: options, nil)
     }
     
     func animateProgress(_ value: Double, _ duration: Double, completion: @escaping () -> Void){

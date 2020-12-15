@@ -593,7 +593,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         options.direction = .toTop
         options.duration = 0.4
         options.style = .easeOut
-        UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
+        UIApplication.shared.keyWindow?.set(rootViewController: initialVC, options: options, nil)
     }
     
     func clearDefaults() {
@@ -884,15 +884,12 @@ extension AppDelegate: MessagingDelegate {
         RequestManager.shared.getAccountEvents(accountId: accountId)
     }
     
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        guard let inboxVC = getInboxVC() else {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let inboxVC = getInboxVC(),
+              let firebaseToken = fcmToken else {
             return
         }
-        inboxVC.registerToken(fcmToken: fcmToken)
-    }
-    
-    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-        
+        inboxVC.registerToken(fcmToken: firebaseToken)
     }
 }
 

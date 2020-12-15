@@ -90,11 +90,11 @@ class CustomizeiCloudViewController: UIViewController {
                 return
             }
             let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
-            var options = UIWindow.TransitionOptions()
+            let options = UIWindow.TransitionOptions()
             options.direction = .toTop
             options.duration = 0.4
             options.style = .easeOut
-            UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
+            UIApplication.shared.keyWindow?.set(rootViewController: mailboxVC, options: options, nil)
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  RemoveAliasUIPopover.swift
+//  AddAliasUIPopover.swift
 //  iOS-Email-Client
 //
 //  Created by Jorge Blacio on 3/9/20.

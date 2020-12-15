@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -82,22 +82,14 @@
 		41B6AAB52017987500D428B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB32017987500D428B7 /* Main.storyboard */; };
 		41B6AABA2017987500D428B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB82017987500D428B7 /* LaunchScreen.storyboard */; };
 		41B6AAC52017987500D428B7 /* iOS_Email_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B6AAC42017987500D428B7 /* iOS_Email_ClientTests.swift */; };
-		41C36848207C69F3008B50A8 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
 		41C3684A207C6C0B008B50A8 /* Motion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36849207C6C0B008B50A8 /* Motion.framework */; };
-		41C9CBBA20769A9600B8994F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229B12076923E00C32998 /* Alamofire.framework */; };
 		41C9CBBB20769A9F00B8994F /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
-		41C9CBBC20769AA500B8994F /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229B52076943F00C32998 /* SwiftyJSON.framework */; };
 		41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FD82720602244000E5F14 /* TagListView.framework */; };
 		41C9CC832078195900B8994F /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC822078195900B8994F /* Material.framework */; };
 		41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC842078196600B8994F /* CICropPicker.framework */; };
-		41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8620781C4600B8994F /* SDWebImage.framework */; };
 		41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8820781C4E00B8994F /* M13Checkbox.framework */; };
-		41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */; };
-		41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8E20781C6700B8994F /* MMMaterialDesignSpinner.framework */; };
 		41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */; };
-		41E229BF207696DE00C32998 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BD207696DE00C32998 /* Realm.framework */; };
-		41E229C0207696DE00C32998 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
 		41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748D207C68C900CCA685 /* MIBadgeButton_Swift.framework */; };
 		41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
 		48227CA322B1ACE900EE88DD /* ChangePasswordLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48227CA222B1ACE900EE88DD /* ChangePasswordLoginViewController.swift */; };
@@ -140,19 +132,6 @@
 		7C3549E6248032280083EE41 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A4442111268900A40C74 /* libc++.tbd */; };
 		7C3549E72480322D0083EE41 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD4A4402111264E00A40C74 /* libsqlite3.tbd */; };
 		7C3549E8248032320083EE41 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C3549E3248031E20083EE41 /* StoreKit.framework */; };
-		7C354A30248052330083EE41 /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A23248052310083EE41 /* GoogleDataTransport.framework */; };
-		7C354A31248052330083EE41 /* FirebaseCrashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A24248052310083EE41 /* FirebaseCrashlytics.framework */; };
-		7C354A32248052330083EE41 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A25248052310083EE41 /* GoogleAppMeasurement.framework */; };
-		7C354A33248052330083EE41 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A26248052320083EE41 /* FirebaseInstanceID.framework */; };
-		7C354A34248052330083EE41 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A27248052320083EE41 /* FirebaseCore.framework */; };
-		7C354A35248052330083EE41 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A28248052320083EE41 /* FirebaseMessaging.framework */; };
-		7C354A36248052340083EE41 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A29248052320083EE41 /* FirebaseCoreDiagnostics.framework */; };
-		7C354A39248052340083EE41 /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2C248052320083EE41 /* FirebaseInstallations.framework */; };
-		7C354A3A248052340083EE41 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2D248052320083EE41 /* FIRAnalyticsConnector.framework */; };
-		7C354A3B248052340083EE41 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2E248052330083EE41 /* GoogleUtilities.framework */; };
-		7C354A3C248052340083EE41 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A2F248052330083EE41 /* FirebaseAnalytics.framework */; };
-		7C354A3F248052490083EE41 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A3D248052490083EE41 /* nanopb.framework */; };
-		7C354A40248052490083EE41 /* PromisesObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C354A3E248052490083EE41 /* PromisesObjC.framework */; };
 		7C38774B242531C4002B98D4 /* MXRecordsUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */; };
 		7C394E7E210BD5DB00AE3297 /* SignalProtocolFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C147B42203C9676004823DE /* SignalProtocolFramework.framework */; };
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
@@ -192,6 +171,32 @@
 		7C6CA869244E12BF00181703 /* MembershipWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6CA868244E12BF00181703 /* MembershipWebViewController.swift */; };
 		7C6CA86B244F4FD100181703 /* GetPlusUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6CA86A244F4FD100181703 /* GetPlusUIPopover.xib */; };
 		7C6CA86D244F545300181703 /* GetPlusUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6CA86C244F545300181703 /* GetPlusUIPopover.swift */; };
+		7C6D0C342589643500D80BB5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C332589643500D80BB5 /* Alamofire */; };
+		7C6D0C3A2589664900D80BB5 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C392589664900D80BB5 /* Realm */; };
+		7C6D0C3C2589664900D80BB5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C3B2589664900D80BB5 /* RealmSwift */; };
+		7C6D0C422589666400D80BB5 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C412589666400D80BB5 /* SwiftyJSON */; };
+		7C6D0C482589669100D80BB5 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C472589669100D80BB5 /* SDWebImage */; };
+		7C6D0C4A2589669100D80BB5 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C492589669100D80BB5 /* SDWebImageMapKit */; };
+		7C6D0C50258966B100D80BB5 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C4F258966B100D80BB5 /* SwiftSoup */; };
+		7C6D0C56258966E300D80BB5 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C55258966E300D80BB5 /* IQKeyboardManagerSwift */; };
+		7C6D0C5C2589670A00D80BB5 /* UIWindowTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C5B2589670A00D80BB5 /* UIWindowTransitions */; };
+		7C6D0C622589678B00D80BB5 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C612589678B00D80BB5 /* Lottie */; };
+		7C6D0C68258967A300D80BB5 /* Gzip in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C67258967A300D80BB5 /* Gzip */; };
+		7C6D0C6E2589681600D80BB5 /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C6D2589681600D80BB5 /* TLPhotoPicker */; };
+		7C6D0C742589691400D80BB5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C732589691400D80BB5 /* FirebaseAnalytics */; };
+		7C6D0C762589691400D80BB5 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C752589691400D80BB5 /* FirebaseMessaging */; };
+		7C6D0C782589691400D80BB5 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C772589691400D80BB5 /* FirebaseCrashlytics */; };
+		7C6D0C8625896DB600D80BB5 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C8525896DB600D80BB5 /* Realm */; };
+		7C6D0C8825896DB600D80BB5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C8725896DB600D80BB5 /* RealmSwift */; };
+		7C6D0C8A25896DBF00D80BB5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C8925896DBF00D80BB5 /* Alamofire */; };
+		7C6D0C8C25896DC400D80BB5 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C8B25896DC400D80BB5 /* SwiftSoup */; };
+		7C6D0C8E25896DD300D80BB5 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C8D25896DD300D80BB5 /* IQKeyboardManagerSwift */; };
+		7C6D0C9025896DDC00D80BB5 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C8F25896DDC00D80BB5 /* SDWebImage */; };
+		7C6D0C9225896DDC00D80BB5 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C9125896DDC00D80BB5 /* SDWebImageMapKit */; };
+		7C6D0C9725896EA200D80BB5 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C9625896EA200D80BB5 /* Realm */; };
+		7C6D0C9925896EA200D80BB5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C9825896EA200D80BB5 /* RealmSwift */; };
+		7C6D0C9E2589700C00D80BB5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C9D2589700C00D80BB5 /* Alamofire */; };
+		7C6D0CA32589702900D80BB5 /* Gzip in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0CA22589702900D80BB5 /* Gzip */; };
 		7C6DB466215173A6001B3749 /* GenericDualAnswerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB465215173A6001B3749 /* GenericDualAnswerUIPopover.swift */; };
 		7C6DB468215173D0001B3749 /* GenericDualAnswerUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C6DB467215173D0001B3749 /* GenericDualAnswerUIPopover.xib */; };
 		7C6DB46B2152B910001B3749 /* LinkData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6DB46A2152B910001B3749 /* LinkData.swift */; };
@@ -210,7 +215,6 @@
 		7C7F2FF320B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FF220B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift */; };
 		7C7F2FF720B5E29900A2CB32 /* SingleTextInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FF620B5E29900A2CB32 /* SingleTextInputViewController.swift */; };
 		7C7F2FF920B6059800A2CB32 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FF820B6059800A2CB32 /* Device.swift */; };
-		7C89D1ED24805417001E6198 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C89D1EC24805417001E6198 /* Protobuf.framework */; };
 		7C8A9AED2052E9CA0096EEB8 /* CriptextDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */; };
 		7C8C2F7020EAB87D00FC145E /* LabelsFooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8C2F6F20EAB87D00FC145E /* LabelsFooterViewCell.swift */; };
 		7C8D6C642034A4D800AB96EF /* StatusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8D6C632034A4D800AB96EF /* StatusTextField.swift */; };
@@ -259,7 +263,6 @@
 		7CC44BE220FD583A004BF759 /* CreateCustomJSONFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BE120FD583A004BF759 /* CreateCustomJSONFileTests.swift */; };
 		7CC44BF120FEE1ED004BF759 /* AESCipherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC44BF020FEE1ED004BF759 /* AESCipherTests.swift */; };
 		7CCA060D210B687200BC4CEF /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA060C210B687200BC4CEF /* Dummy.swift */; };
-		7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCC82F62126155D00D33F84 /* UIWindowTransitions.framework */; };
 		7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E5212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift */; };
 		7CCD73E8212F2207002C8C7F /* ResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD73E7212F2207002C8C7F /* ResponseData.swift */; };
 		7CDAD2682040A9FE0080A32C /* CriptextSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDAD2672040A9FE0080A32C /* CriptextSessionStore.swift */; };
@@ -284,7 +287,6 @@
 		7CF93F562146E41700361837 /* Lock.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CF93F532146E41500361837 /* Lock.json */; };
 		7CF93F572146E41700361837 /* Arm.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CF93F542146E41600361837 /* Arm.json */; };
 		7CF93F582146E41700361837 /* Email.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CF93F552146E41600361837 /* Email.json */; };
-		7CF93F5A2146EDC300361837 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CF93F592146EDC300361837 /* Lottie.framework */; };
 		7CF93F5C214963A500361837 /* GeneralVersionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF93F5B214963A500361837 /* GeneralVersionTableViewCell.swift */; };
 		7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF93F5F21498C4800361837 /* AttachmentTableViewCell.swift */; };
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
@@ -309,7 +311,6 @@
 		A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF2F217A910100FFFDFF /* EmailSetPasswordUIPopover.xib */; };
 		A70609F921A74C0A0066BFA4 /* EmailSetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E987D20C9E608003205F8 /* EmailSetPasswordViewController.swift */; };
 		A70609FA21A74C250066BFA4 /* BaseUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6A881E20619B7000BB1E12 /* BaseUIPopover.swift */; };
-		A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C36847207C69F2008B50A8 /* IQKeyboardManagerSwift.framework */; };
 		A70609FF21A9C0120066BFA4 /* OptionsPickerUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70609FE21A9C0110066BFA4 /* OptionsPickerUIPopover.swift */; };
 		A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7060A0221AA5AC80066BFA4 /* CustomPasscodeViewController.swift */; };
 		A7065E5D21CC1A4200F8292A /* FeedHeaderTitleUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7065E5C21CC1A4200F8292A /* FeedHeaderTitleUIView.swift */; };
@@ -459,14 +460,11 @@
 		A7C613D42278FF7A00234C5C /* FindKeybundleSpyApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C613D32278FF7A00234C5C /* FindKeybundleSpyApiManager.swift */; };
 		A7CC38072190D9DA00C8355A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38062190D9DA00C8355A /* NotificationService.swift */; };
 		A7CC380B2190D9DA00C8355A /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A7CC38042190D9D900C8355A /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BE207696DE00C32998 /* RealmSwift.framework */; };
-		A7CC38342190FE8C00C8355A /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229BD207696DE00C32998 /* Realm.framework */; };
 		A7CC384D219247B100C8355A /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC52E201A9FCC00809C4D /* Email.swift */; };
 		A7CC384E219247B400C8355A /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FD82C20607602000E5F14 /* Label.swift */; };
 		A7CC384F219247B800C8355A /* EmailContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95661FCA205C2B9A006DF852 /* EmailContact.swift */; };
 		A7CC3850219247BF00C8355A /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC530201A9FCD00809C4D /* Contact.swift */; };
 		A7CC3852219250D100C8355A /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AAC555201AA08500809C4D /* DateUtils.m */; };
-		A7CC3858219348E800C8355A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E229B12076923E00C32998 /* Alamofire.framework */; };
 		A7CC385B21934DC600C8355A /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C154FD2204DEBAF00D72F6E /* Account.swift */; };
 		A7CC385D21934E1200C8355A /* DBAxolotl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385C21934E1200C8355A /* DBAxolotl.swift */; };
 		A7CC385E21934E1200C8355A /* DBAxolotl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC385C21934E1200C8355A /* DBAxolotl.swift */; };
@@ -482,7 +480,6 @@
 		A7CC386821934FF400C8355A /* CRTrustedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA794B8204F3B2A000AC986 /* CRTrustedDevice.swift */; };
 		A7CC386B21936A0300C8355A /* NewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC386921936A0300C8355A /* NewEmail.swift */; };
 		A7CC386C21936A6000C8355A /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C13D8AE20810D75008F1395 /* SignalHandler.swift */; };
-		A7CC386D21936D9D00C8355A /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8C20781C5E00B8994F /* SwiftSoup.framework */; };
 		A7CC387521939B2600C8355A /* NewEmailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387421939B2600C8355A /* NewEmailHandler.swift */; };
 		A7CC387821939BA600C8355A /* NewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC386921936A0300C8355A /* NewEmail.swift */; };
 		A7CC387A21939C3D00C8355A /* SharedDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC387921939C3D00C8355A /* SharedDB.swift */; };
@@ -510,7 +507,6 @@
 		A7F30271216E859300676DD2 /* GZipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F30270216E859300676DD2 /* GZipTests.swift */; };
 		A7F30275216EA60B00676DD2 /* gunzipped.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F30274216EA60B00676DD2 /* gunzipped.txt */; };
 		A7F3027A216EB78200676DD2 /* compressed.gz in Resources */ = {isa = PBXBuildFile; fileRef = A7F30279216EB78200676DD2 /* compressed.gz */; };
-		A7F3027C216EBABD00676DD2 /* Gzip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F3027B216EBABC00676DD2 /* Gzip.framework */; };
 		A7F30280216F9DCF00676DD2 /* SignInVerificationUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3027F216F9DCF00676DD2 /* SignInVerificationUIPopover.swift */; };
 		A7FFCF1B217A8FE300FFFDFF /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF1D217A8FE300FFFDFF /* Login.storyboard */; };
 		A7FFCF1E217A90B300FFFDFF /* ContactsDetailUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF20217A90B300FFFDFF /* ContactsDetailUIPopover.xib */; };
@@ -531,11 +527,9 @@
 		A7FFCF63217A93E600FFFDFF /* CriptextLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */; };
 		A7FFCF68217F735100FFFDFF /* ControllerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF67217F735100FFFDFF /* ControllerMessage.swift */; };
 		A7FFCF8D2180BCA100FFFDFF /* QueueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCF8C2180BCA100FFFDFF /* QueueItem.swift */; };
-		A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FFCF8E2182621D00FFFDFF /* TLPhotoPicker.framework */; };
 		CF96000221FA7D65001FD5A3 /* CIDSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF96000121FA7D65001FD5A3 /* CIDSchemeHandler.swift */; };
 		D60C0B5921EE39EB00D8D4A1 /* FilterUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C0B5821EE39EB00D8D4A1 /* FilterUIPopover.swift */; };
 		D60C0B5B21EE3A0C00D8D4A1 /* FilterUIPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60C0B5A21EE3A0C00D8D4A1 /* FilterUIPopover.xib */; };
-		D627CE2522035ED300FFB7A4 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8620781C4600B8994F /* SDWebImage.framework */; };
 		D63EE2DA21CC247E001125B3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254221CAFE20003CF78D /* Theme.swift */; };
 		D63EE2DB21CC248E001125B3 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A723254421CBE257003CF78D /* ThemeManager.swift */; };
 		D643395022013C4C00B74C1D /* ProfileEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D643394F22013C4C00B74C1D /* ProfileEditorViewController.swift */; };
@@ -835,21 +829,6 @@
 		7C34E5FE2048BCBA00E71906 /* ReplyDetailUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyDetailUIView.swift; sourceTree = "<group>"; };
 		7C34E6042049E84500E71906 /* EmailDetailFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailFooterCell.swift; sourceTree = "<group>"; };
 		7C3549E3248031E20083EE41 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		7C354A23248052310083EE41 /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
-		7C354A24248052310083EE41 /* FirebaseCrashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCrashlytics.framework; path = Carthage/Build/iOS/FirebaseCrashlytics.framework; sourceTree = "<group>"; };
-		7C354A25248052310083EE41 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = Carthage/Build/iOS/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
-		7C354A26248052320083EE41 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Carthage/Build/iOS/FirebaseInstanceID.framework; sourceTree = "<group>"; };
-		7C354A27248052320083EE41 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
-		7C354A28248052320083EE41 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Carthage/Build/iOS/FirebaseMessaging.framework; sourceTree = "<group>"; };
-		7C354A29248052320083EE41 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCoreDiagnostics.framework; path = Carthage/Build/iOS/FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
-		7C354A2A248052320083EE41 /* GoogleDataTransportCCTSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransportCCTSupport.framework; path = Carthage/Build/iOS/GoogleDataTransportCCTSupport.framework; sourceTree = "<group>"; };
-		7C354A2B248052320083EE41 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = Carthage/Build/iOS/Firebase.framework; sourceTree = "<group>"; };
-		7C354A2C248052320083EE41 /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
-		7C354A2D248052320083EE41 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
-		7C354A2E248052330083EE41 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = Carthage/Build/iOS/GoogleUtilities.framework; sourceTree = "<group>"; };
-		7C354A2F248052330083EE41 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Carthage/Build/iOS/FirebaseAnalytics.framework; sourceTree = "<group>"; };
-		7C354A3D248052490083EE41 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = nanopb.framework; path = Carthage/Build/iOS/nanopb.framework; sourceTree = "<group>"; };
-		7C354A3E248052490083EE41 /* PromisesObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromisesObjC.framework; path = Carthage/Build/iOS/PromisesObjC.framework; sourceTree = "<group>"; };
 		7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRecordsUIView.swift; sourceTree = "<group>"; };
 		7C394E84210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECKeyPair+KeyPairOpenPrivate.h"; sourceTree = "<group>"; };
 		7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ECKeyPair+KeyPairOpenPrivate.m"; sourceTree = "<group>"; };
@@ -914,7 +893,6 @@
 		7C7F2FF220B4D36600A2CB32 /* SettingsDeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeviceTableViewCell.swift; sourceTree = "<group>"; };
 		7C7F2FF620B5E29900A2CB32 /* SingleTextInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTextInputViewController.swift; sourceTree = "<group>"; };
 		7C7F2FF820B6059800A2CB32 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		7C89D1EC24805417001E6198 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Carthage/Build/iOS/Protobuf.framework; sourceTree = "<group>"; };
 		7C8A9AEC2052E9C90096EEB8 /* CriptextDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextDrawerController.swift; sourceTree = "<group>"; };
 		7C8C2F6F20EAB87D00FC145E /* LabelsFooterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsFooterViewCell.swift; sourceTree = "<group>"; };
 		7C8D6C632034A4D800AB96EF /* StatusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTextField.swift; sourceTree = "<group>"; };
@@ -1208,48 +1186,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C6D0C3C2589664900D80BB5 /* RealmSwift in Frameworks */,
+				7C6D0C5C2589670A00D80BB5 /* UIWindowTransitions in Frameworks */,
 				7C3549E8248032320083EE41 /* StoreKit.framework in Frameworks */,
 				7C3549E72480322D0083EE41 /* libsqlite3.tbd in Frameworks */,
+				7C6D0C482589669100D80BB5 /* SDWebImage in Frameworks */,
 				7C3549E6248032280083EE41 /* libc++.tbd in Frameworks */,
 				A77C30A921A4EC240031E219 /* PasscodeLock.framework in Frameworks */,
-				A7FFCF8F2182621E00FFFDFF /* TLPhotoPicker.framework in Frameworks */,
-				A7F3027C216EBABD00676DD2 /* Gzip.framework in Frameworks */,
-				7C354A40248052490083EE41 /* PromisesObjC.framework in Frameworks */,
-				7CF93F5A2146EDC300361837 /* Lottie.framework in Frameworks */,
-				7CCC82F72126155F00D33F84 /* UIWindowTransitions.framework in Frameworks */,
-				7C354A39248052340083EE41 /* FirebaseInstallations.framework in Frameworks */,
-				7C354A3F248052490083EE41 /* nanopb.framework in Frameworks */,
-				7C354A3A248052340083EE41 /* FIRAnalyticsConnector.framework in Frameworks */,
 				7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */,
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
-				7C89D1ED24805417001E6198 /* Protobuf.framework in Frameworks */,
+				7C6D0C3A2589664900D80BB5 /* Realm in Frameworks */,
 				41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */,
-				41C36848207C69F3008B50A8 /* IQKeyboardManagerSwift.framework in Frameworks */,
-				41C9CC8F20781C6700B8994F /* MMMaterialDesignSpinner.framework in Frameworks */,
-				7C354A30248052330083EE41 /* GoogleDataTransport.framework in Frameworks */,
-				7C354A34248052330083EE41 /* FirebaseCore.framework in Frameworks */,
-				41C9CC8D20781C5E00B8994F /* SwiftSoup.framework in Frameworks */,
-				7C354A31248052330083EE41 /* FirebaseCrashlytics.framework in Frameworks */,
 				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
-				41C9CC8720781C4600B8994F /* SDWebImage.framework in Frameworks */,
+				7C6D0C762589691400D80BB5 /* FirebaseMessaging in Frameworks */,
+				7C6D0C782589691400D80BB5 /* FirebaseCrashlytics in Frameworks */,
 				41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */,
-				7C354A35248052330083EE41 /* FirebaseMessaging.framework in Frameworks */,
-				7C354A32248052330083EE41 /* GoogleAppMeasurement.framework in Frameworks */,
+				7C6D0C6E2589681600D80BB5 /* TLPhotoPicker in Frameworks */,
+				7C6D0C622589678B00D80BB5 /* Lottie in Frameworks */,
 				41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */,
 				41C3684A207C6C0B008B50A8 /* Motion.framework in Frameworks */,
 				41C9CC832078195900B8994F /* Material.framework in Frameworks */,
-				41E229BF207696DE00C32998 /* Realm.framework in Frameworks */,
+				7C6D0C342589643500D80BB5 /* Alamofire in Frameworks */,
 				41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */,
-				41E229C0207696DE00C32998 /* RealmSwift.framework in Frameworks */,
-				41C9CBBA20769A9600B8994F /* Alamofire.framework in Frameworks */,
-				7C354A3C248052340083EE41 /* FirebaseAnalytics.framework in Frameworks */,
-				7C354A33248052330083EE41 /* FirebaseInstanceID.framework in Frameworks */,
+				7C6D0C56258966E300D80BB5 /* IQKeyboardManagerSwift in Frameworks */,
+				7C6D0C68258967A300D80BB5 /* Gzip in Frameworks */,
 				41C9CBBB20769A9F00B8994F /* SignalProtocolFramework.framework in Frameworks */,
-				41C9CBBC20769AA500B8994F /* SwiftyJSON.framework in Frameworks */,
-				7C354A36248052340083EE41 /* FirebaseCoreDiagnostics.framework in Frameworks */,
+				7C6D0C4A2589669100D80BB5 /* SDWebImageMapKit in Frameworks */,
 				41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */,
-				7C354A3B248052340083EE41 /* GoogleUtilities.framework in Frameworks */,
+				7C6D0C422589666400D80BB5 /* SwiftyJSON in Frameworks */,
 				A7EBB11022CABFD000689760 /* Starscream.framework in Frameworks */,
+				7C6D0C742589691400D80BB5 /* FirebaseAnalytics in Frameworks */,
+				7C6D0C50258966B100D80BB5 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1265,12 +1232,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C6D0C9025896DDC00D80BB5 /* SDWebImage in Frameworks */,
 				A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */,
 				A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */,
+				7C6D0CA32589702900D80BB5 /* Gzip in Frameworks */,
+				7C6D0C9925896EA200D80BB5 /* RealmSwift in Frameworks */,
 				D652A07921C036B0005EC3E1 /* UIImageView_Letters.framework in Frameworks */,
-				A70609FB21A74C4A0066BFA4 /* IQKeyboardManagerSwift.framework in Frameworks */,
-				D627CE2522035ED300FFB7A4 /* SDWebImage.framework in Frameworks */,
+				7C6D0C9E2589700C00D80BB5 /* Alamofire in Frameworks */,
 				A7ADA15A21A725460027FC1C /* Material.framework in Frameworks */,
+				7C6D0C9225896DDC00D80BB5 /* SDWebImageMapKit in Frameworks */,
+				7C6D0C9725896EA200D80BB5 /* Realm in Frameworks */,
+				7C6D0C8E25896DD300D80BB5 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,11 +1250,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7CC38342190FE8C00C8355A /* Realm.framework in Frameworks */,
+				7C6D0C8825896DB600D80BB5 /* RealmSwift in Frameworks */,
+				7C6D0C8A25896DBF00D80BB5 /* Alamofire in Frameworks */,
 				A7CC386421934FDE00C8355A /* SignalProtocolFramework.framework in Frameworks */,
-				A7CC386D21936D9D00C8355A /* SwiftSoup.framework in Frameworks */,
-				A7CC3858219348E800C8355A /* Alamofire.framework in Frameworks */,
-				A7CC38332190FE8A00C8355A /* RealmSwift.framework in Frameworks */,
+				7C6D0C8625896DB600D80BB5 /* Realm in Frameworks */,
+				7C6D0C8C25896DC400D80BB5 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1478,22 +1450,6 @@
 		41B6AAA32017987500D428B7 = {
 			isa = PBXGroup;
 			children = (
-				7C354A2D248052320083EE41 /* FIRAnalyticsConnector.framework */,
-				7C354A2B248052320083EE41 /* Firebase.framework */,
-				7C354A2F248052330083EE41 /* FirebaseAnalytics.framework */,
-				7C354A27248052320083EE41 /* FirebaseCore.framework */,
-				7C354A29248052320083EE41 /* FirebaseCoreDiagnostics.framework */,
-				7C354A24248052310083EE41 /* FirebaseCrashlytics.framework */,
-				7C354A2C248052320083EE41 /* FirebaseInstallations.framework */,
-				7C354A26248052320083EE41 /* FirebaseInstanceID.framework */,
-				7C354A28248052320083EE41 /* FirebaseMessaging.framework */,
-				7C354A25248052310083EE41 /* GoogleAppMeasurement.framework */,
-				7C354A23248052310083EE41 /* GoogleDataTransport.framework */,
-				7C354A2A248052320083EE41 /* GoogleDataTransportCCTSupport.framework */,
-				7C354A2E248052330083EE41 /* GoogleUtilities.framework */,
-				7C354A3D248052490083EE41 /* nanopb.framework */,
-				7C354A3E248052490083EE41 /* PromisesObjC.framework */,
-				7C89D1EC24805417001E6198 /* Protobuf.framework */,
 				41B6AAAE2017987500D428B7 /* iOS-Email-Client */,
 				41B6AAC32017987500D428B7 /* iOS-Email-ClientTests */,
 				A7CC38052190D9DA00C8355A /* NotificationExtension */,
@@ -1956,6 +1912,23 @@
 				A77C30B721A5055A0031E219 /* PBXTargetDependency */,
 			);
 			name = "iOS-Email-Client";
+			packageProductDependencies = (
+				7C6D0C332589643500D80BB5 /* Alamofire */,
+				7C6D0C392589664900D80BB5 /* Realm */,
+				7C6D0C3B2589664900D80BB5 /* RealmSwift */,
+				7C6D0C412589666400D80BB5 /* SwiftyJSON */,
+				7C6D0C472589669100D80BB5 /* SDWebImage */,
+				7C6D0C492589669100D80BB5 /* SDWebImageMapKit */,
+				7C6D0C4F258966B100D80BB5 /* SwiftSoup */,
+				7C6D0C55258966E300D80BB5 /* IQKeyboardManagerSwift */,
+				7C6D0C5B2589670A00D80BB5 /* UIWindowTransitions */,
+				7C6D0C612589678B00D80BB5 /* Lottie */,
+				7C6D0C67258967A300D80BB5 /* Gzip */,
+				7C6D0C6D2589681600D80BB5 /* TLPhotoPicker */,
+				7C6D0C732589691400D80BB5 /* FirebaseAnalytics */,
+				7C6D0C752589691400D80BB5 /* FirebaseMessaging */,
+				7C6D0C772589691400D80BB5 /* FirebaseCrashlytics */,
+			);
 			productName = "iOS-Email-Client";
 			productReference = 41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */;
 			productType = "com.apple.product-type.application";
@@ -1991,6 +1964,15 @@
 			dependencies = (
 			);
 			name = ShareExtension;
+			packageProductDependencies = (
+				7C6D0C8D25896DD300D80BB5 /* IQKeyboardManagerSwift */,
+				7C6D0C8F25896DDC00D80BB5 /* SDWebImage */,
+				7C6D0C9125896DDC00D80BB5 /* SDWebImageMapKit */,
+				7C6D0C9625896EA200D80BB5 /* Realm */,
+				7C6D0C9825896EA200D80BB5 /* RealmSwift */,
+				7C6D0C9D2589700C00D80BB5 /* Alamofire */,
+				7C6D0CA22589702900D80BB5 /* Gzip */,
+			);
 			productName = ShareExtension;
 			productReference = A77C30AE21A5055A0031E219 /* ShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -2008,6 +1990,12 @@
 			dependencies = (
 			);
 			name = NotificationExtension;
+			packageProductDependencies = (
+				7C6D0C8525896DB600D80BB5 /* Realm */,
+				7C6D0C8725896DB600D80BB5 /* RealmSwift */,
+				7C6D0C8925896DBF00D80BB5 /* Alamofire */,
+				7C6D0C8B25896DC400D80BB5 /* SwiftSoup */,
+			);
 			productName = NotificationExtension;
 			productReference = A7CC38042190D9D900C8355A /* NotificationExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -2085,6 +2073,19 @@
 				es,
 			);
 			mainGroup = 41B6AAA32017987500D428B7;
+			packageReferences = (
+				7C6D0C322589643500D80BB5 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				7C6D0C402589666400D80BB5 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				7C6D0C462589669100D80BB5 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				7C6D0C4E258966B100D80BB5 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				7C6D0C54258966E300D80BB5 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				7C6D0C5A2589670A00D80BB5 /* XCRemoteSwiftPackageReference "UIWindowTransitions" */,
+				7C6D0C602589678B00D80BB5 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */,
+				7C6D0C6C2589681600D80BB5 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
+				7C6D0C722589691400D80BB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 41B6AAAD2017987500D428B7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -2253,56 +2254,32 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SignalProtocolFramework.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/TagListView.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CLTokenInputView.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Material.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CICropPicker.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/M13Checkbox.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftSoup.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/MMMaterialDesignSpinner.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MIBadgeButton_Swift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/RichEditorView.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManagerSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/UIImageView_Letters.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Motion.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Instructions.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/UIWindowTransitions.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Lottie.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Gzip.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/TLPhotoPicker.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/PasscodeLock.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Starscream.framework",
 			);
 			name = "Run Script Framework";
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SignalProtocolFramework.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Realm.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RealmSwift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/TagListView.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftyJSON.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CLTokenInputView.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Material.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CICropPicker.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SDWebImage.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/M13Checkbox.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftSoup.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MMMaterialDesignSpinner.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MIBadgeButton_Swift.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RichEditorView.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManagerSwift.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIImageView_Letters.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Motion.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Instructions.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIWindowTransitions.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Lottie.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Gzip.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/TLPhotoPicker.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PasscodeLock.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Starscream.framework",
 			);
@@ -3309,7 +3286,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3318,7 +3295,10 @@
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3349,7 +3329,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3358,7 +3338,10 @@
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3390,7 +3373,11 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "iOS-Email-ClientTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-ClientTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3415,7 +3402,11 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "iOS-Email-ClientTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-ClientTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3494,7 +3485,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3504,7 +3495,10 @@
 				);
 				INFOPLIST_FILE = "iOS-Email-Client/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3536,7 +3530,11 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "iOS-Email-ClientTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.criptext.iOS-Email-ClientTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3557,7 +3555,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3565,7 +3563,11 @@
 				);
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -3588,7 +3590,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3596,7 +3598,11 @@
 				);
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
@@ -3618,7 +3624,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3627,7 +3633,11 @@
 				);
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.ShareExtension;
@@ -3651,7 +3661,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3659,7 +3669,11 @@
 				);
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -3685,7 +3699,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3693,7 +3707,11 @@
 				);
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
@@ -3718,7 +3736,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3727,7 +3745,11 @@
 				);
 				INFOPLIST_FILE = NotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.9;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
@@ -3794,6 +3816,230 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7C6D0C322589643500D80BB5 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.9.1;
+			};
+		};
+		7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				kind = exactVersion;
+				version = 3.18.0;
+			};
+		};
+		7C6D0C402589666400D80BB5 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.0.0;
+			};
+		};
+		7C6D0C462589669100D80BB5 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.10.0;
+			};
+		};
+		7C6D0C4E258966B100D80BB5 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.3.2;
+			};
+		};
+		7C6D0C54258966E300D80BB5 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = exactVersion;
+				version = 6.5.6;
+			};
+		};
+		7C6D0C5A2589670A00D80BB5 /* XCRemoteSwiftPackageReference "UIWindowTransitions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/UIWindowTransitions.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.0;
+			};
+		};
+		7C6D0C602589678B00D80BB5 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = revision;
+				revision = 11d518841365b85b0dca7f7a55174d12911f05a0;
+			};
+		};
+		7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/1024jp/GzipSwift";
+			requirement = {
+				kind = exactVersion;
+				version = 5.1.1;
+			};
+		};
+		7C6D0C6C2589681600D80BB5 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tilltue/TLPhotoPicker.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.1.3;
+			};
+		};
+		7C6D0C722589691400D80BB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 7.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7C6D0C332589643500D80BB5 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C322589643500D80BB5 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		7C6D0C392589664900D80BB5 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		7C6D0C3B2589664900D80BB5 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		7C6D0C412589666400D80BB5 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C402589666400D80BB5 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		7C6D0C472589669100D80BB5 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C462589669100D80BB5 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		7C6D0C492589669100D80BB5 /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C462589669100D80BB5 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+		7C6D0C4F258966B100D80BB5 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C4E258966B100D80BB5 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+		7C6D0C55258966E300D80BB5 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C54258966E300D80BB5 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+		7C6D0C5B2589670A00D80BB5 /* UIWindowTransitions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C5A2589670A00D80BB5 /* XCRemoteSwiftPackageReference "UIWindowTransitions" */;
+			productName = UIWindowTransitions;
+		};
+		7C6D0C612589678B00D80BB5 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C602589678B00D80BB5 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		7C6D0C67258967A300D80BB5 /* Gzip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */;
+			productName = Gzip;
+		};
+		7C6D0C6D2589681600D80BB5 /* TLPhotoPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C6C2589681600D80BB5 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */;
+			productName = TLPhotoPicker;
+		};
+		7C6D0C732589691400D80BB5 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C722589691400D80BB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		7C6D0C752589691400D80BB5 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C722589691400D80BB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		7C6D0C772589691400D80BB5 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C722589691400D80BB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		7C6D0C8525896DB600D80BB5 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		7C6D0C8725896DB600D80BB5 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		7C6D0C8925896DBF00D80BB5 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C322589643500D80BB5 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		7C6D0C8B25896DC400D80BB5 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C4E258966B100D80BB5 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+		7C6D0C8D25896DD300D80BB5 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C54258966E300D80BB5 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+		7C6D0C8F25896DDC00D80BB5 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C462589669100D80BB5 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		7C6D0C9125896DDC00D80BB5 /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C462589669100D80BB5 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+		7C6D0C9625896EA200D80BB5 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		7C6D0C9825896EA200D80BB5 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C382589664900D80BB5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		7C6D0C9D2589700C00D80BB5 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C322589643500D80BB5 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		7C6D0CA22589702900D80BB5 /* Gzip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */;
+			productName = Gzip;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 41B6AAA42017987500D428B7 /* Project object */;
 }
