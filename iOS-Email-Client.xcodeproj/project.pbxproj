@@ -230,7 +230,6 @@
 		7C92104820FFD5690081C048 /* AESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104720FFD5690081C048 /* AESCipher.swift */; };
 		7C92104A210141380081C048 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C921049210141380081C048 /* EventData.swift */; };
 		7C92104C21022B290081C048 /* CircleLoaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C92104B21022B290081C048 /* CircleLoaderUIView.swift */; };
-		7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9F571F245B818F000FC9E6 /* RemoveAliasUIPopover.swift */; };
 		7C9F572224621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9F572124621EBA000FC9E6 /* EmailDetailContentOptionsInterface.swift */; };
 		7CA607B9242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
 		7CA607BA242A5E120086D6B4 /* AccountAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA607B8242A5E120086D6B4 /* AccountAlias.swift */; };
@@ -2007,7 +2006,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Criptext Inc.";
 				TargetAttributes = {
 					41B6AAAB2017987500D428B7 = {
@@ -2477,7 +2476,6 @@
 				7C170F2524980BC100D083F8 /* LinkDBMaps.swift in Sources */,
 				7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */,
 				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
-				7C9F5720245B818F000FC9E6 /* RemoveAliasUIPopover.swift in Sources */,
 				7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */,
 				9568329020753FBE007F8489 /* File.swift in Sources */,
 				7C7F2FF120B4D2C400A2CB32 /* SettingsDevicesViewController.swift in Sources */,
@@ -3299,7 +3297,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3342,7 +3340,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3499,7 +3497,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3568,7 +3566,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
@@ -3603,7 +3601,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
@@ -3638,7 +3636,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
@@ -3674,7 +3672,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
@@ -3712,7 +3710,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3750,7 +3748,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
