@@ -950,15 +950,17 @@ extension InboxViewController{
         
         let popover = EnableAutoBackupUIPopover()
         popover.onEnableAutoBackup = { [weak self] enable in
-            self?.enableAutoBackup(enable)
+            guard let weakSelf = self else {
+                return
+            }
+            defaults.setShownAutobackup(email: weakSelf.myAccount.email)
+            weakSelf.enableAutoBackup(enable)
         }
         self.presentPopover(popover: popover, height: 380)
     }
     
     func enableAutoBackup(_ enable: Bool) {
-        let defaults = CriptextDefaults()
         guard enable else {
-            defaults.setShownAutobackup(email: self.myAccount.email)
             return
         }
         guard BackupManager.shared.hasCloudAccessDir(email: self.myAccount.email) else {
@@ -969,7 +971,6 @@ extension InboxViewController{
         DBManager.update(account: self.myAccount, frequency: BackupFrequency.daily.rawValue)
         BackupManager.shared.clearAccount(accountId: self.myAccount.compoundKey)
         BackupManager.shared.backupNow(account: self.myAccount)
-        defaults.setShownAutobackup(email: self.myAccount.email)
         self.showSnackbar(String.localize("BACKUP_ACTIVATED"), attributedText: nil, permanent: false)
     }
 }

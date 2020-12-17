@@ -210,7 +210,7 @@ class CriptextDefaults {
     }
     
     func setShownAutobackup(email: String) {
-        defaults.bool(forKey: "\(Config.autoBackupPopup.rawValue)_\(email)")
+        defaults.set(true, forKey: "\(Config.autoBackupPopup.rawValue)_\(email)")
     }
     
     func getShownAutoBackup(email: String) -> Bool {

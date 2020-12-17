@@ -240,7 +240,7 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
                     options.direction = .toTop
                     options.duration = 0.4
                     options.style = .easeOut
-                    UIApplication.shared.keyWindow?.setRootViewController(initialVC, options: options)
+                    UIApplication.shared.keyWindow?.set(rootViewController: initialVC, options: options, nil)
                     return
             }
             let storyboard = UIStoryboard(name: "Login", bundle: nil)

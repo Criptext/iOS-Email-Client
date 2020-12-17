@@ -135,17 +135,6 @@ class NewEmailHandler {
                 switch(decryptedContentResult) {
                     case .Content(let decryptedContent):
                         content = decryptedContent
-                    case .Duplicated, .NoSession:
-                        let emailId = "\(myAccount.compoundKey):\(event.metadataKey)"
-                        let defaults = CriptextDefaults()
-                        if defaults.getEmailStrike(id: emailId) > 2 {
-                            content = String.localize("CONTENT_UNENCRYPTED")
-                            defaults.deleteEmailStrike(id: emailId)
-                        } else {
-                            defaults.addEmailStrike(id: emailId)
-                            completion(EmailProcessResult(type: .Failure))
-                            return
-                        }
                     case .UnableToDecryptExternal:
                         completion(EmailProcessResult(type: .UnableToDecryptExternal))
                         return
@@ -298,6 +287,7 @@ class NewEmailHandler {
             let deviceId = senderDeviceId else {
                 return .Content(myContent)
         }
+
         var trueBody = myContent
         let err = tryBlock {
             trueBody = self.signal.decryptMessage(myContent, messageType: messageType, account: account, recipientId: recipient, deviceId: deviceId)
@@ -311,12 +301,12 @@ class NewEmailHandler {
                 "codeName": codeName
                 ] as [String : Any]
             Crashlytics.crashlytics().record(error: NSError.init(domain: codeName, code: -1000, userInfo: payload))
-            if (error.name.rawValue == "AxolotlDuplicateMessage") {
+            if isExternal {
+                return .UnableToDecryptExternal
+            } else if (error.name.rawValue == "AxolotlDuplicateMessage") {
                 return .Duplicated
             } else if (error.name.rawValue == "AxolotlNoSessionException") {
                 return .NoSession
-            } else if(isExternal){
-                return .UnableToDecryptExternal
             } else {
                 return .Uknown
             }
