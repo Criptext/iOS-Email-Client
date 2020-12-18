@@ -162,7 +162,9 @@ class SendMailAsyncTask {
             return
         }
         guard let myAccount = SharedDB.getAccountById(self.accountId) else {
-            completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
+            DispatchQueue.main.async {
+                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_DUPLICATE"))))
+            }
             return
         }
         apiManager.duplicateFiles(filetokens: self.duplicates, token: myAccount.jwt, queue: queue) { (responseData) in
@@ -170,7 +172,9 @@ class SendMailAsyncTask {
                 let myAccount = SharedDB.getAccountById(self.accountId),
                 let duplicates = response["duplicates"] as? [String: Any],
                 let fileParams = SharedDB.duplicateFiles(account: myAccount, key: self.emailKey, duplicates: duplicates) else {
-                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_DUPLICATE"))))
+                DispatchQueue.main.async {
+                    completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_DUPLICATE"))))
+                }
                 return
             }
             self.files.append(contentsOf: fileParams)
@@ -180,7 +184,9 @@ class SendMailAsyncTask {
     
     private func getSessionAndEncrypt(queue: DispatchQueue, completion: @escaping ((ResponseData) -> Void)){
         guard let myAccount = SharedDB.getAccountById(self.accountId) else {
-            completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
+            DispatchQueue.main.async {
+                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
+            }
             return
         }
         
@@ -199,7 +205,9 @@ class SendMailAsyncTask {
             }
             let guestDomains = self.buildSessions(keysData: keysArray, myAccount: myAccount)
             guard let emailsData = self.createSendEmailData(myAccount: myAccount, guestDomains: guestDomains) else {
-                completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
+                DispatchQueue.main.async {
+                    completion(ResponseData.Error(CriptextError(message: String.localize("UNABLE_HANDLE_MAIL"))))
+                }
                 return
             }
             let sendEmailData = SendEmailData(criptextEmails: emailsData.0, guestEmails: emailsData.1)
