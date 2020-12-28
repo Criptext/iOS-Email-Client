@@ -7,17 +7,16 @@
 //
 
 import Foundation
-import RichEditorView
 
 class KeyboardManager: NSObject{
     
     weak var view: UIView?
-    var toolbar: RichEditorToolbar
+    //var toolbar: RichEditorToolbar
     
     init(view: UIView) {
         self.view = view
-        toolbar = RichEditorToolbar(frame: CGRect(x: 0, y: view.bounds.height, width: view.bounds.width, height: 44))
-        toolbar.options = [.bold, .italic, .header(1), .header(2), .header(3), .header(4), .header(5), .alignLeft, .alignCenter, .alignRight, .indent, .outdent, .undo, .redo] as [RichEditorDefaultOption]
+        //toolbar = RichEditorToolbar(frame: CGRect(x: 0, y: view.bounds.height, width: view.bounds.width, height: 44))
+        //toolbar.options = [.bold, .italic, .header(1), .header(2), .header(3), .header(4), .header(5), .alignLeft, .alignCenter, .alignRight, .indent, .outdent, .undo, .redo] as [RichEditorDefaultOption]
     }
 
     func beginMonitoring() {
@@ -38,23 +37,6 @@ class KeyboardManager: NSObject{
         let options = UIView.AnimationOptions(rawValue: curve)
         let keyboardRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero
         
-        
-        if notification.name == UIResponder.keyboardWillShowNotification {
-            self.view?.addSubview(self.toolbar)
-            UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
-                if let view = self.view {
-                    self.toolbar.frame.origin.y = view.frame.height - (keyboardRect.height + self.toolbar.frame.height)
-                }
-            }, completion: nil)
-            
-            
-        } else if notification.name == UIResponder.keyboardWillHideNotification {
-            UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
-                if let view = self.view {
-                    self.toolbar.frame.origin.y = view.frame.height
-                }
-            }, completion: nil)
-        }
     }
     
 }

@@ -88,7 +88,6 @@
 		41C9CC832078195900B8994F /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC822078195900B8994F /* Material.framework */; };
 		41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC842078196600B8994F /* CICropPicker.framework */; };
 		41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8820781C4E00B8994F /* M13Checkbox.framework */; };
-		41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */; };
 		41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748D207C68C900CCA685 /* MIBadgeButton_Swift.framework */; };
 		41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
@@ -137,8 +136,6 @@
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */; };
-		7C3C35D0243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */; };
-		7C3C35D1243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */; };
 		7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */; };
 		7C46BED72153F71E00282182 /* SingleWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED62153F71E00282182 /* SingleWebSocket.swift */; };
 		7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */; };
@@ -151,8 +148,13 @@
 		7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */; };
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
+		7C5274CA258BFDB100486D5A /* TheRichTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5274C9258BFDB100486D5A /* TheRichTextEditor.swift */; };
+		7C5274CC258BFDC000486D5A /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 7C5274CB258BFDC000486D5A /* main.js */; };
+		7C5274CE258BFDC800486D5A /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C5274CD258BFDC800486D5A /* main.html */; };
+		7C5274D3258C179A00486D5A /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 7C5274D2258C179A00486D5A /* SwiftyJSON */; };
 		7C5322122111394000C78981 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C5322112111394000C78981 /* GoogleService-Info.plist */; };
 		7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */; };
+		7C5571A5259A795100D6D0C6 /* CustomWebview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5571A4259A795100D6D0C6 /* CustomWebview.swift */; };
 		7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
 		7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */; };
 		7C5FD822205C2FBB000E5F14 /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C5FD821205C2FBA000E5F14 /* AttachmentTableViewCell.xib */; };
@@ -207,6 +209,9 @@
 		7C7869CA2469F2070085D909 /* LinkFileHandlerVersion6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869C92469F2070085D909 /* LinkFileHandlerVersion6.swift */; };
 		7C7869CC246EDFD40085D909 /* AvatarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C7869CB246EDFD40085D909 /* AvatarUIView.xib */; };
 		7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869CD246EE0DC0085D909 /* AvatarUI.swift */; };
+		7C79DBCD25927D1D00AC5385 /* TheRichTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5274C9258BFDB100486D5A /* TheRichTextEditor.swift */; };
+		7C79DBD125927D1F00AC5385 /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 7C5274CB258BFDC000486D5A /* main.js */; };
+		7C79DBD225927D2200AC5385 /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C5274CD258BFDC800486D5A /* main.html */; };
 		7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */; };
 		7C7F2FEB20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FEA20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift */; };
 		7C7F2FED20B4B65700A2CB32 /* SettingsLabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FEC20B4B65700A2CB32 /* SettingsLabelsViewController.swift */; };
@@ -391,7 +396,6 @@
 		A789B24021B8228800F89DF3 /* CriptextLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */; };
 		A78D27A12238084200B3ECD6 /* APIManagerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78D27A02238084200B3ECD6 /* APIManagerSpy.swift */; };
 		A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
-		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
 		A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */; };
@@ -840,7 +844,6 @@
 		7C3C35C624329D22001A8C9F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/de.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
 		7C3C35C824329D23001A8C9F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/ru.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
 		7C3C35CA24329D23001A8C9F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/es.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
-		7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichEditorWrapperView.swift; sourceTree = "<group>"; };
 		7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUploadViewController.swift; sourceTree = "<group>"; };
 		7C46BED62153F71E00282182 /* SingleWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWebSocket.swift; sourceTree = "<group>"; };
 		7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryEmailViewController.swift; sourceTree = "<group>"; };
@@ -853,8 +856,12 @@
 		7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterLabelUIView.swift; sourceTree = "<group>"; };
 		7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAccountViewController.swift; sourceTree = "<group>"; };
 		7C50C692202E3A3000FED2E8 /* TipUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipUIView.swift; sourceTree = "<group>"; };
+		7C5274C9258BFDB100486D5A /* TheRichTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheRichTextEditor.swift; sourceTree = "<group>"; };
+		7C5274CB258BFDC000486D5A /* main.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
+		7C5274CD258BFDC800486D5A /* main.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = main.html; sourceTree = "<group>"; };
 		7C5322112111394000C78981 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWarningPopoverViewController.swift; sourceTree = "<group>"; };
+		7C5571A4259A795100D6D0C6 /* CustomWebview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWebview.swift; sourceTree = "<group>"; };
 		7C55B88B20863D7900BA96E8 /* CriptextError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriptextError.swift; sourceTree = "<group>"; };
 		7C5E404120B715D20027C61F /* SignatureEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureEditorViewController.swift; sourceTree = "<group>"; };
 		7C5FD821205C2FBA000E5F14 /* AttachmentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentTableViewCell.xib; sourceTree = "<group>"; };
@@ -1195,7 +1202,6 @@
 				7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */,
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
 				7C6D0C3A2589664900D80BB5 /* Realm in Frameworks */,
-				41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */,
 				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
 				7C6D0C762589691400D80BB5 /* FirebaseMessaging in Frameworks */,
 				7C6D0C782589691400D80BB5 /* FirebaseCrashlytics in Frameworks */,
@@ -1232,7 +1238,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C6D0C9025896DDC00D80BB5 /* SDWebImage in Frameworks */,
-				A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */,
 				A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */,
 				7C6D0CA32589702900D80BB5 /* Gzip in Frameworks */,
 				7C6D0C9925896EA200D80BB5 /* RealmSwift in Frameworks */,
@@ -1249,6 +1254,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C5274D3258C179A00486D5A /* SwiftyJSON in Frameworks */,
 				7C6D0C8825896DB600D80BB5 /* RealmSwift in Frameworks */,
 				7C6D0C8A25896DBF00D80BB5 /* Alamofire in Frameworks */,
 				A7CC386421934FDE00C8355A /* SignalProtocolFramework.framework in Frameworks */,
@@ -1472,6 +1478,7 @@
 		41B6AAAE2017987500D428B7 /* iOS-Email-Client */ = {
 			isa = PBXGroup;
 			children = (
+				7C5274C1258BFD9900486D5A /* Web */,
 				A765FD882315C9A500AF9EA2 /* Interfaces */,
 				A7CC387721939B7700C8355A /* Shared */,
 				7CF93F522146E3D700361837 /* Lottie */,
@@ -1753,6 +1760,17 @@
 			path = DB;
 			sourceTree = "<group>";
 		};
+		7C5274C1258BFD9900486D5A /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				7C5274C9258BFDB100486D5A /* TheRichTextEditor.swift */,
+				7C5274CB258BFDC000486D5A /* main.js */,
+				7C5274CD258BFDC800486D5A /* main.html */,
+				7C5571A4259A795100D6D0C6 /* CustomWebview.swift */,
+			);
+			path = Web;
+			sourceTree = "<group>";
+		};
 		7C756F2B20DF5AFB007C0641 /* AsyncTasks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1884,7 +1902,6 @@
 				A7CC3885219496E600C8355A /* SharedUtils.swift */,
 				A7CC38882194979A00C8355A /* SharedExtensions.swift */,
 				70D965382340E839006D7E95 /* AppStoreReviewManager.swift */,
-				7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1994,6 +2011,7 @@
 				7C6D0C8725896DB600D80BB5 /* RealmSwift */,
 				7C6D0C8925896DBF00D80BB5 /* Alamofire */,
 				7C6D0C8B25896DC400D80BB5 /* SwiftSoup */,
+				7C5274D2258C179A00486D5A /* SwiftyJSON */,
 			);
 			productName = NotificationExtension;
 			productReference = A7CC38042190D9D900C8355A /* NotificationExtension.appex */;
@@ -2167,7 +2185,9 @@
 				41B6AAB52017987500D428B7 /* Main.storyboard in Resources */,
 				A741B9EE2264E60D001BB19C /* BackupHeaderView.xib in Resources */,
 				41AAC551201AA06500809C4D /* mark_unread.png in Resources */,
+				7C5274CE258BFDC800486D5A /* main.html in Resources */,
 				A7E399F5219F61CD007EEC1C /* GoogleService-Info-Support.plist in Resources */,
+				7C5274CC258BFDC000486D5A /* main.js in Resources */,
 				A76D303622565C64004F8747 /* SettingsOptionTableCell.xib in Resources */,
 				41AAC54F201AA05E00809C4D /* mark_read.png in Resources */,
 				A7FFCF30217A910A00FFFDFF /* LabelsFooterTableViewCell.xib in Resources */,
@@ -2214,6 +2234,7 @@
 				A7ADA15621A61A1B0027FC1C /* NunitoSans-LightItalic.ttf in Resources */,
 				D652A07721C036A9005EC3E1 /* ContactShareTableViewCell.xib in Resources */,
 				A7ADA14E21A61A1B0027FC1C /* NunitoSans-Bold.ttf in Resources */,
+				7C79DBD225927D2200AC5385 /* main.html in Resources */,
 				A7ADA15321A61A1B0027FC1C /* NunitoSans-ExtraLightItalic.ttf in Resources */,
 				A7115EA323172DD400EBECE7 /* MoreOptionsUIView.xib in Resources */,
 				A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */,
@@ -2229,6 +2250,7 @@
 				A70609F821A74BE60066BFA4 /* EmailSetPasswordUIPopover.xib in Resources */,
 				A7ADA14D21A61A1B0027FC1C /* NunitoSans-BlackItalic.ttf in Resources */,
 				A7ADA14C21A61A1B0027FC1C /* NunitoSans-Black.ttf in Resources */,
+				7C79DBD125927D1F00AC5385 /* main.js in Resources */,
 				A753B8922245374500BB3FEB /* AccountFromCell.xib in Resources */,
 				A7ADA15921A61A1B0027FC1C /* NunitoSans-SemiBoldItalic.ttf in Resources */,
 			);
@@ -2259,7 +2281,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/CICropPicker.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/M13Checkbox.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MIBadgeButton_Swift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RichEditorView.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/UIImageView_Letters.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Motion.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Instructions.framework",
@@ -2275,7 +2296,6 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CICropPicker.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/M13Checkbox.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MIBadgeButton_Swift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RichEditorView.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIImageView_Letters.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Motion.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Instructions.framework",
@@ -2324,7 +2344,6 @@
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
 				3499BEBE24EFBE3600ADBFD6 /* SignUpConfirmPasswordViewController.swift in Sources */,
-				7C3C35D0243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				5BBA9D2A232F68D100277C48 /* ValidateString.swift in Sources */,
 				950AFF3021FA6A7E003115E7 /* EmailSourceViewController.swift in Sources */,
@@ -2439,6 +2458,7 @@
 				34718D4224F3DF7000936E50 /* CustomizeThemeViewController.swift in Sources */,
 				348F1ED92412B3F70095BCBB /* AliasViewController.swift in Sources */,
 				41AAC541201A9FF500809C4D /* APIManager.swift in Sources */,
+				7C5571A5259A795100D6D0C6 /* CustomWebview.swift in Sources */,
 				34A56A52241F2C5E00120984 /* MXRecord.swift in Sources */,
 				41AAC505201A9FAD00809C4D /* SignatureViewController.swift in Sources */,
 				A7621DEC2163D58900ADCD2C /* Env.swift in Sources */,
@@ -2457,6 +2477,7 @@
 				348F1EDD24167CC80095BCBB /* RemoveAliasUIPopover.swift in Sources */,
 				7C4D33C3212C745A00045B09 /* GenericAlertUIPopover.swift in Sources */,
 				7C6A881F20619B7100BB1E12 /* BaseUIPopover.swift in Sources */,
+				7C5274CA258BFDB100486D5A /* TheRichTextEditor.swift in Sources */,
 				D652A07621C0369C005EC3E1 /* ContactShareTableViewCell.swift in Sources */,
 				7C2B7D20214ACA6400604059 /* GeneralHeaderTableViewCell.swift in Sources */,
 				7C92104A210141380081C048 /* EventData.swift in Sources */,
@@ -2614,6 +2635,7 @@
 				A7ADA12D21A5F1DA0027FC1C /* CRSessionRecord.swift in Sources */,
 				A7ADA15E21A72A000027FC1C /* Dummy.swift in Sources */,
 				A7ADA13021A5F1E10027FC1C /* Label.swift in Sources */,
+				7C79DBCD25927D1D00AC5385 /* TheRichTextEditor.swift in Sources */,
 				A7ADA14721A60B500027FC1C /* APIManager.swift in Sources */,
 				D652A07821C036A9005EC3E1 /* ContactShareTableViewCell.swift in Sources */,
 				A7ADA14B21A610440027FC1C /* Utils.swift in Sources */,
@@ -2621,7 +2643,6 @@
 				A7ADA13721A5F1FA0027FC1C /* SharedAPI.swift in Sources */,
 				A789B23F21B5E4A700F89DF3 /* PasscodeConfig.swift in Sources */,
 				A7ADA12C21A5F1DA0027FC1C /* CRPreKeyRecord.swift in Sources */,
-				7C3C35D1243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */,
 				A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */,
 				A7ADA13B21A5F2100027FC1C /* CriptextPreKeyStore.swift in Sources */,
 				7CA607BA242A5E120086D6B4 /* AccountAlias.swift in Sources */,
@@ -3284,7 +3305,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3327,7 +3348,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3483,7 +3504,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3553,7 +3574,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3588,7 +3609,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3622,7 +3643,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3659,7 +3680,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3697,7 +3718,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3734,7 +3755,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3907,6 +3928,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7C5274D2258C179A00486D5A /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C402589666400D80BB5 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
 		7C6D0C332589643500D80BB5 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7C6D0C322589643500D80BB5 /* XCRemoteSwiftPackageReference "Alamofire" */;

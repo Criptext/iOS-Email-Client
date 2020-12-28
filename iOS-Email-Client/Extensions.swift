@@ -8,7 +8,6 @@
 
 import Foundation
 import MobileCoreServices
-import RichEditorView
 import SignalProtocolFramework
 import SafariServices
 
@@ -393,56 +392,6 @@ extension UIAlertController {
             let password2 = textFields?[1].text,
             let action = actions.last {
             action.isEnabled = isValidPassword(password) && isValidPassword(password2) && password == password2
-        }
-    }
-}
-
-extension RichEditorView {
-    /// Reads a file from the application's bundle, and returns its contents as a string
-    /// Returns nil if there was some error
-    func readFile(name: String, type: String) -> String? {
-        
-        if let filePath = Bundle.main.path(forResource: name, ofType: type) {
-            do {
-                let file = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue) as String
-                return file
-            } catch let error {
-                print("Error loading \(name).\(type): \(error)")
-            }
-        }
-        return nil
-    }
-    
-    func cleanStringForJS(_ string: String) -> String {
-        let substitutions = [
-            "\"": "\\\"",
-            "'": "\\'",
-            "\n": "\\\n",
-            ]
-        
-        var output = string
-        for (key, value) in substitutions {
-            output = (output as NSString).replacingOccurrences(of: key, with: value)
-        }
-        
-        return output
-    }
-    
-    /// Creates a JS string that can be run in the WebView to apply the passed in CSS to it
-    func addCSSString(style: String) -> String {
-        let css = self.cleanStringForJS(style)
-        let js = "var css = document.createElement('style'); css.type = 'text/css'; css.innerHTML = '\(css)'; document.body.appendChild(css);"
-        return js
-    }
-    
-    func replace(font:String, css:String){
-        if var customCSS = self.readFile(name: css, type: "css") {
-            /// Replace the font with the actual location of the font inside our bundle
-            if let fontLocation = Bundle.main.path(forResource: font, ofType: "ttf") {
-                customCSS = customCSS.replacingOccurrences(of: font, with: fontLocation)
-            }
-            let js = self.addCSSString(style: customCSS)
-            self.runJS(js)
         }
     }
 }

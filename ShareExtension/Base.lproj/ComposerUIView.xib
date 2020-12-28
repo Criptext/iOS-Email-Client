@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +25,7 @@
                 <outlet property="ccHeightConstraint" destination="ZPe-Is-asO" id="MBt-lX-yuP"/>
                 <outlet property="contactsTableView" destination="vDn-Eg-utq" id="PjA-av-lQ7"/>
                 <outlet property="editorHeightConstraint" destination="mU1-qR-BAR" id="dA8-dd-X0E"/>
-                <outlet property="editorView" destination="y6r-pP-m3L" id="9Y7-cZ-5G3"/>
+                <outlet property="editorView" destination="y6r-pP-m3L" id="GjM-wr-fkf"/>
                 <outlet property="fromButton" destination="oRl-O7-iXF" id="zaY-xe-S9R"/>
                 <outlet property="fromField" destination="6e0-4U-xWw" id="LJW-Dw-Xnf"/>
                 <outlet property="navigationBar" destination="SlT-XZ-Wvh" id="Yxs-dh-sH5"/>
@@ -152,7 +152,7 @@
                             <fontDescription key="fontDescription" name="NunitoSans-Bold" family="Nunito Sans" pointSize="19"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textField>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6r-pP-m3L" customClass="RichEditorWrapperView" customModule="ShareExtension" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y6r-pP-m3L" customClass="TheRichTextEditor" customModule="ShareExtension" customModuleProvider="target">
                             <rect key="frame" x="13" y="228" width="347" height="150"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -212,6 +212,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" red="0.21642738580000001" green="0.22670188550000001" blue="0.26275038719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
                 <constraint firstItem="SlT-XZ-Wvh" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="22a-pg-RcV"/>
@@ -227,7 +228,6 @@
                 <constraint firstItem="1os-vN-Gop" firstAttribute="leading" secondItem="SlT-XZ-Wvh" secondAttribute="leading" id="umT-Qd-fHZ"/>
                 <constraint firstItem="1os-vN-Gop" firstAttribute="top" secondItem="SlT-XZ-Wvh" secondAttribute="top" constant="44" id="y6f-tg-QLw"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="76" y="48.125937031484263"/>
         </view>
     </objects>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0" />
+        <style>
+            @font-face
+            {
+                font-family: 'Nunito Sans';
+                font-weight: normal;
+                src: url('NunitoSans-Regular.ttf');
+            }
+        </style>
+        <style>
+            html {
+                height: 100%;
+            }
+
+            body {
+                min-height: 100%;
+                overflow: auto;
+            }
+        
+            body, h1, p {
+                margin: 0;
+                position: relative;
+            }
+
+            div {
+                display: block;
+                position: static;
+            }
+
+            #editor {
+                -webkit-user-select: auto !important;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+                
+                min-height: 100%;
+                height: 100%;
+                overflow: auto;
+                display: block;
+                font-family: 'Nunito Sans';
+                font-weight: normal;
+                color:#666666;
+                font-size: 12pt;
+            }
+
+            #editor:focus {
+                outline: none;
+            }
+            
+            .placeholder[placeholder]:after {
+                content: attr(placeholder);
+                position: absolute;
+                top: 0px;
+                color: #a6a6a6;
+            }
+        
+            #not-editor {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="editor" contenteditable="true" placeholder="Start typing here..." class="placeholder"></div>
+        <div id="not-editor"></div>
+    </body>
+</html>

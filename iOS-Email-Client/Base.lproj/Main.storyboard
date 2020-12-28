@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -843,7 +843,7 @@
                                             <constraint firstAttribute="bottom" secondItem="KSZ-LW-VX3" secondAttribute="bottom" id="y4b-ds-bol"/>
                                         </constraints>
                                     </view>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qY5-rJ-Nng" customClass="RichEditorWrapperView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qY5-rJ-Nng" customClass="TheRichTextEditor" customModule="iOS_Email_Client" customModuleProvider="target">
                                         <rect key="frame" x="18" y="147" width="381" height="150"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -1300,7 +1300,7 @@
                         <outlet property="contactTableView" destination="c58-aV-hT9" id="ilI-ci-0NA"/>
                         <outlet property="contactTableViewTopConstraint" destination="skq-DN-03B" id="KnZ-Hx-0QL"/>
                         <outlet property="editorHeightConstraint" destination="BJ6-ET-T1U" id="fyu-nL-dzp"/>
-                        <outlet property="editorView" destination="qY5-rJ-Nng" id="r68-MJ-6ki"/>
+                        <outlet property="editorView" destination="qY5-rJ-Nng" id="0dj-cW-bq9"/>
                         <outlet property="fromButton" destination="hWa-Dv-ykY" id="Gvj-Qu-1Pt"/>
                         <outlet property="fromField" destination="mss-ZG-FkL" id="6dc-Do-Wzw"/>
                         <outlet property="scrollView" destination="f2A-K4-V0b" id="8pX-QZ-yVL"/>
@@ -2001,10 +2001,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="414" height="101"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="101"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="102"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -2028,10 +2028,10 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="315" height="101"/>
+                                                    <rect key="frame" x="27" y="0.0" width="315" height="102"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="101"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="102"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
                                                                     <rect key="frame" x="2" y="48" width="6" height="6"/>
@@ -2055,7 +2055,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="293" height="101"/>
+                                                            <rect key="frame" x="22" y="0.0" width="293" height="102"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -2717,7 +2717,7 @@
                                     <constraint firstAttribute="trailing" secondItem="cb5-Ym-zzt" secondAttribute="trailing" constant="27" id="zoS-S6-T4a"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eM-lg-clQ" customClass="RichEditorView" customModule="RichEditorView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eM-lg-clQ" customClass="TheRichTextEditor" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="27" y="124" width="363" height="738"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -2735,7 +2735,7 @@
                     </view>
                     <connections>
                         <outlet property="OnOffLabel" destination="wbm-oq-FDu" id="JBu-d4-BO9"/>
-                        <outlet property="richEditor" destination="5eM-lg-clQ" id="Gts-hS-89S"/>
+                        <outlet property="richEditor" destination="5eM-lg-clQ" id="Pyc-1C-h70"/>
                         <outlet property="separatorView" destination="FG0-Iq-Ffg" id="pL2-c5-S3m"/>
                         <outlet property="signatureEnableSwitch" destination="cb5-Ym-zzt" id="pRy-aZ-iGb"/>
                     </connections>

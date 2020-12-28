@@ -7,11 +7,10 @@
 //
 
 import Foundation
-import RichEditorView
 
 class SignatureEditorViewController: UIViewController {
     
-    @IBOutlet weak var richEditor: RichEditorView!
+    @IBOutlet weak var richEditor: TheRichTextEditor!
     @IBOutlet weak var signatureEnableSwitch: UISwitch!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var OnOffLabel: UILabel!
@@ -26,16 +25,13 @@ class SignatureEditorViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: String.localize("DONE"), style: .plain, target: self, action: #selector(saveAndReturn))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
         signatureEnableSwitch.isOn = myAccount.signatureEnabled
-        richEditor.isEditingEnabled = signatureEnableSwitch.isOn
-        richEditor.isHidden = !signatureEnableSwitch.isOn
         OnOffLabel.text = myAccount.signatureEnabled ? String.localize("ON") : String.localize("OFF")
-        richEditor.delegate = self
         richEditor.html = myAccount.signature
-        richEditor.placeholder = String.localize("SIGNATURE")
-        richEditor.setTextColor(.green)
         keyboardManager = KeyboardManager(view: self.view)
-        keyboardManager.toolbar.editor = richEditor
         applyTheme()
+        
+        richEditor.isHidden = !signatureEnableSwitch.isOn
+        richEditor.delegate = self
     }
     
     func applyTheme() {
@@ -50,7 +46,9 @@ class SignatureEditorViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         keyboardManager.beginMonitoring()
-        richEditor.focus()
+        if signatureEnableSwitch.isOn {
+            richEditor.focus()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,7 +58,6 @@ class SignatureEditorViewController: UIViewController {
     
     @IBAction func onSwitchToggle(_ sender: Any) {
         isEdited = true
-        richEditor.isEditingEnabled = signatureEnableSwitch.isOn
         richEditor.isHidden = !signatureEnableSwitch.isOn
         OnOffLabel.text = signatureEnableSwitch.isOn ? String.localize("ON") : String.localize("OFF")
         if(signatureEnableSwitch.isOn){
@@ -93,22 +90,32 @@ class SignatureEditorViewController: UIViewController {
     }
     
     @objc func saveAndReturn(){
-        DBManager.update(account: myAccount, signature: richEditor.html, enabled: signatureEnableSwitch.isOn)
+        DBManager.update(account: myAccount, signature: richEditor.body, enabled: signatureEnableSwitch.isOn)
         navigationController?.popViewController(animated: true)
     }
 }
 
-extension SignatureEditorViewController: RichEditorDelegate {
-    func richEditorDidLoad(_ editor: RichEditorView) {
-        let theme = ThemeManager.shared.theme
-        editor.setEditorFontColor(theme.mainText)
-        editor.setEditorBackgroundColor(theme.overallBackground)
+extension SignatureEditorViewController: TheRichTextEditorDelegate {
+    func heightDidChange() {
+        
     }
     
-    func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
-        if(myAccount.signature != content){
+    func textDidChange(content: String) {
+        if(myAccount.signature != richEditor.body){
             isEdited = true
         }
+    }
+    
+    func editorDidLoad() {
+        let theme = ThemeManager.shared.theme
+        richEditor.setEditorFontColor(theme.mainText)
+        richEditor.setEditorBackgroundColor(theme.overallBackground)
+        richEditor.backgroundColor = theme.overallBackground
+        richEditor.placeholder = String.localize("SIGNATURE")
+    }
+    
+    func scrollOffset(verticalOffset: CGFloat) {
+        
     }
 }
 

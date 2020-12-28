@@ -13,7 +13,6 @@ import CICropPicker
 import TLPhotoPicker
 import M13Checkbox
 import ContactsUI
-import RichEditorView
 import SwiftSoup
 import MIBadgeButton_Swift
 import IQKeyboardManagerSwift
@@ -32,7 +31,7 @@ class ComposeViewController: UIViewController {
     let ATTACHMENT_ROW_HEIGHT = 65
     let MARGIN_TOP = 5
     let CONTACT_FIELDS_HEIGHT = 90
-    let ENTER_LINE_HEIGHT : CGFloat = 28.0
+    let ENTER_LINE_HEIGHT : CGFloat = 23.0
     let TOOLBAR_MARGIN_HEIGHT = 25
     let COMPOSER_MIN_HEIGHT = 150
     let PASSWORD_POPUP_HEIGHT = 295
@@ -46,7 +45,7 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var ccField: CLTokenInputView!
     @IBOutlet weak var bccField: CLTokenInputView!
     @IBOutlet weak var subjectField: UITextField!
-    @IBOutlet weak var editorView: RichEditorView!
+    @IBOutlet weak var editorView: TheRichTextEditor!
     @IBOutlet weak var topSeparator: UIView!
     @IBOutlet weak var bottomSeparator: UIView!
     
@@ -139,7 +138,6 @@ class ComposeViewController: UIViewController {
         let disableImage = Icon.send.image?.tint(with: UIColor.white.withAlphaComponent(0.6))
         self.disableSendButton = UIBarButtonItem(image: disableImage, style: .plain, target: self, action: nil)
         
-        self.editorView.placeholder = String.localize("MESSAGE")
         self.editorView.delegate = self
         self.subjectField.delegate = self
         self.subjectField.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(onDonePress(_:)))
@@ -178,8 +176,6 @@ class ComposeViewController: UIViewController {
         self.ccField.accessoryView?.isHidden = true
         
         self.contactTableView.isHidden = true
-        
-        self.editorView.isScrollEnabled = false
         self.editorHeightConstraint.constant = 150
         self.attachmentContainerBottomConstraint.constant = 50
         
@@ -446,7 +442,7 @@ class ComposeViewController: UIViewController {
         DBManager.store(fileManager.registeredFiles)
         let draft = Email()
         draft.status = .none
-        let bodyWithoutHtml = self.editorView.text.replaceNewLineCharater(separator: " ")
+        let bodyWithoutHtml = self.editorView.preview.replaceNewLineCharater(separator: " ")
         draft.account = self.activeAccount
         
         let preview = String(bodyWithoutHtml.prefix(100))
@@ -470,7 +466,8 @@ class ComposeViewController: UIViewController {
         draft.buildCompoundKey()
         DBManager.store(draft)
         
-        FileUtils.saveEmailToFile(email: activeAccount.email, metadataKey: "\(draft.key)", body: self.editorView.html, headers: "")
+        print(editorView.html)
+        FileUtils.saveEmailToFile(email: activeAccount.email, metadataKey: "\(draft.key)", body: self.editorView.body, headers: "")
         
         //create email contacts
         var emailContacts = [EmailContact]()
@@ -566,7 +563,7 @@ class ComposeViewController: UIViewController {
         self.ccField.endEditing()
         self.bccField.endEditing()
         self.subjectField.resignFirstResponder()
-        self.editorView.webView.endEditing(true)
+        self.editorView.endEditing(true)
     }
     
     func collapseCC(_ shouldCollapse: Bool){
@@ -661,7 +658,7 @@ class ComposeViewController: UIViewController {
         DBManager.updateEmail(email, status: Email.Status.sending.rawValue)
         self.dismiss(animated: true){
             self.shouldSaveDraft = false
-            self.delegate?.sendMail(email: email, emailBody: self.editorView.html, password: password)
+            self.delegate?.sendMail(email: email, emailBody: self.editorView.body, password: password)
         }
     }
     
@@ -1310,34 +1307,8 @@ extension ComposeViewController: CriptextFileDelegate {
 }
 
 //MARK: - Rich editor Delegate
-extension ComposeViewController: RichEditorDelegate {
-    
-    func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
-        let cgheight = CGFloat(height)
-        let diff = cgheight - composerEditorHeight
-        let offset = self.scrollView.contentOffset
-        
-        let calcHeight = self.attachmentButtonContainerView.layer.borderWidth + CGFloat(ATTACHMENT_BUTTON_HEIGHT)
-        if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) + calcHeight > self.toolbarView.frame.origin.y {
-            var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
-            if diff == -ENTER_LINE_HEIGHT  {
-                newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
-            }
-
-            if self.isEdited && !editor.webView.isLoading {
-                self.scrollView.setContentOffset(newOffset, animated: true)
-            }
-        }
-        
-        guard height > COMPOSER_MIN_HEIGHT else {
-            return
-        }
-        
-        composerEditorHeight = cgheight
-        self.editorHeightConstraint.constant = cgheight + self.attachmentButtonContainerView.layer.borderWidth + CGFloat(ATTACHMENT_BUTTON_HEIGHT) + composerKeyboardOffset
-    }
-    
-    func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
+extension ComposeViewController: TheRichTextEditorDelegate {
+    func textDidChange(content: String) {
         guard !self.isEdited else {
             return
         }
@@ -1350,8 +1321,36 @@ extension ComposeViewController: RichEditorDelegate {
         }
     }
     
-    func richEditorDidLoad(_ editor: RichEditorView) {
-        self.editorView.replace(font: "NunitoSans-Regular", css: "editor-style")
+    func scrollOffset(verticalOffset: CGFloat) {
+        //self.scrollView.setContentOffset(CGPoint(x: self.scrollView.contentOffset.x, y: verticalOffset + CGFloat(CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) + composerKeyboardOffset), animated: true)
+    }
+    
+    func heightDidChange() {
+        let height = editorView.height
+        let cgheight = CGFloat(height)
+        let diff = cgheight - composerEditorHeight
+        let offset = self.scrollView.contentOffset
+        
+        let calcHeight = self.attachmentButtonContainerView.layer.borderWidth + CGFloat(ATTACHMENT_BUTTON_HEIGHT)
+        if CGFloat(Int(height) + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) + calcHeight > self.toolbarView.frame.origin.y {
+            var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
+            if diff < 0  {
+                newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
+            }
+            if self.isEdited && !editorView.webView.isLoading {
+                self.scrollView.setContentOffset(newOffset, animated: true)
+            }
+        }
+        
+        guard Int(height) > COMPOSER_MIN_HEIGHT else {
+            return
+        }
+        
+        composerEditorHeight = cgheight
+        self.editorHeightConstraint.constant = cgheight + self.attachmentButtonContainerView.layer.borderWidth + CGFloat(ATTACHMENT_BUTTON_HEIGHT) + composerKeyboardOffset
+    }
+    
+    func editorDidLoad() {
         let hasInitialContacts = composerData.initToContacts.count > 0 || composerData.initCcContacts.count > 0
         if(hasInitialContacts){
             self.setupInitContacts()
@@ -1359,44 +1358,14 @@ extension ComposeViewController: RichEditorDelegate {
         if(!hasInitialContacts){
             toField.beginEditing()
         } else if(!composerData.initSubject.isEmpty){
-            editorView.focus(at: CGPoint(x: 0.0, y: 0.0))
+            editorView.focus()
         } else {
             subjectField.becomeFirstResponder()
         }
         let theme = ThemeManager.shared.theme
         editorView.setEditorFontColor(theme.mainText)
         editorView.setEditorBackgroundColor(theme.overallBackground)
-        
-        let disableImages = """
-        document.addEventListener('paste', e => {
-            var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
-            if (items[0] && items[0].kind === 'file') {
-                e.preventDefault();
-            }
-        });
-        """
-        let _ = editorView.webView.stringByEvaluatingJavaScript(from: disableImages)
-    }
-    
-    func richEditorTookFocus(_ editor: RichEditorView) {
-        self.collapseCC(true)
-        let defaults = CriptextDefaults()
-        if !defaults.guideAttachments {
-            let presentationContext = PresentationContext.viewController(self)
-            self.coachMarksController.start(in: presentationContext)
-            defaults.guideAttachments = true
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            guard let focusPoint = (self.editorView as? RichEditorWrapperView)?.lastFocus else {
-                return
-            }
-            self.editorView.focus(at: focusPoint)
-        }
-    }
-    
-    func richEditorLostFocus(_ editor: RichEditorView) {
-        (editorView as? RichEditorWrapperView)?.lastFocus = nil
+        editorView.placeholder = String.localize("MESSAGE")
     }
 }
 
