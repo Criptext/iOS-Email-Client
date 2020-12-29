@@ -219,6 +219,7 @@ class ComposeViewController: UIViewController {
         
         subjectField.text = composerData.initSubject
 
+        editorView.enableAccessoryView = false
         editorView.html = "\(composerData.initContent)\(composerData.emailDraft == nil && !activeAccount.signature.isEmpty && activeAccount.signatureEnabled ? "<br/> \(activeAccount.signature)" : "")"
         
         fileManager.delegate = self

@@ -30,6 +30,7 @@ class SignatureEditorViewController: UIViewController {
         keyboardManager = KeyboardManager(view: self.view)
         applyTheme()
         
+        richEditor.enableAccessoryView = true
         richEditor.isHidden = !signatureEnableSwitch.isOn
         richEditor.delegate = self
     }

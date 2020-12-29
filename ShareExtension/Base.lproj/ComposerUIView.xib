@@ -158,6 +158,9 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="150" id="mU1-qR-BAR"/>
                             </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="enableAccessoryView" value="NO"/>
+                            </userDefinedRuntimeAttributes>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lgr-7H-82B">
                             <rect key="frame" x="0.0" y="378" width="375" height="303"/>

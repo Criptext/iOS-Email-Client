@@ -30,7 +30,6 @@ fileprivate class WeakScriptMessageHandler: NSObject, WKScriptMessageHandler {
 }
 
 public class TheRichTextEditor: UIView, WKScriptMessageHandler, WKNavigationDelegate, UIScrollViewDelegate {
-
     private static let textDidChange = "textDidChange"
     private static let heightDidChange = "heightDidChange"
     private static let previewDidChange = "previewDidChange"
@@ -75,6 +74,16 @@ public class TheRichTextEditor: UIView, WKScriptMessageHandler, WKNavigationDele
         setup()
     }
     
+    var enableAccessoryView: Bool {
+        set {
+            (webView as? CustomWebview)?.enableAccessoryView = newValue
+        }
+        
+        get {
+            return (webView as? CustomWebview)?.enableAccessoryView ?? false
+        }
+    }
+    
     func setup() {
         guard let scriptPath = Bundle.main.path(forResource: "main", ofType: "js"),
             let scriptContent = try? String(contentsOfFile: scriptPath, encoding: String.Encoding.utf8),
@@ -92,7 +101,8 @@ public class TheRichTextEditor: UIView, WKScriptMessageHandler, WKNavigationDele
             )
         )
 
-        webView = WKWebView(frame: .zero, configuration: configuration)
+        webView = CustomWebview(frame: .zero, configuration: configuration)
+        (webView as? CustomWebview)?.toolbarDelegate = self
 
         [TheRichTextEditor.textDidChange, TheRichTextEditor.heightDidChange, TheRichTextEditor.previewDidChange, TheRichTextEditor.documentHasLoaded].forEach {
             configuration.userContentController.add(WeakScriptMessageHandler(delegate: self), name: $0)
@@ -186,6 +196,52 @@ public class TheRichTextEditor: UIView, WKScriptMessageHandler, WKNavigationDele
 
     public func focus(at: CGPoint) {
         webView.evaluateJavaScript("richeditor.focusAtPoint(\(at.x), \(at.y));", completionHandler: nil)
+    }
+    
+    public func runCommand(_ command: String) {
+        webView.evaluateJavaScript("document.execCommand('\(command)', false, null);", completionHandler: nil)
+    }
+}
+
+extension TheRichTextEditor: WebviewToolbarDelegate {
+    func onUndoPress() {
+        self.runCommand("undo")
+    }
+    
+    func onRedoPress() {
+        self.runCommand("redo")
+    }
+    
+    func onTextAlignCenter() {
+        self.runCommand("justifyCenter")
+    }
+    
+    func onIndentPress() {
+        self.runCommand("indent")
+    }
+    
+    func onOutdentPress() {
+        self.runCommand("outdent")
+    }
+    
+    func onClearPress() {
+        self.runCommand("removeFormat")
+    }
+    
+    func onItalicPress() {
+        self.runCommand("italic")
+    }
+    
+    func onTextAlignLeft() {
+        self.runCommand("justifyLeft")
+    }
+    
+    func onTextAlignRight() {
+        self.runCommand("justifyRight")
+    }
+    
+    func onBoldPress() {
+        self.runCommand("bold")
     }
 }
 

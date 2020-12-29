@@ -78,6 +78,8 @@ class ComposerUIView: UIView {
     }
     
     func initialLoad() {
+        editorView.enableAccessoryView = false
+        
         navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationItem.detailLabel.tintColor = .white
         self.editorView.delegate = self
