@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CLTokenInputView
 import Material
+import TheRichTextEditor
 
 protocol ComposerDelegate: class {
     func close()
@@ -203,7 +204,7 @@ class ComposerUIView: UIView {
         self.ccField.endEditing()
         self.bccField.endEditing()
         self.subjectTextField.resignFirstResponder()
-        self.editorView.webView.endEditing(true)
+        self.editorView.endEditing(true)
     }
     
     @IBAction func onClosePress(_ sender: Any) {

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import TheRichTextEditor
 
 class SignatureEditorViewController: UIViewController {
     
@@ -38,6 +39,7 @@ class SignatureEditorViewController: UIViewController {
     func applyTheme() {
         let theme = ThemeManager.shared.theme
         self.view.backgroundColor = theme.overallBackground
+        richEditor.setColors(background: theme.background, icons: theme.mainText)
         richEditor.webView.backgroundColor = theme.overallBackground
         richEditor.webView.isOpaque = false
         separatorView.backgroundColor = theme.separator

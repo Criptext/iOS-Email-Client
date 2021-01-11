@@ -18,6 +18,7 @@ import MIBadgeButton_Swift
 import IQKeyboardManagerSwift
 import SignalProtocolFramework
 import Instructions
+import TheRichTextEditor
 
 protocol ComposerSendMailDelegate: class {
     func sendMail(email: Email, emailBody: String, password: String?)
