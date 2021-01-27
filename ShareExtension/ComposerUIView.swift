@@ -8,9 +8,9 @@
 
 import Foundation
 import UIKit
-import RichEditorView
 import CLTokenInputView
 import Material
+import TheRichTextEditor
 
 protocol ComposerDelegate: class {
     func close()
@@ -39,7 +39,7 @@ class ComposerUIView: UIView {
     @IBOutlet weak var arrowButton: UIButton!
     @IBOutlet var view: UIView!
     @IBOutlet var scrollView: UIScrollView!
-    @IBOutlet weak var editorView: RichEditorView!
+    @IBOutlet weak var editorView: TheRichTextEditor!
     @IBOutlet weak var toField: CLTokenInputView!
     @IBOutlet weak var ccField: CLTokenInputView!
     @IBOutlet weak var bccField: CLTokenInputView!
@@ -79,11 +79,11 @@ class ComposerUIView: UIView {
     }
     
     func initialLoad() {
+        editorView.enableAccessoryView = false
+        
         navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationItem.detailLabel.tintColor = .white
-        self.editorView.placeholder = String.localize("MESSAGE")
         self.editorView.delegate = self
-        self.editorView.isScrollEnabled = false
         self.editorHeightConstraint.constant = 150
         
         self.toField.fieldName = String.localize("TO")
@@ -204,7 +204,7 @@ class ComposerUIView: UIView {
         self.ccField.endEditing()
         self.bccField.endEditing()
         self.subjectTextField.resignFirstResponder()
-        self.editorView.webView.endEditing(true)
+        self.editorView.endEditing(true)
     }
     
     @IBAction func onClosePress(_ sender: Any) {
@@ -226,7 +226,7 @@ class ComposerUIView: UIView {
     }
     
     func getPlainEditorContent () -> String {
-        return self.editorView.text.replaceNewLineCharater(separator: " ")
+        return self.editorView.preview.replaceNewLineCharater(separator: " ")
     }
     
     func resizeAttachmentTable(numberOfAttachments: Int){
@@ -261,61 +261,49 @@ class ComposerUIView: UIView {
     }
 }
 
-extension ComposerUIView: RichEditorDelegate {
-    func richEditorDidLoad(_ editor: RichEditorView) {
-        editorView.setEditorFontColor(theme.mainText)
-        editorView.setEditorBackgroundColor(theme.background)
-        toField.beginEditing()
+extension ComposerUIView: TheRichTextEditorDelegate {
+    func textDidChange(content: String) {
         
-        let disableImages = """
-        document.addEventListener('paste', e => {
-            var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
-            if (items[0] && items[0].kind === 'file') {
-                e.preventDefault();
-            }
-        });
-        """
-        let _ = editorView.webView.stringByEvaluatingJavaScript(from: disableImages)
     }
     
-    func addToContent(text: String) {
-        editorView.html = editorView.html + text
+    func scrollOffset(verticalOffset: CGFloat) {
+        
     }
     
-    func richEditor(_ editor: RichEditorView, heightDidChange height: Int) {
+    func heightDidChange() {
+        let height = editorView.height
         let cgheight = CGFloat(height)
         let diff = cgheight - composerEditorHeight
         let offset = self.scrollView.contentOffset
         
-        if CGFloat(height + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) > self.view.frame.origin.y + self.view.frame.width {
+        if CGFloat(Int(height) + CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) > self.view.frame.origin.y + self.view.frame.width {
             var newOffset = CGPoint(x: offset.x, y: offset.y + ENTER_LINE_HEIGHT)
-            if diff == -ENTER_LINE_HEIGHT  {
+            if diff < 0  {
                 newOffset = CGPoint(x: offset.x, y: offset.y - ENTER_LINE_HEIGHT)
             }
-            
-            if !editor.webView.isLoading {
+            if !editorView.webView.isLoading {
                 self.scrollView.setContentOffset(newOffset, animated: true)
             }
         }
         
-        guard height > COMPOSER_MIN_HEIGHT else {
+        guard Int(height) > COMPOSER_MIN_HEIGHT else {
             return
         }
+        
         composerEditorHeight = cgheight
         self.editorHeightConstraint.constant = cgheight
     }
     
-    func richEditorTookFocus(_ editor: RichEditorView) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            guard let focusPoint = (self.editorView as? RichEditorWrapperView)?.lastFocus else {
-                return
-            }
-            self.editorView.focus(at: focusPoint)
-        }
+    func editorDidLoad() {
+        editorView.placeholder = String.localize("MESSAGE")
+        editorView.setEditorFontColor(theme.mainText)
+        editorView.setEditorBackgroundColor(theme.background)
+        editorView.backgroundColor = theme.background
+        toField.beginEditing()
     }
     
-    func richEditorLostFocus(_ editor: RichEditorView) {
-        (editorView as? RichEditorWrapperView)?.lastFocus = nil
+    func addToContent(text: String) {
+        editorView.html = editorView.html + text
     }
 }
 

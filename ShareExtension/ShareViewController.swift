@@ -8,7 +8,6 @@
 
 import UIKit
 import Social
-import RichEditorView
 import CLTokenInputView
 import RealmSwift
 import MobileCoreServices
@@ -34,6 +33,7 @@ class ShareViewController: UIViewController {
     }()
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         configRealm()
         getAccount()
         composerUIView.initialLoad()
@@ -369,7 +369,7 @@ extension ShareViewController {
         
         SharedDB.store(emailContacts)
         
-        FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(draft.key)", body: self.composerUIView.editorView.html, headers: "")
+        FileUtils.saveEmailToFile(email: myAccount.email, metadataKey: "\(draft.key)", body: self.composerUIView.editorView.body, headers: "")
         
         return draft
     }
@@ -430,7 +430,7 @@ extension ShareViewController {
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: nil)
         
-        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: self.composerUIView.editorView.html ,password: password)
+        let sendMailAsyncTask = SendMailAsyncTask(email: email, emailBody: self.composerUIView.editorView.body ,password: password)
         sendMailAsyncTask.start { [weak self] responseData in
             guard let weakSelf = self else {
                 alert.dismiss(animated: true, completion: nil)

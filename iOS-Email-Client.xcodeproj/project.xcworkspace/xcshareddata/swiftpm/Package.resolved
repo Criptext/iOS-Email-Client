@@ -155,6 +155,15 @@
         }
       },
       {
+        "package": "TheRichTextEditor",
+        "repositoryURL": "https://github.com/Criptext/TheRichTextEditor",
+        "state": {
+          "branch": null,
+          "revision": "5967667041a51a2ac2c96fe5413fa5e0f7b6598b",
+          "version": "0.3.3"
+        }
+      },
+      {
         "package": "TLPhotoPicker",
         "repositoryURL": "https://github.com/tilltue/TLPhotoPicker.git",
         "state": {

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RichEditorView
 import Material
 
 class ReplyToEditorViewController: UIViewController {

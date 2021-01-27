@@ -88,7 +88,6 @@
 		41C9CC832078195900B8994F /* Material.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC822078195900B8994F /* Material.framework */; };
 		41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC842078196600B8994F /* CICropPicker.framework */; };
 		41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC8820781C4E00B8994F /* M13Checkbox.framework */; };
-		41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9620781CFB00B8994F /* UIImageView_Letters.framework */; };
 		41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748D207C68C900CCA685 /* MIBadgeButton_Swift.framework */; };
 		41EE7490207C68D700CCA685 /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
@@ -137,8 +136,6 @@
 		7C394E86210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E85210CBED300AE3297 /* ECKeyPair+KeyPairOpenPrivate.m */; };
 		7C394E88210CC8E700AE3297 /* SendEmailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C394E87210CC8E700AE3297 /* SendEmailData.swift */; };
 		7C3C35BA2432598A001A8C9F /* MXRecordsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */; };
-		7C3C35D0243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */; };
-		7C3C35D1243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */; };
 		7C46BED52153EBF900282182 /* ConnectUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */; };
 		7C46BED72153F71E00282182 /* SingleWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46BED62153F71E00282182 /* SingleWebSocket.swift */; };
 		7C4D33BD212B4F9D00045B09 /* RecoveryEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */; };
@@ -151,6 +148,7 @@
 		7C4D4FED203DFFD700DF6E4E /* CounterLabelUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D4FEC203DFFD700DF6E4E /* CounterLabelUIView.swift */; };
 		7C50C691202E12C000FED2E8 /* CreatingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C690202E12C000FED2E8 /* CreatingAccountViewController.swift */; };
 		7C50C693202E3A3000FED2E8 /* TipUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50C692202E3A3000FED2E8 /* TipUIView.swift */; };
+		7C5274D3258C179A00486D5A /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 7C5274D2258C179A00486D5A /* SwiftyJSON */; };
 		7C5322122111394000C78981 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C5322112111394000C78981 /* GoogleService-Info.plist */; };
 		7C53AC3A21121DE400938A3D /* SignInWarningPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C53AC3921121DE400938A3D /* SignInWarningPopoverViewController.swift */; };
 		7C55B88C20863D7900BA96E8 /* CriptextError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C55B88B20863D7900BA96E8 /* CriptextError.swift */; };
@@ -277,6 +275,8 @@
 		7CE1FA0024787BEC00D14352 /* UpgradePlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */; };
 		7CE1FA02247882B300D14352 /* AlreadyPlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */; };
 		7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */; };
+		7CE587A025ACD6550000B2D7 /* TheRichTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 7CE5879F25ACD6550000B2D7 /* TheRichTextEditor */; };
+		7CE587A525ACD68C0000B2D7 /* TheRichTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 7CE587A425ACD68C0000B2D7 /* TheRichTextEditor */; };
 		7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */; };
 		7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */; };
 		7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */; };
@@ -290,7 +290,6 @@
 		7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF93F5F21498C4800361837 /* AttachmentTableViewCell.swift */; };
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
-		7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */; };
 		7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFF2EE720766532002B19DB /* MenuViewController.swift */; };
 		950AFF3021FA6A7E003115E7 /* EmailSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950AFF2F21FA6A7E003115E7 /* EmailSourceViewController.swift */; };
 		95145BA92368E8A200E4EB72 /* GenericSingleInputPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95145BA82368E8A200E4EB72 /* GenericSingleInputPopover.xib */; };
@@ -391,7 +390,6 @@
 		A789B24021B8228800F89DF3 /* CriptextLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7FFCF65217A93E600FFFDFF /* CriptextLocalizable.strings */; };
 		A78D27A12238084200B3ECD6 /* APIManagerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78D27A02238084200B3ECD6 /* APIManagerSpy.swift */; };
 		A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41EE748F207C68D700CCA685 /* CLTokenInputView.framework */; };
-		A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C9CC9220781CAB00B8994F /* RichEditorView.framework */; };
 		A7ADA12021A5C4A70027FC1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41B6AAB62017987500D428B7 /* Assets.xcassets */; };
 		A7ADA12121A5C97A0027FC1C /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CC38882194979A00C8355A /* SharedExtensions.swift */; };
 		A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ADA12421A5CF9C0027FC1C /* ComposerUIView.swift */; };
@@ -840,7 +838,6 @@
 		7C3C35C624329D22001A8C9F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/de.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
 		7C3C35C824329D23001A8C9F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/ru.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
 		7C3C35CA24329D23001A8C9F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "iOS-Email-Client/Views/iOS-Email-Client/Views/es.lproj/AddAliasUIPopover.strings"; sourceTree = "<group>"; };
-		7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichEditorWrapperView.swift; sourceTree = "<group>"; };
 		7C46BED42153EBF900282182 /* ConnectUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUploadViewController.swift; sourceTree = "<group>"; };
 		7C46BED62153F71E00282182 /* SingleWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWebSocket.swift; sourceTree = "<group>"; };
 		7C4D33BC212B4F9D00045B09 /* RecoveryEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryEmailViewController.swift; sourceTree = "<group>"; };
@@ -976,7 +973,6 @@
 		7CF93F5F21498C4800361837 /* AttachmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentTableViewCell.swift; sourceTree = "<group>"; };
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
-		7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		7CFF2EE720766532002B19DB /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		950AFF2F21FA6A7E003115E7 /* EmailSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSourceViewController.swift; sourceTree = "<group>"; };
 		95145B8B2368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ConnectView.strings; sourceTree = "<group>"; };
@@ -1195,7 +1191,6 @@
 				7C1E82BE2116A122007CA853 /* Instructions.framework in Frameworks */,
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
 				7C6D0C3A2589664900D80BB5 /* Realm in Frameworks */,
-				41C9CC9320781CAB00B8994F /* RichEditorView.framework in Frameworks */,
 				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
 				7C6D0C762589691400D80BB5 /* FirebaseMessaging in Frameworks */,
 				7C6D0C782589691400D80BB5 /* FirebaseCrashlytics in Frameworks */,
@@ -1213,6 +1208,7 @@
 				7C6D0C4A2589669100D80BB5 /* SDWebImageMapKit in Frameworks */,
 				41C9CBBD20769AAA00B8994F /* TagListView.framework in Frameworks */,
 				7C6D0C422589666400D80BB5 /* SwiftyJSON in Frameworks */,
+				7CE587A025ACD6550000B2D7 /* TheRichTextEditor in Frameworks */,
 				A7EBB11022CABFD000689760 /* Starscream.framework in Frameworks */,
 				7C6D0C742589691400D80BB5 /* FirebaseAnalytics in Frameworks */,
 				7C6D0C50258966B100D80BB5 /* SwiftSoup in Frameworks */,
@@ -1232,10 +1228,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C6D0C9025896DDC00D80BB5 /* SDWebImage in Frameworks */,
-				A7ADA11F21A5BEE60027FC1C /* RichEditorView.framework in Frameworks */,
 				A7ADA11E21A5BEE00027FC1C /* CLTokenInputView.framework in Frameworks */,
 				7C6D0CA32589702900D80BB5 /* Gzip in Frameworks */,
 				7C6D0C9925896EA200D80BB5 /* RealmSwift in Frameworks */,
+				7CE587A525ACD68C0000B2D7 /* TheRichTextEditor in Frameworks */,
 				D652A07921C036B0005EC3E1 /* UIImageView_Letters.framework in Frameworks */,
 				7C6D0C9E2589700C00D80BB5 /* Alamofire in Frameworks */,
 				A7ADA15A21A725460027FC1C /* Material.framework in Frameworks */,
@@ -1249,6 +1245,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C5274D3258C179A00486D5A /* SwiftyJSON in Frameworks */,
 				7C6D0C8825896DB600D80BB5 /* RealmSwift in Frameworks */,
 				7C6D0C8A25896DBF00D80BB5 /* Alamofire in Frameworks */,
 				A7CC386421934FDE00C8355A /* SignalProtocolFramework.framework in Frameworks */,
@@ -1327,7 +1324,6 @@
 				41AAC540201A9FF500809C4D /* APIManager.swift */,
 				41AAC544201AA01400809C4D /* DBManager.swift */,
 				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
-				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
 				A723254421CBE257003CF78D /* ThemeManager.swift */,
 				A7385F3E2230272E005CB38D /* RequestManager.swift */,
 				A7B17A892257C93600927102 /* BackupManager.swift */,
@@ -1884,7 +1880,6 @@
 				A7CC3885219496E600C8355A /* SharedUtils.swift */,
 				A7CC38882194979A00C8355A /* SharedExtensions.swift */,
 				70D965382340E839006D7E95 /* AppStoreReviewManager.swift */,
-				7C3C35CF243E5896001A8C9F /* RichEditorWrapperView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1927,6 +1922,7 @@
 				7C6D0C732589691400D80BB5 /* FirebaseAnalytics */,
 				7C6D0C752589691400D80BB5 /* FirebaseMessaging */,
 				7C6D0C772589691400D80BB5 /* FirebaseCrashlytics */,
+				7CE5879F25ACD6550000B2D7 /* TheRichTextEditor */,
 			);
 			productName = "iOS-Email-Client";
 			productReference = 41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */;
@@ -1971,6 +1967,7 @@
 				7C6D0C9825896EA200D80BB5 /* RealmSwift */,
 				7C6D0C9D2589700C00D80BB5 /* Alamofire */,
 				7C6D0CA22589702900D80BB5 /* Gzip */,
+				7CE587A425ACD68C0000B2D7 /* TheRichTextEditor */,
 			);
 			productName = ShareExtension;
 			productReference = A77C30AE21A5055A0031E219 /* ShareExtension.appex */;
@@ -1994,6 +1991,7 @@
 				7C6D0C8725896DB600D80BB5 /* RealmSwift */,
 				7C6D0C8925896DBF00D80BB5 /* Alamofire */,
 				7C6D0C8B25896DC400D80BB5 /* SwiftSoup */,
+				7C5274D2258C179A00486D5A /* SwiftyJSON */,
 			);
 			productName = NotificationExtension;
 			productReference = A7CC38042190D9D900C8355A /* NotificationExtension.appex */;
@@ -2084,6 +2082,7 @@
 				7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */,
 				7C6D0C6C2589681600D80BB5 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
 				7C6D0C722589691400D80BB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				7CE5879E25ACD6550000B2D7 /* XCRemoteSwiftPackageReference "TheRichTextEditor" */,
 			);
 			productRefGroup = 41B6AAAD2017987500D428B7 /* Products */;
 			projectDirPath = "";
@@ -2259,7 +2258,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/CICropPicker.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/M13Checkbox.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MIBadgeButton_Swift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RichEditorView.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/UIImageView_Letters.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Motion.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Instructions.framework",
@@ -2275,7 +2273,6 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CICropPicker.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/M13Checkbox.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MIBadgeButton_Swift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RichEditorView.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/UIImageView_Letters.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Motion.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Instructions.framework",
@@ -2324,7 +2321,6 @@
 				41AAC504201A9FAD00809C4D /* ComposeViewController.swift in Sources */,
 				7C5E404220B715D20027C61F /* SignatureEditorViewController.swift in Sources */,
 				3499BEBE24EFBE3600ADBFD6 /* SignUpConfirmPasswordViewController.swift in Sources */,
-				7C3C35D0243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */,
 				7C8D6C7220371FA500AB96EF /* ConnectDeviceViewController.swift in Sources */,
 				5BBA9D2A232F68D100277C48 /* ValidateString.swift in Sources */,
 				950AFF3021FA6A7E003115E7 /* EmailSourceViewController.swift in Sources */,
@@ -2333,7 +2329,6 @@
 				348DD9DA2361FF1C000DC704 /* GenericSingleInputPopover.swift in Sources */,
 				7CAC1CEE20F6AE7B004A50C6 /* PaddingUILabel.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
-				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,
 				A73ACB9B2280CAB500B0CF91 /* GetThreadsAsyncTask.swift in Sources */,
 				7CB5D81B253895E2008A0E62 /* SwingingLoaderUIView.swift in Sources */,
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
@@ -2621,7 +2616,6 @@
 				A7ADA13721A5F1FA0027FC1C /* SharedAPI.swift in Sources */,
 				A789B23F21B5E4A700F89DF3 /* PasscodeConfig.swift in Sources */,
 				A7ADA12C21A5F1DA0027FC1C /* CRPreKeyRecord.swift in Sources */,
-				7C3C35D1243E5896001A8C9F /* RichEditorWrapperView.swift in Sources */,
 				A7ADA12521A5CF9C0027FC1C /* ComposerUIView.swift in Sources */,
 				A7ADA13B21A5F2100027FC1C /* CriptextPreKeyStore.swift in Sources */,
 				7CA607BA242A5E120086D6B4 /* AccountAlias.swift in Sources */,
@@ -3284,7 +3278,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3327,7 +3321,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3483,7 +3477,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3553,7 +3547,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3588,7 +3582,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3622,7 +3616,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3659,7 +3653,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3697,7 +3691,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3734,7 +3728,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3904,9 +3898,22 @@
 				version = 7.3.0;
 			};
 		};
+		7CE5879E25ACD6550000B2D7 /* XCRemoteSwiftPackageReference "TheRichTextEditor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Criptext/TheRichTextEditor";
+			requirement = {
+				kind = exactVersion;
+				version = 0.3.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7C5274D2258C179A00486D5A /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6D0C402589666400D80BB5 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
 		7C6D0C332589643500D80BB5 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7C6D0C322589643500D80BB5 /* XCRemoteSwiftPackageReference "Alamofire" */;
@@ -4036,6 +4043,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */;
 			productName = Gzip;
+		};
+		7CE5879F25ACD6550000B2D7 /* TheRichTextEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CE5879E25ACD6550000B2D7 /* XCRemoteSwiftPackageReference "TheRichTextEditor" */;
+			productName = TheRichTextEditor;
+		};
+		7CE587A425ACD68C0000B2D7 /* TheRichTextEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CE5879E25ACD6550000B2D7 /* XCRemoteSwiftPackageReference "TheRichTextEditor" */;
+			productName = TheRichTextEditor;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
