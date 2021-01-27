@@ -267,7 +267,7 @@ extension ComposerUIView: TheRichTextEditorDelegate {
     }
     
     func scrollOffset(verticalOffset: CGFloat) {
-        //self.scrollView.setContentOffset(CGPoint(x: self.scrollView.contentOffset.x, y: verticalOffset + CGFloat(CONTACT_FIELDS_HEIGHT + TOOLBAR_MARGIN_HEIGHT) + composerKeyboardOffset), animated: true)
+        
     }
     
     func heightDidChange() {

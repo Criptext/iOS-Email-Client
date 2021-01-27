@@ -17,7 +17,6 @@ class SignatureEditorViewController: UIViewController {
     @IBOutlet weak var OnOffLabel: UILabel!
     var isEdited = false
     var myAccount: Account!
-    var keyboardManager: KeyboardManager!
     
     override func viewDidLoad() {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self as UIGestureRecognizerDelegate
@@ -28,7 +27,6 @@ class SignatureEditorViewController: UIViewController {
         signatureEnableSwitch.isOn = myAccount.signatureEnabled
         OnOffLabel.text = myAccount.signatureEnabled ? String.localize("ON") : String.localize("OFF")
         richEditor.html = myAccount.signature
-        keyboardManager = KeyboardManager(view: self.view)
         applyTheme()
         
         richEditor.enableAccessoryView = true
@@ -48,15 +46,9 @@ class SignatureEditorViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        keyboardManager.beginMonitoring()
         if signatureEnableSwitch.isOn {
             richEditor.focus()
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        keyboardManager.stopMonitoring()
     }
     
     @IBAction func onSwitchToggle(_ sender: Any) {

@@ -290,7 +290,6 @@
 		7CF93F6021498C4800361837 /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF93F5F21498C4800361837 /* AttachmentTableViewCell.swift */; };
 		7CFBD99F204DA80300A7786D /* TableEndViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */; };
 		7CFBD9A1204DA97500A7786D /* TableEndViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */; };
-		7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */; };
 		7CFF2EE820766532002B19DB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFF2EE720766532002B19DB /* MenuViewController.swift */; };
 		950AFF3021FA6A7E003115E7 /* EmailSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950AFF2F21FA6A7E003115E7 /* EmailSourceViewController.swift */; };
 		95145BA92368E8A200E4EB72 /* GenericSingleInputPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95145BA82368E8A200E4EB72 /* GenericSingleInputPopover.xib */; };
@@ -974,7 +973,6 @@
 		7CF93F5F21498C4800361837 /* AttachmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentTableViewCell.swift; sourceTree = "<group>"; };
 		7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableEndViewCell.xib; sourceTree = "<group>"; };
 		7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableEndViewCell.swift; sourceTree = "<group>"; };
-		7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		7CFF2EE720766532002B19DB /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		950AFF2F21FA6A7E003115E7 /* EmailSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSourceViewController.swift; sourceTree = "<group>"; };
 		95145B8B2368E26D00E4EB72 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ConnectView.strings; sourceTree = "<group>"; };
@@ -1326,7 +1324,6 @@
 				41AAC540201A9FF500809C4D /* APIManager.swift */,
 				41AAC544201AA01400809C4D /* DBManager.swift */,
 				7C13D8AA2080FCCD008F1395 /* WebSocketManager.swift */,
-				7CFE8D4F20BC688900998A2F /* KeyboardManager.swift */,
 				A723254421CBE257003CF78D /* ThemeManager.swift */,
 				A7385F3E2230272E005CB38D /* RequestManager.swift */,
 				A7B17A892257C93600927102 /* BackupManager.swift */,
@@ -2332,7 +2329,6 @@
 				348DD9DA2361FF1C000DC704 /* GenericSingleInputPopover.swift in Sources */,
 				7CAC1CEE20F6AE7B004A50C6 /* PaddingUILabel.swift in Sources */,
 				7CDAD26A2040B80A0080A32C /* CriptextPreKeyStore.swift in Sources */,
-				7CFE8D5020BC688900998A2F /* KeyboardManager.swift in Sources */,
 				A73ACB9B2280CAB500B0CF91 /* GetThreadsAsyncTask.swift in Sources */,
 				7CB5D81B253895E2008A0E62 /* SwingingLoaderUIView.swift in Sources */,
 				7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */,
