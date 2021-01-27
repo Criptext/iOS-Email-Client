@@ -257,7 +257,7 @@ class MenuViewController: UIViewController{
                 weakSelf.accountsCollectionView.reloadData()
             }
             if (weakSelf.mailboxVC != nil) {
-                weakSelf.mailboxVC.circleBadgeView.isHidden = !weakSelf.menuData.accountBadge.contains(where: {$0.value > 0})
+                weakSelf.mailboxVC.headToolbar.showAccountAlert(weakSelf.menuData.accountBadge.contains(where: {$0.value > 0}))
             }
         }
     }

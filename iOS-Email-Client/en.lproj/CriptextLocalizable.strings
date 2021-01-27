@@ -45,6 +45,7 @@
 "ACCESS_DENIED" = "Access denied";
 "NEED_ENABLE_ACCESS" = "You need to enable access for this app in your settings";
 "ODD" = "Well, that’s odd…";
+"SEARCH" = "Search";
 "SIGNUP" = "Sign up";
 "NOT_REGISTERED" = "Not registered? ";
 "SIGNIN" = "Sign In";

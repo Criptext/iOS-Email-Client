@@ -45,6 +45,7 @@
 "ACCESS_DENIED" = "Acceso denegado";
 "NEED_ENABLE_ACCESS" = "Necesitas habilitar el acceso para esta aplicación en tu configuración del celular";
 "ODD" = "Bueno, eso fue extraño…";
+"SEARCH" = "Buscar";
 "SIGNUP" = "Crear Cuenta";
 "NOT_REGISTERED" = "¿No estás registrado? ";
 "SIGNIN" = "Iniciar Sesión";

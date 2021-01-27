@@ -225,8 +225,6 @@
 		7C756F3120E2D57B007C0641 /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */; };
 		7C7869C82469F1240085D909 /* LinkFileMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869C72469F1240085D909 /* LinkFileMiddleware.swift */; };
 		7C7869CA2469F2070085D909 /* LinkFileHandlerVersion6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869C92469F2070085D909 /* LinkFileHandlerVersion6.swift */; };
-		7C7869CC246EDFD40085D909 /* AvatarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C7869CB246EDFD40085D909 /* AvatarUIView.xib */; };
-		7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7869CD246EE0DC0085D909 /* AvatarUI.swift */; };
 		7C7D1D1C254B576300400281 /* PasswordChangeLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7D1D1B254B576300400281 /* PasswordChangeLoginViewController.swift */; };
 		7C7F2FE920B4978200A2CB32 /* GeneralTapTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */; };
 		7C7F2FEB20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7F2FEA20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift */; };
@@ -300,6 +298,8 @@
 		7CE1ED2E2553334A005599DE /* SyncDeniedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */; };
 		7CE1ED392553442D005599DE /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED382553442D005599DE /* SyncViewController.swift */; };
 		7CE1ED4325535A07005599DE /* RestoreBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */; };
+		7CDFE0BA25C1FFE800F7D817 /* HeaderBarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CDFE0B925C1FFE800F7D817 /* HeaderBarUIView.xib */; };
+		7CDFE0CB25C2068D00F7D817 /* HeaderBarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */; };
 		7CE1F9FE2478788300D14352 /* PlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FD2478788300D14352 /* PlusViewController.swift */; };
 		7CE1FA0024787BEC00D14352 /* UpgradePlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */; };
 		7CE1FA02247882B300D14352 /* AlreadyPlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */; };
@@ -932,8 +932,6 @@
 		7C756F3020E2D57B007C0641 /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
 		7C7869C72469F1240085D909 /* LinkFileMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileMiddleware.swift; sourceTree = "<group>"; };
 		7C7869C92469F2070085D909 /* LinkFileHandlerVersion6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkFileHandlerVersion6.swift; sourceTree = "<group>"; };
-		7C7869CB246EDFD40085D909 /* AvatarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarUIView.xib; sourceTree = "<group>"; };
-		7C7869CD246EE0DC0085D909 /* AvatarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarUI.swift; sourceTree = "<group>"; };
 		7C7D1D1B254B576300400281 /* PasswordChangeLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordChangeLoginViewController.swift; sourceTree = "<group>"; };
 		7C7F2FE820B4978200A2CB32 /* GeneralTapTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTapTableCellView.swift; sourceTree = "<group>"; };
 		7C7F2FEA20B497D000A2CB32 /* GeneralSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -1014,6 +1012,8 @@
 		7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDeniedUIView.swift; sourceTree = "<group>"; };
 		7CE1ED382553442D005599DE /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncViewController.swift; sourceTree = "<group>"; };
 		7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreBackupViewController.swift; sourceTree = "<group>"; };
+		7CDFE0B925C1FFE800F7D817 /* HeaderBarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderBarUIView.xib; sourceTree = "<group>"; };
+		7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderBarUIView.swift; sourceTree = "<group>"; };
 		7CE1F9FD2478788300D14352 /* PlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusViewController.swift; sourceTree = "<group>"; };
 		7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradePlusUIView.swift; sourceTree = "<group>"; };
 		7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlreadyPlusUIView.swift; sourceTree = "<group>"; };
@@ -1628,6 +1628,7 @@
 			isa = PBXGroup;
 			children = (
 				7CE1ED242553326E005599DE /* LogIn */,
+				7CDFE0B825C1FFB500F7D817 /* Toolbars */,
 				7CB198A52051E71F00AA4FF8 /* AttachmentHistoryTableCell.swift */,
 				7CB198A32051DF7D00AA4FF8 /* AttachmentHistoryTableCell.xib */,
 				A7065E6021CC62E200F8292A /* AttachmentOptionsContainerView.swift */,
@@ -1719,8 +1720,6 @@
 				7CFBD9A0204DA97500A7786D /* TableEndViewCell.swift */,
 				7CFBD99E204DA80300A7786D /* TableEndViewCell.xib */,
 				7C50C692202E3A3000FED2E8 /* TipUIView.swift */,
-				7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */,
-				7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */,
 				7C63AB5F205816470053219F /* UnsentUIPopover.swift */,
 				7C63AB5D205814FD0053219F /* UnsentUIPopover.xib */,
 				A7FFCF44217A91C300FFFDFF /* WelcomeTourView.xib */,
@@ -1739,8 +1738,6 @@
 				7C3C35BC2432598A001A8C9F /* MXRecordsUIView.xib */,
 				7C38774A242531C4002B98D4 /* MXRecordsUIView.swift */,
 				7C6CA86A244F4FD100181703 /* GetPlusUIPopover.xib */,
-				7C7869CB246EDFD40085D909 /* AvatarUIView.xib */,
-				7C7869CD246EE0DC0085D909 /* AvatarUI.swift */,
 				7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */,
 				7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */,
 				7CB3969B2491B04F00301129 /* EnableAutoBackupUIPopover.swift */,
@@ -1912,6 +1909,17 @@
 				7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */,
 			);
 			path = LogIn;
+			sourceTree = "<group>";
+		}
+		7CDFE0B825C1FFB500F7D817 /* Toolbars */ = {
+			isa = PBXGroup;
+			children = (
+				7C15669F20A23AEB000CA8D2 /* TopbarUIView.swift */,
+				7C15669D20A232E8000CA8D2 /* TopbarUIView.xib */,
+				7CDFE0B925C1FFE800F7D817 /* HeaderBarUIView.xib */,
+				7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */,
+			);
+			path = Toolbars;
 			sourceTree = "<group>";
 		};
 		7CF93F522146E3D700361837 /* Lottie */ = {
@@ -2247,6 +2255,7 @@
 				412CB0412037402D005D1B3F /* NunitoSans-Bold.ttf in Resources */,
 				A7B5B574223B0D650083E467 /* AccountCollectionCell.xib in Resources */,
 				A7627D9E223C323F007A26F6 /* showmore-dark-opened.png in Resources */,
+				7CDFE0BA25C1FFE800F7D817 /* HeaderBarUIView.xib in Resources */,
 				A7627D9C223C3234007A26F6 /* showmore-light-opened.png in Resources */,
 				7C63AB5E205814FD0053219F /* UnsentUIPopover.xib in Resources */,
 				A7D2DE7421C42BC8002ED6F8 /* PasscodeLockView.xib in Resources */,
@@ -2258,7 +2267,6 @@
 				A713109E2159762100534F13 /* Assets.xcassets in Resources */,
 				D652A07421C03671005EC3E1 /* ContactShareTableViewCell.xib in Resources */,
 				A7FFCF3F217A914000FFFDFF /* RemoveDeviceUIPopover.xib in Resources */,
-				7C7869CC246EDFD40085D909 /* AvatarUIView.xib in Resources */,
 				412CB0372037402D005D1B3F /* NunitoSans-BoldItalic.ttf in Resources */,
 				7C8C163B255C856E00DD94C9 /* WaitingCloud.json in Resources */,
 				7C15669E20A232E8000CA8D2 /* TopbarUIView.xib in Resources */,
@@ -2459,6 +2467,7 @@
 				D6E1E63D21E5156400FA968A /* FileKey.swift in Sources */,
 				7C1E8850208D367B003FA304 /* MailboxData.swift in Sources */,
 				A73151C321B9F2FA00D20B72 /* SettingsOptionCell.swift in Sources */,
+				7CDFE0CB25C2068D00F7D817 /* HeaderBarUIView.swift in Sources */,
 				3499BEC024F0543B00ADBFD6 /* SignUpRecoveryEmailViewController.swift in Sources */,
 				A7115E9D2316D32500EBECE7 /* MailboxOptionsInterface.swift in Sources */,
 				7C7869C82469F1240085D909 /* LinkFileMiddleware.swift in Sources */,
@@ -2593,7 +2602,6 @@
 				7CF93F5C214963A500361837 /* GeneralVersionTableViewCell.swift in Sources */,
 				A7060A0321AA5AC80066BFA4 /* CustomPasscodeViewController.swift in Sources */,
 				7C170F2524980BC100D083F8 /* LinkDBMaps.swift in Sources */,
-				7C7869CE246EE0DC0085D909 /* AvatarUI.swift in Sources */,
 				7CCD73E6212DF6F5002C8C7F /* RemoveDeviceUIPopover.swift in Sources */,
 				7C09FF422558C54900C4213A /* ResetPasswordViewController.swift in Sources */,
 				7C09FF3525548F7600C4213A /* CircleProgressBarUIView.swift in Sources */,
