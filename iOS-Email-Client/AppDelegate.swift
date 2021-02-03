@@ -568,7 +568,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             DBManager.disableAccount(account)
             self.setloginAsRoot(manually: manually, message: message)
-            ThemeManager.shared.swapTheme(theme: Theme.init())
             self.clearDefaults()
         }
         
@@ -589,7 +588,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let loginVC = initialVC.topViewController as? NewLoginViewController {
             loginVC.loggedOutRemotely = message
         }
-        var options = UIWindow.TransitionOptions()
+        let options = UIWindow.TransitionOptions()
         options.direction = .toTop
         options.duration = 0.4
         options.style = .easeOut

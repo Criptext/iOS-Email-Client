@@ -415,7 +415,6 @@ class SharedDB {
         
         try! realm.write() {
             senderContact.isTrusted = false
-            senderContact.spamScore += 1
         }
     }
     
@@ -424,7 +423,6 @@ class SharedDB {
         
         try! realm.write() {
             senderContact.isTrusted = true
-            senderContact.spamScore = 0
         }
     }
     

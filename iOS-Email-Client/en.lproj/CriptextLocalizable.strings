@@ -65,7 +65,7 @@
 "NOT_VALID_EMAIL" = "this is not a valid email";
 "CONTINUE" = "Continue";
 "TERMS_CONDITIONS" = "Terms & Conditions";
-"ACCEPT_TERMS" = "By clicking create account, you agree to our ";
+"ACCEPT_TERMS" = "I have read and agree with the ";
 "WARNING_RECOVERY_2" = " Recovery Email ";
 "WARNING_RECOVERY_1" = "You did NOT set a";
 "WARNING_RECOVERY_3" = "so account recovery is imposible if you forget your password. \n\nProceed without recovery email?";

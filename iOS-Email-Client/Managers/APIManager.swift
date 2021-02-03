@@ -935,7 +935,7 @@ class APIManager: SharedAPI {
         let headers = [versionHeader: apiVersion]
         let params = [ "email": recoveryEmail,
                        "username": username] as [String : Any]
-        return Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+        return Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }

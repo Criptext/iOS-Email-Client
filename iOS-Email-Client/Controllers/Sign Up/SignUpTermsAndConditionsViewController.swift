@@ -21,6 +21,7 @@ class SignUpTermsAndConditionsViewController: UIViewController{
     @IBOutlet weak var loadingView: SwingingLoaderUIView!
     @IBOutlet weak var loadingOverlayView: UIView!
     @IBOutlet weak var captchaTextField: StatusTextField!
+    @IBOutlet weak var captchaContainerView: UIView!
     @IBOutlet weak var captchaWebView: WKWebView!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var creatingLabel: UILabel!
@@ -71,6 +72,8 @@ class SignUpTermsAndConditionsViewController: UIViewController{
         onRefreshPress(self)
         captchaWebView.scrollView.bouncesZoom = false
         captchaWebView.scrollView.isScrollEnabled = false
+        captchaContainerView.layer.borderWidth = 1
+        captchaContainerView.layer.borderColor = UIColor(red: 212/255, green: 218/255, blue: 227/255, alpha: 1).cgColor
     }
     
     func applyTheme() {

@@ -253,10 +253,12 @@ class SyncViewController: UIViewController {
             return
         }
         
-        let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "setsettingsviewcontroller") as! SetSettingsViewController
-        controller.myAccount = self.myAccount
-        self.navigationController?.pushViewController(controller, animated: true)
+        let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
+        let options = UIWindow.TransitionOptions()
+        options.direction = .toTop
+        options.duration = 0.4
+        options.style = .easeOut
+        UIApplication.shared.keyWindow?.set(rootViewController: mailboxVC, options: options, nil)
     }
     
     func setProcessLabel() {

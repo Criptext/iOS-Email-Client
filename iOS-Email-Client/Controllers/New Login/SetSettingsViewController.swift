@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Contacts
 
 class SetSettingsViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -27,13 +28,31 @@ class SetSettingsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        setSettings.append(SetSetting(setting: .theme, activated: false))
-        setSettings.append(SetSetting(setting: .contacts, activated: false))
+        setSettings.append(SetSetting(setting: .theme, activated: ThemeManager.shared.theme.name == "Dark"))
+        
+        setSettings.append(SetSetting(setting: .contacts, activated: CNContactStore.authorizationStatus(for: .contacts) == .authorized))
+        
         setSettings.append(SetSetting(setting: .notifications, activated: false))
+        
         setSettings.append(SetSetting(setting: .backup, activated: false))
         
+        checkPushNotifications()
         applyTheme()
         applyLocalization()
+    }
+    
+    func checkPushNotifications() {
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            switch settings.authorizationStatus {
+            case .authorized, .provisional:
+                self.setSettings[2].activated = true
+            default:
+                self.setSettings[2].activated = false
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func applyTheme() {
@@ -55,11 +74,11 @@ class SetSettingsViewController: UIViewController {
         }
         
         let mailboxVC = delegate.initMailboxRootVC(nil, myAccount, showRestore: false)
-        var options = UIWindow.TransitionOptions()
+        let options = UIWindow.TransitionOptions()
         options.direction = .toTop
         options.duration = 0.4
         options.style = .easeOut
-        UIApplication.shared.keyWindow?.setRootViewController(mailboxVC, options: options)
+        UIApplication.shared.keyWindow?.set(rootViewController: mailboxVC, options: options, nil)
     }
 }
 
@@ -123,5 +142,9 @@ extension SetSettingsViewController: UITableViewDelegate, UITableViewDataSource 
             }
         }
         self.tableView.reloadData()
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
     }
 }
