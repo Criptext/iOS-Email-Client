@@ -58,63 +58,77 @@ class CreateCustomJSONFileAsyncTask {
         metadata.language = Env.language
         
         handleRow(metadata.toDictionary())
-        results.contacts.enumerated().forEach {
-            contacts[$1.email] = $0 + 1
-            let dictionary = $1.toDictionary(id: $0 + 1)
-            handleRow(dictionary)
-            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+        results.contacts.enumerated().forEach { (index, contact) in
+            autoreleasepool {
+                contacts[contact.email] = index + 1
+                let dictionary = contact.toDictionary(id: index + 1)
+                handleRow(dictionary)
+                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+            }
         }
-        results.labels.forEach {
-            handleRow($0.toDictionary())
-            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+        results.labels.forEach { label in
+            autoreleasepool {
+                handleRow(label.toDictionary())
+                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+            }
         }
-        results.emails.enumerated().forEach {
-            emails[$1.key] = $0 + 1
-            let dictionary = $1.toDictionary(
-                id: $0 + 1,
-                emailBody: FileUtils.getBodyFromFile(account: account!, metadataKey: "\($1.key)"),
-                headers: FileUtils.getHeaderFromFile(account: account!, metadataKey: "\($1.key)"))
-            handleRow(dictionary)
-            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+        results.emails.enumerated().forEach { (index, email) in
+            autoreleasepool {
+                emails[email.key] = index + 1
+                let dictionary = email.toDictionary(
+                    id: index + 1,
+                    emailBody: FileUtils.getBodyFromFile(account: account!, metadataKey: "\(email.key)"),
+                    headers: FileUtils.getHeaderFromFile(account: account!, metadataKey: "\(email.key)"))
+                handleRow(dictionary)
+                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+            }
         }
         results.emails.forEach { (email) in
-            email.toDictionaryLabels(emailsMap: emails).forEach({ (emailLabelDictionary) in
-                guard let jsonString = Utils.convertToJSONString(dictionary: emailLabelDictionary) else {
+            autoreleasepool {
+                email.toDictionaryLabels(emailsMap: emails).forEach({ (emailLabelDictionary) in
+                    guard let jsonString = Utils.convertToJSONString(dictionary: emailLabelDictionary) else {
+                        return
+                    }
+                    writeRowToFile(jsonRow: jsonString)
+                    progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+                })
+            }
+        }
+        results.emailContacts.enumerated().forEach { (index, emailContact) in
+            autoreleasepool {
+                guard let emailId = emails[emailContact.email.key] else {
                     return
                 }
-                writeRowToFile(jsonRow: jsonString)
+                handleRow(emailContact.toDictionary(id: index + 1, emailId: emailId, contactId: contacts[emailContact.contact.email]!))
                 progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
-            })
-        }
-        results.emailContacts.enumerated().forEach {
-            guard let emailId = emails[$1.email.key] else {
-                return
             }
-            handleRow($1.toDictionary(id: $0 + 1, emailId: emailId, contactId: contacts[$1.contact.email]!))
-            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
         }
         var fileId = 1
         results.emails.forEach { (email) in
-            email.files.enumerated().forEach({ (index, file) in
-                guard let emailId = emails[file.emailId] else {
-                    return
-                }
-                handleRow(file.toDictionary(id: fileId, emailId: emailId))
-                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
-                fileId += 1
-            })
+            autoreleasepool {
+                email.files.enumerated().forEach({ (index, file) in
+                    guard let emailId = emails[file.emailId] else {
+                        return
+                    }
+                    handleRow(file.toDictionary(id: fileId, emailId: emailId))
+                    progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+                    fileId += 1
+                })
+            }
         }
         var aliasId = 1
-        results.aliases.forEach {
-            handleRow($0.toDictionary(id: aliasId))
+        results.aliases.forEach { alias in
+            handleRow(alias.toDictionary(id: aliasId))
             progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
             aliasId += 1
         }
         var customDomainId = 1
-        results.customDomains.forEach {
-            handleRow($0.toDictionary(id: customDomainId))
-            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
-            customDomainId += 1
+        results.customDomains.forEach { domain in
+            autoreleasepool {
+                handleRow(domain.toDictionary(id: customDomainId))
+                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+                customDomainId += 1
+            }
         }
         DispatchQueue.main.async {
             completion(nil, self.fileURL)
