@@ -10,6 +10,7 @@ import Foundation
 
 protocol RequestDelegate: class {
     func finishRequest(accountId: String, result: EventData.Result)
+    func progressRequest(accountId: String, progress: Float)
     func errorRequest(accountId: String, response: ResponseData)
 }
 
@@ -19,6 +20,7 @@ final class RequestManager: NSObject {
     private var accountRequests = [String]()
     var accountCompletions = [String: ((Bool) -> Void)]()
     private var processingAccount: String? = nil
+    private var currentHandler: EventHandler? = nil
     
     func getEvents() {
         guard processingAccount == nil,
@@ -93,7 +95,11 @@ final class RequestManager: NSObject {
             }
             
             let eventHandler = EventHandler(account: myAccount)
-            eventHandler.handleEvents(events: events){ [weak self] result in
+            eventHandler.handleEvents(events: events) { [weak self] progress in
+                self?.delegates.forEach { delegate in
+                    delegate?.progressRequest(accountId: accountId, progress: progress)
+                }
+            } completion: { [weak self] result in
                 weakSelf.processingAccount = nil
                 guard let weakSelf = self else {
                     self?.getEvents()
@@ -110,6 +116,7 @@ final class RequestManager: NSObject {
                 }
                 weakSelf.getEvents()
             }
+            weakSelf.currentHandler = eventHandler
         }
         
     }
@@ -137,6 +144,8 @@ final class RequestManager: NSObject {
     }
     
     func clearPending() {
+        currentHandler?.cancelled = true
+        currentHandler = nil
         accountRequests.removeAll()
         accountCompletions.removeAll()
     }

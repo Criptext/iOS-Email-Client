@@ -379,6 +379,10 @@ class ProfileEditorViewController: UIViewController {
 }
 
 extension ProfileEditorViewController: RequestDelegate {
+    func progressRequest(accountId: String, progress: Float) {
+        
+    }
+    
     func finishRequest(accountId: String, result: EventData.Result) {
         self.didReceiveEvents(result: result)
     }

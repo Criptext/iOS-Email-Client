@@ -30,6 +30,7 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var headToolbar: HeaderBarUIView!
     @IBOutlet weak var buttonCompose: UIButton!
     @IBOutlet weak var newsHeaderView: MailboxNewsHeaderUIView!
+    @IBOutlet weak var progressView: UIProgressView!
         
     @IBOutlet weak var envelopeImageView: UIImageView!
     @IBOutlet weak var envelopeTitleView: UILabel!
@@ -212,6 +213,9 @@ class InboxViewController: UIViewController {
     }
     
     func viewSetup(){
+        progressView.isHidden = true
+        progressView.progress = 0
+        
         let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
         self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
         let newsHeaderNib = UINib(nibName: "MailboxNewsHeaderUITableCell", bundle: nil)
@@ -258,6 +262,7 @@ class InboxViewController: UIViewController {
         initFloatingButton(color: theme.criptextBlue)
         refreshControl.tintColor = theme.name == "Dark" ? .white : .gray
         view.backgroundColor = theme.background
+        progressView.tintColor = theme.criptextBlue
         generalOptionsContainerView.applyTheme()
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.applyTheme()
@@ -2003,6 +2008,14 @@ extension InboxViewController {
 }
 
 extension InboxViewController: RequestDelegate {
+    func progressRequest(accountId: String, progress: Float) {
+        guard !myAccount.isInvalidated && myAccount.compoundKey == accountId else {
+            return
+        }
+        progressView.isHidden = false
+        progressView.progress = progress
+    }
+    
     func finishRequest(accountId: String, result: EventData.Result) {
         if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
             self.refreshControl.endRefreshing()
@@ -2021,6 +2034,8 @@ extension InboxViewController: RequestDelegate {
             }
             return
         }
+        self.progressView.isHidden = true
+        self.progressView.progress = 0
         self.didReceiveEvents(result: result)
     }
     

@@ -1581,6 +1581,9 @@
                                     <outlet property="delegate" destination="gA0-rr-zOr" id="cuz-7q-AFN"/>
                                 </connections>
                             </tableView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="N9x-dI-3Xj">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="2.5"/>
+                            </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xaY-yy-tiI">
                                 <rect key="frame" x="336" y="696" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1619,8 +1622,10 @@
                             <constraint firstItem="xJq-0v-4GG" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="Jbf-Sm-xAb"/>
                             <constraint firstItem="RGw-Kx-VBy" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="Jyf-Hl-HgU"/>
                             <constraint firstAttribute="bottom" secondItem="RGw-Kx-VBy" secondAttribute="bottom" id="K1r-HE-omP"/>
+                            <constraint firstItem="N9x-dI-3Xj" firstAttribute="top" secondItem="RGw-Kx-VBy" secondAttribute="top" id="MAh-5g-K27"/>
                             <constraint firstAttribute="trailing" secondItem="iVc-79-cuJ" secondAttribute="trailing" id="SVW-0w-EaA"/>
                             <constraint firstItem="Mwd-eq-N7c" firstAttribute="top" secondItem="ZfB-jw-VMM" secondAttribute="bottom" id="bBn-rq-HZZ"/>
+                            <constraint firstItem="N9x-dI-3Xj" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="dXo-Ug-jYs"/>
                             <constraint firstItem="ZfB-jw-VMM" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="ega-7h-GeI"/>
                             <constraint firstAttribute="trailing" secondItem="RGw-Kx-VBy" secondAttribute="trailing" id="epY-zD-fMa"/>
                             <constraint firstAttribute="bottom" secondItem="fhP-Ga-19D" secondAttribute="bottom" id="g8s-u8-Cv6"/>
@@ -1629,6 +1634,7 @@
                             <constraint firstItem="iVc-79-cuJ" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="mmO-cA-F1M"/>
                             <constraint firstAttribute="trailing" secondItem="fhP-Ga-19D" secondAttribute="trailing" id="rew-CF-bn7"/>
                             <constraint firstItem="RGw-Kx-VBy" firstAttribute="top" secondItem="ZfB-jw-VMM" secondAttribute="bottom" id="wB9-yW-MZv"/>
+                            <constraint firstAttribute="trailing" secondItem="N9x-dI-3Xj" secondAttribute="trailing" id="yTO-9M-VJg"/>
                             <constraint firstItem="iVc-79-cuJ" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="z2W-gE-qax"/>
                         </constraints>
                     </view>
@@ -1644,6 +1650,7 @@
                         <outlet property="generalOptionsContainerView" destination="fhP-Ga-19D" id="Kkq-Qi-Q9p"/>
                         <outlet property="headToolbar" destination="iVc-79-cuJ" id="tfV-4I-L8h"/>
                         <outlet property="newsHeaderView" destination="ZfB-jw-VMM" id="k1y-Mt-8H8"/>
+                        <outlet property="progressView" destination="N9x-dI-3Xj" id="7Vf-NL-VRi"/>
                         <outlet property="tableView" destination="RGw-Kx-VBy" id="PUS-eO-VVj"/>
                         <outlet property="topToolbar" destination="xJq-0v-4GG" id="ciI-OE-wd4"/>
                         <segue destination="U03-Od-wtY" kind="presentation" identifier="showComposer" modalPresentationStyle="fullScreen" id="Lr4-gz-kw3"/>
@@ -1652,7 +1659,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6rU-L3-MlW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-836" y="472.71364317841085"/>
+            <point key="canvasLocation" x="-836.23188405797111" y="472.09821428571428"/>
         </scene>
         <!--Feed View Controller-->
         <scene sceneID="qaf-5e-Kt3">
@@ -2015,10 +2022,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="414" height="103.5"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="104"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="103.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="104"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -2042,10 +2049,10 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="315" height="103.5"/>
+                                                    <rect key="frame" x="27" y="0.0" width="315" height="104"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="103.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="104"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
                                                                     <rect key="frame" x="2" y="49" width="6" height="6"/>
@@ -2069,7 +2076,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="293" height="103.5"/>
+                                                            <rect key="frame" x="22" y="0.0" width="293" height="104"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>

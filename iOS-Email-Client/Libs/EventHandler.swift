@@ -16,13 +16,14 @@ class EventHandler {
     var signalHandler: SignalHandler.Type = SignalHandler.self
     let queue = DispatchQueue.global(qos: .userInteractive)
     var parsedKeys = false
-    
+    var cancelled = false
+        
     init(account: Account){
         accountId = account.compoundKey
         jwt = account.jwt
     }
 
-    func handleEvents(events: [[String: Any]], completion: @escaping (_ result: EventData.Result) -> Void){
+    func handleEvents(events: [[String: Any]], progressCallback: ((_ progress: Float) -> Void)? = nil, completion: @escaping (_ result: EventData.Result) -> Void){
         var result = EventData.Result()
         var successfulEvents = [Any]()
         let dispatchQueue = DispatchQueue(label: "taskQueue")
@@ -30,10 +31,17 @@ class EventHandler {
         
         dispatchQueue.async {
             for (index, event) in events.enumerated() {
+                guard !self.cancelled else {
+                    completion(result)
+                    return
+                }
                 self.handleEvent(event, finishCallback: { (successfulEventId, eventResult) in
                     self.handleEventResult(result: &result, successfulEvents: &successfulEvents , successfulEventId, eventResult)
                     dispatchSemaphore.signal()
                     guard index == events.count - 1 else {
+                        DispatchQueue.main.async {
+                            progressCallback?(Float(index + 1)/Float(events.count))
+                        }
                         return
                     }
                     DispatchQueue.main.async {
