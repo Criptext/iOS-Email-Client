@@ -127,7 +127,10 @@ class DevicesLimitViewController: UIViewController {
 }
 
 extension DevicesLimitViewController: LoginManagerDelegate {
-    func handleResult(account: Account) {
+    func handleResult(accountId: String) {
+        guard let account = DBManager.getAccountById(accountId) else {
+            return
+        }
         creatingAccountLoadingView.display = false
         goToImportOptions(account: account)
     }

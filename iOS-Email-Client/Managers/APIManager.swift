@@ -19,14 +19,14 @@ protocol ProgressDelegate {
 class APIManager: SharedAPI {
     static let fileServiceUrl = "https://services.criptext.com"
     
-    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func postKeybundle(params: [String : Any], token: String, queue: DispatchQueue = .main, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
         let headers = [
             "Authorization": "Bearer \(token)",
             versionHeader: apiVersion,
             language: Env.language
         ]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             let responseData = handleResponse(response)
             completion(responseData)
         }

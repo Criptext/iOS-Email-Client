@@ -118,9 +118,11 @@ class CreateCustomJSONFileAsyncTask {
         }
         var aliasId = 1
         results.aliases.forEach { alias in
-            handleRow(alias.toDictionary(id: aliasId))
-            progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
-            aliasId += 1
+            autoreleasepool {
+                handleRow(alias.toDictionary(id: aliasId))
+                progress = handleProgress(progress: progress, total: results.total, step: results.step, progressHandler: progressHandler)
+                aliasId += 1
+            }
         }
         var customDomainId = 1
         results.customDomains.forEach { domain in

@@ -167,7 +167,10 @@ class PasswordChangeLoginViewController: UIViewController {
 }
 
 extension PasswordChangeLoginViewController: LoginManagerDelegate {
-    func handleResult(account: Account) {
+    func handleResult(accountId: String) {
+        guard let account = DBManager.getAccountById(accountId) else {
+            return
+        }
         self.creatingAccountLoadingView.display = false
         self.goToImportOptions(account: account)
     }

@@ -26,6 +26,7 @@ class LoginViewController: UIViewController {
         creatingAccountLoadingView.display = false
         showLoading(false)
         
+        usernameTextField.becomeFirstResponder()
         applyTheme()
         applyLocalization()
     }
@@ -129,7 +130,9 @@ class LoginViewController: UIViewController {
             goToRemoveDevices(loginData: loginData)
         } else {
             creatingAccountLoadingView.display = true
-            createAccount(loginData: loginData)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.createAccount(loginData: loginData)
+            }
         }
     }
     
@@ -150,7 +153,6 @@ class LoginViewController: UIViewController {
     func createAccount(loginData: LoginParams) {
         let loginManager = LoginManager(loginData: loginData)
         loginManager.delegate = self
-        self.creatingAccountLoadingView.display = true
         loginManager.createAccount()
     }
     
@@ -194,7 +196,10 @@ class LoginViewController: UIViewController {
 }
 
 extension LoginViewController: LoginManagerDelegate {
-    func handleResult(account: Account) {
+    func handleResult(accountId: String) {
+        guard let account = DBManager.getAccountById(accountId) else {
+            return
+        }
         self.creatingAccountLoadingView.display = false
         self.goToImportOptions(account: account)
     }
