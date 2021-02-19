@@ -2,20 +2,33 @@ version: 2
 jobs:
   build-and-test:
     macos:
-      xcode: "10.2"
+      xcode: "12.0.0"
     steps:
       - checkout
       - restore_cache:
+          key: 1-gems-v2
+      - run: bundle check || bundle install --path vendor/bundle
+      - save_cache:
+          key: 1-gems-v2
+          paths:
+            - vendor/bundle
+      - restore_cache:
           keys:
-            - criptext-carthage-swift5
+            - criptext-carthage-swift-v2
+            - spm-cache-v2-{{ checksum "spm-cache-test.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}
       - run: bash ./scripts/intelligent-bootstrap.sh
       - save_cache:
-          key: criptext-carthage-swift5
+          key: criptext-carthage-swift-v2
           paths:
             - ./Carthage
+      - run: for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
       - run:
           name: Build and run rests
-          command: fastlane scan
+          command: bundle exec fastlane build_and_test
+      - save_cache:
+          key: spm-cache-v2-{{ checksum "spm-cache-test.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}
+          paths:
+            - SourcePackages/
 
 workflows:
   version: 2

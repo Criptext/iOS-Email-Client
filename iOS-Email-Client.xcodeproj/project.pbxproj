@@ -201,7 +201,6 @@
 		7C6D0C50258966B100D80BB5 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C4F258966B100D80BB5 /* SwiftSoup */; };
 		7C6D0C56258966E300D80BB5 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C55258966E300D80BB5 /* IQKeyboardManagerSwift */; };
 		7C6D0C5C2589670A00D80BB5 /* UIWindowTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C5B2589670A00D80BB5 /* UIWindowTransitions */; };
-		7C6D0C622589678B00D80BB5 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C612589678B00D80BB5 /* Lottie */; };
 		7C6D0C68258967A300D80BB5 /* Gzip in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C67258967A300D80BB5 /* Gzip */; };
 		7C6D0C6E2589681600D80BB5 /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C6D2589681600D80BB5 /* TLPhotoPicker */; };
 		7C6D0C742589691400D80BB5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6D0C732589691400D80BB5 /* FirebaseAnalytics */; };
@@ -307,6 +306,7 @@
 		7CE549CE2088E50100A5E77B /* CheckMarkUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE549CD2088E50100A5E77B /* CheckMarkUIView.swift */; };
 		7CE587A025ACD6550000B2D7 /* TheRichTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 7CE5879F25ACD6550000B2D7 /* TheRichTextEditor */; };
 		7CE587A525ACD68C0000B2D7 /* TheRichTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 7CE587A425ACD68C0000B2D7 /* TheRichTextEditor */; };
+		7CECAEDA25E06E49009A3792 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7CECAED925E06E49009A3792 /* Lottie */; };
 		7CEF1CDB2076CBFA008DAAEE /* MenuItemUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDA2076CBFA008DAAEE /* MenuItemUIView.xib */; };
 		7CEF1CDD2076CC42008DAAEE /* MenuItemUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF1CDC2076CC42008DAAEE /* MenuItemUIView.swift */; };
 		7CF0CFD320460DD200781DE6 /* EmailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF0CFD220460DD200781DE6 /* EmailDetailViewController.swift */; };
@@ -1252,11 +1252,11 @@
 				41C9CC9720781CFB00B8994F /* UIImageView_Letters.framework in Frameworks */,
 				7C6D0C3A2589664900D80BB5 /* Realm in Frameworks */,
 				41C9CC8920781C4E00B8994F /* M13Checkbox.framework in Frameworks */,
+				7CECAEDA25E06E49009A3792 /* Lottie in Frameworks */,
 				7C6D0C762589691400D80BB5 /* FirebaseMessaging in Frameworks */,
 				7C6D0C782589691400D80BB5 /* FirebaseCrashlytics in Frameworks */,
 				41C9CC852078196600B8994F /* CICropPicker.framework in Frameworks */,
 				7C6D0C6E2589681600D80BB5 /* TLPhotoPicker in Frameworks */,
-				7C6D0C622589678B00D80BB5 /* Lottie in Frameworks */,
 				41EE748E207C68C900CCA685 /* MIBadgeButton_Swift.framework in Frameworks */,
 				41C3684A207C6C0B008B50A8 /* Motion.framework in Frameworks */,
 				41C9CC832078195900B8994F /* Material.framework in Frameworks */,
@@ -2022,13 +2022,13 @@
 				7C6D0C4F258966B100D80BB5 /* SwiftSoup */,
 				7C6D0C55258966E300D80BB5 /* IQKeyboardManagerSwift */,
 				7C6D0C5B2589670A00D80BB5 /* UIWindowTransitions */,
-				7C6D0C612589678B00D80BB5 /* Lottie */,
 				7C6D0C67258967A300D80BB5 /* Gzip */,
 				7C6D0C6D2589681600D80BB5 /* TLPhotoPicker */,
 				7C6D0C732589691400D80BB5 /* FirebaseAnalytics */,
 				7C6D0C752589691400D80BB5 /* FirebaseMessaging */,
 				7C6D0C772589691400D80BB5 /* FirebaseCrashlytics */,
 				7CE5879F25ACD6550000B2D7 /* TheRichTextEditor */,
+				7CECAED925E06E49009A3792 /* Lottie */,
 			);
 			productName = "iOS-Email-Client";
 			productReference = 41B6AAAC2017987500D428B7 /* iOS-Email-Client.app */;
@@ -2184,11 +2184,11 @@
 				7C6D0C4E258966B100D80BB5 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				7C6D0C54258966E300D80BB5 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				7C6D0C5A2589670A00D80BB5 /* XCRemoteSwiftPackageReference "UIWindowTransitions" */,
-				7C6D0C602589678B00D80BB5 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */,
 				7C6D0C6C2589681600D80BB5 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
 				7C6D0C722589691400D80BB5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				7CE5879E25ACD6550000B2D7 /* XCRemoteSwiftPackageReference "TheRichTextEditor" */,
+				7CECAED825E06E49009A3792 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 41B6AAAD2017987500D428B7 /* Products */;
 			projectDirPath = "";
@@ -4002,14 +4002,6 @@
 				version = 1.0.0;
 			};
 		};
-		7C6D0C602589678B00D80BB5 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
-			requirement = {
-				kind = revision;
-				revision = 11d518841365b85b0dca7f7a55174d12911f05a0;
-			};
-		};
 		7C6D0C66258967A300D80BB5 /* XCRemoteSwiftPackageReference "GzipSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/1024jp/GzipSwift";
@@ -4040,6 +4032,14 @@
 			requirement = {
 				kind = exactVersion;
 				version = 0.3.3;
+			};
+		};
+		7CECAED825E06E49009A3792 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.2.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -4094,11 +4094,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C6D0C5A2589670A00D80BB5 /* XCRemoteSwiftPackageReference "UIWindowTransitions" */;
 			productName = UIWindowTransitions;
-		};
-		7C6D0C612589678B00D80BB5 /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7C6D0C602589678B00D80BB5 /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
 		};
 		7C6D0C67258967A300D80BB5 /* Gzip */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -4189,6 +4184,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7CE5879E25ACD6550000B2D7 /* XCRemoteSwiftPackageReference "TheRichTextEditor" */;
 			productName = TheRichTextEditor;
+		};
+		7CECAED925E06E49009A3792 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CECAED825E06E49009A3792 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
