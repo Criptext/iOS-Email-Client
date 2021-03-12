@@ -20,6 +20,7 @@ enum ResponseData {
     case Forbidden
     case Missing
     case BadRequest
+    case BadRequestDictionary([String: Any])
     case AuthPending
     case AuthDenied
     case Conflict

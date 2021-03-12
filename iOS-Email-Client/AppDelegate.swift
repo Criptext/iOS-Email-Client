@@ -458,7 +458,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             BackupManager.shared.checkAccounts()
         } else {
             //Go to login
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
             let loginVC = storyboard.instantiateInitialViewController()!
             initialVC = loginVC
         }
@@ -568,7 +568,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             DBManager.disableAccount(account)
             self.setloginAsRoot(manually: manually, message: message)
-            ThemeManager.shared.swapTheme(theme: Theme.init())
             self.clearDefaults()
         }
         
@@ -583,13 +582,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setloginAsRoot(manually: Bool, message: String) {
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let initialVC = storyboard.instantiateInitialViewController() as! UINavigationController
         if !manually,
             let loginVC = initialVC.topViewController as? NewLoginViewController {
             loginVC.loggedOutRemotely = message
         }
-        var options = UIWindow.TransitionOptions()
+        let options = UIWindow.TransitionOptions()
         options.direction = .toTop
         options.duration = 0.4
         options.style = .easeOut

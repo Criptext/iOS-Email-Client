@@ -62,27 +62,13 @@ class CustomizeAccountCreatedViewController: UIViewController {
         self.onNextPress(sender)
     }
     
-    func toggleLoadingView(_ show: Bool){
-        if(show){
-            nextButton.setTitle("", for: .normal)
-            loadingView.isHidden = false
-            loadingView.startAnimating()
-        }else{
-            nextButton.setTitle(String.localize("NEXT"), for: .normal)
-            loadingView.isHidden = true
-            loadingView.stopAnimating()
-        }
-    }
-    
     @IBAction func onNextPress(_ sender: Any) {
-        toggleLoadingView(true)
         let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "customizeProfilePictureView")  as! CustomizeProfilePictureViewController
         controller.myAccount = self.myAccount
         controller.recoveryEmail = self.recoveryEmail
         controller.multipleAccount = self.multipleAccount
         navigationController?.pushViewController(controller, animated: true)
-        toggleLoadingView(false)
     }
 }
 

@@ -230,16 +230,6 @@ class NewEmailHandler {
             }
         } else if let inboxLabel = SharedDB.getLabel(SystemLabel.inbox.id) {
             email.labels.append(inboxLabel)
-            let fromContact = self.database.getContact(ContactUtils.parseContact(event.from, account: myAccount).email)
-            if(fromContact != nil){
-                if(fromContact?.spamScore ?? 0 >= 2){
-                    if(!event.labels.contains(SystemLabel.spam.nameId)){
-                        APIManager.postReportContact(emails: [fromContact!.email], type: ContactUtils.ReportType.spam, data: nil, token: myAccount.jwt, completion: {_ in })
-                    }
-                    let spamLabel = SharedDB.getLabel(SystemLabel.spam.id)
-                    email.labels.append(spamLabel!)
-                }
-            }
         }
         
         if(!event.labels.isEmpty){

@@ -267,7 +267,6 @@ extension CriptextDefaults {
         groupDefaults.removeObject(forKey: PIN.faceid.rawValue)
         groupDefaults.removeObject(forKey: PIN.goneTimestamp.rawValue)
         groupDefaults.removeObject(forKey: PIN.lockTimer.rawValue)
-        groupDefaults.removeObject(forKey: ThemeMode.themeMode.rawValue)
     }
     
     func removeQuickGuideFlags(){

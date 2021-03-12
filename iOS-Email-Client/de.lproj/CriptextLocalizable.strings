@@ -622,3 +622,79 @@
 "CAPTCH_ERROR" = "Unable to refresh captcha. Please try again";
 "CAPTCH_PLACEHOLDER" = "Enter the characters you see";
 "WRONG_CAPTCHA" = "Wrong Captcha. Please try again";
+
+"LOGIN" = "Log In";
+
+"SYNC_REQUEST_TITLE" = "Check other device";
+"SYNC_REQUEST_MESSAGE" = "Open Criptext on the other device to begin import";
+"SYNC_REQUEST_BUTTON" = "Resend Request";
+
+"SYNC_DENIED_TITLE" = "Import Rejected 😖";
+"SYNC_DENIED_MESSAGE" = "Your other device rejected the request to import mailbox";
+"SYNC_DENIED_WARNING_TITLE" = "Warning: ";
+"SYNC_DENIED_WARNING_MESSAGE" = "Multiple rejections could lead this device to be blacklisted";
+"SYNC_DENIED_BUTTON" = "Try again";
+
+
+"SYNC_TITLE" = "Importing Mailbox";
+"SYNC_MESSAGE" = "Don’t leave the app or turn off the screen ";
+"SYNC_KEYS" = "Sending Keys…";
+"SYNC_WAITING" = "Waiting for mailbox…";
+"SYNC_DOWNLOADING" = "Downloading Mailbox…";
+"SYNC_RESTORING" = "Restoring Mailbox…";
+"SYNC_READY" = "Device Ready! 😎";
+"SYNC_CANCEL" = "Cancel Import";
+
+"BACKUP_SEARCH" = "Searching for Backup";
+"BACKUP_SEARCH_MESSAGE" = "Don’t leave the app or turn off the screen";
+"BACKUP_SEARCH_DOWNLOAD" = "A backup file is being downloaded";
+
+"BACKUP_NONE" = "No backup found  😟";
+"BACKUP_NONE_MESSAGE" = "Try importing from another source";
+
+"BACKUP_FOUND" = "Backup Found 🙌";
+"BACKUP_FOUND_MESSAGE" = "Your data is ready to be imported";
+
+"BACKUP_RESTORING" = "Restoring…";
+"BACKUP_RESTORING_MESSAGE" = "Don’t leave the app or turn off the screen";
+
+"BACKUP_DELAY" = "Something has happened that is delaying this process.";
+
+"IMPORT_TITLE" = "Where will you import your emails from?";
+"IMPORT_MESSAGE" = "Select a source to import your emails and account info";
+"IMPORT_DEVICE" = "From other device  🖥";
+"IMPORT_CLOUD" = "From iCloud  ☁️";
+"IMPORT_FILE" = "From Backup File  📁";
+
+"IMPORT_FORMAT" = "The file format is invalid";
+"IMPORT_WRONG_PASSWORD" = "The password you entered is invalid";
+
+"LOGIN_TITLE" = "Ah, you're back!";
+"LOGIN_MESSAGE" = "It's not the same without you";
+"LOGIN_FORGOT" = "Forgot Password?";
+
+"DEVICE_LIMIT_TITLE" = "You've reached your device limit 😰";
+"DEVICE_LIMIT_MESSAGE" = "Logout from one device to make room for this one.";
+
+"RESET_TITLE" = "Enter your Criptext Email";
+"RESET_MESSAGE" = "You'll get an email with a link to reset your password";
+"RESET_PLACEHOLDER" = "Criptext Email";
+
+"SUCCESS_RESET_TITLE" = "Reset link sent to your recovery email 📩";
+"SUCCESS_RESET_MESSAGE" = "The link will expire in 30 min";
+
+"2FA_TITLE" = "Two-Factor Authentication";
+"2FA_MESSAGE" = "Enter the code we sent to:";
+"2FA_DIDNT" = "Didn’t get the code? ";
+"2FA_RESEND" = "Resend it";
+"2FA_CODE" = "Code";
+
+"CHANGE_TITLE" = "Change your Password";
+"CHANGE_MESSAGE" = "It was requested for you to change your password";
+
+"SET_TITLE" = "Set your settings";
+"SET_MESSAGE" = "Tip: Criptext works better when everything's switched on";
+"SET_THEME" = "Dark Theme 🌛";
+"SET_NOTIFICATIONS" = "Allow Notifications 🔔";
+"SET_CONTACTS" = "Allow Contacts 📒";
+"SET_BACKUP" = "Automatic iCloud Backup ☁️";

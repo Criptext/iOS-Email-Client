@@ -19,6 +19,7 @@ extension InboxViewController: ComposerSendMailDelegate {
     }
     
     func sendFailEmail(){
+
         guard let email = DBManager.getEmailFailed(account: self.myAccount) else {
             return
         }

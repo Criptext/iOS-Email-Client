@@ -709,9 +709,8 @@ class DBManager: SharedDB {
                 }
                 if(addedLabelNames.contains(SystemLabel.spam.nameId)){
                     let predicate = NSPredicate(format: "email == '\(email.fromContact.email)'")
-                    let contact = realm.objects(Contact.self).filter(predicate).first
-                    if(contact != nil){
-                        contact?.spamScore += 1
+                    if let contact = realm.objects(Contact.self).filter(predicate).first {
+                        contact.isTrusted = false
                     }
                 }
                 self.addRemoveLabels(realm: realm, email: email, addedLabelNames: addedLabelNames, removedLabelNames: removedLabelNames)
@@ -729,9 +728,8 @@ class DBManager: SharedDB {
                 for email in emails {
                     if(addedLabelNames.contains(SystemLabel.spam.nameId)){
                         let predicate = NSPredicate(format: "email == '\(email.fromContact.email)'")
-                        let contact = realm.objects(Contact.self).filter(predicate).first
-                        if(contact != nil){
-                            contact?.spamScore += 1
+                        if let contact = realm.objects(Contact.self).filter(predicate).first {
+                            contact.isTrusted = false
                         }
                     }
                     self.addRemoveLabels(realm: realm, email: email, addedLabelNames: addedLabelNames, removedLabelNames: removedLabelNames)

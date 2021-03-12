@@ -19,14 +19,14 @@ protocol ProgressDelegate {
 class APIManager: SharedAPI {
     static let fileServiceUrl = "https://services.criptext.com"
     
-    class func postKeybundle(params: [String : Any], token: String, completion: @escaping ((ResponseData) -> Void)){
+    class func postKeybundle(params: [String : Any], token: String, queue: DispatchQueue = .main, completion: @escaping ((ResponseData) -> Void)){
         let url = "\(self.baseUrl)/keybundle"
         let headers = [
             "Authorization": "Bearer \(token)",
             versionHeader: apiVersion,
             language: Env.language
         ]
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: queue) { response in
             let responseData = handleResponse(response)
             completion(responseData)
         }
@@ -935,7 +935,7 @@ class APIManager: SharedAPI {
         let headers = [versionHeader: apiVersion]
         let params = [ "email": recoveryEmail,
                        "username": username] as [String : Any]
-        return Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
+        return Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             let responseData = handleResponse(response, satisfy: .success)
             completion(responseData)
         }
@@ -974,13 +974,11 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func findDevices(username: String, domain: String, password: String, completion: @escaping ((ResponseData) -> Void)){
-        let parameters = ["recipientId": username,
-                          "domain": domain,
-                          "password": password] as [String : Any]
-        let url = "\(self.baseUrl)/device/find"
-        let headers = [versionHeader: apiVersion]
-        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON {
+    class func listDevices(token: String, completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(self.baseUrl)/device/list"
+        let headers = ["Authorization": "Bearer \(token)",
+            versionHeader: apiVersion]
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON {
             (response) in
             let responseData = handleResponse(response)
             completion(responseData)
@@ -998,21 +996,16 @@ class APIManager: SharedAPI {
         }
     }
     
-    class func deleteDevices(username: String, domain: String, token: String, deviceIds: [Int], completion: @escaping ((ResponseData) -> Void)){
-        let url = "\(Env.apiURL)/device/\(username)/\(domain)/\(token)?\(deviceIds.map {"deviceId=\($0)"}.joined(separator: "&"))"
+    class func deleteDevices(token: String, deviceIds: [Int], completion: @escaping ((ResponseData) -> Void)){
+        let url = "\(Env.apiURL)/device/bulk?\(deviceIds.map {"deviceId=\($0)"}.joined(separator: "&"))"
         let headers = [
             versionHeader: apiVersion,
-            language: Env.language
+            language: Env.language,
+            "Authorization": "Bearer \(token)"
         ]
-        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseString { (response) in
-            let responseData = handleResponse(response, satisfy: .success)
-            self.authorizationRequest(responseData: responseData, token: token) { (refreshResponseData, newToken) in
-                if let refreshData = refreshResponseData {
-                    completion(refreshData)
-                    return
-                }
-                self.deleteDevices(username: username, domain: domain, token: token, deviceIds: deviceIds, completion: completion)
-            }
+        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            let responseData = handleResponse(response)
+            completion(responseData)
         }
     }
     
@@ -1095,7 +1088,7 @@ class APIManager: SharedAPI {
             "domain": domain
         ] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
-            let responseData = handleResponse(response, satisfy: .success)
+            let responseData = handleResponse(response, alwaysReturnJSON: true)
             completion(responseData)
         }
     }

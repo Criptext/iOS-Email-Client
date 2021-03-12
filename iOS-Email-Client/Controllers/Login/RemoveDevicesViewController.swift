@@ -171,7 +171,7 @@ extension RemoveDevicesViewController: DeviceTableViewCellDelegate {
     
     @objc func removeSelectedDevices(){
         let deviceIds = devices.filter { $0.checked }.map { $0.id }
-        APIManager.deleteDevices(username: self.loginData.username, domain: self.loginData.domain, token: self.tempToken, deviceIds: deviceIds) { (responseData) in
+        APIManager.deleteDevices(token: self.tempToken, deviceIds: deviceIds) { (responseData) in
             guard case .Success = responseData else {
                 let popover = GenericAlertUIPopover()
                 popover.myTitle = String.localize("REMOVE_DEVICES_POPOVER_ERROR_TITLE")

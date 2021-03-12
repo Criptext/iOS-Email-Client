@@ -55,8 +55,6 @@ class Account: Object{
         return "compoundKey"
     }
     
-    
-    
     enum CustomerType: Int {
         case standard = 0
         case plus = 1
