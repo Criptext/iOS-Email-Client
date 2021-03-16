@@ -27,33 +27,11 @@ class InboxViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var topToolbar: TopbarUIView!
+    @IBOutlet weak var headToolbar: HeaderBarUIView!
     @IBOutlet weak var buttonCompose: UIButton!
     @IBOutlet weak var newsHeaderView: MailboxNewsHeaderUIView!
-    
-    var searchController = UISearchController(searchResultsController: nil)
-    var spaceBarButton:UIBarButtonItem!
-    var filterBarButton:UIBarButtonItem!
-    var fixedSpaceBarButton:UIBarButtonItem!
-    var flexibleSpaceBarButton:UIBarButtonItem!
-    var searchBarButton:UIBarButtonItem!
-    var activityBarButton:UIBarButtonItem!
-    var composerBarButton:UIBarButtonItem!
-    var trashBarButton:UIBarButtonItem!
-    var archiveBarButton:UIBarButtonItem!
-    var moveBarButton:UIBarButtonItem!
-    var markBarButton:UIBarButtonItem!
-    var deleteBarButton:UIBarButtonItem!
-    var menuButton:UIBarButtonItem!
-    var menuAvatarButton:UIBarButtonItem!
-    var menuAvatarImageView: UIImageView!
-    var circleBadgeView: UIView!
-    var avatarBorderView: UIImageView!
-    var counterBarButton:UIBarButtonItem!
-    var titleBarButton = UIBarButtonItem(title: "INBOX", style: .plain, target: nil, action: nil)
-    var countBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-    
-    let statusBarButton = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
-    
+    @IBOutlet weak var progressView: UIProgressView!
+        
     @IBOutlet weak var envelopeImageView: UIImageView!
     @IBOutlet weak var envelopeTitleView: UILabel!
     @IBOutlet weak var envelopeSubtitleView: UILabel!
@@ -216,7 +194,28 @@ class InboxViewController: UIViewController {
         }
     }
     
+    func headToolbarSetup(){
+        self.navigationController?.navigationBar.addSubview(self.headToolbar)
+        let margins = self.navigationController!.navigationBar.layoutMarginsGuide
+        self.headToolbar.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: -8.0).isActive = true
+        self.headToolbar.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 8.0).isActive = true
+        self.headToolbar.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: 8.0).isActive = true
+        self.navigationController?.navigationBar.bringSubviewToFront(self.headToolbar)
+        
+        UIUtils.setProfilePictureImage(imageView: self.headToolbar.avatarImageView, contact: (myAccount.email, myAccount.name))
+        UIUtils.setAvatarBorderImage(imageView: self.headToolbar.borderImageView, contact: (myAccount.email, myAccount.name))
+        
+        headToolbar.delegate = self
+        headToolbar.searchDelegate = self
+        headToolbar.setMailbox(label: SystemLabel.inbox.description.uppercased())
+        headToolbar.setActivityCounter(count: DBManager.getNewFeedsCount(since: myAccount.lastTimeFeedOpened))
+        headToolbar.setCounter(count: "")
+    }
+    
     func viewSetup(){
+        progressView.isHidden = true
+        progressView.progress = 0
+        
         let headerNib = UINib(nibName: "MailboxHeaderUITableCell", bundle: nil)
         self.tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "InboxHeaderTableViewCell")
         let newsHeaderNib = UINib(nibName: "MailboxNewsHeaderUITableCell", bundle: nil)
@@ -235,24 +234,10 @@ class InboxViewController: UIViewController {
         
         self.startNetworkListener()
         
-        self.edgesForExtendedLayout = UIRectEdge()
-        self.searchController.searchResultsUpdater = self as UISearchResultsUpdating
-        self.searchController.dimsBackgroundDuringPresentation = false
-        self.searchController.searchBar.delegate = self
-        self.searchController.searchBar.barStyle = .black
-        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "NunitoSans-Regular", size: 18.0)!, NSAttributedString.Key.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .normal)
-        
-        self.navigationItem.searchController = self.searchController
-        self.definesPresentationContext = true
         self.tableView.allowsMultipleSelection = true
-        
-        self.initBarButtonItems()
-        
+                
         self.setButtonItems(isEditing: false)
         
-        self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
-        self.titleBarButton.title = SystemLabel.inbox.description.uppercased()
-
         topToolbar.delegate = self
         refreshControl.addTarget(self, action: #selector(getPendingEvents(_:completion:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
@@ -263,6 +248,8 @@ class InboxViewController: UIViewController {
         mailboxOptionsInterface = MailboxOptionsInterface(currentLabel: mailboxData.selectedLabel)
         mailboxOptionsInterface?.delegate = self
         self.generalOptionsContainerView.setDelegate(newDelegate: mailboxOptionsInterface!)
+        
+        self.headToolbarSetup()
         
         DBManager.setSendingEmailsAsFailed(account: myAccount)
     }
@@ -275,6 +262,7 @@ class InboxViewController: UIViewController {
         initFloatingButton(color: theme.criptextBlue)
         refreshControl.tintColor = theme.name == "Dark" ? .white : .gray
         view.backgroundColor = theme.background
+        progressView.tintColor = theme.criptextBlue
         generalOptionsContainerView.applyTheme()
         if let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController {
             menuViewController.applyTheme()
@@ -453,71 +441,6 @@ class InboxViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.coachMarksController.stop(immediately: true)
-    }
-    
-    func initAvatarButton() {
-        let containerView = UIView(frame: CGRect(x: 3, y: 0, width: 33, height: 30))
-        menuAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
-        avatarBorderView = UIImageView(frame: CGRect(x: -3, y: -3, width: 34, height: 34))
-        circleBadgeView = UIView(frame: CGRect(x: 22, y: -2, width: 12, height: 12))
-        circleBadgeView.backgroundColor = .red
-        circleBadgeView.layer.cornerRadius = 6
-        circleBadgeView.layer.borderWidth = 2
-        circleBadgeView.layer.borderColor = UIColor.charcoal.cgColor
-        circleBadgeView.isHidden = true
-        
-        menuAvatarImageView.contentMode = .scaleAspectFit
-        menuAvatarImageView.clipsToBounds = true
-        
-        avatarBorderView.contentMode = .scaleAspectFit
-        
-        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOpenMenu(_:)))
-        containerView.addSubview(avatarBorderView)
-        containerView.addSubview(menuAvatarImageView)
-        containerView.addSubview(circleBadgeView)
-        containerView.addGestureRecognizer(tapGesture)
-        self.menuAvatarButton = UIBarButtonItem(customView: containerView)
-    }
-    
-    func initBarButtonItems(){
-        self.spaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        self.fixedSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
-        self.fixedSpaceBarButton.width = 25.0
-        self.flexibleSpaceBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        
-        self.titleBarButton.setTitleTextAttributes([NSAttributedString.Key.font: Font.bold.size(16)!, NSAttributedString.Key.foregroundColor: UIColor.white], for: .disabled)
-        self.titleBarButton.isEnabled = false
-        self.countBarButton.setTitleTextAttributes([NSAttributedString.Key.font: Font.bold.size(16)!, NSAttributedString.Key.foregroundColor: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0)], for: .disabled)
-        self.countBarButton.isEnabled = false
-        
-        let menuImage = #imageLiteral(resourceName: "menu_white").tint(with: .white)
-        let filterICon = #imageLiteral(resourceName: "filter").tint(with: .lightGray)
-        let searchImage = #imageLiteral(resourceName: "search").tint(with: UIColor(red:0.73, green:0.73, blue:0.74, alpha:1.0))
-        
-        self.menuButton = UIBarButtonItem(image: menuImage, style: .plain, target: self, action: #selector(didPressOpenMenu(_:)))
-        self.searchBarButton = UIBarButtonItem(image: searchImage, style: .plain, target: self, action: #selector(didPressSearch(_:)))
-        self.filterBarButton = UIBarButtonItem(image: filterICon, style: .plain, target: self, action: #selector(didPressFilter(_:)))
-        self.initAvatarButton()
-        // Set batButtonItems
-        let activityButton = MIBadgeButton(type: .custom)
-        let badgeCounter = DBManager.getNewFeedsCount(since: myAccount.lastTimeFeedOpened)
-        activityButton.badgeString = badgeCounter > 0 ? badgeCounter.description : ""
-        activityButton.frame = CGRect(x:0, y:0, width: 16, height: 20)
-        activityButton.badgeEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 2, right: 0)
-        activityButton.setImage(#imageLiteral(resourceName: "activity"), for: .normal)
-        activityButton.tintColor = UIColor.white
-        activityButton.addTarget(self, action: #selector(didPressActivityMenu), for: UIControl.Event.touchUpInside)
-        self.activityBarButton = UIBarButtonItem(customView: activityButton)
-        
-        self.activityBarButton.tintColor = UIColor.white
-        
-        let font:UIFont = Font.regular.size(13)!
-        let attributes:[NSAttributedString.Key : Any] = [NSAttributedString.Key.font: font];
-        self.statusBarButton.setTitleTextAttributes(attributes, for: .normal)
-        self.statusBarButton.tintColor = UIColor.darkGray
     }
     
     func initFloatingButton(color: UIColor){
@@ -721,8 +644,7 @@ extension InboxViewController {
             }
             DBManager.refresh()
             UIUtils.deleteSDWebImageCache()
-            UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-            UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
+            headToolbar.setAvatar(email: myAccount.email, name: myAccount.name)
             menuViewController.reloadView()
         }
         
@@ -823,10 +745,11 @@ extension InboxViewController{
         self.showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
         self.tableView.reloadData()
         
-        titleBarButton.title = (SystemLabel(rawValue: myLabelId)?.description ?? fallbackLabel.text).uppercased()
+        headToolbar.setMailbox(label: (SystemLabel(rawValue: myLabelId)?.description ?? fallbackLabel.text).uppercased())
+        headToolbar.setCounter(count: "")
         topToolbar.swapTrashIcon(labelId: labelId)
         
-        self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
+        //self.filterBarButton.image =  #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.viewSetupNews()
         self.openActionRequired()
         self.navigationDrawerController?.closeLeftView()
@@ -850,7 +773,7 @@ extension InboxViewController{
                 weakSelf.mailboxData.selectedLabel == label else {
                 return
             }
-            weakSelf.countBarButton.title = counter
+            weakSelf.headToolbar.setCounter(count: counter)
         }
         
         guard let menuViewController = navigationDrawerController?.leftViewController as? MenuViewController else {
@@ -860,33 +783,51 @@ extension InboxViewController{
     }
     
     func updateFeedsBadge(counter: Int){
-        guard let activityButton = self.activityBarButton.customView as? MIBadgeButton else {
-            return
-        }
-        activityButton.badgeString = counter > 0 ? counter.description : ""
+        headToolbar.setActivityCounter(count: counter)
     }
 }
 
 //MARK: - Side menu events
-extension InboxViewController {
-    @objc func didPressActivityMenu(){
+extension InboxViewController: HeaderBarToolbarDelegate {
+    func onActivityPress() {
         self.navigationDrawerController?.openRightView()
         self.coachMarksController.stop(immediately: true)
     }
     
-    @IBAction func didPressOpenMenu(_ sender: UIBarButtonItem) {
+    func onSearchPress() {
+        
+    }
+    
+    func onMenuPress() {
         self.navigationDrawerController?.toggleLeftView()
     }
     
-    @IBAction func didPressSearch(_ sender: UIBarButtonItem) {
-        self.searchController.searchBar.becomeFirstResponder()
-    }
-    
-    @IBAction func didPressFilter(_ sender: UIBarButtonItem) {
+    func onFilterPress() {
         let selectLabel = mailboxData.filterUnread ? String.localize("SHOW_UNREAD") : String.localize("SHOW_ALL")
         let filterPopover = FilterUIPopover.instantiate(initLabel: selectLabel)
         filterPopover.delegate = self
         self.presentPopover(popover: filterPopover, height: Constants.basePopoverHeight + filterPopover.labels.count * Constants.labelPopoverHeight)
+    }
+}
+
+//MARK: - Search Delegate
+extension InboxViewController: SearchBarToolbarDelegate {
+    func onSearchChanged(text: String) {
+        mailboxData.searchMode = true
+        mailboxData.cancelFetchAsyncTask()
+        if(!mailboxData.searchMode){
+            showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+            tableView.reloadData()
+        } else {
+            mailboxData.reachedEnd = false
+            loadMails(since: Date(), clear: true)
+        }
+    }
+    
+    func onSearchDismiss() {
+        mailboxData.searchMode = false
+        showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
+        tableView.reloadData()
     }
 }
 
@@ -895,8 +836,7 @@ extension InboxViewController{
     func setButtonItems(isEditing: Bool){
         
         guard isEditing else {
-            self.navigationItem.rightBarButtonItems = [self.activityBarButton, self.filterBarButton, self.spaceBarButton]
-            self.navigationItem.leftBarButtonItems = [self.menuAvatarButton, self.fixedSpaceBarButton, self.titleBarButton, self.countBarButton]
+            //CHECK THIS LOGIC
             return
         }
         
@@ -911,7 +851,7 @@ extension InboxViewController{
         guard !isTest && (clear || mailboxData.fetchAsyncTask == nil) else {
             return
         }
-        let searchText = searchController.searchBar.text
+        let searchText = headToolbar.searchTextField.text
         let threadsAsyncTask = GetThreadsAsyncTask(accountId: myAccount.compoundKey, since: date, threads: clear ? [] : mailboxData.threads, limit: limit, searchText: mailboxData.searchMode ? searchText : nil, showAll: mailboxData.searchMode || !mailboxData.filterUnread, selectedLabel: mailboxData.selectedLabel)
         mailboxData.fetchAsyncTask = threadsAsyncTask
         threadsAsyncTask.start { [weak self] (threads) in
@@ -1000,8 +940,7 @@ extension InboxViewController: FilterUIPopoverDelegate {
             return
         }
         mailboxData.filterUnread = isFilterUnread
-        self.filterBarButton.image = isFilterUnread ? #imageLiteral(resourceName: "filter").tint(with: .white)
-            : #imageLiteral(resourceName: "filter").tint(with: .lightGray)
+        //self.filterBarButton.image = isFilterUnread ? #imageLiteral(resourceName: "filter").tint(with: .white) : #imageLiteral(resourceName: "filter").tint(with: .lightGray)
         self.loadMails(since: Date(), clear: true, limit: 0)
     }
 }
@@ -1329,6 +1268,7 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
     }
     
     func goToEmailDetail(selectedThread: Thread, selectedLabel: Int, message: ControllerMessage? = nil){
+        self.headToolbar.resignKeyboard()
         self.navigationDrawerController?.closeRightView()
         
         autoreleasepool {
@@ -1586,27 +1526,6 @@ extension InboxViewController: InboxTableViewCellDelegate, UITableViewDelegate {
                 completion?()
             }
         }
-    }
-}
-
-//MARK: - Search Delegate
-extension InboxViewController: UISearchResultsUpdating, UISearchBarDelegate {
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        mailboxData.searchMode = self.searchController.isActive && !searchController.searchBar.text!.isEmpty
-        filterContentForSearchText(searchText: searchController.searchBar.text!)
-    }
-    
-    func filterContentForSearchText(searchText: String) {
-        mailboxData.cancelFetchAsyncTask()
-        if(!mailboxData.searchMode){
-            showNoThreadsView(mailboxData.reachedEnd && mailboxData.threads.isEmpty)
-            tableView.reloadData()
-        } else {
-            mailboxData.reachedEnd = false
-            loadMails(since: Date(), clear: true)
-        }
-        
     }
 }
 
@@ -1876,7 +1795,7 @@ extension InboxViewController: CoachMarksControllerDataSource, CoachMarksControl
     func getTarget() -> UIView? {
         switch(currentGuide){
         case "guideFeed":
-            return self.activityBarButton.customView as! MIBadgeButton
+            return self.headToolbar.activityButton
         case "guideSecure":
             let index = IndexPath(row: mailboxData.threads.firstIndex(where: { $0.isSecure }) ?? -1, section: 0)
             if(index.row != -1) {
@@ -2082,14 +2001,21 @@ extension InboxViewController {
             updateFeedsBadge(counter: badgeCounter)
         }
         self.setQueueItemsListener()
-        UIUtils.setProfilePictureImage(imageView: menuAvatarImageView, contact: (myAccount.email, myAccount.name))
-        UIUtils.setAvatarBorderImage(imageView: avatarBorderView, contact: (myAccount.email, myAccount.name))
+        headToolbar.setAvatar(email: myAccount.email, name: myAccount.name)
         self.showSnackbar("\(String.localize("NOW_LOGGED"))\(account.email)", attributedText: nil, permanent: false)
         RequestManager.shared.getAccountEvents(accountId: account.compoundKey)
     }
 }
 
 extension InboxViewController: RequestDelegate {
+    func progressRequest(accountId: String, progress: Float) {
+        guard !myAccount.isInvalidated && myAccount.compoundKey == accountId else {
+            return
+        }
+        progressView.isHidden = false
+        progressView.progress = progress
+    }
+    
     func finishRequest(accountId: String, result: EventData.Result) {
         if !RequestManager.shared.isInQueue(accountId: myAccount.compoundKey) {
             self.refreshControl.endRefreshing()
@@ -2108,6 +2034,8 @@ extension InboxViewController: RequestDelegate {
             }
             return
         }
+        self.progressView.isHidden = true
+        self.progressView.progress = 0
         self.didReceiveEvents(result: result)
     }
     

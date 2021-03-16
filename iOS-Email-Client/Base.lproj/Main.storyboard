@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JRj-3p-f3U">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -845,7 +845,7 @@
                                     </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qY5-rJ-Nng" customClass="TheRichTextEditor" customModule="TheRichTextEditor">
                                         <rect key="frame" x="18" y="147" width="381" height="150"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="150" id="BJ6-ET-T1U"/>
                                         </constraints>
@@ -1335,9 +1335,16 @@
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJq-0v-4GG" customClass="TopbarUIView" customModule="iOS_Email_Client" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
-                                <color key="backgroundColor" red="0.21517819169999999" green="0.22662246229999999" blue="0.27226996419999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.43529411764705883" green="0.44705882352941173" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="p0S-lX-gC1"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iVc-79-cuJ" customClass="HeaderBarUIView" customModule="iOS_Email_Client" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <color key="backgroundColor" red="0.43529411764705883" green="0.44705882352941173" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="BbC-jw-ZzL"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZfB-jw-VMM" customClass="MailboxNewsHeaderUIView" customModule="iOS_Email_Client" customModuleProvider="target">
@@ -1574,6 +1581,9 @@
                                     <outlet property="delegate" destination="gA0-rr-zOr" id="cuz-7q-AFN"/>
                                 </connections>
                             </tableView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="N9x-dI-3Xj">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="2.5"/>
+                            </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xaY-yy-tiI">
                                 <rect key="frame" x="336" y="696" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.0" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1612,14 +1622,20 @@
                             <constraint firstItem="xJq-0v-4GG" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="Jbf-Sm-xAb"/>
                             <constraint firstItem="RGw-Kx-VBy" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="Jyf-Hl-HgU"/>
                             <constraint firstAttribute="bottom" secondItem="RGw-Kx-VBy" secondAttribute="bottom" id="K1r-HE-omP"/>
+                            <constraint firstItem="N9x-dI-3Xj" firstAttribute="top" secondItem="RGw-Kx-VBy" secondAttribute="top" id="MAh-5g-K27"/>
+                            <constraint firstAttribute="trailing" secondItem="iVc-79-cuJ" secondAttribute="trailing" id="SVW-0w-EaA"/>
                             <constraint firstItem="Mwd-eq-N7c" firstAttribute="top" secondItem="ZfB-jw-VMM" secondAttribute="bottom" id="bBn-rq-HZZ"/>
+                            <constraint firstItem="N9x-dI-3Xj" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="dXo-Ug-jYs"/>
                             <constraint firstItem="ZfB-jw-VMM" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="ega-7h-GeI"/>
                             <constraint firstAttribute="trailing" secondItem="RGw-Kx-VBy" secondAttribute="trailing" id="epY-zD-fMa"/>
                             <constraint firstAttribute="bottom" secondItem="fhP-Ga-19D" secondAttribute="bottom" id="g8s-u8-Cv6"/>
                             <constraint firstItem="ulq-Th-0Cu" firstAttribute="top" secondItem="xaY-yy-tiI" secondAttribute="bottom" constant="18" id="khG-Th-8UP"/>
                             <constraint firstItem="fhP-Ga-19D" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="lZk-8d-veS"/>
+                            <constraint firstItem="iVc-79-cuJ" firstAttribute="leading" secondItem="AIM-Zi-4Pj" secondAttribute="leading" id="mmO-cA-F1M"/>
                             <constraint firstAttribute="trailing" secondItem="fhP-Ga-19D" secondAttribute="trailing" id="rew-CF-bn7"/>
                             <constraint firstItem="RGw-Kx-VBy" firstAttribute="top" secondItem="ZfB-jw-VMM" secondAttribute="bottom" id="wB9-yW-MZv"/>
+                            <constraint firstAttribute="trailing" secondItem="N9x-dI-3Xj" secondAttribute="trailing" id="yTO-9M-VJg"/>
+                            <constraint firstItem="iVc-79-cuJ" firstAttribute="top" secondItem="IXE-Ut-Sc1" secondAttribute="bottom" id="z2W-gE-qax"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ot7-Yo-7gJ"/>
@@ -1632,7 +1648,9 @@
                         <outlet property="envelopeView" destination="Mwd-eq-N7c" id="ax7-3e-tra"/>
                         <outlet property="featureHeaderHeightConstraint" destination="hyy-yY-wgw" id="3BK-HO-CUu"/>
                         <outlet property="generalOptionsContainerView" destination="fhP-Ga-19D" id="Kkq-Qi-Q9p"/>
+                        <outlet property="headToolbar" destination="iVc-79-cuJ" id="tfV-4I-L8h"/>
                         <outlet property="newsHeaderView" destination="ZfB-jw-VMM" id="k1y-Mt-8H8"/>
+                        <outlet property="progressView" destination="N9x-dI-3Xj" id="7Vf-NL-VRi"/>
                         <outlet property="tableView" destination="RGw-Kx-VBy" id="PUS-eO-VVj"/>
                         <outlet property="topToolbar" destination="xJq-0v-4GG" id="ciI-OE-wd4"/>
                         <segue destination="U03-Od-wtY" kind="presentation" identifier="showComposer" modalPresentationStyle="fullScreen" id="Lr4-gz-kw3"/>
@@ -1641,7 +1659,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6rU-L3-MlW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-836" y="472.71364317841085"/>
+            <point key="canvasLocation" x="-836.23188405797111" y="472.09821428571428"/>
         </scene>
         <!--Feed View Controller-->
         <scene sceneID="qaf-5e-Kt3">
@@ -2004,14 +2022,14 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="settingsLabelCell" id="82W-dO-Eio" customClass="LabelsLabelTableViewCell" customModule="iOS_Email_Client" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="414" height="103"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="414" height="104.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82W-dO-Eio" id="LlJ-DA-jEg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="103"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="104.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tz-oI-oPm" customClass="CheckMarkUIView" customModule="iOS_Email_Client" customModuleProvider="target">
-                                                    <rect key="frame" x="339" y="43.5" width="16" height="16"/>
+                                                    <rect key="frame" x="339" y="44.5" width="16" height="16"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="16" id="6m0-09-ggS"/>
@@ -2019,7 +2037,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6n-ID-26a" userLabel="More Label Button">
-                                                    <rect key="frame" x="379" y="41.5" width="18" height="20"/>
+                                                    <rect key="frame" x="379" y="42.5" width="18" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="MBK-5z-3XB"/>
                                                         <constraint firstAttribute="height" constant="20" id="pgR-MU-Koc"/>
@@ -2031,13 +2049,13 @@
                                                     </connections>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-oJ-OcS">
-                                                    <rect key="frame" x="27" y="0.0" width="315" height="103"/>
+                                                    <rect key="frame" x="27" y="0.0" width="315" height="104.5"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blV-ex-kfY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="103"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="104.5"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhY-yB-6ci">
-                                                                    <rect key="frame" x="2" y="48.5" width="6" height="6"/>
+                                                                    <rect key="frame" x="2" y="49.5" width="6" height="6"/>
                                                                     <color key="backgroundColor" red="0.0" green="1" blue="0.017805179300000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="6" id="LiT-aA-huk"/>
@@ -2058,7 +2076,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veP-YG-at8">
-                                                            <rect key="frame" x="22" y="0.0" width="293" height="103"/>
+                                                            <rect key="frame" x="22" y="0.0" width="293" height="104.5"/>
                                                             <fontDescription key="fontDescription" name="NunitoSans-Regular" family="Nunito Sans" pointSize="17"/>
                                                             <color key="textColor" red="0.2156862745" green="0.2274509804" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>

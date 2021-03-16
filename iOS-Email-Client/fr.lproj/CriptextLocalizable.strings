@@ -45,6 +45,7 @@
 "ACCESS_DENIED" = "Accès refusé";
 "NEED_ENABLE_ACCESS" = "Vous devez activer l'accès à cette app dans vos paramètres";
 "ODD" = "Eh bien, c'est étrange...";
+"SEARCH" = "Search";
 "SIGNUP" = "Inscription";
 "NOT_REGISTERED" = "Pas enregistré? ";
 "SIGNIN" = "Connexion";
