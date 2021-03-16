@@ -293,13 +293,13 @@
 		7CDB465C203E2FF2007C9637 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */; };
 		7CDB465E203E336A007C9637 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465D203E336A007C9637 /* FeedViewController.swift */; };
 		7CDB4660203F0C2A007C9637 /* FeedsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDB465F203F0C2A007C9637 /* FeedsData.swift */; };
+		7CDFE0BA25C1FFE800F7D817 /* HeaderBarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CDFE0B925C1FFE800F7D817 /* HeaderBarUIView.xib */; };
+		7CDFE0CB25C2068D00F7D817 /* HeaderBarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */; };
 		7CE1ED2025533220005599DE /* SyncRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED1F25533220005599DE /* SyncRequestViewController.swift */; };
 		7CE1ED26255332AD005599DE /* SyncRequestUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED25255332AD005599DE /* SyncRequestUIView.swift */; };
 		7CE1ED2E2553334A005599DE /* SyncDeniedUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */; };
 		7CE1ED392553442D005599DE /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED382553442D005599DE /* SyncViewController.swift */; };
 		7CE1ED4325535A07005599DE /* RestoreBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */; };
-		7CDFE0BA25C1FFE800F7D817 /* HeaderBarUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CDFE0B925C1FFE800F7D817 /* HeaderBarUIView.xib */; };
-		7CDFE0CB25C2068D00F7D817 /* HeaderBarUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */; };
 		7CE1F9FE2478788300D14352 /* PlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FD2478788300D14352 /* PlusViewController.swift */; };
 		7CE1FA0024787BEC00D14352 /* UpgradePlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */; };
 		7CE1FA02247882B300D14352 /* AlreadyPlusUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */; };
@@ -1007,13 +1007,13 @@
 		7CDB465B203E2FF2007C9637 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		7CDB465D203E336A007C9637 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7CDB465F203F0C2A007C9637 /* FeedsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsData.swift; sourceTree = "<group>"; };
+		7CDFE0B925C1FFE800F7D817 /* HeaderBarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderBarUIView.xib; sourceTree = "<group>"; };
+		7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderBarUIView.swift; sourceTree = "<group>"; };
 		7CE1ED1F25533220005599DE /* SyncRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRequestViewController.swift; sourceTree = "<group>"; };
 		7CE1ED25255332AD005599DE /* SyncRequestUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncRequestUIView.swift; sourceTree = "<group>"; };
 		7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDeniedUIView.swift; sourceTree = "<group>"; };
 		7CE1ED382553442D005599DE /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncViewController.swift; sourceTree = "<group>"; };
 		7CE1ED4225535A07005599DE /* RestoreBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreBackupViewController.swift; sourceTree = "<group>"; };
-		7CDFE0B925C1FFE800F7D817 /* HeaderBarUIView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderBarUIView.xib; sourceTree = "<group>"; };
-		7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderBarUIView.swift; sourceTree = "<group>"; };
 		7CE1F9FD2478788300D14352 /* PlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusViewController.swift; sourceTree = "<group>"; };
 		7CE1F9FF24787BEC00D14352 /* UpgradePlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradePlusUIView.swift; sourceTree = "<group>"; };
 		7CE1FA01247882B300D14352 /* AlreadyPlusUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlreadyPlusUIView.swift; sourceTree = "<group>"; };
@@ -1902,15 +1902,6 @@
 			path = AxolotlStore;
 			sourceTree = "<group>";
 		};
-		7CE1ED242553326E005599DE /* LogIn */ = {
-			isa = PBXGroup;
-			children = (
-				7CE1ED25255332AD005599DE /* SyncRequestUIView.swift */,
-				7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */,
-			);
-			path = LogIn;
-			sourceTree = "<group>";
-		}
 		7CDFE0B825C1FFB500F7D817 /* Toolbars */ = {
 			isa = PBXGroup;
 			children = (
@@ -1920,6 +1911,15 @@
 				7CDFE0CA25C2068D00F7D817 /* HeaderBarUIView.swift */,
 			);
 			path = Toolbars;
+			sourceTree = "<group>";
+		};
+		7CE1ED242553326E005599DE /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				7CE1ED25255332AD005599DE /* SyncRequestUIView.swift */,
+				7CE1ED2D2553334A005599DE /* SyncDeniedUIView.swift */,
+			);
+			path = LogIn;
 			sourceTree = "<group>";
 		};
 		7CF93F522146E3D700361837 /* Lottie */ = {
@@ -3422,7 +3422,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3435,7 +3435,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3465,7 +3465,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3478,7 +3478,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3621,7 +3621,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3635,7 +3635,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"$(inherited)",
@@ -3691,7 +3691,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3704,7 +3704,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
@@ -3726,7 +3726,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3739,7 +3739,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
@@ -3760,7 +3760,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3774,7 +3774,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
@@ -3797,7 +3797,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3810,7 +3810,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
@@ -3835,7 +3835,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3848,7 +3848,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3872,7 +3872,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 65NU4336S4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3886,7 +3886,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.criptext.mail.support.NotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";

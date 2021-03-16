@@ -104,7 +104,7 @@ class Utils: SharedUtils {
     }
     
     class func isValidUsername(_ testStr:String) -> Bool {
-        let emailRegEx = "(?=^([a-z0-9]([._-]{0,2}[a-z0-9])+)$)(?:^.{3,64}$)$"
+        let emailRegEx = "(?=^([a-z]([._-]{0,2}[a-z0-9])+)$)(?:^.{3,64}$)$"
         
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
